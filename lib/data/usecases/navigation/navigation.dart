@@ -1,0 +1,1 @@
+export './getx_navigate_to.dart';
