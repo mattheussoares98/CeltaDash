@@ -3,6 +3,7 @@
 import './translation.dart';
 
 class EnUs implements Translation {
+  String get msgInvalidEmail => "Invalid email";
   String get msgInvalidField => "Invalid field";
   String get msgRequiredField => "Required field";
   String get msgVeryShortField => "Field very short";

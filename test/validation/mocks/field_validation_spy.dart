@@ -5,15 +5,11 @@ import 'package:mocktail/mocktail.dart';
 
 class FieldValidationSpy extends Mock implements FieldValidation {
   FieldValidationSpy() {
-    mockValidation();
-    mockFieldName('any_field');
+    this.mockValidation();
   }
 
-  When mockValidationCall() => when(() => validate(any()));
-  void mockValidation() => mockValidationCall().thenReturn(null);
+  When _mockValidationCall() => when(() => this.validate(any()));
+  void mockValidation() => this._mockValidationCall().thenReturn(null);
   void mockValidationError(ValidationError error) =>
-      mockValidationCall().thenReturn(error);
-
-  void mockFieldName(String fieldName) =>
-      when(() => field).thenReturn(fieldName);
+      this._mockValidationCall().thenReturn(error);
 }

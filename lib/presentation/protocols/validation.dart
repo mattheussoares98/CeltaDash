@@ -1,10 +1,11 @@
 import '../../ui/helpers/helpers.dart';
 
 abstract class Validation {
-  ValidationError? validate({required String field, required Map input});
+  ValidationError? validate(String? value);
 }
 
 enum ValidationError {
+  invalidEmail,
   invalidField,
   requiredField,
   shortField,
@@ -13,6 +14,8 @@ enum ValidationError {
 extension ValidationErrorExtension on ValidationError {
   String get description {
     switch (this) {
+      case ValidationError.invalidEmail:
+        return R.string.msgInvalidEmail;
       case ValidationError.invalidField:
         return R.string.msgInvalidField;
       case ValidationError.requiredField:

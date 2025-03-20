@@ -8,31 +8,30 @@ void main() {
   late MinLengthValidation sut;
 
   setUp(() {
-    sut = const MinLengthValidation(field: 'any_field', size: 5);
+    sut = const MinLengthValidation(size: 5);
   });
 
   test('Should return error if value is empty', () {
-    expect(sut.validate({'any_field': ''}), ValidationError.shortField);
+    expect(sut.validate(""), ValidationError.shortField);
   });
 
   test('Should return error if value is null', () {
-    expect(sut.validate({}), ValidationError.shortField);
-    expect(sut.validate({'any_field': null}), ValidationError.shortField);
+    expect(sut.validate(""), ValidationError.shortField);
+    expect(sut.validate(null), ValidationError.requiredField);
   });
 
   test('Should return error if value is less than min size', () {
-    expect(sut.validate({'any_field': faker.randomGenerator.string(4, min: 1)}),
-        ValidationError.shortField);
+    expect(
+      sut.validate(faker.randomGenerator.string(4, min: 1)),
+      ValidationError.shortField,
+    );
   });
 
   test('Should return null if value is equal than min size', () {
-    expect(sut.validate({'any_field': faker.randomGenerator.string(5, min: 5)}),
-        null);
+    expect(sut.validate(faker.randomGenerator.string(5, min: 5)), null);
   });
 
   test('Should return null if value is bigger than min size', () {
-    expect(
-        sut.validate({'any_field': faker.randomGenerator.string(10, min: 6)}),
-        null);
+    expect(sut.validate(faker.randomGenerator.string(10, min: 6)), null);
   });
 }

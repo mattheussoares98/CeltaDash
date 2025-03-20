@@ -4,6 +4,7 @@ import './translation.dart';
 
 class PtBr implements Translation {
   String get msgUnexpectedError => "Ocorreu um erro não esperado";
+  String get msgInvalidEmail => "E-mail inválido";
   String get msgInvalidField => "Campo inválido";
   String get msgRequiredField => "Campo obrigatório";
   String get msgVeryShortField => "Campo muito curto";

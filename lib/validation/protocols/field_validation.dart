@@ -1,6 +1,5 @@
 import '../../presentation/protocols/protocols.dart';
 
 abstract class FieldValidation {
-  String get field;
-  ValidationError? validate(Map input);
+  ValidationError? validate(String? input);
 }

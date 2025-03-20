@@ -14,12 +14,12 @@ class ValidationBuilder {
   }
 
   ValidationBuilder required() {
-    validations.add(RequiredFieldValidation(fieldName));
+    validations.add(RequiredFieldValidation());
     return this;
   }
 
   ValidationBuilder min(int size) {
-    validations.add(MinLengthValidation(field: fieldName, size: size));
+    validations.add(MinLengthValidation(size: size));
     return this;
   }
 
