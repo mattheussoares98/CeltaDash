@@ -17,15 +17,19 @@ class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  final emailFocusNode = FocusNode();
+  final passwordFocusNode = FocusNode();
 
   @override
   void dispose() {
     super.dispose();
     emailController.dispose();
     passwordController.dispose();
+    emailFocusNode.dispose();
+    passwordFocusNode.dispose();
   }
 
-  void enter() {
+  void login() {
     if (formKey.currentState?.validate() != true) {
       return;
     }
@@ -41,9 +45,17 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              EmailField(emailController: emailController),
-              PasswordField(passwordController: passwordController),
-              ElevatedButton(onPressed: enter, child: Text(R.string.enter)),
+              EmailField(
+                emailController: emailController,
+                emailFocusNode: emailFocusNode,
+                passwordFocusNode: passwordFocusNode,
+              ),
+              PasswordField(
+                passwordController: passwordController,
+                login: login,
+                passwordFocusNode: passwordFocusNode,
+              ),
+              ElevatedButton(onPressed: login, child: Text(R.string.enter)),
             ],
           ),
         ),

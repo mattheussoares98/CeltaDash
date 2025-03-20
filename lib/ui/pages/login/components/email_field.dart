@@ -8,12 +8,26 @@ import '../../../helpers/helpers.dart';
 
 class EmailField extends StatelessWidget {
   final TextEditingController emailController;
-  const EmailField({super.key, required this.emailController});
+  final FocusNode emailFocusNode;
+  final FocusNode passwordFocusNode;
+
+  const EmailField({
+    super.key,
+    required this.emailController,
+    required this.emailFocusNode,
+    required this.passwordFocusNode,
+  });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: emailController,
+      focusNode: emailFocusNode,
+      onFieldSubmitted: (_) {
+        Future.delayed(Duration.zero, () {
+          passwordFocusNode.requestFocus();
+        });
+      },
       validator: (value) {
         return ValidationComposite([
           RequiredFieldValidation(),

@@ -6,17 +6,32 @@ import '../../../../validation/validators/validators.dart';
 import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 
-class PasswordField extends StatelessWidget {
+class PasswordField extends StatefulWidget {
   final TextEditingController passwordController;
-  const PasswordField({super.key, required this.passwordController});
+  final FocusNode passwordFocusNode;
+  final void Function() login;
+  const PasswordField({
+    super.key,
+    required this.passwordController,
+    required this.passwordFocusNode,
+    required this.login,
+  });
 
+  @override
+  State<PasswordField> createState() => _PasswordFieldState();
+}
+
+class _PasswordFieldState extends State<PasswordField> {
+  bool showPassword = false;
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: TextFormField(
-        controller: passwordController,
-        obscureText: true,
+        controller: widget.passwordController,
+        obscureText: showPassword,
+        focusNode: widget.passwordFocusNode,
+        onFieldSubmitted: (_) => widget.login(),
         validator: (value) {
           return ValidationComposite([
             RequiredFieldValidation(),
@@ -28,7 +43,14 @@ class PasswordField extends StatelessWidget {
           hintText: R.string.password,
           labelText: R.string.password,
           prefixIcon: const Icon(Icons.lock),
-          suffixIcon: Icon(Icons.remove_red_eye),
+          suffixIcon: IconButton(
+            icon: Icon(showPassword ? Icons.visibility_off : Icons.visibility),
+            onPressed: () {
+              setState(() {
+                showPassword = !showPassword;
+              });
+            },
+          ),
         ),
       ),
     );
