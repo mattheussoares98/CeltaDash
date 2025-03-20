@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               EmailField(emailController: emailController),
               PasswordField(passwordController: passwordController),
-              ElevatedButton(onPressed: () {}, child: Text(R.string.enter)),
+              ElevatedButton(onPressed: enter, child: Text(R.string.enter)),
             ],
           ),
         ),

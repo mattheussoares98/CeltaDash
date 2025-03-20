@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../../main/composites/composites.dart';
+import '../../../../presentation/protocols/protocols.dart';
+import '../../../../validation/validators/validators.dart';
 import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 
@@ -12,7 +15,9 @@ class EmailField extends StatelessWidget {
     return TextFormField(
       controller: emailController,
       validator: (value) {
-        return null; //TODO change how validate
+        return ValidationComposite([
+          RequiredFieldValidation(),
+        ]).validate(value)?.description;
       },
       decoration: FormFieldDecoration.decoration(
         context: context,
