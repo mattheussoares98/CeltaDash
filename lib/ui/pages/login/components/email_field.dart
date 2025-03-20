@@ -17,6 +17,7 @@ class EmailField extends StatelessWidget {
       validator: (value) {
         return ValidationComposite([
           RequiredFieldValidation(),
+          EmailFieldValidation(),
         ]).validate(value)?.description;
       },
       decoration: FormFieldDecoration.decoration(
