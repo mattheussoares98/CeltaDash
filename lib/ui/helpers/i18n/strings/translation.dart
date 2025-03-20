@@ -7,7 +7,10 @@ abstract class Translation {
 
   String get close;
   String get dateNotUpdated;
+  String get email;
+  String get enter;
   String get no;
+  String get password;
   String get wait;
   String get yes;
 }

@@ -11,7 +11,10 @@ class EnUs implements Translation {
 
   String get close => "Close";
   String get dateNotUpdated => "Date not updated";
+  String get email => "Email";
+  String get enter => "Enter";
   String get no => "No";
+  String get password => "Password";
   String get wait => "Wait...";
   String get yes => "Yes";
 }
