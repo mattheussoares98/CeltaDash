@@ -6,6 +6,7 @@ class Providers {
   Providers._();
 
   static final providers = [
+    ListenableProvider<LoginPresenter>(create: (_) => makeGetxLoginPresenter()),
     ListenableProvider<SplashPresenter>(
       create: (_) => makeGetxSplashPresenter(),
     ),

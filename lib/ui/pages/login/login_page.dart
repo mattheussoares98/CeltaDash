@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../helpers/helpers.dart';
 import 'components/components.dart';
@@ -29,14 +30,21 @@ class _LoginPageState extends State<LoginPage> {
     passwordFocusNode.dispose();
   }
 
-  void login() {
+  Future<void> login(LoginPresenter loginPresenter) async {
     if (formKey.currentState?.validate() != true) {
       return;
     }
+
+    await loginPresenter.login(
+      email: emailController.text,
+      password: passwordController.text,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    LoginPresenter loginPresenter = Provider.of(context, listen: false);
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -52,10 +60,17 @@ class _LoginPageState extends State<LoginPage> {
               ),
               PasswordField(
                 passwordController: passwordController,
-                login: login,
+                login: () async {
+                  await login(loginPresenter);
+                },
                 passwordFocusNode: passwordFocusNode,
               ),
-              ElevatedButton(onPressed: login, child: Text(R.string.enter)),
+              ElevatedButton(
+                onPressed: () async {
+                  await login(loginPresenter);
+                },
+                child: Text(R.string.enter),
+              ),
             ],
           ),
         ),

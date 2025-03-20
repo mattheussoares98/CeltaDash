@@ -29,7 +29,7 @@ class _PasswordFieldState extends State<PasswordField> {
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: TextFormField(
         controller: widget.passwordController,
-        obscureText: showPassword,
+        obscureText: !showPassword,
         focusNode: widget.passwordFocusNode,
         onFieldSubmitted: (_) => widget.login(),
         validator: (value) {
