@@ -10,11 +10,12 @@ ThemeData makeAppTheme(BuildContext context) {
   final disabledColor = Colors.grey[400];
   const dividerColor = Colors.grey;
   const textTheme = TextTheme(
-      displayLarge: TextStyle(
-    fontSize: 30,
-    fontWeight: FontWeight.bold,
-    color: primaryColorDark,
-  ));
+    displayLarge: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+      color: primaryColorDark,
+    ),
+  );
   final inputDecorationTheme = InputDecorationTheme(
     labelStyle: const TextStyle(
       color: primaryColorDark,
@@ -63,29 +64,35 @@ ThemeData makeAppTheme(BuildContext context) {
     ),
   );
   final buttonTheme = ButtonThemeData(
-      colorScheme: const ColorScheme.light(primary: primaryColor),
-      buttonColor: primaryColor,
-      splashColor: primaryColorLight,
-      padding: EdgeInsets.symmetric(
-        vertical: hasMinWidth(context) ? 10 : 2,
-        horizontal: hasMinWidth(context) ? 20 : 5,
-      ),
-      textTheme: ButtonTextTheme.primary,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)));
-
-  final elevatedButtonTheme = ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
+    colorScheme: const ColorScheme.light(primary: primaryColor),
+    buttonColor: primaryColor,
+    splashColor: primaryColorLight,
     padding: EdgeInsets.symmetric(
       vertical: hasMinWidth(context) ? 10 : 2,
       horizontal: hasMinWidth(context) ? 20 : 5,
     ),
+    textTheme: ButtonTextTheme.primary,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-    backgroundColor: primaryColorDark,
-    foregroundColor: Colors.white,
-  ));
+  );
+
+  final elevatedButtonTheme = ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      padding: EdgeInsets.symmetric(
+        vertical: hasMinWidth(context) ? 10 : 2,
+        horizontal: hasMinWidth(context) ? 20 : 5,
+      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+      backgroundColor: primaryColorDark,
+      foregroundColor: Colors.white,
+    ),
+  );
 
   AppBarTheme appBarTheme = AppBarTheme(
     backgroundColor: primaryColorLight.withAlpha(15),
+  );
+
+  final textButtonTheme = TextButtonThemeData(
+    style: TextButton.styleFrom(foregroundColor: primaryColorDark),
   );
 
   return ThemeData(
@@ -103,5 +110,6 @@ ThemeData makeAppTheme(BuildContext context) {
     buttonTheme: buttonTheme,
     elevatedButtonTheme: elevatedButtonTheme,
     appBarTheme: appBarTheme,
+    textButtonTheme: textButtonTheme,
   );
 }
