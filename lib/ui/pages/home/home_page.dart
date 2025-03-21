@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../helpers/helpers.dart';
 import '../pages.dart';
+import 'components/components.dart';
 
 class HomePage extends StatelessWidget {
   final HomePresenter homePresenter;
@@ -22,7 +23,7 @@ class HomePage extends StatelessWidget {
       stream: homePresenter.currentPageIndexStream,
       builder: (context, snapshot) {
         return Scaffold(
-          appBar: AppBar(),
+          appBar: HomeAppBar(),
           body: ListenableProvider(
             create: (_) => homePresenter,
             child: pages[snapshot.data ?? 0],
