@@ -15,9 +15,10 @@ class ResumePage extends StatelessWidget {
             children: [
               SalesInformations(
                 title: "Sales of the day" + "",
-                chartTitle: "R\$ 0,00" + "",
+                totalSales: 10,
                 leftButton: TypesButton(),
                 rightButton: SectionsButton(),
+                goal: 20,
                 children: [
                   Text("" + "Sales quantity\n2000"),
                   Text("" + "Ticket avarage (R\$)\nR\$75,82"),
@@ -27,8 +28,9 @@ class ResumePage extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               SalesInformations(
+                goal: 1000000,
                 title: "Sales of the month" + "",
-                chartTitle: "No goal" + "",
+                totalSales: 0,
                 leftButton: SetGoalButton(),
                 rightButton: SectionsButton(),
                 children: [Text("" + "Sales until now\nR\$ 165.059,04")],
