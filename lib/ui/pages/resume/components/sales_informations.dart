@@ -10,6 +10,7 @@ class SalesInformations extends StatelessWidget {
   final List<Widget> children;
   final Widget leftButton;
   final Widget rightButton;
+  final ScrollController scrollController;
   const SalesInformations({
     required this.title,
     required this.totalSales,
@@ -18,6 +19,7 @@ class SalesInformations extends StatelessWidget {
     required this.leftButton,
     required this.rightButton,
     super.key,
+    required this.scrollController,
   });
 
   @override
@@ -56,11 +58,12 @@ class SalesInformations extends StatelessWidget {
                     height: 200,
                     child: Column(
                       children: [
-                        CircleProgress(
+                        AnimatedCircleProgress(
                           value: totalSales,
                           maximum: goal,
                           width: 170,
                           height: 170,
+                          scrollController: scrollController,
                         ),
                         SizedBox(
                           height: 30,

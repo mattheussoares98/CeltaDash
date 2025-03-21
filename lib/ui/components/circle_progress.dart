@@ -2,42 +2,115 @@ import 'package:flutter/material.dart';
 
 import '../../../ui/helpers/helpers.dart';
 
-class CircleProgress extends StatelessWidget {
+class AnimatedCircleProgress extends StatefulWidget {
   final double value;
   final double maximum;
   final double height;
   final double width;
-  const CircleProgress({
+  final ScrollController
+  scrollController; //need to repeat the animation when hide from the page and appears agein
+
+  const AnimatedCircleProgress({
     super.key,
     required this.value,
     required this.maximum,
     required this.height,
     required this.width,
+    required this.scrollController,
   });
 
   @override
+  State<AnimatedCircleProgress> createState() => _AnimatedCircleProgressState();
+}
+
+class _AnimatedCircleProgressState extends State<AnimatedCircleProgress>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _progressAnimation;
+  final GlobalKey _widgetKey = GlobalKey();
+  bool _hasAnimated = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+    _progressAnimation = Tween<double>(
+      begin: 0,
+      end: widget.value / widget.maximum,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+    WidgetsBinding.instance.addPostFrameCallback((_) => _checkVisibility());
+
+    widget.scrollController.addListener(_checkVisibility);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    widget.scrollController.removeListener(_checkVisibility);
+    super.dispose();
+  }
+
+  void _checkVisibility() {
+    final renderBox =
+        _widgetKey.currentContext?.findRenderObject() as RenderBox?;
+    if (renderBox != null) {
+      final position = renderBox.localToGlobal(Offset.zero);
+      final size = renderBox.size;
+      final screenHeight = MediaQuery.of(context).size.height;
+
+      final isVisible =
+          position.dy < screenHeight && (position.dy + size.height) > 0;
+
+      if (isVisible && !_hasAnimated) {
+        _controller.reset();
+        _controller.forward();
+        _hasAnimated = true;
+      } else if (!isVisible) {
+        _hasAnimated =
+            false; // Se sumiu, permite animar novamente quando voltar
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        CustomPaint(
-          size: Size(width, height),
-          painter: _ProgressCirclePainter(
-            progress: value / maximum,
-            backgroundColor: Theme.of(context).primaryColorLight.withAlpha(15),
-            progressColor: Colors.green,
-          ),
-        ),
-        FittedBox(
-          child: Padding(
-            padding: const EdgeInsets.all(30),
-            child: Text(
-              value.toString().toBrazilianNumber().addBrazilianCoin(),
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ),
-        ),
-      ],
+    return Container(
+      key: _widgetKey,
+      child: AnimatedBuilder(
+        animation: _progressAnimation,
+        builder: (context, child) {
+          return Stack(
+            alignment: Alignment.center,
+            children: [
+              CustomPaint(
+                size: Size(widget.width, widget.height),
+                painter: _ProgressCirclePainter(
+                  progress: _progressAnimation.value,
+                  backgroundColor: Theme.of(
+                    context,
+                  ).primaryColorLight.withAlpha(15),
+                  progressColor: Colors.green,
+                ),
+              ),
+              FittedBox(
+                child: Padding(
+                  padding: const EdgeInsets.all(30),
+                  child: Text(
+                    widget.value
+                        .toString()
+                        .toBrazilianNumber()
+                        .addBrazilianCoin(),
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }
