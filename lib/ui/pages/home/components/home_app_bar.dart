@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../components/components.dart';
 
@@ -72,7 +73,7 @@ class _HomeAppBarState extends State<HomeAppBar> {
                   });
                 }
               },
-              label: Text(selectedDate.toIso8601String()),
+              label: Text("${DateFormat('dd/MM/yyyy').format(selectedDate)}  ${DateFormat('EEEE', 'pt_BR').format(selectedDate)}"),
               icon: Icon(Icons.date_range, color: Colors.white),
             ),
           ),
