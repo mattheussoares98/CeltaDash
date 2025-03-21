@@ -1,3 +1,5 @@
+export './daily_analysis.dart';
+export './hour_result.dart';
 export './profitability_button.dart';
 export './sales_informations.dart';
 export './sections_button.dart';

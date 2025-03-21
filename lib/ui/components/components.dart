@@ -2,7 +2,6 @@ export "./app_theme.dart";
 export './circle_progress.dart';
 export './default_drop_down.dart';
 export './error_message.dart';
-export './form_field_decoration.dart';
 export './get_new_date.dart';
 export './loading_dialog.dart';
 export './notification_dialog.dart';

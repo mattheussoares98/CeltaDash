@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../helpers/helpers.dart';
-import 'components.dart';
 
 class SearchWidget extends StatefulWidget {
   final Future<void> Function(bool useCamera) onPressSearch;

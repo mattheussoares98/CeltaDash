@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../../../main/composites/composites.dart';
 import '../../../../presentation/protocols/protocols.dart';
 import '../../../../validation/validators/validators.dart';
-import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 
 class PasswordField extends StatefulWidget {

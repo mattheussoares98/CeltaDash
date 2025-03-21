@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../ui/helpers/convert/convert.dart';
 import '../../../components/components.dart';
+import '../../../helpers/helpers.dart';
 
 class SalesInformations extends StatelessWidget {
   final String title;
@@ -25,22 +26,7 @@ class SalesInformations extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Theme.of(context).primaryColorLight.withAlpha(30),
-            offset: Offset(2, 2), // horizontal and vertical offset
-            blurRadius: 1,
-          ),
-          BoxShadow(
-            color: Theme.of(context).primaryColorLight.withAlpha(30),
-            offset: Offset(-2, -2),
-            blurRadius: 1,
-          ),
-        ],
-      ),
+      decoration: ContainerDecoration.decoration,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
