@@ -18,6 +18,7 @@ class EnUs implements Translation {
   String get no => "No";
   String get password => "Password";
   String get products => "Products";
+  String get profitability => "Profitability";
   String get resume => "Resume";
   String get sales => "Sales";
   String get team => "Team";

@@ -18,6 +18,7 @@ class PtBr implements Translation {
   String get no => "Não";
   String get password => "Senha";
   String get products => "Produtos";
+  String get profitability => "Rentabilidade";
   String get resume => "Resumo";
   String get sales => "Vendas";
   String get team => "Time";

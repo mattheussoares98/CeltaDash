@@ -26,6 +26,7 @@ class _ResumePageState extends State<ResumePage> {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               SalesInformations(
                 scrollController: scrollController,
@@ -51,6 +52,8 @@ class _ResumePageState extends State<ResumePage> {
                 rightButton: SectionsButton(),
                 children: [Text("" + "Sales until now\nR\$ 165.059,04")],
               ),
+              const SizedBox(height: 8),
+              ProfitabilityButton(),
             ],
           ),
         ),

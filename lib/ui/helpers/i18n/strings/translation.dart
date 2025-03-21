@@ -14,6 +14,7 @@ abstract class Translation {
   String get no;
   String get password;
   String get products;
+  String get profitability;
   String get resume;
   String get sales;
   String get team;
