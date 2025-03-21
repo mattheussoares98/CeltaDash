@@ -10,8 +10,13 @@ abstract class Translation {
   String get dateNotUpdated;
   String get email;
   String get enter;
+  String get indicators;
   String get no;
   String get password;
+  String get products;
+  String get resume;
+  String get sales;
+  String get team;
   String get wait;
   String get yes;
 }

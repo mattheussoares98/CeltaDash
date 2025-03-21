@@ -14,8 +14,13 @@ class EnUs implements Translation {
   String get dateNotUpdated => "Date not updated";
   String get email => "Email";
   String get enter => "Enter";
+  String get indicators => "Indicators";
   String get no => "No";
   String get password => "Password";
+  String get products => "Products";
+  String get resume => "Resume";
+  String get sales => "Sales";
+  String get team => "Team";
   String get wait => "Wait...";
   String get yes => "Yes";
 }

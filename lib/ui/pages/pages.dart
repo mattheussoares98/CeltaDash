@@ -1,3 +1,8 @@
 export './home/home.dart';
+export './indicators/indicators.dart';
 export './login/login.dart';
+export './products/products.dart';
+export './resume/resume.dart';
+export './sales/sales.dart';
 export './splash/splash.dart';
+export './team/team.dart';

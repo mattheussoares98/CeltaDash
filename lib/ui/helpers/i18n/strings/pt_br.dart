@@ -14,8 +14,13 @@ class PtBr implements Translation {
   String get dateNotUpdated => "Data não atualizada";
   String get email => "E-mail";
   String get enter => "Entrar";
+  String get indicators => "Indicadores";
   String get no => "Não";
   String get password => "Senha";
+  String get products => "Produtos";
+  String get resume => "Resumo";
+  String get sales => "Vendas";
+  String get team => "Time";
   String get wait => "Aguarde...";
   String get yes => "Sim";
 }
