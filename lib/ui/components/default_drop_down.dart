@@ -5,7 +5,7 @@ import '../helpers/helpers.dart';
 class DefaultDropDown<T> extends StatefulWidget {
   final void Function(T) onChanged;
   final List<DropdownMenuItem<T>>? items;
-  final Widget hint;
+  final Widget? hint;
   final T selectedItem;
 
   const DefaultDropDown({
@@ -24,6 +24,7 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<T>(
+      decoration: const InputDecoration(isDense: true),
       validator: (value) {
         return null;
       },

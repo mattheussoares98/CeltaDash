@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../components/components.dart';
 
-class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
+class HomeAppBar extends StatefulWidget implements PreferredSizeWidget {
   const HomeAppBar({super.key});
 
   static List<String> enterprises = [
@@ -13,12 +13,21 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   ];
 
   @override
-  Size get preferredSize => const Size.fromHeight(85);
+  Size get preferredSize => Size.fromHeight(appBarHeight);
+
+  @override
+  State<HomeAppBar> createState() => _HomeAppBarState();
+}
+
+double appBarHeight = 90;
+
+class _HomeAppBarState extends State<HomeAppBar> {
+  DateTime selectedDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      toolbarHeight: preferredSize.height,
+      toolbarHeight: appBarHeight,
       title: Column(
         children: [
           Row(
@@ -26,9 +35,9 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
               Expanded(
                 child: DefaultDropDown<String>(
                   onChanged: (_) {},
-                  hint: Text("Select an enterprise"),
+                  hint: null,
                   items:
-                      enterprises
+                      HomeAppBar.enterprises
                           .map(
                             (e) => DropdownMenuItem<String>(
                               value: e,
@@ -37,7 +46,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                             ),
                           )
                           .toList(),
-                  selectedItem: enterprises[0],
+                  selectedItem: HomeAppBar.enterprises[0],
                 ),
               ),
               Padding(
@@ -46,7 +55,27 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ],
           ),
-          FittedBox(child: Text("31/03/1998")),
+          SizedBox(height: 5),
+          FittedBox(
+            child: ElevatedButton.icon(
+              onPressed: () async {
+                final newDate = await GetNewDate.get(
+                  reduceDaysFromInitialDate: 60,
+                  canInsertDateBeforeNow: true,
+                  insertHoursAndMinutes: false,
+                  lastDate: DateTime.now(),
+                );
+
+                if (newDate != null) {
+                  setState(() {
+                    selectedDate = newDate;
+                  });
+                }
+              },
+              label: Text(selectedDate.toIso8601String()),
+              icon: Icon(Icons.date_range, color: Colors.white),
+            ),
+          ),
         ],
       ),
     );

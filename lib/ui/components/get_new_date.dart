@@ -11,6 +11,7 @@ class GetNewDate {
     bool? canInsertDateBeforeNow = false,
     bool insertHoursAndMinutes = true,
     int? reduceDaysFromInitialDate,
+    DateTime? lastDate,
   }) async {
     DateTime now = DateTime.now();
     final initialDate = now.subtract(
@@ -21,7 +22,7 @@ class GetNewDate {
       context: NavigatorKey.key.currentState!.context,
       firstDate: initialDate,
       initialDate: now,
-      lastDate: now.add(const Duration(days: 1825)),
+      lastDate: lastDate ?? now.add(const Duration(days: 1825)),
       locale: const Locale('pt', 'BR'),
     );
 
