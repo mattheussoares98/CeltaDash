@@ -1,10 +1,8 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 
-import '../../../main/utils/utils.dart';
-import '../../helpers/helpers.dart';
-import '../components.dart';
+import '../../main/utils/utils.dart';
+import '../helpers/helpers.dart';
+import 'components.dart';
 
 class GetNewDate {
   GetNewDate._();
@@ -39,7 +37,9 @@ class GetNewDate {
 
       if (newTime == null) {
         snackBarMessage(
-            NavigatorKey.key.currentState!.context, R.string.dateNotUpdated);
+          NavigatorKey.key.currentState!.context,
+          R.string.dateNotUpdated,
+        );
       } else {
         DateTime selectedDateTime = DateTime(
           validityDate.year,
@@ -52,7 +52,9 @@ class GetNewDate {
         if (selectedDateTime.isBefore(initialDate) &&
             canInsertDateBeforeNow == false) {
           snackBarMessage(
-              NavigatorKey.key.currentState!.context, R.string.dateNotUpdated);
+            NavigatorKey.key.currentState!.context,
+            R.string.dateNotUpdated,
+          );
 
           return null;
         } else {
