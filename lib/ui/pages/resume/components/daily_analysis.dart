@@ -25,19 +25,11 @@ class DailyAnalysis extends StatelessWidget {
               "Sexta-feirassss de 2025",
               textAlign: TextAlign.center,
             ), //TODO create a Model in HomePresenter to control selected data and selected enterprise
-            Row(
-              children: [
-                HourResult(
-                  hour: "18:00 ~ 18:59",
-                  isBestHour: true,
-                  value: 3622.89,
-                ),
-                HourResult(
-                  hour: "22:00 ~ 22:59",
-                  isBestHour: false,
-                  value: 8.63,
-                ),
-              ],
+            CompareTimesResult(
+              betterTime: "18:00 ~ 18:59",
+              betterValue: 3622.89,
+              worstTime: "22:00 ~ 22:59",
+              worstValue: 8.59,
             ),
             const SizedBox(height: 8),
             ElevatedButton.icon(

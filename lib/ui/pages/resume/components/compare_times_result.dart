@@ -2,16 +2,40 @@ import 'package:flutter/material.dart';
 
 import '../../../../ui/helpers/helpers.dart';
 
-class HourResult extends StatelessWidget {
-  final String hour;
-  final bool isBestHour;
-  final double value;
-  const HourResult({
+class CompareTimesResult extends StatelessWidget {
+  final String betterTime;
+  final String worstTime;
+  final double betterValue;
+  final double worstValue;
+  const CompareTimesResult({
     super.key,
-    required this.hour,
+    required this.betterTime,
+    required this.worstTime,
+    required this.betterValue,
+    required this.worstValue,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        _Item(isBestHour: true, hour: betterTime, value: betterValue),
+        _Item(isBestHour: false, hour: betterTime, value: worstValue),
+      ],
+    );
+  }
+}
+
+class _Item extends StatelessWidget {
+  const _Item({
     required this.isBestHour,
+    required this.hour,
     required this.value,
   });
+
+  final bool isBestHour;
+  final String hour;
+  final double value;
 
   @override
   Widget build(BuildContext context) {
