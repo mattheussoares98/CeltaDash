@@ -10,7 +10,7 @@ class TypesButton extends StatelessWidget {
   Widget build(BuildContext context) {
     ResumePresenter resumePresenter = Provider.of(context, listen: false);
 
-    return TextButton(
+    return ElevatedButton(
       onPressed: resumePresenter.goToTypesPage,
       child: Text("" + "Types"),
     );

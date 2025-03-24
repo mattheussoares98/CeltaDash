@@ -74,10 +74,12 @@ class SalesInformations extends StatelessWidget {
                 ),
               ],
             ),
+            const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Expanded(child: leftButton),
+                const SizedBox(width: 8),
                 Expanded(child: rightButton),
               ],
             ),

@@ -10,7 +10,7 @@ class SectionsButton extends StatelessWidget {
   Widget build(BuildContext context) {
     ResumePresenter resumePresenter = Provider.of(context, listen: false);
 
-    return TextButton(
+    return ElevatedButton(
       onPressed: resumePresenter.goToSectionsPage,
       child: Text("" + "Sections"),
     );

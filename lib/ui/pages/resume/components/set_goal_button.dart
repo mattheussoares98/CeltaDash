@@ -10,7 +10,7 @@ class SetGoalButton extends StatelessWidget {
   Widget build(BuildContext context) {
     ResumePresenter resumePresenter = Provider.of(context, listen: false);
 
-    return TextButton(
+    return ElevatedButton(
       onPressed: resumePresenter.goToSetGoalPage,
       child: Text("" + "Set goal"),
     );
