@@ -13,6 +13,11 @@ class GetPages {
       transition: Transition.fadeIn,
     ),
     GetPage(
+      name: PageRoutes.groupSummary,
+      page: makeGroupSummaryPage,
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
       name: PageRoutes.home,
       page: makeHomePage,
       transition: Transition.fadeIn,

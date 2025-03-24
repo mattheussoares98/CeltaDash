@@ -1,4 +1,5 @@
 export 'compare_days/compare_days.dart';
+export 'group_summary/group_summary.dart';
 export 'home/home.dart';
 export 'login/login.dart';
 export 'payments_type/payments_type.dart';
