@@ -8,5 +8,6 @@ export './profitability/profitability.dart';
 export './resume/resume.dart';
 export './sales/sales.dart';
 export './sections/sections.dart';
+export './set_goal/set_goal.dart';
 export './splash/splash.dart';
 export './team/team.dart';

@@ -38,6 +38,11 @@ class GetPages {
       transition: Transition.fadeIn,
     ),
     GetPage(
+      name: PageRoutes.setGoal,
+      page: makeSetGoalPage,
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
       name: PageRoutes.splash,
       page: makeSplashPage,
       transition: Transition.fadeIn,
