@@ -1,4 +1,4 @@
-export './daily_analysis/daily_analysis.dart';
+export 'compare_days/compare_days.dart';
 export './home/home.dart';
 export './indicators/indicators.dart';
 export './login/login.dart';

@@ -10,8 +10,8 @@ class GetxResumePresenter extends GetxController implements ResumePresenter {
   GetxResumePresenter({required this.navigateTo});
 
   @override
-  void goToDailyAnalysisPage() {
-    navigateTo.navigate(pageRoute: PageRoutes.dailyAnalysis);
+  void goToCompareDays() {
+    navigateTo.navigate(pageRoute: PageRoutes.compareDays);
   }
 
   @override

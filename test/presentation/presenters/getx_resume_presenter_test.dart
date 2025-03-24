@@ -49,10 +49,10 @@ void main() {
       ).called(1);
     });
     test("Should navigate to daily analysis page correctly", () async {
-      sut.goToDailyAnalysisPage();
+      sut.goToCompareDays();
 
       verify(
-        () => navigateTo.navigate(pageRoute: PageRoutes.dailyAnalysis),
+        () => navigateTo.navigate(pageRoute: PageRoutes.compareDays),
       ).called(1);
     });
     test("Should navigate to sections page correctly", () async {

@@ -38,7 +38,7 @@ class DailyAnalysis extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             ElevatedButton.icon(
-              onPressed: resumePresenter.goToDailyAnalysisPage,
+              onPressed: resumePresenter.goToCompareDays,
               label: Text("Compare days"),
               icon: Icon(Icons.arrow_outward_rounded, color: Colors.white),
               iconAlignment: IconAlignment.end,
