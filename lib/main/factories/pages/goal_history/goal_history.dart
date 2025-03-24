@@ -1,0 +1,1 @@
+export './goal_history_page_factory.dart';

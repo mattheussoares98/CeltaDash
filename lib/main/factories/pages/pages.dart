@@ -1,4 +1,5 @@
 export 'compare_days/compare_days.dart';
+export 'goal_history/goal_history.dart';
 export 'group_summary/group_summary.dart';
 export 'home/home.dart';
 export 'login/login.dart';
