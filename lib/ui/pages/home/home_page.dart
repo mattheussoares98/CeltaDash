@@ -1,3 +1,4 @@
+import 'package:celta_plus/main/factories/factories.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,7 +14,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pages = <Widget>[
-      ResumePage(),
+      makeResumePage(),
       IndicatorsPage(),
       SalesPage(),
       ProductsPage(),

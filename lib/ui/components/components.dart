@@ -6,6 +6,5 @@ export './error_message.dart';
 export './get_new_date.dart';
 export './loading_dialog.dart';
 export './notification_dialog.dart';
-export './personalized_dialog_page.dart';
 export './search_widget.dart';
 export 'snack_bar_message.dart';

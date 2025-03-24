@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
+import '../resume.dart';
 import 'components.dart';
 
 class DailyAnalysis extends StatelessWidget {
@@ -9,6 +10,8 @@ class DailyAnalysis extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ResumePresenter resumePresenter = Provider.of(context, listen: false);
+
     return Container(
       decoration: ContainerDecoration.decoration,
       child: Padding(
@@ -17,12 +20,12 @@ class DailyAnalysis extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              "Análise diária",
+              "Análise diária" + "",
               style: Theme.of(context).textTheme.displayLarge,
               textAlign: TextAlign.center,
             ),
             Text(
-              "Sexta-feirassss de 2025",
+              "Sexta-feirassss de 2025" + "",
               textAlign: TextAlign.center,
             ), //TODO create a Model in HomePresenter to control selected data and selected enterprise
             CompareTimesResult(
@@ -35,12 +38,7 @@ class DailyAnalysis extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             ElevatedButton.icon(
-              onPressed: () {
-                PersonalizedDialogPage.open(
-                  context: context,
-                  page: Scaffold(body: Center(child: Text("Daily analysis"))),
-                );
-              },
+              onPressed: resumePresenter.goToDailyAnalysisPage,
               label: Text("Compare days"),
               icon: Icon(Icons.arrow_outward_rounded, color: Colors.white),
               iconAlignment: IconAlignment.end,

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'components/components.dart';
+import 'resume.dart';
 
 class ResumePage extends StatefulWidget {
-  const ResumePage({super.key});
+  final ResumePresenter resumePresenter;
+  const ResumePage({super.key, required this.resumePresenter});
 
   @override
   State<ResumePage> createState() => _ResumePageState();
@@ -21,45 +24,48 @@ class _ResumePageState extends State<ResumePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        controller: scrollController,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SalesInformations(
-                scrollController: scrollController,
-                title: "Sales of the day" + "",
-                totalSales: 10,
-                leftButton: TypesButton(),
-                rightButton: SectionsButton(),
-                goal: 20,
-                children: [
-                  Text("" + "Sales quantity\n2000"),
-                  Text("" + "Ticket avarage (R\$)\nR\$75,82"),
-                  Text("" + "Average price (R\$)\nR\$15"),
-                  Text("" + "Products by sale\n9,16"),
-                ],
-              ),
-              const SizedBox(height: 8),
-              SalesInformations(
-                scrollController: scrollController,
-                goal: 1000000,
-                title: "Sales of the month" + "",
-                totalSales: 800000,
-                leftButton: SetGoalButton(),
-                rightButton: SectionsButton(),
-                children: [Text("" + "Sales until now\nR\$ 165.059,04")],
-              ),
-              const SizedBox(height: 8),
-              ProfitabilityButton(),
-              const SizedBox(height: 8),
-              DailyAnalysis(),
-              SizedBox(height: 8),
-              MonthlyAnalysis(),
-              SizedBox(height: 15),
-            ],
+      body: ListenableProvider(
+        create: (_) => widget.resumePresenter,
+        child: SingleChildScrollView(
+          controller: scrollController,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SalesInformations(
+                  scrollController: scrollController,
+                  title: "Sales of the day" + "",
+                  totalSales: 10,
+                  leftButton: TypesButton(),
+                  rightButton: SectionsButton(),
+                  goal: 20,
+                  children: [
+                    Text("" + "Sales quantity\n2000"),
+                    Text("" + "Ticket avarage (R\$)\nR\$75,82"),
+                    Text("" + "Average price (R\$)\nR\$15"),
+                    Text("" + "Products by sale\n9,16"),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                SalesInformations(
+                  scrollController: scrollController,
+                  goal: 1000000,
+                  title: "Sales of the month" + "",
+                  totalSales: 800000,
+                  leftButton: SetGoalButton(),
+                  rightButton: SectionsButton(),
+                  children: [Text("" + "Sales until now\nR\$ 165.059,04")],
+                ),
+                const SizedBox(height: 8),
+                ProfitabilityButton(),
+                const SizedBox(height: 8),
+                DailyAnalysis(),
+                SizedBox(height: 8),
+                MonthlyAnalysis(),
+                SizedBox(height: 15),
+              ],
+            ),
           ),
         ),
       ),
