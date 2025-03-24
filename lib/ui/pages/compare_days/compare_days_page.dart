@@ -6,8 +6,8 @@ class CompareDaysPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Daily Analysis")),
-      body: Text("Daily Analysis"),
+      appBar: AppBar(title: Text("Compare days")),
+      body: Text("Compare days"),
     );
   }
 }
