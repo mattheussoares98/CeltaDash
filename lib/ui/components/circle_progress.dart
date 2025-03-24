@@ -95,9 +95,10 @@ class _AnimatedCircleProgressState extends State<AnimatedCircleProgress>
                   progressColor: Colors.green,
                 ),
               ),
-              FittedBox(
-                child: Padding(
-                  padding: const EdgeInsets.all(30),
+              SizedBox(
+                width: widget.width * 0.8,
+                height: widget.height * 0.8,
+                child: FittedBox(
                   child: Text(
                     widget.value
                         .toString()
