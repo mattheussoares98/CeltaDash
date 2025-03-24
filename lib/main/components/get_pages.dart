@@ -33,6 +33,11 @@ class GetPages {
       transition: Transition.fadeIn,
     ),
     GetPage(
+      name: PageRoutes.sections,
+      page: makeSectionsPage,
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
       name: PageRoutes.splash,
       page: makeSplashPage,
       transition: Transition.fadeIn,

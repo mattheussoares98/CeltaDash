@@ -4,4 +4,5 @@ export 'login/login.dart';
 export 'payments_type/payments_type.dart';
 export 'profitability/profitability.dart';
 export 'resume/resume.dart';
+export 'sections/sections.dart';
 export 'splash/splash.dart';
