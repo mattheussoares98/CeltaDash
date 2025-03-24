@@ -8,7 +8,7 @@ class SalesInformations extends StatelessWidget {
   final double totalSales;
   final double goal;
   final List<Widget> children;
-  final Widget leftButton;
+  final Widget leftButton; //TODO create a default button
   final Widget rightButton;
   final ScrollController scrollController;
   const SalesInformations({

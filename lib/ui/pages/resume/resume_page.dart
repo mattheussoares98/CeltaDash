@@ -79,7 +79,7 @@ class _ResumePageState extends State<ResumePage> {
                       Random().nextDouble() * 50000 * quantityOfDaysInMonth,
                   title: "Sales of the month" + "",
                   leftButton: SetGoalButton(),
-                  rightButton: SectionsButton(),
+                  rightButton: GoalHistoryButton(),
                   children: [
                     Text(
                       "" +
