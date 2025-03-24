@@ -50,8 +50,14 @@ class _ResumePageState extends State<ResumePage> {
                   scrollController: scrollController,
                   title: "Sales of the day" + "",
                   totalSales: dailySalesModel.totalAmountInDay,
-                  leftButton: TypesButton(),
-                  rightButton: SectionsButton(),
+                  leftButton: DefaultNavigateButton(
+                    onTap: widget.resumePresenter.goToPaymentsTypePage,
+                    title: "" + "Tipos de pagamento",
+                  ),
+                  rightButton: DefaultNavigateButton(
+                    onTap: widget.resumePresenter.goToSectionsPage,
+                    title: "" + "Seções",
+                  ),
                   goal: Random().nextDouble() * 50000,
                   children: [
                     Text(
@@ -78,8 +84,18 @@ class _ResumePageState extends State<ResumePage> {
                   totalSales:
                       Random().nextDouble() * 50000 * quantityOfDaysInMonth,
                   title: "Sales of the month" + "",
-                  leftButton: SetGoalButton(),
-                  rightButton: GoalHistoryButton(),
+                  leftButton: DefaultNavigateButton(
+                    onTap: widget.resumePresenter.goToSetGoalPage,
+                    title: "" + "Inserir meta",
+                  ),
+
+                  rightButton: DefaultNavigateButton(
+                    onTap:
+                        widget
+                            .resumePresenter
+                            .goToSetGoalPage, //TODO add new function
+                    title: "" + "Histórico de metas",
+                  ),
                   children: [
                     Text(
                       "" +

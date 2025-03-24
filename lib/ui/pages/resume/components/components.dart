@@ -1,9 +1,6 @@
 export './compare_times_result.dart';
 export './daily_analysis.dart';
-export './goal_history_button.dart';
+export './default_navigate_button.dart';
 export './monthly_analysis.dart';
 export './profitability_button.dart';
 export './sales_informations.dart';
-export './sections_button.dart';
-export './set_goal_button.dart';
-export './types_button.dart';
