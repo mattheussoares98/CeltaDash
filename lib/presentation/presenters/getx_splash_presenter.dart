@@ -17,7 +17,7 @@ class GetxSplashPresenter extends GetxController implements SplashPresenter {
   }) async {
     try {
       await Future.delayed(Duration(seconds: durationInSeconds));
-      navigateTo.navigate(pageRoute: PageRoutes.login, clear: true);
+      navigateTo.navigate(pageRoute: PageRoutes.home, clear: true);
     } on DomainError catch (e) {
       switch (e) {
         default:
