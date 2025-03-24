@@ -30,6 +30,8 @@ class DailyAnalysis extends StatelessWidget {
               betterValue: 3622.89,
               worstTime: "22:00 ~ 22:59",
               worstValue: 8.59,
+              betterTimeMessage: "" + "Melhor hora do dia",
+              worstTimeMessage: "" + "Pior hora do dia",
             ),
             const SizedBox(height: 8),
             ElevatedButton.icon(

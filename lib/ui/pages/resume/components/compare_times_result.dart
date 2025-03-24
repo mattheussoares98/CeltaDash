@@ -5,12 +5,16 @@ import '../../../../ui/helpers/helpers.dart';
 class CompareTimesResult extends StatelessWidget {
   final String betterTime;
   final String worstTime;
+  final String betterTimeMessage;
+  final String worstTimeMessage;
   final double betterValue;
   final double worstValue;
   const CompareTimesResult({
     super.key,
     required this.betterTime,
     required this.worstTime,
+    required this.betterTimeMessage,
+    required this.worstTimeMessage,
     required this.betterValue,
     required this.worstValue,
   });
@@ -19,23 +23,39 @@ class CompareTimesResult extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        _Item(isBestHour: true, hour: betterTime, value: betterValue),
-        _Item(isBestHour: false, hour: betterTime, value: worstValue),
+        _Item(
+          isBestHour: true,
+          hour: betterTime,
+          value: betterValue,
+          betterTimeMessage: betterTimeMessage,
+          worstTimeMessage: worstTimeMessage,
+        ),
+        _Item(
+          isBestHour: false,
+          hour: betterTime,
+          value: worstValue,
+          betterTimeMessage: betterTimeMessage,
+          worstTimeMessage: worstTimeMessage,
+        ),
       ],
     );
   }
 }
 
 class _Item extends StatelessWidget {
+  final bool isBestHour;
+  final String hour;
+  final double value;
+  final String worstTimeMessage;
+  final String betterTimeMessage;
+
   const _Item({
     required this.isBestHour,
     required this.hour,
     required this.value,
+    required this.worstTimeMessage,
+    required this.betterTimeMessage,
   });
-
-  final bool isBestHour;
-  final String hour;
-  final double value;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +64,7 @@ class _Item extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            isBestHour ? "Best hour" : "Worst hour",
+            isBestHour ? betterTimeMessage : worstTimeMessage,
             style: TextStyle(color: color),
           ),
           FittedBox(

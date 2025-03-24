@@ -57,6 +57,7 @@ class _ResumePageState extends State<ResumePage> {
               const SizedBox(height: 8),
               DailyAnalysis(),
               SizedBox(height: 15),
+              MonthlyAnalysis(),
             ],
           ),
         ),
