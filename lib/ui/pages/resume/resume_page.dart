@@ -104,7 +104,11 @@ class _ResumePageState extends State<ResumePage> {
                   ],
                 ),
                 const SizedBox(height: 8),
-                ProfitabilityButton(),
+                DefaultNavigateButton(
+                  onTap: widget.resumePresenter.goToProfitabillityPage,
+                  title: "" + "Rentabilidade",
+                  icon: Icon(Icons.arrow_outward_sharp, color: Colors.white),
+                ),
                 const SizedBox(height: 8),
                 DailyAnalysis(),
                 SizedBox(height: 8),

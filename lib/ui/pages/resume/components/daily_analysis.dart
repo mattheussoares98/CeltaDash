@@ -37,11 +37,10 @@ class DailyAnalysis extends StatelessWidget {
               worstTimeMessage: "" + "Pior hora do dia",
             ),
             const SizedBox(height: 8),
-            ElevatedButton.icon(
-              onPressed: resumePresenter.goToCompareDays,
-              label: Text("Compare days"),
-              icon: Icon(Icons.arrow_outward_rounded, color: Colors.white),
-              iconAlignment: IconAlignment.end,
+            DefaultNavigateButton(
+              onTap: resumePresenter.goToCompareDays,
+              title: "" + "Comparar dias",
+              icon: Icon(Icons.arrow_outward_sharp, color: Colors.white),
             ),
           ],
         ),
