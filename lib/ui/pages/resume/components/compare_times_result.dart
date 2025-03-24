@@ -32,7 +32,7 @@ class CompareTimesResult extends StatelessWidget {
         ),
         _Item(
           isBestHour: false,
-          hour: betterTime,
+          hour: worstTime,
           value: worstValue,
           betterTimeMessage: betterTimeMessage,
           worstTimeMessage: worstTimeMessage,

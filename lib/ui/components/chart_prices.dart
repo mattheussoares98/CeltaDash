@@ -2,10 +2,11 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../data/models/models.dart';
 import '../../ui/helpers/helpers.dart';
 
 class ChartPrices extends StatelessWidget {
-  final List<DateAndValue> datesAndValues;
+  final List<DateAndValueModel> datesAndValues;
 
   const ChartPrices({super.key, required this.datesAndValues});
 
@@ -180,7 +181,7 @@ class ChartPrices extends StatelessWidget {
 }
 
 class _ChartTitle extends StatelessWidget {
-  final List<DateAndValue> bitcoinPriceHistory;
+  final List<DateAndValueModel> bitcoinPriceHistory;
 
   const _ChartTitle({required this.bitcoinPriceHistory});
 
@@ -218,11 +219,4 @@ class _ChartTitle extends StatelessWidget {
       ],
     );
   }
-}
-
-class DateAndValue {
-  final double value;
-  final DateTime date;
-
-  DateAndValue({required this.value, required this.date});
 }

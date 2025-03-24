@@ -2,7 +2,9 @@ import 'dart:math';
 
 import 'package:celta_plus/ui/components/chart_prices.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
+import '../../../../data/models/models.dart';
 import '../../../../ui/helpers/helpers.dart';
 import 'components.dart';
 
@@ -11,6 +13,34 @@ class MonthlyAnalysis extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<DateAndValueModel> datesAndValues = List.generate(31, (index) {
+      //TODO get by external api
+      int day = index + 1;
+      return DateAndValueModel(
+        value: double.parse(
+          (Random().nextDouble() * 50000).toStringAsFixed(2),
+        ),
+        date: DateTime(2025, 3, day),
+      );
+    });
+
+    final betterValue = datesAndValues.reduce(
+      (a, b) => a.value > b.value ? a : b,
+    );
+    final worstValue = datesAndValues.reduce(
+      (a, b) => a.value < b.value ? a : b,
+    );
+
+    final averageValue =
+        datesAndValues.fold(
+          0.0,
+          (previous, element) => previous + element.value,
+        ) /
+        datesAndValues.length;
+
+    int daysInCurrentMonth =
+        DateTime(DateTime.now().year, DateTime.now().month + 1, 0).day;
+
     return Container(
       decoration: ContainerDecoration.decoration,
       padding: EdgeInsets.all(8),
@@ -28,7 +58,7 @@ class MonthlyAnalysis extends StatelessWidget {
                   children: [
                     Text("" + "Tendência de vendas"),
                     Text(
-                      1109131.25
+                      (averageValue * daysInCurrentMonth)
                           .toString()
                           .toBrazilianNumber()
                           .addBrazilianCoin(),
@@ -42,7 +72,7 @@ class MonthlyAnalysis extends StatelessWidget {
                   children: [
                     Text("" + "Venda média diária"),
                     Text(
-                      35778.43
+                      averageValue
                           .toString()
                           .toBrazilianNumber()
                           .addBrazilianCoin(),
@@ -54,26 +84,15 @@ class MonthlyAnalysis extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           CompareTimesResult(
-            betterTime: "21/03",
-            worstTime: "24/04",
-            betterValue: 53073.79,
-            worstValue: 9624.39,
+            betterTime: DateFormat("dd/MM").format(betterValue.date),
+            worstTime: DateFormat("dd/MM").format(worstValue.date),
+            betterValue: betterValue.value,
+            worstValue: worstValue.value,
             betterTimeMessage: "" + "Melhor dia do mês",
             worstTimeMessage: "" + "Pior dia do mês",
           ),
           const SizedBox(height: 8),
-          ChartPrices(
-            datesAndValues: List.generate(30, (index) {
-              //TODO get by external api
-              int day = index + 1;
-              return DateAndValue(
-                value: double.parse(
-                  (Random().nextDouble() * 1000000).toStringAsFixed(2),
-                ),
-                date: DateTime(2025, 3, day),
-              );
-            }),
-          ),
+          ChartPrices(datesAndValues: datesAndValues),
         ],
       ),
     );
