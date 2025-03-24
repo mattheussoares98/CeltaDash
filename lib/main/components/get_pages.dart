@@ -18,6 +18,11 @@ class GetPages {
       transition: Transition.fadeIn,
     ),
     GetPage(
+      name: PageRoutes.profitability,
+      page: makeProfitabilityPage,
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
       name: PageRoutes.splash,
       page: makeSplashPage,
       transition: Transition.fadeIn,
