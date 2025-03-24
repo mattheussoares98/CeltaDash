@@ -8,6 +8,11 @@ class GetPages {
 
   static final getPages = [
     GetPage(
+      name: PageRoutes.dailyAnalysis,
+      page: makeDailyAnalysisPage,
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
       name: PageRoutes.home,
       page: makeHomePage,
       transition: Transition.fadeIn,
