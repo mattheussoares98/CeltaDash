@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:celta_plus/ui/components/chart_prices.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../ui/helpers/helpers.dart';
@@ -57,6 +60,19 @@ class MonthlyAnalysis extends StatelessWidget {
             worstValue: 9624.39,
             betterTimeMessage: "" + "Melhor dia do mês",
             worstTimeMessage: "" + "Pior dia do mês",
+          ),
+          const SizedBox(height: 8),
+          ChartPrices(
+            datesAndValues: List.generate(30, (index) {
+              //TODO get by external api
+              int day = index + 1;
+              return DateAndValue(
+                value: double.parse(
+                  (Random().nextDouble() * 1000000).toStringAsFixed(2),
+                ),
+                date: DateTime(2025, 3, day),
+              );
+            }),
           ),
         ],
       ),
