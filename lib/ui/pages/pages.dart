@@ -2,6 +2,7 @@ export 'compare_days/compare_days.dart';
 export './home/home.dart';
 export './indicators/indicators.dart';
 export './login/login.dart';
+export './payment_type/payment_type.dart';
 export './products/products.dart';
 export './profitability/profitability.dart';
 export './resume/resume.dart';

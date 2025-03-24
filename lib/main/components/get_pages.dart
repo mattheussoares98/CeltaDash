@@ -23,6 +23,11 @@ class GetPages {
       transition: Transition.fadeIn,
     ),
     GetPage(
+      name: PageRoutes.paymentsType,
+      page: makePaymentsTypePage,
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
       name: PageRoutes.profitability,
       page: makeProfitabilityPage,
       transition: Transition.fadeIn,
