@@ -30,7 +30,7 @@ class GetxResumePresenter extends GetxController implements ResumePresenter {
   }
 
   @override
-  void goToTypesPage() {
-    navigateTo.navigate(pageRoute: PageRoutes.types);
+  void goToPaymentsTypePage() {
+    navigateTo.navigate(pageRoute: PageRoutes.paymentsType);
   }
 }

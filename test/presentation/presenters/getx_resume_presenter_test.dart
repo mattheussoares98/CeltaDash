@@ -70,10 +70,10 @@ void main() {
       ).called(1);
     });
     test("Should navigate to types page correctly", () async {
-      sut.goToTypesPage();
+      sut.goToPaymentsTypePage();
 
       verify(
-        () => navigateTo.navigate(pageRoute: PageRoutes.types),
+        () => navigateTo.navigate(pageRoute: PageRoutes.paymentsType),
       ).called(1);
     });
   });

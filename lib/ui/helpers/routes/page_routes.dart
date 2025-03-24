@@ -6,5 +6,5 @@ class PageRoutes {
   static const String sections = "/sections";
   static const String setGoal = "/set_goal";
   static const String splash = "/splash";
-  static const String types = "/types";
+  static const String paymentsType = "/payments_type";
 }

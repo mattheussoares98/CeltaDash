@@ -11,8 +11,8 @@ class TypesButton extends StatelessWidget {
     ResumePresenter resumePresenter = Provider.of(context, listen: false);
 
     return ElevatedButton(
-      onPressed: resumePresenter.goToTypesPage,
-      child: Text("" + "Types"),
+      onPressed: resumePresenter.goToPaymentsTypePage,
+      child: Text("" + "Tipos de pagamento"),
     );
   }
 }
