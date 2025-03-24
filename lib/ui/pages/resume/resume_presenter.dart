@@ -6,4 +6,6 @@ abstract class ResumePresenter implements Listenable {
   void goToSectionsPage();
   void goToPaymentsTypePage();
   void goToSetGoalPage();
+  void goToGoalHistoryPage();
+  void goToGroupSummaryPage();
 }

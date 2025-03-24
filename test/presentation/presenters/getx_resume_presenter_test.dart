@@ -76,5 +76,19 @@ void main() {
         () => navigateTo.navigate(pageRoute: PageRoutes.paymentsType),
       ).called(1);
     });
+    test("Should navigate to group summary correctly", () async {
+      sut.goToGroupSummaryPage();
+
+      verify(
+        () => navigateTo.navigate(pageRoute: PageRoutes.groupSummary),
+      ).called(1);
+    });
+    test("Should navigate to goal history page correctly", () async {
+      sut.goToGoalHistoryPage();
+
+      verify(
+        () => navigateTo.navigate(pageRoute: PageRoutes.goalHistory),
+      ).called(1);
+    });
   });
 }

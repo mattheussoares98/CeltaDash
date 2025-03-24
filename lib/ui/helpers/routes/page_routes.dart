@@ -1,5 +1,7 @@
 class PageRoutes {
   static const String compareDays = "/daily_analysis";
+  static const String goalHistory = "/goal_history";
+  static const String groupSummary = "/group_summary";
   static const String home = "/home";
   static const String login = "/login";
   static const String profitability = "/profitability";

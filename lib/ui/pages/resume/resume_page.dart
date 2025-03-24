@@ -87,10 +87,7 @@ class _ResumePageState extends State<ResumePage> {
                   ),
 
                   rightButton: DefaultNavigateButton(
-                    onTap:
-                        widget
-                            .resumePresenter
-                            .goToSetGoalPage, //TODO add new function
+                    onTap: widget.resumePresenter.goToGoalHistoryPage,
                     title: R.string.goalHistory,
                   ),
                   children: [
@@ -111,7 +108,7 @@ class _ResumePageState extends State<ResumePage> {
                 MonthlyAnalysis(),
                 SizedBox(height: 8),
                 DefaultNavigateButton(
-                  onTap: () {},
+                  onTap: widget.resumePresenter.goToGroupSummaryPage,
                   title: R.string.groupSummary,
                   icon: Icon(Icons.arrow_outward_sharp, color: Colors.white),
                 ),
