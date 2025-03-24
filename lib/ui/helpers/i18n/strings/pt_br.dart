@@ -22,10 +22,12 @@ class PtBr implements Translation {
   String get email => "E-mail";
   String get enter => "Entrar";
   String get goalHistory => "Histórico de metas";
+  String get groupOfStores => "Grupo de lojas";
   String get groupSummary => "Resumo do grupo";
   String get indicators => "Indicadores";
   String get insertGoal => "Inserir meta";
   String get monthlyAnalysis => "Análise mensal";
+  String get moreDetails => "Mais detalhes";
   String get no => "Não";
   String get of => "De";
   String get password => "Senha";
@@ -40,6 +42,7 @@ class PtBr implements Translation {
   String get salesQuantity => "Quantidade de vendas";
   String get salesUntilNow => "Vendas até agora";
   String get sections => "Seções";
+  String get seeMore => "Ver mais";
   String get ticketAverage => "Ticket médio";
   String get team => "Time";
   String get trendSales => "Tendência de vendas";

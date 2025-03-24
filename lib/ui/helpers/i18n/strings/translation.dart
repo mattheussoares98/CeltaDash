@@ -18,10 +18,12 @@ abstract class Translation {
   String get email;
   String get enter;
   String get goalHistory;
+  String get groupOfStores;
   String get groupSummary;
   String get indicators;
   String get insertGoal;
   String get monthlyAnalysis;
+  String get moreDetails;
   String get no;
   String get of;
   String get password;

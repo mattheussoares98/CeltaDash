@@ -112,6 +112,8 @@ class _ResumePageState extends State<ResumePage> {
                   title: R.string.groupSummary,
                   icon: Icon(Icons.arrow_outward_sharp, color: Colors.white),
                 ),
+                SizedBox(height: 8),
+                GroupOfStores(),
                 SizedBox(height: 15),
               ],
             ),
