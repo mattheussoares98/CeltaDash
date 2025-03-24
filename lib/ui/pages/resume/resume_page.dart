@@ -109,6 +109,12 @@ class _ResumePageState extends State<ResumePage> {
                 DailyAnalysis(),
                 SizedBox(height: 8),
                 MonthlyAnalysis(),
+                SizedBox(height: 8),
+                DefaultNavigateButton(
+                  onTap: () {},
+                  title: R.string.groupSummary,
+                  icon: Icon(Icons.arrow_outward_sharp, color: Colors.white),
+                ),
                 SizedBox(height: 15),
               ],
             ),

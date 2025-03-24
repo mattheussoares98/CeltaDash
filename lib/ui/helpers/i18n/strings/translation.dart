@@ -18,6 +18,7 @@ abstract class Translation {
   String get email;
   String get enter;
   String get goalHistory;
+  String get groupSummary;
   String get indicators;
   String get insertGoal;
   String get monthlyAnalysis;

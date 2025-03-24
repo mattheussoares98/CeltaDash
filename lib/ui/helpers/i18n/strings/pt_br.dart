@@ -22,6 +22,7 @@ class PtBr implements Translation {
   String get email => "E-mail";
   String get enter => "Entrar";
   String get goalHistory => "Histórico de metas";
+  String get groupSummary => "Resumo do grupo";
   String get indicators => "Indicadores";
   String get insertGoal => "Inserir meta";
   String get monthlyAnalysis => "Análise mensal";
