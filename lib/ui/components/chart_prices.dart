@@ -202,14 +202,6 @@ class _ChartTitle extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "" + "Atual month sales",
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
-        ),
-        Text(
           getOldestAndNewestDates(),
           style: TextStyle(
             color: Theme.of(context).secondaryHeaderColor,

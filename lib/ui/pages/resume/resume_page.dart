@@ -48,32 +48,29 @@ class _ResumePageState extends State<ResumePage> {
               children: [
                 SalesInformations(
                   scrollController: scrollController,
-                  title: "Sales of the day" + "",
+                  title: R.string.salesOfTheDay,
                   totalSales: dailySalesModel.totalAmountInDay,
                   leftButton: DefaultNavigateButton(
                     onTap: widget.resumePresenter.goToPaymentsTypePage,
-                    title: "" + "Tipos de pagamento",
+                    title: R.string.paymentsType,
                   ),
                   rightButton: DefaultNavigateButton(
                     onTap: widget.resumePresenter.goToSectionsPage,
-                    title: "" + "Seções",
+                    title: R.string.sections,
                   ),
                   goal: Random().nextDouble() * 50000,
                   children: [
                     Text(
-                      "" + "Sales quantity\n${dailySalesModel.salesQuantity}",
+                      "${R.string.salesQuantity}\n${dailySalesModel.salesQuantity}",
                     ),
                     Text(
-                      "" +
-                          "Ticket avarage (R\$)\n${(dailySalesModel.totalAmountInDay / dailySalesModel.salesQuantity).toString().toBrazilianNumber().addBrazilianCoin()}",
+                      "${R.string.ticketAverage}\n${(dailySalesModel.totalAmountInDay / dailySalesModel.salesQuantity).toString().toBrazilianNumber().addBrazilianCoin()}",
                     ),
                     Text(
-                      "" +
-                          "Products by sale\n${dailySalesModel.productsAverageBySale.toString().toBrazilianNumber()}",
+                      "${R.string.productsBySale}\n${dailySalesModel.productsAverageBySale.toString().toBrazilianNumber()}",
                     ),
                     Text(
-                      "" +
-                          "Average price (R\$)\n${(dailySalesModel.totalAmountInDay / dailySalesModel.salesQuantity / dailySalesModel.productsAverageBySale).toString().toBrazilianNumber().addBrazilianCoin()}",
+                      "${R.string.averagePrice}\n${(dailySalesModel.totalAmountInDay / dailySalesModel.salesQuantity / dailySalesModel.productsAverageBySale).toString().toBrazilianNumber().addBrazilianCoin()}",
                     ),
                   ],
                 ),
@@ -83,10 +80,10 @@ class _ResumePageState extends State<ResumePage> {
                   goal: Random().nextDouble() * 50000 * quantityOfDaysInMonth,
                   totalSales:
                       Random().nextDouble() * 50000 * quantityOfDaysInMonth,
-                  title: "Sales of the month" + "",
+                  title: R.string.salesOfTheMonth,
                   leftButton: DefaultNavigateButton(
                     onTap: widget.resumePresenter.goToSetGoalPage,
-                    title: "" + "Inserir meta",
+                    title: R.string.insertGoal,
                   ),
 
                   rightButton: DefaultNavigateButton(
@@ -94,19 +91,18 @@ class _ResumePageState extends State<ResumePage> {
                         widget
                             .resumePresenter
                             .goToSetGoalPage, //TODO add new function
-                    title: "" + "Histórico de metas",
+                    title: R.string.goalHistory,
                   ),
                   children: [
                     Text(
-                      "" +
-                          "Sales until now\n${(Random().nextDouble() * 30000).toString().toBrazilianNumber().addBrazilianCoin()}",
+                      "${R.string.salesUntilNow}\n${(Random().nextDouble() * 30000).toString().toBrazilianNumber().addBrazilianCoin()}",
                     ),
                   ],
                 ),
                 const SizedBox(height: 8),
                 DefaultNavigateButton(
                   onTap: widget.resumePresenter.goToProfitabillityPage,
-                  title: "" + "Rentabilidade",
+                  title: R.string.profitability,
                   icon: Icon(Icons.arrow_outward_sharp, color: Colors.white),
                 ),
                 const SizedBox(height: 8),

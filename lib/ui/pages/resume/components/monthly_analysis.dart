@@ -17,9 +17,7 @@ class MonthlyAnalysis extends StatelessWidget {
       //TODO get by external api
       int day = index + 1;
       return DateAndValueModel(
-        value: double.parse(
-          (Random().nextDouble() * 50000).toStringAsFixed(2),
-        ),
+        value: double.parse((Random().nextDouble() * 50000).toStringAsFixed(2)),
         date: DateTime(2025, 3, day),
       );
     });
@@ -47,7 +45,7 @@ class MonthlyAnalysis extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            "" + "Análise mensal",
+            R.string.monthlyAnalysis,
             style: Theme.of(context).textTheme.displayLarge,
           ),
           const SizedBox(height: 8),
@@ -56,7 +54,7 @@ class MonthlyAnalysis extends StatelessWidget {
               Expanded(
                 child: Column(
                   children: [
-                    Text("" + "Tendência de vendas"),
+                    Text(R.string.trendSales),
                     Text(
                       (averageValue * daysInCurrentMonth)
                           .toString()
@@ -70,7 +68,7 @@ class MonthlyAnalysis extends StatelessWidget {
               Expanded(
                 child: Column(
                   children: [
-                    Text("" + "Venda média diária"),
+                    Text(R.string.averageDailySale),
                     Text(
                       averageValue
                           .toString()
@@ -88,8 +86,8 @@ class MonthlyAnalysis extends StatelessWidget {
             worstTime: DateFormat("dd/MM").format(worstValue.date),
             betterValue: betterValue.value,
             worstValue: worstValue.value,
-            betterTimeMessage: "" + "Melhor dia do mês",
-            worstTimeMessage: "" + "Pior dia do mês",
+            betterTimeMessage: R.string.bestDayOfTheMonth,
+            worstTimeMessage: R.string.worstDayOfTheMonth,
           ),
           const SizedBox(height: 8),
           ChartPrices(datesAndValues: datesAndValues),
