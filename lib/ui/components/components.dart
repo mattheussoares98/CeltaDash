@@ -1,3 +1,4 @@
+export './table/table.dart';
 export "./app_theme.dart";
 export './chart_pie.dart';
 export './chart_prices.dart';
