@@ -1,4 +1,5 @@
 export "./app_theme.dart";
+export './chart_pie.dart';
 export './chart_prices.dart';
 export './circle_progress.dart';
 export './default_drop_down.dart';

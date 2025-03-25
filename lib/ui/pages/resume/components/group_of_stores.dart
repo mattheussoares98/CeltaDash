@@ -1,5 +1,9 @@
+import 'dart:math';
+
+import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 
+import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import 'components.dart';
 
@@ -18,7 +22,30 @@ class GroupOfStores extends StatelessWidget {
             style: Theme.of(context).textTheme.displayLarge,
           ),
           Text(R.string.salesOfTheDay),
-          //TODO add new chart
+          ChartPie(
+            pieParameters: [
+              PieParameter(
+                value: Random().nextDouble() * 50000,
+                title: faker.company.name(),
+              ),
+              PieParameter(
+                value: Random().nextDouble() * 50000,
+                title: faker.company.name(),
+              ),
+              PieParameter(
+                value: Random().nextDouble() * 50000,
+                title: faker.company.name(),
+              ),
+              PieParameter(
+                value: Random().nextDouble() * 50000,
+                title: faker.company.name(),
+              ),
+              PieParameter(
+                value: Random().nextDouble() * 50000,
+                title: faker.company.name(),
+              ),
+            ],
+          ),
           DefaultNavigateButton(onTap: () {}, title: R.string.moreDetails),
         ],
       ),
