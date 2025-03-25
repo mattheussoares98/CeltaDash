@@ -66,7 +66,6 @@ ThemeData makeAppTheme(BuildContext context) {
   final buttonTheme = ButtonThemeData(
     colorScheme: const ColorScheme.light(primary: primaryColor),
     buttonColor: primaryColor,
-    splashColor: primaryColorLight,
     padding: EdgeInsets.symmetric(
       vertical: hasMinWidth(context) ? 10 : 2,
       horizontal: hasMinWidth(context) ? 20 : 5,
