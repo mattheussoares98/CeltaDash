@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
@@ -19,59 +22,65 @@ class _SalesPageState extends State<SalesPage> {
           debugPrint("Search sales again");
         },
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SelectPeriodItems(
-              items: [
-                SelectPeriodItems.createItem(
-                  title: R.string.hour,
-                  onTap: () {},
-                ),
-                SelectPeriodItems.createItem(title: R.string.day, onTap: () {}),
-                SelectPeriodItems.createItem(
-                  title: R.string.month,
-                  onTap: () {},
-                ),
-                SelectPeriodItems.createItem(
-                  title: R.string.year,
-                  onTap: () {},
-                ),
-              ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SelectPeriodItems(
+                items: [
+                  SelectPeriodItems.createItem(
+                    title: R.string.hour,
+                    onTap: () {},
+                  ),
+                  SelectPeriodItems.createItem(
+                    title: R.string.day,
+                    onTap: () {},
+                  ),
+                  SelectPeriodItems.createItem(
+                    title: R.string.month,
+                    onTap: () {},
+                  ),
+                  SelectPeriodItems.createItem(
+                    title: R.string.year,
+                    onTap: () {},
+                  ),
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: TableItem(
-              columnWidths: {
-                0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.13),
-              },
-              titles: [
-                "",
-                R.string.totalSales.toUpperCase(),
-                R.string.share.toUpperCase(),
-              ],
-              rowValues: [
-                [
-                  PersonalizedTableCell(value: "25\nseg"),
-                  PersonalizedTableCell(value: 4.46, isMoney: true),
-                  PersonalizedTableCell(value: 8.81, isPercentage: true),
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: TableItem(
+                columnWidths: {
+                  0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.13),
+                },
+                titles: [
+                  "",
+                  R.string.totalSales.toUpperCase(),
+                  R.string.share.toUpperCase(),
                 ],
-                [
-                  PersonalizedTableCell(value: "26\nter"),
-                  PersonalizedTableCell(value: 9.8, isMoney: true),
-                  PersonalizedTableCell(value: 7.62, isPercentage: true),
-                ],
-                [
-                  PersonalizedTableCell(value: "27\nqua"),
-                  PersonalizedTableCell(value: 14.56, isMoney: true),
-                  PersonalizedTableCell(value: 3.25, isPercentage: true),
-                ],
-              ],
+                rowValues:
+                    List.generate(30, (index) {
+                      final now = DateTime.now();
+                      final atualDate = DateTime(
+                        now.year,
+                        now.month,
+                        index + 1,
+                      );
+
+                      return [
+                        PersonalizedTableCell(
+                          value:
+                              "${atualDate.day}\n${DateFormat.EEEE("pt_BR").format(atualDate).toUpperCase().substring(0, 3)}",
+                        ),
+                        PersonalizedTableCell(value: Random().nextDouble() * 50000, isMoney: true),
+                        PersonalizedTableCell(value: Random().nextDouble() * 3, isPercentage: true),
+                      ];
+                    }).toList(),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
