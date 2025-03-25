@@ -3,6 +3,7 @@ export "./app_theme.dart";
 export './chart_pie.dart';
 export './chart_prices.dart';
 export './circle_progress.dart';
+export './default_app_bar.dart';
 export './default_drop_down.dart';
 export './error_message.dart';
 export './get_new_date.dart';

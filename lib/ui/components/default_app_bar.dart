@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../components/components.dart';
+import 'components.dart';
 
-class HomeAppBar extends StatefulWidget implements PreferredSizeWidget {
-  const HomeAppBar({super.key});
+class DefaultAppBar extends StatefulWidget implements PreferredSizeWidget {
+  final void Function() onChangeDateOrEnterprise;
+  const DefaultAppBar({super.key, required this.onChangeDateOrEnterprise});
 
   static List<String> enterprises = [
     "Enterprise A",
@@ -17,12 +18,12 @@ class HomeAppBar extends StatefulWidget implements PreferredSizeWidget {
   Size get preferredSize => Size.fromHeight(appBarHeight);
 
   @override
-  State<HomeAppBar> createState() => _HomeAppBarState();
+  State<DefaultAppBar> createState() => _DefaultAppBarState();
 }
 
 double appBarHeight = 90;
 
-class _HomeAppBarState extends State<HomeAppBar> {
+class _DefaultAppBarState extends State<DefaultAppBar> {
   DateTime selectedDate = DateTime.now();
 
   @override
@@ -35,10 +36,12 @@ class _HomeAppBarState extends State<HomeAppBar> {
             children: [
               Expanded(
                 child: DefaultDropDown<String>(
-                  onChanged: (_) {},
+                  onChanged: (_) {
+                    widget.onChangeDateOrEnterprise();
+                  },
                   hint: null,
                   items:
-                      HomeAppBar.enterprises
+                      DefaultAppBar.enterprises
                           .map(
                             (e) => DropdownMenuItem<String>(
                               value: e,
@@ -47,7 +50,7 @@ class _HomeAppBarState extends State<HomeAppBar> {
                             ),
                           )
                           .toList(),
-                  selectedItem: HomeAppBar.enterprises[0],
+                  selectedItem: DefaultAppBar.enterprises[0],
                 ),
               ),
               Padding(
@@ -71,9 +74,12 @@ class _HomeAppBarState extends State<HomeAppBar> {
                   setState(() {
                     selectedDate = newDate;
                   });
+                  widget.onChangeDateOrEnterprise();
                 }
               },
-              label: Text("${DateFormat('dd/MM/yyyy').format(selectedDate)}  ${DateFormat('EEEE', 'pt_BR').format(selectedDate)}"),
+              label: Text(
+                "${DateFormat('dd/MM/yyyy').format(selectedDate)}  ${DateFormat('EEEE', 'pt_BR').format(selectedDate)}",
+              ),
               icon: Icon(Icons.date_range, color: Colors.white),
             ),
           ),
