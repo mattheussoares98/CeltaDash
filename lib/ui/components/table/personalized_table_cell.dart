@@ -24,7 +24,7 @@ class PersonalizedTableCell extends StatelessWidget {
       if (isMoney == true) {
         return newValue.toString().toBrazilianNumber().addBrazilianCoin();
       } else if (isPercentage == true) {
-        return '$newValue%';
+        return '${newValue.toString().toBrazilianNumber()}%';
       }
       return newValue.toString().toBrazilianNumber();
     } else if (value is int) {

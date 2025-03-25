@@ -55,18 +55,18 @@ class _SalesPageState extends State<SalesPage> {
               rowValues: [
                 [
                   PersonalizedTableCell(value: "25\nseg"),
-                  PersonalizedTableCell(value: 4.46),
-                  PersonalizedTableCell(value: 8.81, isMoney: true),
+                  PersonalizedTableCell(value: 4.46, isMoney: true),
+                  PersonalizedTableCell(value: 8.81, isPercentage: true),
                 ],
                 [
                   PersonalizedTableCell(value: "26\nter"),
-                  PersonalizedTableCell(value: 9.8),
-                  PersonalizedTableCell(value: 7.62, isMoney: true),
+                  PersonalizedTableCell(value: 9.8, isMoney: true),
+                  PersonalizedTableCell(value: 7.62, isPercentage: true),
                 ],
                 [
                   PersonalizedTableCell(value: "27\nqua"),
-                  PersonalizedTableCell(value: 14.56),
-                  PersonalizedTableCell(value: 3.25, isMoney: true),
+                  PersonalizedTableCell(value: 14.56, isMoney: true),
+                  PersonalizedTableCell(value: 3.25, isPercentage: true),
                 ],
               ],
             ),
