@@ -21,6 +21,7 @@ abstract class Translation {
   String get goalHistory;
   String get groupOfStores;
   String get groupSummary;
+  String get hour;
   String get indicators;
   String get insertGoal;
   String get month;

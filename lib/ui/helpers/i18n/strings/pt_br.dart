@@ -25,6 +25,7 @@ class PtBr implements Translation {
   String get goalHistory => "Histórico de metas";
   String get groupOfStores => "Grupo de lojas";
   String get groupSummary => "Resumo do grupo";
+  String get hour => "Hora";
   String get indicators => "Indicadores";
   String get insertGoal => "Inserir meta";
   String get month => "Mês";

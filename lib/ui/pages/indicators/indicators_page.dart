@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
-import 'components/components.dart';
 
 class IndicatorsPage extends StatefulWidget {
   const IndicatorsPage({super.key});
@@ -17,7 +16,22 @@ class _IndicatorsPageState extends State<IndicatorsPage> {
     return Scaffold(
       body: Column(
         children: [
-          Padding(padding: const EdgeInsets.all(8.0), child: PeriodItems()),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SelectPeriodItems(
+              items: [
+                SelectPeriodItems.createItem(title: R.string.day, onTap: () {}),
+                SelectPeriodItems.createItem(
+                  title: R.string.month,
+                  onTap: () {},
+                ),
+                SelectPeriodItems.createItem(
+                  title: R.string.year,
+                  onTap: () {},
+                ),
+              ],
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.only(top: 8),
             child: TableItem(
