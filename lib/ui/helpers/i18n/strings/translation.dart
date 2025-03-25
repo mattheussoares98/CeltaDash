@@ -15,6 +15,7 @@ abstract class Translation {
   String get compareDays;
   String get dailyAnalysis;
   String get dateNotUpdated;
+  String get day;
   String get email;
   String get enter;
   String get goalHistory;
@@ -22,6 +23,7 @@ abstract class Translation {
   String get groupSummary;
   String get indicators;
   String get insertGoal;
+  String get month;
   String get monthlyAnalysis;
   String get moreDetails;
   String get no;
@@ -36,6 +38,7 @@ abstract class Translation {
   String get salesOfTheDay;
   String get salesOfTheMonth;
   String get salesQuantity;
+  String get salesQuantityAbbreviated;
   String get salesUntilNow;
   String get sections;
   String get ticketAverage;
@@ -44,5 +47,6 @@ abstract class Translation {
   String get wait;
   String get worstDayOfTheMonth;
   String get worstHourOfTheDay;
+  String get year;
   String get yes;
 }
