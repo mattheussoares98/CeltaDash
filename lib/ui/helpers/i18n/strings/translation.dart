@@ -42,8 +42,10 @@ abstract class Translation {
   String get salesQuantityAbbreviated;
   String get salesUntilNow;
   String get sections;
+  String get share;
   String get ticketAverage;
   String get team;
+  String get totalSales;
   String get trendSales;
   String get wait;
   String get worstDayOfTheMonth;

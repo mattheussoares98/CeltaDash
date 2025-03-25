@@ -47,8 +47,10 @@ class PtBr implements Translation {
   String get salesUntilNow => "Vendas até agora";
   String get sections => "Seções";
   String get seeMore => "Ver mais";
+  String get share => "Share";
   String get ticketAverage => "Ticket médio";
   String get team => "Time";
+  String get totalSales => "Total de vendas";
   String get trendSales => "Tendência de vendas";
   String get wait => "Aguarde...";
   String get worstDayOfTheMonth => "Pior hora do dia";

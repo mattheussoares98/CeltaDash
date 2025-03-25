@@ -39,10 +39,11 @@ class _PeriodItems extends State<SelectPeriodItems> {
       segments: List.generate(widget.items.length, (i) {
         return ButtonSegment(
           value: widget.items[i].title,
-          label: Text(widget.items[i].title),
+          label: FittedBox(child: Text(widget.items[i].title)),
         );
       }),
       selected: {selected!},
+      showSelectedIcon: false,
       onSelectionChanged: (newSelection) {
         setState(() {
           selected = newSelection.first;
