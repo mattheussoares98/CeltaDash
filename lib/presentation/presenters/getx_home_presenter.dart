@@ -12,4 +12,13 @@ class GetxHomePresenter extends GetxController implements HomePresenter {
   }
 
   final _currentPageIndex = 0.obs;
+
+  DateTime _selectedDate = DateTime.now();
+  @override
+  DateTime get selectedDate => _selectedDate;
+
+  @override
+  void updateSelectedDate(DateTime date) {
+    _selectedDate = date;
+  }
 }

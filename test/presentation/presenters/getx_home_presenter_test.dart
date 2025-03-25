@@ -53,4 +53,17 @@ void main() {
       sut.updateSelectedIndex(third);
     });
   });
+
+  group("Update selected date", () {
+    test("Should update date correctly", () {
+      final firstDate = faker.date.dateTime();
+      final secondDate = faker.date.dateTime();
+
+      sut.updateSelectedDate(firstDate);
+      expect(sut.selectedDate, firstDate);
+
+      sut.updateSelectedDate(secondDate);
+      expect(sut.selectedDate, secondDate);
+    });
+  });
 }
