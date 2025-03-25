@@ -2,9 +2,11 @@ import 'dart:math';
 
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
+import '../../pages.dart';
 import 'components.dart';
 
 class GroupOfStores extends StatelessWidget {
@@ -12,6 +14,8 @@ class GroupOfStores extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ResumePresenter resumePresenter = Provider.of(context, listen: false);
+
     return Container(
       decoration: ContainerDecoration.decoration,
       padding: const EdgeInsets.all(8.0),
@@ -46,7 +50,10 @@ class GroupOfStores extends StatelessWidget {
               ),
             ],
           ),
-          DefaultNavigateButton(onTap: () {}, title: R.string.moreDetails),
+          DefaultNavigateButton(
+            onTap: resumePresenter.goToGroupSummaryPage,
+            title: R.string.moreDetails,
+          ),
         ],
       ),
     );
