@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../../data/models/models.dart';
 import '../../../ui/helpers/helpers.dart';
+import '../../components/components.dart';
 import 'components/components.dart';
 import 'resume.dart';
 
@@ -37,6 +38,11 @@ class _ResumePageState extends State<ResumePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: DefaultAppBar(
+        onChangeDateOrEnterprise: () {
+          debugPrint("Search all resume data again");
+        },
+      ),
       body: ListenableProvider(
         create: (_) => widget.resumePresenter,
         child: SingleChildScrollView(

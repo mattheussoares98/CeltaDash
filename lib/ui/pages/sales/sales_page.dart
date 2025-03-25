@@ -14,6 +14,11 @@ class _SalesPageState extends State<SalesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: DefaultAppBar(
+        onChangeDateOrEnterprise: () {
+          debugPrint("Search sales again");
+        },
+      ),
       body: Column(
         children: [
           Padding(

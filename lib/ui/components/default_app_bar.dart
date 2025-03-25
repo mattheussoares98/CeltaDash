@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
+import '../pages/pages.dart';
 import 'components.dart';
 
 class DefaultAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -24,10 +26,10 @@ class DefaultAppBar extends StatefulWidget implements PreferredSizeWidget {
 double appBarHeight = 90;
 
 class _DefaultAppBarState extends State<DefaultAppBar> {
-  DateTime selectedDate = DateTime.now();
-
   @override
   Widget build(BuildContext context) {
+    HomePresenter homePresenter = Provider.of(context, listen: false);
+
     return AppBar(
       toolbarHeight: appBarHeight,
       title: Column(
@@ -72,13 +74,13 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
 
                 if (newDate != null) {
                   setState(() {
-                    selectedDate = newDate;
+                    homePresenter.updateSelectedDate(newDate);
                   });
                   widget.onChangeDateOrEnterprise();
                 }
               },
               label: Text(
-                "${DateFormat('dd/MM/yyyy').format(selectedDate)}  ${DateFormat('EEEE', 'pt_BR').format(selectedDate)}",
+                "${DateFormat('dd/MM/yyyy').format(homePresenter.selectedDate)}  ${DateFormat('EEEE', 'pt_BR').format(homePresenter.selectedDate)}",
               ),
               icon: Icon(Icons.date_range, color: Colors.white),
             ),

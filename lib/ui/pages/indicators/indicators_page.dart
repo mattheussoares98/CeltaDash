@@ -14,6 +14,11 @@ class _IndicatorsPageState extends State<IndicatorsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: DefaultAppBar(
+        onChangeDateOrEnterprise: () {
+          debugPrint("Search indicators again");
+        },
+      ),
       body: Column(
         children: [
           Padding(
