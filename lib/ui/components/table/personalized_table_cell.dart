@@ -6,7 +6,8 @@ class PersonalizedTableCell extends StatelessWidget {
   final String? subtile;
   final bool? isMoney;
   final bool? isPercentage;
-  final TextStyle? style;
+  final TextStyle? titleStyle;
+  final TextStyle? subtitleStyle;
   final void Function()? onTap;
   const PersonalizedTableCell({
     super.key,
@@ -14,7 +15,8 @@ class PersonalizedTableCell extends StatelessWidget {
     this.isMoney,
     this.subtile,
     this.isPercentage,
-    this.style,
+    this.titleStyle,
+    this.subtitleStyle,
     this.onTap,
   });
 
@@ -51,7 +53,7 @@ class PersonalizedTableCell extends StatelessWidget {
                   getName(),
                   textAlign: TextAlign.center,
                   style:
-                      style ??
+                      titleStyle ??
                       TextStyle(
                         fontSize: 12,
                         fontWeight:
@@ -64,7 +66,7 @@ class PersonalizedTableCell extends StatelessWidget {
                   Text(
                     subtile!,
                     style:
-                        style ??
+                        subtitleStyle ??
                         TextStyle(
                           fontSize: 12,
                           color: Theme.of(context).primaryColor,
