@@ -56,7 +56,7 @@ class _SalesPageState extends State<SalesPage> {
                 },
                 columnIndexToCompareAndDetachBetterAndWorstValue: 1,
                 titles: [
-                  "",
+                  R.string.day.toUpperCase(),
                   R.string.totalSales.toUpperCase(),
                   R.string.share.toUpperCase(),
                 ],

@@ -52,7 +52,7 @@ class _IndicatorsPageState extends State<IndicatorsPage> {
                 },
                 columnIndexToCompareAndDetachBetterAndWorstValue: 1,
                 titles: [
-                  "",
+                  R.string.day.toUpperCase(),
                   R.string.ticketAverage.toUpperCase(),
                   R.string.salesQuantityAbbreviated.toUpperCase(),
                   R.string.productsBySale.toUpperCase(),

@@ -50,10 +50,26 @@ class PersonalizedTableCell extends StatelessWidget {
                 Text(
                   getName(),
                   textAlign: TextAlign.center,
-                  style: style ?? TextStyle(fontSize: 12),
+                  style:
+                      style ??
+                      TextStyle(
+                        fontSize: 12,
+                        fontWeight:
+                            subtile == null
+                                ? FontWeight.normal
+                                : FontWeight.bold,
+                      ),
                 ),
                 if (subtile != null)
-                  Text(subtile!, style: style ?? TextStyle(fontSize: 12)),
+                  Text(
+                    subtile!,
+                    style:
+                        style ??
+                        TextStyle(
+                          fontSize: 12,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                  ),
               ],
             ),
           ),

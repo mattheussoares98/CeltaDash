@@ -105,6 +105,10 @@ class _TableItemState extends State<TableItem> {
             return PersonalizedTableCell(
               value: widget.titles[index],
               onTap: () => sortTable(index),
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
             );
           }),
         ),
