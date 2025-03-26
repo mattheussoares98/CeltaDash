@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class PersonalizedTableCell extends StatelessWidget {
   final dynamic value;
+  final String? subtile;
   final bool? isMoney;
   final bool? isPercentage;
   final TextStyle? style;
@@ -11,6 +12,7 @@ class PersonalizedTableCell extends StatelessWidget {
     super.key,
     required this.value,
     this.isMoney,
+    this.subtile,
     this.isPercentage,
     this.style,
     this.onTap,
@@ -43,10 +45,16 @@ class PersonalizedTableCell extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(3),
           child: Center(
-            child: Text(
-              getName(),
-              textAlign: TextAlign.center,
-              style: style ?? TextStyle(fontSize: 12),
+            child: Column(
+              children: [
+                Text(
+                  getName(),
+                  textAlign: TextAlign.center,
+                  style: style ?? TextStyle(fontSize: 12),
+                ),
+                if (subtile != null)
+                  Text(subtile!, style: style ?? TextStyle(fontSize: 12)),
+              ],
             ),
           ),
         ),

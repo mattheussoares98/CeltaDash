@@ -71,8 +71,10 @@ class _IndicatorsPageState extends State<IndicatorsPage> {
 
                       return [
                         PersonalizedTableCell(
-                          value:
-                              "${atualDate.day}\n${DateFormat.EEEE("pt_BR").format(atualDate).toUpperCase().substring(0, 3)}",
+                          value: atualDate.day,
+                          subtile: DateFormat.EEEE(
+                            "pt_BR",
+                          ).format(atualDate).toUpperCase().substring(0, 3),
                         ),
                         PersonalizedTableCell(
                           value: totalSales / quantitySales,
