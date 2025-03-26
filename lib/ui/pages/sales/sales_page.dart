@@ -51,9 +51,10 @@ class _SalesPageState extends State<SalesPage> {
             Padding(
               padding: const EdgeInsets.only(top: 8),
               child: TableItem(
-                columnWidths: {
+                tableColumnWidth: {
                   0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.13),
                 },
+                columnIndexToCompareAndDetachBetterAndWorstValue: 1,
                 titles: [
                   "",
                   R.string.totalSales.toUpperCase(),
@@ -68,6 +69,8 @@ class _SalesPageState extends State<SalesPage> {
                         index + 1,
                       );
 
+                      final totalSales = Random().nextDouble() * 50000;
+
                       return [
                         PersonalizedTableCell(
                           value: atualDate.day,
@@ -75,12 +78,9 @@ class _SalesPageState extends State<SalesPage> {
                             "pt_BR",
                           ).format(atualDate).toUpperCase().substring(0, 3),
                         ),
+                        PersonalizedTableCell(value: totalSales, isMoney: true),
                         PersonalizedTableCell(
-                          value: Random().nextDouble() * 50000,
-                          isMoney: true,
-                        ),
-                        PersonalizedTableCell(
-                          value: Random().nextDouble() * 3,
+                          value: (totalSales / 50000) * 3,
                           isPercentage: true,
                         ),
                       ];

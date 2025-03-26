@@ -47,9 +47,10 @@ class _IndicatorsPageState extends State<IndicatorsPage> {
             Padding(
               padding: const EdgeInsets.only(top: 8),
               child: TableItem(
-                columnWidths: {
+                tableColumnWidth: {
                   0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.13),
                 },
+                columnIndexToCompareAndDetachBetterAndWorstValue: 1,
                 titles: [
                   "",
                   R.string.ticketAverage.toUpperCase(),

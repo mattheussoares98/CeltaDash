@@ -5,12 +5,14 @@ import 'table.dart';
 class TableItem extends StatefulWidget {
   final List<String> titles;
   final List<List<PersonalizedTableCell>> rowValues;
-  final Map<int, TableColumnWidth>? columnWidths;
+  final Map<int, TableColumnWidth>? tableColumnWidth;
+  final int? columnIndexToCompareAndDetachBetterAndWorstValue;
   const TableItem({
     super.key,
     required this.titles,
     required this.rowValues,
-    this.columnWidths,
+    this.tableColumnWidth,
+    this.columnIndexToCompareAndDetachBetterAndWorstValue,
   });
 
   @override
@@ -21,11 +23,40 @@ class _TableItemState extends State<TableItem> {
   int? orderByIndex;
   bool ascending = true;
   List<List<PersonalizedTableCell>> sortedRows = [];
+  int? minValueRowIndex;
+  int? maxValueRowIndex;
 
   @override
   initState() {
     super.initState();
     sortedRows = [...widget.rowValues];
+    _calculateMinMaxIndexes();
+  }
+
+  void _calculateMinMaxIndexes() {
+    if (widget.columnIndexToCompareAndDetachBetterAndWorstValue == null) return;
+    final columnIndex =
+        widget.columnIndexToCompareAndDetachBetterAndWorstValue!;
+
+    double? minValue;
+    double? maxValue;
+
+    for (int i = 0; i < sortedRows.length; i++) {
+      final value = double.tryParse(
+        sortedRows[i][columnIndex].value.toString(),
+      );
+      if (value != null) {
+        if (minValue == null || value < minValue) {
+          minValue = value;
+          minValueRowIndex = i;
+        }
+        if (maxValue == null || value > maxValue) {
+          maxValue = value;
+          maxValueRowIndex = i;
+        }
+      }
+    }
+    setState(() {});
   }
 
   void sortTable(int columnIndex) {
@@ -49,6 +80,16 @@ class _TableItemState extends State<TableItem> {
         return ascending ? aValue.compareTo(bValue) : bValue.compareTo(aValue);
       });
     });
+    _calculateMinMaxIndexes();
+  }
+
+  Color getColor(int rowIndex) {
+    if (rowIndex == minValueRowIndex) return Colors.red.withAlpha(120);
+    if (rowIndex == maxValueRowIndex) return Colors.green.withAlpha(120);
+    if (rowIndex % 2 == 0) {
+      return Theme.of(context).primaryColorLight.withAlpha(20);
+    }
+    return Colors.transparent;
   }
 
   @override
@@ -56,7 +97,7 @@ class _TableItemState extends State<TableItem> {
     return Table(
       border: TableBorder.all(color: Colors.black, width: 0.06),
       defaultColumnWidth: FlexColumnWidth(1),
-      columnWidths: widget.columnWidths /* ??
+      columnWidths: widget.tableColumnWidth /* ??
           {0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.1)} */,
       children: [
         TableRow(
@@ -71,12 +112,7 @@ class _TableItemState extends State<TableItem> {
           sortedRows.length,
           (index) => TableRow(
             children: sortedRows[index],
-            decoration: BoxDecoration(
-              color:
-                  index % 2 == 1
-                      ? Theme.of(context).primaryColorLight.withAlpha(15)
-                      : Colors.white,
-            ),
+            decoration: BoxDecoration(color: getColor(index)),
           ),
         ),
       ],
