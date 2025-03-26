@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
@@ -19,63 +22,74 @@ class _IndicatorsPageState extends State<IndicatorsPage> {
           debugPrint("Search indicators again");
         },
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SelectPeriodItems(
-              items: [
-                SelectPeriodItems.createItem(title: R.string.day, onTap: () {}),
-                SelectPeriodItems.createItem(
-                  title: R.string.month,
-                  onTap: () {},
-                ),
-                SelectPeriodItems.createItem(
-                  title: R.string.year,
-                  onTap: () {},
-                ),
-              ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SelectPeriodItems(
+                items: [
+                  SelectPeriodItems.createItem(
+                    title: R.string.day,
+                    onTap: () {},
+                  ),
+                  SelectPeriodItems.createItem(
+                    title: R.string.month,
+                    onTap: () {},
+                  ),
+                  SelectPeriodItems.createItem(
+                    title: R.string.year,
+                    onTap: () {},
+                  ),
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: TableItem(
-              columnWidths: {
-                0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.13),
-              },
-              titles: [
-                "",
-                R.string.ticketAverage.toUpperCase(),
-                R.string.salesQuantityAbbreviated.toUpperCase(),
-                R.string.productsBySale.toUpperCase(),
-                R.string.averagePrice.toUpperCase(),
-              ],
-              rowValues: [
-                [
-                  PersonalizedTableCell(value: "25\nseg"),
-                  PersonalizedTableCell(value: 39.19, isMoney: true),
-                  PersonalizedTableCell(value: 215),
-                  PersonalizedTableCell(value: 4.46),
-                  PersonalizedTableCell(value: 8.81, isMoney: true),
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: TableItem(
+                columnWidths: {
+                  0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.13),
+                },
+                titles: [
+                  "",
+                  R.string.ticketAverage.toUpperCase(),
+                  R.string.salesQuantityAbbreviated.toUpperCase(),
+                  R.string.productsBySale.toUpperCase(),
+                  R.string.averagePrice.toUpperCase(),
                 ],
-                [
-                  PersonalizedTableCell(value: "26\nter"),
-                  PersonalizedTableCell(value: 25.80, isMoney: true),
-                  PersonalizedTableCell(value: 115),
-                  PersonalizedTableCell(value: 9.8),
-                  PersonalizedTableCell(value: 7.62, isMoney: true),
-                ],
-                [
-                  PersonalizedTableCell(value: "27\nqua"),
-                  PersonalizedTableCell(value: 68.80, isMoney: true),
-                  PersonalizedTableCell(value: 86),
-                  PersonalizedTableCell(value: 14.56),
-                  PersonalizedTableCell(value: 3.25, isMoney: true),
-                ],
-              ],
+                rowValues:
+                    List.generate(DateTime.now().day, (index) {
+                      final now = DateTime.now();
+                      final atualDate = DateTime(
+                        now.year,
+                        now.month,
+                        index + 1,
+                      );
+                      final totalSales = Random().nextDouble() * 50000;
+                      final quantitySales = Random().nextInt(999);
+                      final int productsBySale = Random().nextInt(11) + 4;
+
+                      return [
+                        PersonalizedTableCell(
+                          value:
+                              "${atualDate.day}\n${DateFormat.EEEE("pt_BR").format(atualDate).toUpperCase().substring(0, 3)}",
+                        ),
+                        PersonalizedTableCell(
+                          value: totalSales / quantitySales,
+                          isMoney: true,
+                        ),
+                        PersonalizedTableCell(value: quantitySales),
+                        PersonalizedTableCell(value: productsBySale),
+                        PersonalizedTableCell(
+                          value: totalSales / productsBySale / quantitySales,
+                          isMoney: true,
+                        ),
+                      ];
+                    }).toList(),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -60,7 +60,7 @@ class _SalesPageState extends State<SalesPage> {
                   R.string.share.toUpperCase(),
                 ],
                 rowValues:
-                    List.generate(30, (index) {
+                    List.generate(DateTime.now().day, (index) {
                       final now = DateTime.now();
                       final atualDate = DateTime(
                         now.year,
@@ -73,8 +73,14 @@ class _SalesPageState extends State<SalesPage> {
                           value:
                               "${atualDate.day}\n${DateFormat.EEEE("pt_BR").format(atualDate).toUpperCase().substring(0, 3)}",
                         ),
-                        PersonalizedTableCell(value: Random().nextDouble() * 50000, isMoney: true),
-                        PersonalizedTableCell(value: Random().nextDouble() * 3, isPercentage: true),
+                        PersonalizedTableCell(
+                          value: Random().nextDouble() * 50000,
+                          isMoney: true,
+                        ),
+                        PersonalizedTableCell(
+                          value: Random().nextDouble() * 3,
+                          isPercentage: true,
+                        ),
                       ];
                     }).toList(),
               ),
