@@ -35,9 +35,12 @@ class PtBr implements Translation {
   String get of => "De";
   String get password => "Senha";
   String get paymentsType => "Tipos de pagamento";
+  String get positionAbbreviated => "Pos";
+  String get product => "Produto";
   String get products => "Produtos";
   String get productsBySale => "Produtos por venda";
   String get profitability => "Rentabilidade";
+  String get quantityAbbreviated => "Qtd";
   String get resume => "Resumo";
   String get sales => "Vendas";
   String get salesOfTheDay => "Vendas do dia";

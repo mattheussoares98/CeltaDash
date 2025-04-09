@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 class PersonalizedTableCell extends StatelessWidget {
   final dynamic value;
   final String? subtile;
-  final bool? isMoney;
-  final bool? isPercentage;
+  final bool? isMoney; //TODO move to title
+  final bool? isPercentage; //TODO move to title
   final TextStyle? titleStyle;
   final TextStyle? subtitleStyle;
   final void Function()? onTap;

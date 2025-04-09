@@ -31,9 +31,12 @@ abstract class Translation {
   String get of;
   String get password;
   String get paymentsType;
+  String get positionAbbreviated;
+  String get product;
   String get products;
   String get productsBySale;
   String get profitability;
+  String get quantityAbbreviated;
   String get resume;
   String get sales;
   String get salesOfTheDay;
