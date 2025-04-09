@@ -37,6 +37,10 @@ class _ResumePageState extends State<ResumePage> {
 
   @override
   Widget build(BuildContext context) {
+    double totalMonthSales =
+        Random().nextDouble() * 50000 * quantityOfDaysInMonth;
+    double totalDaySales = totalMonthSales / quantityOfDaysInMonth;
+
     return Scaffold(
       appBar: DefaultAppBar(
         onChangeDateOrEnterprise: () {
@@ -55,7 +59,8 @@ class _ResumePageState extends State<ResumePage> {
                 SalesInformations(
                   scrollController: scrollController,
                   title: R.string.salesOfTheDay,
-                  totalSales: dailySalesModel.totalAmountInDay,
+                  totalSales: totalDaySales * Random().nextDouble(),
+                  goal: totalDaySales,
                   leftButton: DefaultNavigateButton(
                     onTap: widget.resumePresenter.goToPaymentsTypePage,
                     title: R.string.paymentsType,
@@ -64,7 +69,6 @@ class _ResumePageState extends State<ResumePage> {
                     onTap: widget.resumePresenter.goToSectionsPage,
                     title: R.string.sections,
                   ),
-                  goal: Random().nextDouble() * 50000,
                   children: [
                     Text(
                       "${R.string.salesQuantity}\n${dailySalesModel.salesQuantity}",
@@ -83,9 +87,8 @@ class _ResumePageState extends State<ResumePage> {
                 const SizedBox(height: 8),
                 SalesInformations(
                   scrollController: scrollController,
-                  goal: Random().nextDouble() * 50000 * quantityOfDaysInMonth,
-                  totalSales:
-                      Random().nextDouble() * 50000 * quantityOfDaysInMonth,
+                  goal: totalMonthSales,
+                  totalSales: totalMonthSales * Random().nextDouble(),
                   title: R.string.salesOfTheMonth,
                   leftButton: DefaultNavigateButton(
                     onTap: widget.resumePresenter.goToSetGoalPage,
