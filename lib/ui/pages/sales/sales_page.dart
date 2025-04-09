@@ -84,7 +84,7 @@ class _SalesPageState extends State<SalesPage> {
                           isPercentage: true,
                         ),
                       ];
-                    }).toList(),
+                    }).toList().reversed.toList(),
               ),
             ),
           ],

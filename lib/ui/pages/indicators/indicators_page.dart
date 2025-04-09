@@ -88,7 +88,7 @@ class _IndicatorsPageState extends State<IndicatorsPage> {
                           isMoney: true,
                         ),
                       ];
-                    }).toList(),
+                    }).toList().reversed.toList(),
               ),
             ),
           ],
