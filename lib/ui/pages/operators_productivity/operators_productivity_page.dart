@@ -5,6 +5,9 @@ class OperatorsProductivityPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: Text("Operators Productivity")));
+    return Scaffold(
+      appBar: AppBar(title: Text("Operators Productivity")),
+      body: Center(child: Text("Operators Productivity")),
+    );
   }
 }

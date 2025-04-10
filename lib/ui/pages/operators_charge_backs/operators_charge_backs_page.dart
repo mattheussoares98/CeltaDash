@@ -5,6 +5,9 @@ class OperatorsChargeBacksPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: Text("Operators Charge backs")));
+    return Scaffold(
+      appBar: AppBar(title: Text("Operators Charge backs")),
+      body: Center(child: Text("Operators Charge backs")),
+    );
   }
 }

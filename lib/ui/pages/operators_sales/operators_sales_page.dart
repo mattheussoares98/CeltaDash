@@ -5,6 +5,9 @@ class OperatorsSalesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: Text("Operators Sales")));
+    return Scaffold(
+      appBar: AppBar(title: Text("Operators Sales")),
+      body: Center(child: Text("Operators Sales")),
+    );
   }
 }
