@@ -56,9 +56,11 @@ class _SalesPageState extends State<SalesPage> {
                 },
                 columnIndexToCompareAndDetachBetterAndWorstValue: 1,
                 titles: [
-                  R.string.day.toUpperCase(),
-                  R.string.totalSales.toUpperCase(),
-                  R.string.share.toUpperCase(),
+                  PersonalizedTableCell(value: R.string.day.toUpperCase()),
+                  PersonalizedTableCell(
+                    value: R.string.totalSales.toUpperCase(),
+                  ),
+                  PersonalizedTableCell(value: R.string.share.toUpperCase()),
                 ],
                 rowValues:
                     List.generate(DateTime.now().day, (index) {

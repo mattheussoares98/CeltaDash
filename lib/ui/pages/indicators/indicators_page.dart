@@ -51,12 +51,21 @@ class _IndicatorsPageState extends State<IndicatorsPage> {
                   0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.13),
                 },
                 columnIndexToCompareAndDetachBetterAndWorstValue: 1,
+                titleMinHeight: 43,
                 titles: [
-                  R.string.day.toUpperCase(),
-                  R.string.ticketAverage.toUpperCase(),
-                  R.string.salesQuantityAbbreviated.toUpperCase(),
-                  R.string.productsBySale.toUpperCase(),
-                  R.string.averagePrice.toUpperCase(),
+                  PersonalizedTableCell(value: R.string.day.toUpperCase()),
+                  PersonalizedTableCell(
+                    value: R.string.ticketAverage.toUpperCase(),
+                  ),
+                  PersonalizedTableCell(
+                    value: R.string.salesQuantityAbbreviated.toUpperCase(),
+                  ),
+                  PersonalizedTableCell(
+                    value: R.string.productsBySale.toUpperCase(),
+                  ),
+                  PersonalizedTableCell(
+                    value: R.string.averagePrice.toUpperCase(),
+                  ),
                 ],
                 rowValues:
                     List.generate(DateTime.now().day, (index) {

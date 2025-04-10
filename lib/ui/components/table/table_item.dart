@@ -3,16 +3,18 @@ import 'package:flutter/material.dart';
 import 'table.dart';
 
 class TableItem extends StatefulWidget {
-  final List<String> titles;
+  final List<PersonalizedTableCell> titles;
   final List<List<PersonalizedTableCell>> rowValues;
   final Map<int, TableColumnWidth>? tableColumnWidth;
   final int? columnIndexToCompareAndDetachBetterAndWorstValue;
+  final double? titleMinHeight;
   const TableItem({
     super.key,
     required this.titles,
     required this.rowValues,
     this.tableColumnWidth,
     this.columnIndexToCompareAndDetachBetterAndWorstValue,
+    this.titleMinHeight,
   });
 
   @override
@@ -102,12 +104,16 @@ class _TableItemState extends State<TableItem> {
       children: [
         TableRow(
           children: List.generate(widget.titles.length, (index) {
-            return PersonalizedTableCell(
-              value: widget.titles[index],
-              onTap: () => sortTable(index),
-              titleStyle: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
+            return IntrinsicHeight(
+              child: Container(
+                constraints:
+                    widget.titleMinHeight != null
+                        ? BoxConstraints(minHeight: widget.titleMinHeight!)
+                        : null,
+                child: InkWell(
+                  onTap: () => sortTable(index),
+                  child: widget.titles[index],
+                ),
               ),
             );
           }),

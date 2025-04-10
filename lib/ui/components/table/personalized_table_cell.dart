@@ -40,40 +40,36 @@ class PersonalizedTableCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TableCell(
-      verticalAlignment: TableCellVerticalAlignment.middle,
-      child: InkWell(
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.all(3),
-          child: Center(
-            child: Column(
-              children: [
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(3),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                getName(),
+                textAlign: TextAlign.center,
+                style:
+                    titleStyle ??
+                    TextStyle(
+                      fontSize: 12,
+                      fontWeight:
+                          subtile == null ? FontWeight.normal : FontWeight.bold,
+                    ),
+              ),
+              if (subtile != null)
                 Text(
-                  getName(),
-                  textAlign: TextAlign.center,
+                  subtile!,
                   style:
-                      titleStyle ??
+                      subtitleStyle ??
                       TextStyle(
                         fontSize: 12,
-                        fontWeight:
-                            subtile == null
-                                ? FontWeight.normal
-                                : FontWeight.bold,
+                        color: Theme.of(context).primaryColor,
                       ),
                 ),
-                if (subtile != null)
-                  Text(
-                    subtile!,
-                    style:
-                        subtitleStyle ??
-                        TextStyle(
-                          fontSize: 12,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                  ),
-              ],
-            ),
+            ],
           ),
         ),
       ),

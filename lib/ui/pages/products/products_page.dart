@@ -52,11 +52,19 @@ class _ProductsPageState extends State<ProductsPage> {
                 },
                 columnIndexToCompareAndDetachBetterAndWorstValue: 1,
                 titles: [
-                  R.string.positionAbbreviated.toUpperCase(),
-                  R.string.product.toUpperCase(),
-                  "${R.string.totalSales.toUpperCase()} (R\$)",
-                  R.string.quantityAbbreviated.toUpperCase(),
-                  "${R.string.averagePrice.toUpperCase()} (R\$)",
+                  PersonalizedTableCell(
+                    value: R.string.positionAbbreviated.toUpperCase(),
+                  ),
+                  PersonalizedTableCell(value: R.string.product.toUpperCase()),
+                  PersonalizedTableCell(
+                    value: "${R.string.totalSales.toUpperCase()} (R\$)",
+                  ),
+                  PersonalizedTableCell(
+                    value: R.string.quantityAbbreviated.toUpperCase(),
+                  ),
+                  PersonalizedTableCell(
+                    value: "${R.string.averagePrice.toUpperCase()} (R\$)",
+                  ),
                 ],
                 rowValues:
                     List.generate(DateTime.now().day, (index) {
