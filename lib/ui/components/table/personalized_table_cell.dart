@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 class PersonalizedTableCell extends StatelessWidget {
   final dynamic value;
   final String? subtile;
-  final bool? isMoney; //TODO move to title
-  final bool? isPercentage; //TODO move to title
+  final bool? isMoney;
+  final bool? isPercentage;
   final TextStyle? titleStyle;
   final TextStyle? subtitleStyle;
   final void Function()? onTap;
@@ -23,19 +23,19 @@ class PersonalizedTableCell extends StatelessWidget {
   String getName() {
     if (value is String) {
       return value;
-    } else if (value is double) {
-      var newValue = value as double;
-      if (isMoney == true) {
-        return newValue.toString().toBrazilianNumber().addBrazilianCoin();
-      } else if (isPercentage == true) {
-        return '${newValue.toString().toBrazilianNumber()}%';
-      }
-      return newValue.toString().toBrazilianNumber();
-    } else if (value is int) {
-      return value.toString();
-    } else {
-      throw Exception("Write String, double or int type");
     }
+
+    if (value is double) {
+      var newValue = value as double;
+
+      return newValue.toString().toBrazilianNumber();
+    }
+
+    if (value is int) {
+      return value.toString();
+    }
+
+    throw Exception("Write String, double or int type");
   }
 
   @override
@@ -44,33 +44,59 @@ class PersonalizedTableCell extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(3),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                getName(),
-                textAlign: TextAlign.center,
-                style:
-                    titleStyle ??
-                    TextStyle(
-                      fontSize: 12,
-                      fontWeight:
-                          subtile == null ? FontWeight.normal : FontWeight.bold,
-                    ),
-              ),
-              if (subtile != null)
-                Text(
-                  subtile!,
-                  style:
-                      subtitleStyle ??
-                      TextStyle(
-                        fontSize: 12,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                children: [
+                  if (isMoney == true)
+                    TextSpan(
+                      text: 'R\$ ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 10,
                         color: Theme.of(context).primaryColor,
                       ),
-                ),
-            ],
-          ),
+                    ),
+        
+                  TextSpan(
+                    text: getName(),
+                    style:
+                        titleStyle ??
+                        TextStyle(
+                          color: Colors.black,
+                          fontSize: 12,
+                          fontWeight:
+                              subtile == null
+                                  ? FontWeight.normal
+                                  : FontWeight.bold,
+                        ),
+                  ),
+                  if (isPercentage == true)
+                    TextSpan(
+                      text: ' %',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 10,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            if (subtile != null)
+              Text(
+                subtile!,
+                style:
+                    subtitleStyle ??
+                    TextStyle(
+                      fontSize: 12,
+                      color: Theme.of(context).primaryColor,
+                    ),
+              ),
+          ],
         ),
       ),
     );
