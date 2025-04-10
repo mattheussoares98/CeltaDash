@@ -54,15 +54,11 @@ class _ProductsPageState extends State<ProductsPage> {
                 value: R.string.positionAbbreviated.toUpperCase(),
               ),
               PersonalizedTableCell(value: R.string.product.toUpperCase()),
-              PersonalizedTableCell(
-                value: "${R.string.totalSales.toUpperCase()} (R\$)",
-              ),
+              PersonalizedTableCell(value: R.string.totalSales.toUpperCase()),
               PersonalizedTableCell(
                 value: R.string.quantityAbbreviated.toUpperCase(),
               ),
-              PersonalizedTableCell(
-                value: "${R.string.averagePrice.toUpperCase()} (R\$)",
-              ),
+              PersonalizedTableCell(value: R.string.averagePrice.toUpperCase()),
             ],
             rowValues:
                 List.generate(DateTime.now().day, (index) {
@@ -81,9 +77,12 @@ class _ProductsPageState extends State<ProductsPage> {
                       ).format(atualDate).toUpperCase().substring(0, 3),
                     ),
                     PersonalizedTableCell(value: faker.food.cuisine()),
-                    PersonalizedTableCell(value: totalSales),
+                    PersonalizedTableCell(value: totalSales, isMoney: true),
                     PersonalizedTableCell(value: quantity),
-                    PersonalizedTableCell(value: (totalSales / quantity)),
+                    PersonalizedTableCell(
+                      value: (totalSales / quantity),
+                      isMoney: true,
+                    ),
                   ];
                 }).toList(),
           ),

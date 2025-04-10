@@ -107,6 +107,7 @@ class _TableItemState extends State<TableItem> {
             children: [
               TableRow(
                 children: List.generate(widget.titles.length, (index) {
+                  final tableCell = widget.titles[index];
                   return IntrinsicHeight(
                     child: Container(
                       constraints: BoxConstraints(
@@ -114,7 +115,10 @@ class _TableItemState extends State<TableItem> {
                       ),
                       child: InkWell(
                         onTap: () => sortTable(index),
-                        child: widget.titles[index],
+                        child: PersonalizedTableCell(
+                          value: tableCell.value,
+                          isTitle: true,
+                        ),
                       ),
                     ),
                   );

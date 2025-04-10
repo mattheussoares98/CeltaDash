@@ -6,8 +6,7 @@ class PersonalizedTableCell extends StatelessWidget {
   final String? subtile;
   final bool? isMoney;
   final bool? isPercentage;
-  final TextStyle? titleStyle;
-  final TextStyle? subtitleStyle;
+  final bool? isTitle;
   final void Function()? onTap;
   const PersonalizedTableCell({
     super.key,
@@ -15,8 +14,7 @@ class PersonalizedTableCell extends StatelessWidget {
     this.isMoney,
     this.subtile,
     this.isPercentage,
-    this.titleStyle,
-    this.subtitleStyle,
+    this.isTitle,
     this.onTap,
   });
 
@@ -60,19 +58,14 @@ class PersonalizedTableCell extends StatelessWidget {
                         color: Theme.of(context).primaryColor,
                       ),
                     ),
-        
+
                   TextSpan(
                     text: getName(),
-                    style:
-                        titleStyle ??
-                        TextStyle(
-                          color: Colors.black,
-                          fontSize: 12,
-                          fontWeight:
-                              subtile == null
-                                  ? FontWeight.normal
-                                  : FontWeight.bold,
-                        ),
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12,
+                      fontWeight: isTitle == true ? FontWeight.bold : null,
+                    ),
                   ),
                   if (isPercentage == true)
                     TextSpan(
@@ -89,12 +82,10 @@ class PersonalizedTableCell extends StatelessWidget {
             if (subtile != null)
               Text(
                 subtile!,
-                style:
-                    subtitleStyle ??
-                    TextStyle(
-                      fontSize: 12,
-                      color: Theme.of(context).primaryColor,
-                    ),
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
           ],
         ),
