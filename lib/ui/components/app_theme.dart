@@ -98,7 +98,7 @@ ThemeData makeAppTheme(BuildContext context) {
     primaryColor: primaryColor,
     primaryColorDark: primaryColorDark,
     primaryColorLight: primaryColorLight,
-    highlightColor: primaryColorDark,
+    highlightColor: primaryColorLight.withAlpha(50),
     secondaryHeaderColor: secondaryColor,
     disabledColor: disabledColor,
     dividerColor: dividerColor,
