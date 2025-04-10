@@ -19,15 +19,30 @@ class TeamPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             DefaultTitle(title: R.string.operators),
-            DefaultButton(title: R.string.discounts, onTap: () {}),
-            DefaultButton(title: R.string.chargeBacks, onTap: () {}),
-            DefaultButton(title: R.string.productivity, onTap: () {}),
-            DefaultButton(title: R.string.sales, onTap: () {}),
+            DefaultButton(
+              title: R.string.discounts,
+              onTap: presenter.goToOperatorsDiscountsPage,
+            ),
+            DefaultButton(
+              title: R.string.chargeBacks,
+              onTap: presenter.goToOperatorsChargeBacksPage,
+            ),
+            DefaultButton(
+              title: R.string.productivity,
+              onTap: presenter.goToOperatorsProductivityPage,
+            ),
+            DefaultButton(
+              title: R.string.sales,
+              onTap: presenter.goToOperatorsSalesPage,
+            ),
             Padding(
               padding: const EdgeInsets.only(top: 30),
               child: DefaultTitle(title: R.string.sallers),
             ),
-            DefaultButton(title: R.string.sales, onTap: () {}),
+            DefaultButton(
+              title: R.string.sales,
+              onTap: presenter.goToSallersSalesPage,
+            ),
           ],
         ),
       ),
