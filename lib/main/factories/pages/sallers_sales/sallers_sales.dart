@@ -1,0 +1,1 @@
+export './sallers_sales_page_factory.dart';

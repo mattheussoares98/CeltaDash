@@ -1,1 +1,1 @@
-export './operators_discounts.dart';
+export './operators_discounts_page.dart';

@@ -13,6 +13,7 @@ export './products/products.dart';
 export './profitability/profitability.dart';
 export './resume/resume.dart';
 export './sales/sales.dart';
+export './sallers_sales/sallers_sales.dart';
 export './sections/sections.dart';
 export './set_goal/set_goal.dart';
 export './splash/splash.dart';
