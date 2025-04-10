@@ -43,6 +43,7 @@ class _ProductsPageState extends State<ProductsPage> {
             ),
           ),
           TableItem(
+            titleMinHeight: 43,
             tableColumnWidth: {
               0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.12),
               3: FixedColumnWidth(MediaQuery.of(context).size.width * 0.18),
@@ -66,16 +67,12 @@ class _ProductsPageState extends State<ProductsPage> {
             rowValues:
                 List.generate(DateTime.now().day, (index) {
                   final now = DateTime.now();
-                  final atualDate = DateTime(
-                    now.year,
-                    now.month,
-                    index + 1,
-                  );
-                
+                  final atualDate = DateTime(now.year, now.month, index + 1);
+
                   final totalSales = Random().nextDouble() * 50000;
                   final quantity =
                       Random().nextInt(100) * Random().nextDouble();
-                
+
                   return [
                     PersonalizedTableCell(
                       value: atualDate.day,
