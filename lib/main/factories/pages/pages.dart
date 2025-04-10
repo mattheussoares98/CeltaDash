@@ -5,6 +5,7 @@ export 'home/home.dart';
 export 'login/login.dart';
 export 'operators_charge_backs/operators_charge_backs.dart';
 export 'operators_discounts/operators_discounts.dart';
+export 'operators_productivity/operators_productivity.dart';
 export 'operators_sales/operators_sales.dart';
 export 'payments_type/payments_type.dart';
 export 'profitability/profitability.dart';
