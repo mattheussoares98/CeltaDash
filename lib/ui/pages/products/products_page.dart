@@ -15,8 +15,22 @@ class ProductsPage extends StatefulWidget {
 }
 
 class _ProductsPageState extends State<ProductsPage> {
+  final rows =
+      List.generate(DateTime.now().day, (_) {
+        final totalSales = Random().nextDouble() * 50000;
+        final quantity = Random().nextInt(100) * Random().nextDouble();
+        final Map<String, dynamic> row = {
+          'totalSales': totalSales,
+          'quantity': quantity,
+          'product': faker.food.cuisine(),
+        };
+        return row;
+      }).toList();
+
   @override
   Widget build(BuildContext context) {
+    rows.sort((a, b) => a['totalSales']!.compareTo(b['totalSales']!));
+
     return Scaffold(
       appBar: DefaultAppBar(
         onChangeDateOrEnterprise: () {
@@ -48,7 +62,7 @@ class _ProductsPageState extends State<ProductsPage> {
               0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.12),
               3: FixedColumnWidth(MediaQuery.of(context).size.width * 0.18),
             },
-            columnIndexToCompareAndDetachBetterAndWorstValue: 1,
+            columnIndexToCompareAndDetachBetterAndWorstValue: 2,
             titles: [
               PersonalizedTableCell(
                 value: R.string.positionAbbreviated.toUpperCase(),
@@ -61,26 +75,19 @@ class _ProductsPageState extends State<ProductsPage> {
               PersonalizedTableCell(value: R.string.averagePrice.toUpperCase()),
             ],
             rowValues:
-                List.generate(DateTime.now().day, (index) {
-                  final now = DateTime.now();
-                  final atualDate = DateTime(now.year, now.month, index + 1);
-
-                  final totalSales = Random().nextDouble() * 50000;
-                  final quantity =
-                      Random().nextInt(100) * Random().nextDouble();
+                rows.asMap().entries.map((entry) {
+                  final index = entry.key;
+                  final item = entry.value;
+                  final totalSales = item['totalSales']!;
+                  final quantity = item['quantity']!;
 
                   return [
-                    PersonalizedTableCell(
-                      value: atualDate.day,
-                      subtile: DateFormat.EEEE(
-                        "pt_BR",
-                      ).format(atualDate).toUpperCase().substring(0, 3),
-                    ),
-                    PersonalizedTableCell(value: faker.food.cuisine()),
+                    PersonalizedTableCell(value: index + 1),
+                    PersonalizedTableCell(value: item['product']),
                     PersonalizedTableCell(value: totalSales, isMoney: true),
                     PersonalizedTableCell(value: quantity),
                     PersonalizedTableCell(
-                      value: (totalSales / quantity),
+                      value: totalSales / quantity,
                       isMoney: true,
                     ),
                   ];
