@@ -15,11 +15,13 @@ class PtBr implements Translation {
   String get averagePrice => "Preço médio";
   String get bestDayOfTheMonth => "Melhor dia do mês";
   String get bestHourOfTheDay => "Melhor horário do dia";
+  String get chargeBacks => "Estornos";
   String get close => "Fechar";
   String get compareDays => "Comparar dias";
   String get dailyAnalysis => "Análise diária";
   String get dateNotUpdated => "Data não atualizada";
   String get day => "Dia";
+  String get discounts => "Descontos";
   String get email => "E-mail";
   String get enter => "Entrar";
   String get goalHistory => "Histórico de metas";
@@ -33,12 +35,14 @@ class PtBr implements Translation {
   String get moreDetails => "Mais detalhes";
   String get no => "Não";
   String get of => "De";
+  String get operators => "Operadores";
   String get password => "Senha";
   String get paymentsType => "Tipos de pagamento";
   String get positionAbbreviated => "Pos";
   String get product => "Produto";
   String get products => "Produtos";
   String get productsBySale => "Produtos por venda";
+  String get productivity => "Produtividade";
   String get profitability => "Rentabilidade";
   String get quantityAbbreviated => "Qtd";
   String get resume => "Resumo";
@@ -48,6 +52,7 @@ class PtBr implements Translation {
   String get salesQuantity => "Quantidade de vendas";
   String get salesQuantityAbbreviated => "Qtd de vendas";
   String get salesUntilNow => "Vendas até agora";
+  String get sallers => "Vendedores";
   String get sections => "Seções";
   String get seeMore => "Ver mais";
   String get share => "Share";
