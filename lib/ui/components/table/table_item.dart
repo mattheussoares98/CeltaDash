@@ -96,36 +96,53 @@ class _TableItemState extends State<TableItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Table(
-      border: TableBorder.all(color: Colors.black, width: 0.06),
-      defaultColumnWidth: FlexColumnWidth(1),
-      columnWidths: widget.tableColumnWidth /* ??
-          {0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.1)} */,
-      children: [
-        TableRow(
-          children: List.generate(widget.titles.length, (index) {
-            return IntrinsicHeight(
-              child: Container(
-                constraints:
-                    widget.titleMinHeight != null
-                        ? BoxConstraints(minHeight: widget.titleMinHeight!)
-                        : null,
-                child: InkWell(
-                  onTap: () => sortTable(index),
-                  child: widget.titles[index],
-                ),
+    return Expanded(
+      child: Column(
+        children: [
+          Table(
+            border: TableBorder.all(color: Colors.black, width: 0.06),
+            defaultColumnWidth: FlexColumnWidth(1),
+            columnWidths: widget.tableColumnWidth /* ??
+                {0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.1)} */,
+            children: [
+              TableRow(
+                children: List.generate(widget.titles.length, (index) {
+                  return IntrinsicHeight(
+                    child: Container(
+                      constraints: BoxConstraints(
+                        minHeight: widget.titleMinHeight ?? 1,
+                      ),
+                      child: InkWell(
+                        onTap: () => sortTable(index),
+                        child: widget.titles[index],
+                      ),
+                    ),
+                  );
+                }),
               ),
-            );
-          }),
-        ),
-        ...List.generate(
-          sortedRows.length,
-          (index) => TableRow(
-            children: sortedRows[index],
-            decoration: BoxDecoration(color: getColor(index)),
+            ],
           ),
-        ),
-      ],
+          Expanded(
+            child: SingleChildScrollView(
+              child: Table(
+                border: TableBorder.all(color: Colors.black, width: 0.06),
+                defaultColumnWidth: FlexColumnWidth(1),
+                columnWidths: widget.tableColumnWidth /* ??
+                    {0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.1)} */,
+                children: [
+                  ...List.generate(
+                    sortedRows.length,
+                    (index) => TableRow(
+                      children: sortedRows[index],
+                      decoration: BoxDecoration(color: getColor(index)),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
