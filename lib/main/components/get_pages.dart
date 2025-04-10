@@ -57,5 +57,10 @@ class GetPages {
       page: makeSplashPage,
       transition: Transition.fadeIn,
     ),
+    GetPage(
+      name: PageRoutes.splash,
+      page: makeTeamPage,
+      transition: Transition.fadeIn,
+    ),
   ];
 }

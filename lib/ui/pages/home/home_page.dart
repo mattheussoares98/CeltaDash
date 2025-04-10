@@ -17,7 +17,7 @@ class HomePage extends StatelessWidget {
       IndicatorsPage(),
       SalesPage(),
       ProductsPage(),
-      TeamPage(),
+      makeTeamPage(),
     ];
     return StreamBuilder<int>(
       stream: homePresenter.currentPageIndexStream,

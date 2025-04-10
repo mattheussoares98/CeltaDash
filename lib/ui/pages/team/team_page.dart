@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
+import '../pages.dart';
 import 'components/components.dart';
 
 class TeamPage extends StatelessWidget {
-  const TeamPage({super.key});
+  final TeamPresenter presenter;
+  const TeamPage({super.key, required this.presenter});
 
   @override
   Widget build(BuildContext context) {
