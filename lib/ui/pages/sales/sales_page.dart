@@ -48,7 +48,7 @@ class _SalesPageState extends State<SalesPage> {
             ),
           ),
           TableItem(
-            titleMinHeight: 1,
+            titleMinHeight: 43,
             tableColumnWidth: {
               0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.13),
             },

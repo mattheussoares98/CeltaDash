@@ -132,8 +132,22 @@ class _TableItemState extends State<TableItem> {
                 children: [
                   ...List.generate(
                     sortedRows.length,
+                    //travel a list of PersonalizedTableCell
                     (index) => TableRow(
-                      children: sortedRows[index],
+                      children: List.generate(
+                        sortedRows[index].length,
+                        //get each PersonalizedTableCell to insert IntrinsicHeight and center the value
+                        (i) {
+                          return IntrinsicHeight(
+                            child: Container(
+                              constraints: BoxConstraints(
+                                minHeight: widget.titleMinHeight ?? 1,
+                              ),
+                              child: sortedRows[index][i],
+                            ),
+                          );
+                        },
+                      ),
                       decoration: BoxDecoration(color: getColor(index)),
                     ),
                   ),
