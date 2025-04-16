@@ -68,7 +68,7 @@ class _ProfitabilityPageState extends State<ProfitabilityPage> {
             },
             titleMinHeight: 40,
             indexToSort: 4,
-            columnsIndexToSum: [1, 2, 3],
+            columnsIndexToSum: [1, 2, 3, 4],
             rowValues:
                 List.generate(10, (index) {
                   final totalSales = Random().nextDouble() * 3000;

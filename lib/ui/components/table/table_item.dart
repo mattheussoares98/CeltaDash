@@ -129,7 +129,10 @@ class _TableItemState extends State<TableItem> {
         }
         sumRow.add(
           PersonalizedTableCell(
-            value: sum.toString().toBrazilianNumber(),
+            value:
+                isPercentage == true
+                    ? sum / widget.rowValues.length
+                    : sum.toString().toBrazilianNumber(),
             isTitle: true, // Style it like a header cell
             isMoney: isMoney,
             isPercentage: isPercentage,
