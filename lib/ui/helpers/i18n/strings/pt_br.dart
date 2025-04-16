@@ -58,6 +58,7 @@ class PtBr implements Translation {
   String get share => "Share";
   String get ticketAverage => "Ticket médio";
   String get team => "Time";
+  String get total => "Total";
   String get totalSales => "Total de vendas";
   String get trendSales => "Tendência de vendas";
   String get wait => "Aguarde...";

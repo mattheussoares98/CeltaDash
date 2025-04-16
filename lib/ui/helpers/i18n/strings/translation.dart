@@ -53,6 +53,7 @@ abstract class Translation {
   String get share;
   String get ticketAverage;
   String get team;
+  String get total;
   String get totalSales;
   String get trendSales;
   String get wait;
