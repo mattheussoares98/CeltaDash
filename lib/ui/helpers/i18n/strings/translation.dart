@@ -14,6 +14,7 @@ abstract class Translation {
   String get chargeBacks;
   String get close;
   String get compareDays;
+  String get comparedToDay;
   String get cost;
   String get dailyAnalysis;
   String get dateNotUpdated;
@@ -21,6 +22,7 @@ abstract class Translation {
   String get discounts;
   String get email;
   String get enter;
+  String get firstDaySales;
   String get goalHistory;
   String get grossMargin;
   String get grossProfit;
@@ -52,9 +54,11 @@ abstract class Translation {
   String get salesQuantityAbbreviated;
   String get salesUntilNow;
   String get sallers;
+  String get secondDaySales;
   String get section;
   String get sections;
   String get share;
+  String get sold;
   String get ticketAverage;
   String get team;
   String get total;
