@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../ui/helpers/helpers.dart';
 import 'table.dart';
 
 class TableItem extends StatefulWidget {
@@ -8,6 +9,8 @@ class TableItem extends StatefulWidget {
   final Map<int, TableColumnWidth>? tableColumnWidth;
   final int? columnIndexToCompareAndDetachBetterAndWorstValue;
   final double? titleMinHeight;
+  final int? indexToSort;
+  final List<int>? columnsIndexToSum;
   const TableItem({
     super.key,
     required this.titles,
@@ -15,6 +18,8 @@ class TableItem extends StatefulWidget {
     this.tableColumnWidth,
     this.columnIndexToCompareAndDetachBetterAndWorstValue,
     this.titleMinHeight,
+    this.indexToSort,
+    this.columnsIndexToSum,
   });
 
   @override
@@ -33,6 +38,12 @@ class _TableItemState extends State<TableItem> {
     super.initState();
     sortedRows = [...widget.rowValues];
     _calculateMinMaxIndexes();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && widget.indexToSort != null) {
+        sortTable(widget.indexToSort!);
+        sortTable(widget.indexToSort!);
+      }
+    });
   }
 
   void _calculateMinMaxIndexes() {
@@ -92,6 +103,44 @@ class _TableItemState extends State<TableItem> {
       return Theme.of(context).primaryColorLight.withAlpha(20);
     }
     return Colors.transparent;
+  }
+
+  List<PersonalizedTableCell> _buildSumRow() {
+    List<PersonalizedTableCell> sumRow = [];
+
+    for (int col = 0; col < widget.titles.length; col++) {
+      bool isMoney = false;
+      bool isPercentage = false;
+
+      if (widget.columnsIndexToSum?.contains(col) == true) {
+        double sum = 0.0;
+        for (var row in sortedRows) {
+          if (row[col].isMoney == true) {
+            isMoney = true;
+          }
+          if (row[col].isPercentage == true) {
+            isPercentage = true;
+          }
+
+          final value = double.tryParse(row[col].value.toString());
+          if (value != null) {
+            sum += value;
+          }
+        }
+        sumRow.add(
+          PersonalizedTableCell(
+            value: sum.toString().toBrazilianNumber(),
+            isTitle: true, // Style it like a header cell
+            isMoney: isMoney,
+            isPercentage: isPercentage,
+          ),
+        );
+      } else {
+        sumRow.add(PersonalizedTableCell(value: '', isTitle: true));
+      }
+    }
+
+    return sumRow;
   }
 
   @override
@@ -155,6 +204,12 @@ class _TableItemState extends State<TableItem> {
                       decoration: BoxDecoration(color: getColor(index)),
                     ),
                   ),
+                  if (widget.columnsIndexToSum != null &&
+                      widget.columnsIndexToSum!.isNotEmpty)
+                    TableRow(
+                      decoration: BoxDecoration(color: Colors.grey[300]),
+                      children: _buildSumRow(),
+                    ),
                 ],
               ),
             ),
