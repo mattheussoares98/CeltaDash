@@ -69,7 +69,7 @@ class _PaymentTypePageState extends State<PaymentTypePage> {
             },
             titleMinHeight: 40,
             indexToSort: 3,
-            columnsIndexToSum: [1, 3],
+            columnsIndexToSum: [1],
             rowValues:
                 List.generate(5, (index) {
                   final totalSales =
