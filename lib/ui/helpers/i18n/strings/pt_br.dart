@@ -18,6 +18,7 @@ class PtBr implements Translation {
   String get chargeBacks => "Estornos";
   String get close => "Fechar";
   String get compareDays => "Comparar dias";
+  String get cost => "Custo";
   String get dailyAnalysis => "Análise diária";
   String get dateNotUpdated => "Data não atualizada";
   String get day => "Dia";
@@ -25,6 +26,8 @@ class PtBr implements Translation {
   String get email => "E-mail";
   String get enter => "Entrar";
   String get goalHistory => "Histórico de metas";
+  String get grossMargin => "Margem bruta";
+  String get grossProfit => "Lucro bruto";
   String get groupOfStores => "Grupo de lojas";
   String get groupSummary => "Resumo do grupo";
   String get hour => "Hora";
