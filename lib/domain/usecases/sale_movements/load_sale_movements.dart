@@ -1,5 +1,7 @@
+import '../../entities/entities.dart';
+
 abstract class LoadSaleMovements {
-  Future<void> get({
+  Future<List<SaleMovementEntity>> get({
     List<int>? enterpriseIds,
     DateTime? startDate,
     DateTime? endDate,
