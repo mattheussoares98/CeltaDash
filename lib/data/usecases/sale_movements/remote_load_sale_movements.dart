@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../domain/helpers/helpers.dart';
 import '../../../domain/usecases/usecases.dart';
+import '../../../main/builders/builders.dart';
 import '../../http/http.dart';
 import '../../models/models.dart';
 
@@ -23,11 +24,11 @@ class RemoteLoadSaleMovements implements LoadSaleMovements {
     bool? groupByHour,
     bool? groupByProduct,
   }) async {
-    //TODO create EnterpriseBuilder;
+    final url = EnterpriseBuilder.entity?.url;
 
     try {
       final response = await httpAdapter.request(
-        url: "url/api/salemovements/getstatistics",
+        url: "$url/api/salemovements/getstatistics",
         method: "post",
         body: {
           "period": {
