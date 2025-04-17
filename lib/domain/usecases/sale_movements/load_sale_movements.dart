@@ -2,9 +2,9 @@ import '../../entities/entities.dart';
 
 abstract class LoadSaleMovements {
   Future<List<SaleMovementEntity>> get({
+    required DateTime startDate,
+    required DateTime endDate,
     List<int>? enterpriseIds,
-    DateTime? startDate,
-    DateTime? endDate,
     bool? groupByEnterprise,
     bool? groupByYear,
     bool? groupByMonth,
