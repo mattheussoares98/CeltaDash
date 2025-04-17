@@ -41,6 +41,7 @@ class RemoteLoadSaleMovements implements LoadSaleMovements {
           "groupByDay": groupByDay,
           "groupByHour": groupByHour,
           "groupByProduct": groupByProduct,
+          "enterpriseIds": enterpriseIds,
         },
       );
 
