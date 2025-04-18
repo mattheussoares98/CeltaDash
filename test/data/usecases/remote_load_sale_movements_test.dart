@@ -24,6 +24,10 @@ void main() {
   late bool groupByMonth;
   late bool groupByProduct;
   late bool groupByYear;
+  late bool groupByProductDepartment;
+  late bool groupByProductSection;
+  late bool groupByPaymentFinalization;
+  late bool groupByPaymentModality;
   late List<int> enterpriseIds;
   late List<SaleMovementEntity> saleMovementsEntitys;
 
@@ -52,6 +56,10 @@ void main() {
     groupByMonth = faker.randomGenerator.boolean();
     groupByProduct = faker.randomGenerator.boolean();
     groupByYear = faker.randomGenerator.boolean();
+    groupByProductDepartment = faker.randomGenerator.boolean();
+    groupByProductSection = faker.randomGenerator.boolean();
+    groupByPaymentFinalization = faker.randomGenerator.boolean();
+    groupByPaymentModality = faker.randomGenerator.boolean();
     enterpriseIds = [
       faker.randomGenerator.integer(10),
       faker.randomGenerator.integer(10),
@@ -60,11 +68,33 @@ void main() {
   }
 
   void initMockSuccess() {
-    httpClient.mockRequest(
-      saleMovementsEntitys
-          .map((e) => SaleMovementModel.fromEntity(e).toJson())
-          .toList(),
-    );
+    final searchParameters = {
+      "period": {
+        "startDate": startDate.toIso8601String(),
+        "endDate": endDate.toIso8601String(),
+      },
+      "groupByEnterprise": groupByEnterprise,
+      "groupByYear": groupByYear,
+      "groupByMonth": groupByMonth,
+      "groupByDay": groupByDay,
+      "groupByHour": groupByHour,
+      "groupByProduct": groupByProduct,
+      "groupByProductDepartment": groupByProductDepartment,
+      "groupByProductSection": groupByProductSection,
+      "groupByPaymentFinalization": groupByPaymentFinalization,
+      "groupByPaymentModality": groupByPaymentModality,
+      "user": {"id": 274, "name": "CELTABSPDV"},
+    };
+
+    final results =
+        saleMovementsEntitys
+            .map((e) => SaleMovementModel.fromEntity(e).toJson())
+            .toList();
+
+    httpClient.mockRequest({
+      "searchParameters": searchParameters,
+      "results": results,
+    });
   }
 
   setUp(() {
@@ -113,5 +143,26 @@ void main() {
     ).called(1);
   });
 
-  //TODO create other tests
+  test(
+    "Should return list of SaleMovementEntity when API wraps in searchParameters/results",
+    () async {
+      final list = await sut.get(
+        startDate: startDate,
+        endDate: endDate,
+        enterpriseIds: enterpriseIds,
+        groupByEnterprise: groupByEnterprise,
+        groupByYear: groupByYear,
+        groupByMonth: groupByMonth,
+        groupByDay: groupByDay,
+        groupByHour: groupByHour,
+        groupByProduct: groupByProduct,
+        groupByProductDepartment: groupByProductDepartment,
+        groupByProductSection: groupByProductSection,
+        groupByPaymentFinalization: groupByPaymentFinalization,
+        groupByPaymentModality: groupByPaymentModality,
+      );
+
+      expect(list, saleMovementsEntitys);
+    },
+  );
 }

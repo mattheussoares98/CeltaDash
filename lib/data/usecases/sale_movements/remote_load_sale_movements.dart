@@ -53,7 +53,7 @@ class RemoteLoadSaleMovements implements LoadSaleMovements {
         },
       );
 
-      return (response as List)
+      return (response['results'] as List)
           .map((e) => SaleMovementModel.fromJson(e).toEntity())
           .toList();
     } catch (e) {
