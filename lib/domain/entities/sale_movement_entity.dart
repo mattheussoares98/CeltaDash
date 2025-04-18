@@ -8,6 +8,10 @@ class SaleMovementEntity extends Equatable {
   final int? Hour;
   final String? Enterprise;
   final String? Product;
+  final String? ProductDepartment;
+  final String? ProductSection;
+  final String? PaymentFinalization;
+  final String? PaymentModality;
 
   const SaleMovementEntity({
     required this.Date,
@@ -17,6 +21,10 @@ class SaleMovementEntity extends Equatable {
     required this.Hour,
     required this.Enterprise,
     required this.Product,
+    required this.ProductDepartment,
+    required this.ProductSection,
+    required this.PaymentFinalization,
+    required this.PaymentModality,
   });
 
   @override
@@ -28,5 +36,9 @@ class SaleMovementEntity extends Equatable {
     Date,
     Hour,
     Product,
+    ProductDepartment,
+    ProductSection,
+    PaymentFinalization,
+    PaymentModality,
   ];
 }
