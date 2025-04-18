@@ -1,24 +1,26 @@
 import '../../data/database/database.dart';
 import 'package:hive/hive.dart';
 
+import '../helpers/helpers.dart';
+
 class HiveAdapter implements HiveStorage {
   final Box box;
 
   HiveAdapter({required this.box});
 
   @override
-  Future<void> delete(String key) async {
-    await box.delete(key);
+  Future<void> delete(DatabaseKeys key) async {
+    await box.delete(key.name);
   }
 
   @override
-  Future<dynamic> get(String key) async {
-    return await box.get(key);
+  Future<dynamic> get(DatabaseKeys key) async {
+    return await box.get(key.name);
   }
 
   @override
-  Future<void> put(String key, value) async {
-    await box.delete(key);
-    await box.put(key, value);
+  Future<void> put(DatabaseKeys key, value) async {
+    await box.delete(key.name);
+    await box.put(key.name, value);
   }
 }
