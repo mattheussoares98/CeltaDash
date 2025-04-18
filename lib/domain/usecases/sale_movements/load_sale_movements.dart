@@ -11,5 +11,9 @@ abstract class LoadSaleMovements {
     bool? groupByDay,
     bool? groupByHour,
     bool? groupByProduct,
+    bool? groupByProductDepartment,
+    bool? groupByProductSection,
+    bool? groupByPaymentFinalization,
+    bool? groupByPaymentModality,
   });
 }

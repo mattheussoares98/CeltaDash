@@ -23,6 +23,10 @@ class RemoteLoadSaleMovements implements LoadSaleMovements {
     bool? groupByDay,
     bool? groupByHour,
     bool? groupByProduct,
+    bool? groupByProductDepartment,
+    bool? groupByProductSection,
+    bool? groupByPaymentFinalization,
+    bool? groupByPaymentModality,
   }) async {
     final url = EnterpriseBuilder.entity?.url;
 
@@ -31,6 +35,7 @@ class RemoteLoadSaleMovements implements LoadSaleMovements {
         url: "$url/api/salemovements/getstatistics",
         method: "post",
         body: {
+          "enterpriseIds": enterpriseIds,
           "period": {
             "startDate": startDate.toIso8601String(),
             "endDate": endDate.toIso8601String(),
@@ -41,7 +46,10 @@ class RemoteLoadSaleMovements implements LoadSaleMovements {
           "groupByDay": groupByDay,
           "groupByHour": groupByHour,
           "groupByProduct": groupByProduct,
-          "enterpriseIds": enterpriseIds,
+          "groupByProductDepartment": groupByProductDepartment,
+          "groupByProductSection": groupByProductSection,
+          "groupByPaymentFinalization": groupByPaymentFinalization,
+          "groupByPaymentModality": groupByPaymentModality,
         },
       );
 
