@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 
 import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
+import '../../infra/helpers/helpers.dart';
 import '../../main/builders/builders.dart';
 import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
@@ -16,6 +17,8 @@ class GetxSplashPresenter extends GetxController implements SplashPresenter {
   Future<void> checkPageToGo({int durationInSeconds = 2}) async {
     try {
       await Future.delayed(Duration(seconds: durationInSeconds));
+
+      final enterprise = await localStorage.get(DatabaseKeys.enterprise);
 
       if (EnterpriseBuilder.entity?.user == null ||
           EnterpriseBuilder.entity?.accessKey == null) {

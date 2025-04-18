@@ -1,3 +1,4 @@
+import 'package:celta_plus/infra/helpers/helpers.dart';
 import 'package:celta_plus/main/builders/builders.dart';
 import 'package:celta_plus/presentation/presenters/presenters.dart';
 import 'package:celta_plus/ui/helpers/helpers.dart';
@@ -37,7 +38,9 @@ void main() {
     EnterpriseBuilder.entity = EntityFactory.makeEnterpriseEntity();
   }
 
-  void initMockSuccess() {}
+  void initMockSuccess() {
+    localStorage.mockGet(EnterpriseBuilder.entity);
+  }
 
   setUp(() {
     initUsecases();
@@ -47,7 +50,9 @@ void main() {
   });
 
   setUpAll(() {
-    registerFallbackValue("");
+    for (var key in DatabaseKeys.values) {
+      registerFallbackValue(key);
+    }
   });
 
   test("Should navigate to login page if user is null", () async {
@@ -55,13 +60,22 @@ void main() {
 
     await sut.checkPageToGo(durationInSeconds: 0);
 
-    verify(() => navigateTo.navigate(pageRoute: PageRoutes.login, clear: true));
+    verify(
+      () => navigateTo.navigate(pageRoute: PageRoutes.login, clear: true),
+    ).called(1);
   });
   test("Should navigate to login page if accessKey is null", () async {
     EntityFactory.anullEnterpriseProperties(annullAccessKey: true);
 
     await sut.checkPageToGo(durationInSeconds: 0);
 
-    verify(() => navigateTo.navigate(pageRoute: PageRoutes.login, clear: true));
+    verify(
+      () => navigateTo.navigate(pageRoute: PageRoutes.login, clear: true),
+    ).called(1);
+  });
+  test("Should load local enterprise", () async {
+    await sut.checkPageToGo(durationInSeconds: 0);
+
+    verify(() => localStorage.get(DatabaseKeys.enterprise)).called(1);
   });
 }

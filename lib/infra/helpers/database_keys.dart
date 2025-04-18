@@ -1,1 +1,1 @@
-enum DatabaseKeys { hiveBoxName }
+enum DatabaseKeys { enterprise, hiveBoxName }
