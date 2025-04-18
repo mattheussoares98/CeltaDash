@@ -43,6 +43,7 @@ Widget makePage({
   return MultiProvider(
     providers: [
       ListenableProvider<SplashPresenter>(create: (_) => SplashPresenterSpy()),
+      ListenableProvider<LoginPresenter>(create: (_) => LoginPresenterSpy()),
     ],
     child: GetMaterialApp(
       initialRoute: path,
