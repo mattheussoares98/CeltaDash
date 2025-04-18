@@ -16,16 +16,21 @@ void main() {
   late GetxSplashPresenter sut;
 
   late NavigateToSpy navigateTo;
+  late LocalStorageSpy localStorage;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
 
   void initUsecases() {
     navigateTo = NavigateToSpy();
+    localStorage = LocalStorageSpy();
   }
 
   void initPresenters() {
-    sut = GetxSplashPresenter(navigateTo: navigateTo);
+    sut = GetxSplashPresenter(
+      navigateTo: navigateTo,
+      localStorage: localStorage,
+    );
   }
 
   void initEntitys() {
@@ -47,7 +52,7 @@ void main() {
 
   test("Should navigate to login page if user is null", () async {
     EntityFactory.anullEnterpriseProperties(annullUser: true);
-    
+
     await sut.checkPageToGo(durationInSeconds: 0);
 
     verify(() => navigateTo.navigate(pageRoute: PageRoutes.login, clear: true));

@@ -8,8 +8,9 @@ import '../../ui/pages/pages.dart';
 
 class GetxSplashPresenter extends GetxController implements SplashPresenter {
   final NavigateTo navigateTo;
+  final LocalStorage localStorage;
 
-  GetxSplashPresenter({required this.navigateTo});
+  GetxSplashPresenter({required this.navigateTo, required this.localStorage});
 
   @override
   Future<void> checkPageToGo({int durationInSeconds = 2}) async {

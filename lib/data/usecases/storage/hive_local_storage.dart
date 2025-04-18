@@ -2,10 +2,10 @@ import 'package:celta_plus/infra/helpers/database_keys.dart';
 
 import '../../../domain/helpers/helpers.dart';
 import '../../../domain/usecases/usecases.dart';
-import '../../../infra/databases/databases.dart';
+import '../../database/database.dart';
 
 class HiveLocalStorage implements LocalStorage {
-  final HiveAdapter hiveAdapter;
+  final HiveStorage hiveAdapter;
 
   HiveLocalStorage(this.hiveAdapter);
 
