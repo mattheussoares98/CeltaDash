@@ -130,6 +130,10 @@ void main() {
         url:
             "${EnterpriseBuilder.entity!.url!}/api/salemovements/getstatistics",
         method: "post",
+        headers: {
+          "user": EnterpriseBuilder.entity?.user,
+          "accessKey": EnterpriseBuilder.entity?.accessKey,
+        },
         body: {
           "period": {
             "startDate": startDate.toIso8601String(),

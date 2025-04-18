@@ -34,6 +34,10 @@ class RemoteLoadSaleMovements implements LoadSaleMovements {
       final response = await httpAdapter.request(
         url: "$url/api/salemovements/getstatistics",
         method: "post",
+        headers: {
+          "user": EnterpriseBuilder.entity?.user,
+          "accessKey": EnterpriseBuilder.entity?.accessKey,
+        },
         body: {
           "enterpriseIds": enterpriseIds,
           "period": {
