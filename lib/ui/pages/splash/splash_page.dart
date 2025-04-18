@@ -9,7 +9,7 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    presenter.checkPageToGo(atualDate: DateTime.now());
+    presenter.checkPageToGo();
 
     return Scaffold(
       body: Center(

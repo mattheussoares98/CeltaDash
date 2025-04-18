@@ -1,4 +1,5 @@
 import 'package:celta_plus/domain/entities/entities.dart';
+import 'package:celta_plus/main/builders/builders.dart';
 import 'package:faker/faker.dart';
 
 class EntityFactory {
@@ -9,6 +10,20 @@ class EntityFactory {
     user: faker.company.name(),
     accessKey: faker.guid.guid(),
   );
+
+  static anullEnterpriseProperties({
+    bool? annullUrl,
+    bool? annullUser,
+    bool? annullAccessKey,
+  }) {
+    final enterprise = EnterpriseBuilder.entity;
+    final newEntity = EnterpriseEntity(
+      url: annullUrl == true ? null : enterprise?.url,
+      user: annullUser == true ? null : enterprise?.user,
+      accessKey: annullAccessKey == true ? null : enterprise?.accessKey,
+    );
+    EnterpriseBuilder.entity = newEntity;
+  }
 
   static makeSaleMovementEntity() => SaleMovementEntity(
     Enterprise: faker.company.name(),

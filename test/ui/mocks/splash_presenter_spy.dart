@@ -6,7 +6,6 @@ class SplashPresenterSpy extends Mock implements SplashPresenter {
     when(
       () => this.checkPageToGo(
         durationInSeconds: any(named: 'durationInSeconds'),
-        atualDate: any(named: 'atualDate'),
       ),
     ).thenAnswer((any) async => any);
   }
