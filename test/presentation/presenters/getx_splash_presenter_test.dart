@@ -35,13 +35,11 @@ void main() {
     );
   }
 
-  void initEntitys() {
-    EnterpriseBuilder.entity = EntityFactory.makeEnterpriseEntity();
-  }
+  void initEntitys() {}
 
   void initMockSuccess() {
     localStorage.mockGet(
-      EnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson(),
+      EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity()).toJson(),
     );
   }
 
@@ -88,5 +86,22 @@ void main() {
     await sut.checkPageToGo(durationInSeconds: 0);
 
     verify(() => localStorage.get(DatabaseKeys.enterprise)).called(1);
+  });
+
+  test("Should update EnterpriseBuilder.entity correctly", () async {
+    final newEnterprise = EntityFactory.makeEnterpriseEntity();
+
+    localStorage.mockGet(EnterpriseModel.fromEntity(newEnterprise).toJson());
+
+    await sut.checkPageToGo(durationInSeconds: 0);
+
+    expect(EnterpriseBuilder.entity, newEnterprise);
+  });
+  test("Should update EnterpriseBuilder.entity correctly when return null", () async {
+    localStorage.mockGet(null);
+
+    await sut.checkPageToGo(durationInSeconds: 0);
+
+    expect(EnterpriseBuilder.entity, null);
   });
 }
