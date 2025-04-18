@@ -41,7 +41,7 @@ void main() {
     sut = RemoteLoadSaleMovements(httpClient);
   }
 
-  void initEntitys() {
+  void initEntities() {
     EnterpriseBuilder.entity = EntityFactory.makeEnterpriseEntity();
     saleMovementsEntitys = [
       EntityFactory.makeSaleMovementEntity(),
@@ -100,7 +100,7 @@ void main() {
   setUp(() {
     initUsecases();
     initPresenters();
-    initEntitys();
+    initEntities();
     initMockSuccess();
   });
 

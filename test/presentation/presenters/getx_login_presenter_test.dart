@@ -29,7 +29,7 @@ void main() {
     sut = GetxLoginPresenter(navigateTo: navigateTo);
   }
 
-  void initEntitys() {
+  void initEntities() {
     email = faker.internet.email();
     password = faker.internet.password();
   }
@@ -39,7 +39,7 @@ void main() {
   setUp(() {
     initUsecases();
     initPresenters();
-    initEntitys();
+    initEntities();
     initMockSuccess();
   });
 

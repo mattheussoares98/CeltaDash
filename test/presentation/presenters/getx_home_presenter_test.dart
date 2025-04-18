@@ -20,14 +20,14 @@ void main() {
     sut = GetxHomePresenter();
   }
 
-  void initEntitys() {}
+  void initEntities() {}
 
   void initMockSuccess() {}
 
   setUp(() {
     initUsecases();
     initPresenters();
-    initEntitys();
+    initEntities();
     initMockSuccess();
   });
 

@@ -25,14 +25,14 @@ void main() {
     sut = GetxTeamPresenter(navigateTo: navigateTo);
   }
 
-  void initEntitys() {}
+  void initEntities() {}
 
   void initMockSuccess() {}
 
   setUp(() {
     initUsecases();
     initPresenters();
-    initEntitys();
+    initEntities();
     initMockSuccess();
   });
 

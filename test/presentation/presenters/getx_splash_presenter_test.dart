@@ -35,7 +35,7 @@ void main() {
     );
   }
 
-  void initEntitys() {}
+  void initEntities() {}
 
   void initMockSuccess() {
     localStorage.mockGet(
@@ -44,7 +44,7 @@ void main() {
   }
 
   setUp(() {
-    initEntitys();
+    initEntities();
     initUsecases();
     initPresenters();
     initMockSuccess();
