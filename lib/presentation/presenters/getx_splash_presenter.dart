@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+import '../../data/models/models.dart';
 import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
 import '../../infra/helpers/helpers.dart';
@@ -19,6 +20,10 @@ class GetxSplashPresenter extends GetxController implements SplashPresenter {
       await Future.delayed(Duration(seconds: durationInSeconds));
 
       final enterprise = await localStorage.get(DatabaseKeys.enterprise);
+      if (enterprise != null) {
+        EnterpriseBuilder.entity =
+            EnterpriseModel.fromJson(enterprise).toEntity();
+      }
 
       if (EnterpriseBuilder.entity?.user == null ||
           EnterpriseBuilder.entity?.accessKey == null) {

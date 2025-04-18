@@ -1,3 +1,4 @@
+import 'package:celta_plus/data/models/models.dart';
 import 'package:celta_plus/infra/helpers/helpers.dart';
 import 'package:celta_plus/main/builders/builders.dart';
 import 'package:celta_plus/presentation/presenters/presenters.dart';
@@ -39,13 +40,15 @@ void main() {
   }
 
   void initMockSuccess() {
-    localStorage.mockGet(EnterpriseBuilder.entity);
+    localStorage.mockGet(
+      EnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson(),
+    );
   }
 
   setUp(() {
+    initEntitys();
     initUsecases();
     initPresenters();
-    initEntitys();
     initMockSuccess();
   });
 
@@ -56,7 +59,11 @@ void main() {
   });
 
   test("Should navigate to login page if user is null", () async {
-    EntityFactory.anullEnterpriseProperties(annullUser: true);
+    localStorage.mockGet(
+      EnterpriseModel.fromEntity(
+        EntityFactory.anullEnterpriseProperties(annullUser: true),
+      ).toJson(),
+    );
 
     await sut.checkPageToGo(durationInSeconds: 0);
 
@@ -65,7 +72,11 @@ void main() {
     ).called(1);
   });
   test("Should navigate to login page if accessKey is null", () async {
-    EntityFactory.anullEnterpriseProperties(annullAccessKey: true);
+    localStorage.mockGet(
+      EnterpriseModel.fromEntity(
+        EntityFactory.anullEnterpriseProperties(annullAccessKey: true),
+      ).toJson(),
+    );
 
     await sut.checkPageToGo(durationInSeconds: 0);
 

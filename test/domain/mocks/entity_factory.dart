@@ -11,18 +11,17 @@ class EntityFactory {
     accessKey: faker.guid.guid(),
   );
 
-  static anullEnterpriseProperties({
+  static EnterpriseEntity anullEnterpriseProperties({
     bool? annullUrl,
     bool? annullUser,
     bool? annullAccessKey,
   }) {
     final enterprise = EnterpriseBuilder.entity;
-    final newEntity = EnterpriseEntity(
+    return EnterpriseEntity(
       url: annullUrl == true ? null : enterprise?.url,
       user: annullUser == true ? null : enterprise?.user,
       accessKey: annullAccessKey == true ? null : enterprise?.accessKey,
     );
-    EnterpriseBuilder.entity = newEntity;
   }
 
   static makeSaleMovementEntity() => SaleMovementEntity(
