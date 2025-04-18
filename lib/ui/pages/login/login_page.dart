@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     await loginPresenter.login(
-      email: emailController.text,
+      user: emailController.text,
       password: passwordController.text,
     );
   }

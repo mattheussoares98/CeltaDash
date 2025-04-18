@@ -14,6 +14,7 @@ void main() {
   late GetxLoginPresenter sut;
 
   late NavigateToSpy navigateTo;
+  late RemoteLoginSpy remoteLogin;
 
   late String email;
   late String password;
@@ -23,10 +24,11 @@ void main() {
 
   void initUsecases() {
     navigateTo = NavigateToSpy();
+    remoteLogin = RemoteLoginSpy();
   }
 
   void initPresenters() {
-    sut = GetxLoginPresenter(navigateTo: navigateTo);
+    sut = GetxLoginPresenter(navigateTo: navigateTo, remoteLogin: remoteLogin);
   }
 
   void initEntities() {
@@ -49,7 +51,7 @@ void main() {
 
   group("Login", () {
     test("Should navigate to home page", () async {
-      await sut.login(email: email, password: password);
+      await sut.login(user: email, password: password);
 
       verify(
         () => navigateTo.navigate(pageRoute: PageRoutes.home, clear: true),

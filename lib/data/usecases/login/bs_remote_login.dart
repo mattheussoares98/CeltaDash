@@ -4,12 +4,12 @@ import 'package:xml2json/xml2json.dart';
 
 import '../../../domain/helpers/helpers.dart';
 import '../../../domain/usecases/usecases.dart';
-import '../../../infra/http/http.dart';
 import '../../../main/builders/builders.dart';
+import '../../http/http.dart';
 import '../../models/models.dart';
 
 class BsRemoteLogin implements RemoteLogin {
-  final SoapAdapter soapAdapter;
+  final SoapRequest soapAdapter;
 
   BsRemoteLogin(this.soapAdapter);
 

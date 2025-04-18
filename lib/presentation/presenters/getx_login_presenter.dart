@@ -6,11 +6,12 @@ import '../../ui/pages/pages.dart';
 
 class GetxLoginPresenter extends GetxController implements LoginPresenter {
   final NavigateTo navigateTo;
+  final RemoteLogin remoteLogin;
 
-  GetxLoginPresenter({required this.navigateTo});
+  GetxLoginPresenter({required this.navigateTo, required this.remoteLogin});
 
   @override
-  Future<void> login({required String email, required String password}) async {
+  Future<void> login({required String user, required String password}) async {
     navigateTo.navigate(pageRoute: PageRoutes.home, clear: true);
   }
 }
