@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../../helpers/helpers.dart';
+
 abstract class LoginPresenter implements Listenable {
-  Future<void> login({required String user, required String password});
+  Stream<UIError?> get mainErrorStream;
+  Stream<bool> get isLoadingStream;
+  Future<void> login({
+    required String user,
+    required String password,
+    required void Function(String error) showBsErrorMessage,
+  });
 }

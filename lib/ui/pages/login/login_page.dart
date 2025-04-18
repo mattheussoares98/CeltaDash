@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 import 'components/components.dart';
 import 'login.dart';
@@ -38,6 +39,9 @@ class _LoginPageState extends State<LoginPage> {
     await loginPresenter.login(
       user: emailController.text,
       password: passwordController.text,
+      showBsErrorMessage: (error) {
+        snackBarMessage(context, error, backgroundColor: Colors.red);
+      },
     );
   }
 
