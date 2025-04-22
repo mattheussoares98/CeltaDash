@@ -33,22 +33,32 @@ class GetxLoginPresenter extends GetxController
     try {
       final enterprise = await firebaseManager.get(
         collection: "enterprises",
-        doc: enterpriseName,
+        doc: enterpriseName.toLowerCase().removeWhiteSpaces(),
       );
 
       final enterpriseData = enterprise.data();
 
       EnterpriseBuilder.entity = EnterpriseEntity(
         url: enterpriseData["ccsUrl"],
+        //TODO add enterpriseName. Move user and accessKey to another entity
         user: user,
         accessKey: "",
       );
+      //TODO create test to change enterprise correctly
 
       final response = await remoteLogin.login(user: user, password: password);
 
       if (response.responseType == SoapResponseType.error) {
         showBsErrorMessage(response.response);
       } else {
+        EnterpriseBuilder.entity = EnterpriseEntity(
+          url: EnterpriseBuilder.entity?.url, //TODO change to ccsUrl
+          //TODO add enterpriseName. Move user and accessKey to another entity
+          user: user,
+          accessKey: response.response["accessKey"], //TODO add crossId
+        );
+        //TODO create test to change enterprise correctly
+
         navigateTo.navigate(pageRoute: PageRoutes.home, clear: true);
       }
     } catch (e) {

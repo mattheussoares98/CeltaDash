@@ -7,7 +7,7 @@ enum SoapResponseType {
 
 class SoapResponseModel extends Equatable {
   final SoapResponseType responseType;
-  final String response;
+  final dynamic response;
 
   const SoapResponseModel({
     required this.response,

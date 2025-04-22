@@ -104,7 +104,7 @@ void main() {
     });
     test("Should call RemoteLogin with correct values", () async {
       await sut.login(
-        enterpriseName: enterpriseName,
+        enterpriseName: enterpriseName.toLowerCase().removeWhiteSpaces(),
         user: user,
         password: password,
         showBsErrorMessage: (_) {},

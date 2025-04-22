@@ -31,15 +31,19 @@ class BsRemoteLogin implements RemoteLogin {
 
       if (response.responseType == SoapResponseType.error) return response;
 
+      var userUpdated = {};
+
       Map resultAsMap = json.decode(response.response);
+      userUpdated = resultAsMap["Usuarios"][0];
 
       final myTransformer = Xml2Json();
       myTransformer.parse(resultAsMap["Usuarios"][0]['CrossIdentity_Usuario']);
       String toParker = myTransformer.toParker();
       Map toParker2 = json.decode(toParker);
+      userUpdated["CrossIdentity_Usuario"] = toParker2["string"];
 
       return SoapResponseModel(
-        response: toParker2["string"].toString(),
+        response: userUpdated,
         responseType: SoapResponseType.success,
       );
     } catch (e) {
