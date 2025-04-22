@@ -49,6 +49,7 @@ class _LoginPageState extends State<LoginPage>
     }
 
     await loginPresenter.login(
+      enterpriseName: enterpriseController.text,
       user: emailController.text,
       password: passwordController.text,
       showBsErrorMessage: (error) {

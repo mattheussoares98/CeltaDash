@@ -6,6 +6,7 @@ abstract class LoginPresenter implements Listenable {
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
   Future<void> login({
+    required String enterpriseName,
     required String user,
     required String password,
     required void Function(String error) showBsErrorMessage,

@@ -23,6 +23,7 @@ class GetxLoginPresenter extends GetxController
 
   @override
   Future<void> login({
+    required String enterpriseName,
     required String user,
     required String password,
     required void Function(String error) showBsErrorMessage,
@@ -32,7 +33,7 @@ class GetxLoginPresenter extends GetxController
     try {
       final enterprise = await firebaseManager.get(
         collection: "enterprises",
-        doc: "celtateste",
+        doc: enterpriseName,
       );
 
       final enterpriseData = enterprise.data();

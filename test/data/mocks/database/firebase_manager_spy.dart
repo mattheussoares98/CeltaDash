@@ -6,8 +6,18 @@ import 'package:mocktail/mocktail.dart';
 class DocumentReferenceFake extends Fake
     implements DocumentReference<Map<String, dynamic>> {}
 
+class MockedFirebaseGet {
+  final dynamic dataToReturn;
+
+  MockedFirebaseGet({required this.dataToReturn});
+
+  dynamic data() => dataToReturn;
+}
+
 class FirebaseManagerSpy extends Mock implements FirebaseManager {
-  FirebaseManagerSpy() {
+  final MockedFirebaseGet mockedFirebaseGet;
+
+  FirebaseManagerSpy({required this.mockedFirebaseGet}) {
     registerFallbackValue(DocumentReferenceFake());
     this.mockPut();
   }
@@ -37,7 +47,7 @@ class FirebaseManagerSpy extends Mock implements FirebaseManager {
       valueToSearch: any(named: "valueToSearch"),
     ),
   );
-  void mockGet(dynamic value) {
+  void mockGet(MockedFirebaseGet value) {
     this._mockGetCall().thenAnswer((any) async => value);
   }
 
