@@ -26,18 +26,20 @@ class BsRemoteLogin implements RemoteLogin {
         soapAction: "UserCanLoginJson",
         serviceASMX: "CeltaSecurityService.asmx",
         typeOfResult: "UserCanLoginJsonResult",
-        ccsUrl: "$url/ccs",
+        ccsUrl: "$url",
       );
+
+      if (response.responseType == SoapResponseType.error) return response;
 
       Map resultAsMap = json.decode(response.response);
 
       final myTransformer = Xml2Json();
       myTransformer.parse(resultAsMap["Usuarios"][0]['CrossIdentity_Usuario']);
       String toParker = myTransformer.toParker();
-      // Map toParker2 = json.decode(toParker);
+      Map toParker2 = json.decode(toParker);
 
       return SoapResponseModel(
-        response: toParker,
+        response: toParker2["string"].toString(),
         responseType: SoapResponseType.success,
       );
     } catch (e) {

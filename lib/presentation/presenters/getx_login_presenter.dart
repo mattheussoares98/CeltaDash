@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
+import '../../domain/entities/entities.dart';
 import '../../domain/usecases/usecases.dart';
+import '../../main/builders/builders.dart';
 import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
@@ -28,7 +30,18 @@ class GetxLoginPresenter extends GetxController
     mainError = null;
     isLoading = true;
     try {
-      final enterprise = await firebaseManager.get(collection: "enterprises");
+      final enterprise = await firebaseManager.get(
+        collection: "enterprises",
+        doc: "celtateste",
+      );
+
+      final enterpriseData = enterprise.data();
+
+      EnterpriseBuilder.entity = EnterpriseEntity(
+        url: enterpriseData["ccsUrl"],
+        user: user,
+        accessKey: "",
+      );
 
       final response = await remoteLogin.login(user: user, password: password);
 
