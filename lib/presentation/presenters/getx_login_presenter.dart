@@ -67,4 +67,13 @@ class GetxLoginPresenter extends GetxController
       isLoading = false;
     }
   }
+
+  bool _changedEnterpriseName = false;
+  @override
+  bool get changedEnterpriseName => _changedEnterpriseName;
+
+  @override
+  void updateChangedEnterpriseName(bool value) {
+    _changedEnterpriseName = value;
+  }
 }
