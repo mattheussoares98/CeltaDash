@@ -147,6 +147,22 @@ void main() {
             doc: enterpriseName.toLowerCase().removeWhiteSpaces()),
       );
     });
+    test("Should not call remoteLogin if firebaseData is null", () async {
+      EnterpriseBuilder.entity = EntityFactory.anullEnterpriseProperties(
+        annullCcsUrl: true,
+      );
+
+      firebaseManager.mockGet(MockedFirebaseGet(dataToReturn: null));
+
+      await sut.login(
+        enterpriseName: enterpriseName,
+        user: user,
+        password: password,
+        showBsErrorMessage: (_) {},
+      );
+
+      verifyNever(() => remoteLogin.login(user: user, password: password));
+    });
 
     test("Should call RemoteLogin with correct values", () async {
       await sut.login(
@@ -263,25 +279,23 @@ void main() {
         ),
       );
     });
+  });
+  group("On change enterprise name", () {
+    test("Should update enterprise correctly when call the funcion", () async {
+      sut.onChangedEnterpriseName();
 
-    group("On change enterprise name", () {
-      test("Should update enterprise correctly when call the funcion",
-          () async {
-        sut.onChangedEnterpriseName();
-
-        expect(
-          EnterpriseBuilder.entity,
-          EnterpriseEntity(
-            ccsUrl: null,
-            enterpriseName: EnterpriseBuilder.entity?.enterpriseName,
-            bsUser: BsUserEntity(
-              name: EnterpriseBuilder.entity?.bsUser?.name,
-              AccessKey: null,
-              CrossIdentity_Usuario: null,
-            ),
+      expect(
+        EnterpriseBuilder.entity,
+        EnterpriseEntity(
+          ccsUrl: null,
+          enterpriseName: EnterpriseBuilder.entity?.enterpriseName,
+          bsUser: BsUserEntity(
+            name: EnterpriseBuilder.entity?.bsUser?.name,
+            AccessKey: null,
+            CrossIdentity_Usuario: null,
           ),
-        );
-      });
+        ),
+      );
     });
   });
 }

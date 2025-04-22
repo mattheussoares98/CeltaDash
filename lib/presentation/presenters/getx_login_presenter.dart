@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
 import '../../domain/entities/entities.dart';
+import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
 import '../../infra/helpers/helpers.dart';
 import '../../main/builders/builders.dart';
@@ -39,7 +40,11 @@ class GetxLoginPresenter extends GetxController
           collection: "enterprises",
           doc: enterpriseName.toLowerCase().removeWhiteSpaces(),
         );
+        enterprise.data;
         final enterpriseData = enterprise.data();
+        if (enterpriseData == null) {
+          throw DomainError.unexpected;//TODO change to enterprise not found
+        }
 
         EnterpriseBuilder.entity = EnterpriseEntity(
           ccsUrl: enterpriseData["ccsUrl"],
