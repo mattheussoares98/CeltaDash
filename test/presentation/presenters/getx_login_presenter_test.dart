@@ -19,6 +19,7 @@ void main() {
   late NavigateToSpy navigateTo;
   late RemoteLoginSpy remoteLogin;
   late FirebaseManagerSpy firebaseManager;
+  late LocalStorageSpy localStorage;
 
   late String enterpriseName;
   late String user;
@@ -33,6 +34,7 @@ void main() {
     navigateTo = NavigateToSpy();
     remoteLogin = RemoteLoginSpy();
     firebaseManager = FirebaseManagerSpy(mockedFirebaseGet: mockedFirebaseGet);
+    localStorage = LocalStorageSpy();
   }
 
   void initPresenters() {
@@ -40,6 +42,7 @@ void main() {
       navigateTo: navigateTo,
       remoteLogin: remoteLogin,
       firebaseManager: firebaseManager,
+      localStorage: localStorage,
     );
   }
 

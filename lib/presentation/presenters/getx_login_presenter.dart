@@ -14,11 +14,13 @@ class GetxLoginPresenter extends GetxController
   final NavigateTo navigateTo;
   final RemoteLogin remoteLogin;
   final FirebaseManager firebaseManager;
+  final LocalStorage localStorage;
 
   GetxLoginPresenter({
     required this.navigateTo,
     required this.remoteLogin,
     required this.firebaseManager,
+    required this.localStorage,
   });
 
   @override
