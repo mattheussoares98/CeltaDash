@@ -26,6 +26,7 @@ class PtBr implements Translation {
   String get discounts => "Descontos";
   String get email => "E-mail";
   String get enter => "Entrar";
+  String get enterprise => "Empresa";
   String get firstDaySales => "Vendas do primeiro dia";
   String get goalHistory => "Histórico de metas";
   String get grossMargin => "Margem bruta";

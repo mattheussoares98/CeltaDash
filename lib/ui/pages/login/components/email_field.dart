@@ -19,25 +19,29 @@ class EmailField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: emailController,
-      focusNode: emailFocusNode,
-      onFieldSubmitted: (_) {
-        Future.delayed(Duration.zero, () {
-          passwordFocusNode.requestFocus();
-        });
-      },
-      validator: (value) {
-        return ValidationComposite([
-          RequiredFieldValidation(),
-          EmailFieldValidation(),
-        ]).validate(value)?.description;
-      },
-      decoration: FormFieldDecoration.decoration(
-        context: context,
-        hintText: R.string.email,
-        labelText: R.string.email,
-        prefixIcon: const Icon(Icons.email),
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: TextFormField(
+        controller: emailController,
+        focusNode: emailFocusNode,
+        keyboardType: TextInputType.emailAddress,
+        onFieldSubmitted: (_) {
+          Future.delayed(Duration.zero, () {
+            passwordFocusNode.requestFocus();
+          });
+        },
+        validator: (value) {
+          return ValidationComposite([
+            RequiredFieldValidation(),
+            EmailFieldValidation(),
+          ]).validate(value)?.description;
+        },
+        decoration: FormFieldDecoration.decoration(
+          context: context,
+          hintText: R.string.email,
+          labelText: R.string.email,
+          prefixIcon: const Icon(Icons.email),
+        ),
       ),
     );
   }

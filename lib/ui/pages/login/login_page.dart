@@ -18,17 +18,21 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final enterpriseController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final emailFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
+  final enterpriseFocusNode = FocusNode();
 
   @override
   void dispose() {
     super.dispose();
     emailController.dispose();
     passwordController.dispose();
+    enterpriseController.dispose();
     emailFocusNode.dispose();
     passwordFocusNode.dispose();
+    enterpriseFocusNode.dispose();
   }
 
   Future<void> login(LoginPresenter loginPresenter) async {
@@ -57,6 +61,11 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              EnterpriseField(
+                enterpriseController: enterpriseController,
+                enterpriseFocusNode: enterpriseFocusNode,
+                emailFocusNode: emailFocusNode,
+              ),
               EmailField(
                 emailController: emailController,
                 emailFocusNode: emailFocusNode,

@@ -22,6 +22,7 @@ abstract class Translation {
   String get discounts;
   String get email;
   String get enter;
+  String get enterprise;
   String get firstDaySales;
   String get goalHistory;
   String get grossMargin;
