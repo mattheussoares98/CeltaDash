@@ -15,9 +15,10 @@ class LocalStorageSpy extends Mock implements LocalStorage {
     this._mockGetCall().thenThrow(Exception());
   }
 
-  When _mockPutCall() => when(() => this.put(any(), any()));
-  void mockPut(dynamic value) {
-    this._mockPutCall().thenAnswer((any) async => value);
+  When _mockPutCall<T>() => when(() => put<T>(any(), any()));
+
+  void mockPut<T>(T insertTheGenerics) {
+    _mockPutCall<T>().thenAnswer((any) async => any);
   }
 
   void mockPutError() {

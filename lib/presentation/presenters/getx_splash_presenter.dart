@@ -26,7 +26,8 @@ class GetxSplashPresenter extends GetxController implements SplashPresenter {
       }
 
       if (EnterpriseBuilder.entity?.bsUser?.name == null ||
-          EnterpriseBuilder.entity?.bsUser?.accessKey == null) {
+          EnterpriseBuilder.entity?.bsUser?.AccessKey == null ||
+          EnterpriseBuilder.entity?.bsUser?.CrossIdentity_Usuario == null) {
         navigateTo.navigate(pageRoute: PageRoutes.login, clear: true);
       } else {
         navigateTo.navigate(pageRoute: PageRoutes.home, clear: true);

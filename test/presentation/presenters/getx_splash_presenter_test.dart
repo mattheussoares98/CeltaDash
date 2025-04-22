@@ -35,12 +35,13 @@ void main() {
     );
   }
 
-  void initEntities() {}
+  void initEntities() {
+    EnterpriseBuilder.entity = EntityFactory.makeEnterpriseEntity();
+  }
 
   void initMockSuccess() {
     localStorage.mockGet(
-      EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity()).toJson(),
-    );
+        EnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson());
   }
 
   setUp(() {
@@ -59,7 +60,20 @@ void main() {
   test("Should navigate to login page if accessKey is null", () async {
     localStorage.mockGet(
       EnterpriseModel.fromEntity(
-        EntityFactory.anullEnterpriseProperties(anullBsUser: true),
+        EntityFactory.anullEnterpriseProperties(anullUserAccessKey: true),
+      ).toJson(),
+    );
+
+    await sut.checkPageToGo(durationInSeconds: 0);
+
+    verify(
+      () => navigateTo.navigate(pageRoute: PageRoutes.login, clear: true),
+    ).called(1);
+  });
+  test("Should navigate to login page if crossIdentity is null", () async {
+    localStorage.mockGet(
+      EnterpriseModel.fromEntity(
+        EntityFactory.anullEnterpriseProperties(anullUserCrossIdentity: true),
       ).toJson(),
     );
 
@@ -83,13 +97,5 @@ void main() {
     await sut.checkPageToGo(durationInSeconds: 0);
 
     expect(EnterpriseBuilder.entity, newEnterprise);
-  });
-  test("Should update EnterpriseBuilder.entity correctly when return null",
-      () async {
-    localStorage.mockGet(null);
-
-    await sut.checkPageToGo(durationInSeconds: 0);
-
-    expect(EnterpriseBuilder.entity, null);
   });
 }

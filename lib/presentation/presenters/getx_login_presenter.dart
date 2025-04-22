@@ -46,7 +46,8 @@ class GetxLoginPresenter extends GetxController
         ccsUrl: enterpriseData["ccsUrl"],
         bsUser: BsUserEntity(
           name: user,
-          accessKey: null,
+          AccessKey: null,
+          CrossIdentity_Usuario: null,
         ),
         enterpriseName: enterpriseName,
       );
@@ -62,14 +63,17 @@ class GetxLoginPresenter extends GetxController
           //TODO add enterpriseName. Move user and accessKey to another entity
           bsUser: BsUserEntity(
             name: user,
-            accessKey: enterpriseData["accessKey"],
+            AccessKey: response.response["AccessKey"],
+            CrossIdentity_Usuario: response.response["CrossIdentity_Usuario"],
           ),
           enterpriseName: enterpriseName,
         );
         //TODO create test to change enterprise correctly
 
-        await localStorage.put(DatabaseKeys.enterprise,
-            EnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson());
+        await localStorage.put(
+          DatabaseKeys.enterprise,
+          EnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson(),
+        );
         navigateTo.navigate(pageRoute: PageRoutes.home, clear: true);
       }
     } catch (e) {

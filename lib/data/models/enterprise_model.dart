@@ -6,7 +6,7 @@ import 'bs_user_model.dart'; // ajuste o caminho se necessário
 class EnterpriseModel extends Equatable {
   final String? ccsUrl;
   final String? enterpriseName;
-  final BsUserModel bsUser;
+  final BsUserModel? bsUser;
 
   const EnterpriseModel({
     required this.ccsUrl,
@@ -20,7 +20,9 @@ class EnterpriseModel extends Equatable {
   factory EnterpriseModel.fromJson(Map json) => EnterpriseModel(
         ccsUrl: json['ccsUrl'],
         enterpriseName: json['enterpriseName'],
-        bsUser: BsUserModel.fromJson(json['bsUser']),
+        bsUser: json['bsUser'] == null
+            ? null
+            : BsUserModel.fromJson(json['bsUser']),
       );
 
   factory EnterpriseModel.fromEntity(EnterpriseEntity entity) =>
@@ -33,12 +35,12 @@ class EnterpriseModel extends Equatable {
   Map<String, dynamic> toJson() => {
         'ccsUrl': ccsUrl,
         'enterpriseName': enterpriseName,
-        'bsUser': bsUser.toJson(),
+        'bsUser': bsUser?.toJson(),
       };
 
   EnterpriseEntity toEntity() => EnterpriseEntity(
         ccsUrl: ccsUrl,
         enterpriseName: enterpriseName,
-        bsUser: bsUser.toEntity(),
+        bsUser: bsUser?.toEntity(),
       );
 }

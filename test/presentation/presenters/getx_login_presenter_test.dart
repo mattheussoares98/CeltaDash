@@ -32,10 +32,10 @@ void main() {
   Get.testMode = true;
 
   void initUsecases() {
+    localStorage = LocalStorageSpy();
     navigateTo = NavigateToSpy();
     remoteLogin = RemoteLoginSpy();
     firebaseManager = FirebaseManagerSpy(mockedFirebaseGet: mockedFirebaseGet);
-    localStorage = LocalStorageSpy();
   }
 
   void initPresenters() {
@@ -52,6 +52,7 @@ void main() {
     enterpriseName = faker.company.name();
     user = faker.person.name();
     password = faker.internet.password();
+
     response = SoapResponseModel(
       response: EnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson(),
       responseType: SoapResponseType.success,
@@ -65,19 +66,23 @@ void main() {
   void initMockSuccess() {
     remoteLogin.mockLogin(response);
     firebaseManager.mockGet(mockedFirebaseGet);
+    localStorage.mockPut(<String, dynamic>{});
+    localStorage.mockGet(
+      EnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson(),
+    );
   }
 
   setUp(() {
-    initEntities();
-    initUsecases();
-    initMockSuccess();
-    initPresenters();
-  });
-
-  setUpAll(() {
     for (var key in DatabaseKeys.values) {
       registerFallbackValue(key);
     }
+
+    // registerFallbackValue(<String, dynamic>{});
+
+    initEntities();
+    initUsecases();
+    initPresenters();
+    initMockSuccess();
   });
 
   group("Login", () {

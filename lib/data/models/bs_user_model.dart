@@ -4,33 +4,43 @@ import '../../domain/entities/entities.dart';
 
 class BsUserModel extends Equatable {
   final String? name;
-  final String? accessKey;
+  final String? AccessKey;
+  final String? CrossIdentity_Usuario;
 
   const BsUserModel({
     required this.name,
-    required this.accessKey,
+    required this.AccessKey,
+    required this.CrossIdentity_Usuario,
   });
 
   @override
-  List<Object?> get props => [name, accessKey];
+  List<Object?> get props => [
+        name,
+        AccessKey,
+        CrossIdentity_Usuario,
+      ];
 
   factory BsUserModel.fromJson(Map json) => BsUserModel(
         name: json['name'],
-        accessKey: json['accessKey'],
+        AccessKey: json['AccessKey'],
+        CrossIdentity_Usuario: json['CrossIdentity_Usuario'],
       );
 
   factory BsUserModel.fromEntity(BsUserEntity? entity) => BsUserModel(
         name: entity?.name,
-        accessKey: entity?.accessKey,
+        AccessKey: entity?.AccessKey,
+        CrossIdentity_Usuario: entity?.CrossIdentity_Usuario,
       );
 
   Map<String, dynamic> toJson() => {
         'name': name,
-        'accessKey': accessKey,
+        'AccessKey': AccessKey,
+        'CrossIdentity_Usuario': CrossIdentity_Usuario,
       };
 
   BsUserEntity? toEntity() => BsUserEntity(
         name: name,
-        accessKey: accessKey,
+        AccessKey: AccessKey,
+        CrossIdentity_Usuario: CrossIdentity_Usuario,
       );
 }

@@ -2,13 +2,19 @@ import 'package:equatable/equatable.dart';
 
 class BsUserEntity extends Equatable {
   final String? name;
-  final String? accessKey;
+  final String? AccessKey;
+  final String? CrossIdentity_Usuario;
 
   const BsUserEntity({
     required this.name,
-    required this.accessKey,
+    required this.AccessKey,
+    required this.CrossIdentity_Usuario,
   });
 
   @override
-  List<Object?> get props => [name, accessKey];
+  List<Object?> get props => [
+        name,
+        AccessKey,
+        CrossIdentity_Usuario,
+      ];
 }

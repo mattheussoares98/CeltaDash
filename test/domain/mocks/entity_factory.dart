@@ -13,13 +13,21 @@ class EntityFactory {
 
   static EnterpriseEntity anullEnterpriseProperties({
     bool? annullUrl,
-    bool? anullBsUser,
+    bool? anullUserName,
+    bool? anullUserAccessKey,
+    bool? anullUserCrossIdentity,
     bool? annullEnterpriseName,
   }) {
     final enterprise = EnterpriseBuilder.entity;
+    final bsUser = BsUserEntity(
+      name: anullUserName == true ? null : enterprise?.bsUser?.name,
+      AccessKey: anullUserAccessKey == true ? null : enterprise?.bsUser?.AccessKey,
+      CrossIdentity_Usuario:
+          anullUserCrossIdentity == true ? null : enterprise?.bsUser?.CrossIdentity_Usuario,
+    );
     return EnterpriseEntity(
       ccsUrl: annullUrl == true ? null : enterprise?.ccsUrl,
-      bsUser: anullBsUser == true ? null : enterprise?.bsUser,
+      bsUser: bsUser,
       enterpriseName:
           annullEnterpriseName == true ? null : enterprise?.enterpriseName,
     );
@@ -41,6 +49,7 @@ class EntityFactory {
 
   static makeBsUserEntity() => BsUserEntity(
         name: faker.person.name(),
-        accessKey: faker.guid.guid(),
+        AccessKey: faker.guid.guid(),
+        CrossIdentity_Usuario: faker.guid.guid(),
       );
 }
