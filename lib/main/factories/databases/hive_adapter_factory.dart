@@ -6,5 +6,5 @@ import '../../../infra/helpers/helpers.dart';
 
 HiveStorage makeHiveAdapter() => HiveAdapter(
         box: Hive.box(
-      DatabaseKeys.hiveBoxName.name,
+      DatabaseKeys.dash.name,
     ));

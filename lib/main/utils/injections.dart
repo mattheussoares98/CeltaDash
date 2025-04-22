@@ -37,14 +37,14 @@ Future<void> _initHive() async {
 
   try {
     if (kIsWeb) {
-      path = DatabaseKeys.hiveBoxName.name;
+      path = DatabaseKeys.dash.name;
     } else {
       final appDocumentDir =
           await path_provider.getApplicationDocumentsDirectory();
       path = appDocumentDir.path;
     }
     Hive.init(path);
-    await Hive.openBox(DatabaseKeys.hiveBoxName.name);
+    await Hive.openBox(DatabaseKeys.dash.name);
   } catch (e) {
     debugPrint(e.toString());
   }
