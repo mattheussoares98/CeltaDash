@@ -35,8 +35,8 @@ class RemoteLoadSaleMovements implements LoadSaleMovements {
         url: "$url/api/salemovements/getstatistics",
         method: "post",
         headers: {
-          "user": EnterpriseBuilder.entity?.user,
-          "accessKey": EnterpriseBuilder.entity?.accessKey,
+          "user": EnterpriseBuilder.entity?.bsUser?.name,
+          "accessKey": EnterpriseBuilder.entity?.bsUser?.accessKey,
         },
         body: {
           "enterpriseIds": enterpriseIds,

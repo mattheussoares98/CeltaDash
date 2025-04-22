@@ -1,49 +1,44 @@
 import 'package:equatable/equatable.dart';
 
 import '../../domain/entities/entities.dart';
+import 'bs_user_model.dart'; // ajuste o caminho se necessário
 
 class EnterpriseModel extends Equatable {
   final String? ccsUrl;
-  final String? user;
-  final String? accessKey;
   final String? enterpriseName;
+  final BsUserModel bsUser;
 
   const EnterpriseModel({
     required this.ccsUrl,
-    required this.user,
-    required this.accessKey,
     required this.enterpriseName,
+    required this.bsUser,
   });
 
   @override
-  List<Object?> get props => [ccsUrl, user, accessKey, enterpriseName];
+  List<Object?> get props => [ccsUrl, enterpriseName, bsUser];
 
   factory EnterpriseModel.fromJson(Map json) => EnterpriseModel(
-    ccsUrl: json['ccsUrl'],
-    user: json['user'],
-    accessKey: json['accessKey'],
-    enterpriseName: json['enterpriseName'],
-  );
+        ccsUrl: json['ccsUrl'],
+        enterpriseName: json['enterpriseName'],
+        bsUser: BsUserModel.fromJson(json['bsUser']),
+      );
 
   factory EnterpriseModel.fromEntity(EnterpriseEntity entity) =>
       EnterpriseModel(
         ccsUrl: entity.ccsUrl,
-        user: entity.user,
-        accessKey: entity.accessKey,
         enterpriseName: entity.enterpriseName,
+        bsUser: BsUserModel.fromEntity(entity.bsUser),
       );
 
   Map<String, dynamic> toJson() => {
-    'ccsUrl': ccsUrl,
-    'user': user,
-    'accessKey': accessKey,
-    'enterpriseName': enterpriseName,
-  };
+        'ccsUrl': ccsUrl,
+        'enterpriseName': enterpriseName,
+        'bsUser': bsUser.toJson(),
+      };
 
   EnterpriseEntity toEntity() => EnterpriseEntity(
-    ccsUrl: ccsUrl,
-    user: user,
-    accessKey: accessKey,
-    enterpriseName: enterpriseName,
-  );
+        ccsUrl: ccsUrl,
+        enterpriseName: enterpriseName,
+        bsUser: bsUser.toEntity(),
+      );
 }

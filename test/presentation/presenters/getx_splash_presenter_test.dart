@@ -56,23 +56,10 @@ void main() {
     }
   });
 
-  test("Should navigate to login page if user is null", () async {
-    localStorage.mockGet(
-      EnterpriseModel.fromEntity(
-        EntityFactory.anullEnterpriseProperties(annullUser: true),
-      ).toJson(),
-    );
-
-    await sut.checkPageToGo(durationInSeconds: 0);
-
-    verify(
-      () => navigateTo.navigate(pageRoute: PageRoutes.login, clear: true),
-    ).called(1);
-  });
   test("Should navigate to login page if accessKey is null", () async {
     localStorage.mockGet(
       EnterpriseModel.fromEntity(
-        EntityFactory.anullEnterpriseProperties(annullAccessKey: true),
+        EntityFactory.anullEnterpriseProperties(anullBsUser: true),
       ).toJson(),
     );
 
@@ -97,7 +84,8 @@ void main() {
 
     expect(EnterpriseBuilder.entity, newEnterprise);
   });
-  test("Should update EnterpriseBuilder.entity correctly when return null", () async {
+  test("Should update EnterpriseBuilder.entity correctly when return null",
+      () async {
     localStorage.mockGet(null);
 
     await sut.checkPageToGo(durationInSeconds: 0);

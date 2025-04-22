@@ -86,10 +86,9 @@ void main() {
       "user": {"id": 274, "name": "CELTABSPDV"},
     };
 
-    final results =
-        saleMovementsEntitys
-            .map((e) => SaleMovementModel.fromEntity(e).toJson())
-            .toList();
+    final results = saleMovementsEntitys
+        .map((e) => SaleMovementModel.fromEntity(e).toJson())
+        .toList();
 
     httpClient.mockRequest({
       "searchParameters": searchParameters,
@@ -131,8 +130,8 @@ void main() {
             "${EnterpriseBuilder.entity!.ccsUrl!}/api/salemovements/getstatistics",
         method: "post",
         headers: {
-          "user": EnterpriseBuilder.entity?.user,
-          "accessKey": EnterpriseBuilder.entity?.accessKey,
+          "user": EnterpriseBuilder.entity?.bsUser?.name,
+          "accessKey": EnterpriseBuilder.entity?.bsUser?.accessKey,
         },
         body: {
           "period": {
