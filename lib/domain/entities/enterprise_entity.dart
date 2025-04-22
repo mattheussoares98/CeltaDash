@@ -1,16 +1,18 @@
 import 'package:equatable/equatable.dart';
 
 class EnterpriseEntity extends Equatable {
-  final String? url;
+  final String? ccsUrl;
   final String? user;
   final String? accessKey;
+  final String? enterpriseName;
 
   const EnterpriseEntity({
-    required this.url,
+    required this.ccsUrl,
     required this.user,
     required this.accessKey,
+    required this.enterpriseName,
   });
 
   @override
-  List<Object?> get props => [url, user, accessKey];
+  List<Object?> get props => [ccsUrl, user, accessKey, enterpriseName];
 }

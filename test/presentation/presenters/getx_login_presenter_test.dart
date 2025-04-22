@@ -49,7 +49,7 @@ void main() {
     user = faker.person.name();
     password = faker.internet.password();
     response = SoapResponseModel(
-      response: faker.lorem.word(),
+      response: EnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson(),
       responseType: SoapResponseType.success,
     );
     mockedFirebaseGet = MockedFirebaseGet(

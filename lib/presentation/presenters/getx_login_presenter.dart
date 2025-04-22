@@ -40,10 +40,10 @@ class GetxLoginPresenter extends GetxController
       _changedEnterpriseName = false;
 
       EnterpriseBuilder.entity = EnterpriseEntity(
-        url: enterpriseData["ccsUrl"],
-        //TODO add enterpriseName. Move user and accessKey to another entity
+        ccsUrl: enterpriseData["ccsUrl"],
         user: user,
-        accessKey: "",
+        accessKey: enterpriseData["accessKey"],
+        enterpriseName: enterpriseName,
       );
       //TODO create test to change enterprise correctly
 
@@ -53,10 +53,11 @@ class GetxLoginPresenter extends GetxController
         showBsErrorMessage(response.response);
       } else {
         EnterpriseBuilder.entity = EnterpriseEntity(
-          url: EnterpriseBuilder.entity?.url, //TODO change to ccsUrl
+          ccsUrl: EnterpriseBuilder.entity?.ccsUrl, //TODO change to ccsUrl
           //TODO add enterpriseName. Move user and accessKey to another entity
           user: user,
           accessKey: response.response["accessKey"], //TODO add crossId
+          enterpriseName: enterpriseName,
         );
         //TODO create test to change enterprise correctly
 

@@ -6,21 +6,25 @@ class EntityFactory {
   EntityFactory._();
 
   static makeEnterpriseEntity() => EnterpriseEntity(
-    url: faker.internet.httpUrl(),
-    user: faker.company.name(),
+    ccsUrl: faker.internet.httpUrl(),
+    user: faker.person.name(),
     accessKey: faker.guid.guid(),
+    enterpriseName: faker.company.name(),
   );
 
   static EnterpriseEntity anullEnterpriseProperties({
     bool? annullUrl,
     bool? annullUser,
     bool? annullAccessKey,
+    bool? annullEnterpriseName,
   }) {
     final enterprise = EnterpriseBuilder.entity;
     return EnterpriseEntity(
-      url: annullUrl == true ? null : enterprise?.url,
+      ccsUrl: annullUrl == true ? null : enterprise?.ccsUrl,
       user: annullUser == true ? null : enterprise?.user,
       accessKey: annullAccessKey == true ? null : enterprise?.accessKey,
+      enterpriseName:
+          annullEnterpriseName == true ? null : enterprise?.enterpriseName,
     );
   }
 

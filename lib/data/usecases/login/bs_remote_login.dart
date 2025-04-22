@@ -19,7 +19,7 @@ class BsRemoteLogin implements RemoteLogin {
     required String password,
   }) async {
     try {
-      final url = EnterpriseBuilder.entity?.url;
+      final url = EnterpriseBuilder.entity?.ccsUrl;
       final response = await soapAdapter.post(
         parameters: {"user": user, "password": password},
         typeOfResponse: "UserCanLoginJsonResponse",
