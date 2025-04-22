@@ -37,6 +37,7 @@ class GetxLoginPresenter extends GetxController
       );
 
       final enterpriseData = enterprise.data();
+      _changedEnterpriseName = false;
 
       EnterpriseBuilder.entity = EnterpriseEntity(
         url: enterpriseData["ccsUrl"],

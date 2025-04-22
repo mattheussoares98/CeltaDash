@@ -142,5 +142,31 @@ void main() {
 
       verifyNever(() => navigateTo.navigate(pageRoute: PageRoutes.home));
     });
+
+    test("Should update _changedEnterpriseName to false in success", () async {
+      await sut.login(
+        enterpriseName: enterpriseName,
+        user: user,
+        password: password,
+        showBsErrorMessage: (_) {},
+      );
+
+      expect(sut.changedEnterpriseName, false);
+    });
+    test("Should update _changedEnterpriseName correctly", () async {
+      sut.updateChangedEnterpriseName(true);
+      expect(sut.changedEnterpriseName, true);
+
+      await sut.login(
+        enterpriseName: enterpriseName,
+        user: user,
+        password: password,
+        showBsErrorMessage: (_) {},
+      );
+      expect(sut.changedEnterpriseName, false);
+
+      sut.updateChangedEnterpriseName(false);
+      expect(sut.changedEnterpriseName, false);
+    });
   });
 }
