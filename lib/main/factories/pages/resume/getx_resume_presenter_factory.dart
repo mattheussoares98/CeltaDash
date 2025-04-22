@@ -2,5 +2,7 @@ import '../../../../presentation/presenters/presenters.dart';
 import '../../../../ui/pages/pages.dart';
 import '../../factories.dart';
 
-ResumePresenter makeGetxResumePresenter() =>
-    GetxResumePresenter(navigateTo: makeGetxNavigateTo());
+ResumePresenter makeGetxResumePresenter() => GetxResumePresenter(
+      navigateTo: makeGetxNavigateTo(),
+      loadSaleMovements: makeRemoteLoadSaleMovements(),
+    );

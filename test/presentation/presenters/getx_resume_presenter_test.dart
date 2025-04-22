@@ -13,16 +13,21 @@ void main() {
   late GetxResumePresenter sut;
 
   late NavigateToSpy navigateTo;
+  late LoadSaleMovementsSpy loadSaleMovements;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
 
   void initUsecases() {
     navigateTo = NavigateToSpy();
+    loadSaleMovements = LoadSaleMovementsSpy();
   }
 
   void initPresenters() {
-    sut = GetxResumePresenter(navigateTo: navigateTo);
+    sut = GetxResumePresenter(
+      navigateTo: navigateTo,
+      loadSaleMovements: loadSaleMovements,
+    );
   }
 
   void initEntities() {}

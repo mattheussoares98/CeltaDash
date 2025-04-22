@@ -6,8 +6,12 @@ import '../../ui/pages/pages.dart';
 
 class GetxResumePresenter extends GetxController implements ResumePresenter {
   final NavigateTo navigateTo;
+  final LoadSaleMovements loadSaleMovements;
 
-  GetxResumePresenter({required this.navigateTo});
+  GetxResumePresenter({
+    required this.navigateTo,
+    required this.loadSaleMovements,
+  });
 
   @override
   void goToCompareDays() {
