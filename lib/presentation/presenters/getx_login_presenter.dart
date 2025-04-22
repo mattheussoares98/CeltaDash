@@ -11,8 +11,13 @@ class GetxLoginPresenter extends GetxController
     implements LoginPresenter {
   final NavigateTo navigateTo;
   final RemoteLogin remoteLogin;
+  final FirebaseManager firebaseManager;
 
-  GetxLoginPresenter({required this.navigateTo, required this.remoteLogin});
+  GetxLoginPresenter({
+    required this.navigateTo,
+    required this.remoteLogin,
+    required this.firebaseManager,
+  });
 
   @override
   Future<void> login({

@@ -16,6 +16,7 @@ void main() {
 
   late NavigateToSpy navigateTo;
   late RemoteLoginSpy remoteLogin;
+  late FirebaseManagerSpy firebaseManager;
 
   late String user;
   late String password;
@@ -27,10 +28,15 @@ void main() {
   void initUsecases() {
     navigateTo = NavigateToSpy();
     remoteLogin = RemoteLoginSpy();
+    firebaseManager = FirebaseManagerSpy();
   }
 
   void initPresenters() {
-    sut = GetxLoginPresenter(navigateTo: navigateTo, remoteLogin: remoteLogin);
+    sut = GetxLoginPresenter(
+      navigateTo: navigateTo,
+      remoteLogin: remoteLogin,
+      firebaseManager: firebaseManager,
+    );
   }
 
   void initEntities() {
