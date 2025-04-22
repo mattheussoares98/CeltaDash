@@ -1,8 +1,14 @@
 import 'package:celta_plus/domain/usecases/usecases.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mocktail/mocktail.dart';
+
+// ignore: subtype_of_sealed_class
+class DocumentReferenceFake extends Fake
+    implements DocumentReference<Map<String, dynamic>> {}
 
 class FirebaseManagerSpy extends Mock implements FirebaseManager {
   FirebaseManagerSpy() {
+    registerFallbackValue(DocumentReferenceFake());
     this.mockPut();
   }
 

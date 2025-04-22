@@ -50,6 +50,7 @@ void main() {
 
   void initMockSuccess() {
     remoteLogin.mockLogin(response);
+    firebaseManager.mockGet("any");
   }
 
   setUp(() {

@@ -28,6 +28,8 @@ class GetxLoginPresenter extends GetxController
     mainError = null;
     isLoading = true;
     try {
+      final enterprise = await firebaseManager.get(collection: "enterprises");
+
       final response = await remoteLogin.login(user: user, password: password);
 
       if (response.responseType == SoapResponseType.error) {
