@@ -34,24 +34,23 @@ class GetxLoginPresenter extends GetxController
     mainError = null;
     isLoading = true;
     try {
-      final enterprise = await firebaseManager.get(
-        collection: "enterprises",
-        doc: enterpriseName.toLowerCase().removeWhiteSpaces(),
-      );
+      if (EnterpriseBuilder.entity?.ccsUrl == null) {
+        final enterprise = await firebaseManager.get(
+          collection: "enterprises",
+          doc: enterpriseName.toLowerCase().removeWhiteSpaces(),
+        );
+        final enterpriseData = enterprise.data();
 
-      final enterpriseData = enterprise.data();
-      _changedEnterpriseName = false;
-
-      EnterpriseBuilder.entity = EnterpriseEntity(
-        ccsUrl: enterpriseData["ccsUrl"],
-        bsUser: BsUserEntity(
-          name: user,
-          AccessKey: null,
-          CrossIdentity_Usuario: null,
-        ),
-        enterpriseName: enterpriseName,
-      );
-      //TODO create test to change enterprise correctly
+        EnterpriseBuilder.entity = EnterpriseEntity(
+          ccsUrl: enterpriseData["ccsUrl"],
+          bsUser: BsUserEntity(
+            name: user,
+            AccessKey: null,
+            CrossIdentity_Usuario: null,
+          ),
+          enterpriseName: enterpriseName,
+        );
+      }
 
       final response = await remoteLogin.login(user: user, password: password);
 
@@ -59,8 +58,7 @@ class GetxLoginPresenter extends GetxController
         showBsErrorMessage(response.response);
       } else {
         EnterpriseBuilder.entity = EnterpriseEntity(
-          ccsUrl: EnterpriseBuilder.entity?.ccsUrl, //TODO change to ccsUrl
-          //TODO add enterpriseName. Move user and accessKey to another entity
+          ccsUrl: EnterpriseBuilder.entity?.ccsUrl,
           bsUser: BsUserEntity(
             name: user,
             AccessKey: response.response["AccessKey"],
@@ -68,7 +66,6 @@ class GetxLoginPresenter extends GetxController
           ),
           enterpriseName: enterpriseName,
         );
-        //TODO create test to change enterprise correctly
 
         await localStorage.put(
           DatabaseKeys.enterprise,
@@ -83,12 +80,6 @@ class GetxLoginPresenter extends GetxController
     }
   }
 
-  bool _changedEnterpriseName = false;
   @override
-  bool get changedEnterpriseName => _changedEnterpriseName;
-
-  @override
-  void updateChangedEnterpriseName(bool value) {
-    _changedEnterpriseName = value;
-  }
+  void updateChangedEnterpriseName() {}
 }

@@ -114,6 +114,39 @@ void main() {
         showBsErrorMessage: (_) {},
       );
     });
+
+    test("Should get enterprise in firebase if dont has urlCcs", () async {
+      EnterpriseBuilder.entity = EntityFactory.anullEnterpriseProperties(
+        annullCcsUrl: true,
+      );
+
+      await sut.login(
+        enterpriseName: enterpriseName,
+        user: user,
+        password: password,
+        showBsErrorMessage: (_) {},
+      );
+
+      verify(
+        () => firebaseManager.get(
+            collection: "enterprises",
+            doc: enterpriseName.toLowerCase().removeWhiteSpaces()),
+      ).called(1);
+    });
+    test("Should not get enterprise in firebase if has urlCcs", () async {
+      await sut.login(
+        enterpriseName: enterpriseName,
+        user: user,
+        password: password,
+        showBsErrorMessage: (_) {},
+      );
+
+      verifyNever(
+        () => firebaseManager.get(
+            collection: "enterprises",
+            doc: enterpriseName.toLowerCase().removeWhiteSpaces()),
+      );
+    });
     test("Should call RemoteLogin with correct values", () async {
       await sut.login(
         enterpriseName: enterpriseName.toLowerCase().removeWhiteSpaces(),
@@ -137,7 +170,8 @@ void main() {
       ).called(1);
     });
 
-    test("Should not navgate to home page if soap response is error", () async {
+    test("Should not navigate to home page if soap response is error",
+        () async {
       remoteLogin.mockLogin(
         SoapResponseModel(
           response: faker.randomGenerator.string(10),
@@ -153,32 +187,6 @@ void main() {
       );
 
       verifyNever(() => navigateTo.navigate(pageRoute: PageRoutes.home));
-    });
-
-    test("Should update _changedEnterpriseName to false in success", () async {
-      await sut.login(
-        enterpriseName: enterpriseName,
-        user: user,
-        password: password,
-        showBsErrorMessage: (_) {},
-      );
-
-      expect(sut.changedEnterpriseName, false);
-    });
-    test("Should update _changedEnterpriseName correctly", () async {
-      sut.updateChangedEnterpriseName(true);
-      expect(sut.changedEnterpriseName, true);
-
-      await sut.login(
-        enterpriseName: enterpriseName,
-        user: user,
-        password: password,
-        showBsErrorMessage: (_) {},
-      );
-      expect(sut.changedEnterpriseName, false);
-
-      sut.updateChangedEnterpriseName(false);
-      expect(sut.changedEnterpriseName, false);
     });
 
     test("Should save enterprise locally in success", () async {

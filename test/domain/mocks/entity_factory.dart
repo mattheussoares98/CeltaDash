@@ -12,7 +12,7 @@ class EntityFactory {
       );
 
   static EnterpriseEntity anullEnterpriseProperties({
-    bool? annullUrl,
+    bool? annullCcsUrl,
     bool? anullUserName,
     bool? anullUserAccessKey,
     bool? anullUserCrossIdentity,
@@ -26,7 +26,7 @@ class EntityFactory {
           anullUserCrossIdentity == true ? null : enterprise?.bsUser?.CrossIdentity_Usuario,
     );
     return EnterpriseEntity(
-      ccsUrl: annullUrl == true ? null : enterprise?.ccsUrl,
+      ccsUrl: annullCcsUrl == true ? null : enterprise?.ccsUrl,
       bsUser: bsUser,
       enterpriseName:
           annullEnterpriseName == true ? null : enterprise?.enterpriseName,
