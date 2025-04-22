@@ -1,4 +1,5 @@
 import 'package:celta_plus/data/models/models.dart';
+import 'package:celta_plus/domain/entities/entities.dart';
 import 'package:celta_plus/infra/helpers/helpers.dart';
 import 'package:celta_plus/main/builders/builders.dart';
 import 'package:celta_plus/presentation/presenters/presenters.dart';
@@ -192,6 +193,47 @@ void main() {
         () => localStorage.put(DatabaseKeys.enterprise,
             EnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson()),
       ).called(1);
+    });
+    test("Should update EnterpriseBuilder correctly when login is successful",
+        () async {
+      await sut.login(
+        enterpriseName: enterpriseName,
+        user: user,
+        password: password,
+        showBsErrorMessage: (_) {},
+      );
+
+      expect(
+        EnterpriseBuilder.entity,
+        EnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toEntity(),
+      );
+    });
+    test("Should update EnterpriseBuilder correctly when login bs throws",
+        () async {
+      remoteLogin.mockLogin(
+        SoapResponseModel(
+            response: response, responseType: SoapResponseType.error),
+      );
+
+      await sut.login(
+        enterpriseName: enterpriseName,
+        user: user,
+        password: password,
+        showBsErrorMessage: (_) {},
+      );
+
+      expect(
+        EnterpriseBuilder.entity,
+        EnterpriseEntity(
+          ccsUrl: mockedFirebaseGet.data()["ccsUrl"],
+          bsUser: BsUserEntity(
+            name: user,
+            AccessKey: null,
+            CrossIdentity_Usuario: null,
+          ),
+          enterpriseName: enterpriseName,
+        ),
+      );
     });
   });
 }
