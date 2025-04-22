@@ -1,1 +1,4 @@
-enum DomainError { unexpected }
+enum DomainError {
+  enterpriseNotFound,
+  unexpected,
+}

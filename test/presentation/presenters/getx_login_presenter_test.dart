@@ -115,6 +115,27 @@ void main() {
       );
     });
 
+    test("Should emit correct values if dont found the enterprise in firebase",
+        () async {
+      EnterpriseBuilder.entity = EntityFactory.anullEnterpriseProperties(
+        annullCcsUrl: true,
+      );
+      firebaseManager.mockGet(MockedFirebaseGet(dataToReturn: null));
+
+      expectLater(
+        sut.mainErrorStream,
+        emitsInOrder([null, UIError.enterpriseNotFound]),
+      );
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+
+      await sut.login(
+        enterpriseName: enterpriseName,
+        user: user,
+        password: password,
+        showBsErrorMessage: (_) {},
+      );
+    });
+
     test("Should get enterprise in firebase if dont has urlCcs", () async {
       EnterpriseBuilder.entity = EntityFactory.anullEnterpriseProperties(
         annullCcsUrl: true,

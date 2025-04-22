@@ -40,10 +40,10 @@ class GetxLoginPresenter extends GetxController
           collection: "enterprises",
           doc: enterpriseName.toLowerCase().removeWhiteSpaces(),
         );
-        enterprise.data;
+
         final enterpriseData = enterprise.data();
         if (enterpriseData == null) {
-          throw DomainError.unexpected;//TODO change to enterprise not found
+          throw DomainError.enterpriseNotFound;
         }
 
         EnterpriseBuilder.entity = EnterpriseEntity(
@@ -78,8 +78,13 @@ class GetxLoginPresenter extends GetxController
         );
         navigateTo.navigate(pageRoute: PageRoutes.home, clear: true);
       }
-    } catch (e) {
-      mainError = UIError.unexpected;
+    } on DomainError catch (e) {
+      switch (e) {
+        case DomainError.enterpriseNotFound:
+          mainError = UIError.enterpriseNotFound;
+        default:
+          mainError = UIError.unexpected;
+      }
     } finally {
       isLoading = false;
     }
