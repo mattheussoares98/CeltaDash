@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
+import '../../mixins/mixins.dart';
 import 'components/components.dart';
 import 'login.dart';
 
@@ -15,7 +18,8 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State<LoginPage>
+    with LoadingManager, UIErrorManager {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final enterpriseController = TextEditingController();
@@ -23,6 +27,8 @@ class _LoginPageState extends State<LoginPage> {
   final emailFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
   final enterpriseFocusNode = FocusNode();
+  StreamSubscription? errorSubscription;
+  StreamSubscription? loadingSubscription;
 
   @override
   void dispose() {
@@ -33,6 +39,8 @@ class _LoginPageState extends State<LoginPage> {
     emailFocusNode.dispose();
     passwordFocusNode.dispose();
     enterpriseFocusNode.dispose();
+    errorSubscription?.cancel();
+    loadingSubscription?.cancel();
   }
 
   Future<void> login(LoginPresenter loginPresenter) async {
@@ -52,6 +60,17 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     LoginPresenter loginPresenter = Provider.of(context, listen: false);
+    errorSubscription?.cancel();
+    loadingSubscription?.cancel();
+
+    errorSubscription = handleMainError(
+      context,
+      loginPresenter.mainErrorStream,
+    );
+    loadingSubscription = handleLoading(
+      context,
+      loginPresenter.isLoadingStream,
+    );
 
     return Scaffold(
       body: Padding(
