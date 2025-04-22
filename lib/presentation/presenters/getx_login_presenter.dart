@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../data/models/models.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/usecases/usecases.dart';
+import '../../infra/helpers/helpers.dart';
 import '../../main/builders/builders.dart';
 import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
@@ -67,6 +68,8 @@ class GetxLoginPresenter extends GetxController
         );
         //TODO create test to change enterprise correctly
 
+        await localStorage.put(DatabaseKeys.enterprise,
+            EnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson());
         navigateTo.navigate(pageRoute: PageRoutes.home, clear: true);
       }
     } catch (e) {

@@ -1,4 +1,5 @@
 import 'package:celta_plus/data/models/models.dart';
+import 'package:celta_plus/infra/helpers/helpers.dart';
 import 'package:celta_plus/main/builders/builders.dart';
 import 'package:celta_plus/presentation/presenters/presenters.dart';
 import 'package:celta_plus/ui/helpers/helpers.dart';
@@ -74,7 +75,9 @@ void main() {
   });
 
   setUpAll(() {
-    registerFallbackValue("");
+    for (var key in DatabaseKeys.values) {
+      registerFallbackValue(key);
+    }
   });
 
   group("Login", () {
@@ -170,6 +173,20 @@ void main() {
 
       sut.updateChangedEnterpriseName(false);
       expect(sut.changedEnterpriseName, false);
+    });
+
+    test("Should save enterprise locally in success", () async {
+      await sut.login(
+        enterpriseName: enterpriseName,
+        user: user,
+        password: password,
+        showBsErrorMessage: (_) {},
+      );
+
+      verify(
+        () => localStorage.put(DatabaseKeys.enterprise,
+            EnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson()),
+      ).called(1);
     });
   });
 }
