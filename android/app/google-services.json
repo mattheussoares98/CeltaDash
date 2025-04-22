@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "525012960806",
+    "project_id": "celta-dash",
+    "storage_bucket": "celta-dash.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:525012960806:android:1a4445d0f56b5b4b00c8e7",
+        "android_client_info": {
+          "package_name": "br.com.celtaware.dash"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZadHo2oVmbwFbuiniPoXuLj3zMigJj4Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

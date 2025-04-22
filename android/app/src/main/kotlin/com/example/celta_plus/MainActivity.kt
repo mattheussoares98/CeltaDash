@@ -1,4 +1,4 @@
-package com.example.celta_plus
+package br.com.celtaware.dash
 
 import io.flutter.embedding.android.FlutterActivity
 

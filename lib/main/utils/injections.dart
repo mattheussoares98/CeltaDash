@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:firebase_core/firebase_core.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:hive/hive.dart';
 
@@ -5,16 +8,22 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../firebase_options.dart';
 import '../../infra/helpers/helpers.dart';
 
-Future<void> initInjections() async {
+Future<void> initApp() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await _initFirebase();
   await _initHive();
   await _makeOnlyPortraitMode();
 }
 
-
+Future<void> _initFirebase() async {
+  await Firebase.initializeApp(
+    options: Platform.isIOS ? null : DefaultFirebaseOptions.currentPlatform,
+  );
+}
 
 Future<void> _makeOnlyPortraitMode() async {
   await SystemChrome.setPreferredOrientations([

@@ -12,7 +12,7 @@ import 'main/components/components.dart';
 import 'main/utils/utils.dart';
 
 void main() async {
-  await initInjections();
+  await initApp();
 
   runApp(const App());
 }
