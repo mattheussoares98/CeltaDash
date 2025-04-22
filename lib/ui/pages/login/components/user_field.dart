@@ -24,7 +24,6 @@ class EmailField extends StatelessWidget {
       child: TextFormField(
         controller: emailController,
         focusNode: emailFocusNode,
-        keyboardType: TextInputType.emailAddress,
         onFieldSubmitted: (_) {
           Future.delayed(Duration.zero, () {
             passwordFocusNode.requestFocus();
@@ -38,9 +37,9 @@ class EmailField extends StatelessWidget {
         },
         decoration: FormFieldDecoration.decoration(
           context: context,
-          hintText: R.string.email,
-          labelText: R.string.email,
-          prefixIcon: const Icon(Icons.email),
+          hintText: R.string.user,
+          labelText: R.string.user,
+          prefixIcon: const Icon(Icons.person),
         ),
       ),
     );

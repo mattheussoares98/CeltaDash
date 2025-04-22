@@ -65,6 +65,7 @@ abstract class Translation {
   String get total;
   String get totalSales;
   String get trendSales;
+  String get user;
   String get wait;
   String get worstDayOfTheMonth;
   String get worstHourOfTheDay;
