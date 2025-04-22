@@ -27,7 +27,7 @@ class EnterpriseField extends StatelessWidget {
       controller: enterpriseController,
       focusNode: enterpriseFocusNode,
       onChanged: (_) {
-        loginPresenter.updateChangedEnterpriseName();
+        loginPresenter.onChangedEnterpriseName();
       },
       onFieldSubmitted: (_) {
         Future.delayed(Duration.zero, () {

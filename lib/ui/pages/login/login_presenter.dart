@@ -5,7 +5,7 @@ import '../../helpers/helpers.dart';
 abstract class LoginPresenter implements Listenable {
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
-  void updateChangedEnterpriseName();
+  void onChangedEnterpriseName();
   Future<void> login({
     required String enterpriseName,
     required String user,

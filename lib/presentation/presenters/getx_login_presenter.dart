@@ -81,5 +81,17 @@ class GetxLoginPresenter extends GetxController
   }
 
   @override
-  void updateChangedEnterpriseName() {}
+  void onChangedEnterpriseName() {
+    final oldEnterprise = EnterpriseBuilder.entity;
+
+    EnterpriseBuilder.entity = EnterpriseEntity(
+      ccsUrl: null,
+      enterpriseName: oldEnterprise?.enterpriseName,
+      bsUser: BsUserEntity(
+        name: oldEnterprise?.bsUser?.name,
+        AccessKey: null,
+        CrossIdentity_Usuario: null,
+      ),
+    );
+  }
 }

@@ -14,6 +14,7 @@ class RemoteFirebaseManager implements FirebaseManager {
     String? fieldToSearch,
     String? valueToSearch,
   }) async {
+    
     return await firebaseStorage.get(
       collection: collection,
       doc: doc,

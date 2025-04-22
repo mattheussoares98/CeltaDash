@@ -147,6 +147,7 @@ void main() {
             doc: enterpriseName.toLowerCase().removeWhiteSpaces()),
       );
     });
+
     test("Should call RemoteLogin with correct values", () async {
       await sut.login(
         enterpriseName: enterpriseName.toLowerCase().removeWhiteSpaces(),
@@ -156,6 +157,22 @@ void main() {
       );
 
       verify(() => remoteLogin.login(user: user, password: password)).called(1);
+    });
+
+    test("Should not call remote login if firebaseManager throws", () async {
+      EnterpriseBuilder.entity = EntityFactory.anullEnterpriseProperties(
+        annullCcsUrl: true,
+      );
+      firebaseManager.mockGetError();
+
+      await sut.login(
+        enterpriseName: enterpriseName,
+        user: user,
+        password: password,
+        showBsErrorMessage: (_) {},
+      );
+
+      verifyNever(() => remoteLogin.login(user: user, password: password));
     });
     test("Should navigate to home page", () async {
       await sut.login(
@@ -218,6 +235,9 @@ void main() {
     });
     test("Should update EnterpriseBuilder correctly when login bs throws",
         () async {
+      EnterpriseBuilder.entity =
+          EntityFactory.anullEnterpriseProperties(annullCcsUrl: true);
+
       remoteLogin.mockLogin(
         SoapResponseModel(
             response: response, responseType: SoapResponseType.error),
@@ -242,6 +262,26 @@ void main() {
           enterpriseName: enterpriseName,
         ),
       );
+    });
+
+    group("On change enterprise name", () {
+      test("Should update enterprise correctly when call the funcion",
+          () async {
+        sut.onChangedEnterpriseName();
+
+        expect(
+          EnterpriseBuilder.entity,
+          EnterpriseEntity(
+            ccsUrl: null,
+            enterpriseName: EnterpriseBuilder.entity?.enterpriseName,
+            bsUser: BsUserEntity(
+              name: EnterpriseBuilder.entity?.bsUser?.name,
+              AccessKey: null,
+              CrossIdentity_Usuario: null,
+            ),
+          ),
+        );
+      });
     });
   });
 }
