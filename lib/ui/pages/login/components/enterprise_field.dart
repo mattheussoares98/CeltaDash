@@ -37,7 +37,7 @@ class EnterpriseField extends StatelessWidget {
       validator: (value) {
         return ValidationComposite([
           RequiredFieldValidation(),
-          MinLengthValidation(size: 3),
+          MinLengthValidation(size: 2),
         ]).validate(value)?.description;
       },
       decoration: FormFieldDecoration.decoration(
