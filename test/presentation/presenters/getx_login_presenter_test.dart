@@ -55,7 +55,8 @@ void main() {
     password = faker.internet.password();
 
     response = SoapResponseModel(
-      response: EnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson(),
+      response: EnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson()
+        ..["AccessKey"] = faker.lorem.sentence(),
       responseType: SoapResponseType.success,
     );
     mockedFirebaseGet = MockedFirebaseGet(
