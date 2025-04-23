@@ -1,5 +1,5 @@
-import '../../entities/entities.dart';
+import '../../../data/models/models.dart';
 
 abstract class RemoteLoadEnterprises {
-  Future<List<BsEnterpriseEntity>> get();
+  Future<SoapResponseModel> get();
 }
