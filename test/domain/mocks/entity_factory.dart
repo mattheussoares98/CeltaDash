@@ -6,13 +6,13 @@ class EntityFactory {
   EntityFactory._();
 
   static makeEnterpriseEntity() => EnterpriseEntity(
-        ccsUrl: faker.internet.httpUrl(),
+        baseUrl: faker.internet.httpUrl(),
         enterpriseName: faker.company.name(),
         bsUser: makeBsUserEntity(),
       );
 
   static EnterpriseEntity anullEnterpriseProperties({
-    bool? annullCcsUrl,
+    bool? annullbaseUrl,
     bool? anullUserName,
     bool? anullUserAccessKey,
     bool? anullUserCrossIdentity,
@@ -26,7 +26,7 @@ class EntityFactory {
           anullUserCrossIdentity == true ? null : enterprise?.bsUser?.CrossIdentity_Usuario,
     );
     return EnterpriseEntity(
-      ccsUrl: annullCcsUrl == true ? null : enterprise?.ccsUrl,
+      baseUrl: annullbaseUrl == true ? null : enterprise?.baseUrl,
       bsUser: bsUser,
       enterpriseName:
           annullEnterpriseName == true ? null : enterprise?.enterpriseName,

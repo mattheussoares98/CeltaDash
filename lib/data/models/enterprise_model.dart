@@ -4,21 +4,21 @@ import '../../domain/entities/entities.dart';
 import 'bs_user_model.dart'; // ajuste o caminho se necessário
 
 class EnterpriseModel extends Equatable {
-  final String? ccsUrl;
+  final String? baseUrl;
   final String? enterpriseName;
   final BsUserModel? bsUser;
 
   const EnterpriseModel({
-    required this.ccsUrl,
+    required this.baseUrl,
     required this.enterpriseName,
     required this.bsUser,
   });
 
   @override
-  List<Object?> get props => [ccsUrl, enterpriseName, bsUser];
+  List<Object?> get props => [baseUrl, enterpriseName, bsUser];
 
   factory EnterpriseModel.fromJson(Map json) => EnterpriseModel(
-        ccsUrl: json['ccsUrl'],
+        baseUrl: json['baseUrl'],
         enterpriseName: json['enterpriseName'],
         bsUser: json['bsUser'] == null
             ? null
@@ -27,19 +27,19 @@ class EnterpriseModel extends Equatable {
 
   factory EnterpriseModel.fromEntity(EnterpriseEntity entity) =>
       EnterpriseModel(
-        ccsUrl: entity.ccsUrl,
+        baseUrl: entity.baseUrl,
         enterpriseName: entity.enterpriseName,
         bsUser: BsUserModel.fromEntity(entity.bsUser),
       );
 
   Map<String, dynamic> toJson() => {
-        'ccsUrl': ccsUrl,
+        'baseUrl': baseUrl,
         'enterpriseName': enterpriseName,
         'bsUser': bsUser?.toJson(),
       };
 
   EnterpriseEntity toEntity() => EnterpriseEntity(
-        ccsUrl: ccsUrl,
+        baseUrl: baseUrl,
         enterpriseName: enterpriseName,
         bsUser: bsUser?.toEntity(),
       );

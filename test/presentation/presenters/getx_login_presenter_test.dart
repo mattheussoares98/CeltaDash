@@ -67,7 +67,6 @@ void main() {
   void initMockSuccess() {
     remoteLogin.mockLogin(response);
     firebaseManager.mockGet(mockedFirebaseGet);
-    localStorage.mockPut(<String, dynamic>{});
     localStorage.mockGet(
       EnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson(),
     );
@@ -77,8 +76,6 @@ void main() {
     for (var key in DatabaseKeys.values) {
       registerFallbackValue(key);
     }
-
-    // registerFallbackValue(<String, dynamic>{});
 
     initEntities();
     initUsecases();
@@ -118,7 +115,7 @@ void main() {
     test("Should emit correct values if dont found the enterprise in firebase",
         () async {
       EnterpriseBuilder.entity = EntityFactory.anullEnterpriseProperties(
-        annullCcsUrl: true,
+        annullbaseUrl: true,
       );
       firebaseManager.mockGet(MockedFirebaseGet(dataToReturn: null));
 
@@ -138,7 +135,7 @@ void main() {
 
     test("Should get enterprise in firebase if dont has urlCcs", () async {
       EnterpriseBuilder.entity = EntityFactory.anullEnterpriseProperties(
-        annullCcsUrl: true,
+        annullbaseUrl: true,
       );
 
       await sut.login(
@@ -170,7 +167,7 @@ void main() {
     });
     test("Should not call remoteLogin if firebaseData is null", () async {
       EnterpriseBuilder.entity = EntityFactory.anullEnterpriseProperties(
-        annullCcsUrl: true,
+        annullbaseUrl: true,
       );
 
       firebaseManager.mockGet(MockedFirebaseGet(dataToReturn: null));
@@ -198,8 +195,9 @@ void main() {
 
     test("Should not call remote login if firebaseManager throws", () async {
       EnterpriseBuilder.entity = EntityFactory.anullEnterpriseProperties(
-        annullCcsUrl: true,
+        annullbaseUrl: true,
       );
+      
       firebaseManager.mockGetError();
 
       await sut.login(
@@ -273,11 +271,13 @@ void main() {
     test("Should update EnterpriseBuilder correctly when login bs throws",
         () async {
       EnterpriseBuilder.entity =
-          EntityFactory.anullEnterpriseProperties(annullCcsUrl: true);
+          EntityFactory.anullEnterpriseProperties(annullbaseUrl: true);
 
       remoteLogin.mockLogin(
         SoapResponseModel(
-            response: response, responseType: SoapResponseType.error),
+          response: faker.lorem.sentence(),
+          responseType: SoapResponseType.error,
+        ),
       );
 
       await sut.login(
@@ -290,7 +290,7 @@ void main() {
       expect(
         EnterpriseBuilder.entity,
         EnterpriseEntity(
-          ccsUrl: mockedFirebaseGet.data()["ccsUrl"],
+          baseUrl: mockedFirebaseGet.data()["baseUrl"],
           bsUser: BsUserEntity(
             name: user,
             AccessKey: null,
@@ -308,7 +308,7 @@ void main() {
       expect(
         EnterpriseBuilder.entity,
         EnterpriseEntity(
-          ccsUrl: null,
+          baseUrl: null,
           enterpriseName: EnterpriseBuilder.entity?.enterpriseName,
           bsUser: BsUserEntity(
             name: EnterpriseBuilder.entity?.bsUser?.name,

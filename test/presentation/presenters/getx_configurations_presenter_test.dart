@@ -40,7 +40,7 @@ void main() {
   void initEntities() {
     EnterpriseBuilder.entity = EntityFactory.makeEnterpriseEntity();
     enterpriseOnLogout = EnterpriseEntity(
-      ccsUrl: null,
+      baseUrl: null,
       enterpriseName: EnterpriseBuilder.entity?.enterpriseName,
       bsUser: BsUserEntity(
         name: EnterpriseBuilder.entity?.bsUser?.name,
@@ -53,17 +53,17 @@ void main() {
   void initMockSuccess() {}
 
   setUp(() {
+    for (var key in DatabaseKeys.values) {
+      registerFallbackValue(key);
+    }
+
     initUsecases();
     initPresenters();
     initEntities();
     initMockSuccess();
   });
 
-  setUpAll(() {
-    for (var key in DatabaseKeys.values) {
-      registerFallbackValue(key);
-    }
-  });
+  setUpAll(() {});
 
   group("Do logout", () {
     test("Should emit correct values on success", () async {

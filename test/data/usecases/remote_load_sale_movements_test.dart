@@ -127,7 +127,7 @@ void main() {
     verify(
       () => httpClient.request(
         url:
-            "${EnterpriseBuilder.entity!.ccsUrl!}/api/salemovements/getstatistics",
+            "${EnterpriseBuilder.entity!.baseUrl!}/api/salemovements/getstatistics",
         method: "post",
         headers: {
           "user": EnterpriseBuilder.entity?.bsUser?.name,

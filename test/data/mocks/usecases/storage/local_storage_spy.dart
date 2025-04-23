@@ -4,6 +4,7 @@ import 'package:mocktail/mocktail.dart';
 class LocalStorageSpy extends Mock implements LocalStorage {
   LocalStorageSpy() {
     this.mockDelete();
+    this.mockPut(<String, dynamic>{});
   }
 
   When _mockGetCall() => when(() => this.get(any()));

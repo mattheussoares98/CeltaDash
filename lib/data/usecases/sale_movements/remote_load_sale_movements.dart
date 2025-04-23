@@ -28,7 +28,7 @@ class RemoteLoadSaleMovements implements LoadSaleMovements {
     bool? groupByPaymentFinalization,
     bool? groupByPaymentModality,
   }) async {
-    final url = EnterpriseBuilder.entity?.ccsUrl;
+    final url = EnterpriseBuilder.entity?.baseUrl;
 
     try {
       final response = await httpAdapter.request(

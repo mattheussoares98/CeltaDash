@@ -1,3 +1,4 @@
+import 'package:celta_plus/domain/helpers/helpers.dart';
 import 'package:celta_plus/domain/usecases/usecases.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mocktail/mocktail.dart';
@@ -52,6 +53,6 @@ class FirebaseManagerSpy extends Mock implements FirebaseManager {
   }
 
   void mockGetError() {
-    this._mockGetCall().thenThrow(Exception());
+    this._mockGetCall().thenThrow(DomainError.unexpected);
   }
 }

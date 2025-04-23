@@ -19,14 +19,14 @@ class BsRemoteLogin implements RemoteLogin {
     required String password,
   }) async {
     try {
-      final url = EnterpriseBuilder.entity?.ccsUrl;
+      final baseUrl = EnterpriseBuilder.entity?.baseUrl;
       final response = await soapAdapter.post(
         parameters: {"user": user, "password": password},
         typeOfResponse: "UserCanLoginJsonResponse",
         soapAction: "UserCanLoginJson",
         serviceASMX: "CeltaSecurityService.asmx",
         typeOfResult: "UserCanLoginJsonResult",
-        ccsUrl: "$url",
+        ccsUrl: "$baseUrl/ccs",
       );
 
       if (response.responseType == SoapResponseType.error) return response;

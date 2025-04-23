@@ -28,7 +28,7 @@ class GetxConfigurationsPresenter extends GetxController
       final oldEnterprise = EnterpriseBuilder.entity;
 
       EnterpriseBuilder.entity = EnterpriseEntity(
-        ccsUrl: null,
+        baseUrl: null,
         enterpriseName: oldEnterprise?.enterpriseName,
         bsUser: BsUserEntity(
           name: oldEnterprise?.bsUser?.name,

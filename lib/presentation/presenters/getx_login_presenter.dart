@@ -35,7 +35,7 @@ class GetxLoginPresenter extends GetxController
     mainError = null;
     isLoading = true;
     try {
-      if (EnterpriseBuilder.entity?.ccsUrl == null) {
+      if (EnterpriseBuilder.entity?.baseUrl == null) {
         final enterprise = await firebaseManager.get(
           collection: "enterprises",
           doc: enterpriseName.toLowerCase().removeWhiteSpaces(),
@@ -47,13 +47,13 @@ class GetxLoginPresenter extends GetxController
         }
 
         EnterpriseBuilder.entity = EnterpriseEntity(
-          ccsUrl: enterpriseData["ccsUrl"],
+          baseUrl: enterpriseData["baseUrl"],
+          enterpriseName: enterpriseName,
           bsUser: BsUserEntity(
             name: user,
             AccessKey: null,
             CrossIdentity_Usuario: null,
           ),
-          enterpriseName: enterpriseName,
         );
       }
 
@@ -63,7 +63,7 @@ class GetxLoginPresenter extends GetxController
         showBsErrorMessage(response.response);
       } else {
         EnterpriseBuilder.entity = EnterpriseEntity(
-          ccsUrl: EnterpriseBuilder.entity?.ccsUrl,
+          baseUrl: EnterpriseBuilder.entity?.baseUrl,
           bsUser: BsUserEntity(
             name: user,
             AccessKey: response.response["AccessKey"],
@@ -95,7 +95,7 @@ class GetxLoginPresenter extends GetxController
     final oldEnterprise = EnterpriseBuilder.entity;
 
     EnterpriseBuilder.entity = EnterpriseEntity(
-      ccsUrl: null,
+      baseUrl: null,
       enterpriseName: oldEnterprise?.enterpriseName,
       bsUser: BsUserEntity(
         name: oldEnterprise?.bsUser?.name,

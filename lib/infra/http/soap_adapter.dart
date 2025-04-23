@@ -79,9 +79,8 @@ class SoapAdapter implements SoapRequest {
     if (typeOfResult != null && responseBody[typeOfResult] != null) {
       if (_isValidResponse(responseBody, typeOfResult)) {
         return SoapResponseModel(
-          response:
-              responseBody[typeOfResult]["diffgr:diffgram"]["NewDataSet"]
-                  .toString(),
+          response: responseBody[typeOfResult]["diffgr:diffgram"]["NewDataSet"]
+              .toString(),
           responseType: SoapResponseType.success,
         );
       }
