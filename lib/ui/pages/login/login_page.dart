@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../main/builders/builders.dart';
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 import '../../mixins/mixins.dart';
@@ -20,23 +21,40 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage>
     with LoadingManager, UIErrorManager {
-  final emailController = TextEditingController();
+  final userController = TextEditingController();
   final passwordController = TextEditingController();
   final enterpriseController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  final emailFocusNode = FocusNode();
+  final userFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
   final enterpriseFocusNode = FocusNode();
   StreamSubscription? errorSubscription;
   StreamSubscription? loadingSubscription;
 
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        if (EnterpriseBuilder.entity?.enterpriseName != null) {
+          enterpriseController.text = EnterpriseBuilder.entity!.enterpriseName!;
+        }
+
+        if (EnterpriseBuilder.entity?.bsUser?.name != null) {
+          userController.text = EnterpriseBuilder.entity!.bsUser!.name!;
+        }
+      }
+    });
+  }
+
+  @override
   void dispose() {
     super.dispose();
-    emailController.dispose();
+    userController.dispose();
     passwordController.dispose();
     enterpriseController.dispose();
-    emailFocusNode.dispose();
+    userFocusNode.dispose();
     passwordFocusNode.dispose();
     enterpriseFocusNode.dispose();
     errorSubscription?.cancel();
@@ -50,7 +68,7 @@ class _LoginPageState extends State<LoginPage>
 
     await loginPresenter.login(
       enterpriseName: enterpriseController.text,
-      user: emailController.text,
+      user: userController.text,
       password: passwordController.text,
       showBsErrorMessage: (error) {
         snackBarMessage(context, error, backgroundColor: Colors.red);
@@ -84,11 +102,11 @@ class _LoginPageState extends State<LoginPage>
               EnterpriseField(
                 enterpriseController: enterpriseController,
                 enterpriseFocusNode: enterpriseFocusNode,
-                emailFocusNode: emailFocusNode,
+                emailFocusNode: userFocusNode,
               ),
               EmailField(
-                emailController: emailController,
-                emailFocusNode: emailFocusNode,
+                emailController: userController,
+                emailFocusNode: userFocusNode,
                 passwordFocusNode: passwordFocusNode,
               ),
               PasswordField(
