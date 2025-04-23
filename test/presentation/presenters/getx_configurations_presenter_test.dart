@@ -95,7 +95,7 @@ void main() {
       await sut.doLogout();
 
       verify(() => navigateTo.navigate(
-            pageRoute: PageRoutes.login,
+            pageRoute: PageRoutes.splash,
             clear: true,
           )).called(1);
     });

@@ -40,7 +40,7 @@ class GetxConfigurationsPresenter extends GetxController
       await localStorage.put(DatabaseKeys.enterprise,
           EnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson());
 
-      navigateTo.navigate(pageRoute: PageRoutes.login, clear: true);
+      navigateTo.navigate(pageRoute: PageRoutes.splash, clear: true);
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {
