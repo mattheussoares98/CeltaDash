@@ -16,6 +16,7 @@ abstract class Translation {
   String get close;
   String get compareDays;
   String get comparedToDay;
+  String get configurations;
   String get cost;
   String get dailyAnalysis;
   String get dateNotUpdated;
@@ -33,6 +34,7 @@ abstract class Translation {
   String get hour;
   String get indicators;
   String get insertGoal;
+  String get logout;
   String get month;
   String get monthlyAnalysis;
   String get moreDetails;

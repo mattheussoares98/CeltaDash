@@ -13,6 +13,11 @@ class GetPages {
       transition: Transition.fadeIn,
     ),
     GetPage(
+      name: PageRoutes.configurations,
+      page: makeConfigurationsPage,
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
       name: PageRoutes.goalHistory,
       page: makeGoalHistoryPage,
       transition: Transition.fadeIn,

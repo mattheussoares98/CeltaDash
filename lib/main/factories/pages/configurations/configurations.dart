@@ -1,0 +1,1 @@
+export './configurations_page_factory.dart';

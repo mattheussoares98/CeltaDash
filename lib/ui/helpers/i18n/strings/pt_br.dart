@@ -20,6 +20,7 @@ class PtBr implements Translation {
   String get close => "Fechar";
   String get compareDays => "Comparar dias";
   String get comparedToDay => "Em comparação ao dia";
+  String get configurations => "Configurações";
   String get cost => "Custo";
   String get dailyAnalysis => "Análise diária";
   String get dateNotUpdated => "Data não atualizada";
@@ -37,6 +38,7 @@ class PtBr implements Translation {
   String get hour => "Hora";
   String get indicators => "Indicadores";
   String get insertGoal => "Inserir meta";
+  String get logout => "Sair";
   String get month => "Mês";
   String get monthlyAnalysis => "Análise mensal";
   String get moreDetails => "Mais detalhes";
