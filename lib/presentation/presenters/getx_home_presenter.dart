@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
-import '../../domain/entities/entities.dart';
 import '../../domain/usecases/usecases.dart';
 import '../../presentation/mixins/mixins.dart';
 import '../../ui/helpers/helpers.dart';
@@ -44,9 +43,9 @@ class GetxHomePresenter extends GetxController
     navigateTo.navigate(pageRoute: PageRoutes.configurations);
   }
 
-  final _bsEnterprises = Rx<List<BsEnterpriseEntity>?>(null);
+  final _bsEnterprises = Rx<List<BsEnterpriseViewModel>?>(null);
   @override
-  Stream<List<BsEnterpriseEntity>?> get bsEnterprisesStream =>
+  Stream<List<BsEnterpriseViewModel>?> get bsEnterprisesStream =>
       _bsEnterprises.stream;
 
   @override
@@ -62,7 +61,7 @@ class GetxHomePresenter extends GetxController
         showBsErrorMessage(soapResponse.response);
       } else {
         _bsEnterprises.value = (json.decode(soapResponse.response) as List)
-            .map((e) => BsEnterpriseModel.fromJson(e).toEntity())
+            .map((e) => BsEnterpriseModel.fromJson(e).toViewModel())
             .toList();
 
         _selectedEnterprise.value = _bsEnterprises.value?.first;
@@ -74,13 +73,13 @@ class GetxHomePresenter extends GetxController
     }
   }
 
-  final _selectedEnterprise = Rx<BsEnterpriseEntity?>(null);
+  final _selectedEnterprise = Rx<BsEnterpriseViewModel?>(null);
   @override
-  Stream<BsEnterpriseEntity?> get bsSelectedEnterpriseStream =>
+  Stream<BsEnterpriseViewModel?> get bsSelectedEnterpriseStream =>
       _selectedEnterprise.stream;
 
   @override
-  void updateSelectedEnterprise(BsEnterpriseEntity enterprise) {
+  void updateSelectedEnterprise(BsEnterpriseViewModel enterprise) {
     _selectedEnterprise.value = enterprise;
   }
 }

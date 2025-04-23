@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../../domain/entities/entities.dart';
+import '../pages.dart';
 
 abstract class HomePresenter implements Listenable {
   Stream<int> get currentPageIndexStream;
   DateTime get selectedDate;
-  Stream<List<BsEnterpriseEntity>?> get bsEnterprisesStream;
-  Stream<BsEnterpriseEntity?> get bsSelectedEnterpriseStream;
+  Stream<List<BsEnterpriseViewModel>?> get bsEnterprisesStream;
+  Stream<BsEnterpriseViewModel?> get bsSelectedEnterpriseStream;
 
   void updateSelectedIndex(int index);
   void updateSelectedDate(DateTime date);
@@ -16,5 +16,5 @@ abstract class HomePresenter implements Listenable {
     required void Function(String) showBsErrorMessage,
   });
 
-  void updateSelectedEnterprise(BsEnterpriseEntity enterprise);
+  void updateSelectedEnterprise(BsEnterpriseViewModel enterprise);
 }

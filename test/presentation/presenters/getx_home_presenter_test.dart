@@ -116,8 +116,17 @@ void main() {
     test("Should emit correct values on success", () async {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(sut.mainErrorStream, emits(null));
-      expectLater(sut.bsEnterprisesStream, emits(bsEnterprises));
-      expectLater(sut.bsSelectedEnterpriseStream, emits(bsEnterprises.first));
+      expectLater(
+          sut.bsEnterprisesStream,
+          emits(
+            bsEnterprises
+                .map((e) => BsEnterpriseModel.fromEntity(e).toViewModel()),
+          ));
+      expectLater(
+          sut.bsSelectedEnterpriseStream,
+          emits(
+            BsEnterpriseModel.fromEntity(bsEnterprises.first).toViewModel(),
+          ));
 
       await sut.getBsEnterprises(showBsErrorMessage: (_) {});
     });
@@ -142,8 +151,10 @@ void main() {
 
   group("Update selected enterprise", () {
     test("Should update selected enterprise correctly", () {
-      final first = bsEnterprises.first;
-      final second = bsEnterprises.last;
+      final first =
+          BsEnterpriseModel.fromEntity(bsEnterprises.first).toViewModel();
+      final second =
+          BsEnterpriseModel.fromEntity(bsEnterprises.last).toViewModel();
 
       expectLater(
         sut.bsSelectedEnterpriseStream,

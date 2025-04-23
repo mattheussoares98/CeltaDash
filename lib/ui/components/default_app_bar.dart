@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../../domain/entities/entities.dart';
 import '../helpers/helpers.dart';
 import '../pages/pages.dart';
 import 'components.dart';
@@ -27,7 +26,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
 
     return AppBar(
       toolbarHeight: appBarHeight,
-      title: StreamBuilder<List<BsEnterpriseEntity>?>(
+      title: StreamBuilder<List<BsEnterpriseViewModel>?>(
           stream: homePresenter.bsEnterprisesStream,
           builder: (context, snapAllEnterprises) {
             if (snapAllEnterprises.data == null) {
@@ -45,7 +44,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                 child: Text(R.string.loadEnterprises),
               );
             }
-            return StreamBuilder<BsEnterpriseEntity?>(
+            return StreamBuilder<BsEnterpriseViewModel?>(
                 stream: homePresenter.bsSelectedEnterpriseStream,
                 builder: (context, snapshot) {
                   return Column(
@@ -53,15 +52,15 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                       Row(
                         children: [
                           Expanded(
-                            child: DefaultDropDown<BsEnterpriseEntity?>(
+                            child: DefaultDropDown<BsEnterpriseViewModel?>(
                               onChanged: (_) {
                                 widget.onChangeDateOrEnterprise();
                               },
                               hint: null,
                               items: snapAllEnterprises.data
                                   ?.map(
-                                    (e) =>
-                                        DropdownMenuItem<BsEnterpriseEntity?>(
+                                    (e) => DropdownMenuItem<
+                                        BsEnterpriseViewModel?>(
                                       value: e,
                                       alignment: Alignment.center,
                                       child: Text(
