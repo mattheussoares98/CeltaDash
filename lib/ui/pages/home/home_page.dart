@@ -2,13 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../main/factories/factories.dart';
+import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 import '../pages.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   final HomePresenter homePresenter;
 
   const HomePage(this.homePresenter, {super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        await widget.homePresenter.getBsEnterprises(
+            showBsErrorMessage: (error) {
+          snackBarMessage(
+            context,
+            error,
+            backgroundColor: Colors.red,
+          ); //TODO make color obligatory
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,16 +44,16 @@ class HomePage extends StatelessWidget {
       makeTeamPage(),
     ];
     return StreamBuilder<int>(
-      stream: homePresenter.currentPageIndexStream,
+      stream: widget.homePresenter.currentPageIndexStream,
       builder: (context, snapshot) {
         return Scaffold(
           body: ListenableProvider(
-            create: (_) => homePresenter,
+            create: (_) => widget.homePresenter,
             child: pages[snapshot.data ?? 0],
           ),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: snapshot.data ?? 0,
-            onTap: homePresenter.updateSelectedIndex,
+            onTap: widget.homePresenter.updateSelectedIndex,
             type: BottomNavigationBarType.fixed,
             unselectedFontSize: 10,
             selectedFontSize: 12,

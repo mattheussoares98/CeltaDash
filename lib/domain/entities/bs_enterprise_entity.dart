@@ -1,6 +1,8 @@
-class BsEnterpriseEntity {
+import 'package:equatable/equatable.dart';
+
+class BsEnterpriseEntity extends Equatable {
   final int? Code;
-  final int? PersonalizedCode;
+  final String? PersonalizedCode;
   final String? Name;
   final int? CnpjNumber;
   final int? CodigoInternoVendaMobile_ModeloPedido;
@@ -26,4 +28,20 @@ class BsEnterpriseEntity {
     required this.ProductCodeWithCheckerDigit,
     required this.InscriptionNumber,
   });
+
+  @override
+  List<Object?> get props => [
+        Code,
+        PersonalizedCode,
+        Name,
+        CnpjNumber,
+        CodigoInternoVendaMobile_ModeloPedido,
+        useEcommerceSale,
+        useRetailSale,
+        useWholeSale,
+        EnterpriseParticipateEnterpriseGroup,
+        ProductCodeSizeOfBalanceLabel,
+        ProductCodeWithCheckerDigit,
+        InscriptionNumber,
+      ];
 }

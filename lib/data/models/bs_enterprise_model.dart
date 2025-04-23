@@ -1,118 +1,119 @@
+import 'package:celta_plus/ui/helpers/helpers.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../domain/entities/entities.dart';
 
 class BsEnterpriseModel extends Equatable {
-  final int? code;
-  final int? personalizedCode;
-  final String? name;
-  final int? cnpjNumber;
-  final int? codigoInternoVendaMobileModeloPedido;
-  final bool? useRetailSale;
-  final bool? useWholeSale;
-  final bool? useEcommerceSale;
-  final bool? enterpriseParticipateEnterpriseGroup;
-  final int? productCodeSizeOfBalanceLabel;
-  final bool? productCodeWithCheckerDigit;
-  final String? inscriptionNumber;
+  final int? Code;
+  final String? PersonalizedCode;
+  final String? Name;
+  final int? CnpjNumber;
+  final int? CodigoInternoVendaMobileModeloPedido;
+  final bool? UseRetailSale;
+  final bool? UseWholeSale;
+  final bool? UseEcommerceSale;
+  final bool? EnterpriseParticipateEnterpriseGroup;
+  final int? ProductCodeSizeOfBalanceLabel;
+  final bool? ProductCodeWithCheckerDigit;
+  final String? InscriptionNumber;
 
   const BsEnterpriseModel({
-    required this.code,
-    required this.personalizedCode,
-    required this.name,
-    required this.cnpjNumber,
-    required this.codigoInternoVendaMobileModeloPedido,
-    required this.useEcommerceSale,
-    required this.useRetailSale,
-    required this.useWholeSale,
-    required this.enterpriseParticipateEnterpriseGroup,
-    required this.productCodeSizeOfBalanceLabel,
-    required this.productCodeWithCheckerDigit,
-    required this.inscriptionNumber,
+    required this.Code,
+    required this.PersonalizedCode,
+    required this.Name,
+    required this.CnpjNumber,
+    required this.CodigoInternoVendaMobileModeloPedido,
+    required this.UseEcommerceSale,
+    required this.UseRetailSale,
+    required this.UseWholeSale,
+    required this.EnterpriseParticipateEnterpriseGroup,
+    required this.ProductCodeSizeOfBalanceLabel,
+    required this.ProductCodeWithCheckerDigit,
+    required this.InscriptionNumber,
   });
 
   factory BsEnterpriseModel.fromJson(Map json) => BsEnterpriseModel(
-        code: json['Code'],
-        personalizedCode: json['PersonalizedCode'],
-        name: json['Name'],
-        cnpjNumber: json['CnpjNumber'],
-        codigoInternoVendaMobileModeloPedido:
+        Code: json['Code'],
+        PersonalizedCode: json['PersonalizedCode'],
+        Name: json['Name'],
+        CnpjNumber: json['CnpjNumber']?.toString().toInt(),
+        CodigoInternoVendaMobileModeloPedido:
             json['CodigoInternoVendaMobile_ModeloPedido'],
-        useEcommerceSale: json['useEcommerceSale'],
-        useRetailSale: json['useRetailSale'],
-        useWholeSale: json['useWholeSale'],
-        enterpriseParticipateEnterpriseGroup:
+        UseEcommerceSale: json['useEcommerceSale'],
+        UseRetailSale: json['useRetailSale'],
+        UseWholeSale: json['useWholeSale'],
+        EnterpriseParticipateEnterpriseGroup:
             json['EnterpriseParticipateEnterpriseGroup'],
-        productCodeSizeOfBalanceLabel: json['ProductCodeSizeOfBalanceLabel'],
-        productCodeWithCheckerDigit: json['ProductCodeWithCheckerDigit'],
-        inscriptionNumber: json['InscriptionNumber'],
+        ProductCodeSizeOfBalanceLabel: json['ProductCodeSizeOfBalanceLabel'],
+        ProductCodeWithCheckerDigit: json['ProductCodeWithCheckerDigit'],
+        InscriptionNumber: json['InscriptionNumber'],
       );
 
   Map<String, dynamic> toJson() => {
-        'Code': code,
-        'PersonalizedCode': personalizedCode,
-        'Name': name,
-        'CnpjNumber': cnpjNumber,
+        'Code': Code,
+        'PersonalizedCode': PersonalizedCode,
+        'Name': Name,
+        'CnpjNumber': CnpjNumber,
         'CodigoInternoVendaMobile_ModeloPedido':
-            codigoInternoVendaMobileModeloPedido,
-        'useEcommerceSale': useEcommerceSale,
-        'useRetailSale': useRetailSale,
-        'useWholeSale': useWholeSale,
+            CodigoInternoVendaMobileModeloPedido,
+        'useEcommerceSale': UseEcommerceSale,
+        'useRetailSale': UseRetailSale,
+        'useWholeSale': UseWholeSale,
         'EnterpriseParticipateEnterpriseGroup':
-            enterpriseParticipateEnterpriseGroup,
-        'ProductCodeSizeOfBalanceLabel': productCodeSizeOfBalanceLabel,
-        'ProductCodeWithCheckerDigit': productCodeWithCheckerDigit,
-        'InscriptionNumber': inscriptionNumber,
+            EnterpriseParticipateEnterpriseGroup,
+        'ProductCodeSizeOfBalanceLabel': ProductCodeSizeOfBalanceLabel,
+        'ProductCodeWithCheckerDigit': ProductCodeWithCheckerDigit,
+        'InscriptionNumber': InscriptionNumber,
       };
 
   factory BsEnterpriseModel.fromEntity(BsEnterpriseEntity entity) =>
       BsEnterpriseModel(
-        code: entity.Code,
-        personalizedCode: entity.PersonalizedCode,
-        name: entity.Name,
-        cnpjNumber: entity.CnpjNumber,
-        codigoInternoVendaMobileModeloPedido:
+        Code: entity.Code,
+        PersonalizedCode: entity.PersonalizedCode,
+        Name: entity.Name,
+        CnpjNumber: entity.CnpjNumber,
+        CodigoInternoVendaMobileModeloPedido:
             entity.CodigoInternoVendaMobile_ModeloPedido,
-        useEcommerceSale: entity.useEcommerceSale,
-        useRetailSale: entity.useRetailSale,
-        useWholeSale: entity.useWholeSale,
-        enterpriseParticipateEnterpriseGroup:
+        UseEcommerceSale: entity.useEcommerceSale,
+        UseRetailSale: entity.useRetailSale,
+        UseWholeSale: entity.useWholeSale,
+        EnterpriseParticipateEnterpriseGroup:
             entity.EnterpriseParticipateEnterpriseGroup,
-        productCodeSizeOfBalanceLabel: entity.ProductCodeSizeOfBalanceLabel,
-        productCodeWithCheckerDigit: entity.ProductCodeWithCheckerDigit,
-        inscriptionNumber: entity.InscriptionNumber,
+        ProductCodeSizeOfBalanceLabel: entity.ProductCodeSizeOfBalanceLabel,
+        ProductCodeWithCheckerDigit: entity.ProductCodeWithCheckerDigit,
+        InscriptionNumber: entity.InscriptionNumber,
       );
 
   BsEnterpriseEntity toEntity() => BsEnterpriseEntity(
-        Code: code,
-        PersonalizedCode: personalizedCode,
-        Name: name,
-        CnpjNumber: cnpjNumber,
+        Code: Code,
+        PersonalizedCode: PersonalizedCode,
+        Name: Name,
+        CnpjNumber: CnpjNumber,
         CodigoInternoVendaMobile_ModeloPedido:
-            codigoInternoVendaMobileModeloPedido,
-        useEcommerceSale: useEcommerceSale,
-        useRetailSale: useRetailSale,
-        useWholeSale: useWholeSale,
+            CodigoInternoVendaMobileModeloPedido,
+        useEcommerceSale: UseEcommerceSale,
+        useRetailSale: UseRetailSale,
+        useWholeSale: UseWholeSale,
         EnterpriseParticipateEnterpriseGroup:
-            enterpriseParticipateEnterpriseGroup,
-        ProductCodeSizeOfBalanceLabel: productCodeSizeOfBalanceLabel,
-        ProductCodeWithCheckerDigit: productCodeWithCheckerDigit,
-        InscriptionNumber: inscriptionNumber,
+            EnterpriseParticipateEnterpriseGroup,
+        ProductCodeSizeOfBalanceLabel: ProductCodeSizeOfBalanceLabel,
+        ProductCodeWithCheckerDigit: ProductCodeWithCheckerDigit,
+        InscriptionNumber: InscriptionNumber,
       );
 
   @override
   List<Object?> get props => [
-        code,
-        personalizedCode,
-        name,
-        cnpjNumber,
-        codigoInternoVendaMobileModeloPedido,
-        useEcommerceSale,
-        useRetailSale,
-        useWholeSale,
-        enterpriseParticipateEnterpriseGroup,
-        productCodeSizeOfBalanceLabel,
-        productCodeWithCheckerDigit,
-        inscriptionNumber,
+        Code,
+        PersonalizedCode,
+        Name,
+        CnpjNumber,
+        CodigoInternoVendaMobileModeloPedido,
+        UseEcommerceSale,
+        UseRetailSale,
+        UseWholeSale,
+        EnterpriseParticipateEnterpriseGroup,
+        ProductCodeSizeOfBalanceLabel,
+        ProductCodeWithCheckerDigit,
+        InscriptionNumber,
       ];
 }

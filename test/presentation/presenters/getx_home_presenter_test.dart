@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:celta_plus/data/models/models.dart';
+import 'package:celta_plus/domain/entities/entities.dart';
 import 'package:celta_plus/presentation/presenters/presenters.dart';
 import 'package:celta_plus/ui/helpers/helpers.dart';
 import 'package:faker/faker.dart';
@@ -9,12 +13,16 @@ import 'package:flutter/widgets.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../data/mocks/mocks.dart';
+import '../../domain/mocks/mocks.dart';
 
 void main() {
   late GetxHomePresenter sut;
 
   late NavigateToSpy navigateTo;
   late RemoteLoadEnterprisesSpy remoteLoadEnterprises;
+
+  late SoapResponseModel soapResponse;
+  late List<BsEnterpriseEntity> bsEnterprises;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
@@ -31,9 +39,24 @@ void main() {
     );
   }
 
-  void initEntities() {}
+  void initEntities() {
+    bsEnterprises = [
+      EntityFactory.makeBsEnterpriseEntity(),
+      EntityFactory.makeBsEnterpriseEntity(),
+    ];
+    soapResponse = SoapResponseModel(
+      response: json.encode(
+        bsEnterprises
+            .map((e) => BsEnterpriseModel.fromEntity(e).toJson())
+            .toList(),
+      ),
+      responseType: SoapResponseType.success,
+    );
+  }
 
-  void initMockSuccess() {}
+  void initMockSuccess() {
+    remoteLoadEnterprises.mockGet(soapResponse);
+  }
 
   setUp(() {
     initUsecases();
@@ -86,6 +109,33 @@ void main() {
         () => navigateTo.navigate(
             pageRoute: PageRoutes.configurations, clear: false),
       ).called(1);
+    });
+  });
+
+  group("Get enterprises", () {
+    test("Should emit correct values on success", () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(sut.mainErrorStream, emits(null));
+      expectLater(sut.bsEnterprisesStream, emits(bsEnterprises));
+
+      await sut.getBsEnterprises(showBsErrorMessage: (_) {});
+    });
+    test("Should emit correct values on error", () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(
+        sut.mainErrorStream,
+        emitsInOrder([null, UIError.unexpected]),
+      );
+
+      remoteLoadEnterprises.mockGetError();
+
+      await sut.getBsEnterprises(showBsErrorMessage: (_) {});
+    });
+
+    test("Should call remoteLoadEnterprises", () async {
+      await sut.getBsEnterprises(showBsErrorMessage: (_) {});
+
+      verify(() => remoteLoadEnterprises.get()).called(1);
     });
   });
 }

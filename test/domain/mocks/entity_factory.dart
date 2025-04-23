@@ -5,7 +5,7 @@ import 'package:faker/faker.dart';
 class EntityFactory {
   EntityFactory._();
 
-  static makeEnterpriseEntity() => EnterpriseEntity(
+  static EnterpriseEntity makeEnterpriseEntity() => EnterpriseEntity(
         baseUrl: faker.internet.httpUrl(),
         enterpriseName: faker.company.name(),
         bsUser: makeBsUserEntity(),
@@ -21,9 +21,11 @@ class EntityFactory {
     final enterprise = EnterpriseBuilder.entity;
     final bsUser = BsUserEntity(
       name: anullUserName == true ? null : enterprise?.bsUser?.name,
-      AccessKey: anullUserAccessKey == true ? null : enterprise?.bsUser?.AccessKey,
-      CrossIdentity_Usuario:
-          anullUserCrossIdentity == true ? null : enterprise?.bsUser?.CrossIdentity_Usuario,
+      AccessKey:
+          anullUserAccessKey == true ? null : enterprise?.bsUser?.AccessKey,
+      CrossIdentity_Usuario: anullUserCrossIdentity == true
+          ? null
+          : enterprise?.bsUser?.CrossIdentity_Usuario,
     );
     return EnterpriseEntity(
       baseUrl: annullbaseUrl == true ? null : enterprise?.baseUrl,
@@ -33,7 +35,7 @@ class EntityFactory {
     );
   }
 
-  static makeSaleMovementEntity() => SaleMovementEntity(
+  static SaleMovementEntity makeSaleMovementEntity() => SaleMovementEntity(
         Enterprise: faker.company.name(),
         LiquidValue: faker.randomGenerator.decimal(),
         Year: faker.randomGenerator.integer(3000),
@@ -47,9 +49,25 @@ class EntityFactory {
         PaymentModality: faker.lorem.word(),
       );
 
-  static makeBsUserEntity() => BsUserEntity(
+  static BsUserEntity makeBsUserEntity() => BsUserEntity(
         name: faker.person.name(),
         AccessKey: faker.guid.guid(),
         CrossIdentity_Usuario: faker.guid.guid(),
+      );
+
+  static BsEnterpriseEntity makeBsEnterpriseEntity() => BsEnterpriseEntity(
+        PersonalizedCode: faker.randomGenerator.string(10),
+        Name: faker.randomGenerator.string(10),
+        InscriptionNumber: faker.randomGenerator.string(10),
+        Code: faker.randomGenerator.integer(100),
+        CnpjNumber: faker.randomGenerator.integer(100),
+        CodigoInternoVendaMobile_ModeloPedido:
+            faker.randomGenerator.integer(100),
+        ProductCodeSizeOfBalanceLabel: faker.randomGenerator.integer(100),
+        useEcommerceSale: faker.randomGenerator.boolean(),
+        useRetailSale: faker.randomGenerator.boolean(),
+        useWholeSale: faker.randomGenerator.boolean(),
+        EnterpriseParticipateEnterpriseGroup: faker.randomGenerator.boolean(),
+        ProductCodeWithCheckerDigit: faker.randomGenerator.boolean(),
       );
 }
