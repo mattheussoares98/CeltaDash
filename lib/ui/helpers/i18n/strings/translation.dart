@@ -5,6 +5,7 @@ abstract class Translation {
   String get msgReallyWantLogout;
   String get msgRequiredField;
   String get msgUnexpectedError;
+  String get msgUpdateCeltaBs;
   String get msgVeryShortField;
   String get msgWriteSomething;
 

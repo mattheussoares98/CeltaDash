@@ -197,7 +197,7 @@ void main() {
       EnterpriseBuilder.entity = EntityFactory.anullEnterpriseProperties(
         annullbaseUrl: true,
       );
-      
+
       firebaseManager.mockGetError();
 
       await sut.login(
@@ -299,6 +299,55 @@ void main() {
           enterpriseName: enterpriseName,
         ),
       );
+    });
+
+    test("Should not do login if dont receive accessKey", () async {
+      EnterpriseBuilder.entity =
+          EntityFactory.anullEnterpriseProperties(annullbaseUrl: true);
+
+      remoteLogin.mockLogin(
+        SoapResponseModel(
+          response:
+              EnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson()
+                ..["AccessKey"] = null,
+          responseType: SoapResponseType.success,
+        ),
+      );
+
+      await sut.login(
+        enterpriseName: enterpriseName,
+        user: user,
+        password: password,
+        showBsErrorMessage: (_) {},
+      );
+
+      verifyNever(() => navigateTo.navigate(pageRoute: PageRoutes.login));
+    });
+    test("Should emit correct error when dont receive AccesKey", () async {
+      EnterpriseBuilder.entity =
+          EntityFactory.anullEnterpriseProperties(annullbaseUrl: true);
+
+      remoteLogin.mockLogin(
+        SoapResponseModel(
+          response:
+              EnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson()
+                ..["AccessKey"] = null,
+          responseType: SoapResponseType.success,
+        ),
+      );
+
+      expectLater(
+          sut.mainErrorStream, emitsInOrder([null, UIError.updateCeltaBs]));
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+
+      await sut.login(
+        enterpriseName: enterpriseName,
+        user: user,
+        password: password,
+        showBsErrorMessage: (_) {},
+      );
+
+      verifyNever(() => navigateTo.navigate(pageRoute: PageRoutes.login));
     });
   });
   group("On change enterprise name", () {

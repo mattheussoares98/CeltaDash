@@ -3,6 +3,7 @@ import '../helpers.dart';
 enum UIError {
   enterpriseNotFound,
   unexpected,
+  updateCeltaBs,
 }
 
 extension UIErrorExtension on UIError {
@@ -12,6 +13,8 @@ extension UIErrorExtension on UIError {
         return R.string.msgEnterpriseNotFound;
       case UIError.unexpected:
         return R.string.msgUnexpectedError;
+      case UIError.updateCeltaBs:
+        return R.string.msgUpdateCeltaBs;
     }
   }
 }

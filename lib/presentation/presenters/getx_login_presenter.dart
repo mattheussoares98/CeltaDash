@@ -61,6 +61,8 @@ class GetxLoginPresenter extends GetxController
 
       if (response.responseType == SoapResponseType.error) {
         showBsErrorMessage(response.response);
+      } else if (response.response["AccessKey"] == null) {
+        throw DomainError.updateCeltaBs;
       } else {
         EnterpriseBuilder.entity = EnterpriseEntity(
           baseUrl: EnterpriseBuilder.entity?.baseUrl,
@@ -82,6 +84,8 @@ class GetxLoginPresenter extends GetxController
       switch (e) {
         case DomainError.enterpriseNotFound:
           mainError = UIError.enterpriseNotFound;
+        case DomainError.updateCeltaBs:
+          mainError = UIError.updateCeltaBs;
         default:
           mainError = UIError.unexpected;
       }
