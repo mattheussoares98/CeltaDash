@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import '../../ui/pages/pages.dart';
 
 mixin SaleMovementManager on GetxController {
-  final _saleMovement = Rx<SaleMovementViewModel?>(null);
-  Stream<SaleMovementViewModel?> get saleMovementStream => _saleMovement.stream;
-  set saleMovement(SaleMovementViewModel? value) => _saleMovement.value = value;
+  final _saleMovements = Rx<List<SaleMovementViewModel>?>(null);
+  Stream<List<SaleMovementViewModel>?> get saleMovementStream =>
+      _saleMovements.stream;
+  set saleMovements(List<SaleMovementViewModel>? value) =>
+      _saleMovements.value = value;
 }

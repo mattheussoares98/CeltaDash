@@ -1,5 +1,8 @@
+import 'package:celta_plus/data/models/models.dart';
+import 'package:celta_plus/domain/entities/entities.dart';
 import 'package:celta_plus/presentation/presenters/presenters.dart';
 import 'package:celta_plus/ui/helpers/helpers.dart';
+import 'package:faker/faker.dart';
 
 import 'package:get/get.dart';
 
@@ -8,12 +11,17 @@ import 'package:flutter/widgets.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../data/mocks/mocks.dart';
+import '../../domain/mocks/mocks.dart';
+import '../mocks/mocks.dart';
 
 void main() {
   late GetxResumePresenter sut;
+  late HomePresenterSpy homePresenter;
 
   late NavigateToSpy navigateTo;
   late LoadSaleMovementsSpy loadSaleMovements;
+
+  late List<SaleMovementEntity> saleMovementEntitys;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
@@ -28,11 +36,20 @@ void main() {
       navigateTo: navigateTo,
       loadSaleMovements: loadSaleMovements,
     );
+    homePresenter = HomePresenterSpy();
   }
 
-  void initEntities() {}
+  void initEntities() {
+    saleMovementEntitys = [
+      EntityFactory.makeSaleMovementEntity(),
+      EntityFactory.makeSaleMovementEntity(),
+      EntityFactory.makeSaleMovementEntity(),
+    ];
+  }
 
-  void initMockSuccess() {}
+  void initMockSuccess() {
+    loadSaleMovements.mockGet(saleMovementEntitys);
+  }
 
   setUp(() {
     initUsecases();
@@ -94,6 +111,79 @@ void main() {
       verify(
         () => navigateTo.navigate(pageRoute: PageRoutes.goalHistory),
       ).called(1);
+    });
+  });
+
+  group("Get sales", () {
+    test("Should emit correct values on success", () async {
+      expectLater(sut.mainErrorStream, emits(null));
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(
+        sut.saleMovementStream,
+        emits(saleMovementEntitys
+            .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+            .toList()),
+      );
+
+      await sut.getSales(homePresenter);
+    });
+    test("Should emit correct values on error", () async {
+      expectLater(
+        sut.mainErrorStream,
+        emitsInOrder([null, UIError.unexpected]),
+      );
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+
+      loadSaleMovements.mockGetError();
+
+      await sut.getSales(homePresenter);
+    });
+
+    test("Should load sale movements with correct values", () async {
+      await sut.getSales(homePresenter);
+
+      final startDate = DateTime(
+        homePresenter.selectedDate.year,
+        homePresenter.selectedDate.month,
+        1,
+      );
+      final endDate = DateTime(
+        homePresenter.selectedDate.year,
+        homePresenter.selectedDate.month + 1,
+        1,
+      ).subtract(Duration(days: 1));
+
+      verify(() => loadSaleMovements.get(
+            startDate: startDate,
+            endDate: endDate,
+            groupByDay: true,
+            groupByMonth: true,
+            groupByHour: true,
+          )).called(1);
+    });
+    test("Should load sale movements with correct new date", () async {
+      homePresenter.selectedDateMock = faker.date.dateTime();
+
+      await sut.getSales(homePresenter);
+
+      final startDate = DateTime(
+        homePresenter.selectedDateMock.year,
+        homePresenter.selectedDateMock.month,
+        1,
+      );
+      final endDate = DateTime(
+        homePresenter.selectedDateMock.year,
+        homePresenter.selectedDateMock.month + 1,
+        1,
+      ).subtract(Duration(days: 1));
+
+      verify(() => loadSaleMovements.get(
+            startDate: startDate,
+            endDate: endDate,
+            groupByDay: true,
+            groupByMonth: true,
+            groupByHour: true,
+          )).called(1);
     });
   });
 }

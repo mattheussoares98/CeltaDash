@@ -1,11 +1,8 @@
+import 'package:celta_plus/domain/entities/entities.dart';
 import 'package:celta_plus/domain/usecases/usecases.dart';
 import 'package:mocktail/mocktail.dart';
 
 class LoadSaleMovementsSpy extends Mock implements LoadSaleMovements {
-  LoadSaleMovementsSpy() {
-    this.mockGet();
-  }
-
   When _mockGetCall() => when(
         () => this.get(
           startDate: any(named: "startDate"),
@@ -23,8 +20,8 @@ class LoadSaleMovementsSpy extends Mock implements LoadSaleMovements {
         ),
       );
 
-  void mockGet() {
-    this._mockGetCall().thenAnswer((any) async => any);
+  void mockGet(List<SaleMovementEntity> saleMovements) {
+    this._mockGetCall().thenAnswer((any) async => saleMovements);
   }
 
   void mockGetError() {

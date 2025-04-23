@@ -1,10 +1,14 @@
 import 'package:get/get.dart';
 
+import '../../data/models/models.dart';
 import '../../domain/usecases/usecases.dart';
 import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
+import '../mixins/mixins.dart';
 
-class GetxResumePresenter extends GetxController implements ResumePresenter {
+class GetxResumePresenter extends GetxController
+    with SaleMovementManager, UIErrorManager, LoadingManager
+    implements ResumePresenter {
   final NavigateTo navigateTo;
   final LoadSaleMovements loadSaleMovements;
 
@@ -46,5 +50,36 @@ class GetxResumePresenter extends GetxController implements ResumePresenter {
   @override
   void goToGroupSummaryPage() {
     navigateTo.navigate(pageRoute: PageRoutes.groupSummary);
+  }
+
+  @override
+  Future<void> getSales(HomePresenter homePresenter) async {
+    isLoading = true;
+    mainError = null;
+    try {
+      final result = await loadSaleMovements.get(
+        startDate: DateTime(
+          homePresenter.selectedDate.year,
+          homePresenter.selectedDate.month,
+          1,
+        ),
+        endDate: DateTime(
+          homePresenter.selectedDate.year,
+          homePresenter.selectedDate.month + 1,
+          1,
+        ).subtract(Duration(days: 1)),
+        groupByDay: true,
+        groupByMonth: true,
+        groupByHour: true,
+      );
+
+      saleMovements = result
+          .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+          .toList();
+    } catch (e) {
+      mainError = UIError.unexpected;
+    } finally {
+      isLoading = false;
+    }
   }
 }
