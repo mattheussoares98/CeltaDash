@@ -11,13 +11,10 @@ class BsRemoteLoadEnterprises implements RemoteLoadEnterprises {
   @override
   Future<SoapResponseModel> get() async {
     try {
-      final baseUrl = EnterpriseBuilder.entity?.baseUrl;
       final crossIdentity =
           EnterpriseBuilder.entity?.bsUser?.CrossIdentity_Usuario;
 
       return await soapAdapter.post(
-        ccsUrl:
-            "$baseUrl/ccs", //TODO remove this parameter because always will use enterpriseBuilder
         parameters: {
           "crossIdentity": crossIdentity,
           "simpleSearchValue": "",

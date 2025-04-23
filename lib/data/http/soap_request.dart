@@ -7,6 +7,5 @@ abstract class SoapRequest {
     required String? typeOfResult,
     required String soapAction,
     required String serviceASMX,
-    required String ccsUrl,
   });
 }

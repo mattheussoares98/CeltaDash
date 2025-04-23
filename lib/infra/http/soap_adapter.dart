@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import '../../data/http/http.dart';
 import '../../data/models/models.dart';
 import '../../domain/helpers/helpers.dart';
+import '../../main/builders/builders.dart';
 
 class SoapAdapter implements SoapRequest {
   @override
@@ -14,7 +15,6 @@ class SoapAdapter implements SoapRequest {
     required String? typeOfResult,
     required String soapAction,
     required String serviceASMX,
-    required String ccsUrl,
   }) async {
     late SoapResponseModel soapResponse;
 
@@ -43,8 +43,9 @@ class SoapAdapter implements SoapRequest {
         </soap12:Body>
       </soap12:Envelope>''';
 
+      final baseUrl = EnterpriseBuilder.entity?.baseUrl;
       final response = await http.post(
-        Uri.parse('$ccsUrl/$serviceASMX'),
+        Uri.parse('$baseUrl/ccs/$serviceASMX'),
         body: envelope,
         headers: soapHeaders,
       );

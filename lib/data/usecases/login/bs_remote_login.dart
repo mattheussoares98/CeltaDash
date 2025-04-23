@@ -4,7 +4,6 @@ import 'package:xml2json/xml2json.dart';
 
 import '../../../domain/helpers/helpers.dart';
 import '../../../domain/usecases/usecases.dart';
-import '../../../main/builders/builders.dart';
 import '../../http/http.dart';
 import '../../models/models.dart';
 
@@ -19,14 +18,12 @@ class BsRemoteLogin implements RemoteLogin {
     required String password,
   }) async {
     try {
-      final baseUrl = EnterpriseBuilder.entity?.baseUrl;
       final response = await soapAdapter.post(
         parameters: {"user": user, "password": password},
         typeOfResponse: "UserCanLoginJsonResponse",
         soapAction: "UserCanLoginJson",
         serviceASMX: "CeltaSecurityService.asmx",
         typeOfResult: "UserCanLoginJsonResult",
-        ccsUrl: "$baseUrl/ccs",
       );
 
       if (response.responseType == SoapResponseType.error) return response;
