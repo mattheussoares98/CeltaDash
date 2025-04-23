@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 
 import '../../helpers/helpers.dart';
+import '../pages.dart';
 
 class ConfigurationsPage extends StatelessWidget {
-  const ConfigurationsPage({super.key});
+  final ConfigurationsPresenter configurationsPresenter;
+  const ConfigurationsPage({
+    super.key,
+    required this.configurationsPresenter,
+  });
 
   @override
   Widget build(BuildContext context) {
