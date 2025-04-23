@@ -2,6 +2,7 @@ import 'package:celta_plus/ui/helpers/helpers.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../domain/entities/entities.dart';
+import '../../ui/pages/pages.dart';
 
 class BsEnterpriseModel extends Equatable {
   final int? Code;
@@ -31,6 +32,22 @@ class BsEnterpriseModel extends Equatable {
     required this.ProductCodeWithCheckerDigit,
     required this.InscriptionNumber,
   });
+
+  @override
+  List<Object?> get props => [
+        Code,
+        PersonalizedCode,
+        Name,
+        CnpjNumber,
+        CodigoInternoVendaMobileModeloPedido,
+        UseEcommerceSale,
+        UseRetailSale,
+        UseWholeSale,
+        EnterpriseParticipateEnterpriseGroup,
+        ProductCodeSizeOfBalanceLabel,
+        ProductCodeWithCheckerDigit,
+        InscriptionNumber,
+      ];
 
   factory BsEnterpriseModel.fromJson(Map json) => BsEnterpriseModel(
         Code: json['Code'],
@@ -101,19 +118,41 @@ class BsEnterpriseModel extends Equatable {
         InscriptionNumber: InscriptionNumber,
       );
 
-  @override
-  List<Object?> get props => [
-        Code,
-        PersonalizedCode,
-        Name,
-        CnpjNumber,
-        CodigoInternoVendaMobileModeloPedido,
-        UseEcommerceSale,
-        UseRetailSale,
-        UseWholeSale,
-        EnterpriseParticipateEnterpriseGroup,
-        ProductCodeSizeOfBalanceLabel,
-        ProductCodeWithCheckerDigit,
-        InscriptionNumber,
-      ];
+  factory BsEnterpriseModel.fromViewModel(BsEnterpriseViewModel viewModel) =>
+      BsEnterpriseModel(
+        Code: viewModel.Code?.toInt(),
+        PersonalizedCode: viewModel.PersonalizedCode,
+        Name: viewModel.Name,
+        CnpjNumber: viewModel.CnpjNumber?.toInt(),
+        CodigoInternoVendaMobileModeloPedido:
+            viewModel.CodigoInternoVendaMobileModeloPedido?.toInt(),
+        UseEcommerceSale: viewModel.UseEcommerceSale == "true",
+        UseRetailSale: viewModel.UseRetailSale == "true",
+        UseWholeSale: viewModel.UseWholeSale == "true",
+        EnterpriseParticipateEnterpriseGroup:
+            viewModel.EnterpriseParticipateEnterpriseGroup == "true",
+        ProductCodeSizeOfBalanceLabel:
+            viewModel.ProductCodeSizeOfBalanceLabel?.toInt(),
+        ProductCodeWithCheckerDigit:
+            viewModel.ProductCodeWithCheckerDigit == "true",
+        InscriptionNumber: viewModel.InscriptionNumber,
+      );
+
+  BsEnterpriseViewModel toViewModel() => BsEnterpriseViewModel(
+        Code: Code?.toString(),
+        PersonalizedCode: PersonalizedCode,
+        Name: Name,
+        CnpjNumber: CnpjNumber?.toString(),
+        CodigoInternoVendaMobileModeloPedido:
+            CodigoInternoVendaMobileModeloPedido?.toString(),
+        UseEcommerceSale: UseEcommerceSale?.toString(),
+        UseRetailSale: UseRetailSale?.toString(),
+        UseWholeSale: UseWholeSale?.toString(),
+        EnterpriseParticipateEnterpriseGroup:
+            EnterpriseParticipateEnterpriseGroup?.toString(),
+        ProductCodeSizeOfBalanceLabel:
+            ProductCodeSizeOfBalanceLabel?.toString(),
+        ProductCodeWithCheckerDigit: ProductCodeWithCheckerDigit?.toString(),
+        InscriptionNumber: InscriptionNumber,
+      );
 }
