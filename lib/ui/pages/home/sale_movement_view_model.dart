@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 
 class SaleMovementViewModel extends Equatable {
-  //TODO create toViewModel and fromViewModel in saleMovementModel
   final String? Date;
   final String? LiquidValue;
   final String? Year;
