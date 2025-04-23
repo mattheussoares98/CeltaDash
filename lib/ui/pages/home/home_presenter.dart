@@ -5,4 +5,5 @@ abstract class HomePresenter implements Listenable {
   DateTime get selectedDate;
   void updateSelectedIndex(int index);
   void updateSelectedDate(DateTime date);
+  void goToConfigurationsPage();
 }

@@ -42,22 +42,25 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                     widget.onChangeDateOrEnterprise();
                   },
                   hint: null,
-                  items:
-                      DefaultAppBar.enterprises
-                          .map(
-                            (e) => DropdownMenuItem<String>(
-                              value: e,
-                              alignment: Alignment.center,
-                              child: Text(e),
-                            ),
-                          )
-                          .toList(),
+                  items: DefaultAppBar.enterprises
+                      .map(
+                        (e) => DropdownMenuItem<String>(
+                          value: e,
+                          alignment: Alignment.center,
+                          child: Text(e),
+                        ),
+                      )
+                      .toList(),
                   selectedItem: DefaultAppBar.enterprises[0],
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 8),
-                child: IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
+                child: IconButton(
+                    onPressed: () {
+                      homePresenter.goToConfigurationsPage();
+                    },
+                    icon: Icon(Icons.settings)),
               ),
             ],
           ),

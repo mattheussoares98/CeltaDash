@@ -1,4 +1,5 @@
 import 'package:celta_plus/presentation/presenters/presenters.dart';
+import 'package:celta_plus/ui/helpers/helpers.dart';
 import 'package:faker/faker.dart';
 
 import 'package:get/get.dart';
@@ -7,17 +8,24 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mocktail/mocktail.dart';
 
+import '../../data/mocks/mocks.dart';
+
 void main() {
-  // ignore: unused_local_variable
   late GetxHomePresenter sut;
+
+  late NavigateToSpy navigateTo;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
 
-  void initUsecases() {}
+  void initUsecases() {
+    navigateTo = NavigateToSpy();
+  }
 
   void initPresenters() {
-    sut = GetxHomePresenter();
+    sut = GetxHomePresenter(
+      navigateTo: navigateTo,
+    );
   }
 
   void initEntities() {}
@@ -64,6 +72,17 @@ void main() {
 
       sut.updateSelectedDate(secondDate);
       expect(sut.selectedDate, secondDate);
+    });
+  });
+
+  group("Navigation", () {
+    test("Should go to configurations page", () {
+      sut.goToConfigurationsPage();
+
+      verify(
+        () => navigateTo.navigate(
+            pageRoute: PageRoutes.configurations, clear: false),
+      ).called(1);
     });
   });
 }
