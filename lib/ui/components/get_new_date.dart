@@ -40,6 +40,7 @@ class GetNewDate {
         snackBarMessage(
           NavigatorKey.key.currentState!.context,
           R.string.dateNotUpdated,
+          Colors.red,
         );
       } else {
         DateTime selectedDateTime = DateTime(
@@ -55,6 +56,7 @@ class GetNewDate {
           snackBarMessage(
             NavigatorKey.key.currentState!.context,
             R.string.dateNotUpdated,
+            Colors.red,
           );
 
           return null;

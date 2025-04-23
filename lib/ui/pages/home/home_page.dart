@@ -24,11 +24,7 @@ class _HomePageState extends State<HomePage> {
       if (mounted) {
         await widget.homePresenter.getBsEnterprises(
             showBsErrorMessage: (error) {
-          snackBarMessage(
-            context,
-            error,
-            backgroundColor: Colors.red,
-          ); //TODO make color obligatory
+          snackBarMessage(context, error, Colors.red);
         });
       }
     });

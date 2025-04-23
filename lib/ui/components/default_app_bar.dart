@@ -38,7 +38,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                     snackBarMessage(
                       context,
                       error,
-                      backgroundColor: Colors.red,
+                      Colors.red,
                     );
                   });
                 },

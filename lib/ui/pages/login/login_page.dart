@@ -71,7 +71,7 @@ class _LoginPageState extends State<LoginPage>
       user: userController.text,
       password: passwordController.text,
       showBsErrorMessage: (error) {
-        snackBarMessage(context, error, backgroundColor: Colors.red);
+        snackBarMessage(context, error, Colors.red);
       },
     );
   }
