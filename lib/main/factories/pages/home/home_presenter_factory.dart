@@ -4,4 +4,5 @@ import '../../factories.dart';
 
 HomePresenter makeGetxHomePresenter() => GetxHomePresenter(
       navigateTo: makeGetxNavigateTo(),
+      remoteLoadEnterprises: makeBsRemoteLoadEnterprises(),
     );

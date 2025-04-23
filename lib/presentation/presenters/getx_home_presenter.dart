@@ -6,9 +6,11 @@ import '../../ui/pages/pages.dart';
 
 class GetxHomePresenter extends GetxController implements HomePresenter {
   final NavigateTo navigateTo;
+  final RemoteLoadEnterprises remoteLoadEnterprises;
 
   GetxHomePresenter({
     required this.navigateTo,
+    required this.remoteLoadEnterprises,
   });
 
   @override

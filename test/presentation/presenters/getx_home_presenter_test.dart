@@ -14,17 +14,20 @@ void main() {
   late GetxHomePresenter sut;
 
   late NavigateToSpy navigateTo;
+  late RemoteLoadEnterprisesSpy remoteLoadEnterprises;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
 
   void initUsecases() {
     navigateTo = NavigateToSpy();
+    remoteLoadEnterprises = RemoteLoadEnterprisesSpy();
   }
 
   void initPresenters() {
     sut = GetxHomePresenter(
       navigateTo: navigateTo,
+      remoteLoadEnterprises: remoteLoadEnterprises,
     );
   }
 
