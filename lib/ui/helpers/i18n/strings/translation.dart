@@ -36,6 +36,7 @@ abstract class Translation {
   String get hour;
   String get indicators;
   String get insertGoal;
+  String get loadEnterprises;
   String get logout;
   String get month;
   String get monthlyAnalysis;
