@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -6,8 +7,9 @@ import 'package:provider/provider.dart';
 import '../../../data/models/models.dart';
 import '../../../ui/helpers/helpers.dart';
 import '../../components/components.dart';
+import '../../mixins/mixins.dart';
+import '../pages.dart';
 import 'components/components.dart';
-import 'resume.dart';
 
 class ResumePage extends StatefulWidget {
   final ResumePresenter resumePresenter;
@@ -17,13 +19,31 @@ class ResumePage extends StatefulWidget {
   State<ResumePage> createState() => _ResumePageState();
 }
 
-class _ResumePageState extends State<ResumePage> {
+class _ResumePageState extends State<ResumePage>
+    with UIErrorManager, LoadingManager {
   final scrollController = ScrollController();
+  StreamSubscription? mainErrorSubscription;
+  StreamSubscription? loadingSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        HomePresenter homePresenter = Provider.of(context, listen: false);
+        await widget.resumePresenter.getSales(homePresenter);
+      }
+    });
+  }
 
   @override
   void dispose() {
     super.dispose();
     scrollController.dispose();
+
+    mainErrorSubscription?.cancel();
+    loadingSubscription?.cancel();
   }
 
   final DailySalesModel dailySalesModel = DailySalesModel(
@@ -37,6 +57,13 @@ class _ResumePageState extends State<ResumePage> {
 
   @override
   Widget build(BuildContext context) {
+    mainErrorSubscription?.cancel();
+    loadingSubscription?.cancel();
+    loadingSubscription =
+        handleLoading(context, widget.resumePresenter.isLoadingStream);
+    mainErrorSubscription =
+        handleMainError(context, widget.resumePresenter.mainErrorStream);
+
     double totalMonthSales =
         Random().nextDouble() * 50000 * quantityOfDaysInMonth;
     double totalDaySales = totalMonthSales / quantityOfDaysInMonth;
@@ -94,7 +121,6 @@ class _ResumePageState extends State<ResumePage> {
                     onTap: widget.resumePresenter.goToSetGoalPage,
                     title: R.string.insertGoal,
                   ),
-
                   rightButton: DefaultNavigateButton(
                     onTap: widget.resumePresenter.goToGoalHistoryPage,
                     title: R.string.goalHistory,
