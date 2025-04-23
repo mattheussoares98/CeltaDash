@@ -3,4 +3,7 @@ import '../../../../ui/pages/pages.dart';
 import '../../factories.dart';
 
 ConfigurationsPresenter makeGetxConfigurationsPresenter() =>
-    GetxConfigurationsPresenter(navigateTo: makeGetxNavigateTo());
+    GetxConfigurationsPresenter(
+      navigateTo: makeGetxNavigateTo(),
+      localStorage: makeHiveLocalStorage(),
+    );
