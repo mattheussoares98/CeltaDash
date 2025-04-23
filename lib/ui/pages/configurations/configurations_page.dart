@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../ui/components/components.dart';
 import '../../helpers/helpers.dart';
 import '../pages.dart';
 
@@ -22,7 +23,16 @@ class ConfigurationsPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () async {
+                notificationDialog(
+                  context: context,
+                  titleMessage: R.string.msgReallyWantLogout,
+                  content: null,
+                  onPress: () async {
+                    await configurationsPresenter.doLogout();
+                  },
+                );
+              },
               child: Text(R.string.logout),
             )
           ],
