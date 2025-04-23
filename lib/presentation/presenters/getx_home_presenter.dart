@@ -64,11 +64,23 @@ class GetxHomePresenter extends GetxController
         _bsEnterprises.value = (json.decode(soapResponse.response) as List)
             .map((e) => BsEnterpriseModel.fromJson(e).toEntity())
             .toList();
+
+        _selectedEnterprise.value = _bsEnterprises.value?.first;
       }
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {
       isLoading = false;
     }
+  }
+
+  final _selectedEnterprise = Rx<BsEnterpriseEntity?>(null);
+  @override
+  Stream<BsEnterpriseEntity?> get bsSelectedEnterpriseStream =>
+      _selectedEnterprise.stream;
+
+  @override
+  void updateSelectedEnterprise(BsEnterpriseEntity enterprise) {
+    _selectedEnterprise.value = enterprise;
   }
 }

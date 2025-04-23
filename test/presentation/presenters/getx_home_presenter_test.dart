@@ -117,6 +117,7 @@ void main() {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(sut.mainErrorStream, emits(null));
       expectLater(sut.bsEnterprisesStream, emits(bsEnterprises));
+      expectLater(sut.bsSelectedEnterpriseStream, emits(bsEnterprises.first));
 
       await sut.getBsEnterprises(showBsErrorMessage: (_) {});
     });
@@ -136,6 +137,21 @@ void main() {
       await sut.getBsEnterprises(showBsErrorMessage: (_) {});
 
       verify(() => remoteLoadEnterprises.get()).called(1);
+    });
+  });
+
+  group("Update selected enterprise", () {
+    test("Should update selected enterprise correctly", () {
+      final first = bsEnterprises.first;
+      final second = bsEnterprises.last;
+
+      expectLater(
+        sut.bsSelectedEnterpriseStream,
+        emitsInOrder([first, second]),
+      );
+
+      sut.updateSelectedEnterprise(first);
+      sut.updateSelectedEnterprise(second);
     });
   });
 }
