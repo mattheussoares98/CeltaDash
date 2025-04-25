@@ -20,18 +20,9 @@ class GetxHomePresenter extends GetxController
   });
 
   @override
-  Stream<int> get currentPageIndexStream => _currentPageIndex.stream;
-
-  @override
   void updateSelectedIndex(int index) {
     _currentPageIndex.value = index;
   }
-
-  final _currentPageIndex = 0.obs;
-
-  DateTime _selectedDate = DateTime.now();
-  @override
-  DateTime get selectedDate => _selectedDate;
 
   @override
   void updateSelectedDate(DateTime date) {
@@ -42,10 +33,6 @@ class GetxHomePresenter extends GetxController
   void goToConfigurationsPage() {
     navigateTo.navigate(pageRoute: PageRoutes.configurations);
   }
-
-  List<BsEnterpriseViewModel>? _bsEnterprises;
-  @override
-  List<BsEnterpriseViewModel>? get bsEnterprises => _bsEnterprises;
 
   @override
   Future<void> getBsEnterprises({
@@ -59,11 +46,11 @@ class GetxHomePresenter extends GetxController
       if (soapResponse.responseType == SoapResponseType.error) {
         showBsErrorMessage(soapResponse.response);
       } else {
-        _bsEnterprises = (json.decode(soapResponse.response) as List)
+        _bsEnterprises.value = (json.decode(soapResponse.response) as List)
             .map((e) => BsEnterpriseModel.fromJson(e).toViewModel())
             .toList();
 
-        _selectedEnterprise = _bsEnterprises?.first;
+        _selectedEnterprise.value = _bsEnterprises.value?.first;
       }
     } catch (e) {
       mainError = UIError.unexpected;
@@ -72,12 +59,27 @@ class GetxHomePresenter extends GetxController
     }
   }
 
-  BsEnterpriseViewModel? _selectedEnterprise;
-  @override
-  BsEnterpriseViewModel? get bsSelectedEnterprise => _selectedEnterprise;
-
   @override
   void updateSelectedEnterprise(BsEnterpriseViewModel? enterprise) {
-    _selectedEnterprise = enterprise;
+    _selectedEnterprise.value = enterprise;
   }
+
+  final _selectedEnterprise = Rx<BsEnterpriseViewModel?>(null);
+  @override
+  BsEnterpriseViewModel? get bsSelectedEnterprise => _selectedEnterprise.value;
+
+  final Rx<List<BsEnterpriseViewModel>?> _bsEnterprises =
+      Rx<List<BsEnterpriseViewModel>?>(null);
+
+  @override
+  List<BsEnterpriseViewModel>? get bsEnterprises => _bsEnterprises.value;
+
+  @override
+  Stream<int> get currentPageIndexStream => _currentPageIndex.stream;
+
+  final _currentPageIndex = 0.obs;
+
+  DateTime _selectedDate = DateTime.now();
+  @override
+  DateTime get selectedDate => _selectedDate;
 }
