@@ -4,7 +4,7 @@ import '../../helpers/helpers.dart';
 import '../pages.dart';
 
 abstract class ResumePresenter implements Listenable {
-  Stream<List<SaleMovementViewModel>?> get saleMovementStream;
+  List<SaleMovementViewModel>? get saleMovements;
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
 

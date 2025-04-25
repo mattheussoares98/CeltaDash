@@ -118,15 +118,10 @@ void main() {
     test("Should emit correct values on success", () async {
       expectLater(sut.mainErrorStream, emits(null));
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
-      expectLater(
-        sut.saleMovementStream,
-        emits(saleMovementEntitys
-            .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
-            .toList()),
-      );
 
       await sut.getSales(homePresenter);
     });
+
     test("Should emit correct values on error", () async {
       expectLater(
         sut.mainErrorStream,
@@ -137,6 +132,17 @@ void main() {
       loadSaleMovements.mockGetError();
 
       await sut.getSales(homePresenter);
+    });
+
+    test("Should update sale movements correctly", () async {
+      await sut.getSales(homePresenter);
+
+      expect(
+        sut.saleMovements,
+        saleMovementEntitys
+            .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+            .toList(),
+      );
     });
 
     test("Should load sale movements with correct values", () async {
