@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -26,91 +27,87 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
 
     return AppBar(
       toolbarHeight: appBarHeight,
-      title: StreamBuilder<List<BsEnterpriseViewModel>?>(
-          stream: homePresenter.bsEnterprisesStream,
-          builder: (context, snapAllEnterprises) {
-            if (snapAllEnterprises.data == null) {
-              return ElevatedButton(
-                onPressed: () async {
-                  await homePresenter.getBsEnterprises(
-                      showBsErrorMessage: (error) {
-                    snackBarMessage(
-                      context,
-                      error,
-                      Colors.red,
-                    );
-                  });
-                },
-                child: Text(R.string.loadEnterprises),
-              );
-            }
-            return StreamBuilder<BsEnterpriseViewModel?>(
-                stream: homePresenter.bsSelectedEnterpriseStream,
-                builder: (context, snapshot) {
-                  return Column(
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: DefaultDropDown<BsEnterpriseViewModel?>(
-                              onChanged: (_) {
-                                widget.onChangeDateOrEnterprise();
-                              },
-                              hint: null,
-                              items: snapAllEnterprises.data
-                                  ?.map(
-                                    (e) => DropdownMenuItem<
-                                        BsEnterpriseViewModel?>(
-                                      value: e,
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        "${e.PersonalizedCode} - ${e.Name}",
-                                        maxLines: 1,
-                                      ),
-                                    ),
-                                  )
-                                  .toList(),
-                              selectedItem: snapshot.data,
+      title: Obx(() {
+        final enterprises = homePresenter.bsEnterprises;
+        final selectedEnterprise = homePresenter.bsSelectedEnterprise;
+
+        if (enterprises == null) {
+          return ElevatedButton(
+            onPressed: () async {
+              await homePresenter.getBsEnterprises(showBsErrorMessage: (error) {
+                snackBarMessage(
+                  context,
+                  error,
+                  Colors.red,
+                );
+              });
+            },
+            child: Text(R.string.loadEnterprises),
+          );
+        }
+        return Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: DefaultDropDown<BsEnterpriseViewModel?>(
+                    onChanged: (e) {
+                      widget.onChangeDateOrEnterprise();
+                      homePresenter.updateSelectedEnterprise(e);
+                    },
+                    hint: null,
+                    items: enterprises
+                        .map(
+                          (e) => DropdownMenuItem<BsEnterpriseViewModel?>(
+                            value: e,
+                            alignment: Alignment.center,
+                            child: Text(
+                              "${e.PersonalizedCode} - ${e.Name}",
+                              maxLines: 1,
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8),
-                            child: IconButton(
-                                onPressed: () {
-                                  homePresenter.goToConfigurationsPage();
-                                },
-                                icon: Icon(Icons.settings)),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 5),
-                      FittedBox(
-                        child: ElevatedButton.icon(
-                          onPressed: () async {
-                            final newDate = await GetNewDate.get(
-                              reduceDaysFromInitialDate: 60,
-                              canInsertDateBeforeNow: true,
-                              insertHoursAndMinutes: false,
-                              lastDate: DateTime.now(),
-                            );
-
-                            if (newDate != null) {
-                              setState(() {
-                                homePresenter.updateSelectedDate(newDate);
-                              });
-                              widget.onChangeDateOrEnterprise();
-                            }
-                          },
-                          label: Text(
-                            "${DateFormat('dd/MM/yyyy').format(homePresenter.selectedDate)}  ${DateFormat('EEEE', 'pt_BR').format(homePresenter.selectedDate)}",
-                          ),
-                          icon: Icon(Icons.date_range, color: Colors.white),
-                        ),
-                      ),
-                    ],
+                        )
+                        .toList(),
+                    selectedItem: selectedEnterprise,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: IconButton(
+                      onPressed: () {
+                        homePresenter.goToConfigurationsPage();
+                      },
+                      icon: Icon(Icons.settings)),
+                ),
+              ],
+            ),
+            SizedBox(height: 5),
+            FittedBox(
+              child: ElevatedButton.icon(
+                onPressed: () async {
+                  final newDate = await GetNewDate.get(
+                    reduceDaysFromInitialDate: 60,
+                    canInsertDateBeforeNow: true,
+                    insertHoursAndMinutes: false,
+                    lastDate: DateTime.now(),
                   );
-                });
-          }),
+
+                  if (newDate != null) {
+                    setState(() {
+                      homePresenter.updateSelectedDate(newDate);
+                    });
+                    widget.onChangeDateOrEnterprise();
+                  }
+                },
+                label: Text(
+                  "${DateFormat('dd/MM/yyyy').format(homePresenter.selectedDate)}  ${DateFormat('EEEE', 'pt_BR').format(homePresenter.selectedDate)}",
+                ),
+                icon: Icon(Icons.date_range, color: Colors.white),
+              ),
+            ),
+          ],
+        );
+      }),
     );
   }
 }

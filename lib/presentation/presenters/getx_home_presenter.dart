@@ -43,10 +43,9 @@ class GetxHomePresenter extends GetxController
     navigateTo.navigate(pageRoute: PageRoutes.configurations);
   }
 
-  final _bsEnterprises = Rx<List<BsEnterpriseViewModel>?>(null);
+  List<BsEnterpriseViewModel>? _bsEnterprises;
   @override
-  Stream<List<BsEnterpriseViewModel>?> get bsEnterprisesStream =>
-      _bsEnterprises.stream;
+  List<BsEnterpriseViewModel>? get bsEnterprises => _bsEnterprises;
 
   @override
   Future<void> getBsEnterprises({
@@ -60,11 +59,11 @@ class GetxHomePresenter extends GetxController
       if (soapResponse.responseType == SoapResponseType.error) {
         showBsErrorMessage(soapResponse.response);
       } else {
-        _bsEnterprises.value = (json.decode(soapResponse.response) as List)
+        _bsEnterprises = (json.decode(soapResponse.response) as List)
             .map((e) => BsEnterpriseModel.fromJson(e).toViewModel())
             .toList();
 
-        _selectedEnterprise.value = _bsEnterprises.value?.first;
+        _selectedEnterprise = _bsEnterprises?.first;
       }
     } catch (e) {
       mainError = UIError.unexpected;
@@ -73,13 +72,12 @@ class GetxHomePresenter extends GetxController
     }
   }
 
-  final _selectedEnterprise = Rx<BsEnterpriseViewModel?>(null);
+  BsEnterpriseViewModel? _selectedEnterprise;
   @override
-  Stream<BsEnterpriseViewModel?> get bsSelectedEnterpriseStream =>
-      _selectedEnterprise.stream;
+  BsEnterpriseViewModel? get bsSelectedEnterprise => _selectedEnterprise;
 
   @override
-  void updateSelectedEnterprise(BsEnterpriseViewModel enterprise) {
-    _selectedEnterprise.value = enterprise;
+  void updateSelectedEnterprise(BsEnterpriseViewModel? enterprise) {
+    _selectedEnterprise = enterprise;
   }
 }

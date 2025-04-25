@@ -116,17 +116,6 @@ void main() {
     test("Should emit correct values on success", () async {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(sut.mainErrorStream, emits(null));
-      expectLater(
-          sut.bsEnterprisesStream,
-          emits(
-            bsEnterprises
-                .map((e) => BsEnterpriseModel.fromEntity(e).toViewModel()),
-          ));
-      expectLater(
-          sut.bsSelectedEnterpriseStream,
-          emits(
-            BsEnterpriseModel.fromEntity(bsEnterprises.first).toViewModel(),
-          ));
 
       await sut.getBsEnterprises(showBsErrorMessage: (_) {});
     });
@@ -142,6 +131,27 @@ void main() {
       await sut.getBsEnterprises(showBsErrorMessage: (_) {});
     });
 
+    test("Should update selected enterprise correctly", () async {
+      await sut.getBsEnterprises(showBsErrorMessage: (_) {});
+
+      expect(
+        sut.bsSelectedEnterprise,
+        BsEnterpriseModel.fromEntity(bsEnterprises.first).toViewModel(),
+      );
+    });
+    test("Should not update selected enterprise if already has one selected",
+        () async {
+      await sut.getBsEnterprises(showBsErrorMessage: (_) {});
+
+      final secondEnterprise =
+          BsEnterpriseModel.fromEntity(bsEnterprises[1]).toViewModel();
+      sut.updateSelectedEnterprise(secondEnterprise);
+
+      remoteLoadEnterprises.mockGetError();
+      await sut.getBsEnterprises(showBsErrorMessage: (_) {});
+
+      expect(sut.bsSelectedEnterprise, secondEnterprise);
+    });
     test("Should call remoteLoadEnterprises", () async {
       await sut.getBsEnterprises(showBsErrorMessage: (_) {});
 
@@ -156,13 +166,14 @@ void main() {
       final second =
           BsEnterpriseModel.fromEntity(bsEnterprises.last).toViewModel();
 
-      expectLater(
-        sut.bsSelectedEnterpriseStream,
-        emitsInOrder([first, second]),
-      );
-
       sut.updateSelectedEnterprise(first);
+      expect(sut.bsSelectedEnterprise, first);
+
       sut.updateSelectedEnterprise(second);
+      expect(sut.bsSelectedEnterprise, second);
+
+      sut.updateSelectedEnterprise(null);
+      expect(sut.bsSelectedEnterprise, null);
     });
   });
 }
