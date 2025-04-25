@@ -26,6 +26,9 @@ class _HomePageState extends State<HomePage> {
             showBsErrorMessage: (error) {
           snackBarMessage(context, error, Colors.red);
         });
+
+        ResumePresenter resumePresenter = Provider.of(context, listen: false);
+        await resumePresenter.getSales(widget.homePresenter);
       }
     });
   }
