@@ -100,7 +100,7 @@ class _ResumePageState extends State<ResumePage>
                   SalesInformations(
                     scrollController: scrollController,
                     title: R.string.salesOfTheDay,
-                    totalSales: totalDaySales * Random().nextDouble(),
+                    totalSales: saleMovements.totalByDay(),
                     goal: totalDaySales,
                     leftButton: DefaultNavigateButton(
                       onTap: resumePresenter.goToPaymentsTypePage,
