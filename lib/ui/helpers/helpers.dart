@@ -1,3 +1,4 @@
+export './calculator/calculator.dart';
 export './convert/convert.dart';
 export './decorations/decorations.dart';
 export './errors/errors.dart';
