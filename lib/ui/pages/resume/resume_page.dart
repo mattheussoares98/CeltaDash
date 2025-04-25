@@ -45,6 +45,7 @@ class _ResumePageState extends State<ResumePage>
   @override
   Widget build(BuildContext context) {
     ResumePresenter resumePresenter = Provider.of(context, listen: false);
+    HomePresenter homePresenter = Provider.of(context, listen: false);
 
     mainErrorSubscription?.cancel();
     loadingSubscription?.cancel();
@@ -63,8 +64,8 @@ class _ResumePageState extends State<ResumePage>
 
     return Scaffold(
       appBar: DefaultAppBar(
-        onChangeDateOrEnterprise: () {
-          debugPrint("Search all resume data again");
+        onChangeDateOrEnterprise: () async {
+          resumePresenter.getSales(homePresenter);
         },
       ),
       body: SingleChildScrollView(
