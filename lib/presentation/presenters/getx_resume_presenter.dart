@@ -68,6 +68,7 @@ class GetxResumePresenter extends GetxController
           homePresenter.selectedDate.month + 1,
           1,
         ).subtract(Duration(days: 1)),
+        groupByEnterprise: true,
         groupByDay: true,
         groupByMonth: true,
         groupByHour: true,
