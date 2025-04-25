@@ -65,6 +65,7 @@ class PtBr implements Translation {
   String get salesQuantityAbbreviated => "Qtd de vendas";
   String get salesUntilNow => "Vendas até agora";
   String get sallers => "Vendedores";
+  String get searchAgain => "Pesquisar novamente";
   String get secondDaySales => "Vendas do segundo dia";
   String get section => "Seção";
   String get sections => "Seções";
