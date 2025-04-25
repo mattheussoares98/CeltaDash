@@ -30,7 +30,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
           stream: homePresenter.bsEnterprisesStream,
           builder: (context, snapAllEnterprises) {
             if (snapAllEnterprises.data == null) {
-              ElevatedButton(
+              return ElevatedButton(
                 onPressed: () async {
                   await homePresenter.getBsEnterprises(
                       showBsErrorMessage: (error) {
