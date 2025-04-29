@@ -1,10 +1,13 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
+import '../../mixins/mixins.dart';
 import '../pages.dart';
 
 class PaymentTypePage extends StatefulWidget {
@@ -18,13 +21,43 @@ class PaymentTypePage extends StatefulWidget {
   State<PaymentTypePage> createState() => _PaymentTypePageState();
 }
 
-class _PaymentTypePageState extends State<PaymentTypePage> {
+class _PaymentTypePageState extends State<PaymentTypePage>
+    with LoadingManager, UIErrorManager {
   bool selectedDay = true;
+  StreamSubscription? loadingSubscription;
+  StreamSubscription? mainErrorSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        HomePresenter homePresenter = Provider.of(context, listen: false);
+
+        await widget.paymentTypePresenter.getSales(homePresenter);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    loadingSubscription?.cancel();
+    mainErrorSubscription?.cancel();
+  }
 
   @override
   Widget build(BuildContext context) {
     final maxSales = Random().nextDouble() * 100000;
     var combinedSales = 0.0;
+
+    loadingSubscription?.cancel();
+    mainErrorSubscription?.cancel();
+    loadingSubscription =
+        handleLoading(context, widget.paymentTypePresenter.isLoadingStream);
+    mainErrorSubscription =
+        handleMainError(context, widget.paymentTypePresenter.mainErrorStream);
 
     return Scaffold(
       appBar: AppBar(title: Text(R.string.paymentsType)),
