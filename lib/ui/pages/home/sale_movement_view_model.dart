@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class SaleMovementViewModel extends Equatable {
-  final String? Date;
+  final DateTime? Date;
   final String? LiquidValue;
   final String? Year;
   final String? Month;

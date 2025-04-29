@@ -6,17 +6,19 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
     DateTime? filterDate,
     EnterpriseViewModel? enterprise,
   }) {
-    return _getSalesEntities(filterDate, enterprise)
-        .fold(0.0, (p, e) => p + (e.LiquidValue ?? 0));
+    return _filteredSales(filterDate, enterprise).fold<double>(
+      0.0,
+      (sum, e) => sum + (e.LiquidValue ?? 0),
+    );
   }
 
   int quantitySales({
     DateTime? filterDate,
     EnterpriseViewModel? enterprise,
   }) {
-    return _getSalesEntities(filterDate, enterprise).fold(
+    return _filteredSales(filterDate, enterprise).fold<int>(
       0,
-      (p, e) => p + (e.QuantitySales ?? 0),
+      (sum, e) => sum + (e.QuantitySales ?? 0),
     );
   }
 
@@ -24,29 +26,34 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
     DateTime? filterDate,
     EnterpriseViewModel? enterprise,
   }) {
-    return sumLiquidValue(filterDate: filterDate, enterprise: enterprise) /
-        quantitySales(filterDate: filterDate, enterprise: enterprise);
+    final filtered = _filteredSales(filterDate, enterprise);
+    final totalQuantity =
+        filtered.fold<int>(0, (p, e) => p + (e.QuantitySales ?? 0));
+    if (totalQuantity == 0) return 0;
+
+    final totalValue =
+        filtered.fold<double>(0.0, (p, e) => p + (e.LiquidValue ?? 0));
+    return totalValue / totalQuantity;
   }
 
-  List<SaleMovementModel> _getSalesEntities(
+  List<SaleMovementModel> _filteredSales(
     DateTime? filterDate,
-    EnterpriseViewModel? filterEnterprise,
+    EnterpriseViewModel? enterprise,
   ) {
-    var salesEntities =
-        this.map((e) => SaleMovementModel.fromViewModel(e)).toList();
+    return this
+        .where((viewModel) {
+          final matchesEnterprise = enterprise == null ||
+              viewModel.EnterprisePersonalizedCode ==
+                  enterprise.personalizedCode;
 
-    if (filterEnterprise != null) {
-      salesEntities = salesEntities
-          .where((e) =>
-              e.EnterprisePersonalizedCode == filterEnterprise.personalizedCode)
-          .toList();
-    }
+          final matchesDate = filterDate == null ||
+              viewModel.Date?.year == filterDate.year &&
+                  viewModel.Date?.month == filterDate.month &&
+                  viewModel.Date?.day == filterDate.day;
 
-    if (filterDate != null) {
-      salesEntities =
-          salesEntities.where((e) => e.Date?.day == filterDate.day).toList();
-    }
-
-    return salesEntities;
+          return matchesEnterprise && matchesDate;
+        })
+        .map(SaleMovementModel.fromViewModel)
+        .toList();
   }
 }

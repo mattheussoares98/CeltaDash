@@ -1,6 +1,5 @@
 import 'package:celta_plus/ui/helpers/helpers.dart';
 import 'package:equatable/equatable.dart';
-import 'package:intl/intl.dart';
 
 import '../../domain/entities/entities.dart';
 import '../../ui/pages/pages.dart';
@@ -126,17 +125,6 @@ class SaleMovementModel extends Equatable {
       );
 
   factory SaleMovementModel.fromViewModel(SaleMovementViewModel viewModel) {
-    final dateFormat = DateFormat('dd/MM/yyyy');
-
-    DateTime? parsedDate;
-    if (viewModel.Date != null) {
-      try {
-        parsedDate = dateFormat.parse(viewModel.Date!);
-      } catch (_) {
-        parsedDate = null;
-      }
-    }
-
     double? parsedLiquidValue = double.tryParse(viewModel.LiquidValue ?? '');
     int? parsedYear = int.tryParse(viewModel.Year ?? '');
     int? parsedMonth = int.tryParse(viewModel.Month ?? '');
@@ -149,7 +137,7 @@ class SaleMovementModel extends Equatable {
       LiquidValue: parsedLiquidValue,
       Year: parsedYear,
       Month: parsedMonth,
-      Date: parsedDate,
+      Date: viewModel.Date,
       Hour: parsedHour,
       Product: viewModel.Product,
       ProductDepartment: viewModel.ProductDepartment,
@@ -164,10 +152,8 @@ class SaleMovementModel extends Equatable {
   }
 
   SaleMovementViewModel toViewModel() {
-    final dateFormat = DateFormat('dd/MM/yyyy');
-
     return SaleMovementViewModel(
-      Date: Date != null ? dateFormat.format(Date!) : null,
+      Date: Date,
       LiquidValue: LiquidValue?.toString(),
       Year: Year?.toString(),
       Month: Month?.toString(),
