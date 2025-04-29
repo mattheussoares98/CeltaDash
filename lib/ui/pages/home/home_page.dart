@@ -7,9 +7,7 @@ import '../../helpers/helpers.dart';
 import '../pages.dart';
 
 class HomePage extends StatefulWidget {
-  final HomePresenter homePresenter;
-
-  const HomePage(this.homePresenter, {super.key});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -22,19 +20,21 @@ class _HomePageState extends State<HomePage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
-        await widget.homePresenter.getBsEnterprises(
-            showBsErrorMessage: (error) {
+        HomePresenter homePresenter = Provider.of(context, listen: false);
+        await homePresenter.getBsEnterprises(showBsErrorMessage: (error) {
           snackBarMessage(context, error, Colors.red);
         });
 
         ResumePresenter resumePresenter = Provider.of(context, listen: false);
-        await resumePresenter.getSales(widget.homePresenter);
+        await resumePresenter.getSales(homePresenter);
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    HomePresenter homePresenter = Provider.of(context, listen: false);
+
     final pages = <Widget>[
       makeResumePage(),
       IndicatorsPage(),
@@ -43,16 +43,13 @@ class _HomePageState extends State<HomePage> {
       makeTeamPage(),
     ];
     return StreamBuilder<int>(
-      stream: widget.homePresenter.currentPageIndexStream,
+      stream: homePresenter.currentPageIndexStream,
       builder: (context, snapshot) {
         return Scaffold(
-          body: ListenableProvider(
-            create: (_) => widget.homePresenter,
-            child: pages[snapshot.data ?? 0],
-          ),
+          body: pages[snapshot.data ?? 0],
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: snapshot.data ?? 0,
-            onTap: widget.homePresenter.updateSelectedIndex,
+            onTap: homePresenter.updateSelectedIndex,
             type: BottomNavigationBarType.fixed,
             unselectedFontSize: 10,
             selectedFontSize: 12,
