@@ -29,7 +29,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
       toolbarHeight: appBarHeight,
       title: Obx(() {
         final enterprises = homePresenter.bsEnterprises;
-        final selectedEnterprise = homePresenter.bsSelectedEnterprise;
+        final selectedEnterprise = homePresenter.selectedEnterprise;
 
         if (enterprises == null) {
           return ElevatedButton(

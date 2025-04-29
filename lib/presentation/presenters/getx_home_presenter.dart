@@ -59,7 +59,7 @@ class GetxHomePresenter extends GetxController
 
   final _selectedEnterprise = Rx<EnterpriseViewModel?>(null);
   @override
-  EnterpriseViewModel? get bsSelectedEnterprise => _selectedEnterprise.value;
+  EnterpriseViewModel? get selectedEnterprise => _selectedEnterprise.value;
 
   final Rx<List<EnterpriseViewModel>?> _bsEnterprises =
       Rx<List<EnterpriseViewModel>?>(null);

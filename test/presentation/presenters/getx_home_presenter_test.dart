@@ -124,7 +124,7 @@ void main() {
       await sut.getBsEnterprises(showBsErrorMessage: (_) {});
 
       expect(
-        sut.bsSelectedEnterprise,
+        sut.selectedEnterprise,
         EnterpriseModel.fromEntity(enterprises.first).toViewModel(),
       );
     });
@@ -139,7 +139,7 @@ void main() {
       remoteLoadEnterprises.mockGetError();
       await sut.getBsEnterprises(showBsErrorMessage: (_) {});
 
-      expect(sut.bsSelectedEnterprise, secondEnterprise);
+      expect(sut.selectedEnterprise, secondEnterprise);
     });
     test("Should call remoteLoadEnterprises", () async {
       await sut.getBsEnterprises(showBsErrorMessage: (_) {});
@@ -154,13 +154,13 @@ void main() {
       final second = EnterpriseModel.fromEntity(enterprises.last).toViewModel();
 
       sut.updateSelectedEnterprise(first);
-      expect(sut.bsSelectedEnterprise, first);
+      expect(sut.selectedEnterprise, first);
 
       sut.updateSelectedEnterprise(second);
-      expect(sut.bsSelectedEnterprise, second);
+      expect(sut.selectedEnterprise, second);
 
       sut.updateSelectedEnterprise(null);
-      expect(sut.bsSelectedEnterprise, null);
+      expect(sut.selectedEnterprise, null);
     });
   });
 }

@@ -101,7 +101,7 @@ class _ResumePageState extends State<ResumePage>
                     scrollController: scrollController,
                     title: R.string.salesOfTheDay,
                     totalSales: saleMovements.sumLiquidValue(
-                      enterprise: homePresenter.bsSelectedEnterprise,
+                      enterprise: homePresenter.selectedEnterprise,
                       filterDate: homePresenter.selectedDate,
                     ),
                     goal: totalDaySales,
@@ -116,13 +116,13 @@ class _ResumePageState extends State<ResumePage>
                     children: [
                       Text(
                         "${R.string.salesQuantity}\n${saleMovements.quantitySales(
-                          enterprise: homePresenter.bsSelectedEnterprise,
+                          enterprise: homePresenter.selectedEnterprise,
                           filterDate: homePresenter.selectedDate,
                         )}",
                       ),
                       Text(
                         "${R.string.ticketAverage}\n${(saleMovements.ticketAverage(
-                          enterprise: homePresenter.bsSelectedEnterprise,
+                          enterprise: homePresenter.selectedEnterprise,
                           filterDate: homePresenter.selectedDate,
                         )).toString().toBrazilianNumber().addBrazilianCoin()}",
                       ),
