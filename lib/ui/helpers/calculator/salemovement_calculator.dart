@@ -1,3 +1,5 @@
+import 'package:celta_plus/ui/helpers/helpers.dart';
+
 import '../../../data/models/models.dart';
 import '../../pages/pages.dart';
 
@@ -19,10 +21,7 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
 
     if (filterEnterprise != null) {
       salesEntities = salesEntities
-          .where((e) =>
-              e.Enterprise.toString()
-                  .contains(filterEnterprise.PersonalizedCode.toString()) ==
-              true)
+          .where((e) => e.EnterpriseId == filterEnterprise.Code?.toInt())
           .toList();
     }
 

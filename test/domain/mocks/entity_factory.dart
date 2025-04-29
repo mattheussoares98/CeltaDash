@@ -36,7 +36,6 @@ class EntityFactory {
   }
 
   static SaleMovementEntity makeSaleMovementEntity() => SaleMovementEntity(
-        Enterprise: faker.company.name(),
         LiquidValue: faker.randomGenerator.decimal(),
         Year: faker.randomGenerator.integer(3000),
         Month: faker.randomGenerator.integer(12, min: 1),
@@ -47,6 +46,10 @@ class EntityFactory {
         ProductSection: faker.food.restaurant(),
         PaymentFinalization: faker.lorem.word(),
         PaymentModality: faker.lorem.word(),
+        EnterpriseFantasyName: faker.company.name(),
+        EnterpriseId: faker.randomGenerator.integer(100),
+        EnterprisePersonalizedCode:
+            faker.randomGenerator.integer(10).toString(),
       );
 
   static BsUserEntity makeBsUserEntity() => BsUserEntity(

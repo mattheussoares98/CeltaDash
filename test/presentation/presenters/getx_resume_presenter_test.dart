@@ -165,6 +165,7 @@ void main() {
             groupByDay: true,
             groupByMonth: true,
             groupByHour: true,
+            groupByEnterprise: true,
           )).called(1);
     });
     test("Should load sale movements with correct new date", () async {
@@ -189,6 +190,7 @@ void main() {
             groupByDay: true,
             groupByMonth: true,
             groupByHour: true,
+            groupByEnterprise: true,
           )).called(1);
     });
   });
