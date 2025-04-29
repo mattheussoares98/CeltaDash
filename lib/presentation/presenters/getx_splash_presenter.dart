@@ -22,7 +22,7 @@ class GetxSplashPresenter extends GetxController implements SplashPresenter {
       final enterprise = await localStorage.get(DatabaseKeys.enterprise);
       if (enterprise != null) {
         EnterpriseBuilder.entity =
-            EnterpriseModel.fromJson(enterprise).toEntity();
+            FirebaseEnterpriseModel.fromJson(enterprise).toEntity();
       }
 
       if (EnterpriseBuilder.entity?.bsUser?.name == null ||

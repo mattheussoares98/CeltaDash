@@ -27,7 +27,7 @@ class GetxConfigurationsPresenter extends GetxController
     try {
       final oldEnterprise = EnterpriseBuilder.entity;
 
-      EnterpriseBuilder.entity = EnterpriseEntity(
+      EnterpriseBuilder.entity = FirebaseEnterpriseEntity(
         baseUrl: null,
         enterpriseName: oldEnterprise?.enterpriseName,
         bsUser: BsUserEntity(
@@ -38,7 +38,7 @@ class GetxConfigurationsPresenter extends GetxController
       );
 
       await localStorage.put(DatabaseKeys.enterprise,
-          EnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson());
+          FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson());
 
       navigateTo.navigate(pageRoute: PageRoutes.splash, clear: true);
     } catch (e) {

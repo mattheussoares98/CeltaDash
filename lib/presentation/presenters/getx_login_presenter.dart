@@ -46,7 +46,7 @@ class GetxLoginPresenter extends GetxController
           throw DomainError.enterpriseNotFound;
         }
 
-        EnterpriseBuilder.entity = EnterpriseEntity(
+        EnterpriseBuilder.entity = FirebaseEnterpriseEntity(
           baseUrl: enterpriseData["baseUrl"],
           enterpriseName: enterpriseName,
           bsUser: BsUserEntity(
@@ -64,7 +64,7 @@ class GetxLoginPresenter extends GetxController
       } else if (response.response["AccessKey"] == null) {
         throw DomainError.updateCeltaBs;
       } else {
-        EnterpriseBuilder.entity = EnterpriseEntity(
+        EnterpriseBuilder.entity = FirebaseEnterpriseEntity(
           baseUrl: EnterpriseBuilder.entity?.baseUrl,
           bsUser: BsUserEntity(
             name: user,
@@ -76,7 +76,7 @@ class GetxLoginPresenter extends GetxController
 
         await localStorage.put(
           DatabaseKeys.enterprise,
-          EnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson(),
+          FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson(),
         );
         navigateTo.navigate(pageRoute: PageRoutes.home, clear: true);
       }
@@ -98,7 +98,7 @@ class GetxLoginPresenter extends GetxController
   void onChangedEnterpriseName() {
     final oldEnterprise = EnterpriseBuilder.entity;
 
-    EnterpriseBuilder.entity = EnterpriseEntity(
+    EnterpriseBuilder.entity = FirebaseEnterpriseEntity(
       baseUrl: null,
       enterpriseName: oldEnterprise?.enterpriseName,
       bsUser: BsUserEntity(

@@ -3,12 +3,12 @@ import 'package:equatable/equatable.dart';
 import '../../domain/entities/entities.dart';
 import 'bs_user_model.dart'; // ajuste o caminho se necessário
 
-class EnterpriseModel extends Equatable {
+class FirebaseEnterpriseModel extends Equatable {
   final String? baseUrl;
   final String? enterpriseName;
   final BsUserModel? bsUser;
 
-  const EnterpriseModel({
+  const FirebaseEnterpriseModel({
     required this.baseUrl,
     required this.enterpriseName,
     required this.bsUser,
@@ -17,7 +17,7 @@ class EnterpriseModel extends Equatable {
   @override
   List<Object?> get props => [baseUrl, enterpriseName, bsUser];
 
-  factory EnterpriseModel.fromJson(Map json) => EnterpriseModel(
+  factory FirebaseEnterpriseModel.fromJson(Map json) => FirebaseEnterpriseModel(
         baseUrl: json['baseUrl'],
         enterpriseName: json['enterpriseName'],
         bsUser: json['bsUser'] == null
@@ -25,8 +25,8 @@ class EnterpriseModel extends Equatable {
             : BsUserModel.fromJson(json['bsUser']),
       );
 
-  factory EnterpriseModel.fromEntity(EnterpriseEntity entity) =>
-      EnterpriseModel(
+  factory FirebaseEnterpriseModel.fromEntity(FirebaseEnterpriseEntity entity) =>
+      FirebaseEnterpriseModel(
         baseUrl: entity.baseUrl,
         enterpriseName: entity.enterpriseName,
         bsUser: BsUserModel.fromEntity(entity.bsUser),
@@ -38,7 +38,7 @@ class EnterpriseModel extends Equatable {
         'bsUser': bsUser?.toJson(),
       };
 
-  EnterpriseEntity toEntity() => EnterpriseEntity(
+  FirebaseEnterpriseEntity toEntity() => FirebaseEnterpriseEntity(
         baseUrl: baseUrl,
         enterpriseName: enterpriseName,
         bsUser: bsUser?.toEntity(),

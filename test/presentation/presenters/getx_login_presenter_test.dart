@@ -55,13 +55,13 @@ void main() {
     password = faker.internet.password();
 
     response = SoapResponseModel(
-      response: EnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson()
+      response: FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson()
         ..["AccessKey"] = faker.lorem.sentence(),
       responseType: SoapResponseType.success,
     );
     mockedFirebaseGet = MockedFirebaseGet(
       dataToReturn:
-          EnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson(),
+          FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson(),
     );
   }
 
@@ -69,7 +69,7 @@ void main() {
     remoteLogin.mockLogin(response);
     firebaseManager.mockGet(mockedFirebaseGet);
     localStorage.mockGet(
-      EnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson(),
+      FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson(),
     );
   }
 
@@ -252,7 +252,7 @@ void main() {
 
       verify(
         () => localStorage.put(DatabaseKeys.enterprise,
-            EnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson()),
+            FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson()),
       ).called(1);
     });
     test("Should update EnterpriseBuilder correctly when login is successful",
@@ -266,7 +266,7 @@ void main() {
 
       expect(
         EnterpriseBuilder.entity,
-        EnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toEntity(),
+        FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toEntity(),
       );
     });
     test("Should update EnterpriseBuilder correctly when login bs throws",
@@ -290,7 +290,7 @@ void main() {
 
       expect(
         EnterpriseBuilder.entity,
-        EnterpriseEntity(
+        FirebaseEnterpriseEntity(
           baseUrl: mockedFirebaseGet.data()["baseUrl"],
           bsUser: BsUserEntity(
             name: user,
@@ -309,7 +309,7 @@ void main() {
       remoteLogin.mockLogin(
         SoapResponseModel(
           response:
-              EnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson()
+              FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson()
                 ..["AccessKey"] = null,
           responseType: SoapResponseType.success,
         ),
@@ -331,7 +331,7 @@ void main() {
       remoteLogin.mockLogin(
         SoapResponseModel(
           response:
-              EnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson()
+              FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson()
                 ..["AccessKey"] = null,
           responseType: SoapResponseType.success,
         ),
@@ -357,7 +357,7 @@ void main() {
 
       expect(
         EnterpriseBuilder.entity,
-        EnterpriseEntity(
+        FirebaseEnterpriseEntity(
           baseUrl: null,
           enterpriseName: EnterpriseBuilder.entity?.enterpriseName,
           bsUser: BsUserEntity(

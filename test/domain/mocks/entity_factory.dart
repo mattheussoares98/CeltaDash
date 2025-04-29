@@ -5,13 +5,13 @@ import 'package:faker/faker.dart';
 class EntityFactory {
   EntityFactory._();
 
-  static EnterpriseEntity makeEnterpriseEntity() => EnterpriseEntity(
+  static FirebaseEnterpriseEntity makeEnterpriseEntity() => FirebaseEnterpriseEntity(
         baseUrl: faker.internet.httpUrl(),
         enterpriseName: faker.company.name(),
         bsUser: makeBsUserEntity(),
       );
 
-  static EnterpriseEntity anullEnterpriseProperties({
+  static FirebaseEnterpriseEntity anullEnterpriseProperties({
     bool? annullbaseUrl,
     bool? anullUserName,
     bool? anullUserAccessKey,
@@ -27,7 +27,7 @@ class EntityFactory {
           ? null
           : enterprise?.bsUser?.CrossIdentity_Usuario,
     );
-    return EnterpriseEntity(
+    return FirebaseEnterpriseEntity(
       baseUrl: annullbaseUrl == true ? null : enterprise?.baseUrl,
       bsUser: bsUser,
       enterpriseName:

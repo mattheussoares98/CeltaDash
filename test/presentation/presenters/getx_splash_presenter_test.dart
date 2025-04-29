@@ -41,7 +41,7 @@ void main() {
 
   void initMockSuccess() {
     localStorage.mockGet(
-        EnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson());
+        FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson());
   }
 
   setUp(() {
@@ -59,7 +59,7 @@ void main() {
 
   test("Should navigate to login page if accessKey is null", () async {
     localStorage.mockGet(
-      EnterpriseModel.fromEntity(
+      FirebaseEnterpriseModel.fromEntity(
         EntityFactory.anullEnterpriseProperties(anullUserAccessKey: true),
       ).toJson(),
     );
@@ -72,7 +72,7 @@ void main() {
   });
   test("Should navigate to login page if crossIdentity is null", () async {
     localStorage.mockGet(
-      EnterpriseModel.fromEntity(
+      FirebaseEnterpriseModel.fromEntity(
         EntityFactory.anullEnterpriseProperties(anullUserCrossIdentity: true),
       ).toJson(),
     );
@@ -92,7 +92,7 @@ void main() {
   test("Should update EnterpriseBuilder.entity correctly", () async {
     final newEnterprise = EntityFactory.makeEnterpriseEntity();
 
-    localStorage.mockGet(EnterpriseModel.fromEntity(newEnterprise).toJson());
+    localStorage.mockGet(FirebaseEnterpriseModel.fromEntity(newEnterprise).toJson());
 
     await sut.checkPageToGo(durationInSeconds: 0);
 

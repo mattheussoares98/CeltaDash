@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
 import './bs_user_entity.dart';
 
-class EnterpriseEntity extends Equatable {
+class FirebaseEnterpriseEntity extends Equatable {
   final String? baseUrl;
   final String? enterpriseName;
   final BsUserEntity? bsUser;
 
-  const EnterpriseEntity({
+  const FirebaseEnterpriseEntity({
     required this.baseUrl,
     required this.enterpriseName,
     required this.bsUser,

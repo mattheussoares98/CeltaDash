@@ -20,7 +20,7 @@ void main() {
   late NavigateToSpy navigateTo;
   late LocalStorageSpy localStorage;
 
-  late EnterpriseEntity enterpriseOnLogout;
+  late FirebaseEnterpriseEntity enterpriseOnLogout;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
@@ -39,7 +39,7 @@ void main() {
 
   void initEntities() {
     EnterpriseBuilder.entity = EntityFactory.makeEnterpriseEntity();
-    enterpriseOnLogout = EnterpriseEntity(
+    enterpriseOnLogout = FirebaseEnterpriseEntity(
       baseUrl: null,
       enterpriseName: EnterpriseBuilder.entity?.enterpriseName,
       bsUser: BsUserEntity(
@@ -88,7 +88,7 @@ void main() {
 
       verify(() => localStorage.put(
             DatabaseKeys.enterprise,
-            EnterpriseModel.fromEntity(enterpriseOnLogout).toJson(),
+            FirebaseEnterpriseModel.fromEntity(enterpriseOnLogout).toJson(),
           )).called(1);
     });
     test("Should call navigateTo with correct value", () async {
