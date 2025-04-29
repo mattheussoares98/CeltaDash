@@ -100,7 +100,7 @@ class _ResumePageState extends State<ResumePage>
                   SalesInformations(
                     scrollController: scrollController,
                     title: R.string.salesOfTheDay,
-                    totalSales: saleMovements.totalByDay(
+                    totalSales: saleMovements.sumLiquidValue(
                       enterprise: homePresenter.bsSelectedEnterprise,
                       filterDate: homePresenter.selectedDate,
                     ),
@@ -115,10 +115,16 @@ class _ResumePageState extends State<ResumePage>
                     ),
                     children: [
                       Text(
-                        "${R.string.salesQuantity}\n${dailySalesModel.salesQuantity}",
+                        "${R.string.salesQuantity}\n${saleMovements.quantitySales(
+                          enterprise: homePresenter.bsSelectedEnterprise,
+                          filterDate: homePresenter.selectedDate,
+                        )}",
                       ),
                       Text(
-                        "${R.string.ticketAverage}\n${(dailySalesModel.totalAmountInDay / dailySalesModel.salesQuantity).toString().toBrazilianNumber().addBrazilianCoin()}",
+                        "${R.string.ticketAverage}\n${(saleMovements.ticketAverage(
+                          enterprise: homePresenter.bsSelectedEnterprise,
+                          filterDate: homePresenter.selectedDate,
+                        )).toString().toBrazilianNumber().addBrazilianCoin()}",
                       ),
                       Text(
                         "${R.string.productsBySale}\n${dailySalesModel.productsAverageBySale.toString().toBrazilianNumber()}",
