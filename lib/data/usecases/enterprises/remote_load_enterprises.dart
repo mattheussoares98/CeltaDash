@@ -16,6 +16,10 @@ class RemoteLoadEnterprises implements LoadEnterprises {
       final response = await httpAdapter.request(
         url: "$url/api/enterprises",
         method: "get",
+        headers: {
+          "user": EnterpriseBuilder.entity?.bsUser?.name,
+          "accessKey": EnterpriseBuilder.entity?.bsUser?.AccessKey,
+        },
       );
 
       return (response as List)
