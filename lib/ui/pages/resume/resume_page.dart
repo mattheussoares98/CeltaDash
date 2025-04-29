@@ -127,10 +127,8 @@ class _ResumePageState extends State<ResumePage>
                         )).toString().toBrazilianNumber().addBrazilianCoin()}",
                       ),
                       Text(
-                        "${R.string.productsBySale}\n${dailySalesModel.productsAverageBySale.toString().toBrazilianNumber()}",
-                      ),
-                      Text(
-                        "${R.string.averagePrice}\n${(dailySalesModel.totalAmountInDay / dailySalesModel.salesQuantity / dailySalesModel.productsAverageBySale).toString().toBrazilianNumber().addBrazilianCoin()}",
+                        //TODO
+                        "Request Cardoso to add products by sale quantity and average price",
                       ),
                     ],
                   ),
