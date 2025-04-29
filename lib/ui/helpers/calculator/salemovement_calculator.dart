@@ -1,12 +1,10 @@
-import 'package:celta_plus/ui/helpers/helpers.dart';
-
 import '../../../data/models/models.dart';
 import '../../pages/pages.dart';
 
 extension SaleMovementsExtensions on List<SaleMovementViewModel> {
   double sumLiquidValue({
     DateTime? filterDate,
-    BsEnterpriseViewModel? enterprise,
+    EnterpriseViewModel? enterprise,
   }) {
     return _getSalesEntities(filterDate, enterprise)
         .fold(0.0, (p, e) => p + (e.LiquidValue ?? 0));
@@ -14,7 +12,7 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
 
   int quantitySales({
     DateTime? filterDate,
-    BsEnterpriseViewModel? enterprise,
+    EnterpriseViewModel? enterprise,
   }) {
     return _getSalesEntities(filterDate, enterprise).fold(
       0,
@@ -24,7 +22,7 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
 
   double ticketAverage({
     DateTime? filterDate,
-    BsEnterpriseViewModel? enterprise,
+    EnterpriseViewModel? enterprise,
   }) {
     return sumLiquidValue(filterDate: filterDate, enterprise: enterprise) /
         quantitySales(filterDate: filterDate, enterprise: enterprise);
@@ -32,14 +30,15 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
 
   List<SaleMovementModel> _getSalesEntities(
     DateTime? filterDate,
-    BsEnterpriseViewModel? filterEnterprise,
+    EnterpriseViewModel? filterEnterprise,
   ) {
     var salesEntities =
         this.map((e) => SaleMovementModel.fromViewModel(e)).toList();
 
     if (filterEnterprise != null) {
       salesEntities = salesEntities
-          .where((e) => e.EnterpriseId == filterEnterprise.Code?.toInt())
+          .where((e) =>
+              e.EnterprisePersonalizedCode == filterEnterprise.personalizedCode)
           .toList();
     }
 

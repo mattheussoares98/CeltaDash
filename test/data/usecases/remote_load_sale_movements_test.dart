@@ -42,7 +42,7 @@ void main() {
   }
 
   void initEntities() {
-    EnterpriseBuilder.entity = EntityFactory.makeEnterpriseEntity();
+    EnterpriseBuilder.entity = EntityFactory.makeFirebaseEnterpriseEntity();
     saleMovementsEntitys = [
       EntityFactory.makeSaleMovementEntity(),
       EntityFactory.makeSaleMovementEntity(),

@@ -49,7 +49,7 @@ void main() {
   }
 
   void initEntities() {
-    EnterpriseBuilder.entity = EntityFactory.makeEnterpriseEntity();
+    EnterpriseBuilder.entity = EntityFactory.makeFirebaseEnterpriseEntity();
     enterpriseName = faker.company.name();
     user = faker.person.name();
     password = faker.internet.password();

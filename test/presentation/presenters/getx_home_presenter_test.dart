@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:celta_plus/data/models/models.dart';
 import 'package:celta_plus/domain/entities/entities.dart';
 import 'package:celta_plus/presentation/presenters/presenters.dart';
@@ -21,8 +19,7 @@ void main() {
   late NavigateToSpy navigateTo;
   late RemoteLoadEnterprisesSpy remoteLoadEnterprises;
 
-  late SoapResponseModel soapResponse;
-  late List<BsEnterpriseEntity> bsEnterprises;
+  late List<EnterpriseEntity> enterprises;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
@@ -35,27 +32,19 @@ void main() {
   void initPresenters() {
     sut = GetxHomePresenter(
       navigateTo: navigateTo,
-      remoteLoadEnterprises: remoteLoadEnterprises,
+      loadEnterprises: remoteLoadEnterprises,
     );
   }
 
   void initEntities() {
-    bsEnterprises = [
-      EntityFactory.makeBsEnterpriseEntity(),
-      EntityFactory.makeBsEnterpriseEntity(),
+    enterprises = [
+      EntityFactory.makeEnterpriseEntity(),
+      EntityFactory.makeEnterpriseEntity(),
     ];
-    soapResponse = SoapResponseModel(
-      response: json.encode(
-        bsEnterprises
-            .map((e) => BsEnterpriseModel.fromEntity(e).toJson())
-            .toList(),
-      ),
-      responseType: SoapResponseType.success,
-    );
   }
 
   void initMockSuccess() {
-    remoteLoadEnterprises.mockGet(soapResponse);
+    remoteLoadEnterprises.mockGet(enterprises);
   }
 
   setUp(() {
@@ -136,7 +125,7 @@ void main() {
 
       expect(
         sut.bsSelectedEnterprise,
-        BsEnterpriseModel.fromEntity(bsEnterprises.first).toViewModel(),
+        EnterpriseModel.fromEntity(enterprises.first).toViewModel(),
       );
     });
     test("Should not update selected enterprise if already has one selected",
@@ -144,7 +133,7 @@ void main() {
       await sut.getBsEnterprises(showBsErrorMessage: (_) {});
 
       final secondEnterprise =
-          BsEnterpriseModel.fromEntity(bsEnterprises[1]).toViewModel();
+          EnterpriseModel.fromEntity(enterprises[1]).toViewModel();
       sut.updateSelectedEnterprise(secondEnterprise);
 
       remoteLoadEnterprises.mockGetError();
@@ -161,10 +150,8 @@ void main() {
 
   group("Update selected enterprise", () {
     test("Should update selected enterprise correctly", () {
-      final first =
-          BsEnterpriseModel.fromEntity(bsEnterprises.first).toViewModel();
-      final second =
-          BsEnterpriseModel.fromEntity(bsEnterprises.last).toViewModel();
+      final first = EnterpriseModel.fromEntity(enterprises.first).toViewModel();
+      final second = EnterpriseModel.fromEntity(enterprises.last).toViewModel();
 
       sut.updateSelectedEnterprise(first);
       expect(sut.bsSelectedEnterprise, first);

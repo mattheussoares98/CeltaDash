@@ -50,7 +50,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
             Row(
               children: [
                 Expanded(
-                  child: DefaultDropDown<BsEnterpriseViewModel?>(
+                  child: DefaultDropDown<EnterpriseViewModel?>(
                     onChanged: (e) {
                       widget.onChangeDateOrEnterprise();
                       homePresenter.updateSelectedEnterprise(e);
@@ -58,11 +58,11 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                     hint: null,
                     items: enterprises
                         .map(
-                          (e) => DropdownMenuItem<BsEnterpriseViewModel?>(
+                          (e) => DropdownMenuItem<EnterpriseViewModel?>(
                             value: e,
                             alignment: Alignment.center,
                             child: Text(
-                              "${e.PersonalizedCode} - ${e.Name}",
+                              "${e.personalizedCode} - ${e.name}",
                               maxLines: 1,
                             ),
                           ),

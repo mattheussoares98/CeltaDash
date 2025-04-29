@@ -38,7 +38,7 @@ void main() {
   }
 
   void initEntities() {
-    EnterpriseBuilder.entity = EntityFactory.makeEnterpriseEntity();
+    EnterpriseBuilder.entity = EntityFactory.makeFirebaseEnterpriseEntity();
     enterpriseOnLogout = FirebaseEnterpriseEntity(
       baseUrl: null,
       enterpriseName: EnterpriseBuilder.entity?.enterpriseName,

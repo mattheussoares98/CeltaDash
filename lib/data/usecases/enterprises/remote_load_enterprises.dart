@@ -1,0 +1,28 @@
+import '../../../domain/entities/entities.dart';
+import '../../../domain/usecases/usecases.dart';
+import '../../../main/builders/builders.dart';
+import '../../http/http.dart';
+import '../../models/models.dart';
+
+class RemoteLoadEnterprises implements LoadEnterprises {
+  final HttpClient httpAdapter;
+
+  RemoteLoadEnterprises(this.httpAdapter);
+
+  @override
+  Future<List<EnterpriseEntity>> get() async {
+    try {
+      final url = EnterpriseBuilder.entity?.baseUrl;
+      final response = await httpAdapter.request(
+        url: "$url/api/enterprises",
+        method: "get",
+      );
+
+      return (response as List)
+          .map((e) => EnterpriseModel.fromJson(e).toEntity())
+          .toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+}

@@ -5,7 +5,8 @@ import 'package:faker/faker.dart';
 class EntityFactory {
   EntityFactory._();
 
-  static FirebaseEnterpriseEntity makeEnterpriseEntity() => FirebaseEnterpriseEntity(
+  static FirebaseEnterpriseEntity makeFirebaseEnterpriseEntity() =>
+      FirebaseEnterpriseEntity(
         baseUrl: faker.internet.httpUrl(),
         enterpriseName: faker.company.name(),
         bsUser: makeBsUserEntity(),
@@ -59,19 +60,10 @@ class EntityFactory {
         CrossIdentity_Usuario: faker.guid.guid(),
       );
 
-  static BsEnterpriseEntity makeBsEnterpriseEntity() => BsEnterpriseEntity(
-        PersonalizedCode: faker.randomGenerator.string(10),
-        Name: faker.randomGenerator.string(10),
-        InscriptionNumber: faker.randomGenerator.string(10),
-        Code: faker.randomGenerator.integer(100),
-        CnpjNumber: faker.randomGenerator.integer(100),
-        CodigoInternoVendaMobile_ModeloPedido:
-            faker.randomGenerator.integer(100),
-        ProductCodeSizeOfBalanceLabel: faker.randomGenerator.integer(100),
-        useEcommerceSale: faker.randomGenerator.boolean(),
-        useRetailSale: faker.randomGenerator.boolean(),
-        useWholeSale: faker.randomGenerator.boolean(),
-        EnterpriseParticipateEnterpriseGroup: faker.randomGenerator.boolean(),
-        ProductCodeWithCheckerDigit: faker.randomGenerator.boolean(),
+  static EnterpriseEntity makeEnterpriseEntity() => EnterpriseEntity(
+        id: faker.randomGenerator.integer(100),
+        name: faker.company.name(),
+        personalizedCode: faker.randomGenerator.integer(10).toString(),
+        cnpj: faker.guid.guid(),
       );
 }

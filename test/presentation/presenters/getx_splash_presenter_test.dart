@@ -36,7 +36,7 @@ void main() {
   }
 
   void initEntities() {
-    EnterpriseBuilder.entity = EntityFactory.makeEnterpriseEntity();
+    EnterpriseBuilder.entity = EntityFactory.makeFirebaseEnterpriseEntity();
   }
 
   void initMockSuccess() {
@@ -90,7 +90,7 @@ void main() {
   });
 
   test("Should update EnterpriseBuilder.entity correctly", () async {
-    final newEnterprise = EntityFactory.makeEnterpriseEntity();
+    final newEnterprise = EntityFactory.makeFirebaseEnterpriseEntity();
 
     localStorage.mockGet(FirebaseEnterpriseModel.fromEntity(newEnterprise).toJson());
 
