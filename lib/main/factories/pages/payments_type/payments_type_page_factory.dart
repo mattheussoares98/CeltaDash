@@ -1,3 +1,6 @@
 import '../../../../ui/pages/pages.dart';
+import '../../factories.dart';
 
-PaymentTypePage makePaymentsTypePage() => PaymentTypePage();
+PaymentTypePage makePaymentsTypePage() => PaymentTypePage(
+      paymentTypePresenter: makeGetxPaymentTypePresenter(),
+    );

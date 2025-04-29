@@ -5,9 +5,14 @@ import 'package:intl/intl.dart';
 
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
+import '../pages.dart';
 
 class PaymentTypePage extends StatefulWidget {
-  const PaymentTypePage({super.key});
+  final PaymentTypePresenter paymentTypePresenter;
+  const PaymentTypePage({
+    super.key,
+    required this.paymentTypePresenter,
+  });
 
   @override
   State<PaymentTypePage> createState() => _PaymentTypePageState();
@@ -70,36 +75,34 @@ class _PaymentTypePageState extends State<PaymentTypePage> {
             titleMinHeight: 40,
             indexToSort: 3,
             columnsIndexToSum: [1],
-            rowValues:
-                List.generate(5, (index) {
-                  final totalSales =
-                      index == 4
-                          ? maxSales - combinedSales
-                          : Random().nextDouble() * (maxSales / 4);
-                  combinedSales += totalSales;
+            rowValues: List.generate(5, (index) {
+              final totalSales = index == 4
+                  ? maxSales - combinedSales
+                  : Random().nextDouble() * (maxSales / 4);
+              combinedSales += totalSales;
 
-                  final quantitySales = Random().nextInt(999);
-                  final names = [
-                    "Crédito",
-                    "Dinheiro",
-                    "Débito",
-                    "PIX",
-                    "Outros",
-                  ];
+              final quantitySales = Random().nextInt(999);
+              final names = [
+                "Crédito",
+                "Dinheiro",
+                "Débito",
+                "PIX",
+                "Outros",
+              ];
 
-                  return [
-                    PersonalizedTableCell(value: names[index]),
-                    PersonalizedTableCell(value: totalSales, isMoney: true),
-                    PersonalizedTableCell(
-                      value: totalSales / quantitySales,
-                      isMoney: true,
-                    ),
-                    PersonalizedTableCell(
-                      value: totalSales / maxSales * 100,
-                      isPercentage: true,
-                    ),
-                  ];
-                }).toList(),
+              return [
+                PersonalizedTableCell(value: names[index]),
+                PersonalizedTableCell(value: totalSales, isMoney: true),
+                PersonalizedTableCell(
+                  value: totalSales / quantitySales,
+                  isMoney: true,
+                ),
+                PersonalizedTableCell(
+                  value: totalSales / maxSales * 100,
+                  isPercentage: true,
+                ),
+              ];
+            }).toList(),
           ),
         ],
       ),
