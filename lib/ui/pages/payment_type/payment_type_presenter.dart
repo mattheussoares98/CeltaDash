@@ -5,6 +5,7 @@ import '../pages.dart';
 
 abstract class PaymentTypePresenter implements Listenable {
   List<SaleMovementViewModel>? get saleMovements;
+  List<SaleMovementViewModel>? get saleMovementsByFinalizations;
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
 

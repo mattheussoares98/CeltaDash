@@ -20,26 +20,47 @@ class GetxPaymentTypePresenter extends GetxController
     isLoading = true;
     mainError = null;
     try {
-      final result = await loadSaleMovements.get(
-          startDate: DateTime(
-            homePresenter.selectedDate.year,
-            homePresenter.selectedDate.month,
-            1,
-          ),
-          endDate: DateTime(
-            homePresenter.selectedDate.year,
-            homePresenter.selectedDate.month + 1,
-            1,
-          ).subtract(Duration(days: 1)),
-          groupByEnterprise: true,
-          groupByDay: true,
-          groupByMonth: true,
-          groupByPaymentModality: true,
-          enterpriseIds: homePresenter.selectedEnterprise?.id == null
-              ? []
-              : [homePresenter.selectedEnterprise!.id!.toInt()]);
+      final startDate = DateTime(
+        homePresenter.selectedDate.year,
+        homePresenter.selectedDate.month,
+        1,
+      );
 
-      saleMovements = result
+      final endDate = DateTime(
+        homePresenter.selectedDate.year,
+        homePresenter.selectedDate.month + 1,
+        1,
+      ).subtract(Duration(days: 1));
+
+      final enterpriseIds = homePresenter.selectedEnterprise?.id == null
+          ? <int>[]
+          : [homePresenter.selectedEnterprise!.id!.toInt()];
+
+      final salesByModality = await loadSaleMovements.get(
+        startDate: startDate,
+        endDate: endDate,
+        groupByEnterprise: true,
+        groupByDay: true,
+        groupByMonth: true,
+        groupByPaymentModality: true,
+        enterpriseIds: enterpriseIds,
+      );
+
+      saleMovements = salesByModality
+          .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+          .toList();
+
+      final salesByFinalization = await loadSaleMovements.get(
+        startDate: startDate,
+        endDate: endDate,
+        groupByEnterprise: true,
+        groupByDay: true,
+        groupByMonth: true,
+        groupByPaymentFinalization: true,
+        enterpriseIds: enterpriseIds,
+      );
+
+      salesByFinaliztions = salesByFinalization
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
           .toList();
     } catch (e) {
@@ -48,4 +69,11 @@ class GetxPaymentTypePresenter extends GetxController
       isLoading = false;
     }
   }
+
+  final _saleMovementsFinalizations = Rx<List<SaleMovementViewModel>?>(null);
+  @override
+  List<SaleMovementViewModel>? get saleMovementsByFinalizations =>
+      _saleMovementsFinalizations.value;
+  set salesByFinaliztions(List<SaleMovementViewModel>? value) =>
+      _saleMovementsFinalizations.value = value;
 }
