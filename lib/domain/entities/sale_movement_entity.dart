@@ -6,6 +6,7 @@ class SaleMovementEntity extends Equatable {
   final int? Year;
   final int? Month;
   final int? Hour;
+  final int? QuantitySales;
   final String? Product;
   final String? ProductDepartment;
   final String? ProductSection;
@@ -21,6 +22,7 @@ class SaleMovementEntity extends Equatable {
     required this.Year,
     required this.Month,
     required this.Hour,
+    required this.QuantitySales,
     required this.Product,
     required this.ProductDepartment,
     required this.ProductSection,
@@ -38,6 +40,7 @@ class SaleMovementEntity extends Equatable {
         Month,
         Date,
         Hour,
+        QuantitySales,
         Product,
         ProductDepartment,
         ProductSection,

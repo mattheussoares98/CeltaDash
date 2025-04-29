@@ -14,6 +14,7 @@ class SaleMovementViewModel extends Equatable {
   final String? EnterpriseId;
   final String? EnterprisePersonalizedCode;
   final String? EnterpriseFantasyName;
+  final String? QuantitySales;
 
   const SaleMovementViewModel({
     required this.Date,
@@ -29,6 +30,7 @@ class SaleMovementViewModel extends Equatable {
     required this.EnterpriseId,
     required this.EnterprisePersonalizedCode,
     required this.EnterpriseFantasyName,
+    required this.QuantitySales,
   });
 
   @override
@@ -46,5 +48,6 @@ class SaleMovementViewModel extends Equatable {
         EnterpriseId,
         EnterprisePersonalizedCode,
         EnterpriseFantasyName,
+        QuantitySales,
       ];
 }

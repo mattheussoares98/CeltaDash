@@ -11,6 +11,7 @@ class SaleMovementModel extends Equatable {
   final int? Month;
   final DateTime? Date;
   final int? Hour;
+  final int? QuantitySales;
   final String? Product;
   final String? ProductDepartment;
   final String? ProductSection;
@@ -26,6 +27,7 @@ class SaleMovementModel extends Equatable {
     required this.Month,
     required this.Date,
     required this.Hour,
+    required this.QuantitySales,
     required this.Product,
     required this.ProductDepartment,
     required this.ProductSection,
@@ -51,6 +53,7 @@ class SaleMovementModel extends Equatable {
         EnterpriseId,
         EnterprisePersonalizedCode,
         EnterpriseFantasyName,
+        QuantitySales,
       ];
 
   factory SaleMovementModel.fromJson(Map json) => SaleMovementModel(
@@ -67,6 +70,7 @@ class SaleMovementModel extends Equatable {
         EnterpriseId: json['EnterpriseId'],
         EnterprisePersonalizedCode: json['EnterprisePersonalizedCode'],
         EnterpriseFantasyName: json['EnterpriseFantasyName'],
+        QuantitySales: json['QuantitySales'],
       );
 
   factory SaleMovementModel.fromEntity(SaleMovementEntity entity) =>
@@ -84,6 +88,7 @@ class SaleMovementModel extends Equatable {
         EnterpriseId: entity.EnterpriseId,
         EnterprisePersonalizedCode: entity.EnterprisePersonalizedCode,
         EnterpriseFantasyName: entity.EnterpriseFantasyName,
+        QuantitySales: entity.QuantitySales,
       );
 
   Map<String, dynamic> toJson() => {
@@ -100,6 +105,7 @@ class SaleMovementModel extends Equatable {
         'EnterpriseId': EnterpriseId,
         'EnterprisePersonalizedCode': EnterprisePersonalizedCode,
         'EnterpriseFantasyName': EnterpriseFantasyName,
+        'QuantitySales': QuantitySales,
       };
 
   SaleMovementEntity toEntity() => SaleMovementEntity(
@@ -116,6 +122,7 @@ class SaleMovementModel extends Equatable {
         EnterpriseId: EnterpriseId,
         EnterprisePersonalizedCode: EnterprisePersonalizedCode,
         EnterpriseFantasyName: EnterpriseFantasyName,
+        QuantitySales: QuantitySales,
       );
 
   factory SaleMovementModel.fromViewModel(SaleMovementViewModel viewModel) {
@@ -152,6 +159,7 @@ class SaleMovementModel extends Equatable {
       EnterpriseId: viewModel.EnterpriseId?.toInt(),
       EnterprisePersonalizedCode: viewModel.EnterprisePersonalizedCode,
       EnterpriseFantasyName: viewModel.EnterpriseFantasyName,
+      QuantitySales: viewModel.QuantitySales?.toInt(),
     );
   }
 
@@ -172,6 +180,7 @@ class SaleMovementModel extends Equatable {
       EnterpriseId: EnterpriseId?.toString(),
       EnterprisePersonalizedCode: EnterprisePersonalizedCode,
       EnterpriseFantasyName: EnterpriseFantasyName,
+      QuantitySales: QuantitySales?.toString(),
     );
   }
 }

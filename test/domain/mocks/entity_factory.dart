@@ -50,6 +50,7 @@ class EntityFactory {
         EnterpriseId: faker.randomGenerator.integer(100),
         EnterprisePersonalizedCode:
             faker.randomGenerator.integer(10).toString(),
+        QuantitySales: faker.randomGenerator.integer(100),
       );
 
   static BsUserEntity makeBsUserEntity() => BsUserEntity(
