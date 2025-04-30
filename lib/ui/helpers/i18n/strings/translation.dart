@@ -28,6 +28,7 @@ abstract class Translation {
   String get enter;
   String get enterprise;
   String get firstDaySales;
+  String get finalizations;
   String get goalHistory;
   String get grossMargin;
   String get grossProfit;

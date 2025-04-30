@@ -1,9 +1,7 @@
 import 'dart:async';
 
-import 'package:celta_plus/ui/helpers/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/components.dart';
@@ -92,38 +90,37 @@ class _PaymentTypePageState extends State<PaymentTypePage>
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(
-                R.string.paymentsType,
-                style: Theme.of(context).textTheme.displayLarge,
+              child: SelectDayOrMonthButtons(
+                selectedMonth: selectedMonth,
+                updateSelectedMonth: (value) {
+                  setState(() {
+                    selectedMonth = value;
+                  });
+                },
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                selectedMonth
-                    ? DateFormat.yMMM('pt_BR')
-                        .format(homePresenter.selectedDate)
-                    : DateFormat.yMMMd('pt_BR')
-                        .format(homePresenter.selectedDate),
-              ),
-            ),
-            SelectDayOrMonthButtons(
-              selectedMonth: selectedMonth,
-              updateSelectedMonth: (value) {
-                setState(() {
-                  selectedMonth = value;
-                });
-              },
-            ),
-            const SizedBox(height: 10),
             if (saleMovementsByModality != null)
-              PaymentsModalities(
-                saleMovementsByModality: saleMovementsByModality.where(
-                  (element) {
-                    return filter(element, homePresenter);
-                  },
-                ).toList(),
+              Expanded(
+                child: PaymentsModalities(
+                  filterByModality: true,
+                  saleMovements: saleMovementsByModality.where(
+                    (element) {
+                      return filter(element, homePresenter);
+                    },
+                  ).toList(),
+                ),
               ),
+            // if (saleMovementsByFinalizations != null)
+            //   Expanded(
+            //     child: PaymentsModalities(
+            //       filterByModality: false,
+            //       saleMovements: saleMovementsByFinalizations.where(
+            //         (element) {
+            //           return filter(element, homePresenter);
+            //         },
+            //       ).toList(),
+            //     ),
+            //   ),
           ],
         );
       }),
