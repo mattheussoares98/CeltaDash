@@ -57,6 +57,9 @@ class GetxResumePresenter extends GetxController
     isLoading = true;
     mainError = null;
     try {
+      if (_lastMonthLoadedData == homePresenter.selectedDate.month) {
+        return;
+      }
       final result = await loadSaleMovements.get(
         startDate: DateTime(
           homePresenter.selectedDate.year,
@@ -77,10 +80,16 @@ class GetxResumePresenter extends GetxController
       saleMovements = result
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
           .toList();
+
+      _lastMonthLoadedData = homePresenter.selectedDate.month;
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {
       isLoading = false;
     }
   }
+
+  int? _lastMonthLoadedData;
+  @override
+  int? get lastMonthLoadedData => _lastMonthLoadedData;
 }

@@ -193,5 +193,48 @@ void main() {
             groupByEnterprise: true,
           )).called(1);
     });
+
+    test("Should update last month loaded data", () async {
+      homePresenter.selectedDateMock = faker.date.dateTime();
+
+      await sut.getSales(homePresenter);
+
+      expect(sut.lastMonthLoadedData, homePresenter.selectedDateMock.month);
+    });
+    test("Should not update last month loaded data if loadSaleMovements throws",
+        () async {
+      loadSaleMovements.mockGetError();
+
+      await sut.getSales(homePresenter);
+
+      expect(sut.lastMonthLoadedData, null);
+    });
+    test(
+        "Should not load data again if selected date is the same of last loaded month",
+        () async {
+      homePresenter.selectedDateMock = faker.date.dateTime();
+      await sut.getSales(homePresenter);
+
+      await sut.getSales(homePresenter);
+
+      final startDate = DateTime(
+        homePresenter.selectedDateMock.year,
+        homePresenter.selectedDateMock.month,
+        1,
+      );
+      final endDate = DateTime(
+        homePresenter.selectedDateMock.year,
+        homePresenter.selectedDateMock.month + 1,
+        1,
+      ).subtract(Duration(days: 1));
+      verify(() => loadSaleMovements.get(
+            startDate: startDate,
+            endDate: endDate,
+            groupByDay: true,
+            groupByMonth: true,
+            groupByHour: true,
+            groupByEnterprise: true,
+          )).called(1);
+    });
   });
 }
