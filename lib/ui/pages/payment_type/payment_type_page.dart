@@ -48,6 +48,14 @@ class _PaymentTypePageState extends State<PaymentTypePage>
     mainErrorSubscription?.cancel();
   }
 
+  bool filter(SaleMovementViewModel sale, HomePresenter homePresenter) {
+    final selectedDate = homePresenter.selectedDate;
+
+    return (selectedMonth ? true : sale.Date?.day == selectedDate.day) &&
+        sale.Date?.month == selectedDate.month &&
+        sale.Date?.year == selectedDate.year;
+  }
+
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Provider.of(context, listen: false);
@@ -60,16 +68,24 @@ class _PaymentTypePageState extends State<PaymentTypePage>
         handleMainError(context, widget.paymentTypePresenter.mainErrorStream);
 
     return Scaffold(
-      appBar: DefaultAppBar(onChangeDateOrEnterprise: () async {
-        await widget.paymentTypePresenter.getSales(homePresenter);
-        setState(() {});
-      }),
+      appBar: DefaultAppBar(
+        onChangeDateOrEnterprise: () async {
+          await widget.paymentTypePresenter.getSales(homePresenter);
+          Future.delayed(Duration.zero, () {
+            setState(() {});
+          });
+        },
+      ),
       body: Obx(() {
         //TODO add option to search again
         final saleMovementsByModality =
             widget.paymentTypePresenter.saleMovements;
         final saleMovementsByFinalizations =
             widget.paymentTypePresenter.saleMovementsByFinalizations;
+
+        Future.delayed(Duration.zero, () {
+          setState(() {});
+        });
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -94,22 +110,19 @@ class _PaymentTypePageState extends State<PaymentTypePage>
             SelectDayOrMonthButtons(
               selectedMonth: selectedMonth,
               updateSelectedMonth: (value) {
-                selectedMonth = value;
-                Future.delayed(Duration.zero, () {
-                  setState(() {});
+                setState(() {
+                  selectedMonth = value;
                 });
               },
             ),
             const SizedBox(height: 10),
-            if (saleMovementsByModality != null && !selectedMonth)
-              PaymentsGroupedByTypeAndDay(
-                key: const ValueKey('Day'),
-                saleMovementsByModality: saleMovementsByModality,
-              ),
-            if (saleMovementsByModality != null && selectedMonth)
-              PaymentsGroupedByMonth(
-                key: const ValueKey('Month'),
-                saleMovementsByModality: saleMovementsByModality,
+            if (saleMovementsByModality != null)
+              PaymentsModalities(
+                saleMovementsByModality: saleMovementsByModality.where(
+                  (element) {
+                    return filter(element, homePresenter);
+                  },
+                ).toList(),
               ),
           ],
         );

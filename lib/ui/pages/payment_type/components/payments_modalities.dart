@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
-class PaymentsGroupedByMonth extends StatelessWidget {
+class PaymentsModalities extends StatefulWidget {
   final List<SaleMovementViewModel> saleMovementsByModality;
-  const PaymentsGroupedByMonth({
+  const PaymentsModalities({
     super.key,
     required this.saleMovementsByModality,
   });
 
   @override
-  Widget build(BuildContext context) {
-    HomePresenter homePresenter = Provider.of(context, listen: false);
+  State<PaymentsModalities> createState() =>
+      _PaymentsModalitiesState();
+}
 
+class _PaymentsModalitiesState
+    extends State<PaymentsModalities> {
+  @override
+  Widget build(BuildContext context) {
     return Expanded(
       child: Column(
         children: [
@@ -38,12 +42,7 @@ class PaymentsGroupedByMonth extends StatelessWidget {
             titleMinHeight: 40,
             indexToSort: 3,
             columnsIndexToSum: [1],
-            rowValues: saleMovementsByModality
-                .where((sale) {
-                  final selectedDate = homePresenter.selectedDate;
-                  return sale.Date?.month == selectedDate.month &&
-                      sale.Date?.year == selectedDate.year;
-                })
+            rowValues: widget.saleMovementsByModality
                 .fold<Map<String, List<SaleMovementViewModel>>>({},
                     (acc, sale) {
                   final key = sale.PaymentModality ?? 'Undefined';
@@ -58,7 +57,8 @@ class PaymentsGroupedByMonth extends StatelessWidget {
                       0, (sum, s) => sum + (s.LiquidValue?.toDouble() ?? 1));
                   final totalQuantity = sales.fold<int>(
                       0, (sum, s) => sum + (s.QuantitySales?.toInt() ?? 1));
-                  final overallValue = saleMovementsByModality.sumLiquidValue();
+                  final overallValue =
+                      widget.saleMovementsByModality.toList().sumLiquidValue();
 
                   return [
                     PersonalizedTableCell(
