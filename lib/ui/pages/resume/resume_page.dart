@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
-import '../../../data/models/models.dart';
 import '../../../ui/helpers/helpers.dart';
 import '../../components/components.dart';
 import '../../mixins/mixins.dart';
@@ -20,7 +19,7 @@ class ResumePage extends StatefulWidget {
 }
 
 class _ResumePageState extends State<ResumePage>
-    with UIErrorManager, LoadingManager {
+    with UIErrorManager, LoadingManager, RouteAware {
   final scrollController = ScrollController();
   StreamSubscription? mainErrorSubscription;
   StreamSubscription? loadingSubscription;
@@ -28,20 +27,36 @@ class _ResumePageState extends State<ResumePage>
   @override
   void dispose() {
     super.dispose();
+    final routeObserver = Get.find<RouteObserver<PageRoute>>();
+    routeObserver.unsubscribe(this);
+
     scrollController.dispose();
 
     mainErrorSubscription?.cancel();
     loadingSubscription?.cancel();
   }
 
-  final DailySalesModel dailySalesModel = DailySalesModel(
-    salesQuantity: Random().nextInt(1000),
-    totalAmountInDay: Random().nextDouble() * 50000,
-    productsAverageBySale: Random().nextDouble() * 10,
-  );
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final routeObserver = Get.find<RouteObserver<PageRoute>>();
+    routeObserver.subscribe(this, ModalRoute.of(context)! as PageRoute);
+  }
 
-  final quantityOfDaysInMonth =
-      DateTime(DateTime.now().year, DateTime.now().month + 1, 0).day;
+  @override
+  void didPopNext() {
+    debugPrint('Closed another page and returned to resumePage');
+    final resumePresenter =
+        Provider.of<ResumePresenter>(context, listen: false);
+    final homePresenter = Provider.of<HomePresenter>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback(
+        (_) async => await resumePresenter.getSales(homePresenter));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,10 +73,6 @@ class _ResumePageState extends State<ResumePage>
       context,
       resumePresenter.mainErrorStream,
     );
-
-    double totalMonthSales =
-        Random().nextDouble() * 50000 * quantityOfDaysInMonth;
-    double totalDaySales = totalMonthSales / quantityOfDaysInMonth;
 
     return Scaffold(
       appBar: DefaultAppBar(
@@ -104,7 +115,7 @@ class _ResumePageState extends State<ResumePage>
                       enterprise: homePresenter.selectedEnterprise,
                       filterDate: homePresenter.selectedDate,
                     ),
-                    goal: totalDaySales,
+                    goal: 100000,
                     leftButton: DefaultNavigateButton(
                       onTap: resumePresenter.goToPaymentsTypePage,
                       title: R.string.paymentsType,
@@ -135,8 +146,8 @@ class _ResumePageState extends State<ResumePage>
                   const SizedBox(height: 8),
                   SalesInformations(
                     scrollController: scrollController,
-                    goal: totalMonthSales,
-                    totalSales: totalMonthSales * Random().nextDouble(),
+                    goal: 10000,
+                    totalSales: 10000 * Random().nextDouble(),
                     title: R.string.salesOfTheMonth,
                     leftButton: DefaultNavigateButton(
                       onTap: resumePresenter.goToSetGoalPage,

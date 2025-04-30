@@ -24,7 +24,7 @@ class App extends StatelessWidget with KeyboardManager {
   Widget build(BuildContext context) {
     StringSize.updateStringSize(context);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
-    final routeObserver = Get.put<RouteObserver>(RouteObserver<PageRoute>());
+    final routeObserver = Get.put(RouteObserver<PageRoute>());
 
     debugPrint("largura: ${MediaQuery.of(context).size.width}");
     debugPrint("altura: ${MediaQuery.of(context).size.height}");
