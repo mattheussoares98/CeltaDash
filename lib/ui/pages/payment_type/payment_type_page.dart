@@ -1,11 +1,12 @@
 import 'dart:async';
 
+import 'package:celta_plus/ui/helpers/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../../helpers/helpers.dart';
+import '../../components/components.dart';
 import '../../mixins/mixins.dart';
 import '../pages.dart';
 import 'components/components.dart';
@@ -59,7 +60,10 @@ class _PaymentTypePageState extends State<PaymentTypePage>
         handleMainError(context, widget.paymentTypePresenter.mainErrorStream);
 
     return Scaffold(
-      appBar: AppBar(title: Text(R.string.paymentsType)),
+      appBar: DefaultAppBar(onChangeDateOrEnterprise: () async {
+        await widget.paymentTypePresenter.getSales(homePresenter);
+        setState(() {});
+      }),
       body: Obx(() {
         //TODO add option to search again
         final saleMovementsByModality =
@@ -73,6 +77,13 @@ class _PaymentTypePageState extends State<PaymentTypePage>
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
+                R.string.paymentsType,
+                style: Theme.of(context).textTheme.displayLarge,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
                 selectedMonth
                     ? DateFormat.yMMM('pt_BR')
                         .format(homePresenter.selectedDate)
@@ -83,18 +94,21 @@ class _PaymentTypePageState extends State<PaymentTypePage>
             SelectDayOrMonthButtons(
               selectedMonth: selectedMonth,
               updateSelectedMonth: (value) {
-                setState(() {
-                  selectedMonth = value;
+                selectedMonth = value;
+                Future.delayed(Duration.zero, () {
+                  setState(() {});
                 });
               },
             ),
             const SizedBox(height: 10),
             if (saleMovementsByModality != null && !selectedMonth)
               PaymentsGroupedByTypeAndDay(
+                key: const ValueKey('Day'),
                 saleMovementsByModality: saleMovementsByModality,
               ),
             if (saleMovementsByModality != null && selectedMonth)
               PaymentsGroupedByMonth(
+                key: const ValueKey('Month'),
                 saleMovementsByModality: saleMovementsByModality,
               ),
           ],

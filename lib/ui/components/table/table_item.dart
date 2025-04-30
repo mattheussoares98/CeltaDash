@@ -34,14 +34,30 @@ class _TableItemState extends State<TableItem> {
   int? maxValueRowIndex;
 
   @override
-  initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Check if the input data changed, and reset state
+    debugPrint("updated");
     sortedRows = [...widget.rowValues];
     _calculateMinMaxIndexes();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted && widget.indexToSort != null) {
         sortTable(widget.indexToSort!);
         sortTable(widget.indexToSort!);
+      }
+    });
+  }
+
+  @override
+  void didUpdateWidget(covariant TableItem oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    sortedRows = [...oldWidget.rowValues];
+    _calculateMinMaxIndexes();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && oldWidget.indexToSort != null) {
+        sortTable(oldWidget.indexToSort!);
+        sortTable(oldWidget.indexToSort!);
       }
     });
   }
@@ -129,10 +145,9 @@ class _TableItemState extends State<TableItem> {
         }
         sumRow.add(
           PersonalizedTableCell(
-            value:
-                isPercentage == true
-                    ? sum / widget.rowValues.length
-                    : sum.toString().toBrazilianNumber(),
+            value: isPercentage == true
+                ? sum / widget.rowValues.length
+                : sum.toString().toBrazilianNumber(),
             isTitle: true, // Style it like a header cell
             isMoney: isMoney,
             isPercentage: isPercentage,
@@ -154,8 +169,10 @@ class _TableItemState extends State<TableItem> {
           Table(
             border: TableBorder.all(color: Colors.black, width: 0.06),
             defaultColumnWidth: FlexColumnWidth(1),
-            columnWidths: widget.tableColumnWidth /* ??
-                {0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.1)} */,
+            columnWidths: widget
+                .tableColumnWidth /* ??
+                {0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.1)} */
+            ,
             children: [
               TableRow(
                 children: List.generate(widget.titles.length, (index) {
@@ -183,8 +200,10 @@ class _TableItemState extends State<TableItem> {
               child: Table(
                 border: TableBorder.all(color: Colors.black, width: 0.06),
                 defaultColumnWidth: FlexColumnWidth(1),
-                columnWidths: widget.tableColumnWidth /* ??
-                    {0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.1)} */,
+                columnWidths: widget
+                    .tableColumnWidth /* ??
+                    {0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.1)} */
+                ,
                 children: [
                   ...List.generate(
                     sortedRows.length,
