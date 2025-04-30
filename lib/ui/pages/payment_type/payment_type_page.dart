@@ -23,6 +23,7 @@ class PaymentTypePage extends StatefulWidget {
 class _PaymentTypePageState extends State<PaymentTypePage>
     with LoadingManager, UIErrorManager {
   bool selectedMonth = false;
+  bool needUpdateScreen = false;
   int selectedPageIndex = 0;
   StreamSubscription? loadingSubscription;
   StreamSubscription? mainErrorSubscription;
@@ -51,6 +52,7 @@ class _PaymentTypePageState extends State<PaymentTypePage>
     setState(() {
       selectedMonth = value;
     });
+    needUpdateScreen = true;
   }
 
   bool filter(SaleMovementViewModel sale, HomePresenter homePresenter) {
@@ -83,9 +85,12 @@ class _PaymentTypePageState extends State<PaymentTypePage>
             ? widget.paymentTypePresenter.saleMovementsByFinalizations
             : widget.paymentTypePresenter.saleMovements;
 
-        Future.delayed(Duration.zero, () {
-          setState(() {});
-        });
+        if (needUpdateScreen) {
+          Future.delayed(Duration.zero, () {
+            setState(() {});
+          });
+          needUpdateScreen = false;
+        }
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -115,6 +120,7 @@ class _PaymentTypePageState extends State<PaymentTypePage>
           setState(() {
             selectedPageIndex = value;
           });
+          needUpdateScreen = true;
         },
       ),
     );

@@ -44,7 +44,6 @@ class _TableItemState extends State<TableItem> {
       if (mounted && widget.indexToSort != null) {
         sortTable(widget.indexToSort!);
         sortTable(widget.indexToSort!);
-        setState(() {});
       }
     });
   }
@@ -59,7 +58,6 @@ class _TableItemState extends State<TableItem> {
       if (mounted && oldWidget.indexToSort != null) {
         sortTable(oldWidget.indexToSort!);
         sortTable(oldWidget.indexToSort!);
-        setState(() {});
       }
     });
   }
