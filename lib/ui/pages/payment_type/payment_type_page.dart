@@ -5,10 +5,10 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 import '../../mixins/mixins.dart';
 import '../pages.dart';
+import 'components/components.dart';
 
 class PaymentTypePage extends StatefulWidget {
   final PaymentTypePresenter paymentTypePresenter;
@@ -23,7 +23,7 @@ class PaymentTypePage extends StatefulWidget {
 
 class _PaymentTypePageState extends State<PaymentTypePage>
     with LoadingManager, UIErrorManager {
-  bool selectedMonth = true;
+  bool selectedMonth = false;
   StreamSubscription? loadingSubscription;
   StreamSubscription? mainErrorSubscription;
 
@@ -68,77 +68,34 @@ class _PaymentTypePageState extends State<PaymentTypePage>
             widget.paymentTypePresenter.saleMovementsByFinalizations;
 
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 selectedMonth
-                    ? DateFormat.yMMMd('pt_BR')
+                    ? DateFormat.yMMM('pt_BR')
                         .format(homePresenter.selectedDate)
-                    : DateFormat.yMMM('pt_BR')
+                    : DateFormat.yMMMd('pt_BR')
                         .format(homePresenter.selectedDate),
               ),
             ),
-            SelectPeriodItems(
-              items: [
-                SelectPeriodItems.createItem(
-                  title: R.string.day,
-                  onTap: () {
-                    setState(() {
-                      selectedMonth = true;
-                    });
-                    debugPrint("Filter by day");
-                  },
-                ),
-                SelectPeriodItems.createItem(
-                  title: R.string.month,
-                  onTap: () {
-                    setState(() {
-                      selectedMonth = false;
-                    });
-                    debugPrint("Filter by month");
-                  },
-                ),
-              ],
+            SelectDayOrMonthButtons(
+              selectedMonth: selectedMonth,
+              updateSelectedMonth: (value) {
+                setState(() {
+                  selectedMonth = value;
+                });
+              },
             ),
             const SizedBox(height: 10),
-            if (saleMovementsByModality != null)
-              TableItem(
-                titles: [
-                  PersonalizedTableCell(value: R.string.paymentsType),
-                  PersonalizedTableCell(value: R.string.total),
-                  PersonalizedTableCell(value: R.string.ticketAverage),
-                  PersonalizedTableCell(value: R.string.share),
-                ],
-                columnIndexToCompareAndDetachBetterAndWorstValue: 3,
-                tableColumnWidth: {
-                  3: FixedColumnWidth(MediaQuery.of(context).size.width * 0.17),
-                },
-                titleMinHeight: 40,
-                indexToSort: 3,
-                columnsIndexToSum: [1],
-                rowValues: saleMovementsByModality.where((sale) {
-                  final selectedDate = homePresenter.selectedDate;
-
-                  return sale.Date?.day == selectedDate.day &&
-                      sale.Date?.month == selectedDate.month &&
-                      sale.Date?.year == selectedDate.year;
-                }).map((e) {
-                  return [
-                    PersonalizedTableCell(value: e.PaymentModality),
-                    PersonalizedTableCell(value: e.LiquidValue, isMoney: true),
-                    PersonalizedTableCell(
-                      value: (e.LiquidValue?.toDouble() ?? 0) /
-                          (e.QuantitySales?.toInt() ?? 0),
-                      isMoney: true,
-                    ),
-                    PersonalizedTableCell(
-                      value: (e.LiquidValue?.toDouble() ?? 0) /
-                          (saleMovementsByModality.sumLiquidValue()),
-                      isPercentage: true,
-                    ),
-                  ];
-                }).toList(),
+            if (saleMovementsByModality != null && !selectedMonth)
+              PaymentsGroupedByTypeAndDay(
+                saleMovementsByModality: saleMovementsByModality,
+              ),
+            if (saleMovementsByModality != null && selectedMonth)
+              PaymentsGroupedByMonth(
+                saleMovementsByModality: saleMovementsByModality,
               ),
           ],
         );

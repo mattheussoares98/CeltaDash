@@ -42,6 +42,7 @@ class PtBr implements Translation {
   String get insertGoal => "Inserir meta";
   String get loadEnterprises => "Carregar empresas";
   String get logout => "Sair";
+  String get modalities => "Modalidades";
   String get month => "Mês";
   String get monthlyAnalysis => "Análise mensal";
   String get moreDetails => "Mais detalhes";
