@@ -23,6 +23,7 @@ class PaymentTypePage extends StatefulWidget {
 class _PaymentTypePageState extends State<PaymentTypePage>
     with LoadingManager, UIErrorManager {
   bool selectedMonth = false;
+  int selectedPageIndex = 0;
   StreamSubscription? loadingSubscription;
   StreamSubscription? mainErrorSubscription;
 
@@ -44,6 +45,12 @@ class _PaymentTypePageState extends State<PaymentTypePage>
     super.dispose();
     loadingSubscription?.cancel();
     mainErrorSubscription?.cancel();
+  }
+
+  void updateSelectedMonth(bool value) {
+    setState(() {
+      selectedMonth = value;
+    });
   }
 
   bool filter(SaleMovementViewModel sale, HomePresenter homePresenter) {
@@ -69,17 +76,12 @@ class _PaymentTypePageState extends State<PaymentTypePage>
       appBar: DefaultAppBar(
         onChangeDateOrEnterprise: () async {
           await widget.paymentTypePresenter.getSales(homePresenter);
-          Future.delayed(Duration.zero, () {
-            setState(() {});
-          });
         },
       ),
       body: Obx(() {
-        //TODO add option to search again
-        final saleMovementsByModality =
-            widget.paymentTypePresenter.saleMovements;
-        final saleMovementsByFinalizations =
-            widget.paymentTypePresenter.saleMovementsByFinalizations;
+        final saleMovements = selectedPageIndex == 1
+            ? widget.paymentTypePresenter.saleMovementsByFinalizations
+            : widget.paymentTypePresenter.saleMovements;
 
         Future.delayed(Duration.zero, () {
           setState(() {});
@@ -92,38 +94,29 @@ class _PaymentTypePageState extends State<PaymentTypePage>
               padding: const EdgeInsets.all(8.0),
               child: SelectDayOrMonthButtons(
                 selectedMonth: selectedMonth,
-                updateSelectedMonth: (value) {
-                  setState(() {
-                    selectedMonth = value;
-                  });
-                },
+                updateSelectedMonth: updateSelectedMonth,
               ),
             ),
-            if (saleMovementsByModality != null)
-              Expanded(
-                child: PaymentsModalities(
-                  filterByModality: true,
-                  saleMovements: saleMovementsByModality.where(
-                    (element) {
-                      return filter(element, homePresenter);
-                    },
-                  ).toList(),
-                ),
+            if (saleMovements != null)
+              PaymentsModalities(
+                filterByFinalizations: selectedPageIndex == 1,
+                saleMovements: saleMovements.where(
+                  (element) {
+                    return filter(element, homePresenter);
+                  },
+                ).toList(),
               ),
-            // if (saleMovementsByFinalizations != null)
-            //   Expanded(
-            //     child: PaymentsModalities(
-            //       filterByModality: false,
-            //       saleMovements: saleMovementsByFinalizations.where(
-            //         (element) {
-            //           return filter(element, homePresenter);
-            //         },
-            //       ).toList(),
-            //     ),
-            //   ),
           ],
         );
       }),
+      bottomNavigationBar: BottomNavigation(
+        selectedPageIndex: selectedPageIndex,
+        updateSelectedPageIndex: (value) {
+          setState(() {
+            selectedPageIndex = value;
+          });
+        },
+      ),
     );
   }
 }
