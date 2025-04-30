@@ -52,8 +52,8 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                 Expanded(
                   child: DefaultDropDown<EnterpriseViewModel?>(
                     onChanged: (e) {
-                      widget.onChangeDateOrEnterprise();
                       homePresenter.updateSelectedEnterprise(e);
+                      widget.onChangeDateOrEnterprise();
                     },
                     hint: null,
                     items: enterprises
