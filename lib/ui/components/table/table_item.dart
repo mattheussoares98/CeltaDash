@@ -164,39 +164,39 @@ class _TableItemState extends State<TableItem> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Column(
-        children: [
-          Table(
-            border: TableBorder.all(color: Colors.black, width: 0.06),
-            defaultColumnWidth: FlexColumnWidth(1),
-            columnWidths: widget
-                .tableColumnWidth /* ??
-                {0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.1)} */
-            ,
-            children: [
-              TableRow(
-                children: List.generate(widget.titles.length, (index) {
-                  final tableCell = widget.titles[index];
-                  return IntrinsicHeight(
-                    child: Container(
-                      constraints: BoxConstraints(
-                        minHeight: widget.titleMinHeight ?? 1,
-                      ),
-                      child: InkWell(
-                        onTap: () => sortTable(index),
-                        child: PersonalizedTableCell(
-                          value: tableCell.value,
-                          isTitle: true,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Table(
+              border: TableBorder.all(color: Colors.black, width: 0.06),
+              defaultColumnWidth: FlexColumnWidth(1),
+              columnWidths: widget
+                  .tableColumnWidth /* ??
+                  {0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.1)} */
+              ,
+              children: [
+                TableRow(
+                  children: List.generate(widget.titles.length, (index) {
+                    final tableCell = widget.titles[index];
+                    return IntrinsicHeight(
+                      child: Container(
+                        constraints: BoxConstraints(
+                          minHeight: widget.titleMinHeight ?? 1,
+                        ),
+                        child: InkWell(
+                          onTap: () => sortTable(index),
+                          child: PersonalizedTableCell(
+                            value: tableCell.value,
+                            isTitle: true,
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                }),
-              ),
-            ],
-          ),
-          Expanded(
-            child: SingleChildScrollView(
+                    );
+                  }),
+                ),
+              ],
+            ),
+            SingleChildScrollView(
               child: Table(
                 border: TableBorder.all(color: Colors.black, width: 0.06),
                 defaultColumnWidth: FlexColumnWidth(1),
@@ -226,17 +226,24 @@ class _TableItemState extends State<TableItem> {
                       decoration: BoxDecoration(color: getColor(index)),
                     ),
                   ),
-                  if (widget.columnsIndexToSum != null &&
-                      widget.columnsIndexToSum!.isNotEmpty)
-                    TableRow(
-                      decoration: BoxDecoration(color: Colors.grey[300]),
-                      children: _buildSumRow(),
-                    ),
                 ],
               ),
             ),
-          ),
-        ],
+            if (widget.columnsIndexToSum != null &&
+                widget.columnsIndexToSum!.isNotEmpty)
+              Table(
+                border: TableBorder.all(color: Colors.black, width: 0.06),
+                defaultColumnWidth: FlexColumnWidth(1),
+                columnWidths: widget.tableColumnWidth,
+                children: [
+                  TableRow(
+                    decoration: BoxDecoration(color: Colors.grey[300]),
+                    children: _buildSumRow(),
+                  ),
+                ],
+              ),
+          ],
+        ),
       ),
     );
   }
