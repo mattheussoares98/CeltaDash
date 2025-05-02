@@ -77,7 +77,16 @@ class _ResumePageState extends State<ResumePage>
     return Scaffold(
       appBar: DefaultAppBar(
         onChangeDateOrEnterprise: () async {
-          await resumePresenter.getSales(homePresenter, forceRefresh: true);
+          final selectedDate = homePresenter.selectedDate;
+          final now = DateTime.now();
+          bool forceRefresh = selectedDate.year != now.year &&
+              selectedDate.month != now.month &&
+              selectedDate.day != now.day;
+
+          await resumePresenter.getSales(
+            homePresenter,
+            forceRefresh: forceRefresh, //TODO move to presenter
+          );
           setState(() {});
         },
       ),
