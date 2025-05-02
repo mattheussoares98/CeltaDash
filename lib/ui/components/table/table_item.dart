@@ -143,11 +143,13 @@ class _TableItemState extends State<TableItem> {
             sum += value;
           }
         }
+
+        bool isInt = sum % 1 == 0;
         sumRow.add(
           PersonalizedTableCell(
             value: isPercentage == true
                 ? sum / widget.rowValues.length
-                : sum.toString().toBrazilianNumber(),
+                : sum.toString().toBrazilianNumber(isInt ? 0 : 2),
             isTitle: true, // Style it like a header cell
             isMoney: isMoney,
             isPercentage: isPercentage,
