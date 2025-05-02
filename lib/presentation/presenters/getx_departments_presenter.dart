@@ -50,31 +50,10 @@ class GetxDepartmentsPresenter extends GetxController
       saleMovements = salesByModality
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
           .toList();
-
-      final salesByFinalization = await loadSaleMovements.get(
-        startDate: startDate,
-        endDate: endDate,
-        groupByEnterprise: true,
-        groupByDay: true,
-        groupByMonth: true,
-        groupByPaymentFinalization: true,
-        enterpriseIds: enterpriseIds,
-      );
-
-      salesByFinaliztions = salesByFinalization
-          .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
-          .toList();
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {
       isLoading = false;
     }
   }
-
-  final _saleMovementsBySection = Rx<List<SaleMovementViewModel>?>(null);
-  @override
-  List<SaleMovementViewModel>? get saleMovementsBySection =>
-      _saleMovementsBySection.value;
-  set salesByFinaliztions(List<SaleMovementViewModel>? value) =>
-      _saleMovementsBySection.value = value;
 }
