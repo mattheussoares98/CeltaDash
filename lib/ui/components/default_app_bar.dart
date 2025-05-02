@@ -93,7 +93,8 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                     lastDate: DateTime.now(),
                   );
 
-                  if (newDate != null) {
+                  if (newDate != null &&
+                      newDate != homePresenter.selectedDate) {
                     setState(() {
                       homePresenter.updateSelectedDate(newDate);
                     });
