@@ -108,22 +108,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: SelectPeriodItems(
-                items: [
-                  SelectPeriodItems.createItem(
-                    title: R.string.day,
-                    onTap: () {
-                      updateSelectedMonth(false);
-                    },
-                  ),
-                  SelectPeriodItems.createItem(
-                    title: R.string.month,
-                    onTap: () {
-                      updateSelectedMonth(true);
-                    },
-                  ),
-                ],
-              ),
+              child: SelectDayOrMonth(updateSelectedMonth: updateSelectedMonth),
             ),
             //TODO analyse to create two pages and navigate between them
             if (selectedPageIndex == 0)
