@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/components.dart';
+import '../../helpers/helpers.dart';
 import '../../mixins/mixins.dart';
 import '../pages.dart';
 import 'components/components.dart';
@@ -93,6 +94,18 @@ class _PaymentTypePageState extends State<PaymentTypePage>
           needUpdateScreen = false;
         }
 
+        if (saleMovements == null || saleMovements.isEmpty) {
+          //TODO do this in payments page
+          return Center(
+            child: ElevatedButton(
+              onPressed: () async {
+                await widget.paymentTypePresenter.getSales(homePresenter);
+              },
+              child: Text(R.string.searchAgain),
+            ),
+          );
+        }
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -103,22 +116,22 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                 updateSelectedMonth: updateSelectedMonth,
               ),
             ),
-            if (saleMovements != null)
-              //TODO analyse to create two pages and navigate between them
-              PaymentsModalities(
-                filterByFinalizations: selectedPageIndex == 1,
-                saleMovements: saleMovements.where(
-                  (element) {
-                    return filter(element, homePresenter);
-                  },
-                ).toList(),
-              ),
+            //TODO analyse to create two pages and navigate between them
+            PaymentsModalities(
+              filterByFinalizations: selectedPageIndex == 1,
+              saleMovements: saleMovements.where(
+                (element) {
+                  return filter(element, homePresenter);
+                },
+              ).toList(),
+            ),
           ],
         );
       }),
       bottomNavigationBar: BottomNavigation(
         selectedPageIndex: selectedPageIndex,
         updateSelectedPageIndex: (value) {
+          if (value == selectedPageIndex) return;
           setState(() {
             selectedPageIndex = value;
           });

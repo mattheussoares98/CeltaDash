@@ -93,7 +93,6 @@ class _DepartmentsPageState extends State<DepartmentsPage>
         final saleMovements = widget.departmentsPresenter.saleMovements;
 
         if (saleMovements == null || saleMovements.isEmpty) {
-          //TODO do this in payments page
           return Center(
             child: ElevatedButton(
               onPressed: () async {
@@ -136,8 +135,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
       bottomNavigationBar: BottomNavigation(
         selectedPageIndex: selectedPageIndex,
         updateSelectedPageIndex: (value) {
-          if (value == selectedPageIndex)
-            return; //TODO do this in payments page
+          if (value == selectedPageIndex) return;
           setState(() {
             selectedPageIndex = value;
           });
