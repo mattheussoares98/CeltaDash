@@ -104,6 +104,7 @@ class _PaymentTypePageState extends State<PaymentTypePage>
               ),
             ),
             if (saleMovements != null)
+              //TODO analyse to create two pages and navigate between them
               PaymentsModalities(
                 filterByFinalizations: selectedPageIndex == 1,
                 saleMovements: saleMovements.where(
