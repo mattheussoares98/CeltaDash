@@ -42,8 +42,9 @@ class GetxDepartmentsPresenter extends GetxController
         groupByEnterprise: true,
         groupByDay: true,
         groupByMonth: true,
-        groupByPaymentModality: true,
         enterpriseIds: enterpriseIds,
+        groupByProductDepartment: true,
+        groupByProductSection: true,
       );
 
       saleMovements = salesByModality
