@@ -110,10 +110,12 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 8),
-                  child: IconButton(
-                    onPressed: widget.onChangeDateOrEnterprise,
-                    icon: Icon(Icons.refresh),
-                  ),
+                  child: 1 == 1
+                      ? SizedBox()
+                      : IconButton(
+                          onPressed: widget.onChangeDateOrEnterprise,
+                          icon: Icon(Icons.refresh),
+                        ),
                 )
               ],
             ),
