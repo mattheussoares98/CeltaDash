@@ -1,3 +1,6 @@
 import '../../../../ui/pages/pages.dart';
+import '../../factories.dart';
 
-DepartmentsPage makeDepartmentsPage() => DepartmentsPage();
+DepartmentsPage makeDepartmentsPage() => DepartmentsPage(
+      departmentsPresenter: makeGetxDepartmentsPresenter(),
+    );

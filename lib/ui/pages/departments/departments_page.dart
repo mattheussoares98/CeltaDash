@@ -1,101 +1,148 @@
-import 'dart:math';
+import 'dart:async';
 
-import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
+import '../../mixins/mixins.dart';
+import '../pages.dart';
+import 'components/components.dart';
 
 class DepartmentsPage extends StatefulWidget {
-  const DepartmentsPage({super.key});
+  final DepartmentsPresenter departmentsPresenter;
+  const DepartmentsPage({
+    super.key,
+    required this.departmentsPresenter,
+  });
 
   @override
   State<DepartmentsPage> createState() => _DepartmentsPageState();
 }
 
-class _DepartmentsPageState extends State<DepartmentsPage> {
-  bool selectedDay = true;
+class _DepartmentsPageState extends State<DepartmentsPage>
+    with LoadingManager, UIErrorManager {
+  bool selectedMonth = false;
+  bool needUpdateScreen = false;
+  int selectedPageIndex = 0;
+  StreamSubscription? loadingSubscription;
+  StreamSubscription? mainErrorSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        HomePresenter homePresenter = Provider.of(context, listen: false);
+
+        await widget.departmentsPresenter.getSales(homePresenter);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    loadingSubscription?.cancel();
+    mainErrorSubscription?.cancel();
+  }
+
+  void updateSelectedMonth(bool value) {
+    setState(() {
+      selectedMonth = value;
+    });
+    needUpdateScreen = true;
+  }
+
+  bool filter(SaleMovementViewModel sale, HomePresenter homePresenter) {
+    final selectedDate = homePresenter.selectedDate;
+
+    return (selectedMonth ? true : sale.Date?.day == selectedDate.day) &&
+        sale.Date?.month == selectedDate.month &&
+        sale.Date?.year == selectedDate.year;
+  }
 
   @override
   Widget build(BuildContext context) {
-    final maxSales = Random().nextDouble() * 100000;
-    var combinedSales = 0.0;
+    HomePresenter homePresenter = Provider.of(context, listen: false);
+
+    loadingSubscription?.cancel();
+    mainErrorSubscription?.cancel();
+    loadingSubscription =
+        handleLoading(context, widget.departmentsPresenter.isLoadingStream);
+    mainErrorSubscription =
+        handleMainError(context, widget.departmentsPresenter.mainErrorStream);
 
     return Scaffold(
-      appBar: AppBar(title: Text(R.string.departments)),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              selectedDay
-                  ? DateFormat.yMMMd('pt_BR').format(DateTime.now())
-                  : DateFormat.yMMM('pt_BR').format(DateTime.now()),
+      appBar: DefaultAppBar(
+        onChangeDateOrEnterprise: () async {
+          needUpdateScreen = true;
+          await widget.departmentsPresenter.getSales(homePresenter);
+        },
+      ),
+      body: Obx(() {
+        if (needUpdateScreen) {
+          Future.delayed(Duration.zero, () {
+            setState(() {});
+          });
+          needUpdateScreen = false;
+        }
+
+        final saleMovements = widget.departmentsPresenter.saleMovements;
+
+        if (saleMovements == null || saleMovements.isEmpty) {
+          //TODO do this in payments page
+          return Center(
+            child: ElevatedButton(
+              onPressed: () async {
+                await widget.departmentsPresenter.getSales(homePresenter);
+              },
+              child: Text(R.string.searchAgain),
             ),
-          ),
-          SelectPeriodItems(
-            items: [
-              SelectPeriodItems.createItem(
-                title: R.string.day,
-                onTap: () {
-                  setState(() {
-                    selectedDay = true;
-                  });
-                  debugPrint("Search by day");
-                },
-              ),
-              SelectPeriodItems.createItem(
-                title: R.string.month,
-                onTap: () {
-                  setState(() {
-                    selectedDay = false;
-                  });
-                  debugPrint("Search by month");
-                },
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          TableItem(
-            titles: [
-              PersonalizedTableCell(value: R.string.department),
-              PersonalizedTableCell(value: R.string.total),
-              PersonalizedTableCell(value: R.string.ticketAverage),
-              PersonalizedTableCell(value: R.string.share),
-            ],
-            columnIndexToCompareAndDetachBetterAndWorstValue: 3,
-            tableColumnWidth: {
-              3: FixedColumnWidth(MediaQuery.of(context).size.width * 0.17),
-            },
-            titleMinHeight: 40,
-            indexToSort: 3,
-            columnsIndexToSum: [1],
-            rowValues:
-                List.generate(10, (index) {
-                  final totalSales =
-                      index == 9
-                          ? maxSales - combinedSales
-                          : Random().nextDouble() * (maxSales / 4);
-                  combinedSales += totalSales;
+          );
+        }
 
-                  final quantitySales = Random().nextInt(999);
-
-                  return [
-                    PersonalizedTableCell(value: faker.food.dish()),
-                    PersonalizedTableCell(value: totalSales, isMoney: true),
-                    PersonalizedTableCell(
-                      value: totalSales / quantitySales,
-                      isMoney: true,
-                    ),
-                    PersonalizedTableCell(
-                      value: totalSales / maxSales * 100,
-                      isPercentage: true,
-                    ),
-                  ];
-                }).toList(),
-          ),
-        ],
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SelectPeriodItems(
+                items: [
+                  SelectPeriodItems.createItem(
+                    title: R.string.day,
+                    onTap: () {
+                      updateSelectedMonth(false);
+                    },
+                  ),
+                  SelectPeriodItems.createItem(
+                    title: R.string.month,
+                    onTap: () {
+                      updateSelectedMonth(true);
+                    },
+                  ),
+                ],
+              ),
+            ),
+            //TODO analyse to create two pages and navigate between them
+            if (selectedPageIndex == 0)
+              Departments(saleMovements: saleMovements),
+            if (selectedPageIndex == 1) Sections(saleMovements: saleMovements),
+          ],
+        );
+      }),
+      bottomNavigationBar: BottomNavigation(
+        selectedPageIndex: selectedPageIndex,
+        updateSelectedPageIndex: (value) {
+          if (value == selectedPageIndex)
+            return; //TODO do this in payments page
+          setState(() {
+            selectedPageIndex = value;
+          });
+          needUpdateScreen = true;
+        },
       ),
     );
   }
