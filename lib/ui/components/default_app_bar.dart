@@ -86,7 +86,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
               child: ElevatedButton.icon(
                 onPressed: () async {
                   final newDate = await GetNewDate.get(
-                    reduceDaysFromInitialDate: 60,
+                    reduceDaysFromInitialDate: 1825,
                     canInsertDateBeforeNow: true,
                     insertHoursAndMinutes: false,
                     lastDate: DateTime.now(),
