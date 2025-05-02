@@ -82,30 +82,40 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                 ),
               ],
             ),
-            SizedBox(height: 5),
-            FittedBox(
-              child: ElevatedButton.icon(
-                onPressed: () async {
-                  final newDate = await GetNewDate.get(
-                    reduceDaysFromInitialDate: 1825,
-                    canInsertDateBeforeNow: true,
-                    insertHoursAndMinutes: false,
-                    lastDate: DateTime.now(),
-                  );
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: () async {
+                      final newDate = await GetNewDate.get(
+                        reduceDaysFromInitialDate: 1825,
+                        canInsertDateBeforeNow: true,
+                        insertHoursAndMinutes: false,
+                        lastDate: DateTime.now(),
+                      );
 
-                  if (newDate != null &&
-                      newDate != homePresenter.selectedDate) {
-                    setState(() {
-                      homePresenter.updateSelectedDate(newDate);
-                    });
-                    widget.onChangeDateOrEnterprise();
-                  }
-                },
-                label: Text(
-                  "${DateFormat('dd/MM/yyyy').format(homePresenter.selectedDate)}  ${DateFormat('EEEE', 'pt_BR').format(homePresenter.selectedDate)}",
+                      if (newDate != null &&
+                          newDate != homePresenter.selectedDate) {
+                        setState(() {
+                          homePresenter.updateSelectedDate(newDate);
+                        });
+                        widget.onChangeDateOrEnterprise();
+                      }
+                    },
+                    label: Text(
+                      "${DateFormat('dd/MM/yyyy').format(homePresenter.selectedDate)}  ${DateFormat('EEEE', 'pt_BR').format(homePresenter.selectedDate)}",
+                    ),
+                    icon: Icon(Icons.date_range, color: Colors.white),
+                  ),
                 ),
-                icon: Icon(Icons.date_range, color: Colors.white),
-              ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: IconButton(
+                    onPressed: widget.onChangeDateOrEnterprise,
+                    icon: Icon(Icons.refresh),
+                  ),
+                )
+              ],
             ),
           ],
         );
