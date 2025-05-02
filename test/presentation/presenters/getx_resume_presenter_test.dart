@@ -78,10 +78,10 @@ void main() {
       ).called(1);
     });
     test("Should navigate to sections page correctly", () async {
-      sut.goToSectionsPage();
+      sut.goToDepartmentsPage();
 
       verify(
-        () => navigateTo.navigate(pageRoute: PageRoutes.sections),
+        () => navigateTo.navigate(pageRoute: PageRoutes.departments),
       ).called(1);
     });
     test("Should navigate to set goal page correctly", () async {

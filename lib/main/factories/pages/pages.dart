@@ -12,7 +12,7 @@ export 'payments_type/payments_type.dart';
 export 'profitability/profitability.dart';
 export 'resume/resume.dart';
 export 'sallers_sales/sallers_sales.dart';
-export 'sections/sections.dart';
+export 'departments/departments.dart';
 export 'set_goal/set_goal.dart';
 export 'splash/splash.dart';
 export 'team/team.dart';

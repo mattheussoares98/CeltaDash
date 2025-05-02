@@ -1,0 +1,1 @@
+export 'departments_page.dart';

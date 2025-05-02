@@ -7,14 +7,14 @@ import 'package:intl/intl.dart';
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 
-class SectionsPage extends StatefulWidget {
-  const SectionsPage({super.key});
+class DepartmentsPage extends StatefulWidget {
+  const DepartmentsPage({super.key});
 
   @override
-  State<SectionsPage> createState() => _SectionsPageState();
+  State<DepartmentsPage> createState() => _DepartmentsPageState();
 }
 
-class _SectionsPageState extends State<SectionsPage> {
+class _DepartmentsPageState extends State<DepartmentsPage> {
   bool selectedDay = true;
 
   @override
@@ -23,7 +23,7 @@ class _SectionsPageState extends State<SectionsPage> {
     var combinedSales = 0.0;
 
     return Scaffold(
-      appBar: AppBar(title: Text(R.string.sections)),
+      appBar: AppBar(title: Text(R.string.departments)),
       body: Column(
         children: [
           Padding(
@@ -59,7 +59,7 @@ class _SectionsPageState extends State<SectionsPage> {
           const SizedBox(height: 10),
           TableItem(
             titles: [
-              PersonalizedTableCell(value: R.string.section),
+              PersonalizedTableCell(value: R.string.department),
               PersonalizedTableCell(value: R.string.total),
               PersonalizedTableCell(value: R.string.ticketAverage),
               PersonalizedTableCell(value: R.string.share),

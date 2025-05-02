@@ -28,8 +28,8 @@ class GetxResumePresenter extends GetxController
   }
 
   @override
-  void goToSectionsPage() {
-    navigateTo.navigate(pageRoute: PageRoutes.sections);
+  void goToDepartmentsPage() {
+    navigateTo.navigate(pageRoute: PageRoutes.departments);
   }
 
   @override

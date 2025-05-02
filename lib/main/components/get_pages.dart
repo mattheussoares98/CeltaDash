@@ -73,8 +73,8 @@ class GetPages {
       transition: Transition.fadeIn,
     ),
     GetPage(
-      name: PageRoutes.sections,
-      page: makeSectionsPage,
+      name: PageRoutes.departments,
+      page: makeDepartmentsPage,
       transition: Transition.fadeIn,
     ),
     GetPage(

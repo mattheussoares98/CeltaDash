@@ -23,6 +23,8 @@ abstract class Translation {
   String get dailyAnalysis;
   String get dateNotUpdated;
   String get day;
+  String get department;
+  String get departments;
   String get discounts;
   String get email;
   String get enter;

@@ -122,8 +122,8 @@ class _ResumePageState extends State<ResumePage>
                       title: R.string.paymentsType,
                     ),
                     rightButton: DefaultNavigateButton(
-                      onTap: resumePresenter.goToSectionsPage,
-                      title: R.string.sections,
+                      onTap: resumePresenter.goToDepartmentsPage,
+                      title: R.string.departments,
                     ),
                     children: [
                       Text(
