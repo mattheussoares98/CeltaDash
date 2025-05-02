@@ -90,7 +90,9 @@ class _DepartmentsPageState extends State<DepartmentsPage>
           needUpdateScreen = false;
         }
 
-        final saleMovements = widget.departmentsPresenter.saleMovements;
+        final saleMovements = widget.departmentsPresenter.saleMovements
+            ?.where((e) => filter(e, homePresenter))
+            .toList();
 
         if (saleMovements == null || saleMovements.isEmpty) {
           return Center(

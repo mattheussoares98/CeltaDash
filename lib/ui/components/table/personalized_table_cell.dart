@@ -8,6 +8,7 @@ class PersonalizedTableCell extends StatelessWidget {
   final bool? isPercentage;
   final bool? isTitle;
   final void Function()? onTap;
+  final BoxDecoration? decoration;
   const PersonalizedTableCell({
     super.key,
     required this.value,
@@ -16,6 +17,7 @@ class PersonalizedTableCell extends StatelessWidget {
     this.isPercentage,
     this.isTitle,
     this.onTap,
+    this.decoration,
   });
 
   String getName() {
@@ -42,6 +44,7 @@ class PersonalizedTableCell extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(3),
+        decoration: decoration,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

@@ -12,10 +12,20 @@ class Sections extends StatelessWidget {
     required this.saleMovements,
   });
 
+  Color generateColorFromString(String input) {
+    final hash = input.hashCode;
+    final r = (hash & 0xFF0000) >> 16;
+    final g = (hash & 0x00FF00) >> 8;
+    final b = (hash & 0x0000FF);
+    return Color.fromARGB(100, r, g, b); // 50 alpha for light background color
+  }
+
   @override
   Widget build(BuildContext context) {
     final totalValue = saleMovements.sumLiquidValue();
     final quantitySales = saleMovements.quantitySales();
+
+    final departmentColorMap = <String, Color>{};
 
     return TableItem(
       columnIndexToCompareAndDetachBetterAndWorstValue: 1,
@@ -35,11 +45,18 @@ class Sections extends StatelessWidget {
         PersonalizedTableCell(value: R.string.ticketAverage),
         PersonalizedTableCell(value: R.string.share),
       ],
-      rowValues: saleMovements.map((sale) {
+      rowValues: saleMovements
+      
+      .map((sale) {
+        final department = sale.ProductDepartment ?? '';
+        departmentColorMap.putIfAbsent(
+            department, () => generateColorFromString(department));
+
         return [
           PersonalizedTableCell(
             value: sale.ProductDepartment,
             subtile: sale.ProductSection,
+            decoration: BoxDecoration(color: departmentColorMap[department]),
           ),
           PersonalizedTableCell(value: sale.LiquidValue, isMoney: true),
           PersonalizedTableCell(value: sale.QuantitySales),
