@@ -5,10 +5,12 @@ import 'package:intl/intl.dart';
 
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
+import '../pages.dart';
 import 'components/components.dart';
 
 class CompareDaysPage extends StatefulWidget {
-  const CompareDaysPage({super.key});
+  final CompareDaysPresenter presenter;
+  const CompareDaysPage({super.key, required this.presenter});
 
   @override
   State<CompareDaysPage> createState() => _ProfitabilityPageState();

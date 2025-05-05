@@ -12,16 +12,13 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../data/mocks/mocks.dart';
 import '../../domain/mocks/mocks.dart';
-import '../mocks/mocks.dart';
 
 void main() {
   late GetxCompareDaysPresenter sut;
 
-  late NavigateToSpy navigateTo;
   late LoadSaleMovementsSpy loadSaleMovements;
 
   late List<SaleMovementEntity> saleMovementsEntities;
-  late List<SaleMovementEntity> secondDaySaleMovementEntities;
   late DateTime firstDay;
   late DateTime secondDay;
 
@@ -29,7 +26,6 @@ void main() {
   Get.testMode = true;
 
   void initUsecases() {
-    navigateTo = NavigateToSpy();
     loadSaleMovements = LoadSaleMovementsSpy();
   }
 
