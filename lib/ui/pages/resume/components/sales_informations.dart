@@ -8,17 +8,17 @@ class SalesInformations extends StatelessWidget {
   final String title;
   final double totalSales;
   final double goal;
-  final List<Widget> children;
-  final DefaultNavigateButton leftButton;
-  final DefaultNavigateButton rightButton;
+  final List<Widget>? children;
+  final DefaultNavigateButton? leftButton;
+  final DefaultNavigateButton? rightButton;
   final ScrollController scrollController;
   const SalesInformations({
     required this.title,
     required this.totalSales,
     required this.goal,
-    required this.children,
-    required this.leftButton,
-    required this.rightButton,
+    this.children,
+    this.leftButton,
+    this.rightButton,
     super.key,
     required this.scrollController,
   });
@@ -67,21 +67,22 @@ class SalesInformations extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 15),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: children,
+                if (children != null)
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: children!,
+                    ),
                   ),
-                ),
               ],
             ),
             const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Expanded(child: leftButton),
+                if (leftButton != null) Expanded(child: leftButton!),
                 const SizedBox(width: 8),
-                Expanded(child: rightButton),
+                if (rightButton != null) Expanded(child: rightButton!),
               ],
             ),
           ],

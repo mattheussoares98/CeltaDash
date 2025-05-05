@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -153,21 +152,18 @@ class _ResumePageState extends State<ResumePage>
                 SalesInformations(
                   scrollController: scrollController,
                   goal: 10000,
-                  totalSales: 10000 * Random().nextDouble(),
+                  totalSales: saleMovements.sumLiquidValue(
+                    enterprise: homePresenter.selectedEnterprise,
+                  ),
                   title: R.string.salesOfTheMonth,
-                  leftButton: DefaultNavigateButton(
-                    onTap: resumePresenter.goToSetGoalPage,
-                    title: R.string.insertGoal,
-                  ),
-                  rightButton: DefaultNavigateButton(
-                    onTap: resumePresenter.goToGoalHistoryPage,
-                    title: R.string.goalHistory,
-                  ),
-                  children: [
-                    Text(
-                      "${R.string.salesUntilNow}\n${(Random().nextDouble() * 30000).toString().toBrazilianNumber().addBrazilianCoin()}",
-                    ),
-                  ],
+                  // leftButton: DefaultNavigateButton(
+                  //   onTap: resumePresenter.goToSetGoalPage,
+                  //   title: R.string.insertGoal,
+                  // ),
+                  // rightButton: DefaultNavigateButton(
+                  //   onTap: resumePresenter.goToGoalHistoryPage,
+                  //   title: R.string.goalHistory,
+                  // ),
                 ),
                 const SizedBox(height: 8),
                 DefaultNavigateButton(
