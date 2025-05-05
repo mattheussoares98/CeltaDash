@@ -43,10 +43,9 @@ class _ProfitabilityPageState extends State<CompareDaysPage> {
         PersonalizedTableCell(value: firstTotal),
         PersonalizedTableCell(value: secondTotal),
         PersonalizedTableCell(
-          value:
-              secondTotal == 0
-                  ? 100
-                  : getTotalDifference(first: firstTotal, second: secondTotal),
+          value: secondTotal == 0
+              ? 100
+              : getTotalDifference(first: firstTotal, second: secondTotal),
           isPercentage: true,
         ),
       ];
@@ -71,7 +70,10 @@ class _ProfitabilityPageState extends State<CompareDaysPage> {
     final compareDaysWidth = MediaQuery.of(context).size.width * 0.2;
 
     return Scaffold(
-      appBar: AppBar(title: Text(R.string.compareDays)),
+      appBar: DefaultAppBar(
+        onChangeDateOrEnterprise: () {},
+        showDatePicker: false,
+      ),
       body: Column(
         children: [
           Padding(

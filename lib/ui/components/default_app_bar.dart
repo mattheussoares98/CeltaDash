@@ -9,16 +9,20 @@ import 'components.dart';
 
 class DefaultAppBar extends StatefulWidget implements PreferredSizeWidget {
   final void Function() onChangeDateOrEnterprise;
-  const DefaultAppBar({super.key, required this.onChangeDateOrEnterprise});
+  final bool? showDatePicker;
+  const DefaultAppBar({
+    super.key,
+    required this.onChangeDateOrEnterprise,
+    this.showDatePicker = true,
+  });
 
   @override
-  Size get preferredSize => Size.fromHeight(appBarHeight);
+  Size get preferredSize =>
+      Size.fromHeight(this.showDatePicker == true ? 90 : 60);
 
   @override
   State<DefaultAppBar> createState() => _DefaultAppBarState();
 }
-
-double appBarHeight = 90;
 
 class _DefaultAppBarState extends State<DefaultAppBar> {
   @override
@@ -26,7 +30,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
     HomePresenter homePresenter = Provider.of(context, listen: false);
 
     return AppBar(
-      toolbarHeight: appBarHeight,
+      toolbarHeight: widget.showDatePicker == true ? 90 : 60,
       title: Obx(() {
         final enterprises = homePresenter.bsEnterprises;
         final selectedEnterprise = homePresenter.selectedEnterprise;
@@ -82,47 +86,48 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                 ),
               ],
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton.icon(
-                    onPressed: () async {
-                      final newDate = await GetNewDate.get(
-                        reduceDaysFromInitialDate: 1825,
-                        canInsertDateBeforeNow: true,
-                        insertHoursAndMinutes: false,
-                        lastDate: DateTime.now(),
-                      );
+            if (widget.showDatePicker == true)
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      onPressed: () async {
+                        final newDate = await GetNewDate.get(
+                          reduceDaysFromInitialDate: 1825,
+                          canInsertDateBeforeNow: true,
+                          insertHoursAndMinutes: false,
+                          lastDate: DateTime.now(),
+                        );
 
-                      if (newDate != null &&
-                          newDate != homePresenter.selectedDate) {
-                        setState(() {
-                          homePresenter.updateSelectedDate(newDate);
-                        });
-                        widget.onChangeDateOrEnterprise();
-                      }
-                    },
-                    label: Text(
-                      "${DateFormat('dd/MM/yyyy').format(homePresenter.selectedDate)}  ${DateFormat('EEEE', 'pt_BR').format(homePresenter.selectedDate)}",
+                        if (newDate != null &&
+                            newDate != homePresenter.selectedDate) {
+                          setState(() {
+                            homePresenter.updateSelectedDate(newDate);
+                          });
+                          widget.onChangeDateOrEnterprise();
+                        }
+                      },
+                      label: Text(
+                        "${DateFormat('dd/MM/yyyy').format(homePresenter.selectedDate)}  ${DateFormat('EEEE', 'pt_BR').format(homePresenter.selectedDate)}",
+                      ),
+                      icon: Icon(Icons.date_range, color: Colors.white),
                     ),
-                    icon: Icon(Icons.date_range, color: Colors.white),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8),
-                  child: homePresenter.selectedDate.year !=
-                              DateTime.now().year ||
-                          homePresenter.selectedDate.month !=
-                              DateTime.now().month ||
-                          homePresenter.selectedDate.day != DateTime.now().day
-                      ? SizedBox()
-                      : IconButton(
-                          onPressed: widget.onChangeDateOrEnterprise,
-                          icon: Icon(Icons.refresh),
-                        ),
-                )
-              ],
-            ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8),
+                    child: homePresenter.selectedDate.year !=
+                                DateTime.now().year ||
+                            homePresenter.selectedDate.month !=
+                                DateTime.now().month ||
+                            homePresenter.selectedDate.day != DateTime.now().day
+                        ? SizedBox()
+                        : IconButton(
+                            onPressed: widget.onChangeDateOrEnterprise,
+                            icon: Icon(Icons.refresh),
+                          ),
+                  )
+                ],
+              ),
           ],
         );
       }),
