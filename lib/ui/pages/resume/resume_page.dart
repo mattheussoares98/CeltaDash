@@ -85,7 +85,7 @@ class _ResumePageState extends State<ResumePage>
 
           await resumePresenter.getSales(
             homePresenter,
-            forceRefresh: forceRefresh, //TODO move to presenter
+            forceRefresh: forceRefresh,
           );
           setState(() {});
         },
