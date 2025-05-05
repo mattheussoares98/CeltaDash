@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 
+import '../../data/models/models.dart';
 import '../../domain/usecases/usecases.dart';
+import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
@@ -27,7 +29,37 @@ class GetxCompareDaysPresenter extends GetxController
   Future<void> getSales({
     required DateTime firstDay,
     required DateTime secondDay,
-  }) async {}
+  }) async {
+    _selectedFirstDay = firstDay;
+    _selectedSecondDay = secondDay;
+
+    isLoading = true;
+    mainError = null;
+
+    try {
+      final firstDayMovements = await loadSaleMovements.get(
+        startDate: firstDay,
+        endDate: firstDay,
+      );
+
+      _firstDayMovements.value = firstDayMovements
+          .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+          .toList();
+
+      final secondDayMovements = await loadSaleMovements.get(
+        startDate: secondDay,
+        endDate: secondDay,
+      );
+
+      _secondDayMovements.value = secondDayMovements
+          .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+          .toList();
+    } catch (e) {
+      mainError = UIError.unexpected;
+    } finally {
+      isLoading = false;
+    }
+  }
 
   DateTime? _selectedFirstDay;
   @override
