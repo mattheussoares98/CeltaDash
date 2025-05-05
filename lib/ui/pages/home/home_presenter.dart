@@ -5,7 +5,7 @@ import '../pages.dart';
 abstract class HomePresenter implements Listenable {
   Stream<int> get currentPageIndexStream;
   DateTime get selectedDate;
-  List<EnterpriseViewModel>? get bsEnterprises;
+  List<EnterpriseViewModel>? get enterprises;
   EnterpriseViewModel? get selectedEnterprise;
 
   void updateSelectedIndex(int index);

@@ -32,7 +32,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
     return AppBar(
       toolbarHeight: widget.showDatePicker == true ? 90 : 60,
       title: Obx(() {
-        final enterprises = homePresenter.bsEnterprises;
+        final enterprises = homePresenter.enterprises;
         final selectedEnterprise = homePresenter.selectedEnterprise;
 
         if (enterprises == null) {

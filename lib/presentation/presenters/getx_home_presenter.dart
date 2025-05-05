@@ -65,7 +65,7 @@ class GetxHomePresenter extends GetxController
       Rx<List<EnterpriseViewModel>?>(null);
 
   @override
-  List<EnterpriseViewModel>? get bsEnterprises => _bsEnterprises.value;
+  List<EnterpriseViewModel>? get enterprises => _bsEnterprises.value;
 
   @override
   Stream<int> get currentPageIndexStream => _currentPageIndex.stream;
