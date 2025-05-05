@@ -64,6 +64,7 @@ class GetxResumePresenter extends GetxController
           forceRefresh != true) {
         return;
       }
+
       final result = await loadSaleMovements.get(
         startDate: DateTime(
           homePresenter.selectedDate.year,
@@ -72,7 +73,7 @@ class GetxResumePresenter extends GetxController
         ),
         endDate: DateTime(
           homePresenter.selectedDate.year,
-          DateTime.now().month + 1,
+          12,
           1,
         ).subtract(Duration(days: 1)),
         groupByEnterprise: true,

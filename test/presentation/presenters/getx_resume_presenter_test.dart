@@ -155,7 +155,7 @@ void main() {
       );
       DateTime endDate = DateTime(
         homePresenter.selectedDateMock.year,
-        DateTime.now().month + 1,
+        12,
         1,
       ).subtract(Duration(days: 1));
 
@@ -180,7 +180,7 @@ void main() {
       );
       final endDate = DateTime(
         homePresenter.selectedDateMock.year,
-        DateTime.now().month + 1,
+        12,
         1,
       ).subtract(Duration(days: 1));
 
@@ -224,7 +224,7 @@ void main() {
       );
       DateTime endDate = DateTime(
         homePresenter.selectedDate.year,
-        DateTime.now().month + 1,
+        12,
         1,
       ).subtract(Duration(days: 1));
       verify(() => loadSaleMovements.get(
@@ -251,7 +251,7 @@ void main() {
       );
       DateTime endDate = DateTime(
         homePresenter.selectedDate.year,
-        DateTime.now().month + 1,
+        12,
         1,
       ).subtract(Duration(days: 1));
       verify(() => loadSaleMovements.get(
@@ -277,7 +277,7 @@ void main() {
       );
       DateTime endDate = DateTime(
         homePresenter.selectedDate.year,
-        DateTime.now().month + 1,
+        12,
         1,
       ).subtract(Duration(days: 1));
 
@@ -303,7 +303,7 @@ void main() {
       );
       endDate = DateTime(
         homePresenter.selectedDate.year,
-        DateTime.now().month + 1,
+        12,
         1,
       ).subtract(Duration(days: 1));
 
@@ -323,7 +323,6 @@ void main() {
       homePresenter.selectedDateMock = faker.date.dateTime();
       await sut.getSales(homePresenter);
 
-      final currentDate = DateTime.now();
       DateTime startDate = DateTime(
         homePresenter.selectedDate.year,
         1,
@@ -331,7 +330,7 @@ void main() {
       );
       DateTime endDate = DateTime(
         homePresenter.selectedDate.year,
-        currentDate.month + 1,
+        12,
         1,
       ).subtract(Duration(days: 1));
 
@@ -346,9 +345,7 @@ void main() {
 
       homePresenter.selectedDateMock = DateTime(
         homePresenter.selectedDate.year,
-        homePresenter.selectedDate.month == 12
-            ? 12
-            : homePresenter.selectedDate.month + 1,
+        12,
         homePresenter.selectedDate.day,
       );
       await sut.getSales(homePresenter);
