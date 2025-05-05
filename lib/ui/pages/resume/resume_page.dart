@@ -131,7 +131,7 @@ class _ResumePageState extends State<ResumePage>
                     onTap: resumePresenter.goToDepartmentsPage,
                     title: R.string.departments,
                   ),
-                  children: [
+                  rightChildren: [
                     Text(
                       "${R.string.salesQuantity}\n${saleMovements.quantitySales(
                         enterprise: homePresenter.selectedEnterprise,
@@ -180,7 +180,10 @@ class _ResumePageState extends State<ResumePage>
                   icon: Icon(Icons.arrow_outward_sharp, color: Colors.white),
                 ),
                 const SizedBox(height: 8),
-                DailyAnalysis(saleMovements: saleMovements),
+                DailyAnalysis(
+                  saleMovements: saleMovements,
+                  scrollController: scrollController,
+                ),
                 SizedBox(height: 8),
                 MonthlyAnalysis(),
                 SizedBox(height: 8),

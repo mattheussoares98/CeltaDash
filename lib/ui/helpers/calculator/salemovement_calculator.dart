@@ -57,11 +57,30 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
     return totalValue / totalQuantity;
   }
 
+  double weekDayAverage(EnterpriseViewModel? enterprise) {
+    final now = DateTime.now();
+    final totalSales = _filteredSales(
+      enterprise,
+      filterYear: now.year,
+      filterWeekday: now.weekday,
+    ).fold<double>(
+      0.0,
+      (sum, e) => sum + (e.LiquidValue ?? 0),
+    );
+
+    final start = DateTime(now.year, 1, 1);
+    final totalDays = now.difference(start).inDays + 1;
+    final mondaysQuantity = totalDays ~/ 7;
+
+    return totalSales / mondaysQuantity;
+  }
+
   List<SaleMovementModel> _filteredSales(
     EnterpriseViewModel? enterprise, {
     int? filterYear,
     int? filterMonth,
     int? filterDay,
+    int? filterWeekday,
   }) {
     return this
         .where((viewModel) {
@@ -76,7 +95,15 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
           final matchesDay =
               filterDay == null || viewModel.Date?.day == filterDay;
 
-          return matchesEnterprise && matchesYear && matchesMonth && matchesDay;
+          // Dart: segunda = 1, domingo = 7
+          final matchesWeekday =
+              filterWeekday == null || viewModel.Date?.weekday == filterWeekday;
+
+          return matchesEnterprise &&
+              matchesYear &&
+              matchesMonth &&
+              matchesDay &&
+              matchesWeekday;
         })
         .map(SaleMovementModel.fromViewModel)
         .toList();

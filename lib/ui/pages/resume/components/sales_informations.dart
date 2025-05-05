@@ -7,16 +7,20 @@ import 'components.dart';
 class SalesInformations extends StatelessWidget {
   final String title;
   final double totalSales;
-  final double goal;
-  final List<Widget>? children;
+  final double? goal;
+  final List<Widget>? rightChildren;
+  final List<Widget>? topChildren;
+  final List<Widget>? bottomChildren;
   final DefaultNavigateButton? leftButton;
   final DefaultNavigateButton? rightButton;
   final ScrollController scrollController;
   const SalesInformations({
     required this.title,
     required this.totalSales,
-    required this.goal,
-    this.children,
+    this.goal = 0,
+    this.rightChildren,
+    this.topChildren,
+    this.bottomChildren,
     this.leftButton,
     this.rightButton,
     super.key,
@@ -36,6 +40,11 @@ class SalesInformations extends StatelessWidget {
               style: Theme.of(context).textTheme.displayLarge,
             ),
             const SizedBox(height: 10),
+            if (topChildren != null)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: topChildren!,
+              ),
             Row(
               children: [
                 Expanded(
@@ -46,37 +55,37 @@ class SalesInformations extends StatelessWidget {
                       children: [
                         AnimatedCircleProgress(
                           value: totalSales,
-                          maximum: goal,
+                          maximum: goal ?? 0,
                           width: 170,
                           height: 170,
                           scrollController: scrollController,
                         ),
-                        SizedBox(
-                          height: 30,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 8),
-                            child: FittedBox(
-                              child: Text(
-                                "Goal: ${goal.toString().toBrazilianNumber().addBrazilianCoin()}",
+                        if (goal != null && goal! > 0)
+                          SizedBox(
+                            height: 30,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 8),
+                              child: FittedBox(
+                                child: Text(
+                                  "Goal: ${goal.toString().toBrazilianNumber().addBrazilianCoin()}",
+                                ),
                               ),
                             ),
                           ),
-                        ),
                       ],
                     ),
                   ),
                 ),
                 const SizedBox(width: 15),
-                if (children != null)
+                if (rightChildren != null)
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: children!,
+                      children: rightChildren!,
                     ),
                   ),
               ],
             ),
-            const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -85,6 +94,11 @@ class SalesInformations extends StatelessWidget {
                 if (rightButton != null) Expanded(child: rightButton!),
               ],
             ),
+            if (bottomChildren != null)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: bottomChildren!,
+              ),
           ],
         ),
       ),

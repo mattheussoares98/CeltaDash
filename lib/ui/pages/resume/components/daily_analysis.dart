@@ -7,10 +7,12 @@ import '../../pages.dart';
 import 'components.dart';
 
 class DailyAnalysis extends StatelessWidget {
+  final ScrollController scrollController;
   final List<SaleMovementViewModel> saleMovements;
   const DailyAnalysis({
     super.key,
     required this.saleMovements,
+    required this.scrollController,
   });
 
   @override
@@ -31,20 +33,18 @@ class DailyAnalysis extends StatelessWidget {
       filterYear: now.year,
     );
 
-    return Container(
-      decoration: ContainerDecoration.decoration,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
+    return Column(
+      children: [
+        SalesInformations(
+          title: R.string.dailyAnalysisAverage,
+          totalSales: saleMovements.weekDayAverage(
+            homePresenter.selectedEnterprise,
+          ),
+          goal: 0,
+          scrollController: scrollController,
+          topChildren: [
             Text(
-              R.string.dailyAnalysisAverage,
-              style: Theme.of(context).textTheme.displayLarge,
-              textAlign: TextAlign.center,
-            ),
-            Text(
-              "${R.string.all} ${DateFormat.EEEE('pt_BR').format(now)}s ${R.string.of.toLowerCase()} ${now.year}",
+              "${R.string.all} ${DateFormat.EEEE('pt_BR').format(now)}s ${R.string.of.toLowerCase()} ${homePresenter.selectedDate.year}",
               textAlign: TextAlign.center,
             ),
             CompareTimesResult(
@@ -55,7 +55,8 @@ class DailyAnalysis extends StatelessWidget {
               betterTimeMessage: R.string.bestHourOfTheDay,
               worstTimeMessage: R.string.worstHourOfTheDay,
             ),
-            const SizedBox(height: 8),
+          ],
+          bottomChildren: [
             DefaultNavigateButton(
               onTap: resumePresenter.goToCompareDays,
               title: R.string.compareDays,
@@ -63,7 +64,7 @@ class DailyAnalysis extends StatelessWidget {
             ),
           ],
         ),
-      ),
+      ],
     );
   }
 }
