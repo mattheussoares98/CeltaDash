@@ -3,30 +3,51 @@ import '../../pages/pages.dart';
 
 extension SaleMovementsExtensions on List<SaleMovementViewModel> {
   double sumLiquidValue({
-    DateTime? filterDate,
+    int? filterYear,
+    int? filterMonth,
+    int? filterDay,
     EnterpriseViewModel? enterprise,
   }) {
-    return _filteredSales(filterDate, enterprise).fold<double>(
+    return _filteredSales(
+      enterprise,
+      filterYear: filterYear,
+      filterMonth: filterMonth,
+      filterDay: filterDay,
+    ).fold<double>(
       0.0,
       (sum, e) => sum + (e.LiquidValue ?? 0),
     );
   }
 
   int quantitySales({
-    DateTime? filterDate,
+    int? filterYear,
+    int? filterMonth,
+    int? filterDay,
     EnterpriseViewModel? enterprise,
   }) {
-    return _filteredSales(filterDate, enterprise).fold<int>(
+    return _filteredSales(
+      enterprise,
+      filterYear: filterYear,
+      filterMonth: filterMonth,
+      filterDay: filterDay,
+    ).fold<int>(
       0,
       (sum, e) => sum + (e.QuantitySales ?? 0),
     );
   }
 
-  double ticketAverage({
-    DateTime? filterDate,
-    EnterpriseViewModel? enterprise,
+  double ticketAverage(
+    EnterpriseViewModel? enterprise, {
+    int? filterYear,
+    int? filterMonth,
+    int? filterDay,
   }) {
-    final filtered = _filteredSales(filterDate, enterprise);
+    final filtered = _filteredSales(
+      enterprise,
+      filterYear: filterYear,
+      filterMonth: filterMonth,
+      filterDay: filterDay,
+    );
     final totalQuantity =
         filtered.fold<int>(0, (p, e) => p + (e.QuantitySales ?? 0));
     if (totalQuantity == 0) return 0;
@@ -37,21 +58,25 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
   }
 
   List<SaleMovementModel> _filteredSales(
-    DateTime? filterDate,
-    EnterpriseViewModel? enterprise,
-  ) {
+    EnterpriseViewModel? enterprise, {
+    required int? filterYear,
+    required int? filterMonth,
+    required int? filterDay,
+  }) {
     return this
         .where((viewModel) {
           final matchesEnterprise = enterprise == null ||
               viewModel.EnterprisePersonalizedCode ==
                   enterprise.personalizedCode;
 
-          final matchesDate = filterDate == null ||
-              viewModel.Date?.year == filterDate.year &&
-                  viewModel.Date?.month == filterDate.month &&
-                  viewModel.Date?.day == filterDate.day;
+          final matchesYear =
+              filterYear == null || viewModel.Date?.year == filterYear;
+          final matchesMonth =
+              filterMonth == null || viewModel.Date?.month == filterMonth;
+          final matchesDay =
+              filterDay == null || viewModel.Date?.day == filterDay;
 
-          return matchesEnterprise && matchesDate;
+          return matchesEnterprise && matchesYear && matchesMonth && matchesDay;
         })
         .map(SaleMovementModel.fromViewModel)
         .toList();

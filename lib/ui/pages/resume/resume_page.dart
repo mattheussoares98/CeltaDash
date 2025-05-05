@@ -118,7 +118,9 @@ class _ResumePageState extends State<ResumePage>
                   title: R.string.salesOfTheDay,
                   totalSales: saleMovements.sumLiquidValue(
                     enterprise: homePresenter.selectedEnterprise,
-                    filterDate: homePresenter.selectedDate,
+                    filterYear: homePresenter.selectedDate.year,
+                    filterMonth: homePresenter.selectedDate.month,
+                    filterDay: homePresenter.selectedDate.day,
                   ),
                   goal: 100000,
                   leftButton: DefaultNavigateButton(
@@ -133,13 +135,17 @@ class _ResumePageState extends State<ResumePage>
                     Text(
                       "${R.string.salesQuantity}\n${saleMovements.quantitySales(
                         enterprise: homePresenter.selectedEnterprise,
-                        filterDate: homePresenter.selectedDate,
+                        filterYear: homePresenter.selectedDate.year,
+                        filterMonth: homePresenter.selectedDate.month,
+                        filterDay: homePresenter.selectedDate.day,
                       )}",
                     ),
                     Text(
                       "${R.string.ticketAverage}\n${(saleMovements.ticketAverage(
-                        enterprise: homePresenter.selectedEnterprise,
-                        filterDate: homePresenter.selectedDate,
+                        homePresenter.selectedEnterprise,
+                        filterYear: homePresenter.selectedDate.year,
+                        filterMonth: homePresenter.selectedDate.month,
+                        filterDay: homePresenter.selectedDate.day,
                       )).toString().toBrazilianNumber().addBrazilianCoin()}",
                     ),
                     Text(
@@ -154,6 +160,8 @@ class _ResumePageState extends State<ResumePage>
                   goal: 10000,
                   totalSales: saleMovements.sumLiquidValue(
                     enterprise: homePresenter.selectedEnterprise,
+                    filterYear: homePresenter.selectedDate.year,
+                    filterMonth: homePresenter.selectedDate.month,
                   ),
                   title: R.string.salesOfTheMonth,
                   // leftButton: DefaultNavigateButton(
