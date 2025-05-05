@@ -25,6 +25,7 @@ class PtBr implements Translation {
   String get configurations => "Configurações";
   String get cost => "Custo";
   String get dailyAnalysis => "Análise diária";
+  String get dailyAnalysisAverage => "Análise diária (média)";
   String get dateNotUpdated => "Data não atualizada";
   String get day => "Dia";
   String get department => "Departamento";

@@ -18,15 +18,17 @@ class DailyAnalysis extends StatelessWidget {
     ResumePresenter resumePresenter = Provider.of(context, listen: false);
     HomePresenter homePresenter = Provider.of(context, listen: false);
 
+    final now = DateTime.now();
+
     final betterAverage = saleMovements.hourAverage(
       getBest: true,
       enterprise: homePresenter.selectedEnterprise,
-      filterYear: DateTime.now().year,
+      filterYear: now.year,
     );
     final worstAverage = saleMovements.hourAverage(
       getBest: false,
       enterprise: homePresenter.selectedEnterprise,
-      filterYear: DateTime.now().year,
+      filterYear: now.year,
     );
 
     return Container(
@@ -37,14 +39,14 @@ class DailyAnalysis extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              R.string.dailyAnalysis,
+              R.string.dailyAnalysisAverage,
               style: Theme.of(context).textTheme.displayLarge,
               textAlign: TextAlign.center,
             ),
             Text(
-              "${R.string.all} ${DateFormat.EEEE('pt_BR').format(DateTime.now())}s ${R.string.of.toLowerCase()} ${DateTime.now().year}",
+              "${R.string.all} ${DateFormat.EEEE('pt_BR').format(now)}s ${R.string.of.toLowerCase()} ${now.year}",
               textAlign: TextAlign.center,
-            ), //TODO create a Model in HomePresenter to control selected data and selected enterprise
+            ),
             CompareTimesResult(
               betterTime: betterAverage.hour,
               betterValue: betterAverage.value,

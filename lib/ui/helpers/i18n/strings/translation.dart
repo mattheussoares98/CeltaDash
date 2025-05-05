@@ -21,6 +21,7 @@ abstract class Translation {
   String get configurations;
   String get cost;
   String get dailyAnalysis;
+  String get dailyAnalysisAverage;
   String get dateNotUpdated;
   String get day;
   String get department;
