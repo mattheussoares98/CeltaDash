@@ -59,9 +59,9 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
 
   List<SaleMovementModel> _filteredSales(
     EnterpriseViewModel? enterprise, {
-    required int? filterYear,
-    required int? filterMonth,
-    required int? filterDay,
+    int? filterYear,
+    int? filterMonth,
+    int? filterDay,
   }) {
     return this
         .where((viewModel) {
@@ -80,5 +80,60 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
         })
         .map(SaleMovementModel.fromViewModel)
         .toList();
+  }
+
+  HoursComparisonViewModel hourAverage({
+    required bool getBest,
+    int? filterYear,
+    int? filterMonth,
+    int? filterDay,
+    EnterpriseViewModel? enterprise,
+  }) {
+    final filteredSales = _filteredSales(
+      enterprise,
+      filterYear: filterYear,
+      filterMonth: filterMonth,
+      filterDay: filterDay,
+    );
+
+    // Agrupar soma e contagem por hora
+    final Map<String, double> liquidValueByHour = {};
+    final Map<String, int> countByHour = {};
+
+    for (final sale in filteredSales) {
+      final hour = sale.Hour?.toString() ?? 'unknown';
+      final quantity = sale.LiquidValue ?? 0;
+
+      liquidValueByHour[hour] = (liquidValueByHour[hour] ?? 0) + quantity;
+      countByHour[hour] = (countByHour[hour] ?? 0) + 1;
+    }
+
+    if (liquidValueByHour.isEmpty || countByHour.isEmpty) {
+      return HoursComparisonViewModel(value: 0, hour: "unknown");
+    }
+
+    // Calcular a média de cada hora
+    final Map<String, double> averageByHour = {};
+    for (final hour in liquidValueByHour.keys) {
+      final total = liquidValueByHour[hour]!;
+      final count = countByHour[hour]!;
+      averageByHour[hour] = total / count;
+    }
+
+    // Encontrar a melhor ou pior hora com base na média
+    final selectedHour = averageByHour.entries.fold(
+      averageByHour.entries.first,
+      (previous, current) {
+        final isBetter = current.value > previous.value;
+        return getBest
+            ? (isBetter ? current : previous)
+            : (isBetter ? previous : current);
+      },
+    );
+
+    return HoursComparisonViewModel(
+      hour: selectedHour.key,
+      value: selectedHour.value,
+    );
   }
 }

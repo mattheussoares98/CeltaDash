@@ -180,7 +180,7 @@ class _ResumePageState extends State<ResumePage>
                   icon: Icon(Icons.arrow_outward_sharp, color: Colors.white),
                 ),
                 const SizedBox(height: 8),
-                DailyAnalysis(),
+                DailyAnalysis(saleMovements: saleMovements),
                 SizedBox(height: 8),
                 MonthlyAnalysis(),
                 SizedBox(height: 8),

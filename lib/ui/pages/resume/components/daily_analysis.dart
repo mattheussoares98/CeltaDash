@@ -3,15 +3,31 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../helpers/helpers.dart';
-import '../resume.dart';
+import '../../pages.dart';
 import 'components.dart';
 
 class DailyAnalysis extends StatelessWidget {
-  const DailyAnalysis({super.key});
+  final List<SaleMovementViewModel> saleMovements;
+  const DailyAnalysis({
+    super.key,
+    required this.saleMovements,
+  });
 
   @override
   Widget build(BuildContext context) {
     ResumePresenter resumePresenter = Provider.of(context, listen: false);
+    HomePresenter homePresenter = Provider.of(context, listen: false);
+
+    final betterAverage = saleMovements.hourAverage(
+      getBest: true,
+      enterprise: homePresenter.selectedEnterprise,
+      filterYear: DateTime.now().year,
+    );
+    final worstAverage = saleMovements.hourAverage(
+      getBest: false,
+      enterprise: homePresenter.selectedEnterprise,
+      filterYear: DateTime.now().year,
+    );
 
     return Container(
       decoration: ContainerDecoration.decoration,
@@ -30,10 +46,10 @@ class DailyAnalysis extends StatelessWidget {
               textAlign: TextAlign.center,
             ), //TODO create a Model in HomePresenter to control selected data and selected enterprise
             CompareTimesResult(
-              betterTime: "18:00 ~ 18:59",
-              betterValue: 3622.89,
-              worstTime: "22:00 ~ 22:59",
-              worstValue: 8.59,
+              betterTime: betterAverage.hour,
+              betterValue: betterAverage.value,
+              worstTime: worstAverage.hour,
+              worstValue: worstAverage.value,
               betterTimeMessage: R.string.bestHourOfTheDay,
               worstTimeMessage: R.string.worstHourOfTheDay,
             ),
