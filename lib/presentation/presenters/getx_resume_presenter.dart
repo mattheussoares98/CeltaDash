@@ -68,12 +68,12 @@ class GetxResumePresenter extends GetxController
       final result = await loadSaleMovements.get(
         startDate: DateTime(
           homePresenter.selectedDate.year,
-          homePresenter.selectedDate.month,
+          1,
           1,
         ),
         endDate: DateTime(
           homePresenter.selectedDate.year,
-          homePresenter.selectedDate.month + 1,
+          DateTime.now().month + 1,
           1,
         ).subtract(Duration(days: 1)),
         groupByEnterprise: true,

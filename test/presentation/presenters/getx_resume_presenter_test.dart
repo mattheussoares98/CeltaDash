@@ -148,14 +148,14 @@ void main() {
     test("Should load sale movements with correct values", () async {
       await sut.getSales(homePresenter);
 
-      final startDate = DateTime(
-        homePresenter.selectedDate.year,
-        homePresenter.selectedDate.month,
+      DateTime startDate = DateTime(
+        homePresenter.selectedDateMock.year,
+        1,
         1,
       );
-      final endDate = DateTime(
-        homePresenter.selectedDate.year,
-        homePresenter.selectedDate.month + 1,
+      DateTime endDate = DateTime(
+        homePresenter.selectedDateMock.year,
+        DateTime.now().month + 1,
         1,
       ).subtract(Duration(days: 1));
 
@@ -175,12 +175,12 @@ void main() {
 
       final startDate = DateTime(
         homePresenter.selectedDateMock.year,
-        homePresenter.selectedDateMock.month,
+        1,
         1,
       );
       final endDate = DateTime(
         homePresenter.selectedDateMock.year,
-        homePresenter.selectedDateMock.month + 1,
+        DateTime.now().month + 1,
         1,
       ).subtract(Duration(days: 1));
 
@@ -217,14 +217,14 @@ void main() {
 
       await sut.getSales(homePresenter);
 
-      final startDate = DateTime(
-        homePresenter.selectedDateMock.year,
-        homePresenter.selectedDateMock.month,
+      DateTime startDate = DateTime(
+        homePresenter.selectedDate.year,
+        1,
         1,
       );
-      final endDate = DateTime(
-        homePresenter.selectedDateMock.year,
-        homePresenter.selectedDateMock.month + 1,
+      DateTime endDate = DateTime(
+        homePresenter.selectedDate.year,
+        DateTime.now().month + 1,
         1,
       ).subtract(Duration(days: 1));
       verify(() => loadSaleMovements.get(
@@ -244,14 +244,14 @@ void main() {
 
       await sut.getSales(homePresenter, forceRefresh: true);
 
-      final startDate = DateTime(
-        homePresenter.selectedDateMock.year,
-        homePresenter.selectedDateMock.month,
+      DateTime startDate = DateTime(
+        homePresenter.selectedDate.year,
+        1,
         1,
       );
-      final endDate = DateTime(
-        homePresenter.selectedDateMock.year,
-        homePresenter.selectedDateMock.month + 1,
+      DateTime endDate = DateTime(
+        homePresenter.selectedDate.year,
+        DateTime.now().month + 1,
         1,
       ).subtract(Duration(days: 1));
       verify(() => loadSaleMovements.get(
@@ -271,13 +271,13 @@ void main() {
       await sut.getSales(homePresenter);
 
       DateTime startDate = DateTime(
-        homePresenter.selectedDateMock.year,
-        homePresenter.selectedDateMock.month,
+        homePresenter.selectedDate.year,
+        1,
         1,
       );
       DateTime endDate = DateTime(
-        homePresenter.selectedDateMock.year,
-        homePresenter.selectedDateMock.month + 1,
+        homePresenter.selectedDate.year,
+        DateTime.now().month + 1,
         1,
       ).subtract(Duration(days: 1));
 
@@ -290,9 +290,23 @@ void main() {
             groupByEnterprise: true,
           )).called(1);
 
-      homePresenter.selectedDateMock = selectedDate.add(Duration(days: 365));
-      startDate = startDate.add(Duration(days: 365));
-      endDate = endDate.add(Duration(days: 365));
+      homePresenter.selectedDateMock = DateTime(
+        selectedDate.year + 1,
+        selectedDate.month,
+        selectedDate.day,
+      );
+
+      startDate = DateTime(
+        homePresenter.selectedDate.year,
+        1,
+        1,
+      );
+      endDate = DateTime(
+        homePresenter.selectedDate.year,
+        DateTime.now().month + 1,
+        1,
+      ).subtract(Duration(days: 1));
+
       await sut.getSales(homePresenter);
 
       verify(() => loadSaleMovements.get(
@@ -305,42 +319,23 @@ void main() {
           )).called(1);
     });
 
-    test("Should load data again if last loaded data changes the month",
+    test("Should not load data again if last loaded data changes the month",
         () async {
-      final selectedDate = faker.date.dateTime();
-
-      homePresenter.selectedDateMock = selectedDate;
+      homePresenter.selectedDateMock = faker.date.dateTime();
       await sut.getSales(homePresenter);
 
+      final currentDate = DateTime.now();
+
       DateTime startDate = DateTime(
-        selectedDate.year,
-        selectedDate.month,
+        homePresenter.selectedDate.year,
+        1,
         1,
       );
       DateTime endDate = DateTime(
-        selectedDate.year,
-        selectedDate.month + 1,
+        homePresenter.selectedDate.year,
+        currentDate.month + 1,
         1,
       ).subtract(Duration(days: 1));
-
-      verify(() => loadSaleMovements.get(
-            startDate: startDate,
-            endDate: endDate,
-            groupByDay: true,
-            groupByMonth: true,
-            groupByHour: true,
-            groupByEnterprise: true,
-          )).called(1);
-
-      // Add 30 days to simulate change of month
-      final newSelectedDate = selectedDate.add(Duration(days: 30));
-      homePresenter.selectedDateMock = newSelectedDate;
-
-      startDate = DateTime(newSelectedDate.year, newSelectedDate.month, 1);
-      endDate = DateTime(newSelectedDate.year, newSelectedDate.month + 1, 1)
-          .subtract(Duration(days: 1));
-
-      await sut.getSales(homePresenter);
 
       verify(() => loadSaleMovements.get(
             startDate: startDate,
