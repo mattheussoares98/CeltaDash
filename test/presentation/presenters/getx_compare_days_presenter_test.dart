@@ -12,9 +12,12 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../data/mocks/mocks.dart';
 import '../../domain/mocks/mocks.dart';
+import '../mocks/mocks.dart';
 
 void main() {
   late GetxCompareDaysPresenter sut;
+
+  late HomePresenterSpy homePresenter;
 
   late LoadSaleMovementsSpy loadSaleMovements;
 
@@ -33,6 +36,7 @@ void main() {
     sut = GetxCompareDaysPresenter(
       loadSaleMovements: loadSaleMovements,
     );
+    homePresenter = HomePresenterSpy();
   }
 
   void initEntities() {
@@ -65,7 +69,10 @@ void main() {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(sut.mainErrorStream, emits(null));
 
-      await sut.getSales(firstDay: firstDay, secondDay: secondDay);
+      await sut.getSales(
+          homePresenter: homePresenter,
+          firstDay: firstDay,
+          secondDay: secondDay);
     });
     test("Should emit correct values on error", () async {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
@@ -74,47 +81,68 @@ void main() {
 
       loadSaleMovements.mockGetError();
 
-      await sut.getSales(firstDay: firstDay, secondDay: secondDay);
+      await sut.getSales(
+          homePresenter: homePresenter,
+          firstDay: firstDay,
+          secondDay: secondDay);
     });
     test("Should update firstDaySaleMovements correctly", () async {
-      await sut.getSales(firstDay: firstDay, secondDay: secondDay);
+      await sut.getSales(
+          homePresenter: homePresenter,
+          firstDay: firstDay,
+          secondDay: secondDay);
 
       expect(
-        sut.firstDayMovements,
+        sut.saleMovements,
         saleMovementsEntities
             .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
             .toList(),
       );
     });
     test("Should update secondDaySaleMovements correctly", () async {
-      await sut.getSales(firstDay: firstDay, secondDay: secondDay);
+      await sut.getSales(
+          homePresenter: homePresenter,
+          firstDay: firstDay,
+          secondDay: secondDay);
 
       expect(
-        sut.secondDayMovements,
+        sut.saleMovements,
         saleMovementsEntities
             .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
             .toList(),
       );
     });
     test("Should update selected first day correctly", () async {
-      await sut.getSales(firstDay: firstDay, secondDay: secondDay);
+      await sut.getSales(
+          homePresenter: homePresenter,
+          firstDay: firstDay,
+          secondDay: secondDay);
 
       expect(sut.selectedFirstDay, firstDay);
     });
     test("Should update selected second day correctly", () async {
-      await sut.getSales(firstDay: firstDay, secondDay: secondDay);
+      await sut.getSales(
+          homePresenter: homePresenter,
+          firstDay: firstDay,
+          secondDay: secondDay);
 
       expect(sut.selectedSecondDay, secondDay);
     });
     test("Should call load first day with correct parameters", () async {
-      await sut.getSales(firstDay: firstDay, secondDay: secondDay);
+      await sut.getSales(
+          homePresenter: homePresenter,
+          firstDay: firstDay,
+          secondDay: secondDay);
 
       verify(
         () => loadSaleMovements.get(startDate: firstDay, endDate: firstDay),
       ).called(1);
     });
     test("Should call load second day with correct parameters", () async {
-      await sut.getSales(firstDay: firstDay, secondDay: secondDay);
+      await sut.getSales(
+          homePresenter: homePresenter,
+          firstDay: firstDay,
+          secondDay: secondDay);
 
       verify(
         () => loadSaleMovements.get(startDate: secondDay, endDate: secondDay),

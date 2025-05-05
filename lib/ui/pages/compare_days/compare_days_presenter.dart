@@ -4,15 +4,15 @@ import '../../helpers/helpers.dart';
 import '../pages.dart';
 
 abstract class CompareDaysPresenter implements Listenable {
-  List<SaleMovementViewModel>? get firstDayMovements;
-  List<SaleMovementViewModel>? get secondDayMovements;
+  List<SaleMovementViewModel>? get saleMovements;
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
   DateTime? get selectedFirstDay;
   DateTime? get selectedSecondDay;
 
   Future<void> getSales({
-    required DateTime firstDay,
-    required DateTime secondDay,
+    required DateTime? firstDay,
+    required DateTime? secondDay,
+    required HomePresenter homePresenter,
   });
 }

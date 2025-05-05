@@ -7,7 +7,7 @@ import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
 class GetxCompareDaysPresenter extends GetxController
-    with UIErrorManager, LoadingManager
+    with SaleMovementManager, UIErrorManager, LoadingManager
     implements CompareDaysPresenter {
   final LoadSaleMovements loadSaleMovements;
 
@@ -15,20 +15,11 @@ class GetxCompareDaysPresenter extends GetxController
     required this.loadSaleMovements,
   });
 
-  final _firstDayMovements = Rx<List<SaleMovementViewModel>?>(null);
-  @override
-  List<SaleMovementViewModel>? get firstDayMovements =>
-      _firstDayMovements.value;
-
-  final _secondDayMovements = Rx<List<SaleMovementViewModel>?>(null);
-  @override
-  List<SaleMovementViewModel>? get secondDayMovements =>
-      _secondDayMovements.value;
-
   @override
   Future<void> getSales({
-    required DateTime firstDay,
-    required DateTime secondDay,
+    required DateTime? firstDay,
+    required DateTime? secondDay,
+    required HomePresenter homePresenter,
   }) async {
     _selectedFirstDay = firstDay;
     _selectedSecondDay = secondDay;
@@ -37,23 +28,56 @@ class GetxCompareDaysPresenter extends GetxController
     mainError = null;
 
     try {
-      final firstDayMovements = await loadSaleMovements.get(
-        startDate: firstDay,
-        endDate: firstDay,
-      );
+      List<SaleMovementViewModel> firstDayMovements = [];
+      List<SaleMovementViewModel> secondDayMovements = [];
 
-      _firstDayMovements.value = firstDayMovements
-          .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
-          .toList();
+      if (firstDay != null) {
+        final saleMovements = await loadSaleMovements.get(
+          startDate: firstDay,
+          groupByDay: true,
+          groupByHour: true,
+          enterpriseIds: [
+            homePresenter.selectedEnterprise!.id!.toInt(),
+          ],
+          endDate: DateTime(
+            firstDay.year,
+            firstDay.month,
+            firstDay.day,
+            23,
+            59,
+            59,
+          ),
+        );
 
-      final secondDayMovements = await loadSaleMovements.get(
-        startDate: secondDay,
-        endDate: secondDay,
-      );
+        firstDayMovements = saleMovements
+            .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+            .toList();
+      }
 
-      _secondDayMovements.value = secondDayMovements
-          .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
-          .toList();
+      if (secondDay != null) {
+        final saleMovements = await loadSaleMovements.get(
+          startDate: secondDay,
+          groupByDay: true,
+          groupByHour: true,
+          enterpriseIds: [
+            homePresenter.selectedEnterprise!.id!.toInt(),
+          ],
+          endDate: DateTime(
+            secondDay.year,
+            secondDay.month,
+            secondDay.day,
+            23,
+            59,
+            59,
+          ),
+        );
+
+        secondDayMovements = saleMovements
+            .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+            .toList();
+      }
+
+      saleMovements = firstDayMovements + secondDayMovements;
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {

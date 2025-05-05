@@ -1,7 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
@@ -17,45 +15,28 @@ class CompareDaysPage extends StatefulWidget {
 }
 
 class _ProfitabilityPageState extends State<CompareDaysPage> {
-  DateTime firstDate = DateTime.now().subtract(Duration(days: 1));
-  DateTime secondDate = DateTime.now();
-  List<List<PersonalizedTableCell>> rowValues = [];
+  static final _now = DateTime.now();
+  final firstDay = DateTime(_now.year, _now.month, _now.day - 1);
+  final secondDay = DateTime(_now.year, _now.month, _now.day);
 
   @override
   void initState() {
     super.initState();
-    rowValues = getRowValues();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        HomePresenter homePresenter = Provider.of(context, listen: false);
+        await widget.presenter.getSales(
+          firstDay: firstDay,
+          secondDay: secondDay,
+          homePresenter: homePresenter,
+        );
+        Future.delayed(Duration.zero, () {
+          setState(() {});
+        });
+      }
+    });
   }
-
-  List<List<PersonalizedTableCell>> getRowValues() {
-    final formatador = DateFormat.Hm(); // Formato: 00:00
-    return List.generate(24, (i) {
-      final inicio = formatador.format(DateTime(0, 1, 1, i));
-      final fim = formatador.format(DateTime(0, 1, 1, i, 59));
-      return '$inicio\n$fim';
-    }).map((e) {
-      final firstTotal = Random().nextDouble() * 5000;
-      final secondTotal = Random().nextDouble() * 5000;
-
-      totalFirstDay += firstTotal;
-      totalSecondDay += secondTotal;
-
-      return [
-        PersonalizedTableCell(value: e),
-        PersonalizedTableCell(value: firstTotal),
-        PersonalizedTableCell(value: secondTotal),
-        PersonalizedTableCell(
-          value: secondTotal == 0
-              ? 100
-              : getTotalDifference(first: firstTotal, second: secondTotal),
-          isPercentage: true,
-        ),
-      ];
-    }).toList();
-  }
-
-  double totalFirstDay = 0.0;
-  double totalSecondDay = 0.0;
 
   double getTotalDifference({required double first, required double second}) {
     if (first > second) {
@@ -70,6 +51,7 @@ class _ProfitabilityPageState extends State<CompareDaysPage> {
     final hourWidth = MediaQuery.of(context).size.width * 0.2;
     final dayWidth = MediaQuery.of(context).size.width * 0.3;
     final compareDaysWidth = MediaQuery.of(context).size.width * 0.2;
+    HomePresenter homePresenter = Provider.of(context, listen: false);
 
     return Scaffold(
       appBar: DefaultAppBar(
@@ -87,81 +69,130 @@ class _ProfitabilityPageState extends State<CompareDaysPage> {
             children: [
               Flexible(
                 child: SelectDateButton(
-                  date: firstDate,
-                  updateDate: (newDate) {
-                    setState(() {
-                      firstDate = newDate;
-                    });
+                  date: widget.presenter.selectedFirstDay ?? firstDay,
+                  updateDate: (newDate) async {
+                    await widget.presenter.getSales(
+                      firstDay: newDate,
+                      secondDay:
+                          widget.presenter.selectedSecondDay ?? secondDay,
+                      homePresenter: homePresenter,
+                    );
                   },
                 ),
               ),
               const SizedBox(width: 8),
               Flexible(
                 child: SelectDateButton(
-                  date: secondDate,
-                  updateDate: (newDate) {
-                    setState(() {
-                      secondDate = newDate;
-                    });
+                  date: widget.presenter.selectedSecondDay ?? secondDay,
+                  updateDate: (newDate) async {
+                    await widget.presenter.getSales(
+                      firstDay: newDate,
+                      secondDay: newDate,
+                      homePresenter: homePresenter,
+                    );
                   },
                 ),
               ),
             ],
           ),
           const SizedBox(height: 10),
-          TableItem(
-            titles: [
-              PersonalizedTableCell(value: R.string.hour),
-              PersonalizedTableCell(value: "${R.string.day} 1"),
-              PersonalizedTableCell(value: "${R.string.day} 2"),
-              PersonalizedTableCell(value: "1 > 2"),
-            ],
-            titleMinHeight: 40,
-            indexToSort: 0,
-            columnIndexToCompareAndDetachBetterAndWorstValue: 3,
-            tableColumnWidth: {
-              0: FixedColumnWidth(hourWidth),
-              1: FixedColumnWidth(dayWidth),
-              2: FixedColumnWidth(dayWidth),
-              3: FixedColumnWidth(compareDaysWidth),
-            },
-            rowValues: rowValues,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: Column(
-              children: [
-                Row(
+          if (widget.presenter.saleMovements != null)
+            TableItem(
+              titles: [
+                PersonalizedTableCell(value: R.string.hour),
+                PersonalizedTableCell(value: "${R.string.day} 1"),
+                PersonalizedTableCell(value: "${R.string.day} 2"),
+                PersonalizedTableCell(value: "1 > 2"),
+              ],
+              titleMinHeight: 40,
+              indexToSort: 0,
+              columnIndexToCompareAndDetachBetterAndWorstValue: 3,
+              tableColumnWidth: {
+                0: FixedColumnWidth(hourWidth),
+                1: FixedColumnWidth(dayWidth),
+                2: FixedColumnWidth(dayWidth),
+                3: FixedColumnWidth(compareDaysWidth),
+              },
+              rowValues: widget.presenter.saleMovements!
+                  .map((e) => e.Hour)
+                  .whereType<String>()
+                  .toSet()
+                  .toList()
+                  .map((hour) {
+                final firstDay = widget.presenter.selectedFirstDay?.day;
+                final secondDay = widget.presenter.selectedSecondDay?.day;
+
+                final firstDayTotal = widget.presenter.saleMovements!
+                    .where((e) => e.Hour == hour && e.Date!.day == firstDay)
+                    .map((e) => e.LiquidValue?.toDouble() ?? 0)
+                    .fold(0.0, (a, b) => a + b);
+
+                final secondDayTotal = widget.presenter.saleMovements!
+                    .where((e) => e.Hour == hour && e.Date!.day == secondDay)
+                    .map((e) => e.LiquidValue?.toDouble() ?? 0)
+                    .fold(0.0, (a, b) => a + b);
+
+                final difference = firstDayTotal > 0
+                    ? ((firstDayTotal - secondDayTotal) / firstDayTotal) * 100
+                    : 0.0;
+
+                return [
+                  PersonalizedTableCell(value: hour),
+                  PersonalizedTableCell(value: firstDayTotal, isMoney: true),
+                  PersonalizedTableCell(value: secondDayTotal, isMoney: true),
+                  PersonalizedTableCell(value: difference, isPercentage: true),
+                ];
+              }).toList(),
+            ),
+          if (widget.presenter.saleMovements != null)
+            Builder(builder: (context) {
+              final firstDayTotalLiquid =
+                  widget.presenter.saleMovements!.sumLiquidValue(
+                filterDay: widget.presenter.selectedFirstDay?.day,
+              );
+              final secondDayTotalLiquid =
+                  widget.presenter.saleMovements!.sumLiquidValue(
+                filterDay: widget.presenter.selectedSecondDay?.day,
+              );
+
+              return Padding(
+                padding: const EdgeInsets.all(8),
+                child: Column(
                   children: [
-                    Expanded(
-                      child: TotalSalesByDay(
-                        date: firstDate,
-                        totalSales: totalFirstDay,
-                      ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TotalSalesByDay(
+                            date: firstDay,
+                            totalSales: firstDayTotalLiquid,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: TotalSalesByDay(
+                            date:
+                                widget.presenter.selectedSecondDay ?? secondDay,
+                            totalSales: secondDayTotalLiquid,
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: TotalSalesByDay(
-                        date: secondDate,
-                        totalSales: totalSecondDay,
+                    const SizedBox(height: 10),
+                    DayComparison(
+                      firstDate: widget.presenter.selectedFirstDay ?? firstDay,
+                      secondDate:
+                          widget.presenter.selectedSecondDay ?? secondDay,
+                      totalDifference: getTotalDifference(
+                        first: firstDayTotalLiquid,
+                        second: secondDayTotalLiquid,
                       ),
+                      totalFirstDay: firstDayTotalLiquid,
+                      totalSecondDay: secondDayTotalLiquid,
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
-                DayComparison(
-                  firstDate: firstDate,
-                  secondDate: secondDate,
-                  totalDifference: getTotalDifference(
-                    first: totalFirstDay,
-                    second: totalSecondDay,
-                  ),
-                  totalFirstDay: totalFirstDay,
-                  totalSecondDay: totalSecondDay,
-                ),
-              ],
-            ),
-          ),
+              );
+            }),
         ],
       ),
     );
