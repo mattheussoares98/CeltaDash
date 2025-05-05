@@ -319,13 +319,11 @@ void main() {
           )).called(1);
     });
 
-    test("Should not load data again if last loaded data changes the month",
-        () async {
+    test("Should not load data again if changes the month", () async {
       homePresenter.selectedDateMock = faker.date.dateTime();
       await sut.getSales(homePresenter);
 
       final currentDate = DateTime.now();
-
       DateTime startDate = DateTime(
         homePresenter.selectedDate.year,
         1,
@@ -345,6 +343,24 @@ void main() {
             groupByHour: true,
             groupByEnterprise: true,
           )).called(1);
+
+      homePresenter.selectedDateMock = DateTime(
+        homePresenter.selectedDate.year,
+        homePresenter.selectedDate.month == 12
+            ? 12
+            : homePresenter.selectedDate.month + 1,
+        homePresenter.selectedDate.day,
+      );
+      await sut.getSales(homePresenter);
+
+      verifyNever(() => loadSaleMovements.get(
+            startDate: startDate,
+            endDate: endDate,
+            groupByDay: true,
+            groupByMonth: true,
+            groupByHour: true,
+            groupByEnterprise: true,
+          ));
     });
   });
 }

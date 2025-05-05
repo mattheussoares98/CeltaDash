@@ -60,8 +60,7 @@ class GetxResumePresenter extends GetxController
     isLoading = true;
     mainError = null;
     try {
-      if (_lastDateLoadedData?.month == homePresenter.selectedDate.month &&
-          _lastDateLoadedData?.year == homePresenter.selectedDate.year &&
+      if (_lastDateLoadedData?.year == homePresenter.selectedDate.year &&
           forceRefresh != true) {
         return;
       }
