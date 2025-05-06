@@ -53,29 +53,22 @@ class GetxResumePresenter extends GetxController
   }
 
   @override
-  Future<void> getSales(
-    HomePresenter homePresenter, {
-    bool? forceRefresh,
-  }) async {
+  Future<void> getSales(HomePresenter homePresenter) async {
     isLoading = true;
     mainError = null;
     try {
-      if (_lastDateLoadedData?.year == homePresenter.selectedDate.year &&
-          forceRefresh != true) {
-        return;
-      }
-
       final result = await loadSaleMovements.get(
         startDate: DateTime(
           homePresenter.selectedDate.year,
-          1,
+          homePresenter.selectedDate.month,
           1,
         ),
         endDate: DateTime(
           homePresenter.selectedDate.year,
-          12,
+          homePresenter.selectedDate.month + 1,
           1,
         ).subtract(Duration(days: 1)),
+        enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
         groupByEnterprise: true,
         groupByDay: true,
         groupByMonth: true,

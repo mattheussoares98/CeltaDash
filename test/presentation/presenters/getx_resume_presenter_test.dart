@@ -49,6 +49,9 @@ void main() {
 
   void initMockSuccess() {
     loadSaleMovements.mockGet(saleMovementEntitys);
+    homePresenter.selectedEnterpriseMock =
+        EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
+            .toViewModel();
   }
 
   setUp(() {
@@ -150,43 +153,19 @@ void main() {
 
       DateTime startDate = DateTime(
         homePresenter.selectedDateMock.year,
-        1,
+        homePresenter.selectedDateMock.month,
         1,
       );
       DateTime endDate = DateTime(
         homePresenter.selectedDateMock.year,
-        12,
+        homePresenter.selectedDateMock.month + 1,
         1,
       ).subtract(Duration(days: 1));
 
       verify(() => loadSaleMovements.get(
             startDate: startDate,
             endDate: endDate,
-            groupByDay: true,
-            groupByMonth: true,
-            groupByHour: true,
-            groupByEnterprise: true,
-          )).called(1);
-    });
-    test("Should load sale movements with correct new date", () async {
-      homePresenter.selectedDateMock = faker.date.dateTime();
-
-      await sut.getSales(homePresenter);
-
-      final startDate = DateTime(
-        homePresenter.selectedDateMock.year,
-        1,
-        1,
-      );
-      final endDate = DateTime(
-        homePresenter.selectedDateMock.year,
-        12,
-        1,
-      ).subtract(Duration(days: 1));
-
-      verify(() => loadSaleMovements.get(
-            startDate: startDate,
-            endDate: endDate,
+            enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
             groupByDay: true,
             groupByMonth: true,
             groupByHour: true,
@@ -194,170 +173,20 @@ void main() {
           )).called(1);
     });
 
-    test("Should update last month loaded data", () async {
+    test("Should update last date loaded data", () async {
       homePresenter.selectedDateMock = faker.date.dateTime();
 
       await sut.getSales(homePresenter);
 
       expect(sut.lastDateLoadedData, homePresenter.selectedDateMock);
     });
-    test("Should not update last month loaded data if loadSaleMovements throws",
+    test("Should not update last loaded data if loadSaleMovements throws",
         () async {
       loadSaleMovements.mockGetError();
 
       await sut.getSales(homePresenter);
 
       expect(sut.lastDateLoadedData, null);
-    });
-    test(
-        "Should not load data again if selected date is the same of last loaded month and year",
-        () async {
-      homePresenter.selectedDateMock = faker.date.dateTime();
-      await sut.getSales(homePresenter);
-
-      await sut.getSales(homePresenter);
-
-      DateTime startDate = DateTime(
-        homePresenter.selectedDate.year,
-        1,
-        1,
-      );
-      DateTime endDate = DateTime(
-        homePresenter.selectedDate.year,
-        12,
-        1,
-      ).subtract(Duration(days: 1));
-      verify(() => loadSaleMovements.get(
-            startDate: startDate,
-            endDate: endDate,
-            groupByDay: true,
-            groupByMonth: true,
-            groupByHour: true,
-            groupByEnterprise: true,
-          )).called(1);
-    });
-    test(
-        "Should load data again if selected date is the same of last loaded date but force refresh",
-        () async {
-      homePresenter.selectedDateMock = faker.date.dateTime();
-      await sut.getSales(homePresenter);
-
-      await sut.getSales(homePresenter, forceRefresh: true);
-
-      DateTime startDate = DateTime(
-        homePresenter.selectedDate.year,
-        1,
-        1,
-      );
-      DateTime endDate = DateTime(
-        homePresenter.selectedDate.year,
-        12,
-        1,
-      ).subtract(Duration(days: 1));
-      verify(() => loadSaleMovements.get(
-            startDate: startDate,
-            endDate: endDate,
-            groupByDay: true,
-            groupByMonth: true,
-            groupByHour: true,
-            groupByEnterprise: true,
-          )).called(2);
-    });
-    test("Should load data again if last loaded data changes the year",
-        () async {
-      final selectedDate = faker.date.dateTime();
-
-      homePresenter.selectedDateMock = selectedDate;
-      await sut.getSales(homePresenter);
-
-      DateTime startDate = DateTime(
-        homePresenter.selectedDate.year,
-        1,
-        1,
-      );
-      DateTime endDate = DateTime(
-        homePresenter.selectedDate.year,
-        12,
-        1,
-      ).subtract(Duration(days: 1));
-
-      verify(() => loadSaleMovements.get(
-            startDate: startDate,
-            endDate: endDate,
-            groupByDay: true,
-            groupByMonth: true,
-            groupByHour: true,
-            groupByEnterprise: true,
-          )).called(1);
-
-      homePresenter.selectedDateMock = DateTime(
-        selectedDate.year + 1,
-        selectedDate.month,
-        selectedDate.day,
-      );
-
-      startDate = DateTime(
-        homePresenter.selectedDate.year,
-        1,
-        1,
-      );
-      endDate = DateTime(
-        homePresenter.selectedDate.year,
-        12,
-        1,
-      ).subtract(Duration(days: 1));
-
-      await sut.getSales(homePresenter);
-
-      verify(() => loadSaleMovements.get(
-            startDate: startDate,
-            endDate: endDate,
-            groupByDay: true,
-            groupByMonth: true,
-            groupByHour: true,
-            groupByEnterprise: true,
-          )).called(1);
-    });
-
-    test("Should not load data again if changes the month", () async {
-      homePresenter.selectedDateMock = faker.date.dateTime();
-      await sut.getSales(homePresenter);
-
-      DateTime startDate = DateTime(
-        homePresenter.selectedDate.year,
-        1,
-        1,
-      );
-      DateTime endDate = DateTime(
-        homePresenter.selectedDate.year,
-        12,
-        1,
-      ).subtract(Duration(days: 1));
-
-      verify(() => loadSaleMovements.get(
-            startDate: startDate,
-            endDate: endDate,
-            groupByDay: true,
-            groupByMonth: true,
-            groupByHour: true,
-            groupByEnterprise: true,
-          )).called(1);
-
-      homePresenter.selectedDateMock = DateTime(
-        homePresenter.selectedDate.year,
-        12,
-        homePresenter.selectedDate.day,
-      );
-      await sut.getSales(homePresenter);
-
-      verifyNever(() => loadSaleMovements.get(
-            startDate: startDate,
-            endDate: endDate,
-            groupByDay: true,
-            groupByMonth: true,
-            groupByHour: true,
-            groupByEnterprise: true,
-          ));
     });
   });
 }

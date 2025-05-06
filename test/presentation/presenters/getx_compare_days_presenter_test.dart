@@ -51,6 +51,9 @@ void main() {
 
   void initMockSuccess() {
     loadSaleMovements.mockGet(saleMovementsEntities);
+    homePresenter.selectedEnterpriseMock =
+        EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
+            .toViewModel();
   }
 
   setUp(() {
@@ -94,9 +97,12 @@ void main() {
 
       expect(
         sut.saleMovements,
-        saleMovementsEntities
-            .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
-            .toList(),
+        [
+          ...saleMovementsEntities
+              .map((e) => SaleMovementModel.fromEntity(e).toViewModel()),
+          ...saleMovementsEntities
+              .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+        ],
       );
     });
     test("Should update secondDaySaleMovements correctly", () async {
@@ -107,9 +113,12 @@ void main() {
 
       expect(
         sut.saleMovements,
-        saleMovementsEntities
-            .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
-            .toList(),
+        [
+          ...saleMovementsEntities
+              .map((e) => SaleMovementModel.fromEntity(e).toViewModel()),
+          ...saleMovementsEntities
+              .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+        ],
       );
     });
     test("Should update selected first day correctly", () async {
@@ -130,22 +139,49 @@ void main() {
     });
     test("Should call load first day with correct parameters", () async {
       await sut.getSales(
-          homePresenter: homePresenter,
-          firstDay: firstDay,
-          secondDay: secondDay);
+        homePresenter: homePresenter,
+        firstDay: firstDay,
+        secondDay: null,
+      );
 
       verify(
-        () => loadSaleMovements.get(startDate: firstDay, endDate: firstDay),
+        () => loadSaleMovements.get(
+          groupByDay: true,
+          groupByHour: true,
+          enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+          startDate: firstDay,
+          endDate: DateTime(
+            firstDay.year,
+            firstDay.month,
+            firstDay.day,
+            23,
+            59,
+            59,
+          ),
+        ),
       ).called(1);
     });
     test("Should call load second day with correct parameters", () async {
       await sut.getSales(
-          homePresenter: homePresenter,
-          firstDay: firstDay,
-          secondDay: secondDay);
+        homePresenter: homePresenter,
+        firstDay: null,
+        secondDay: secondDay,
+      );
 
       verify(
-        () => loadSaleMovements.get(startDate: secondDay, endDate: secondDay),
+        () => loadSaleMovements.get(
+            groupByDay: true,
+            groupByHour: true,
+            enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+            startDate: secondDay,
+            endDate: DateTime(
+              secondDay.year,
+              secondDay.month,
+              secondDay.day,
+              23,
+              59,
+              59,
+            )),
       ).called(1);
     });
   });
