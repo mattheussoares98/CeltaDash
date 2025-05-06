@@ -123,16 +123,10 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 8),
-                    child: homePresenter.selectedDate.year !=
-                                DateTime.now().year ||
-                            homePresenter.selectedDate.month !=
-                                DateTime.now().month ||
-                            homePresenter.selectedDate.day != DateTime.now().day
-                        ? SizedBox()
-                        : IconButton(
-                            onPressed: widget.onChangeDateOrEnterprise,
-                            icon: Icon(Icons.refresh),
-                          ),
+                    child: IconButton(
+                      onPressed: widget.onChangeDateOrEnterprise,
+                      icon: Icon(Icons.refresh),
+                    ),
                   )
                 ],
               ),
