@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/components.dart';
@@ -60,6 +61,8 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
     mainErrorSubscription?.cancel();
   }
 
+  bool needRefresh = false;
+
   @override
   Widget build(BuildContext context) {
     final hourWidth = MediaQuery.of(context).size.width * 0.2;
@@ -80,143 +83,158 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
         onChangeDateOrEnterprise: (_) {},
         showDatePicker: false,
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(R.string.compareDays),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Flexible(
-                child: SelectDateButton(
-                  date: widget.presenter.selectedFirstDay ?? firstDay,
-                  updateDate: (newDate) async {
-                    await widget.presenter.getSales(
-                      firstDay: newDate,
-                      secondDay:
-                          widget.presenter.selectedSecondDay ?? secondDay,
-                      homePresenter: homePresenter,
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(width: 8),
-              Flexible(
-                child: SelectDateButton(
-                  date: widget.presenter.selectedSecondDay ?? secondDay,
-                  updateDate: (newDate) async {
-                    await widget.presenter.getSales(
-                      firstDay: newDate,
-                      secondDay: newDate,
-                      homePresenter: homePresenter,
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          if (widget.presenter.saleMovements != null)
-            TableItem(
-              titles: [
-                PersonalizedTableCell(value: R.string.hour),
-                PersonalizedTableCell(value: "${R.string.day} 1"),
-                PersonalizedTableCell(value: "${R.string.day} 2"),
-                PersonalizedTableCell(value: "1 > 2"),
-              ],
-              titleMinHeight: 40,
-              indexToSort: 0,
-              columnIndexToCompareAndDetachBetterAndWorstValue: 3,
-              tableColumnWidth: {
-                0: FixedColumnWidth(hourWidth),
-                1: FixedColumnWidth(dayWidth),
-                2: FixedColumnWidth(dayWidth),
-                3: FixedColumnWidth(compareDaysWidth),
-              },
-              rowValues: widget.presenter.saleMovements!
-                  .map((e) => e.Hour)
-                  .whereType<String>()
-                  .toSet()
-                  .toList()
-                  .map((hour) {
-                final firstDay = widget.presenter.selectedFirstDay?.day;
-                final secondDay = widget.presenter.selectedSecondDay?.day;
-
-                final firstDayTotal = widget.presenter.saleMovements!
-                    .where((e) => e.Hour == hour && e.Date!.day == firstDay)
-                    .map((e) => e.LiquidValue?.toDouble() ?? 0)
-                    .fold(0.0, (a, b) => a + b);
-
-                final secondDayTotal = widget.presenter.saleMovements!
-                    .where((e) => e.Hour == hour && e.Date!.day == secondDay)
-                    .map((e) => e.LiquidValue?.toDouble() ?? 0)
-                    .fold(0.0, (a, b) => a + b);
-
-                final difference = firstDayTotal > 0
-                    ? ((firstDayTotal - secondDayTotal) / firstDayTotal) * 100
-                    : 0.0;
-
-                return [
-                  PersonalizedTableCell(value: hour),
-                  PersonalizedTableCell(value: firstDayTotal, isMoney: true),
-                  PersonalizedTableCell(value: secondDayTotal, isMoney: true),
-                  PersonalizedTableCell(value: difference, isPercentage: true),
-                ];
-              }).toList(),
+      body: Obx(() {
+        if (needRefresh) {
+          Future.delayed(Duration.zero, () {
+            setState(() {});
+          });
+          needRefresh = false;
+        }
+        return Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(R.string.compareDays),
             ),
-          if (widget.presenter.saleMovements != null)
-            Builder(builder: (context) {
-              final firstDayTotalLiquid =
-                  widget.presenter.saleMovements!.sumLiquidValue(
-                filterDay: widget.presenter.selectedFirstDay?.day,
-              );
-              final secondDayTotalLiquid =
-                  widget.presenter.saleMovements!.sumLiquidValue(
-                filterDay: widget.presenter.selectedSecondDay?.day,
-              );
-
-              return Padding(
-                padding: const EdgeInsets.all(8),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TotalSalesByDay(
-                            date: firstDay,
-                            totalSales: firstDayTotalLiquid,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: TotalSalesByDay(
-                            date:
-                                widget.presenter.selectedSecondDay ?? secondDay,
-                            totalSales: secondDayTotalLiquid,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    DayComparison(
-                      firstDate: widget.presenter.selectedFirstDay ?? firstDay,
-                      secondDate:
-                          widget.presenter.selectedSecondDay ?? secondDay,
-                      totalDifference: getTotalDifference(
-                        first: firstDayTotalLiquid,
-                        second: secondDayTotalLiquid,
-                      ),
-                      totalFirstDay: firstDayTotalLiquid,
-                      totalSecondDay: secondDayTotalLiquid,
-                    ),
-                  ],
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Flexible(
+                  child: SelectDateButton(
+                    date: widget.presenter.selectedFirstDay ?? firstDay,
+                    updateDate: (newDate) async {
+                      await widget.presenter.getSales(
+                        firstDay: newDate,
+                        secondDay:
+                            widget.presenter.selectedSecondDay ?? secondDay,
+                        homePresenter: homePresenter,
+                      );
+                      needRefresh = true;
+                    },
+                  ),
                 ),
-              );
-            }),
-        ],
-      ),
+                const SizedBox(width: 8),
+                Flexible(
+                  child: SelectDateButton(
+                    date: widget.presenter.selectedSecondDay ?? secondDay,
+                    updateDate: (newDate) async {
+                      await widget.presenter.getSales(
+                        firstDay: widget.presenter.selectedFirstDay ?? firstDay,
+                        secondDay: newDate,
+                        homePresenter: homePresenter,
+                      );
+                      needRefresh = true;
+                    },
+                  ),
+                ),
+              ],
+            ),
+            //TODO test more this page and create more components to make it better
+            //TODO throw an error if try to get the same date
+            const SizedBox(height: 10),
+            if (widget.presenter.saleMovements != null)
+              TableItem(
+                titles: [
+                  PersonalizedTableCell(value: R.string.hour),
+                  PersonalizedTableCell(value: "${R.string.day} 1"),
+                  PersonalizedTableCell(value: "${R.string.day} 2"),
+                  PersonalizedTableCell(value: "1 > 2"),
+                ],
+                titleMinHeight: 40,
+                indexToSort: 3,
+                columnIndexToCompareAndDetachBetterAndWorstValue: 3,
+                tableColumnWidth: {
+                  0: FixedColumnWidth(hourWidth),
+                  1: FixedColumnWidth(dayWidth),
+                  2: FixedColumnWidth(dayWidth),
+                  3: FixedColumnWidth(compareDaysWidth),
+                },
+                rowValues: widget.presenter.saleMovements!
+                    .map((e) => e.Hour)
+                    .whereType<String>()
+                    .toSet()
+                    .toList()
+                    .map((hour) {
+                  final firstDay = widget.presenter.selectedFirstDay?.day;
+                  final secondDay = widget.presenter.selectedSecondDay?.day;
+
+                  final firstDayTotal = widget.presenter.saleMovements!
+                      .where((e) => e.Hour == hour && e.Date!.day == firstDay)
+                      .map((e) => e.LiquidValue?.toDouble() ?? 0)
+                      .fold(0.0, (a, b) => a + b);
+
+                  final secondDayTotal = widget.presenter.saleMovements!
+                      .where((e) => e.Hour == hour && e.Date!.day == secondDay)
+                      .map((e) => e.LiquidValue?.toDouble() ?? 0)
+                      .fold(0.0, (a, b) => a + b);
+
+                  final difference = firstDayTotal > 0
+                      ? ((firstDayTotal - secondDayTotal) / firstDayTotal) * 100
+                      : 0.0;
+
+                  return [
+                    PersonalizedTableCell(value: hour),
+                    PersonalizedTableCell(value: firstDayTotal, isMoney: true),
+                    PersonalizedTableCell(value: secondDayTotal, isMoney: true),
+                    PersonalizedTableCell(
+                        value: difference, isPercentage: true),
+                  ];
+                }).toList(),
+              ),
+            if (widget.presenter.saleMovements != null)
+              Builder(builder: (context) {
+                final firstDayTotalLiquid =
+                    widget.presenter.saleMovements!.sumLiquidValue(
+                  filterDay: widget.presenter.selectedFirstDay?.day,
+                );
+                final secondDayTotalLiquid =
+                    widget.presenter.saleMovements!.sumLiquidValue(
+                  filterDay: widget.presenter.selectedSecondDay?.day,
+                );
+
+                return Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TotalSalesByDay(
+                              date:
+                                  widget.presenter.selectedFirstDay ?? firstDay,
+                              totalSales: firstDayTotalLiquid,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: TotalSalesByDay(
+                              date: widget.presenter.selectedSecondDay ??
+                                  secondDay,
+                              totalSales: secondDayTotalLiquid,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      DayComparison(
+                        firstDate:
+                            widget.presenter.selectedFirstDay ?? firstDay,
+                        secondDate:
+                            widget.presenter.selectedSecondDay ?? secondDay,
+                        totalDifference: getTotalDifference(
+                          first: firstDayTotalLiquid,
+                          second: secondDayTotalLiquid,
+                        ),
+                        totalFirstDay: firstDayTotalLiquid,
+                        totalSecondDay: secondDayTotalLiquid,
+                      ),
+                    ],
+                  ),
+                );
+              }),
+          ],
+        );
+      }),
     );
   }
 }
