@@ -143,16 +143,18 @@ class _ResumePageState extends State<ResumePage>
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
-                SalesInformations(
-                  scrollController: scrollController,
-                  totalSales: saleMovements.sumLiquidValue(
-                    enterprise: homePresenter.selectedEnterprise,
-                    filterYear: homePresenter.selectedDate.year,
-                    filterMonth: homePresenter.selectedDate.month,
-                  ),
-                  title: R.string.salesOfTheMonth,
-                ),
+                SizedBox(height: 8),
+                MonthlyAnalysis(saleMovements: saleMovements),
+                // const SizedBox(height: 8),
+                // SalesInformations(
+                //   scrollController: scrollController,
+                //   totalSales: saleMovements.sumLiquidValue(
+                //     enterprise: homePresenter.selectedEnterprise,
+                //     filterYear: homePresenter.selectedDate.year,
+                //     filterMonth: homePresenter.selectedDate.month,
+                //   ),
+                //   title: R.string.salesOfTheMonth,
+                // ),
                 const SizedBox(height: 8),
                 DefaultNavigateButton(
                   onTap: resumePresenter.goToProfitabillityPage,
@@ -164,8 +166,6 @@ class _ResumePageState extends State<ResumePage>
                   saleMovements: saleMovements,
                   scrollController: scrollController,
                 ),
-                SizedBox(height: 8),
-                MonthlyAnalysis(saleMovements: saleMovements),
                 SizedBox(height: 8),
                 DefaultNavigateButton(
                   onTap: resumePresenter.goToGroupSummaryPage,
