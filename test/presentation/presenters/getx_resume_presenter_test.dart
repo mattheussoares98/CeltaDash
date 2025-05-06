@@ -216,5 +216,34 @@ void main() {
             groupByEnterprise: true,
           )).called(1);
     });
+    test("Should load sales again if force refresh", () async {
+      homePresenter.selectedDateMock = faker.date.dateTime();
+      await sut.getSales(homePresenter);
+
+      homePresenter.selectedDateMock = DateTime(
+        homePresenter.selectedDateMock.year,
+        homePresenter.selectedDateMock.month,
+        faker.date.dateTime().day,
+      );
+
+      await sut.getSales(homePresenter, forceRefresh: true);
+
+      verify(() => loadSaleMovements.get(
+            startDate: DateTime(
+              homePresenter.selectedDateMock.year,
+              homePresenter.selectedDateMock.month,
+              1,
+            ),
+            endDate: DateTime(
+              homePresenter.selectedDateMock.year,
+              homePresenter.selectedDateMock.month + 1,
+              1,
+            ).subtract(Duration(days: 1)),
+            groupByDay: true,
+            groupByMonth: true,
+            groupByHour: true,
+            groupByEnterprise: true,
+          )).called(2);
+    });
   });
 }
