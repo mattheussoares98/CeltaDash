@@ -26,7 +26,7 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
       appBar: DefaultAppBar(
         showEnterpriseDropdown: false,
         onChangeDateOrEnterprise: () async {
-          await resumePresenter.getSales(homePresenter);
+          await resumePresenter.getSales(homePresenter, forceRefresh: true);
         },
       ),
       body: Obx(() {
@@ -47,12 +47,6 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  '${homePresenter.enterprises?.length ?? 1} ${R.string.enterprises}',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
-                const SizedBox(height: 4),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -94,7 +88,7 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
                   return Column(
                     children: [
                       Indicator(
-                        firstTitle: R.string.totalSalesGroup,
+                        firstTitle: '${R.string.totalSalesGroup} (${homePresenter.enterprises?.length ?? 1} ${R.string.enterprises})',
                         secondTitle: R.string.averageSalesGroup,
                         firstValue: groupSalesTotalLiquid
                             .toString()
