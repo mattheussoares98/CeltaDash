@@ -22,6 +22,13 @@ class DailyAnalysis extends StatelessWidget {
 
     final now = DateTime.now();
 
+    final filteredSales = saleMovements.filteredSales(
+      enterprise: homePresenter.selectedEnterprise,
+      filterYear: now.year,
+    );
+
+    if (filteredSales.isEmpty) return Container();
+
     final betterAverage = saleMovements.hourAverage(
       getBest: true,
       enterprise: homePresenter.selectedEnterprise,

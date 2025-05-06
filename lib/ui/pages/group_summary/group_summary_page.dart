@@ -25,8 +25,11 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
     return Scaffold(
       appBar: DefaultAppBar(
         showEnterpriseDropdown: false,
-        onChangeDateOrEnterprise: () async {
-          await resumePresenter.getSales(homePresenter, forceRefresh: true);
+        onChangeDateOrEnterprise: (changedEnterprise) async {
+          await resumePresenter.getSales(
+            homePresenter,
+            forceRefresh: !changedEnterprise,
+          );
         },
       ),
       body: Obx(() {
@@ -88,7 +91,8 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
                   return Column(
                     children: [
                       Indicator(
-                        firstTitle: '${R.string.totalSalesGroup} (${homePresenter.enterprises?.length ?? 1} ${R.string.enterprises})',
+                        firstTitle:
+                            '${R.string.totalSalesGroup} (${homePresenter.enterprises?.length ?? 1} ${R.string.enterprises})',
                         secondTitle: R.string.averageSalesGroup,
                         firstValue: groupSalesTotalLiquid
                             .toString()

@@ -18,7 +18,7 @@ class _IndicatorsPageState extends State<IndicatorsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: DefaultAppBar(
-        onChangeDateOrEnterprise: () {
+        onChangeDateOrEnterprise: (_) {
           debugPrint("Search indicators again");
         },
       ),
@@ -64,37 +64,36 @@ class _IndicatorsPageState extends State<IndicatorsPage> {
                 value: R.string.averagePrice.toUpperCase(),
               ),
             ],
-            rowValues:
-                List.generate(DateTime.now().day, (index) {
-                  final now = DateTime.now();
-                  final atualDate = DateTime(
-                    now.year,
-                    now.month,
-                    index + 1,
-                  );
-                  final totalSales = Random().nextDouble() * 50000;
-                  final quantitySales = Random().nextInt(999);
-                  final int productsBySale = Random().nextInt(11) + 4;
-          
-                  return [
-                    PersonalizedTableCell(
-                      value: atualDate.day,
-                      subtile: DateFormat.EEEE(
-                        "pt_BR",
-                      ).format(atualDate).toUpperCase().substring(0, 3),
-                    ),
-                    PersonalizedTableCell(
-                      value: totalSales / quantitySales,
-                      isMoney: true,
-                    ),
-                    PersonalizedTableCell(value: quantitySales),
-                    PersonalizedTableCell(value: productsBySale),
-                    PersonalizedTableCell(
-                      value: totalSales / productsBySale / quantitySales,
-                      isMoney: true,
-                    ),
-                  ];
-                }).toList().reversed.toList(),
+            rowValues: List.generate(DateTime.now().day, (index) {
+              final now = DateTime.now();
+              final atualDate = DateTime(
+                now.year,
+                now.month,
+                index + 1,
+              );
+              final totalSales = Random().nextDouble() * 50000;
+              final quantitySales = Random().nextInt(999);
+              final int productsBySale = Random().nextInt(11) + 4;
+
+              return [
+                PersonalizedTableCell(
+                  value: atualDate.day,
+                  subtile: DateFormat.EEEE(
+                    "pt_BR",
+                  ).format(atualDate).toUpperCase().substring(0, 3),
+                ),
+                PersonalizedTableCell(
+                  value: totalSales / quantitySales,
+                  isMoney: true,
+                ),
+                PersonalizedTableCell(value: quantitySales),
+                PersonalizedTableCell(value: productsBySale),
+                PersonalizedTableCell(
+                  value: totalSales / productsBySale / quantitySales,
+                  isMoney: true,
+                ),
+              ];
+            }).toList().reversed.toList(),
           ),
         ],
       ),

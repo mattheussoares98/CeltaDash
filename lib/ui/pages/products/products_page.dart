@@ -33,7 +33,7 @@ class _ProductsPageState extends State<ProductsPage> {
 
     return Scaffold(
       appBar: DefaultAppBar(
-        onChangeDateOrEnterprise: () {
+        onChangeDateOrEnterprise: (_) {
           debugPrint("Search sales again");
         },
       ),

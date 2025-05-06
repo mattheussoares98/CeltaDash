@@ -55,7 +55,7 @@ class _ProfitabilityPageState extends State<CompareDaysPage> {
 
     return Scaffold(
       appBar: DefaultAppBar(
-        onChangeDateOrEnterprise: () {},
+        onChangeDateOrEnterprise: (_) {},
         showDatePicker: false,
       ),
       body: Column(

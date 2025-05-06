@@ -44,18 +44,24 @@ class MonthlyAnalysis extends StatelessWidget {
       );
     }).toList();
 
-    final betterValue = datesAndValues.reduce(
-      (a, b) => a.value > b.value ? a : b,
-    );
-    final worstValue = datesAndValues.reduce(
-      (a, b) => a.value < b.value ? a : b,
-    );
+    DateAndValueModel? betterValue = datesAndValues.isEmpty
+        ? null
+        : datesAndValues.reduce(
+            (a, b) => a.value > b.value ? a : b,
+          );
+    DateAndValueModel? worstValue = datesAndValues.isEmpty
+        ? null
+        : datesAndValues.reduce(
+            (a, b) => a.value < b.value ? a : b,
+          );
 
     final averageValue = datesAndValues.fold(
           0.0,
           (previous, element) => previous + element.value,
         ) /
         datesAndValues.length;
+
+    if (betterValue == null || worstValue == null) return SizedBox();
 
     return Container(
       decoration: ContainerDecoration.decoration,
