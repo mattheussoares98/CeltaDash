@@ -9,7 +9,7 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
     EnterpriseViewModel? enterprise,
   }) {
     return filteredSales(
-      enterprise,
+      enterprise: enterprise,
       filterYear: filterYear,
       filterMonth: filterMonth,
       filterDay: filterDay,
@@ -26,13 +26,13 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
     EnterpriseViewModel? enterprise,
   }) {
     return filteredSales(
-      enterprise,
+      enterprise: enterprise,
       filterYear: filterYear,
       filterMonth: filterMonth,
       filterDay: filterDay,
     ).fold<int>(
       0,
-      (sum, e) => sum + (e.QuantitySales ?? 0),
+      (sum, e) => sum + (e.QuantitySales ?? 1),
     );
   }
 
@@ -43,7 +43,7 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
     int? filterDay,
   }) {
     final filtered = filteredSales(
-      enterprise,
+      enterprise: enterprise,
       filterYear: filterYear,
       filterMonth: filterMonth,
       filterDay: filterDay,
@@ -60,7 +60,7 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
   double weekDayAverage(EnterpriseViewModel? enterprise) {
     final now = DateTime.now();
     final totalSales = filteredSales(
-      enterprise,
+      enterprise: enterprise,
       filterYear: now.year,
       filterWeekday: now.weekday,
     ).fold<double>(
@@ -75,8 +75,8 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
     return totalSales / mondaysQuantity;
   }
 
-  List<SaleMovementModel> filteredSales(
-    EnterpriseViewModel? enterprise, {
+  List<SaleMovementModel> filteredSales({//TODO change this return to viewModel
+    EnterpriseViewModel? enterprise,
     int? filterYear,
     int? filterMonth,
     int? filterDay,
@@ -117,7 +117,7 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
     EnterpriseViewModel? enterprise,
   }) {
     final filtered = filteredSales(
-      enterprise,
+      enterprise: enterprise,
       filterYear: filterYear,
       filterMonth: filterMonth,
       filterDay: filterDay,

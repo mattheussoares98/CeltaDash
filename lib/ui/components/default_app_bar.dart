@@ -10,15 +10,19 @@ import 'components.dart';
 class DefaultAppBar extends StatefulWidget implements PreferredSizeWidget {
   final void Function() onChangeDateOrEnterprise;
   final bool? showDatePicker;
+  final bool? showEnterpriseDropdown;
   const DefaultAppBar({
     super.key,
     required this.onChangeDateOrEnterprise,
     this.showDatePicker = true,
+    this.showEnterpriseDropdown = true,
   });
 
   @override
-  Size get preferredSize =>
-      Size.fromHeight(this.showDatePicker == true ? 90 : 60);
+  Size get preferredSize => Size.fromHeight(
+      this.showDatePicker == true && this.showEnterpriseDropdown == true
+          ? 90
+          : 60);
 
   @override
   State<DefaultAppBar> createState() => _DefaultAppBarState();
@@ -30,7 +34,10 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
     HomePresenter homePresenter = Provider.of(context, listen: false);
 
     return AppBar(
-      toolbarHeight: widget.showDatePicker == true ? 90 : 60,
+      toolbarHeight:
+          widget.showDatePicker == true && widget.showEnterpriseDropdown == true
+              ? 90
+              : 60,
       title: Obx(() {
         final enterprises = homePresenter.enterprises;
         final selectedEnterprise = homePresenter.selectedEnterprise;
@@ -51,41 +58,42 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
         }
         return Column(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: DefaultDropDown<EnterpriseViewModel?>(
-                    onChanged: (e) {
-                      if (e == homePresenter.selectedEnterprise) return;
-                      homePresenter.updateSelectedEnterprise(e);
-                      widget.onChangeDateOrEnterprise();
-                    },
-                    hint: null,
-                    items: enterprises
-                        .map(
-                          (e) => DropdownMenuItem<EnterpriseViewModel?>(
-                            value: e,
-                            alignment: Alignment.center,
-                            child: Text(
-                              "${e.personalizedCode} - ${e.name}",
-                              maxLines: 1,
-                            ),
-                          ),
-                        )
-                        .toList(),
-                    selectedItem: selectedEnterprise,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8),
-                  child: IconButton(
-                      onPressed: () {
-                        homePresenter.goToConfigurationsPage();
+            if (widget.showEnterpriseDropdown == true)
+              Row(
+                children: [
+                  Expanded(
+                    child: DefaultDropDown<EnterpriseViewModel?>(
+                      onChanged: (e) {
+                        if (e == homePresenter.selectedEnterprise) return;
+                        homePresenter.updateSelectedEnterprise(e);
+                        widget.onChangeDateOrEnterprise();
                       },
-                      icon: Icon(Icons.settings)),
-                ),
-              ],
-            ),
+                      hint: null,
+                      items: enterprises
+                          .map(
+                            (e) => DropdownMenuItem<EnterpriseViewModel?>(
+                              value: e,
+                              alignment: Alignment.center,
+                              child: Text(
+                                "${e.personalizedCode} - ${e.name}",
+                                maxLines: 1,
+                              ),
+                            ),
+                          )
+                          .toList(),
+                      selectedItem: selectedEnterprise,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8),
+                    child: IconButton(
+                        onPressed: () {
+                          homePresenter.goToConfigurationsPage();
+                        },
+                        icon: Icon(Icons.settings)),
+                  ),
+                ],
+              ),
             if (widget.showDatePicker == true)
               Row(
                 children: [

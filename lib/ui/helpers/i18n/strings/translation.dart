@@ -12,6 +12,7 @@ abstract class Translation {
   String get all;
   String get averageDailySale;
   String get averagePrice;
+  String get averageSalesGroup;
   String get bestDayOfTheMonth;
   String get bestHourOfTheDay;
   String get chargeBacks;
@@ -30,6 +31,7 @@ abstract class Translation {
   String get email;
   String get enter;
   String get enterprise;
+  String get enterprises;
   String get firstDaySales;
   String get finalizations;
   String get goalHistory;
@@ -64,6 +66,7 @@ abstract class Translation {
   String get salesOfTheMonth;
   String get salesQuantity;
   String get salesQuantityAbbreviated;
+  String get salesQuantityAverage;
   String get salesUntilNow;
   String get sallers;
   String get searchAgain;
@@ -76,6 +79,7 @@ abstract class Translation {
   String get team;
   String get total;
   String get totalSales;
+  String get totalSalesGroup;
   String get trendSales;
   String get user;
   String get wait;

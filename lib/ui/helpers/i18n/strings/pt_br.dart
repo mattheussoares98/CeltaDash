@@ -16,6 +16,7 @@ class PtBr implements Translation {
   String get all => "Todas";
   String get averageDailySale => "Venda média diária";
   String get averagePrice => "Preço médio";
+  String get averageSalesGroup => "Venda média do grupo";
   String get bestDayOfTheMonth => "Melhor dia do mês";
   String get bestHourOfTheDay => "Melhor horário do dia";
   String get chargeBacks => "Estornos";
@@ -34,6 +35,7 @@ class PtBr implements Translation {
   String get email => "E-mail";
   String get enter => "Entrar";
   String get enterprise => "Empresa";
+  String get enterprises => "Empresas";
   String get finalizations => "Finalizadoras";
   String get firstDaySales => "Vendas do primeiro dia";
   String get goalHistory => "Histórico de metas";
@@ -68,6 +70,7 @@ class PtBr implements Translation {
   String get salesOfTheMonth => "Vendas do mês";
   String get salesQuantity => "Quantidade de vendas";
   String get salesQuantityAbbreviated => "Qtd de vendas";
+  String get salesQuantityAverage => "Quantidade de vendas (média)";
   String get salesUntilNow => "Vendas até agora";
   String get sallers => "Vendedores";
   String get searchAgain => "Pesquisar novamente";
@@ -81,6 +84,7 @@ class PtBr implements Translation {
   String get team => "Time";
   String get total => "Total";
   String get totalSales => "Total de vendas";
+  String get totalSalesGroup => "Total de vendas do grupo";
   String get trendSales => "Tendência de vendas";
   String get user => "Usuário";
   String get wait => "Aguarde...";
