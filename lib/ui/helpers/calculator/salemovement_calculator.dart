@@ -8,7 +8,7 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
     int? filterDay,
     EnterpriseViewModel? enterprise,
   }) {
-    return _filteredSales(
+    return filteredSales(
       enterprise,
       filterYear: filterYear,
       filterMonth: filterMonth,
@@ -25,7 +25,7 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
     int? filterDay,
     EnterpriseViewModel? enterprise,
   }) {
-    return _filteredSales(
+    return filteredSales(
       enterprise,
       filterYear: filterYear,
       filterMonth: filterMonth,
@@ -42,7 +42,7 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
     int? filterMonth,
     int? filterDay,
   }) {
-    final filtered = _filteredSales(
+    final filtered = filteredSales(
       enterprise,
       filterYear: filterYear,
       filterMonth: filterMonth,
@@ -59,7 +59,7 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
 
   double weekDayAverage(EnterpriseViewModel? enterprise) {
     final now = DateTime.now();
-    final totalSales = _filteredSales(
+    final totalSales = filteredSales(
       enterprise,
       filterYear: now.year,
       filterWeekday: now.weekday,
@@ -75,7 +75,7 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
     return totalSales / mondaysQuantity;
   }
 
-  List<SaleMovementModel> _filteredSales(
+  List<SaleMovementModel> filteredSales(
     EnterpriseViewModel? enterprise, {
     int? filterYear,
     int? filterMonth,
@@ -116,7 +116,7 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
     int? filterDay,
     EnterpriseViewModel? enterprise,
   }) {
-    final filteredSales = _filteredSales(
+    final filtered = filteredSales(
       enterprise,
       filterYear: filterYear,
       filterMonth: filterMonth,
@@ -127,7 +127,7 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
     final Map<String, double> liquidValueByHour = {};
     final Map<String, int> countByHour = {};
 
-    for (final sale in filteredSales) {
+    for (final sale in filtered) {
       final hour = sale.Hour?.toString() ?? 'unknown';
       final quantity = sale.LiquidValue ?? 0;
 

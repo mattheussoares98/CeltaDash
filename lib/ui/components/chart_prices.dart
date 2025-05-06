@@ -12,7 +12,7 @@ class ChartPrices extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final leftReservedSize = MediaQuery.of(context).size.width * 0.12;
+    final leftReservedSize = MediaQuery.of(context).size.width * 0.10;
 
     return Column(
       spacing: 16,
@@ -30,14 +30,17 @@ class ChartPrices extends StatelessWidget {
               transformationController: null,
             ),
             LineChartData(
+              minY: datesAndValues
+                      .map((e) => e.value)
+                      .reduce((a, b) => a < b ? a : b) /
+                  1.1,
               lineBarsData: [
                 LineChartBarData(
-                  spots:
-                      datesAndValues.asMap().entries.map((e) {
-                        final index = e.key;
-                        final item = e.value;
-                        return FlSpot(index.toDouble(), item.value);
-                      }).toList(),
+                  spots: datesAndValues.asMap().entries.map((e) {
+                    final index = e.key;
+                    final item = e.value;
+                    return FlSpot(index.toDouble(), item.value);
+                  }).toList(),
                   dotData: const FlDotData(show: false),
                   color: Theme.of(context).secondaryHeaderColor,
                   barWidth: 0.6,
@@ -125,15 +128,16 @@ class ChartPrices extends StatelessWidget {
                       );
                     }).toList();
                   },
-                  getTooltipColor:
-                      (LineBarSpot barSpot) =>
-                          Theme.of(context).primaryColorDark,
+                  getTooltipColor: (LineBarSpot barSpot) =>
+                      Theme.of(context).primaryColorDark,
                 ),
               ),
               titlesData: FlTitlesData(
                 show: true,
                 rightTitles: const AxisTitles(
                   sideTitles: SideTitles(showTitles: false),
+                  axisNameSize: 10,
+                  axisNameWidget: Text(''),
                 ),
                 topTitles: const AxisTitles(
                   sideTitles: SideTitles(showTitles: false),
@@ -141,7 +145,7 @@ class ChartPrices extends StatelessWidget {
                 leftTitles: AxisTitles(
                   drawBelowEverything: true,
                   sideTitles: SideTitles(
-                    showTitles: MediaQuery.of(context).size.width > 330,
+                    showTitles: true,
                     reservedSize: leftReservedSize,
                     maxIncluded: false,
                     minIncluded: false,
@@ -150,10 +154,12 @@ class ChartPrices extends StatelessWidget {
                 bottomTitles: AxisTitles(
                   sideTitles: SideTitles(
                     showTitles: true,
-                    reservedSize: 38,
-                    maxIncluded: false,
+                    reservedSize: 40,
+                    maxIncluded: true,
+                    minIncluded: true,
                     getTitlesWidget: (double value, TitleMeta meta) {
-                      final date = datesAndValues[value.toInt()].date;
+                      final index = value.toInt();
+                      final date = datesAndValues[index].date;
                       return SideTitleWidget(
                         meta: meta,
                         child: Transform.rotate(

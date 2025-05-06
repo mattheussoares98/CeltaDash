@@ -1,26 +1,48 @@
-import 'dart:math';
-
 import 'package:celta_plus/ui/components/chart_prices.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../data/models/models.dart';
 import '../../../../ui/helpers/helpers.dart';
+import '../../pages.dart';
 import 'components.dart';
 
 class MonthlyAnalysis extends StatelessWidget {
-  const MonthlyAnalysis({super.key});
+  final List<SaleMovementViewModel> saleMovements;
+  const MonthlyAnalysis({super.key, required this.saleMovements});
 
   @override
   Widget build(BuildContext context) {
-    List<DateAndValueModel> datesAndValues = List.generate(31, (index) {
-      //TODO get by external api
-      int day = index + 1;
+    HomePresenter homePresenter = Provider.of(context, listen: false);
+
+    final datesAndValues = (saleMovements
+            .where((e) =>
+                e.EnterpriseId == homePresenter.selectedEnterprise?.id &&
+                e.Date?.month == homePresenter.selectedDate.month)
+            .map((e) => e.Date!.day)
+            .toSet()
+            .toList()
+          ..sort())
+        .map((day) {
+      final salesByDay = saleMovements
+          .where((e) =>
+              e.EnterpriseId == homePresenter.selectedEnterprise?.id &&
+              e.Date?.day == day &&
+              e.Date?.month == homePresenter.selectedDate.month)
+          .toList();
+
+      final firstSale = salesByDay.first;
+
       return DateAndValueModel(
-        value: double.parse((Random().nextDouble() * 50000).toStringAsFixed(2)),
-        date: DateTime(2025, 3, day),
+        value: salesByDay.sumLiquidValue(),
+        date: DateTime(
+          firstSale.Date!.year,
+          firstSale.Date!.month,
+          firstSale.Date!.day,
+        ),
       );
-    });
+    }).toList();
 
     final betterValue = datesAndValues.reduce(
       (a, b) => a.value > b.value ? a : b,
@@ -29,15 +51,11 @@ class MonthlyAnalysis extends StatelessWidget {
       (a, b) => a.value < b.value ? a : b,
     );
 
-    final averageValue =
-        datesAndValues.fold(
+    final averageValue = datesAndValues.fold(
           0.0,
           (previous, element) => previous + element.value,
         ) /
         datesAndValues.length;
-
-    int daysInCurrentMonth =
-        DateTime(DateTime.now().year, DateTime.now().month + 1, 0).day;
 
     return Container(
       decoration: ContainerDecoration.decoration,
@@ -54,9 +72,12 @@ class MonthlyAnalysis extends StatelessWidget {
               Expanded(
                 child: Column(
                   children: [
-                    Text(R.string.trendSales),
+                    Text(R.string.totalSales),
                     Text(
-                      (averageValue * daysInCurrentMonth)
+                      saleMovements
+                          .sumLiquidValue(
+                            enterprise: homePresenter.selectedEnterprise,
+                          )
                           .toString()
                           .toBrazilianNumber()
                           .addBrazilianCoin(),

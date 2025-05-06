@@ -113,7 +113,6 @@ class _ResumePageState extends State<ResumePage>
                     filterMonth: homePresenter.selectedDate.month,
                     filterDay: homePresenter.selectedDate.day,
                   ),
-                  goal: 100000,
                   leftButton: DefaultNavigateButton(
                     onTap: resumePresenter.goToPaymentsTypePage,
                     title: R.string.paymentsType,
@@ -140,7 +139,6 @@ class _ResumePageState extends State<ResumePage>
                       )).toString().toBrazilianNumber().addBrazilianCoin()}",
                     ),
                     Text(
-                      //TODO
                       "Request Cardoso to add products by sale quantity and average price",
                     ),
                   ],
@@ -148,21 +146,12 @@ class _ResumePageState extends State<ResumePage>
                 const SizedBox(height: 8),
                 SalesInformations(
                   scrollController: scrollController,
-                  goal: 10000,
                   totalSales: saleMovements.sumLiquidValue(
                     enterprise: homePresenter.selectedEnterprise,
                     filterYear: homePresenter.selectedDate.year,
                     filterMonth: homePresenter.selectedDate.month,
                   ),
                   title: R.string.salesOfTheMonth,
-                  // leftButton: DefaultNavigateButton(
-                  //   onTap: resumePresenter.goToSetGoalPage,
-                  //   title: R.string.insertGoal,
-                  // ),
-                  // rightButton: DefaultNavigateButton(
-                  //   onTap: resumePresenter.goToGoalHistoryPage,
-                  //   title: R.string.goalHistory,
-                  // ),
                 ),
                 const SizedBox(height: 8),
                 DefaultNavigateButton(
@@ -176,7 +165,7 @@ class _ResumePageState extends State<ResumePage>
                   scrollController: scrollController,
                 ),
                 SizedBox(height: 8),
-                MonthlyAnalysis(),
+                MonthlyAnalysis(saleMovements: saleMovements),
                 SizedBox(height: 8),
                 DefaultNavigateButton(
                   onTap: resumePresenter.goToGroupSummaryPage,
