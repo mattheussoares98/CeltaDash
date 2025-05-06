@@ -165,7 +165,6 @@ void main() {
       verify(() => loadSaleMovements.get(
             startDate: startDate,
             endDate: endDate,
-            enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
             groupByDay: true,
             groupByMonth: true,
             groupByHour: true,
@@ -211,7 +210,6 @@ void main() {
               homePresenter.selectedDateMock.month + 1,
               1,
             ).subtract(Duration(days: 1)),
-            enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
             groupByDay: true,
             groupByMonth: true,
             groupByHour: true,
