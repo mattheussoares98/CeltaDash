@@ -188,5 +188,35 @@ void main() {
 
       expect(sut.lastDateLoadedData, null);
     });
+    test("Should not load sales again if dont change the month", () async {
+      homePresenter.selectedDateMock = faker.date.dateTime();
+      await sut.getSales(homePresenter);
+
+      homePresenter.selectedDateMock = DateTime(
+        homePresenter.selectedDateMock.year,
+        homePresenter.selectedDateMock.month,
+        faker.date.dateTime().day,
+      );
+
+      await sut.getSales(homePresenter);
+
+      verify(() => loadSaleMovements.get(
+            startDate: DateTime(
+              homePresenter.selectedDateMock.year,
+              homePresenter.selectedDateMock.month,
+              1,
+            ),
+            endDate: DateTime(
+              homePresenter.selectedDateMock.year,
+              homePresenter.selectedDateMock.month + 1,
+              1,
+            ).subtract(Duration(days: 1)),
+            enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+            groupByDay: true,
+            groupByMonth: true,
+            groupByHour: true,
+            groupByEnterprise: true,
+          )).called(1);
+    });
   });
 }

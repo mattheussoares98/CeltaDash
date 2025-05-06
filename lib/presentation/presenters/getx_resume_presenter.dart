@@ -57,6 +57,10 @@ class GetxResumePresenter extends GetxController
     isLoading = true;
     mainError = null;
     try {
+      if (_lastDateLoadedData?.year == homePresenter.selectedDate.year &&
+          _lastDateLoadedData?.month == homePresenter.selectedDate.month) {
+        return;
+      }
       final result = await loadSaleMovements.get(
         startDate: DateTime(
           homePresenter.selectedDate.year,
