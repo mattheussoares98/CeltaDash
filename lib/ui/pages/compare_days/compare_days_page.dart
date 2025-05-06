@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
+import '../../mixins/mixins.dart';
 import '../pages.dart';
 import 'components/components.dart';
 
@@ -14,10 +17,14 @@ class CompareDaysPage extends StatefulWidget {
   State<CompareDaysPage> createState() => _ProfitabilityPageState();
 }
 
-class _ProfitabilityPageState extends State<CompareDaysPage> {
+class _ProfitabilityPageState extends State<CompareDaysPage>
+    with UIErrorManager, LoadingManager {
   static final _now = DateTime.now();
   final firstDay = DateTime(_now.year, _now.month, _now.day - 1);
   final secondDay = DateTime(_now.year, _now.month, _now.day);
+
+  StreamSubscription? loadingSubscription;
+  StreamSubscription? mainErrorSubscription;
 
   @override
   void initState() {
@@ -47,11 +54,26 @@ class _ProfitabilityPageState extends State<CompareDaysPage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    loadingSubscription?.cancel();
+    mainErrorSubscription?.cancel();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final hourWidth = MediaQuery.of(context).size.width * 0.2;
     final dayWidth = MediaQuery.of(context).size.width * 0.3;
     final compareDaysWidth = MediaQuery.of(context).size.width * 0.2;
     HomePresenter homePresenter = Provider.of(context, listen: false);
+
+    loadingSubscription?.cancel();
+    mainErrorSubscription?.cancel();
+
+    loadingSubscription =
+        handleLoading(context, widget.presenter.isLoadingStream);
+    mainErrorSubscription =
+        handleMainError(context, widget.presenter.mainErrorStream);
 
     return Scaffold(
       appBar: DefaultAppBar(
