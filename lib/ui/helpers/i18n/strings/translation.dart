@@ -30,6 +30,7 @@ abstract class Translation {
   String get day;
   String get department;
   String get departments;
+  String get details;
   String get discounts;
   String get email;
   String get enter;
