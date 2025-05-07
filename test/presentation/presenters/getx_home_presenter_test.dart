@@ -175,4 +175,12 @@ void main() {
       );
     });
   });
+
+  group("Need update screen", () {
+    test("Should emit correct values", () {
+      expectLater(sut.updateScreenStream, emitsInOrder([true, false]));
+
+      sut.updateScreen();
+    });
+  });
 }

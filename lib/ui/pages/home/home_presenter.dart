@@ -12,6 +12,7 @@ abstract class HomePresenter implements Listenable {
   void updateSelectedIndex(int index);
   void updateSelectedDate(DateTime date);
   void goToConfigurationsPage();
+  void updateScreen();
 
   Future<void> getBsEnterprises({
     required void Function(String) showBsErrorMessage,

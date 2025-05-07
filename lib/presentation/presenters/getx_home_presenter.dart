@@ -25,10 +25,7 @@ class GetxHomePresenter extends GetxController
   @override
   void updateSelectedDate(DateTime date) {
     _selectedDate = date;
-    updateScreen = true;
-    Future.delayed(Duration(milliseconds: 50), () {
-      updateScreen = false;
-    });
+    updateScreen();
   }
 
   @override
@@ -59,10 +56,7 @@ class GetxHomePresenter extends GetxController
   @override
   void updateSelectedEnterprise(EnterpriseViewModel? enterprise) {
     _selectedEnterprise.value = enterprise;
-    updateScreen = true;
-    Future.delayed(Duration(milliseconds: 50), () {
-      updateScreen = false;
-    });
+    updateScreen();
   }
 
   final _selectedEnterprise = Rx<EnterpriseViewModel?>(null);
@@ -83,4 +77,12 @@ class GetxHomePresenter extends GetxController
   DateTime _selectedDate = DateTime.now();
   @override
   DateTime get selectedDate => _selectedDate;
+
+  @override
+  void updateScreen() {
+    needUpdateScreen = true;
+    Future.delayed(Duration(milliseconds: 50), () {
+      needUpdateScreen = false;
+    });
+  }
 }
