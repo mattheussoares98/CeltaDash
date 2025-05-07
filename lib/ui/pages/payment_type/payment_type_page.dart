@@ -23,7 +23,6 @@ class PaymentTypePage extends StatefulWidget {
 class _PaymentTypePageState extends State<PaymentTypePage>
     with LoadingManager, UIErrorManager {
   bool selectedMonth = false;
-  bool needUpdateScreen = false;
   int selectedPageIndex = 0;
   StreamSubscription? loadingSubscription;
   StreamSubscription? mainErrorSubscription;
@@ -51,7 +50,6 @@ class _PaymentTypePageState extends State<PaymentTypePage>
   void updateSelectedMonth(bool value) {
     setState(() {
       selectedMonth = value;
-      needUpdateScreen = true;
     });
   }
 
@@ -78,73 +76,57 @@ class _PaymentTypePageState extends State<PaymentTypePage>
       appBar: DefaultAppBar(
         onChangeEnterprise: (_) async {
           await widget.paymentTypePresenter.getSales(homePresenter);
-          Future.delayed(Duration.zero, () {
-            setState(() {
-              needUpdateScreen = true;
-            });
-          });
         },
         onTapRefresh: () async {
           await widget.paymentTypePresenter
               .getSales(homePresenter, forceRefresh: true);
-          Future.delayed(Duration.zero, () {
-            setState(() {
-              needUpdateScreen = true;
-            });
-          });
         },
         onChangeDate: (newDate) async {
           await widget.paymentTypePresenter.getSales(homePresenter);
-          Future.delayed(Duration.zero, () {
-            setState(() {
-              needUpdateScreen = true;
-            });
-          });
         },
       ),
-      body: Obx(() {
-        final saleMovements = (selectedPageIndex == 1
-                ? widget.paymentTypePresenter.saleMovementsByFinalizations
-                : widget.paymentTypePresenter.saleMovements)
-            ?.filteredSales(
-              enterprise: homePresenter.selectedEnterprise,
-            )
-            .map((e) => e.toViewModel());
-
-        if (needUpdateScreen) {
-          Future.delayed(Duration.zero, () {
-            setState(() {
-              needUpdateScreen = false;
-            });
-          });
-        }
-
-        if (saleMovements == null || saleMovements.isEmpty) {
-          return NoSalesWereFound();
-        }
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SelectDayOrMonthButtons(
-                selectedMonth: selectedMonth,
-                updateSelectedMonth: updateSelectedMonth,
-              ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SelectDayOrMonthButtons(
+              selectedMonth: selectedMonth,
+              updateSelectedMonth: updateSelectedMonth,
             ),
-            //TODO analyse to create two pages and navigate between them
-            PaymentsModalities(
-              filterByFinalizations: selectedPageIndex == 1,
-              saleMovements: saleMovements.where(
-                (element) {
-                  return filter(element, homePresenter);
-                },
-              ).toList(),
-            ),
-          ],
-        );
-      }),
+          ),
+          StreamBuilder<bool>(
+              stream: homePresenter.updateScreenStream,
+              builder: (context, snapshot) {
+                if (snapshot.data == true) {
+                  return const SizedBox.shrink();
+                }
+
+                return Obx(() {
+                  final saleMovements = (selectedPageIndex == 1
+                          ? widget
+                              .paymentTypePresenter.saleMovementsByFinalizations
+                          : widget.paymentTypePresenter.saleMovements)
+                      ?.filteredSales(
+                        enterprise: homePresenter.selectedEnterprise,
+                      )
+                      .map((e) => e.toViewModel());
+
+                  if (saleMovements == null || saleMovements.isEmpty) {
+                    return NoSalesWereFound();
+                  }
+
+                  return PaymentsModalities(
+                    filterByFinalizations: selectedPageIndex == 1,
+                    saleMovements: saleMovements.where(
+                      (element) {
+                        return filter(element, homePresenter);
+                      },
+                    ).toList(),
+                  );
+                });
+              }),
+        ],
+      ),
       bottomNavigationBar: BottomNavigation(
         selectedPageIndex: selectedPageIndex,
         updateSelectedPageIndex: (value) {
@@ -152,7 +134,6 @@ class _PaymentTypePageState extends State<PaymentTypePage>
           setState(() {
             selectedPageIndex = value;
           });
-          needUpdateScreen = true;
         },
       ),
     );
