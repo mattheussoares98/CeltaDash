@@ -19,7 +19,7 @@ class SelectDateButton extends StatelessWidget {
       lastDate: DateTime.now(),
       reduceDaysFromInitialDate: 365,
     );
-    if (newDate != null) {
+    if (newDate != null && newDate != date) {
       updateDate(newDate);
       debugPrint("Changed date");
     }
