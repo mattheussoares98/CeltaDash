@@ -1,6 +1,9 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../pages/pages.dart';
 
 class SelectPeriodItems extends StatefulWidget {
   final List<_PeriodItem> items;
@@ -34,6 +37,7 @@ class _PeriodItems extends State<SelectPeriodItems> {
     if (widget.items.isEmpty) {
       return Text("Empty items. You must create items");
     }
+    HomePresenter homePresenter = Get.find();
 
     return SegmentedButton<String>(
       segments: List.generate(widget.items.length, (i) {
@@ -49,6 +53,7 @@ class _PeriodItems extends State<SelectPeriodItems> {
           selected = newSelection.first;
         });
         widget.items.where((e) => e.title == selected).first.onTap();
+        homePresenter.updateScreen();
       },
       style: ButtonStyle(
         backgroundColor: WidgetStateProperty.resolveWith((states) {

@@ -45,42 +45,42 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
           await resumePresenter.getSales(homePresenter, forceRefresh: true);
         },
       ),
-      body: StreamBuilder<bool>(
-          stream: homePresenter.updateScreenStream,
-          builder: (context, snapshot) {
-            if (snapshot.data == true) {
-              return const SizedBox.shrink();
-            }
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(4),
+            child: SelectDayOrMonthItems(change: (value) {
+              setState(() {
+                selectedDay = value;
+              });
+            }),
+          ),
+          StreamBuilder<bool>(
+              stream: homePresenter.updateScreenStream,
+              builder: (context, snapshot) {
+                if (snapshot.data == true) {
+                  return const SizedBox.shrink();
+                }
 
-            return Obx(() {
-              final saleMovements = resumePresenter.saleMovements;
+                return Obx(() {
+                  final saleMovements = resumePresenter.saleMovements;
 
-              if (saleMovements == null || saleMovements.isEmpty) {
-                return NoSalesWereFound();
-              }
+                  if (saleMovements == null || saleMovements.isEmpty) {
+                    return NoSalesWereFound();
+                  }
 
-              final groupSales = saleMovements
-                  .filteredSales(
-                    filterDay:
-                        selectedDay ? homePresenter.selectedDate.day : null,
-                  )
-                  .map((e) => e.toViewModel())
-                  .toList();
+                  final groupSales = saleMovements
+                      .filteredSales(
+                        filterDay:
+                            selectedDay ? homePresenter.selectedDate.day : null,
+                      )
+                      .map((e) => e.toViewModel())
+                      .toList();
 
-              final groupSalesTotalLiquid = groupSales.sumLiquidValue();
-              int groupSalesQuantity = groupSales.quantitySales();
+                  final groupSalesTotalLiquid = groupSales.sumLiquidValue();
+                  int groupSalesQuantity = groupSales.quantitySales();
 
-              return Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: SelectDayOrMonthItems(change: (value) {
-                      setState(() {
-                        selectedDay = value;
-                      });
-                    }),
-                  ),
-                  Expanded(
+                  return Expanded(
                     child: PageView(
                       controller: pageController,
                       children: [
@@ -96,11 +96,11 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
                         ),
                       ],
                     ),
-                  ),
-                ],
-              );
-            });
-          }),
+                  );
+                });
+              }),
+        ],
+      ),
       bottomNavigationBar: BottomBar(
         onChangePage: (index) {
           setState(() {
