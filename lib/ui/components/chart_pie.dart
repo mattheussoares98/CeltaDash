@@ -8,12 +8,14 @@ class ChartPie extends StatefulWidget {
   final int? quantityToShow;
   final BoxShape? itemsShape;
   final EdgeInsetsGeometry? paddingItems;
+  final bool? showTotalAmount;
   const ChartPie({
     super.key,
     required this.pieParameters,
     this.itemsShape = BoxShape.circle,
     this.quantityToShow,
     this.paddingItems,
+    this.showTotalAmount = true,
   });
 
   @override
@@ -108,34 +110,58 @@ class _ChartPieState extends State<ChartPie> {
   Widget build(BuildContext context) {
     final chartWidth = MediaQuery.of(context).size.width * 0.4;
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(left: 8),
       child: Row(
         children: <Widget>[
-          SizedBox(
-            width: chartWidth,
-            height: chartWidth,
-            child: PieChart(
-              PieChartData(
-                pieTouchData: PieTouchData(
-                  touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                    setState(() {
-                      if (!event.isInterestedForInteractions ||
-                          pieTouchResponse == null ||
-                          pieTouchResponse.touchedSection == null) {
-                        selectedIndex = -1;
-                        return;
-                      }
-                      selectedIndex =
-                          pieTouchResponse.touchedSection!.touchedSectionIndex;
-                    });
-                  },
+          Column(
+            children: [
+              SizedBox(
+                width: chartWidth,
+                height: chartWidth,
+                child: PieChart(
+                  PieChartData(
+                    pieTouchData: PieTouchData(
+                      touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                        setState(() {
+                          if (!event.isInterestedForInteractions ||
+                              pieTouchResponse == null ||
+                              pieTouchResponse.touchedSection == null) {
+                            selectedIndex = -1;
+                            return;
+                          }
+                          selectedIndex = pieTouchResponse
+                              .touchedSection!.touchedSectionIndex;
+                        });
+                      },
+                    ),
+                    borderData: null,
+                    sectionsSpace: 3,
+                    centerSpaceRadius: 40,
+                    sections: getSections(chartWidth),
+                  ),
                 ),
-                borderData: null,
-                sectionsSpace: 3,
-                centerSpaceRadius: 40,
-                sections: getSections(chartWidth),
               ),
-            ),
+              if (widget.showTotalAmount == true)
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Column(
+                    children: [
+                      Text(
+                        R.string.total,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      Text(
+                        widget.pieParameters
+                            .fold(0.0, (p, e) => p + e.value)
+                            .toString()
+                            .toBrazilianNumber()
+                            .addBrazilianCoin(),
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ],
+                  ),
+                )
+            ],
           ),
           Expanded(
             child: Padding(
@@ -183,7 +209,7 @@ class _Indicator extends StatelessWidget {
       child: GestureDetector(
         onTap: changeSelectedIndex,
         child: Padding(
-          padding: padding ?? const EdgeInsets.only(bottom: 4),
+          padding: padding ?? const EdgeInsets.only(bottom: 0),
           child: Row(
             children: <Widget>[
               Container(

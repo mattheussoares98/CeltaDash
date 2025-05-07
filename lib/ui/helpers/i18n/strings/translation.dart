@@ -10,6 +10,7 @@ abstract class Translation {
   String get msgVeryShortField;
   String get msgWriteSomething;
 
+  String get anothersEnterprises;
   String get all;
   String get averageDailySale;
   String get averagePrice;

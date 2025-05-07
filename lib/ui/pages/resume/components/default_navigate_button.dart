@@ -13,11 +13,14 @@ class DefaultNavigateButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton.icon(
-      onPressed: onTap,
-      label: Text(title),
-      icon: icon,
-      iconAlignment: IconAlignment.end,
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: ElevatedButton.icon(
+        onPressed: onTap,
+        label: Text(title),
+        icon: icon,
+        iconAlignment: IconAlignment.end,
+      ),
     );
   }
 }

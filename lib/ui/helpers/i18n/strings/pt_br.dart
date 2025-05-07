@@ -15,6 +15,7 @@ class PtBr implements Translation {
   String get msgVeryShortField => "Campo muito curto";
   String get msgWriteSomething => "Digite algo";
 
+  String get anothersEnterprises => "Outras empresas";
   String get all => "Todas";
   String get averageDailySale => "Venda média diária";
   String get averagePrice => "Preço médio";

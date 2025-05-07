@@ -176,7 +176,7 @@ class _ResumePageState extends State<ResumePage>
                   icon: Icon(Icons.arrow_outward_sharp, color: Colors.white),
                 ),
                 SizedBox(height: 8),
-                GroupOfStores(),
+                GroupOfStores(saleMovements: saleMovements),
                 SizedBox(height: 15),
               ],
             );
