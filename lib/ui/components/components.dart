@@ -8,6 +8,7 @@ export './default_drop_down.dart';
 export './error_message.dart';
 export './get_new_date.dart';
 export './loading_dialog.dart';
+export './no_sales_were_found.dart';
 export './notification_dialog.dart';
 export './search_widget.dart';
 export './select_period_items.dart';
