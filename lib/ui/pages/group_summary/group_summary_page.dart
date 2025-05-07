@@ -1,3 +1,4 @@
+import 'package:celta_plus/ui/pages/group_summary/group_summary_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -61,22 +62,6 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
           });
         },
       ),
-      bottomNavigationBar: BottomBar(
-        onChangePage: (index) {
-          Future.delayed(Duration.zero, () {
-            setState(() {
-              needUpdatePage = true;
-              currentIndex = index;
-            });
-          });
-          pageController.animateToPage(
-            index,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-          );
-        },
-        currentIndex: currentIndex,
-      ),
       body: Obx(() {
         final saleMovements = resumePresenter.saleMovements;
 
@@ -105,18 +90,18 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
         return PageView(
           controller: pageController,
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 2),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Center(
-                      child: Text("Group Summary"),
-                    )
-                  ],
-                ),
-              ),
+            GroupSummaryDetailsPage(
+              groupSalesTotalLiquid: groupSalesTotalLiquid,
+              changeDayOrMonth: (value) {
+                Future.delayed(Duration.zero, () {
+                  setState(() {
+                    needUpdatePage = true;
+                    selectedDay = value;
+                  });
+                });
+              },
+              selectedDay: selectedDay,
+              saleMovements: saleMovements,
             ),
             GroupSummaryResumePage(
               changeDayOrMonth: (value) {
@@ -131,6 +116,22 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
           ],
         );
       }),
+      bottomNavigationBar: BottomBar(
+        onChangePage: (index) {
+          Future.delayed(Duration.zero, () {
+            setState(() {
+              needUpdatePage = true;
+              currentIndex = index;
+            });
+          });
+          pageController.animateToPage(
+            index,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          );
+        },
+        currentIndex: currentIndex,
+      ),
     );
   }
 }
