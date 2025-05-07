@@ -116,15 +116,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
             .toList();
 
         if (saleMovements == null || saleMovements.isEmpty) {
-          return Center(
-            child: Text(
-              R.string.msgNoSalesWereFound,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.error,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          );
+          return NoSalesWereFound();
         }
 
         return Column(

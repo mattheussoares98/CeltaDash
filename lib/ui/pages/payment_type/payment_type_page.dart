@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 import '../../mixins/mixins.dart';
@@ -104,9 +103,13 @@ class _PaymentTypePageState extends State<PaymentTypePage>
         },
       ),
       body: Obx(() {
-        final saleMovements = selectedPageIndex == 1
-            ? widget.paymentTypePresenter.saleMovementsByFinalizations
-            : widget.paymentTypePresenter.saleMovements;
+        final saleMovements = (selectedPageIndex == 1
+                ? widget.paymentTypePresenter.saleMovementsByFinalizations
+                : widget.paymentTypePresenter.saleMovements)
+            ?.filteredSales(
+              enterprise: homePresenter.selectedEnterprise,
+            )
+            .map((e) => e.toViewModel());
 
         if (needUpdateScreen) {
           Future.delayed(Duration.zero, () {
@@ -117,14 +120,7 @@ class _PaymentTypePageState extends State<PaymentTypePage>
         }
 
         if (saleMovements == null || saleMovements.isEmpty) {
-          return Center(
-            child: ElevatedButton(
-              onPressed: () async {
-                await widget.paymentTypePresenter.getSales(homePresenter);
-              },
-              child: Text(R.string.searchAgain),
-            ),
-          );
+          return NoSalesWereFound();
         }
 
         return Column(
@@ -140,12 +136,7 @@ class _PaymentTypePageState extends State<PaymentTypePage>
             //TODO analyse to create two pages and navigate between them
             PaymentsModalities(
               filterByFinalizations: selectedPageIndex == 1,
-              saleMovements: saleMovements
-                  .filteredSales(
-                    enterprise: homePresenter.selectedEnterprise,
-                  )
-                  .map((e) => e.toViewModel())
-                  .where(
+              saleMovements: saleMovements.where(
                 (element) {
                   return filter(element, homePresenter);
                 },
