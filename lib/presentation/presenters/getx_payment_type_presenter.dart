@@ -65,7 +65,7 @@ class GetxPaymentTypePresenter extends GetxController
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
           .toList();
 
-      _lastDateLoadedData = DateTime.now();
+      _lastDateLoadedData = homePresenter.selectedDate;
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {

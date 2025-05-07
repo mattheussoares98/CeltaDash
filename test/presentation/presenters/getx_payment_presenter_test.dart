@@ -94,6 +94,13 @@ void main() {
               .toList(),
         );
       });
+      test("Should update last date loaded data correctly", () async {
+        homePresenter.selectedDateMock = faker.date.dateTime();
+
+        await sut.getSales(homePresenter);
+
+        expect(sut.lastDateLoadedData, homePresenter.selectedDateMock);
+      });
 
       test("Should load sale movements with correct values", () async {
         homePresenter.selectedEnterpriseMock =
@@ -119,9 +126,6 @@ void main() {
               groupByDay: true,
               groupByMonth: true,
               groupByPaymentModality: true,
-              enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
-              ],
             )).called(1);
       });
       test("Should load sale movements with correct new date", () async {
@@ -149,10 +153,61 @@ void main() {
               groupByDay: true,
               groupByMonth: true,
               groupByPaymentModality: true,
-              enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
-              ],
             )).called(1);
+      });
+      test("Should not load sale movements if dont change the month", () async {
+        homePresenter.selectedDateMock = faker.date.dateTime();
+
+        await sut.getSales(homePresenter);
+
+        homePresenter.selectedDateMock = DateTime(
+          homePresenter.selectedDateMock.year,
+          homePresenter.selectedDateMock.month,
+          faker.randomGenerator.integer(28),
+        );
+        await sut.getSales(homePresenter);
+
+        verify(() => loadSaleMovements.get(
+              groupByEnterprise: true,
+              groupByDay: true,
+              groupByMonth: true,
+              groupByPaymentModality: true,
+              startDate: DateTime(
+                homePresenter.selectedDateMock.year,
+                homePresenter.selectedDateMock.month,
+                1,
+              ),
+              endDate: DateTime(
+                homePresenter.selectedDateMock.year,
+                homePresenter.selectedDateMock.month + 1,
+                1,
+              ).subtract(Duration(days: 1)),
+            )).called(1);
+      });
+      test(
+          "Should load sale movements if dont change the month but force refresh",
+          () async {
+        homePresenter.selectedDateMock = faker.date.dateTime();
+
+        await sut.getSales(homePresenter);
+        await sut.getSales(homePresenter, forceRefresh: true);
+
+        verify(() => loadSaleMovements.get(
+              groupByEnterprise: true,
+              groupByDay: true,
+              groupByMonth: true,
+              groupByPaymentModality: true,
+              startDate: DateTime(
+                homePresenter.selectedDateMock.year,
+                homePresenter.selectedDateMock.month,
+                1,
+              ),
+              endDate: DateTime(
+                homePresenter.selectedDateMock.year,
+                homePresenter.selectedDateMock.month + 1,
+                1,
+              ).subtract(Duration(days: 1)),
+            )).called(2);
       });
     });
 
@@ -192,9 +247,6 @@ void main() {
               groupByDay: true,
               groupByMonth: true,
               groupByPaymentFinalization: true,
-              enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
-              ],
             )).called(1);
       });
       test("Should load sale movements with correct new date", () async {
@@ -222,9 +274,6 @@ void main() {
               groupByDay: true,
               groupByMonth: true,
               groupByPaymentFinalization: true,
-              enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
-              ],
             )).called(1);
       });
     });
