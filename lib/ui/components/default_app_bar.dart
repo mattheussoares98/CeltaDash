@@ -9,6 +9,8 @@ import 'components.dart';
 
 class DefaultAppBar extends StatefulWidget implements PreferredSizeWidget {
   final void Function(bool changedEnterprise) onChangeDateOrEnterprise;
+  final void Function()? onTapRefresh;
+  final void Function()? onChangeDate;
   final bool? showDatePicker;
   final bool? showEnterpriseDropdown;
   const DefaultAppBar({
@@ -16,6 +18,8 @@ class DefaultAppBar extends StatefulWidget implements PreferredSizeWidget {
     required this.onChangeDateOrEnterprise,
     this.showDatePicker = true,
     this.showEnterpriseDropdown = true,
+    this.onTapRefresh,
+    this.onChangeDate,
   });
 
   @override
@@ -112,7 +116,9 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                           setState(() {
                             homePresenter.updateSelectedDate(newDate);
                           });
-                          widget.onChangeDateOrEnterprise(false);
+                          if (widget.onChangeDate != null) {
+                            widget.onChangeDate!();
+                          }
                         }
                       },
                       label: Text(
@@ -124,9 +130,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                   Padding(
                     padding: const EdgeInsets.only(left: 8),
                     child: IconButton(
-                      onPressed: () {
-                        widget.onChangeDateOrEnterprise(false);
-                      },
+                      onPressed: widget.onTapRefresh,
                       icon: Icon(Icons.refresh),
                     ),
                   )

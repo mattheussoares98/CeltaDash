@@ -76,10 +76,11 @@ class _ResumePageState extends State<ResumePage>
     return Scaffold(
       appBar: DefaultAppBar(
         onChangeDateOrEnterprise: (changedEnterprise) async {
-          await resumePresenter.getSales(
-            homePresenter,
-            forceRefresh: !changedEnterprise,
-          );
+          await resumePresenter.getSales(homePresenter);
+          setState(() {});
+        },
+        onTapRefresh: () async {
+          await resumePresenter.getSales(homePresenter, forceRefresh: true);
           setState(() {});
         },
       ),
