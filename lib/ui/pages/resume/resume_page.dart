@@ -170,12 +170,6 @@ class _ResumePageState extends State<ResumePage>
                   scrollController: scrollController,
                 ),
                 SizedBox(height: 8),
-                DefaultNavigateButton(
-                  onTap: resumePresenter.goToGroupSummaryPage,
-                  title: R.string.groupSummary,
-                  icon: Icon(Icons.arrow_outward_sharp, color: Colors.white),
-                ),
-                SizedBox(height: 8),
                 GroupOfStores(saleMovements: saleMovements),
                 SizedBox(height: 15),
               ],

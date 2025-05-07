@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
@@ -75,19 +74,23 @@ class GroupOfStores extends StatelessWidget {
       decoration: ContainerDecoration.decoration,
       padding: const EdgeInsets.all(8.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
             R.string.groupOfStores,
             style: Theme.of(context).textTheme.displayLarge,
+            textAlign: TextAlign.center,
           ),
           Text(
             R.string.salesOfTheDay,
             style: Theme.of(context).textTheme.labelLarge,
+            textAlign: TextAlign.center,
           ),
           ChartPie(pieParameters: getPieParameters(homePresenter)),
           DefaultNavigateButton(
             onTap: resumePresenter.goToGroupSummaryPage,
-            title: R.string.moreDetails,
+            title: R.string.groupSummary,
+            icon: Icon(Icons.arrow_outward_sharp, color: Colors.white),
           ),
         ],
       ),
