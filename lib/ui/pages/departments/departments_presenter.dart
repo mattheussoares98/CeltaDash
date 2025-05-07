@@ -7,6 +7,7 @@ abstract class DepartmentsPresenter implements Listenable {
   List<SaleMovementViewModel>? get saleMovements;
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
+  DateTime? get lastDateLoadedData;
 
-  Future<void> getSales(HomePresenter homePresenter);
+  Future<void> getSales(HomePresenter homePresenter, {bool? forceRefresh});
 }

@@ -3,6 +3,7 @@ abstract class Translation {
   String get msgEnterpriseNotFound;
   String get msgInvalidEmail;
   String get msgInvalidField;
+  String get msgNoSalesWereFound;
   String get msgReallyWantLogout;
   String get msgRequiredField;
   String get msgUnexpectedError;

@@ -89,7 +89,10 @@ class _DepartmentsPageState extends State<DepartmentsPage>
           });
         },
         onTapRefresh: () async {
-          await widget.departmentsPresenter.getSales(homePresenter);
+          await widget.departmentsPresenter.getSales(
+            homePresenter,
+            forceRefresh: true,
+          );
           setState(() {
             needUpdateScreen = true;
           });
@@ -105,16 +108,21 @@ class _DepartmentsPageState extends State<DepartmentsPage>
         }
 
         final saleMovements = widget.departmentsPresenter.saleMovements
-            ?.where((e) => filter(e, homePresenter))
+            ?.filteredSales(
+              enterprise: homePresenter.selectedEnterprise,
+            )
+            .map((e) => e.toViewModel())
+            .where((e) => filter(e, homePresenter))
             .toList();
 
         if (saleMovements == null || saleMovements.isEmpty) {
           return Center(
-            child: ElevatedButton(
-              onPressed: () async {
-                await widget.departmentsPresenter.getSales(homePresenter);
-              },
-              child: Text(R.string.searchAgain),
+            child: Text(
+              R.string.msgNoSalesWereFound,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.error,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           );
         }

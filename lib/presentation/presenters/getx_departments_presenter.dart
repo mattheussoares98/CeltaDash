@@ -16,10 +16,19 @@ class GetxDepartmentsPresenter extends GetxController
   });
 
   @override
-  Future<void> getSales(HomePresenter homePresenter) async {
+  Future<void> getSales(
+    HomePresenter homePresenter, {
+    bool? forceRefresh,
+  }) async {
     isLoading = true;
     mainError = null;
     try {
+      if (forceRefresh == true) {
+        //continue...
+      } else if (_lastDateLoadedData?.year == homePresenter.selectedDate.year &&
+          _lastDateLoadedData?.month == homePresenter.selectedDate.month) {
+        return;
+      }
       final startDate = DateTime(
         homePresenter.selectedDate.year,
         homePresenter.selectedDate.month,
@@ -32,17 +41,12 @@ class GetxDepartmentsPresenter extends GetxController
         1,
       ).subtract(Duration(days: 1));
 
-      final enterpriseIds = homePresenter.selectedEnterprise?.id == null
-          ? <int>[]
-          : [homePresenter.selectedEnterprise!.id!.toInt()];
-
       final salesByModality = await loadSaleMovements.get(
         startDate: startDate,
         endDate: endDate,
         groupByEnterprise: true,
         groupByDay: true,
         groupByMonth: true,
-        enterpriseIds: enterpriseIds,
         groupByProductDepartment: true,
         groupByProductSection: true,
       );
@@ -50,10 +54,16 @@ class GetxDepartmentsPresenter extends GetxController
       saleMovements = salesByModality
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
           .toList();
+
+      _lastDateLoadedData = homePresenter.selectedDate;
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {
       isLoading = false;
     }
   }
+
+  DateTime? _lastDateLoadedData;
+  @override
+  DateTime? get lastDateLoadedData => _lastDateLoadedData;
 }
