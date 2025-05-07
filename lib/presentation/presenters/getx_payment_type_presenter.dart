@@ -16,10 +16,17 @@ class GetxPaymentTypePresenter extends GetxController
   });
 
   @override
-  Future<void> getSales(HomePresenter homePresenter) async {
+  Future<void> getSales(HomePresenter homePresenter,
+      {bool? forceRefresh}) async {
     isLoading = true;
     mainError = null;
     try {
+      if (forceRefresh == true) {
+        //continue...
+      } else if (_lastDateLoadedData?.year == homePresenter.selectedDate.year &&
+          _lastDateLoadedData?.month == homePresenter.selectedDate.month) {
+        return;
+      }
       final startDate = DateTime(
         homePresenter.selectedDate.year,
         homePresenter.selectedDate.month,
@@ -32,10 +39,6 @@ class GetxPaymentTypePresenter extends GetxController
         1,
       ).subtract(Duration(days: 1));
 
-      final enterpriseIds = homePresenter.selectedEnterprise?.id == null
-          ? <int>[]
-          : [homePresenter.selectedEnterprise!.id!.toInt()];
-
       final salesByModality = await loadSaleMovements.get(
         startDate: startDate,
         endDate: endDate,
@@ -43,7 +46,6 @@ class GetxPaymentTypePresenter extends GetxController
         groupByDay: true,
         groupByMonth: true,
         groupByPaymentModality: true,
-        enterpriseIds: enterpriseIds,
       );
 
       saleMovements = salesByModality
@@ -57,12 +59,13 @@ class GetxPaymentTypePresenter extends GetxController
         groupByDay: true,
         groupByMonth: true,
         groupByPaymentFinalization: true,
-        enterpriseIds: enterpriseIds,
       );
 
       salesByFinaliztions = salesByFinalization
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
           .toList();
+
+      _lastDateLoadedData = DateTime.now();
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {
@@ -76,4 +79,8 @@ class GetxPaymentTypePresenter extends GetxController
       _saleMovementsFinalizations.value;
   set salesByFinaliztions(List<SaleMovementViewModel>? value) =>
       _saleMovementsFinalizations.value = value;
+
+  DateTime? _lastDateLoadedData;
+  @override
+  DateTime? get lastDateLoadedData => _lastDateLoadedData;
 }

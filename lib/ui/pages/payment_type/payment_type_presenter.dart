@@ -8,6 +8,7 @@ abstract class PaymentTypePresenter implements Listenable {
   List<SaleMovementViewModel>? get saleMovementsByFinalizations;
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
+  DateTime? get lastDateLoadedData;
 
-  Future<void> getSales(HomePresenter homePresenter);
+  Future<void> getSales(HomePresenter homePresenter, {bool? forceRefresh});
 }

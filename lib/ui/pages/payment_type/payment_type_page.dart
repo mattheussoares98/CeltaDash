@@ -52,8 +52,8 @@ class _PaymentTypePageState extends State<PaymentTypePage>
   void updateSelectedMonth(bool value) {
     setState(() {
       selectedMonth = value;
+      needUpdateScreen = true;
     });
-    needUpdateScreen = true;
   }
 
   bool filter(SaleMovementViewModel sale, HomePresenter homePresenter) {
@@ -79,14 +79,28 @@ class _PaymentTypePageState extends State<PaymentTypePage>
       appBar: DefaultAppBar(
         onChangeDateOrEnterprise: (_) async {
           await widget.paymentTypePresenter.getSales(homePresenter);
+          Future.delayed(Duration.zero, () {
+            setState(() {
+              needUpdateScreen = true;
+            });
+          });
         },
         onTapRefresh: () async {
-          await widget.paymentTypePresenter.getSales(homePresenter);
-          needUpdateScreen = true;
+          await widget.paymentTypePresenter
+              .getSales(homePresenter, forceRefresh: true);
+          Future.delayed(Duration.zero, () {
+            setState(() {
+              needUpdateScreen = true;
+            });
+          });
         },
         onChangeDate: (newDate) async {
           await widget.paymentTypePresenter.getSales(homePresenter);
-          needUpdateScreen = true;
+          Future.delayed(Duration.zero, () {
+            setState(() {
+              needUpdateScreen = true;
+            });
+          });
         },
       ),
       body: Obx(() {
@@ -96,13 +110,13 @@ class _PaymentTypePageState extends State<PaymentTypePage>
 
         if (needUpdateScreen) {
           Future.delayed(Duration.zero, () {
-            setState(() {});
+            setState(() {
+              needUpdateScreen = false;
+            });
           });
-          needUpdateScreen = false;
         }
 
         if (saleMovements == null || saleMovements.isEmpty) {
-          //TODO do this in payments page
           return Center(
             child: ElevatedButton(
               onPressed: () async {
@@ -126,7 +140,12 @@ class _PaymentTypePageState extends State<PaymentTypePage>
             //TODO analyse to create two pages and navigate between them
             PaymentsModalities(
               filterByFinalizations: selectedPageIndex == 1,
-              saleMovements: saleMovements.where(
+              saleMovements: saleMovements
+                  .filteredSales(
+                    enterprise: homePresenter.selectedEnterprise,
+                  )
+                  .map((e) => e.toViewModel())
+                  .where(
                 (element) {
                   return filter(element, homePresenter);
                 },
