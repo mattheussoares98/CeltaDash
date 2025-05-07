@@ -100,16 +100,37 @@ class _TableItemState extends State<TableItem> {
       sortedRows.sort((a, b) {
         final aValue = a[columnIndex].value.toString();
         final bValue = b[columnIndex].value.toString();
-        if (double.tryParse(aValue) != null &&
-            double.tryParse(bValue) != null) {
+
+        // Try parsing as double first
+        final aDouble = double.tryParse(aValue);
+        final bDouble = double.tryParse(bValue);
+        if (aDouble != null && bDouble != null) {
           return ascending
-              ? double.parse(aValue).compareTo(double.parse(bValue))
-              : double.parse(bValue).compareTo(double.parse(aValue));
+              ? aDouble.compareTo(bDouble)
+              : bDouble.compareTo(aDouble);
         }
-        return ascending ? aValue.compareTo(bValue) : bValue.compareTo(aValue);
+
+        // Try parsing as time (HH:mm)
+        try {
+          final aTime = _parseTime(aValue.substring(0, 4));
+          final bTime = _parseTime(bValue.substring(0, 4));
+          return ascending ? bTime.compareTo(aTime) : aTime.compareTo(bTime);
+        } catch (_) {
+          // Fallback to string comparison
+          return ascending
+              ? aValue.compareTo(bValue)
+              : bValue.compareTo(aValue);
+        }
       });
     });
     _calculateMinMaxIndexes();
+  }
+
+  DateTime _parseTime(String time) {
+    final parts = time.split(":");
+    final hour = int.parse(parts[0]);
+    final minute = int.parse(parts[1]);
+    return DateTime(0, 1, 1, hour, minute);
   }
 
   Color getColor(int rowIndex) {

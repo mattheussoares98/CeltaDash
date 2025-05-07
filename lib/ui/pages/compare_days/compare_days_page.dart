@@ -141,8 +141,7 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
                   PersonalizedTableCell(value: "1 > 2"),
                 ],
                 titleMinHeight: 40,
-                indexToSort: 3,
-                columnIndexToCompareAndDetachBetterAndWorstValue: 3,
+                indexToSort: 0,
                 tableColumnWidth: {
                   0: FixedColumnWidth(hourWidth),
                   1: FixedColumnWidth(dayWidth),
