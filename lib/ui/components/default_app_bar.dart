@@ -10,7 +10,7 @@ import 'components.dart';
 class DefaultAppBar extends StatefulWidget implements PreferredSizeWidget {
   final void Function(bool changedEnterprise) onChangeDateOrEnterprise;
   final void Function()? onTapRefresh;
-  final void Function()? onChangeDate;
+  final void Function(DateTime newDate)? onChangeDate;
   final bool? showDatePicker;
   final bool? showEnterpriseDropdown;
   const DefaultAppBar({
@@ -117,7 +117,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                             homePresenter.updateSelectedDate(newDate);
                           });
                           if (widget.onChangeDate != null) {
-                            widget.onChangeDate!();
+                            widget.onChangeDate!(newDate);
                           }
                         }
                       },

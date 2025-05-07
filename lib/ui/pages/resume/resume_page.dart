@@ -77,11 +77,12 @@ class _ResumePageState extends State<ResumePage>
       appBar: DefaultAppBar(
         onChangeDateOrEnterprise: (changedEnterprise) async {
           await resumePresenter.getSales(homePresenter);
-          setState(() {});
+        },
+        onChangeDate: (newDate) async {
+          await resumePresenter.getSales(homePresenter);
         },
         onTapRefresh: () async {
           await resumePresenter.getSales(homePresenter, forceRefresh: true);
-          setState(() {});
         },
       ),
       body: SingleChildScrollView(
