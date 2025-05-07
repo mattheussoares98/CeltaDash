@@ -21,9 +21,11 @@ class TotalSalesByDay extends StatelessWidget {
             "${R.string.total} ${DateFormat.yMd('pt_BR').format(date)}",
           ),
         ),
-        Text(
-          totalSales.toString().toBrazilianNumber().addBrazilianCoin(),
-          style: TextStyle(fontWeight: FontWeight.bold),
+        FittedBox(
+          child: Text(
+            totalSales.toString().toBrazilianNumber().addBrazilianCoin(),
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
         ),
       ],
     );
