@@ -73,9 +73,22 @@ void main() {
       expectLater(sut.mainErrorStream, emits(null));
 
       await sut.getSales(
-          homePresenter: homePresenter,
-          firstDay: firstDay,
-          secondDay: secondDay);
+        homePresenter: homePresenter,
+        firstDay: firstDay,
+        secondDay: secondDay,
+      );
+    });
+    test("Should emit correct values on select same days", () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(sut.mainErrorStream, emitsInOrder([null, UIError.sameDays]));
+
+      loadSaleMovements.mockGetError();
+
+      await sut.getSales(
+        homePresenter: homePresenter,
+        firstDay: firstDay,
+        secondDay: firstDay,
+      );
     });
     test("Should emit correct values on error", () async {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
@@ -85,15 +98,17 @@ void main() {
       loadSaleMovements.mockGetError();
 
       await sut.getSales(
-          homePresenter: homePresenter,
-          firstDay: firstDay,
-          secondDay: secondDay);
+        homePresenter: homePresenter,
+        firstDay: firstDay,
+        secondDay: secondDay,
+      );
     });
     test("Should update firstDaySaleMovements correctly", () async {
       await sut.getSales(
-          homePresenter: homePresenter,
-          firstDay: firstDay,
-          secondDay: secondDay);
+        homePresenter: homePresenter,
+        firstDay: firstDay,
+        secondDay: secondDay,
+      );
 
       expect(
         sut.saleMovements,

@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
+import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
 import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
@@ -21,13 +22,16 @@ class GetxCompareDaysPresenter extends GetxController
     required DateTime? secondDay,
     required HomePresenter homePresenter,
   }) async {
-    _selectedFirstDay = firstDay;
-    _selectedSecondDay = secondDay;
-
     isLoading = true;
     mainError = null;
 
     try {
+      if (firstDay != null && firstDay == secondDay) {
+        throw DomainError.sameDays;
+      }
+
+      _selectedFirstDay = firstDay;
+      _selectedSecondDay = secondDay;
       List<SaleMovementViewModel> firstDayMovements = [];
       List<SaleMovementViewModel> secondDayMovements = [];
 
@@ -78,8 +82,14 @@ class GetxCompareDaysPresenter extends GetxController
       }
 
       saleMovements = firstDayMovements + secondDayMovements;
-    } catch (e) {
-      mainError = UIError.unexpected;
+    } on DomainError catch (e) {
+      switch (e) {
+        case DomainError.sameDays:
+          mainError = UIError.sameDays;
+          break;
+        default:
+          mainError = UIError.unexpected;
+      }
     } finally {
       isLoading = false;
     }

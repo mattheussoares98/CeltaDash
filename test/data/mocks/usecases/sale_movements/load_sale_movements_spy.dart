@@ -1,4 +1,5 @@
 import 'package:celta_plus/domain/entities/entities.dart';
+import 'package:celta_plus/domain/helpers/helpers.dart';
 import 'package:celta_plus/domain/usecases/usecases.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -25,6 +26,6 @@ class LoadSaleMovementsSpy extends Mock implements LoadSaleMovements {
   }
 
   void mockGetError() {
-    this._mockGetCall().thenThrow(Exception());
+    this._mockGetCall().thenThrow(DomainError.unexpected);
   }
 }
