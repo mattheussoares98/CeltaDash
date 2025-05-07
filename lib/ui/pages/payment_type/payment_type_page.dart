@@ -78,8 +78,15 @@ class _PaymentTypePageState extends State<PaymentTypePage>
     return Scaffold(
       appBar: DefaultAppBar(
         onChangeDateOrEnterprise: (_) async {
-          needUpdateScreen = true;
           await widget.paymentTypePresenter.getSales(homePresenter);
+        },
+        onTapRefresh: () async {
+          await widget.paymentTypePresenter.getSales(homePresenter);
+          needUpdateScreen = true;
+        },
+        onChangeDate: (newDate) async {
+          await widget.paymentTypePresenter.getSales(homePresenter);
+          needUpdateScreen = true;
         },
       ),
       body: Obx(() {
