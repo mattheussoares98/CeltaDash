@@ -55,50 +55,54 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
               });
             }),
           ),
-          StreamBuilder<bool>(
-              stream: homePresenter.updateScreenStream,
-              builder: (context, snapshot) {
-                if (snapshot.data == true) {
-                  return const SizedBox.shrink();
-                }
+          Obx(() {
+            final saleMovements = resumePresenter.saleMovements;
 
-                return Obx(() {
-                  final saleMovements = resumePresenter.saleMovements;
+            if (saleMovements == null || saleMovements.isEmpty) {
+              return NoSalesWereFound();
+            }
 
-                  if (saleMovements == null || saleMovements.isEmpty) {
-                    return NoSalesWereFound();
-                  }
+            final groupSales = saleMovements
+                .filteredSales(
+                  filterDay:
+                      selectedDay ? homePresenter.selectedDate.day : null,
+                )
+                .map((e) => e.toViewModel())
+                .toList();
 
-                  final groupSales = saleMovements
-                      .filteredSales(
-                        filterDay:
-                            selectedDay ? homePresenter.selectedDate.day : null,
-                      )
-                      .map((e) => e.toViewModel())
-                      .toList();
+            final groupSalesTotalLiquid = groupSales.sumLiquidValue();
+            int groupSalesQuantity = groupSales.quantitySales();
 
-                  final groupSalesTotalLiquid = groupSales.sumLiquidValue();
-                  int groupSalesQuantity = groupSales.quantitySales();
-
+            return StreamBuilder<bool>(
+                stream: homePresenter.updateScreenStream,
+                builder: (context, snapshot) {
                   return Expanded(
-                    child: PageView(
-                      controller: pageController,
-                      children: [
-                        GroupSummaryDetailsPage(
-                          groupSalesTotalLiquid: groupSalesTotalLiquid,
-                          selectedDay: selectedDay,
-                          saleMovements: saleMovements,
-                        ),
-                        GroupSummaryResumePage(
-                          groupSalesTotalLiquid: groupSalesTotalLiquid,
-                          groupSales: groupSales,
-                          groupSalesQuantity: groupSalesQuantity,
-                        ),
-                      ],
+                    child: Opacity(
+                      opacity: snapshot.data == true ? 0 : 1,
+                      child: PageView(
+                        controller: pageController,
+                        onPageChanged: (index) {
+                          setState(() {
+                            currentIndex = index;
+                          });
+                        },
+                        children: [
+                          GroupSummaryDetailsPage(
+                            groupSalesTotalLiquid: groupSalesTotalLiquid,
+                            selectedDay: selectedDay,
+                            saleMovements: saleMovements,
+                          ),
+                          GroupSummaryResumePage(
+                            groupSalesTotalLiquid: groupSalesTotalLiquid,
+                            groupSales: groupSales,
+                            groupSalesQuantity: groupSalesQuantity,
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 });
-              }),
+          }),
         ],
       ),
       bottomNavigationBar: BottomBar(
