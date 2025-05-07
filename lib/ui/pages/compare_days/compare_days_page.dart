@@ -129,8 +129,6 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
                 ),
               ],
             ),
-            //TODO test more this page and create more components to make it better
-            //TODO throw an error if try to get the same date
             const SizedBox(height: 10),
             if (widget.presenter.saleMovements != null)
               TableItem(

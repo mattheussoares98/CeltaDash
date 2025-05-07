@@ -75,7 +75,7 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
     return totalSales / mondaysQuantity;
   }
 
-  List<SaleMovementModel> filteredSales({//TODO change this return to viewModel
+  List<SaleMovementModel> filteredSales({
     EnterpriseViewModel? enterprise,
     int? filterYear,
     int? filterMonth,
