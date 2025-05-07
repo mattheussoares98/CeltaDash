@@ -1,7 +1,8 @@
 import 'package:celta_plus/ui/components/chart_prices.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
+
 
 import '../../../../data/models/models.dart';
 import '../../../../ui/helpers/helpers.dart';
@@ -14,7 +15,7 @@ class MonthlyAnalysis extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    HomePresenter homePresenter = Provider.of(context, listen: false);
+    HomePresenter homePresenter = Get.find();
 
     final datesAndValues = (saleMovements
             .where((e) =>

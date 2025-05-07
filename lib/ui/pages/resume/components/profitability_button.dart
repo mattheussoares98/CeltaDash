@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
+
 
 import '../../../helpers/helpers.dart';
 import '../resume.dart';
@@ -9,7 +10,7 @@ class ProfitabilityButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ResumePresenter resumePresenter = Provider.of(context, listen: false);
+    ResumePresenter resumePresenter = Get.find();
 
     return ElevatedButton.icon(
       onPressed: resumePresenter.goToProfitabillityPage,

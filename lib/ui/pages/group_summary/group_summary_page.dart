@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
+
 
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
@@ -19,8 +19,8 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
 
   @override
   Widget build(BuildContext context) {
-    ResumePresenter resumePresenter = Provider.of(context, listen: false);
-    HomePresenter homePresenter = Provider.of(context, listen: false);
+    ResumePresenter resumePresenter = Get.find();
+    HomePresenter homePresenter = Get.find();
 
     return Scaffold(
       appBar: DefaultAppBar(

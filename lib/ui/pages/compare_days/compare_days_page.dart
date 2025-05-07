@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
@@ -33,7 +32,7 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
-        HomePresenter homePresenter = Provider.of(context, listen: false);
+        HomePresenter homePresenter = Get.find();
         await widget.presenter.getSales(
           firstDay: firstDay,
           secondDay: secondDay,
@@ -70,48 +69,47 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
         onChangeDateOrEnterprise: (_) {},
         showDatePicker: false,
       ),
-      body: ListenableProvider<CompareDaysPresenter>(
-        create: (context) => widget.presenter,
-        child: Obx(() {
-          if (needRefresh) {
-            Future.delayed(Duration.zero, () {
-              setState(() {});
-            });
-            needRefresh = false;
-          }
-          return Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(R.string.compareDays),
-              ),
-              ChangeDatesButtons(
-                firstDay: firstDay,
-                secondDay: secondDay,
-                updateDate: (date) {
-                  setState(() {});
-                },
-                changeNeedUpdateScreen: () {
-                  setState(() {
-                    needRefresh = true;
-                  });
-                },
-              ),
-              const SizedBox(height: 10),
-              if (widget.presenter.saleMovements != null) CompareTable(),
-              if (widget.presenter.saleMovements != null)
-                Result(firstDay: firstDay, secondDay: secondDay),
-              // Expanded(
-              //   child: Column(
-              //     children: [
-              //       Result(firstDay: firstDay, secondDay: secondDay),
-              //     ],
-              //   ),
-              // ),
-            ],
-          );
-        }),
-      ),
+      body: Obx(() {
+        Get.put<CompareDaysPresenter>(widget.presenter);
+
+        if (needRefresh) {
+          Future.delayed(Duration.zero, () {
+            setState(() {});
+          });
+          needRefresh = false;
+        }
+        return Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(R.string.compareDays),
+            ),
+            ChangeDatesButtons(
+              firstDay: firstDay,
+              secondDay: secondDay,
+              updateDate: (date) {
+                setState(() {});
+              },
+              changeNeedUpdateScreen: () {
+                setState(() {
+                  needRefresh = true;
+                });
+              },
+            ),
+            const SizedBox(height: 10),
+            if (widget.presenter.saleMovements != null) CompareTable(),
+            if (widget.presenter.saleMovements != null)
+              Result(firstDay: firstDay, secondDay: secondDay),
+            // Expanded(
+            //   child: Column(
+            //     children: [
+            //       Result(firstDay: firstDay, secondDay: secondDay),
+            //     ],
+            //   ),
+            // ),
+          ],
+        );
+      }),
     );
   }
 }

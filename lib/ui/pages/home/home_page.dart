@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
 import '../../../main/factories/factories.dart';
 import '../../components/components.dart';
@@ -20,12 +20,13 @@ class _HomePageState extends State<HomePage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
-        HomePresenter homePresenter = Provider.of(context, listen: false);
+        HomePresenter homePresenter = Get.find();
+        ResumePresenter resumePresenter = Get.find();
+
         await homePresenter.getBsEnterprises(showBsErrorMessage: (error) {
           snackBarMessage(context, error, Colors.red);
         });
 
-        ResumePresenter resumePresenter = Provider.of(context, listen: false);
         await resumePresenter.getSales(homePresenter);
       }
     });
@@ -33,7 +34,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    HomePresenter homePresenter = Provider.of(context, listen: false);
+    HomePresenter homePresenter = Get.find();
 
     final pages = <Widget>[
       makeResumePage(),

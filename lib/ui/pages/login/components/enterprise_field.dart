@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
 import '../../../../main/composites/composites.dart';
 import '../../../../presentation/protocols/protocols.dart';
@@ -21,7 +21,7 @@ class EnterpriseField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    LoginPresenter loginPresenter = Provider.of(context, listen: false);
+    LoginPresenter loginPresenter = Get.find();
 
     return TextFormField(
       controller: enterpriseController,

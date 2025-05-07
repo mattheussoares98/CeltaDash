@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
@@ -17,8 +17,8 @@ class DailyAnalysis extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ResumePresenter resumePresenter = Provider.of(context, listen: false);
-    HomePresenter homePresenter = Provider.of(context, listen: false);
+    ResumePresenter resumePresenter = Get.find();
+    HomePresenter homePresenter = Get.find();
 
     final now = DateTime.now();
 

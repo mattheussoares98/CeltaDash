@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
 import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
@@ -16,8 +16,7 @@ class CompareTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CompareDaysPresenter compareDaysPresenter =
-        Provider.of(context, listen: false);
+    CompareDaysPresenter compareDaysPresenter = Get.find();
 
     final hourWidth = MediaQuery.of(context).size.width * 0.2;
     final dayWidth = MediaQuery.of(context).size.width * 0.3;

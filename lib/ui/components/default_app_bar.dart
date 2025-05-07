@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
+
 
 import '../helpers/helpers.dart';
 import '../pages/pages.dart';
@@ -35,7 +35,7 @@ class DefaultAppBar extends StatefulWidget implements PreferredSizeWidget {
 class _DefaultAppBarState extends State<DefaultAppBar> {
   @override
   Widget build(BuildContext context) {
-    HomePresenter homePresenter = Provider.of(context, listen: false);
+    HomePresenter homePresenter = Get.find();
 
     return AppBar(
       toolbarHeight:

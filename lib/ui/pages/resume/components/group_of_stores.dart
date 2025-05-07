@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
+
 
 import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
@@ -67,8 +68,8 @@ class GroupOfStores extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ResumePresenter resumePresenter = Provider.of(context, listen: false);
-    HomePresenter homePresenter = Provider.of(context, listen: false);
+    ResumePresenter resumePresenter = Get.find();
+    HomePresenter homePresenter = Get.find();
 
     return Container(
       decoration: ContainerDecoration.decoration,

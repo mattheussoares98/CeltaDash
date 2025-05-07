@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 import '../../../components/components.dart';
 import '../../pages.dart';
@@ -50,9 +50,8 @@ class ChangeDatesButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CompareDaysPresenter compareDaysPresenter =
-        Provider.of(context, listen: false);
-    HomePresenter homePresenter = Provider.of(context, listen: false);
+    CompareDaysPresenter compareDaysPresenter = Get.find();
+    HomePresenter homePresenter = Get.find();
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,

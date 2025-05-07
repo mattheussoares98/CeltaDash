@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
+
 
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
@@ -35,7 +35,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
-        HomePresenter homePresenter = Provider.of(context, listen: false);
+        HomePresenter homePresenter = Get.find();
 
         await widget.departmentsPresenter.getSales(homePresenter);
       }
@@ -66,7 +66,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
 
   @override
   Widget build(BuildContext context) {
-    HomePresenter homePresenter = Provider.of(context, listen: false);
+    HomePresenter homePresenter = Get.find();
 
     loadingSubscription?.cancel();
     mainErrorSubscription?.cancel();

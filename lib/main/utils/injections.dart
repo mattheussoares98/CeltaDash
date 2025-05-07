@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:hive/hive.dart';
 
@@ -10,6 +11,8 @@ import 'package:flutter/services.dart';
 
 import '../../firebase_options.dart';
 import '../../infra/helpers/helpers.dart';
+import '../../ui/pages/pages.dart';
+import '../factories/factories.dart';
 
 Future<void> initApp() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,6 +20,7 @@ Future<void> initApp() async {
   await _initFirebase();
   await _initHive();
   await _makeOnlyPortraitMode();
+  _insertGetPresenters();
 }
 
 Future<void> _initFirebase() async {
@@ -48,4 +52,12 @@ Future<void> _initHive() async {
   } catch (e) {
     debugPrint(e.toString());
   }
+}
+
+void _insertGetPresenters() {
+  Get.put<HomePresenter>(makeGetxHomePresenter());
+  Get.put<HomePresenter>(makeGetxHomePresenter());
+  Get.put<LoginPresenter>(makeGetxLoginPresenter());
+  Get.put<ResumePresenter>(makeGetxResumePresenter());
+  Get.put<SplashPresenter>(makeGetxSplashPresenter());
 }

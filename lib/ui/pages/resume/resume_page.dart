@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
 import '../../../ui/helpers/helpers.dart';
 import '../../components/components.dart';
@@ -45,9 +44,8 @@ class _ResumePageState extends State<ResumePage>
   @override
   void didPopNext() {
     debugPrint('Closed another page and returned to resumePage');
-    final resumePresenter =
-        Provider.of<ResumePresenter>(context, listen: false);
-    final homePresenter = Provider.of<HomePresenter>(context, listen: false);
+    ResumePresenter resumePresenter = Get.find();
+    HomePresenter homePresenter = Get.find();
     WidgetsBinding.instance.addPostFrameCallback(
         (_) async => await resumePresenter.getSales(homePresenter));
   }
@@ -59,8 +57,8 @@ class _ResumePageState extends State<ResumePage>
 
   @override
   Widget build(BuildContext context) {
-    ResumePresenter resumePresenter = Provider.of(context, listen: false);
-    HomePresenter homePresenter = Provider.of(context, listen: false);
+    ResumePresenter resumePresenter = Get.find();
+    HomePresenter homePresenter = Get.find();
 
     mainErrorSubscription?.cancel();
     loadingSubscription?.cancel();

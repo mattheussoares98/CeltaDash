@@ -1,7 +1,6 @@
 import 'package:celta_plus/ui/helpers/helpers.dart';
 import 'package:celta_plus/ui/pages/pages.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
 import 'package:flutter/material.dart';
 
@@ -15,11 +14,10 @@ Widget makePage({
   final allPages = [
     GetPage(
       name: '/any_route',
-      page:
-          () => Scaffold(
-            appBar: AppBar(title: const Text('any title')),
-            body: const Text('fake page'),
-          ),
+      page: () => Scaffold(
+        appBar: AppBar(title: const Text('any title')),
+        body: const Text('fake page'),
+      ),
     ),
     GetPage(
       name: PageRoutes.login,
@@ -40,17 +38,18 @@ Widget makePage({
     allPages.add(GetPage(name: path, page: page, arguments: arguments));
   }
 
-  return MultiProvider(
-    providers: [
-      ListenableProvider<SplashPresenter>(create: (_) => SplashPresenterSpy()),
-      ListenableProvider<LoginPresenter>(create: (_) => LoginPresenterSpy()),
-    ],
-    child: GetMaterialApp(
-      initialRoute: path,
-      navigatorObservers: [Get.put<RouteObserver>(RouteObserver<PageRoute>())],
-      getPages: allPages,
-    ),
+  _createGetPresenters();
+
+  return GetMaterialApp(
+    initialRoute: path,
+    navigatorObservers: [Get.put<RouteObserver>(RouteObserver<PageRoute>())],
+    getPages: allPages,
   );
 }
 
 String get currentRoute => Get.currentRoute;
+
+void _createGetPresenters() {
+  Get.put<SplashPresenter>(SplashPresenterSpy());
+  Get.put<LoginPresenter>(LoginPresenterSpy());
+}

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
 import '../../../../ui/helpers/helpers.dart';
 import '../../pages.dart';
@@ -24,8 +24,7 @@ class Result extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CompareDaysPresenter compareDaysPresenter =
-        Provider.of(context, listen: false);
+    CompareDaysPresenter compareDaysPresenter = Get.find();
 
     return Builder(builder: (context) {
       final firstDayTotalLiquid =

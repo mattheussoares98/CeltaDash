@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
+
 
 import '../../../main/builders/builders.dart';
 import '../../components/components.dart';
@@ -78,7 +79,7 @@ class _LoginPageState extends State<LoginPage>
 
   @override
   Widget build(BuildContext context) {
-    LoginPresenter loginPresenter = Provider.of(context, listen: false);
+    LoginPresenter loginPresenter = Get.find();
     errorSubscription?.cancel();
     loadingSubscription?.cancel();
 

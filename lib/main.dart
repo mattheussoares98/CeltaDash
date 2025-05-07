@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
 import '../ui/components/components.dart';
 import '../ui/helpers/helpers.dart';
@@ -29,36 +28,33 @@ class App extends StatelessWidget with KeyboardManager {
     debugPrint("largura: ${MediaQuery.of(context).size.width}");
     debugPrint("altura: ${MediaQuery.of(context).size.height}");
 
-    return MultiProvider(
-      providers: Providers.providers,
-      child: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: () {
-          FocusScope.of(context).unfocus();
-          hideKeyboard(context);
-        },
-        onPanDown: (_) {
-          FocusScope.of(context).unfocus();
-          hideKeyboard(context);
-        },
-        child: GetMaterialApp(
-          navigatorKey: NavigatorKey.key,
-          title: 'Celta plus',
-          debugShowCheckedModeBanner: false,
-          theme: makeAppTheme(context),
-          navigatorObservers: [routeObserver],
-          initialRoute: PageRoutes.splash,
-          supportedLocales: const [
-            Locale('en', 'US'),
-            Locale('pt', 'BR'),
-          ],
-          localizationsDelegates: [
-            GlobalMaterialLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-          ],
-          getPages: GetPages.getPages,
-        ),
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        FocusScope.of(context).unfocus();
+        hideKeyboard(context);
+      },
+      onPanDown: (_) {
+        FocusScope.of(context).unfocus();
+        hideKeyboard(context);
+      },
+      child: GetMaterialApp(
+        navigatorKey: NavigatorKey.key,
+        title: 'Celta plus',
+        debugShowCheckedModeBanner: false,
+        theme: makeAppTheme(context),
+        navigatorObservers: [routeObserver],
+        initialRoute: PageRoutes.splash,
+        supportedLocales: const [
+          Locale('en', 'US'),
+          Locale('pt', 'BR'),
+        ],
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        getPages: GetPages.getPages,
       ),
     );
   }
