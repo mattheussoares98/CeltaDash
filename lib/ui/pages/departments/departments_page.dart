@@ -76,7 +76,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
 
     return Scaffold(
       appBar: DefaultAppBar(
-        onChangeDateOrEnterprise: (_) async {
+        onChangeEnterprise: (_) async {
           await widget.departmentsPresenter.getSales(homePresenter);
           setState(() {
             needUpdateScreen = true;

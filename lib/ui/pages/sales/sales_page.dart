@@ -18,7 +18,7 @@ class _SalesPageState extends State<SalesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: DefaultAppBar(
-        onChangeDateOrEnterprise: (_) {
+        onChangeEnterprise: (_) {
           debugPrint("Search sales again");
         },
       ),

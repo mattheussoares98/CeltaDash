@@ -76,7 +76,7 @@ class _PaymentTypePageState extends State<PaymentTypePage>
 
     return Scaffold(
       appBar: DefaultAppBar(
-        onChangeDateOrEnterprise: (_) async {
+        onChangeEnterprise: (_) async {
           await widget.paymentTypePresenter.getSales(homePresenter);
           Future.delayed(Duration.zero, () {
             setState(() {

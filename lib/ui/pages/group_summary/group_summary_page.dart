@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 import '../pages.dart';
@@ -25,23 +24,21 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
     return Scaffold(
       appBar: DefaultAppBar(
         showEnterpriseDropdown: false,
-        onChangeDateOrEnterprise: (changedEnterprise) async {
+        onChangeEnterprise: (changedEnterprise) async {
           await resumePresenter.getSales(
             homePresenter,
             forceRefresh: !changedEnterprise,
           );
+        },
+        onTapRefresh: () {
+          resumePresenter.getSales(homePresenter, forceRefresh: true);
         },
       ),
       body: Obx(() {
         final saleMovements = resumePresenter.saleMovements;
 
         if (saleMovements == null || saleMovements.isEmpty) {
-          return ElevatedButton(
-            onPressed: () async {
-              await resumePresenter.getSales(homePresenter);
-            },
-            child: Text(R.string.searchAgain),
-          );
+          return NoSalesWereFound();
         }
 
         return Padding(
@@ -50,31 +47,11 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SelectPeriodItems(
-                      items: [
-                        SelectPeriodItems.createItem(
-                          title: R.string.day,
-                          onTap: () {
-                            setState(() {
-                              selectedDay = true;
-                            });
-                          },
-                        ),
-                        SelectPeriodItems.createItem(
-                          title: R.string.month,
-                          onTap: () {
-                            setState(() {
-                              selectedDay = false;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                SelectDayOrMonthItems(change: (value) {
+                  setState(() {
+                    selectedDay = value;
+                  });
+                }),
                 const SizedBox(height: 8),
                 Builder(builder: (context) {
                   final groupSales = saleMovements

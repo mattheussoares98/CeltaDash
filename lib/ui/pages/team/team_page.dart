@@ -12,7 +12,7 @@ class TeamPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: DefaultAppBar(onChangeDateOrEnterprise: (_) {}),
+      appBar: DefaultAppBar(onChangeEnterprise: (_) {}),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
