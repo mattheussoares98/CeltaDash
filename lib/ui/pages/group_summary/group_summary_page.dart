@@ -18,6 +18,7 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
   bool selectedDay = true;
   final pageController = PageController(initialPage: 0);
   int currentIndex = 0;
+  bool needUpdatePage = false;
 
   @override
   void dispose() {
@@ -33,33 +34,62 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
     return Scaffold(
       appBar: DefaultAppBar(
         showEnterpriseDropdown: false,
+        onChangeDate: (newDate) {
+          Future.delayed(Duration.zero, () {
+            setState(() {
+              needUpdatePage = true;
+            });
+          });
+        },
         onChangeEnterprise: (changedEnterprise) async {
           await resumePresenter.getSales(
             homePresenter,
             forceRefresh: !changedEnterprise,
           );
+          Future.delayed(Duration.zero, () {
+            setState(() {
+              needUpdatePage = true;
+            });
+          });
         },
-        onTapRefresh: () {
-          resumePresenter.getSales(homePresenter, forceRefresh: true);
+        onTapRefresh: () async {
+          await resumePresenter.getSales(homePresenter, forceRefresh: true);
+          Future.delayed(Duration.zero, () {
+            setState(() {
+              needUpdatePage = true;
+            });
+          });
         },
       ),
       bottomNavigationBar: BottomBar(
-          onChangePage: (index) {
+        onChangePage: (index) {
+          Future.delayed(Duration.zero, () {
             setState(() {
+              needUpdatePage = true;
               currentIndex = index;
             });
-            pageController.animateToPage(
-              index,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-            );
-          },
-          currentIndex: currentIndex),
+          });
+          pageController.animateToPage(
+            index,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          );
+        },
+        currentIndex: currentIndex,
+      ),
       body: Obx(() {
         final saleMovements = resumePresenter.saleMovements;
 
         if (saleMovements == null || saleMovements.isEmpty) {
           return NoSalesWereFound();
+        }
+
+        if (needUpdatePage) {
+          Future.delayed(Duration.zero, () {
+            setState(() {
+              needUpdatePage = false;
+            });
+          });
         }
 
         final groupSales = saleMovements
