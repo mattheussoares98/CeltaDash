@@ -19,7 +19,6 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
   bool selectedDay = true;
   final pageController = PageController(initialPage: 0);
   int currentIndex = 0;
-  bool needUpdatePage = false;
 
   @override
   void dispose() {
@@ -35,98 +34,77 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
     return Scaffold(
       appBar: DefaultAppBar(
         showEnterpriseDropdown: false,
-        onChangeDate: (newDate) {
-          Future.delayed(Duration.zero, () {
-            setState(() {
-              needUpdatePage = true;
-            });
-          });
-        },
+        onChangeDate: (newDate) {},
         onChangeEnterprise: (changedEnterprise) async {
           await resumePresenter.getSales(
             homePresenter,
             forceRefresh: !changedEnterprise,
           );
-          Future.delayed(Duration.zero, () {
-            setState(() {
-              needUpdatePage = true;
-            });
-          });
         },
         onTapRefresh: () async {
           await resumePresenter.getSales(homePresenter, forceRefresh: true);
-          Future.delayed(Duration.zero, () {
-            setState(() {
-              needUpdatePage = true;
-            });
-          });
         },
       ),
-      body: Obx(() {
-        final saleMovements = resumePresenter.saleMovements;
+      body: StreamBuilder<bool>(
+          stream: homePresenter.updateScreenStream,
+          builder: (context, snapshot) {
+            if (snapshot.data == true) {
+              return const SizedBox.shrink();
+            }
 
-        if (saleMovements == null || saleMovements.isEmpty) {
-          return NoSalesWereFound();
-        }
+            return Obx(() {
+              final saleMovements = resumePresenter.saleMovements;
 
-        if (needUpdatePage) {
-          Future.delayed(Duration.zero, () {
-            setState(() {
-              needUpdatePage = false;
-            });
-          });
-        }
+              if (saleMovements == null || saleMovements.isEmpty) {
+                return NoSalesWereFound();
+              }
 
-        final groupSales = saleMovements
-            .filteredSales(
-              filterDay: selectedDay ? homePresenter.selectedDate.day : null,
-            )
-            .map((e) => e.toViewModel())
-            .toList();
+              final groupSales = saleMovements
+                  .filteredSales(
+                    filterDay:
+                        selectedDay ? homePresenter.selectedDate.day : null,
+                  )
+                  .map((e) => e.toViewModel())
+                  .toList();
 
-        final groupSalesTotalLiquid = groupSales.sumLiquidValue();
-        int groupSalesQuantity = groupSales.quantitySales();
+              final groupSalesTotalLiquid = groupSales.sumLiquidValue();
+              int groupSalesQuantity = groupSales.quantitySales();
 
-        return Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(4),
-              child: SelectDayOrMonthItems(change: (value) {
-                Future.delayed(Duration.zero, () {
-                  setState(() {
-                    needUpdatePage = true;
-                    selectedDay = value;
-                  });
-                });
-              }),
-            ),
-            Expanded(
-              child: PageView(
-                controller: pageController,
+              return Column(
                 children: [
-                  GroupSummaryDetailsPage(
-                    groupSalesTotalLiquid: groupSalesTotalLiquid,
-                    selectedDay: selectedDay,
-                    saleMovements: saleMovements,
+                  Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: SelectDayOrMonthItems(change: (value) {
+                      setState(() {
+                        selectedDay = value;
+                      });
+                    }),
                   ),
-                  GroupSummaryResumePage(
-                    groupSalesTotalLiquid: groupSalesTotalLiquid,
-                    groupSales: groupSales,
-                    groupSalesQuantity: groupSalesQuantity,
+                  Expanded(
+                    child: PageView(
+                      controller: pageController,
+                      children: [
+                        GroupSummaryDetailsPage(
+                          groupSalesTotalLiquid: groupSalesTotalLiquid,
+                          selectedDay: selectedDay,
+                          saleMovements: saleMovements,
+                        ),
+                        GroupSummaryResumePage(
+                          groupSalesTotalLiquid: groupSalesTotalLiquid,
+                          groupSales: groupSales,
+                          groupSalesQuantity: groupSalesQuantity,
+                        ),
+                      ],
+                    ),
                   ),
                 ],
-              ),
-            ),
-          ],
-        );
-      }),
+              );
+            });
+          }),
       bottomNavigationBar: BottomBar(
         onChangePage: (index) {
-          Future.delayed(Duration.zero, () {
-            setState(() {
-              needUpdatePage = true;
-              currentIndex = index;
-            });
+          setState(() {
+            currentIndex = index;
           });
           pageController.animateToPage(
             index,

@@ -7,7 +7,7 @@ import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
 
 class GetxHomePresenter extends GetxController
-    with UIErrorManager, LoadingManager
+    with UIErrorManager, LoadingManager, UpdateScreenManager
     implements HomePresenter {
   final NavigateTo navigateTo;
   final LoadEnterprises loadEnterprises;
@@ -25,6 +25,10 @@ class GetxHomePresenter extends GetxController
   @override
   void updateSelectedDate(DateTime date) {
     _selectedDate = date;
+    updateScreen = true;
+    Future.delayed(Duration(milliseconds: 50), () {
+      updateScreen = false;
+    });
   }
 
   @override
@@ -55,6 +59,10 @@ class GetxHomePresenter extends GetxController
   @override
   void updateSelectedEnterprise(EnterpriseViewModel? enterprise) {
     _selectedEnterprise.value = enterprise;
+    updateScreen = true;
+    Future.delayed(Duration(milliseconds: 50), () {
+      updateScreen = false;
+    });
   }
 
   final _selectedEnterprise = Rx<EnterpriseViewModel?>(null);

@@ -78,6 +78,11 @@ void main() {
   });
 
   group("Update selected date", () {
+    test("Should emit update screen", () {
+      expectLater(sut.updateScreenStream, emitsInOrder([true, false]));
+
+      sut.updateSelectedDate(faker.date.dateTime());
+    });
     test("Should update date correctly", () {
       final firstDate = faker.date.dateTime();
       final secondDate = faker.date.dateTime();
@@ -161,6 +166,13 @@ void main() {
 
       sut.updateSelectedEnterprise(null);
       expect(sut.selectedEnterprise, null);
+    });
+    test("Should update selected enterprise correctly", () {
+      expectLater(sut.updateScreenStream, emitsInOrder([true, false]));
+
+      sut.updateSelectedEnterprise(
+        EnterpriseModel.fromEntity(enterprises.first).toViewModel(),
+      );
     });
   });
 }

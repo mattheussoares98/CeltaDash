@@ -7,6 +7,7 @@ abstract class HomePresenter implements Listenable {
   DateTime get selectedDate;
   List<EnterpriseViewModel>? get enterprises;
   EnterpriseViewModel? get selectedEnterprise;
+  Stream<bool> get updateScreenStream;
 
   void updateSelectedIndex(int index);
   void updateSelectedDate(DateTime date);
