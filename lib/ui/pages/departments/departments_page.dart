@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 import '../../mixins/mixins.dart';
@@ -78,16 +77,31 @@ class _DepartmentsPageState extends State<DepartmentsPage>
     return Scaffold(
       appBar: DefaultAppBar(
         onChangeDateOrEnterprise: (_) async {
-          needUpdateScreen = true;
           await widget.departmentsPresenter.getSales(homePresenter);
+          setState(() {
+            needUpdateScreen = true;
+          });
+        },
+        onChangeDate: (_) async {
+          await widget.departmentsPresenter.getSales(homePresenter);
+          setState(() {
+            needUpdateScreen = true;
+          });
+        },
+        onTapRefresh: () async {
+          await widget.departmentsPresenter.getSales(homePresenter);
+          setState(() {
+            needUpdateScreen = true;
+          });
         },
       ),
       body: Obx(() {
         if (needUpdateScreen) {
           Future.delayed(Duration.zero, () {
-            setState(() {});
+            setState(() {
+              needUpdateScreen = false;
+            });
           });
-          needUpdateScreen = false;
         }
 
         final saleMovements = widget.departmentsPresenter.saleMovements
