@@ -6,13 +6,11 @@ import '../pages.dart';
 import 'components/components.dart';
 
 class GroupSummaryResumePage extends StatelessWidget {
-  final void Function(bool) changeDayOrMonth;
   final double groupSalesTotalLiquid;
   final List<SaleMovementViewModel> groupSales;
   final int groupSalesQuantity;
   const GroupSummaryResumePage({
     super.key,
-    required this.changeDayOrMonth,
     required this.groupSalesTotalLiquid,
     required this.groupSales,
     required this.groupSalesQuantity,
@@ -28,8 +26,6 @@ class GroupSummaryResumePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SelectDayOrMonthItems(change: changeDayOrMonth),
-            const SizedBox(height: 8),
             Column(
               children: [
                 Indicator(

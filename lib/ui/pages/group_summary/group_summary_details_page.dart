@@ -1,20 +1,17 @@
-import 'package:celta_plus/ui/helpers/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../ui/helpers/helpers.dart';
 import '../../components/components.dart';
 import '../pages.dart';
-import 'components/components.dart';
 
 class GroupSummaryDetailsPage extends StatelessWidget {
   final double groupSalesTotalLiquid;
-  final void Function(bool changedDayOrMonth) changeDayOrMonth;
   final bool selectedDay;
   final List<SaleMovementViewModel> saleMovements;
   const GroupSummaryDetailsPage({
     super.key,
     required this.groupSalesTotalLiquid,
-    required this.changeDayOrMonth,
     required this.selectedDay,
     required this.saleMovements,
   });
@@ -50,11 +47,6 @@ class GroupSummaryDetailsPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(4),
-          child: SelectDayOrMonthItems(change: changeDayOrMonth),
-        ),
-        const SizedBox(height: 8),
         TableItem(
           columnIndexToCompareAndDetachBetterAndWorstValue: 1,
           columnsIndexToSum: [1],

@@ -87,31 +87,35 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
         final groupSalesTotalLiquid = groupSales.sumLiquidValue();
         int groupSalesQuantity = groupSales.quantitySales();
 
-        return PageView(
-          controller: pageController,
+        return Column(
           children: [
-            GroupSummaryDetailsPage(
-              groupSalesTotalLiquid: groupSalesTotalLiquid,
-              changeDayOrMonth: (value) {
+            Padding(
+              padding: const EdgeInsets.all(4),
+              child: SelectDayOrMonthItems(change: (value) {
                 Future.delayed(Duration.zero, () {
                   setState(() {
                     needUpdatePage = true;
                     selectedDay = value;
                   });
                 });
-              },
-              selectedDay: selectedDay,
-              saleMovements: saleMovements,
+              }),
             ),
-            GroupSummaryResumePage(
-              changeDayOrMonth: (value) {
-                setState(() {
-                  selectedDay = value;
-                });
-              },
-              groupSalesTotalLiquid: groupSalesTotalLiquid,
-              groupSales: groupSales,
-              groupSalesQuantity: groupSalesQuantity,
+            Expanded(
+              child: PageView(
+                controller: pageController,
+                children: [
+                  GroupSummaryDetailsPage(
+                    groupSalesTotalLiquid: groupSalesTotalLiquid,
+                    selectedDay: selectedDay,
+                    saleMovements: saleMovements,
+                  ),
+                  GroupSummaryResumePage(
+                    groupSalesTotalLiquid: groupSalesTotalLiquid,
+                    groupSales: groupSales,
+                    groupSalesQuantity: groupSalesQuantity,
+                  ),
+                ],
+              ),
             ),
           ],
         );
