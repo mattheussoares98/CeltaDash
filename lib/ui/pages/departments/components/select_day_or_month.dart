@@ -9,19 +9,24 @@ class SelectDayOrMonth extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SelectPeriodItems(
-      items: [
-        SelectPeriodItems.createItem(
-          title: R.string.day,
-          onTap: () {
-            updateSelectedMonth(false);
-          },
-        ),
-        SelectPeriodItems.createItem(
-          title: R.string.month,
-          onTap: () {
-            updateSelectedMonth(true);
-          },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SelectPeriodItems(
+          items: [
+            SelectPeriodItems.createItem(
+              title: R.string.day,
+              onTap: () {
+                updateSelectedMonth(false);
+              },
+            ),
+            SelectPeriodItems.createItem(
+              title: R.string.month,
+              onTap: () {
+                updateSelectedMonth(true);
+              },
+            ),
+          ],
         ),
       ],
     );

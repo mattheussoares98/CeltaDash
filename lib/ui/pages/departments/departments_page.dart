@@ -90,6 +90,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
         },
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
