@@ -170,10 +170,11 @@ class _TableItemState extends State<TableItem> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Table(
+      child: Column(
+        children: [
+          SizedBox(
+            height: widget.titleMinHeight ?? 1,
+            child: Table(
               border: TableBorder.all(color: Colors.black, width: 0.06),
               defaultColumnWidth: FlexColumnWidth(1),
               columnWidths: widget
@@ -205,7 +206,9 @@ class _TableItemState extends State<TableItem> {
                 ),
               ],
             ),
-            SingleChildScrollView(
+          ),
+          Flexible(
+            child: SingleChildScrollView(
               child: Table(
                 border: TableBorder.all(color: Colors.black, width: 0.06),
                 defaultColumnWidth: FlexColumnWidth(1),
@@ -238,9 +241,12 @@ class _TableItemState extends State<TableItem> {
                 ],
               ),
             ),
-            if (widget.columnsIndexToSum != null &&
-                widget.columnsIndexToSum!.isNotEmpty)
-              Table(
+          ),
+          if (widget.columnsIndexToSum != null &&
+              widget.columnsIndexToSum!.isNotEmpty)
+            SizedBox(
+              height: widget.titleMinHeight ?? 1,
+              child: Table(
                 border: TableBorder.all(color: Colors.black, width: 0.06),
                 defaultColumnWidth: FlexColumnWidth(1),
                 columnWidths: widget.tableColumnWidth,
@@ -251,8 +257,8 @@ class _TableItemState extends State<TableItem> {
                   ),
                 ],
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }
