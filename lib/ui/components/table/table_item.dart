@@ -27,8 +27,7 @@ class TableItem extends StatefulWidget {
 }
 
 class _TableItemState extends State<TableItem> {
-  int? orderByIndex;
-  bool ascending = true;
+  bool ascending = false;
   List<List<PersonalizedTableCell>> sortedRows = [];
   int? minValueRowIndex;
   int? maxValueRowIndex;
@@ -53,18 +52,10 @@ class _TableItemState extends State<TableItem> {
     // Copy the incoming rows
     sortedRows = [...widget.rowValues];
 
-    // Apply the initial sort if requested
-    orderByIndex = widget.indexToSort;
-    if (orderByIndex != null) {
-      ascending = true;
-      _sortRows(orderByIndex!);
+    // Apply the initial sort
+    if (widget.indexToSort != null) {
+      _sortRows(widget.indexToSort!);
     }
-
-    // And calculate your min/max highlights
-    _calculateMinMaxIndexes();
-    // No need for setState here, because
-    // initState + didUpdateWidget both lead
-    // to another build automatically.
   }
 
   void _sortRows(int columnIndex) {
@@ -89,6 +80,7 @@ class _TableItemState extends State<TableItem> {
         return ascending ? aValue.compareTo(bValue) : bValue.compareTo(aValue);
       }
     });
+    _calculateMinMaxIndexes();
   }
 
   void _calculateMinMaxIndexes() {
@@ -198,7 +190,10 @@ class _TableItemState extends State<TableItem> {
                           minHeight: widget.titleMinHeight ?? 1,
                         ),
                         child: InkWell(
-                          onTap: () => _sortRows(index),
+                          onTap: () {
+                            ascending = !ascending;
+                            _sortRows(index);
+                          },
                           child: PersonalizedTableCell(
                             value: tableCell.value,
                             isTitle: true,
