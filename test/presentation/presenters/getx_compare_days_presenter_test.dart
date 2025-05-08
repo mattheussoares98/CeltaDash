@@ -161,6 +161,8 @@ void main() {
 
       verify(
         () => loadSaleMovements.get(
+          groupByYear: true,
+          groupByMonth: true,
           groupByDay: true,
           groupByHour: true,
           enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
@@ -185,6 +187,8 @@ void main() {
 
       verify(
         () => loadSaleMovements.get(
+            groupByYear: true,
+            groupByMonth: true,
             groupByDay: true,
             groupByHour: true,
             enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],

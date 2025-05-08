@@ -42,9 +42,7 @@ class GetxCompareDaysPresenter extends GetxController
           groupByMonth: true,
           groupByDay: true,
           groupByHour: true,
-          enterpriseIds: [
-            homePresenter.selectedEnterprise!.id!.toInt(),
-          ],
+          enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
           endDate: DateTime(
             firstDay.year,
             firstDay.month,
@@ -67,9 +65,7 @@ class GetxCompareDaysPresenter extends GetxController
           groupByMonth: true,
           groupByDay: true,
           groupByHour: true,
-          enterpriseIds: [
-            homePresenter.selectedEnterprise!.id!.toInt(),
-          ],
+          enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
           endDate: DateTime(
             secondDay.year,
             secondDay.month,
