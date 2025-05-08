@@ -66,7 +66,7 @@ class MonthlyAnalysis extends StatelessWidget {
 
     return Container(
       decoration: ContainerDecoration.decoration,
-      padding: EdgeInsets.all(8),
+      padding: EdgeInsets.fromLTRB(4, 8, 8, 8),
       child: Column(
         children: [
           Text(

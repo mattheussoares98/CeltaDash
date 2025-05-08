@@ -12,7 +12,7 @@ class ChartPrices extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final leftReservedSize = MediaQuery.of(context).size.width * 0.10;
+    final leftReservedSize = MediaQuery.of(context).size.width * 0.08;
 
     return Column(
       spacing: 16,
@@ -145,8 +145,24 @@ class ChartPrices extends StatelessWidget {
                 leftTitles: AxisTitles(
                   drawBelowEverything: true,
                   sideTitles: SideTitles(
-                    showTitles: true,
+                    getTitlesWidget: (value, meta) {
+                      String formatted = value.toString();
+                      if (value.toString().length >= 4) {
+                        formatted = (value / 1000).toString();
+                      } else if (value.toString().length >= 7) {
+                        formatted = (value / 1000000).toString();
+                      }
+                      return Expanded(
+                        child: Text(
+                          "${formatted.toBrazilianNumber(0)}K",
+                          style: TextStyle(
+                            fontSize: 10,
+                          ),
+                        ),
+                      );
+                    },
                     reservedSize: leftReservedSize,
+                    showTitles: true,
                     maxIncluded: false,
                     minIncluded: false,
                   ),
