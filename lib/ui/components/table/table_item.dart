@@ -55,6 +55,9 @@ class _TableItemState extends State<TableItem> {
     // Apply the initial sort
     if (widget.indexToSort != null) {
       _sortRows(widget.indexToSort!);
+    } else {
+      // still highlight best/worst even if no sort
+      _calculateMinMaxIndexes();
     }
   }
 
