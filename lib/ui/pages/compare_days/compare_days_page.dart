@@ -18,12 +18,11 @@ class CompareDaysPage extends StatefulWidget {
 
 class _ProfitabilityPageState extends State<CompareDaysPage>
     with UIErrorManager, LoadingManager {
+  StreamSubscription? loadingSubscription;
+  StreamSubscription? mainErrorSubscription;
   static final _now = DateTime.now();
   final firstDay = DateTime(_now.year, _now.month, _now.day - 1);
   final secondDay = DateTime(_now.year, _now.month, _now.day);
-
-  StreamSubscription? loadingSubscription;
-  StreamSubscription? mainErrorSubscription;
 
   @override
   void initState() {
@@ -32,6 +31,7 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
         HomePresenter homePresenter = Get.find();
+
         await widget.presenter.getSales(
           firstDay: firstDay,
           secondDay: secondDay,
@@ -66,8 +66,8 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
       appBar: DefaultAppBar(
         onChangeEnterprise: (_) async {
           await widget.presenter.getSales(
-            firstDay: firstDay,
-            secondDay: secondDay,
+            firstDay: widget.presenter.selectedFirstDay ?? firstDay,
+            secondDay: widget.presenter.selectedSecondDay ?? secondDay,
             homePresenter: homePresenter,
           );
         },
@@ -86,13 +86,21 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
                 child: Column(
                   children: [
                     ChangeDatesButtons(
-                      firstDay: firstDay,
-                      secondDay: secondDay,
+                      firstDay: widget.presenter.selectedFirstDay ?? firstDay,
+                      secondDay:
+                          widget.presenter.selectedSecondDay ?? secondDay,
                     ),
-                    if (saleMovements != null)
-                      CompareTable(firstDay: firstDay, secondDay: secondDay),
-                    if (saleMovements != null)
-                      Result(firstDay: firstDay, secondDay: secondDay),
+                    if (saleMovements != null &&
+                        widget.presenter.selectedFirstDay != null &&
+                        widget.presenter.selectedSecondDay != null)
+                      Expanded(
+                        child: Column(
+                          children: [
+                            CompareTable(),
+                            Result(),
+                          ],
+                        ),
+                      ),
                   ],
                 ),
               );

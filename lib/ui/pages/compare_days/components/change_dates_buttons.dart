@@ -25,22 +25,33 @@ class ChangeDatesButtons extends StatelessWidget {
       lastDate: DateTime.now(),
       reduceDaysFromInitialDate: 365,
     );
-    final date = isFirstDate
-        ? compareDaysPresenter.selectedFirstDay ?? firstDay
-        : compareDaysPresenter.selectedSecondDay ?? secondDay;
+    final date = isFirstDate ? firstDay : secondDay;
 
     if (newDate != null && newDate != date) {
       await compareDaysPresenter.getSales(
-        firstDay: isFirstDate
-            ? newDate
-            : compareDaysPresenter.selectedFirstDay ?? firstDay,
-        secondDay: isFirstDate == false
-            ? newDate
-            : compareDaysPresenter.selectedSecondDay ?? secondDay,
+        firstDay: isFirstDate ? newDate : firstDay,
+        secondDay: isFirstDate == false ? newDate : secondDay,
         homePresenter: homePresenter,
       );
 
       debugPrint("Changed date");
+    }
+  }
+
+  bool showRefreshButton(CompareDaysPresenter compareDaysPresenter) {
+    final now = DateTime.now();
+    if (compareDaysPresenter.saleMovements == null) {
+      return true;
+    } else if (firstDay.day == now.day &&
+        firstDay.month == now.month &&
+        firstDay.year == now.year) {
+      return true;
+    } else if (secondDay.day == now.day &&
+        secondDay.month == now.month &&
+        secondDay.year == now.year) {
+      return true;
+    } else {
+      return false;
     }
   }
 
@@ -54,7 +65,7 @@ class ChangeDatesButtons extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Flexible(
+          Expanded(
             child: ElevatedButton(
               onPressed: () async {
                 await _updateDate(
@@ -64,12 +75,11 @@ class ChangeDatesButtons extends StatelessWidget {
                 );
               },
               child: FittedBox(
-                  child: Text(DateFormat.yMd('pt_BR').format(
-                      compareDaysPresenter.selectedFirstDay ?? firstDay))),
+                  child: Text(DateFormat.yMd('pt_BR').format(firstDay))),
             ),
           ),
           const SizedBox(width: 8),
-          Flexible(
+          Expanded(
             child: ElevatedButton(
               onPressed: () async {
                 await _updateDate(
@@ -79,10 +89,23 @@ class ChangeDatesButtons extends StatelessWidget {
                 );
               },
               child: FittedBox(
-                  child: Text(DateFormat.yMd('pt_BR').format(
-                      compareDaysPresenter.selectedSecondDay ?? secondDay))),
+                  child: Text(DateFormat.yMd('pt_BR').format(secondDay))),
             ),
           ),
+          if (showRefreshButton(compareDaysPresenter))
+            Padding(
+              padding: const EdgeInsets.only(left: 8),
+              child: IconButton(
+                onPressed: () async {
+                  await compareDaysPresenter.getSales(
+                    firstDay: firstDay,
+                    secondDay: secondDay,
+                    homePresenter: homePresenter,
+                  );
+                },
+                icon: Icon(Icons.refresh),
+              ),
+            ),
         ],
       ),
     );

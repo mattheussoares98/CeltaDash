@@ -6,12 +6,8 @@ import '../../pages.dart';
 import 'components.dart';
 
 class Result extends StatelessWidget {
-  final DateTime firstDay;
-  final DateTime secondDay;
   const Result({
     super.key,
-    required this.firstDay,
-    required this.secondDay,
   });
 
   double getTotalDifference({required double first, required double second}) {
@@ -36,11 +32,16 @@ class Result extends StatelessWidget {
         filterDay: compareDaysPresenter.selectedSecondDay?.day,
       );
 
+      if (compareDaysPresenter.selectedFirstDay == null ||
+          compareDaysPresenter.selectedSecondDay == null) {
+        return SizedBox.shrink();
+      }
+
       return Padding(
         padding: const EdgeInsets.all(8),
         child: DayComparison(
-          firstDate: compareDaysPresenter.selectedFirstDay ?? firstDay,
-          secondDate: compareDaysPresenter.selectedSecondDay ?? secondDay,
+          firstDate: compareDaysPresenter.selectedFirstDay!,
+          secondDate: compareDaysPresenter.selectedSecondDay!,
           totalDifference: getTotalDifference(
             first: firstDayTotalLiquid,
             second: secondDayTotalLiquid,

@@ -7,12 +7,8 @@ import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
 class CompareTable extends StatelessWidget {
-  final DateTime firstDay;
-  final DateTime secondDay;
   const CompareTable({
     super.key,
-    required this.firstDay,
-    required this.secondDay,
   });
 
   double calculateDifference(double day1, double day2) {
@@ -29,11 +25,22 @@ class CompareTable extends StatelessWidget {
     final dayWidth = MediaQuery.of(context).size.width * 0.3;
     final compareDaysWidth = MediaQuery.of(context).size.width * 0.2;
 
+    if (compareDaysPresenter.selectedFirstDay == null ||
+        compareDaysPresenter.selectedSecondDay == null) {
+      return SizedBox.shrink();
+    }
+
     return TableItem(
       titles: [
         PersonalizedTableCell(value: R.string.hour),
-        PersonalizedTableCell(value: DateFormat.yMd('pt_BR').format(firstDay)),
-        PersonalizedTableCell(value: DateFormat.yMd('pt_BR').format(secondDay)),
+        PersonalizedTableCell(
+          value: DateFormat.yMd('pt_BR')
+              .format(compareDaysPresenter.selectedFirstDay!),
+        ),
+        PersonalizedTableCell(
+          value: DateFormat.yMd('pt_BR')
+              .format(compareDaysPresenter.selectedSecondDay!),
+        ),
         PersonalizedTableCell(value: R.string.differente),
       ],
       titleMinHeight: 40,
