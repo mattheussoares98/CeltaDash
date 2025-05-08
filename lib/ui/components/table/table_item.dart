@@ -34,30 +34,59 @@ class _TableItemState extends State<TableItem> {
   int? maxValueRowIndex;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Check if the input data changed, and reset state
-    debugPrint("updated");
-    sortedRows = [...widget.rowValues];
-    _calculateMinMaxIndexes();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted && widget.indexToSort != null) {
-        sortTable(widget.indexToSort!);
-        sortTable(widget.indexToSort!);
-      }
-    });
+  void initState() {
+    super.initState();
+    _initializeAndSort();
   }
 
   @override
   void didUpdateWidget(covariant TableItem oldWidget) {
     super.didUpdateWidget(oldWidget);
+    // Only re-init if the data or sort-column actually changed
+    if (oldWidget.rowValues != widget.rowValues ||
+        oldWidget.indexToSort != widget.indexToSort) {
+      _initializeAndSort();
+    }
+  }
 
-    sortedRows = [...oldWidget.rowValues];
+  void _initializeAndSort() {
+    // Copy the incoming rows
+    sortedRows = [...widget.rowValues];
+
+    // Apply the initial sort if requested
+    orderByIndex = widget.indexToSort;
+    if (orderByIndex != null) {
+      ascending = true;
+      _sortRows(orderByIndex!);
+    }
+
+    // And calculate your min/max highlights
     _calculateMinMaxIndexes();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted && oldWidget.indexToSort != null) {
-        sortTable(oldWidget.indexToSort!);
-        sortTable(oldWidget.indexToSort!);
+    // No need for setState here, because
+    // initState + didUpdateWidget both lead
+    // to another build automatically.
+  }
+
+  void _sortRows(int columnIndex) {
+    sortedRows.sort((a, b) {
+      final aValue = a[columnIndex].value.toString();
+      final bValue = b[columnIndex].value.toString();
+
+      // Try numeric
+      final aNum = double.tryParse(aValue);
+      final bNum = double.tryParse(bValue);
+      if (aNum != null && bNum != null) {
+        return ascending ? aNum.compareTo(bNum) : bNum.compareTo(aNum);
+      }
+
+      // Try time HH:mm
+      try {
+        final aTime = _parseTime(aValue);
+        final bTime = _parseTime(bValue);
+        return ascending ? aTime.compareTo(bTime) : bTime.compareTo(aTime);
+      } catch (_) {
+        // Fallback to string
+        return ascending ? aValue.compareTo(bValue) : bValue.compareTo(aValue);
       }
     });
   }
@@ -86,44 +115,6 @@ class _TableItemState extends State<TableItem> {
       }
     }
     setState(() {});
-  }
-
-  void sortTable(int columnIndex) {
-    setState(() {
-      if (orderByIndex == columnIndex) {
-        ascending = !ascending;
-      } else {
-        ascending = true;
-        orderByIndex = columnIndex;
-      }
-
-      sortedRows.sort((a, b) {
-        final aValue = a[columnIndex].value.toString();
-        final bValue = b[columnIndex].value.toString();
-
-        // Try parsing as double first
-        final aDouble = double.tryParse(aValue);
-        final bDouble = double.tryParse(bValue);
-        if (aDouble != null && bDouble != null) {
-          return ascending
-              ? aDouble.compareTo(bDouble)
-              : bDouble.compareTo(aDouble);
-        }
-
-        // Try parsing as time (HH:mm)
-        try {
-          final aTime = _parseTime(aValue.substring(0, 4));
-          final bTime = _parseTime(bValue.substring(0, 4));
-          return ascending ? bTime.compareTo(aTime) : aTime.compareTo(bTime);
-        } catch (_) {
-          // Fallback to string comparison
-          return ascending
-              ? aValue.compareTo(bValue)
-              : bValue.compareTo(aValue);
-        }
-      });
-    });
-    _calculateMinMaxIndexes();
   }
 
   DateTime _parseTime(String time) {
@@ -207,7 +198,7 @@ class _TableItemState extends State<TableItem> {
                           minHeight: widget.titleMinHeight ?? 1,
                         ),
                         child: InkWell(
-                          onTap: () => sortTable(index),
+                          onTap: () => _sortRows(index),
                           child: PersonalizedTableCell(
                             value: tableCell.value,
                             isTitle: true,
