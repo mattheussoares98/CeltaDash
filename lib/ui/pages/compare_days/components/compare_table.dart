@@ -7,15 +7,11 @@ import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
 class CompareTable extends StatelessWidget {
+  final double Function(double day1, double day2) calculateDifferencePercentage;
   const CompareTable({
     super.key,
+    required this.calculateDifferencePercentage,
   });
-
-  double calculateDifference(double day1, double day2) {
-    if (day1 == 0 && day2 == 0) return 0.0;
-    if (day1 == 0) return -100.0; // No sales on Day 1, some on Day 2
-    return ((day1 - day2) / day1) * 100;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +68,8 @@ class CompareTable extends StatelessWidget {
             .map((e) => e.LiquidValue?.toDouble() ?? 0)
             .fold(0.0, (a, b) => a + b);
 
-        final difference = calculateDifference(firstDayTotal, secondDayTotal);
+        final difference =
+            calculateDifferencePercentage(firstDayTotal, secondDayTotal);
 
         return [
           PersonalizedTableCell(value: hour),

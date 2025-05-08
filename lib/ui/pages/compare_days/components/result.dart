@@ -6,17 +6,11 @@ import '../../pages.dart';
 import 'components.dart';
 
 class Result extends StatelessWidget {
+  final double Function(double day1, double day2) calculateDifferencePercentage;
   const Result({
     super.key,
+    required this.calculateDifferencePercentage,
   });
-
-  double getTotalDifference({required double first, required double second}) {
-    if (first > second) {
-      return (first / second - 1) * 100;
-    } else {
-      return -((second - first) / first) * 100;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +36,9 @@ class Result extends StatelessWidget {
         child: DayComparison(
           firstDate: compareDaysPresenter.selectedFirstDay!,
           secondDate: compareDaysPresenter.selectedSecondDay!,
-          totalDifference: getTotalDifference(
-            first: firstDayTotalLiquid,
-            second: secondDayTotalLiquid,
+          totalDifference: calculateDifferencePercentage(
+            firstDayTotalLiquid,
+            secondDayTotalLiquid,
           ),
           totalFirstDay: firstDayTotalLiquid,
           totalSecondDay: secondDayTotalLiquid,

@@ -51,6 +51,12 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
     mainErrorSubscription?.cancel();
   }
 
+  double calculateDifferencePercantage(double day1, double day2) {
+    if (day1 == 0 && day2 == 0) return 0.0;
+    if (day1 == 0) return -100.0; // No sales on Day 1, some on Day 2
+    return ((day1 - day2) / day1) * 100;
+  }
+
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
@@ -96,8 +102,14 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
                       Expanded(
                         child: Column(
                           children: [
-                            CompareTable(),
-                            Result(),
+                            CompareTable(
+                              calculateDifferencePercentage:
+                                  calculateDifferencePercantage,
+                            ),
+                            Result(
+                              calculateDifferencePercentage:
+                                  calculateDifferencePercantage,
+                            ),
                           ],
                         ),
                       ),
