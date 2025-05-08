@@ -141,9 +141,9 @@ class _ResumePageState extends State<ResumePage>
                         filterDay: homePresenter.selectedDate.day,
                       )).toString().toBrazilianNumber().addBrazilianCoin()}",
                     ),
-                    Text(
-                      "Request Cardoso to add products by sale quantity and average price",
-                    ),
+                    // Text(
+                    // TODO  "Request Cardoso to add products by sale quantity and average price",
+                    // ),
                   ],
                 ),
                 SizedBox(height: 8),
