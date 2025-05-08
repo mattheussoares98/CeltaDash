@@ -113,9 +113,16 @@ class _TableItemState extends State<TableItem> {
   }
 
   DateTime _parseTime(String time) {
-    final parts = time.split(":");
+    // strip off the first line‐break (LF or CRLF) and everything after it
+    final cleaned = time.replaceFirst(RegExp(r'\r?\n[\s\S]*$'), '');
+
+    // now split on “:”
+    final parts = cleaned.split(':');
     final hour = int.parse(parts[0]);
-    final minute = int.parse(parts[1]);
+
+    // if there’s no minute part (e.g. “10”), default to 0
+    final minute = parts.length > 1 ? int.parse(parts[1]) : 0;
+
     return DateTime(0, 1, 1, hour, minute);
   }
 
