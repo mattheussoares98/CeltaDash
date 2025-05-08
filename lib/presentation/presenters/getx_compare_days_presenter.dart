@@ -38,6 +38,8 @@ class GetxCompareDaysPresenter extends GetxController
       if (firstDay != null) {
         final saleMovements = await loadSaleMovements.get(
           startDate: firstDay,
+          groupByYear: true,
+          groupByMonth: true,
           groupByDay: true,
           groupByHour: true,
           enterpriseIds: [
@@ -61,6 +63,8 @@ class GetxCompareDaysPresenter extends GetxController
       if (secondDay != null) {
         final saleMovements = await loadSaleMovements.get(
           startDate: secondDay,
+          groupByYear: true,
+          groupByMonth: true,
           groupByDay: true,
           groupByHour: true,
           enterpriseIds: [
