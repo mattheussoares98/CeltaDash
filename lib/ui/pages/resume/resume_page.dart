@@ -158,12 +158,12 @@ class _ResumePageState extends State<ResumePage>
                 //   ),
                 //   title: R.string.salesOfTheMonth,
                 // ),
-                const SizedBox(height: 8),
-                DefaultNavigateButton(
-                  onTap: resumePresenter.goToProfitabillityPage,
-                  title: R.string.profitability,
-                  icon: Icon(Icons.arrow_outward_sharp, color: Colors.white),
-                ),
+                // const SizedBox(height: 8),
+                // DefaultNavigateButton(
+                //   onTap: resumePresenter.goToProfitabillityPage,
+                //   title: R.string.profitability,
+                //   icon: Icon(Icons.arrow_outward_sharp, color: Colors.white),
+                // ),
                 const SizedBox(height: 8),
                 DailyAnalysis(
                   saleMovements: saleMovements,
