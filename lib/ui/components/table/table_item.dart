@@ -106,7 +106,7 @@ class _TableItemState extends State<TableItem> {
         }
       }
     }
-    setState(() {});
+    // setState(() {});
   }
 
   DateTime _parseTime(String time) {
@@ -192,8 +192,10 @@ class _TableItemState extends State<TableItem> {
                         ),
                         child: InkWell(
                           onTap: () {
-                            ascending = !ascending;
-                            _sortRows(index);
+                            setState(() {
+                              ascending = !ascending;
+                              _sortRows(index);
+                            });
                           },
                           child: PersonalizedTableCell(
                             value: tableCell.value,
