@@ -23,10 +23,10 @@ class DepartmentsPage extends StatefulWidget {
 class _DepartmentsPageState extends State<DepartmentsPage>
     with LoadingManager, UIErrorManager {
   bool selectedMonth = false;
-  bool needUpdateScreen = false;
   int selectedPageIndex = 0;
   StreamSubscription? loadingSubscription;
   StreamSubscription? mainErrorSubscription;
+  final pageController = PageController();
 
   @override
   void initState() {
@@ -46,13 +46,13 @@ class _DepartmentsPageState extends State<DepartmentsPage>
     super.dispose();
     loadingSubscription?.cancel();
     mainErrorSubscription?.cancel();
+    pageController.dispose();
   }
 
   void updateSelectedMonth(bool value) {
     setState(() {
       selectedMonth = value;
     });
-    needUpdateScreen = true;
   }
 
   bool filter(SaleMovementViewModel sale, HomePresenter homePresenter) {
@@ -78,69 +78,71 @@ class _DepartmentsPageState extends State<DepartmentsPage>
       appBar: DefaultAppBar(
         onChangeEnterprise: (_) async {
           await widget.departmentsPresenter.getSales(homePresenter);
-          setState(() {
-            needUpdateScreen = true;
-          });
         },
         onChangeDate: (_) async {
           await widget.departmentsPresenter.getSales(homePresenter);
-          setState(() {
-            needUpdateScreen = true;
-          });
         },
         onTapRefresh: () async {
           await widget.departmentsPresenter.getSales(
             homePresenter,
             forceRefresh: true,
           );
-          setState(() {
-            needUpdateScreen = true;
-          });
         },
       ),
-      body: Obx(() {
-        if (needUpdateScreen) {
-          Future.delayed(Duration.zero, () {
-            setState(() {
-              needUpdateScreen = false;
-            });
-          });
-        }
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SelectDayOrMonth(updateSelectedMonth: updateSelectedMonth),
+          ),
+          Obx(() {
+            final saleMovements = widget.departmentsPresenter.saleMovements
+                ?.filteredSales(
+                  enterprise: homePresenter.selectedEnterprise,
+                )
+                .map((e) => e.toViewModel())
+                .where((e) => filter(e, homePresenter))
+                .toList();
 
-        final saleMovements = widget.departmentsPresenter.saleMovements
-            ?.filteredSales(
-              enterprise: homePresenter.selectedEnterprise,
-            )
-            .map((e) => e.toViewModel())
-            .where((e) => filter(e, homePresenter))
-            .toList();
+            if (saleMovements == null || saleMovements.isEmpty) {
+              return SizedBox.shrink();
+            }
 
-        if (saleMovements == null || saleMovements.isEmpty) {
-          return NoSalesWereFound();
-        }
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SelectDayOrMonth(updateSelectedMonth: updateSelectedMonth),
-            ),
-            //TODO analyse to create two pages and navigate between them
-            if (selectedPageIndex == 0)
-              Departments(saleMovements: saleMovements),
-            if (selectedPageIndex == 1) Sections(saleMovements: saleMovements),
-          ],
-        );
-      }),
+            return StreamBuilder<bool>(
+                stream: homePresenter.updateScreenStream,
+                builder: (context, snapshot) {
+                  return Expanded(
+                    child: Opacity(
+                      opacity: snapshot.data == true ? 0 : 1,
+                      child: PageView(
+                        controller: pageController,
+                        onPageChanged: (value) {
+                          setState(() {
+                            selectedPageIndex = value;
+                          });
+                        },
+                        children: [
+                          Departments(saleMovements: saleMovements),
+                          Sections(saleMovements: saleMovements),
+                        ],
+                      ),
+                    ),
+                  );
+                });
+          }),
+        ],
+      ),
       bottomNavigationBar: BottomNavigation(
         selectedPageIndex: selectedPageIndex,
         updateSelectedPageIndex: (value) {
-          if (value == selectedPageIndex) return;
           setState(() {
             selectedPageIndex = value;
           });
-          needUpdateScreen = true;
+          pageController.animateToPage(
+            value,
+            duration: Duration(milliseconds: 300),
+            curve: Curves.bounceOut,
+          );
         },
       ),
     );
