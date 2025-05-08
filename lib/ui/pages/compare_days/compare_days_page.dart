@@ -51,10 +51,9 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
     mainErrorSubscription?.cancel();
   }
 
-  bool needRefresh = false;
-
   @override
   Widget build(BuildContext context) {
+    HomePresenter homePresenter = Get.find();
     loadingSubscription?.cancel();
     mainErrorSubscription?.cancel();
 
@@ -65,46 +64,39 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
 
     return Scaffold(
       appBar: DefaultAppBar(
-        onChangeEnterprise: (_) {},
+        onChangeEnterprise: (_) async {
+          await widget.presenter.getSales(
+            firstDay: firstDay,
+            secondDay: secondDay,
+            homePresenter: homePresenter,
+          );
+        },
         showDatePicker: false,
       ),
       body: Obx(() {
         Get.put<CompareDaysPresenter>(widget.presenter);
 
-        if (needRefresh) {
-          Future.delayed(Duration.zero, () {
-            setState(() {});
-          });
-          needRefresh = false;
-        }
-        return Column(
-          children: [
-            ChangeDatesButtons(
-              firstDay: firstDay,
-              secondDay: secondDay,
-              updateDate: (date) {
-                setState(() {});
-              },
-              changeNeedUpdateScreen: () {
-                setState(() {
-                  needRefresh = true;
-                });
-              },
-            ),
-            const SizedBox(height: 10),
-            if (widget.presenter.saleMovements != null)
-              CompareTable(firstDay: firstDay, secondDay: secondDay),
-            if (widget.presenter.saleMovements != null)
-              Result(firstDay: firstDay, secondDay: secondDay),
-            // Expanded(
-            //   child: Column(
-            //     children: [
-            //       Result(firstDay: firstDay, secondDay: secondDay),
-            //     ],
-            //   ),
-            // ),
-          ],
-        );
+        final saleMovements = widget.presenter.saleMovements;
+
+        return StreamBuilder<bool>(
+            stream: homePresenter.updateScreenStream,
+            builder: (context, snapshot) {
+              return Opacity(
+                opacity: snapshot.data == true ? 0 : 1,
+                child: Column(
+                  children: [
+                    ChangeDatesButtons(
+                      firstDay: firstDay,
+                      secondDay: secondDay,
+                    ),
+                    if (saleMovements != null)
+                      CompareTable(firstDay: firstDay, secondDay: secondDay),
+                    if (saleMovements != null)
+                      Result(firstDay: firstDay, secondDay: secondDay),
+                  ],
+                ),
+              );
+            });
       }),
     );
   }
