@@ -103,10 +103,18 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
                         child: Column(
                           children: [
                             CompareTable(
+                              firstDay:
+                                  widget.presenter.selectedFirstDay ?? firstDay,
+                              secondDay: widget.presenter.selectedSecondDay ??
+                                  secondDay,
                               calculateDifferencePercentage:
                                   calculateDifferencePercantage,
                             ),
                             Result(
+                              firstDay:
+                                  widget.presenter.selectedFirstDay ?? firstDay,
+                              secondDay: widget.presenter.selectedSecondDay ??
+                                  secondDay,
                               calculateDifferencePercentage:
                                   calculateDifferencePercantage,
                             ),

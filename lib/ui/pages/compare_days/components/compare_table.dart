@@ -8,9 +8,13 @@ import '../../pages.dart';
 
 class CompareTable extends StatelessWidget {
   final double Function(double day1, double day2) calculateDifferencePercentage;
+  final DateTime firstDay;
+  final DateTime secondDay;
   const CompareTable({
     super.key,
     required this.calculateDifferencePercentage,
+    required this.firstDay,
+    required this.secondDay,
   });
 
   @override
@@ -55,16 +59,21 @@ class CompareTable extends StatelessWidget {
           .toSet()
           .toList()
           .map((hour) {
-        final firstDay = compareDaysPresenter.selectedFirstDay?.day;
-        final secondDay = compareDaysPresenter.selectedSecondDay?.day;
-
         final firstDayTotal = compareDaysPresenter.saleMovements!
-            .where((e) => e.Hour == hour && e.Date!.day == firstDay)
+            .where((e) =>
+                e.Hour == hour &&
+                e.Date!.day == firstDay.day &&
+                e.Date!.month == firstDay.month &&
+                e.Date!.year == firstDay.year)
             .map((e) => e.LiquidValue?.toDouble() ?? 0)
             .fold(0.0, (a, b) => a + b);
 
         final secondDayTotal = compareDaysPresenter.saleMovements!
-            .where((e) => e.Hour == hour && e.Date!.day == secondDay)
+            .where((e) =>
+                e.Hour == hour &&
+                e.Date!.day == secondDay.day &&
+                e.Date!.month == secondDay.month &&
+                e.Date!.year == secondDay.year)
             .map((e) => e.LiquidValue?.toDouble() ?? 0)
             .fold(0.0, (a, b) => a + b);
 
