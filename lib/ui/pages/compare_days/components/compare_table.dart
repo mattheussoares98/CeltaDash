@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
 class CompareTable extends StatelessWidget {
-  const CompareTable({super.key});
+  final DateTime firstDay;
+  final DateTime secondDay;
+  const CompareTable({
+    super.key,
+    required this.firstDay,
+    required this.secondDay,
+  });
 
   double calculateDifference(double day1, double day2) {
     if (day1 == 0 && day2 == 0) return 0.0;
@@ -25,13 +32,14 @@ class CompareTable extends StatelessWidget {
     return TableItem(
       titles: [
         PersonalizedTableCell(value: R.string.hour),
-        PersonalizedTableCell(value: "${R.string.day} 1"),
-        PersonalizedTableCell(value: "${R.string.day} 2"),
-        PersonalizedTableCell(value: "1 > 2"),
+        PersonalizedTableCell(value: DateFormat.yMd('pt_BR').format(firstDay)),
+        PersonalizedTableCell(value: DateFormat.yMd('pt_BR').format(secondDay)),
+        PersonalizedTableCell(value: R.string.differente),
       ],
       titleMinHeight: 40,
       indexToSort: 0,
       columnIndexToCompareAndDetachBetterAndWorstValue: 3,
+      columnsIndexToSum: [1, 2],
       tableColumnWidth: {
         0: FixedColumnWidth(hourWidth),
         1: FixedColumnWidth(dayWidth),

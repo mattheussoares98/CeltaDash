@@ -38,37 +38,15 @@ class Result extends StatelessWidget {
 
       return Padding(
         padding: const EdgeInsets.all(8),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: TotalSalesByDay(
-                    date: compareDaysPresenter.selectedFirstDay ?? firstDay,
-                    totalSales: firstDayTotalLiquid,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: TotalSalesByDay(
-                    date: compareDaysPresenter.selectedSecondDay ?? secondDay,
-                    totalSales: secondDayTotalLiquid,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            DayComparison(
-              firstDate: compareDaysPresenter.selectedFirstDay ?? firstDay,
-              secondDate: compareDaysPresenter.selectedSecondDay ?? secondDay,
-              totalDifference: getTotalDifference(
-                first: firstDayTotalLiquid,
-                second: secondDayTotalLiquid,
-              ),
-              totalFirstDay: firstDayTotalLiquid,
-              totalSecondDay: secondDayTotalLiquid,
-            ),
-          ],
+        child: DayComparison(
+          firstDate: compareDaysPresenter.selectedFirstDay ?? firstDay,
+          secondDate: compareDaysPresenter.selectedSecondDay ?? secondDay,
+          totalDifference: getTotalDifference(
+            first: firstDayTotalLiquid,
+            second: secondDayTotalLiquid,
+          ),
+          totalFirstDay: firstDayTotalLiquid,
+          totalSecondDay: secondDayTotalLiquid,
         ),
       );
     });

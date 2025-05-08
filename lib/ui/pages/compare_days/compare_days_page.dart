@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../components/components.dart';
-import '../../helpers/helpers.dart';
 import '../../mixins/mixins.dart';
 import '../pages.dart';
 import 'components/components.dart';
@@ -80,10 +79,6 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
         }
         return Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(R.string.compareDays),
-            ),
             ChangeDatesButtons(
               firstDay: firstDay,
               secondDay: secondDay,
@@ -97,7 +92,8 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
               },
             ),
             const SizedBox(height: 10),
-            if (widget.presenter.saleMovements != null) CompareTable(),
+            if (widget.presenter.saleMovements != null)
+              CompareTable(firstDay: firstDay, secondDay: secondDay),
             if (widget.presenter.saleMovements != null)
               Result(firstDay: firstDay, secondDay: secondDay),
             // Expanded(
