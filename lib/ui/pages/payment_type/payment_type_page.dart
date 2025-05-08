@@ -120,7 +120,7 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                 saleMovementsByFinalizations.isEmpty ||
                 saleMovementsByModalities == null ||
                 saleMovementsByModalities.isEmpty) {
-              return NoSalesWereFound();
+              return SizedBox.shrink();
             }
 
             return StreamBuilder<bool>(
