@@ -23,25 +23,25 @@ class PeriodItems extends StatelessWidget {
           child: SelectPeriodItems(
             items: [
               SelectPeriodItems.createItem(
-                title: R.string.hour,
+                title: R.string.hours,
                 onTap: () {
                   updateSelectedItem(filterByHour: true);
                 },
               ),
               SelectPeriodItems.createItem(
-                title: R.string.day,
+                title: R.string.days,
                 onTap: () {
                   updateSelectedItem(filterByDay: true);
                 },
               ),
               SelectPeriodItems.createItem(
-                title: R.string.month,
+                title: R.string.months,
                 onTap: () {
                   updateSelectedItem(filterByMonth: true);
                 },
               ),
               SelectPeriodItems.createItem(
-                title: R.string.year,
+                title: R.string.years,
                 onTap: () {
                   updateSelectedItem(filterByYear: true);
                 },

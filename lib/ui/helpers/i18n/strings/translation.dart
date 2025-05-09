@@ -28,6 +28,7 @@ abstract class Translation {
   String get dailyAnalysisAverage;
   String get dateNotUpdated;
   String get day;
+  String get days;
   String get department;
   String get departments;
   String get details;
@@ -45,12 +46,14 @@ abstract class Translation {
   String get groupOfStores;
   String get groupSummary;
   String get hour;
+  String get hours;
   String get indicators;
   String get insertGoal;
   String get loadEnterprises;
   String get logout;
   String get modalities;
   String get month;
+  String get months;
   String get monthlyAnalysis;
   String get moreDetails;
   String get no;
@@ -91,5 +94,6 @@ abstract class Translation {
   String get worstDayOfTheMonth;
   String get worstHourOfTheDay;
   String get year;
+  String get years;
   String get yes;
 }

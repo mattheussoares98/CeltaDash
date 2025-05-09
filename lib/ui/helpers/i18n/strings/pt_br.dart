@@ -33,6 +33,7 @@ class PtBr implements Translation {
   String get dailyAnalysisAverage => "Análise diária (média)";
   String get dateNotUpdated => "Data não atualizada";
   String get day => "Dia";
+  String get days => "Dias";
   String get department => "Departamento";
   String get departments => "Departamentos";
   String get details => "Detalhes";
@@ -50,12 +51,14 @@ class PtBr implements Translation {
   String get groupOfStores => "Grupo de lojas";
   String get groupSummary => "Resumo do grupo";
   String get hour => "Hora";
+  String get hours => "Horas";
   String get indicators => "Indicadores";
   String get insertGoal => "Inserir meta";
   String get loadEnterprises => "Carregar empresas";
   String get logout => "Sair";
   String get modalities => "Modalidades";
   String get month => "Mês";
+  String get months => "Meses";
   String get monthlyAnalysis => "Análise mensal";
   String get moreDetails => "Mais detalhes";
   String get no => "Não";
@@ -97,5 +100,6 @@ class PtBr implements Translation {
   String get worstDayOfTheMonth => "Pior dia do mês";
   String get worstHourOfTheDay => "Pior hora do dia";
   String get year => "Ano";
+  String get years => "Anos";
   String get yes => "Sim";
 }
