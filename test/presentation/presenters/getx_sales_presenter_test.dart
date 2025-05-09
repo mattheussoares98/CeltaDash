@@ -92,8 +92,6 @@ void main() {
       await sut.getSales(
         resumePresenter: resumePresenter,
         homePresenter: homePresenter,
-        searchByHour: true,
-        searchByDay: true,
         searchByMonth: true,
         searchByYear: true,
       );
@@ -214,6 +212,26 @@ void main() {
       verify(
         () => resumePresenter.getSales(homePresenter, forceRefresh: false),
       ).called(1);
+    });
+
+    test("Should not load sale movements when filter day or hour", () async {
+      await sut.getSales(
+        resumePresenter: resumePresenter,
+        homePresenter: homePresenter,
+        searchByHour: true,
+        searchByDay: true,
+      );
+
+      verifyNever(
+        () => loadSaleMovements.get(
+          enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+          groupByEnterprise: true,
+          startDate: DateTime(homePresenter.selectedDateMock.year),
+          endDate: DateTime(homePresenter.selectedDateMock.year),
+          groupByYear: true,
+          groupByMonth: true,
+        ),
+      );
     });
   });
 }

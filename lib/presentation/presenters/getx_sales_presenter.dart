@@ -28,25 +28,24 @@ class GetxSalesPresenter extends GetxController
     isLoading = true;
 
     try {
-      late DateTime startDate;
-      late DateTime endDate;
-
-      if (searchByHour == true || searchByDay == true) {
+      if (searchByHour != true &&
+          searchByDay != true &&
+          searchByMonth != true &&
+          searchByYear != true &&
+          forceRefresh != true) {
+        throw DomainError.unexpected;
+      } else if (searchByHour == true || searchByDay == true) {
         await resumePresenter.getSales(
           homePresenter,
           forceRefresh: forceRefresh,
         );
-      } else if (searchByMonth == true || searchByYear == true) {
-        startDate = DateTime(homePresenter.selectedDate.year);
-        endDate = DateTime(homePresenter.selectedDate.year);
-      } else {
-        throw DomainError.unexpected;
+        return;
       }
 
       final remoteSales = await loadSaleMovements.get(
         enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
-        startDate: startDate,
-        endDate: endDate,
+        startDate: DateTime(homePresenter.selectedDate.year),
+        endDate: DateTime(homePresenter.selectedDate.year),
         groupByEnterprise: true,
         groupByMonth: true,
         groupByYear: true,
