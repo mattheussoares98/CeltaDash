@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../main/factories/factories.dart';
+import '../../../ui/mixins/mixins.dart';
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 import '../pages.dart';
@@ -13,7 +16,10 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with LoadingManager, UIErrorManager {
+  StreamSubscription? resumeLoadingSubscription;
+  StreamSubscription? resumeMainErrorSubscription;
   @override
   void initState() {
     super.initState();
@@ -32,6 +38,14 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+
+    resumeLoadingSubscription?.cancel();
+    resumeMainErrorSubscription?.cancel();
+  }
+
   final pages = <Widget>[
     makeResumePage(),
     IndicatorsPage(),
@@ -43,6 +57,18 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
+    ResumePresenter resumePresenter = Get.find();
+
+    resumeLoadingSubscription?.cancel();
+    resumeMainErrorSubscription?.cancel();
+    resumeLoadingSubscription = handleLoading(
+      context,
+      resumePresenter.isLoadingStream,
+    );
+    resumeMainErrorSubscription = handleMainError(
+      context,
+      resumePresenter.mainErrorStream,
+    );
 
     return StreamBuilder<int>(
       stream: homePresenter.currentPageIndexStream,
