@@ -51,12 +51,14 @@ class _SalesPageState extends State<SalesPage>
     });
   }
 
-  Future<void> reloadSales(
-    HomePresenter homePresenter, {
+  Future<void> reloadSales({
+    required HomePresenter homePresenter,
+    required ResumePresenter resumePresenter,
     bool? forceRefresh,
   }) async {
     await widget.presenter.getSales(
       homePresenter: homePresenter,
+      resumePresenter: resumePresenter,
       searchByHour: filterByHour,
       searchByDay: filterByDay,
       searchByMonth: filterByMonth,

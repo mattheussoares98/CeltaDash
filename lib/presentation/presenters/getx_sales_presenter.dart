@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
@@ -18,6 +17,7 @@ class GetxSalesPresenter extends GetxController
   @override
   Future<void> getSales({
     required HomePresenter homePresenter,
+    required ResumePresenter resumePresenter,
     bool? searchByHour,
     bool? searchByDay,
     bool? searchByMonth,
@@ -66,8 +66,6 @@ class GetxSalesPresenter extends GetxController
         groupByYear: (searchByMonth == true || searchByYear == true) &&
             (searchByHour != true && searchByDay != true),
       );
-
-      debugPrint("stop");
 
       saleMovements = remoteSales
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())

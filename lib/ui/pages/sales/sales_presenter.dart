@@ -11,6 +11,7 @@ abstract class SalesPresenter implements Listenable {
 
   Future<void> getSales({
     required HomePresenter homePresenter,
+    required ResumePresenter resumePresenter,
     bool? searchByHour,
     bool? searchByDay,
     bool? searchByMonth,

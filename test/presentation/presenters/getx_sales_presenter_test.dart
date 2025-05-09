@@ -17,6 +17,7 @@ import '../mocks/mocks.dart';
 void main() {
   late GetxSalesPresenter sut;
   late HomePresenterSpy homePresenter;
+  late ResumePresenterSpy resumePresenter;
 
   late LoadSaleMovementsSpy loadSaleMovements;
 
@@ -34,6 +35,7 @@ void main() {
       loadSaleMovements: loadSaleMovements,
     );
     homePresenter = HomePresenterSpy();
+    resumePresenter = ResumePresenterSpy();
   }
 
   void initEntities() {
@@ -61,6 +63,7 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue("");
+    registerFallbackValue(HomePresenterSpy());
   });
 
   group("Get sales", () {
@@ -69,6 +72,7 @@ void main() {
       expectLater(sut.mainErrorStream, emits(null));
 
       await sut.getSales(
+        resumePresenter: resumePresenter,
         homePresenter: homePresenter,
         searchByHour: true,
         searchByDay: true,
@@ -86,6 +90,7 @@ void main() {
       loadSaleMovements.mockGetError();
 
       await sut.getSales(
+        resumePresenter: resumePresenter,
         homePresenter: homePresenter,
         searchByHour: true,
         searchByDay: true,
@@ -102,6 +107,7 @@ void main() {
       );
 
       await sut.getSales(
+        resumePresenter: resumePresenter,
         homePresenter: homePresenter,
         searchByHour: false,
         searchByDay: false,
@@ -111,7 +117,10 @@ void main() {
     });
     test("Should load sale movements with correct params when filter day",
         () async {
-      await sut.getSales(homePresenter: homePresenter, searchByDay: true);
+      await sut.getSales(
+          resumePresenter: resumePresenter,
+          homePresenter: homePresenter,
+          searchByDay: true);
 
       verify(
         () => loadSaleMovements.get(
@@ -135,7 +144,10 @@ void main() {
     });
     test("Should load sale movements with correct params when filter hour",
         () async {
-      await sut.getSales(homePresenter: homePresenter, searchByHour: true);
+      await sut.getSales(
+          resumePresenter: resumePresenter,
+          homePresenter: homePresenter,
+          searchByHour: true);
 
       verify(
         () => loadSaleMovements.get(
@@ -159,7 +171,10 @@ void main() {
     });
     test("Should load sale movements with correct params when filter month",
         () async {
-      await sut.getSales(homePresenter: homePresenter, searchByMonth: true);
+      await sut.getSales(
+          resumePresenter: resumePresenter,
+          homePresenter: homePresenter,
+          searchByMonth: true);
 
       verify(
         () => loadSaleMovements.get(
@@ -176,7 +191,10 @@ void main() {
     });
     test("Should load sale movements with correct params when filter year",
         () async {
-      await sut.getSales(homePresenter: homePresenter, searchByMonth: true);
+      await sut.getSales(
+          resumePresenter: resumePresenter,
+          homePresenter: homePresenter,
+          searchByMonth: true);
 
       verify(
         () => loadSaleMovements.get(
@@ -192,7 +210,10 @@ void main() {
       ).called(1);
     });
     test("Should change last loaded date correctly", () async {
-      await sut.getSales(homePresenter: homePresenter, searchByMonth: true);
+      await sut.getSales(
+          resumePresenter: resumePresenter,
+          homePresenter: homePresenter,
+          searchByMonth: true);
 
       expect(sut.lastLoadedDate, homePresenter.selectedDateMock);
     });
@@ -201,6 +222,7 @@ void main() {
         "Should not load if is searching by hour or day and dont changed month and year",
         () async {
       await sut.getSales(
+        resumePresenter: resumePresenter,
         homePresenter: homePresenter,
         searchByMonth: true,
         searchByDay: true,
@@ -213,6 +235,7 @@ void main() {
       );
 
       await sut.getSales(
+        resumePresenter: resumePresenter,
         homePresenter: homePresenter,
         searchByHour: true,
         searchByDay: true,
@@ -240,12 +263,14 @@ void main() {
     });
     test("Should load again if pass the same date but force refresh", () async {
       await sut.getSales(
+        resumePresenter: resumePresenter,
         homePresenter: homePresenter,
         searchByMonth: true,
         searchByDay: true,
       );
 
       await sut.getSales(
+        resumePresenter: resumePresenter,
         homePresenter: homePresenter,
         searchByHour: true,
         searchByDay: true,
