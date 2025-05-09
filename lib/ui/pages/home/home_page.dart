@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
     final pages = <Widget>[
       makeResumePage(),
       IndicatorsPage(),
-      SalesPage(),
+      makeSalesPage(),
       ProductsPage(),
       makeTeamPage(),
     ];

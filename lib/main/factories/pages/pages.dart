@@ -11,6 +11,7 @@ export 'operators_sales/operators_sales.dart';
 export 'payments_type/payments_type.dart';
 export 'profitability/profitability.dart';
 export 'resume/resume.dart';
+export 'sales/sales.dart';
 export 'sallers_sales/sallers_sales.dart';
 export 'departments/departments.dart';
 export 'set_goal/set_goal.dart';
