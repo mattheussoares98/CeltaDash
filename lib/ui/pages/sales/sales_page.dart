@@ -105,8 +105,6 @@ class _SalesPageState extends State<SalesPage>
           stream: homePresenter.updateScreenStream,
           builder: (context, snapshot) {
             return Obx(() {
-              Get.put<SalesPresenter>(widget.presenter);
-
               final resumeSaleMovements = resumePresenter.saleMovements
                   ?.filteredSales(
                     enterprise: homePresenter.selectedEnterprise,

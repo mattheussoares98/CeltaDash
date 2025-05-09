@@ -59,5 +59,6 @@ void _insertGetPresenters() {
   Get.put<HomePresenter>(makeGetxHomePresenter());
   Get.put<LoginPresenter>(makeGetxLoginPresenter());
   Get.put<ResumePresenter>(makeGetxResumePresenter());
+  Get.put<SalesPresenter>(makeGetxSalesPresenter());
   Get.put<SplashPresenter>(makeGetxSplashPresenter());
 }
