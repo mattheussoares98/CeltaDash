@@ -22,6 +22,8 @@ class DayTable extends StatelessWidget {
       titleMinHeight: 43,
       tableColumnWidth: {
         0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.13),
+        2: FixedColumnWidth(MediaQuery.of(context).size.width * 0.20),
+        3: FixedColumnWidth(MediaQuery.of(context).size.width * 0.20),
       },
       columnIndexToCompareAndDetachBetterAndWorstValue: 1,
       columnsIndexToSum: [1],
@@ -31,16 +33,23 @@ class DayTable extends StatelessWidget {
         PersonalizedTableCell(
           value: R.string.totalSales.toUpperCase(),
         ),
+        PersonalizedTableCell(
+          value: R.string.salesQuantityAbbreviated.toUpperCase(),
+        ),
         PersonalizedTableCell(value: R.string.share.toUpperCase()),
       ],
-      rowValues:
-          resumeSaleMovements.map((e) => e.Date?.day).toSet().toList().map((day) {
+      rowValues: resumeSaleMovements
+          .map((e) => e.Date?.day)
+          .toSet()
+          .toList()
+          .map((day) {
         final salesByDay = resumeSaleMovements
             .filteredSales(filterDay: day)
             .map((e) => e.toViewModel())
             .toList();
 
         final totalByDay = salesByDay.sumLiquidValue();
+        final quantitySales = salesByDay.quantitySales();
         final rowDay = DateTime(
           homePresenter.selectedDate.year,
           homePresenter.selectedDate.month,
@@ -55,8 +64,8 @@ class DayTable extends StatelessWidget {
                 .substring(0, 3)
                 .toUpperCase(),
           ),
-          PersonalizedTableCell(
-              value: salesByDay.sumLiquidValue(), isMoney: true),
+          PersonalizedTableCell(value: totalByDay, isMoney: true),
+          PersonalizedTableCell(value: quantitySales),
           PersonalizedTableCell(
             value: (totalByDay / totalInMounth) * 100,
             isPercentage: true,
