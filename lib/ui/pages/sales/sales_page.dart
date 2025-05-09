@@ -125,6 +125,7 @@ class _SalesPageState extends State<SalesPage>
                       .toList();
 
               final saleMovementsByMonth = salesPresenter.saleMovementsByMonth;
+              final saleMovementsByYear = salesPresenter.saleMovementsByYear;
 
               return Opacity(
                 opacity: snapshot.data == true ? 0 : 1,
@@ -144,6 +145,10 @@ class _SalesPageState extends State<SalesPage>
                         saleMovementsByMonth != null &&
                         saleMovementsByMonth.isNotEmpty)
                       MonthSales(saleMovementsByMonth: saleMovementsByMonth),
+                    if (filterByYear &&
+                        saleMovementsByYear != null &&
+                        saleMovementsByYear.isNotEmpty)
+                      YearSales(saleMovementsByYear: saleMovementsByYear),
                   ],
                 ),
               );
