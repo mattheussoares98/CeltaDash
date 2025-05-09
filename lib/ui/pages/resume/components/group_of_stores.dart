@@ -90,7 +90,6 @@ class GroupOfStores extends StatelessWidget {
           DefaultNavigateButton(
             onTap: resumePresenter.goToGroupSummaryPage,
             title: R.string.groupSummary,
-            icon: Icon(Icons.arrow_outward_sharp, color: Colors.white),
           ),
         ],
       ),

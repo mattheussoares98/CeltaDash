@@ -116,14 +116,37 @@ class _ResumePageState extends State<ResumePage>
                     filterMonth: homePresenter.selectedDate.month,
                     filterDay: homePresenter.selectedDate.day,
                   ),
-                  leftButton: DefaultNavigateButton(
-                    onTap: resumePresenter.goToPaymentsTypePage,
-                    title: R.string.paymentsType,
-                  ),
-                  rightButton: DefaultNavigateButton(
-                    onTap: resumePresenter.goToDepartmentsPage,
-                    title: R.string.departments,
-                  ),
+                  bottomChildren: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                          child: DefaultNavigateButton(
+                            onTap: resumePresenter.goToPaymentsTypePage,
+                            title: R.string.paymentsType,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: DefaultNavigateButton(
+                            onTap: resumePresenter.goToDepartmentsPage,
+                            title: R.string.departments,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        DefaultNavigateButton(
+                          onTap: resumePresenter.goToCompareDays,
+                          title: R.string.compareDays,
+                        ),
+                      ],
+                    ),
+                  ],
+                  leftButton: null,
+                  rightButton: null,
                   rightChildren: [
                     Text(
                       "${R.string.salesQuantity}\n${saleMovements.quantitySales(
@@ -162,13 +185,12 @@ class _ResumePageState extends State<ResumePage>
                 // DefaultNavigateButton(
                 //   onTap: resumePresenter.goToProfitabillityPage,
                 //   title: R.string.profitability,
-                //   icon: Icon(Icons.arrow_outward_sharp, color: Colors.white),
+                //
+                // const SizedBox(height: 8),
+                // DailyAnalysis(
+                //   saleMovements: saleMovements,
+                //   scrollController: scrollController,
                 // ),
-                const SizedBox(height: 8),
-                DailyAnalysis(
-                  saleMovements: saleMovements,
-                  scrollController: scrollController,
-                ),
                 SizedBox(height: 8),
                 GroupOfStores(saleMovements: saleMovements),
                 SizedBox(height: 15),

@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 class DefaultNavigateButton extends StatelessWidget {
   final void Function() onTap;
   final String title;
-  final Icon? icon;
   const DefaultNavigateButton({
     super.key,
-    this.icon,
     required this.onTap,
     required this.title,
   });
@@ -17,8 +15,8 @@ class DefaultNavigateButton extends StatelessWidget {
       padding: const EdgeInsets.only(top: 8),
       child: ElevatedButton.icon(
         onPressed: onTap,
-        label: Text(title),
-        icon: icon,
+        label: FittedBox(child: Text(title)),
+        icon: Icon(Icons.arrow_outward_sharp, color: Colors.white),
         iconAlignment: IconAlignment.end,
       ),
     );

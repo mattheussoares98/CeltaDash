@@ -67,7 +67,6 @@ class DailyAnalysis extends StatelessWidget {
             DefaultNavigateButton(
               onTap: resumePresenter.goToCompareDays,
               title: R.string.compareDays,
-              icon: Icon(Icons.arrow_outward_sharp, color: Colors.white),
             ),
           ],
         ),
