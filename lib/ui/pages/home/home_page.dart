@@ -32,17 +32,18 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  final pages = <Widget>[
+    makeResumePage(),
+    IndicatorsPage(),
+    makeSalesPage(),
+    ProductsPage(),
+    makeTeamPage(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
 
-    final pages = <Widget>[
-      makeResumePage(),
-      IndicatorsPage(),
-      makeSalesPage(),
-      ProductsPage(),
-      makeTeamPage(),
-    ];
     return StreamBuilder<int>(
       stream: homePresenter.currentPageIndexStream,
       builder: (context, snapshot) {
