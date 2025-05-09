@@ -10,11 +10,7 @@ import '../pages.dart';
 import 'components/components.dart';
 
 class SalesPage extends StatefulWidget {
-  final SalesPresenter presenter;
-  const SalesPage({
-    super.key,
-    required this.presenter,
-  });
+  const SalesPage({super.key});
 
   @override
   State<SalesPage> createState() => _SalesPageState();
@@ -54,9 +50,10 @@ class _SalesPageState extends State<SalesPage>
   Future<void> reloadSales({
     required HomePresenter homePresenter,
     required ResumePresenter resumePresenter,
+    required SalesPresenter salesPresenter,
     bool? forceRefresh,
   }) async {
-    await widget.presenter.getSales(
+    await salesPresenter.getSales(
       homePresenter: homePresenter,
       resumePresenter: resumePresenter,
       searchByHour: filterByHour,
@@ -71,13 +68,14 @@ class _SalesPageState extends State<SalesPage>
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
     ResumePresenter resumePresenter = Get.find();
+    SalesPresenter salesPresenter = Get.find();
 
     loadingSubscription?.cancel();
     mainErrorSubscription?.cancel();
     loadingSubscription =
-        handleLoading(context, widget.presenter.isLoadingStream);
+        handleLoading(context, salesPresenter.isLoadingStream);
     mainErrorSubscription =
-        handleMainError(context, widget.presenter.mainErrorStream);
+        handleMainError(context, salesPresenter.mainErrorStream);
 
     return Scaffold(
       appBar: DefaultAppBar(
@@ -85,12 +83,14 @@ class _SalesPageState extends State<SalesPage>
           await reloadSales(
             homePresenter: homePresenter,
             resumePresenter: resumePresenter,
+            salesPresenter: salesPresenter,
           );
         },
         onTapRefresh: () async {
           await reloadSales(
             homePresenter: homePresenter,
             resumePresenter: resumePresenter,
+            salesPresenter: salesPresenter,
             forceRefresh: true,
           );
         },
@@ -98,6 +98,7 @@ class _SalesPageState extends State<SalesPage>
           await reloadSales(
             homePresenter: homePresenter,
             resumePresenter: resumePresenter,
+            salesPresenter: salesPresenter,
           );
         },
       ),
@@ -123,6 +124,8 @@ class _SalesPageState extends State<SalesPage>
                       )
                       .toList();
 
+              final saleMovementsByMonth = salesPresenter.saleMovementsByMonth;
+
               return Opacity(
                 opacity: snapshot.data == true ? 0 : 1,
                 child: Column(
@@ -136,7 +139,11 @@ class _SalesPageState extends State<SalesPage>
                         uniqueHours: uniqueHours,
                       ),
                     if (filterByDay && resumeSaleMovements != null)
-                      DayTable(resumeSaleMovements: resumeSaleMovements)
+                      DayTable(resumeSaleMovements: resumeSaleMovements),
+                    if (filterByMonth &&
+                        saleMovementsByMonth != null &&
+                        saleMovementsByMonth.isNotEmpty)
+                      MonthSales(saleMovementsByMonth: saleMovementsByMonth),
                   ],
                 ),
               );
