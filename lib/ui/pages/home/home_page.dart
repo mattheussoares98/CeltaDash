@@ -28,12 +28,20 @@ class _HomePageState extends State<HomePage>
       if (mounted) {
         HomePresenter homePresenter = Get.find();
         ResumePresenter resumePresenter = Get.find();
+        SalesPresenter salesPresenter = Get.find();
 
         await homePresenter.getBsEnterprises(showBsErrorMessage: (error) {
           snackBarMessage(context, error, Colors.red);
         });
 
         await resumePresenter.getSales(homePresenter);
+
+        await salesPresenter.getSales(
+          homePresenter: homePresenter,
+          resumePresenter: resumePresenter,
+          searchByMonth: true,
+          searchByYear: true,
+        );
       }
     });
   }
