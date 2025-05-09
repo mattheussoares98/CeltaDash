@@ -173,15 +173,6 @@ void main() {
         ),
       ).called(1);
     });
-    test("Should change last loaded date correctly", () async {
-      await sut.getSales(
-        resumePresenter: resumePresenter,
-        homePresenter: homePresenter,
-        searchByMonth: true,
-      );
-
-      expect(sut.lastLoadedDate, homePresenter.selectedDateMock);
-    });
 
     test(
         "Should resumePresenter.getSales with correct params if pass the same date and force refresh",

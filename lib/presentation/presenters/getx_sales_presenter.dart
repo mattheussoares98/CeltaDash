@@ -54,16 +54,10 @@ class GetxSalesPresenter extends GetxController
       saleMovements = remoteSales
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
           .toList();
-
-      _lastLoadedDate = homePresenter.selectedDate;
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {
       isLoading = false;
     }
   }
-
-  DateTime? _lastLoadedDate;
-  @override
-  DateTime? get lastLoadedDate => _lastLoadedDate;
 }
