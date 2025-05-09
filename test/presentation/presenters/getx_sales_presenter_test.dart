@@ -238,5 +238,39 @@ void main() {
         ),
       ).called(1);
     });
+    test("Should load again if pass the same date but force refresh", () async {
+      await sut.getSales(
+        homePresenter: homePresenter,
+        searchByMonth: true,
+        searchByDay: true,
+      );
+
+      await sut.getSales(
+        homePresenter: homePresenter,
+        searchByHour: true,
+        searchByDay: true,
+        forceRefresh: true,
+      );
+
+      verify(
+        () => loadSaleMovements.get(
+          enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+          groupByEnterprise: true,
+          startDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month,
+            1,
+          ),
+          endDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month + 1,
+          ).subtract(Duration(days: 1)),
+          groupByYear: false,
+          groupByMonth: false,
+          groupByDay: true,
+          groupByHour: true,
+        ),
+      ).called(2);
+    });
   });
 }

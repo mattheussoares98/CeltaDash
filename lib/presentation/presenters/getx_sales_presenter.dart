@@ -22,7 +22,7 @@ class GetxSalesPresenter extends GetxController
     bool? searchByDay,
     bool? searchByMonth,
     bool? searchByYear,
-    //TODO add forceRefresh
+    bool? forceRefresh,
   }) async {
     mainError = null;
     isLoading = true;
@@ -32,7 +32,8 @@ class GetxSalesPresenter extends GetxController
       late DateTime endDate;
 
       if (searchByHour == true || searchByDay == true) {
-        if (homePresenter.selectedDate.month == _lastLoadedDate?.month &&
+        if (forceRefresh != true &&
+            homePresenter.selectedDate.month == _lastLoadedDate?.month &&
             homePresenter.selectedDate.year == _lastLoadedDate?.year) {
           return;
         }

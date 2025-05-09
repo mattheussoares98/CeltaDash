@@ -15,5 +15,6 @@ abstract class SalesPresenter implements Listenable {
     bool? searchByDay,
     bool? searchByMonth,
     bool? searchByYear,
+    bool? forceRefresh,
   });
 }
