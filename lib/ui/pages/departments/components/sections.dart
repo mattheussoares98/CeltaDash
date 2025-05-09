@@ -23,9 +23,20 @@ class Sections extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final totalValue = saleMovements.sumLiquidValue();
-    final quantitySales = saleMovements.quantitySales();
-
     final departmentColorMap = <String, Color>{};
+
+    final grouped =
+        saleMovements.fold<Map<String, List<SaleMovementViewModel>>>(
+      <String, List<SaleMovementViewModel>>{},
+      (map, sale) {
+        final dept = sale.ProductDepartment ?? '';
+        final sect = sale.ProductSection ?? '';
+        final key = '$dept|$sect';
+
+        map.putIfAbsent(key, () => []).add(sale);
+        return map;
+      },
+    );
 
     return Column(
       children: [
@@ -47,31 +58,34 @@ class Sections extends StatelessWidget {
             PersonalizedTableCell(value: R.string.ticketAverage),
             PersonalizedTableCell(value: R.string.share),
           ],
-          rowValues: saleMovements
-          
-          .map((sale) {
-            final department = sale.ProductDepartment ?? '';
+          rowValues: grouped.entries.map((entry) {
+            // dept & section from the first item in the group
+            final first = entry.value.first;
+            final dept = first.ProductDepartment ?? '';
+            final sect = first.ProductSection ?? '';
+
+            // sum up this group
+            final groupValue = entry.value.sumLiquidValue();
+            final groupQty = entry.value.quantitySales();
+
+            // assign a consistent color per department
             departmentColorMap.putIfAbsent(
-                department, () => generateColorFromString(department));
-        
+                dept, () => generateColorFromString(dept));
+
+            // calculate averages/shares
+            final avgTicket = groupQty > 0 ? groupValue / groupQty : 0;
+            final share = totalValue > 0 ? groupValue / totalValue * 100 : 0;
+
             return [
               PersonalizedTableCell(
-                value: sale.ProductDepartment,
-                subtile: sale.ProductSection,
-                decoration: BoxDecoration(color: departmentColorMap[department]),
+                value: dept,
+                subtile: sect,
+                decoration: BoxDecoration(color: departmentColorMap[dept]),
               ),
-              PersonalizedTableCell(value: sale.LiquidValue, isMoney: true),
-              PersonalizedTableCell(value: sale.QuantitySales),
-              PersonalizedTableCell(
-                value: (sale.QuantitySales?.toInt() ?? 0) > 0
-                    ? (sale.LiquidValue?.toInt() ?? 0) / quantitySales
-                    : 0,
-                isMoney: true,
-              ),
-              PersonalizedTableCell(
-                value: ((sale.LiquidValue?.toInt() ?? 0) / totalValue) * 100,
-                isPercentage: true,
-              ),
+              PersonalizedTableCell(value: groupValue, isMoney: true),
+              PersonalizedTableCell(value: groupQty),
+              PersonalizedTableCell(value: avgTicket, isMoney: true),
+              PersonalizedTableCell(value: share, isPercentage: true),
             ];
           }).toList(),
         ),
