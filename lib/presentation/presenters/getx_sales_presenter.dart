@@ -8,7 +8,7 @@ import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
 class GetxSalesPresenter extends GetxController
-    with SaleMovementManager, LoadingManager, UIErrorManager
+    with LoadingManager, UIErrorManager
     implements SalesPresenter {
   final LoadSaleMovements loadSaleMovements;
 
@@ -42,16 +42,30 @@ class GetxSalesPresenter extends GetxController
         return;
       }
 
-      final remoteSales = await loadSaleMovements.get(
+      final remoteSalesByMonth = await loadSaleMovements.get(
         enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
-        startDate: DateTime(homePresenter.selectedDate.year),
-        endDate: DateTime(homePresenter.selectedDate.year),
+        startDate: DateTime(homePresenter.selectedDate.year, 1, 1),
+        // endDate: DateTime(homePresenter.selectedDate.year, 12, 31),
+        endDate: DateTime
+            .now(), //TODO Cardoso needs to fix the problem when filter a entire year to remove this DateTime.now
         groupByEnterprise: true,
         groupByMonth: true,
         groupByYear: true,
       );
 
-      saleMovements = remoteSales
+      salesByMonth = remoteSalesByMonth
+          .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+          .toList();
+
+      final remoteSalesByYear = await loadSaleMovements.get(
+        enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+        startDate: DateTime(homePresenter.selectedDate.year - 2),
+        endDate: DateTime(homePresenter.selectedDate.year),
+        groupByEnterprise: true,
+        groupByYear: true,
+      );
+
+      salesByYear = remoteSalesByYear
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
           .toList();
     } catch (e) {
@@ -60,4 +74,18 @@ class GetxSalesPresenter extends GetxController
       isLoading = false;
     }
   }
+
+  final _saleMovementsByYear = Rx<List<SaleMovementViewModel>?>(null);
+  @override
+  List<SaleMovementViewModel>? get saleMovementsByYear =>
+      _saleMovementsByYear.value;
+  set salesByYear(List<SaleMovementViewModel>? value) =>
+      _saleMovementsByYear.value = value;
+
+  final _saleMovementsByMonth = Rx<List<SaleMovementViewModel>?>(null);
+  @override
+  List<SaleMovementViewModel>? get saleMovementsByMonth =>
+      _saleMovementsByMonth.value;
+  set salesByMonth(List<SaleMovementViewModel>? value) =>
+      _saleMovementsByMonth.value = value;
 }
