@@ -77,7 +77,7 @@ class _TableItemState extends State<TableItem> {
       try {
         final aTime = _parseTime(aValue);
         final bTime = _parseTime(bValue);
-        return ascending ? aTime.compareTo(bTime) : bTime.compareTo(aTime);
+        return ascending ? bTime.compareTo(aTime) : aTime.compareTo(bTime);
       } catch (_) {
         // Fallback to string
         return ascending ? aValue.compareTo(bValue) : bValue.compareTo(aValue);
