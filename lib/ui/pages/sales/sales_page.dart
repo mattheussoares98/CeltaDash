@@ -81,12 +81,24 @@ class _SalesPageState extends State<SalesPage>
 
     return Scaffold(
       appBar: DefaultAppBar(
-        onChangeEnterprise: (_) async {},
+        onChangeEnterprise: (_) async {
+          await reloadSales(
+            homePresenter: homePresenter,
+            resumePresenter: resumePresenter,
+          );
+        },
         onTapRefresh: () async {
-          await resumePresenter.getSales(homePresenter, forceRefresh: true);
+          await reloadSales(
+            homePresenter: homePresenter,
+            resumePresenter: resumePresenter,
+            forceRefresh: true,
+          );
         },
         onChangeDate: (_) async {
-          await resumePresenter.getSales(homePresenter);
+          await reloadSales(
+            homePresenter: homePresenter,
+            resumePresenter: resumePresenter,
+          );
         },
       ),
       body: StreamBuilder<bool>(
