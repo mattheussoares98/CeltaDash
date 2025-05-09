@@ -1,11 +1,13 @@
-import 'dart:math';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:get/get.dart';
 
+import '../../../ui/mixins/mixins.dart';
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 import '../pages.dart';
+import 'components/components.dart';
 
 class SalesPage extends StatefulWidget {
   final SalesPresenter presenter;
@@ -18,78 +20,111 @@ class SalesPage extends StatefulWidget {
   State<SalesPage> createState() => _SalesPageState();
 }
 
-class _SalesPageState extends State<SalesPage> {
+class _SalesPageState extends State<SalesPage>
+    with LoadingManager, UIErrorManager {
+  StreamSubscription? loadingSubscription;
+  StreamSubscription? mainErrorSubscription;
+
+  bool filterByHour = true;
+  bool filterByDay = false;
+  bool filterByMonth = false;
+  bool filterByYear = false;
+
+  @override
+  void dispose() {
+    super.dispose();
+    loadingSubscription?.cancel();
+    mainErrorSubscription?.cancel();
+  }
+
+  void updateSelectedItem({
+    bool? filterByHour,
+    bool? filterByDay,
+    bool? filterByMonth,
+    bool? filterByYear,
+  }) {
+    setState(() {
+      this.filterByHour = filterByHour ?? false;
+      this.filterByDay = filterByDay ?? false;
+      this.filterByMonth = filterByMonth ?? false;
+      this.filterByYear = filterByYear ?? false;
+    });
+  }
+
+  Future<void> reloadSales(HomePresenter homePresenter) async {
+    await widget.presenter.getSales(
+      homePresenter: homePresenter,
+      searchByHour: filterByHour,
+      searchByDay: filterByDay,
+      searchByMonth: filterByMonth,
+      searchByYear: filterByYear,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    HomePresenter homePresenter = Get.find();
+    Get.put<SalesPresenter>(widget.presenter);
+
+    loadingSubscription?.cancel();
+    mainErrorSubscription?.cancel();
+    loadingSubscription =
+        handleLoading(context, widget.presenter.isLoadingStream);
+    mainErrorSubscription =
+        handleMainError(context, widget.presenter.mainErrorStream);
+
     return Scaffold(
       appBar: DefaultAppBar(
-        onChangeEnterprise: (_) {
-          debugPrint("Search sales again");
+        onChangeEnterprise: (_) async {
+          await reloadSales(homePresenter);
+        },
+        onTapRefresh: () async {
+          await reloadSales(homePresenter);
+        },
+        onChangeDate: (_) async {
+          await reloadSales(homePresenter);
         },
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SelectPeriodItems(
-              items: [
-                SelectPeriodItems.createItem(
-                  title: R.string.hour,
-                  onTap: () {},
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SelectPeriodItems(
+                  items: [
+                    SelectPeriodItems.createItem(
+                      title: R.string.hour,
+                      onTap: () {
+                        updateSelectedItem(filterByHour: true);
+                      },
+                    ),
+                    SelectPeriodItems.createItem(
+                      title: R.string.day,
+                      onTap: () {
+                        updateSelectedItem(filterByDay: true);
+                      },
+                    ),
+                    SelectPeriodItems.createItem(
+                      title: R.string.month,
+                      onTap: () {
+                        updateSelectedItem(filterByMonth: true);
+                      },
+                    ),
+                    SelectPeriodItems.createItem(
+                      title: R.string.year,
+                      onTap: () {
+                        updateSelectedItem(filterByYear: true);
+                      },
+                    ),
+                  ],
                 ),
-                SelectPeriodItems.createItem(
-                  title: R.string.day,
-                  onTap: () {},
-                ),
-                SelectPeriodItems.createItem(
-                  title: R.string.month,
-                  onTap: () {},
-                ),
-                SelectPeriodItems.createItem(
-                  title: R.string.year,
-                  onTap: () {},
-                ),
-              ],
-            ),
-          ),
-          TableItem(
-            titleMinHeight: 43,
-            tableColumnWidth: {
-              0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.13),
-            },
-            columnIndexToCompareAndDetachBetterAndWorstValue: 1,
-            titles: [
-              PersonalizedTableCell(value: R.string.day.toUpperCase()),
-              PersonalizedTableCell(
-                value: R.string.totalSales.toUpperCase(),
               ),
-              PersonalizedTableCell(value: R.string.share.toUpperCase()),
             ],
-            rowValues: List.generate(DateTime.now().day, (index) {
-              final now = DateTime.now();
-              final atualDate = DateTime(
-                now.year,
-                now.month,
-                index + 1,
-              );
-
-              final totalSales = Random().nextDouble() * 50000;
-
-              return [
-                PersonalizedTableCell(
-                  value: atualDate.day,
-                  subtile: DateFormat.EEEE(
-                    "pt_BR",
-                  ).format(atualDate).toUpperCase().substring(0, 3),
-                ),
-                PersonalizedTableCell(value: totalSales, isMoney: true),
-                PersonalizedTableCell(
-                  value: (totalSales / 50000) * 3,
-                  isPercentage: true,
-                ),
-              ];
-            }).toList().reversed.toList(),
           ),
+          if (filterByHour && widget.presenter.saleMovements != null)
+            HourTable(),
         ],
       ),
     );
