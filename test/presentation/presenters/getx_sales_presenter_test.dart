@@ -193,5 +193,10 @@ void main() {
         ),
       );
     });
+    test("Should change last loaded date correctly", () async {
+      await sut.getSales(homePresenter: homePresenter, searchByMonth: true);
+
+      expect(sut.lastLoadedDate, homePresenter.selectedDateMock);
+    });
   });
 }
