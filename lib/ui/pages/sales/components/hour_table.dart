@@ -6,18 +6,18 @@ import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
 class HourTable extends StatelessWidget {
-  final List<SaleMovementViewModel> saleMovements;
+  final List<SaleMovementViewModel> resumeSaleMovements;
   final List<String> uniqueHours;
   const HourTable({
     super.key,
-    required this.saleMovements,
+    required this.resumeSaleMovements,
     required this.uniqueHours,
   });
 
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
-    final totalValue = saleMovements.sumLiquidValue(
+    final totalValue = resumeSaleMovements.sumLiquidValue(
       enterprise: homePresenter.selectedEnterprise,
       filterDay: homePresenter.selectedDate.day,
       filterMonth: homePresenter.selectedDate.month,
@@ -41,7 +41,7 @@ class HourTable extends StatelessWidget {
       ],
       rowValues: uniqueHours.map((hour) {
         final totalByHour =
-            saleMovements.totalForHourOnDate(hour, homePresenter.selectedDate);
+            resumeSaleMovements.totalForHourOnDate(hour, homePresenter.selectedDate);
 
         return [
           PersonalizedTableCell(

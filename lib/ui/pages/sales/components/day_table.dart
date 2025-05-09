@@ -7,16 +7,16 @@ import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
 class DayTable extends StatelessWidget {
-  final List<SaleMovementViewModel> saleMovements;
+  final List<SaleMovementViewModel> resumeSaleMovements;
   const DayTable({
     super.key,
-    required this.saleMovements,
+    required this.resumeSaleMovements,
   });
 
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
-    final totalInMounth = saleMovements.sumLiquidValue();
+    final totalInMounth = resumeSaleMovements.sumLiquidValue();
 
     return TableItem(
       titleMinHeight: 43,
@@ -34,8 +34,8 @@ class DayTable extends StatelessWidget {
         PersonalizedTableCell(value: R.string.share.toUpperCase()),
       ],
       rowValues:
-          saleMovements.map((e) => e.Date?.day).toSet().toList().map((day) {
-        final salesByDay = saleMovements
+          resumeSaleMovements.map((e) => e.Date?.day).toSet().toList().map((day) {
+        final salesByDay = resumeSaleMovements
             .filteredSales(filterDay: day)
             .map((e) => e.toViewModel())
             .toList();

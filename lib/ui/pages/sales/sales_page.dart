@@ -68,6 +68,7 @@ class _SalesPageState extends State<SalesPage>
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
+    ResumePresenter resumePresenter = Get.find();
 
     loadingSubscription?.cancel();
     mainErrorSubscription?.cancel();
@@ -78,14 +79,12 @@ class _SalesPageState extends State<SalesPage>
 
     return Scaffold(
       appBar: DefaultAppBar(
-        onChangeEnterprise: (_) async {
-          await reloadSales(homePresenter, forceRefresh: true);
-        },
+        onChangeEnterprise: (_) async {},
         onTapRefresh: () async {
-          await reloadSales(homePresenter, forceRefresh: true);
+          await resumePresenter.getSales(homePresenter, forceRefresh: true);
         },
         onChangeDate: (_) async {
-          await reloadSales(homePresenter);
+          await resumePresenter.getSales(homePresenter);
         },
       ),
       body: StreamBuilder<bool>(
@@ -93,16 +92,17 @@ class _SalesPageState extends State<SalesPage>
           builder: (context, snapshot) {
             return Obx(() {
               Get.put<SalesPresenter>(widget.presenter);
-              final saleMovements = widget.presenter.saleMovements
+
+              final resumeSaleMovements = resumePresenter.saleMovements
                   ?.filteredSales(
                     enterprise: homePresenter.selectedEnterprise,
                   )
                   .map((e) => e.toViewModel())
                   .toList();
 
-              final uniqueHours = saleMovements == null
+              final uniqueHours = resumeSaleMovements == null
                   ? <String>[]
-                  : saleMovements
+                  : resumeSaleMovements
                       .uniqueHours(
                         enterprise: homePresenter.selectedEnterprise,
                         filterDay: homePresenter.selectedDate.day,
@@ -117,14 +117,14 @@ class _SalesPageState extends State<SalesPage>
                   children: [
                     PeriodItems(updateSelectedItem: updateSelectedItem),
                     if (filterByHour &&
-                        saleMovements != null &&
+                        resumeSaleMovements != null &&
                         uniqueHours.isNotEmpty)
                       HourTable(
-                        saleMovements: saleMovements,
+                        resumeSaleMovements: resumeSaleMovements,
                         uniqueHours: uniqueHours,
                       ),
-                    if (filterByDay && saleMovements != null)
-                      DayTable(saleMovements: saleMovements)
+                    if (filterByDay && resumeSaleMovements != null)
+                      DayTable(resumeSaleMovements: resumeSaleMovements)
                   ],
                 ),
               );
