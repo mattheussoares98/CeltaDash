@@ -107,67 +107,9 @@ class _ResumePageState extends State<ResumePage>
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SalesInformations(
+                DailySales(
                   scrollController: scrollController,
-                  title: R.string.salesOfTheDay,
-                  totalSales: saleMovements.sumLiquidValue(
-                    enterprise: homePresenter.selectedEnterprise,
-                    filterYear: homePresenter.selectedDate.year,
-                    filterMonth: homePresenter.selectedDate.month,
-                    filterDay: homePresenter.selectedDate.day,
-                  ),
-                  bottomChildren: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Expanded(
-                          child: DefaultNavigateButton(
-                            onTap: resumePresenter.goToPaymentsTypePage,
-                            title: R.string.paymentsType,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: DefaultNavigateButton(
-                            onTap: resumePresenter.goToDepartmentsPage,
-                            title: R.string.departments,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        DefaultNavigateButton(
-                          onTap: resumePresenter.goToCompareDays,
-                          title: R.string.compareDays,
-                        ),
-                      ],
-                    ),
-                  ],
-                  leftButton: null,
-                  rightButton: null,
-                  rightChildren: [
-                    Text(
-                      "${R.string.salesQuantity}\n${saleMovements.quantitySales(
-                        enterprise: homePresenter.selectedEnterprise,
-                        filterYear: homePresenter.selectedDate.year,
-                        filterMonth: homePresenter.selectedDate.month,
-                        filterDay: homePresenter.selectedDate.day,
-                      )}",
-                    ),
-                    Text(
-                      "${R.string.ticketAverage}\n${(saleMovements.ticketAverage(
-                        homePresenter.selectedEnterprise,
-                        filterYear: homePresenter.selectedDate.year,
-                        filterMonth: homePresenter.selectedDate.month,
-                        filterDay: homePresenter.selectedDate.day,
-                      )).toString().toBrazilianNumber().addBrazilianCoin()}",
-                    ),
-                    // Text(
-                    // TODO  "Request Cardoso to add products by sale quantity and average price",
-                    // ),
-                  ],
+                  saleMovements: saleMovements,
                 ),
                 SizedBox(height: 8),
                 MonthlyAnalysis(saleMovements: saleMovements),
