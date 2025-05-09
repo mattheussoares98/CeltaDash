@@ -32,21 +32,10 @@ class GetxSalesPresenter extends GetxController
       late DateTime endDate;
 
       if (searchByHour == true || searchByDay == true) {
-        if (forceRefresh != true &&
-            homePresenter.selectedDate.month == _lastLoadedDate?.month &&
-            homePresenter.selectedDate.year == _lastLoadedDate?.year) {
-          return;
-        }
-
-        startDate = DateTime(
-          homePresenter.selectedDate.year,
-          homePresenter.selectedDate.month,
-          1,
+        await resumePresenter.getSales(
+          homePresenter,
+          forceRefresh: forceRefresh,
         );
-        endDate = DateTime(
-          homePresenter.selectedDate.year,
-          homePresenter.selectedDate.month + 1,
-        ).subtract(Duration(days: 1));
       } else if (searchByMonth == true || searchByYear == true) {
         startDate = DateTime(homePresenter.selectedDate.year);
         endDate = DateTime(homePresenter.selectedDate.year);
@@ -59,12 +48,8 @@ class GetxSalesPresenter extends GetxController
         startDate: startDate,
         endDate: endDate,
         groupByEnterprise: true,
-        groupByHour: searchByHour == true || searchByDay == true,
-        groupByDay: searchByHour == true || searchByDay == true,
-        groupByMonth: (searchByMonth == true || searchByYear == true) &&
-            (searchByHour != true && searchByDay != true),
-        groupByYear: (searchByMonth == true || searchByYear == true) &&
-            (searchByHour != true && searchByDay != true),
+        groupByMonth: true,
+        groupByYear: true,
       );
 
       saleMovements = remoteSales

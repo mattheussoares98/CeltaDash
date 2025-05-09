@@ -115,66 +115,35 @@ void main() {
         searchByYear: false,
       );
     });
-    test("Should load sale movements with correct params when filter day",
-        () async {
+    test("Should call resumePresenter.getSales when filter day", () async {
       await sut.getSales(
-          resumePresenter: resumePresenter,
-          homePresenter: homePresenter,
-          searchByDay: true);
+        resumePresenter: resumePresenter,
+        homePresenter: homePresenter,
+        searchByDay: true,
+      );
 
       verify(
-        () => loadSaleMovements.get(
-          enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
-          groupByEnterprise: true,
-          startDate: DateTime(
-            homePresenter.selectedDateMock.year,
-            homePresenter.selectedDateMock.month,
-            1,
-          ),
-          endDate: DateTime(
-            homePresenter.selectedDateMock.year,
-            homePresenter.selectedDateMock.month + 1,
-          ).subtract(Duration(days: 1)),
-          groupByYear: false,
-          groupByMonth: false,
-          groupByDay: true,
-          groupByHour: true,
-        ),
+        () => resumePresenter.getSales(homePresenter),
       ).called(1);
     });
-    test("Should load sale movements with correct params when filter hour",
-        () async {
+    test("Should load resumePresenter.getSales when filter hour", () async {
       await sut.getSales(
-          resumePresenter: resumePresenter,
-          homePresenter: homePresenter,
-          searchByHour: true);
+        resumePresenter: resumePresenter,
+        homePresenter: homePresenter,
+        searchByHour: true,
+      );
 
       verify(
-        () => loadSaleMovements.get(
-          enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
-          groupByEnterprise: true,
-          startDate: DateTime(
-            homePresenter.selectedDateMock.year,
-            homePresenter.selectedDateMock.month,
-            1,
-          ),
-          endDate: DateTime(
-            homePresenter.selectedDateMock.year,
-            homePresenter.selectedDateMock.month + 1,
-          ).subtract(Duration(days: 1)),
-          groupByYear: false,
-          groupByMonth: false,
-          groupByDay: true,
-          groupByHour: true,
-        ),
+        () => resumePresenter.getSales(homePresenter),
       ).called(1);
     });
     test("Should load sale movements with correct params when filter month",
         () async {
       await sut.getSales(
-          resumePresenter: resumePresenter,
-          homePresenter: homePresenter,
-          searchByMonth: true);
+        resumePresenter: resumePresenter,
+        homePresenter: homePresenter,
+        searchByMonth: true,
+      );
 
       verify(
         () => loadSaleMovements.get(
@@ -184,17 +153,16 @@ void main() {
           endDate: DateTime(homePresenter.selectedDateMock.year),
           groupByYear: true,
           groupByMonth: true,
-          groupByDay: false,
-          groupByHour: false,
         ),
       ).called(1);
     });
     test("Should load sale movements with correct params when filter year",
         () async {
       await sut.getSales(
-          resumePresenter: resumePresenter,
-          homePresenter: homePresenter,
-          searchByMonth: true);
+        resumePresenter: resumePresenter,
+        homePresenter: homePresenter,
+        searchByMonth: true,
+      );
 
       verify(
         () => loadSaleMovements.get(
@@ -204,98 +172,48 @@ void main() {
           endDate: DateTime(homePresenter.selectedDateMock.year),
           groupByYear: true,
           groupByMonth: true,
-          groupByDay: false,
-          groupByHour: false,
         ),
       ).called(1);
     });
     test("Should change last loaded date correctly", () async {
       await sut.getSales(
-          resumePresenter: resumePresenter,
-          homePresenter: homePresenter,
-          searchByMonth: true);
+        resumePresenter: resumePresenter,
+        homePresenter: homePresenter,
+        searchByMonth: true,
+      );
 
       expect(sut.lastLoadedDate, homePresenter.selectedDateMock);
     });
 
     test(
-        "Should not load if is searching by hour or day and dont changed month and year",
+        "Should resumePresenter.getSales with correct params if pass the same date and force refresh",
         () async {
       await sut.getSales(
         resumePresenter: resumePresenter,
         homePresenter: homePresenter,
         searchByMonth: true,
         searchByDay: true,
-      );
-
-      homePresenter.selectedDateMock = DateTime(
-        sut.lastLoadedDate!.year,
-        sut.lastLoadedDate!.month,
-        faker.randomGenerator.integer(28),
-      );
-
-      await sut.getSales(
-        resumePresenter: resumePresenter,
-        homePresenter: homePresenter,
-        searchByHour: true,
-        searchByDay: true,
+        forceRefresh: true,
       );
 
       verify(
-        () => loadSaleMovements.get(
-          enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
-          groupByEnterprise: true,
-          startDate: DateTime(
-            homePresenter.selectedDateMock.year,
-            homePresenter.selectedDateMock.month,
-            1,
-          ),
-          endDate: DateTime(
-            homePresenter.selectedDateMock.year,
-            homePresenter.selectedDateMock.month + 1,
-          ).subtract(Duration(days: 1)),
-          groupByYear: false,
-          groupByMonth: false,
-          groupByDay: true,
-          groupByHour: true,
-        ),
+        () => resumePresenter.getSales(homePresenter, forceRefresh: true),
       ).called(1);
     });
-    test("Should load again if pass the same date but force refresh", () async {
+    test(
+        "Should resumePresenter.getSales with correct params if pass the same date and dont force refresh",
+        () async {
       await sut.getSales(
         resumePresenter: resumePresenter,
         homePresenter: homePresenter,
         searchByMonth: true,
         searchByDay: true,
-      );
-
-      await sut.getSales(
-        resumePresenter: resumePresenter,
-        homePresenter: homePresenter,
-        searchByHour: true,
-        searchByDay: true,
-        forceRefresh: true,
+        forceRefresh: false,
       );
 
       verify(
-        () => loadSaleMovements.get(
-          enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
-          groupByEnterprise: true,
-          startDate: DateTime(
-            homePresenter.selectedDateMock.year,
-            homePresenter.selectedDateMock.month,
-            1,
-          ),
-          endDate: DateTime(
-            homePresenter.selectedDateMock.year,
-            homePresenter.selectedDateMock.month + 1,
-          ).subtract(Duration(days: 1)),
-          groupByYear: false,
-          groupByMonth: false,
-          groupByDay: true,
-          groupByHour: true,
-        ),
-      ).called(2);
+        () => resumePresenter.getSales(homePresenter, forceRefresh: false),
+      ).called(1);
     });
   });
 }
