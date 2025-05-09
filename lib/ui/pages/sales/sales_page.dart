@@ -51,13 +51,17 @@ class _SalesPageState extends State<SalesPage>
     });
   }
 
-  Future<void> reloadSales(HomePresenter homePresenter) async {
+  Future<void> reloadSales(
+    HomePresenter homePresenter, {
+    bool? forceRefresh,
+  }) async {
     await widget.presenter.getSales(
       homePresenter: homePresenter,
       searchByHour: filterByHour,
       searchByDay: filterByDay,
       searchByMonth: filterByMonth,
       searchByYear: filterByYear,
+      forceRefresh: forceRefresh,
     );
   }
 
@@ -75,7 +79,7 @@ class _SalesPageState extends State<SalesPage>
     return Scaffold(
       appBar: DefaultAppBar(
         onChangeEnterprise: (_) async {
-          await reloadSales(homePresenter);
+          await reloadSales(homePresenter, forceRefresh: true);
         },
         onTapRefresh: () async {
           await reloadSales(homePresenter);
