@@ -51,8 +51,10 @@ class CompareTable extends StatelessWidget {
         2: FixedColumnWidth(dayWidth),
         3: FixedColumnWidth(compareDaysWidth),
       },
-      rowValues:
-          compareDaysPresenter.saleMovements!.uniqueHours.toList().map((hour) {
+      rowValues: compareDaysPresenter.saleMovements!
+          .uniqueHours()
+          .toList()
+          .map((hour) {
         final t1 = compareDaysPresenter.saleMovements!
             .totalForHourOnDate(hour, firstDay);
         final t2 = compareDaysPresenter.saleMovements!

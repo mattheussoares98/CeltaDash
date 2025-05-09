@@ -166,8 +166,27 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
   }
 
   /// All distinct, non-null hour strings in your list.
-  List<String> get uniqueHours =>
-      map((e) => e.Hour).whereType<String>().toSet().toList();
+  List<String> uniqueHours({
+    EnterpriseViewModel? enterprise,
+    int? filterYear,
+    int? filterMonth,
+    int? filterDay,
+    int? filterWeekday,
+  }) =>
+      this
+          .filteredSales(
+            enterprise: enterprise,
+            filterYear: filterYear,
+            filterMonth: filterMonth,
+            filterDay: filterDay,
+            filterWeekday: filterWeekday,
+          )
+          .map((e) => e.toViewModel())
+          .toList()
+          .map((e) => e.Hour)
+          .whereType<String>()
+          .toSet()
+          .toList();
 
   double totalForHourOnDate(String hour, DateTime date) => where((e) =>
           e.Hour == hour &&

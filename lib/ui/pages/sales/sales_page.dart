@@ -84,13 +84,23 @@ class _SalesPageState extends State<SalesPage>
           await reloadSales(homePresenter);
         },
       ),
-      body: Obx(() {
-        Get.put<SalesPresenter>(widget.presenter);
-        final saleMovements = widget.presenter.saleMovements;
+      body: StreamBuilder<bool>(
+          stream: homePresenter.updateScreenStream,
+          builder: (context, snapshot) {
+            return Obx(() {
+              Get.put<SalesPresenter>(widget.presenter);
+              final saleMovements = widget.presenter.saleMovements;
+              final uniqueHours = saleMovements == null
+                  ? <String>[]
+                  : saleMovements
+                      .uniqueHours(
+                        enterprise: homePresenter.selectedEnterprise,
+                        filterDay: homePresenter.selectedDate.day,
+                        filterMonth: homePresenter.selectedDate.month,
+                        filterYear: homePresenter.selectedDate.year,
+                      )
+                      .toList();
 
-        return StreamBuilder<bool>(
-            stream: homePresenter.updateScreenStream,
-            builder: (context, snapshot) {
               return Opacity(
                 opacity: snapshot.data == true ? 0 : 1,
                 child: Column(
@@ -131,13 +141,18 @@ class _SalesPageState extends State<SalesPage>
                         ),
                       ],
                     ),
-                    if (filterByHour && saleMovements != null)
-                      HourTable(saleMovements: saleMovements),
+                    if (filterByHour &&
+                        saleMovements != null &&
+                        uniqueHours.isNotEmpty)
+                      HourTable(
+                        saleMovements: saleMovements,
+                        uniqueHours: uniqueHours,
+                      ),
                   ],
                 ),
               );
             });
-      }),
+          }),
     );
   }
 }

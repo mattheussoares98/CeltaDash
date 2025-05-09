@@ -7,7 +7,12 @@ import '../../pages.dart';
 
 class HourTable extends StatelessWidget {
   final List<SaleMovementViewModel> saleMovements;
-  const HourTable({super.key, required this.saleMovements});
+  final List<String> uniqueHours;
+  const HourTable({
+    super.key,
+    required this.saleMovements,
+    required this.uniqueHours,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +39,7 @@ class HourTable extends StatelessWidget {
         ),
         PersonalizedTableCell(value: R.string.share.toUpperCase()),
       ],
-      rowValues: saleMovements.uniqueHours.toList().map((hour) {
+      rowValues: uniqueHours.map((hour) {
         final totalByHour =
             saleMovements.totalForHourOnDate(hour, homePresenter.selectedDate);
 
