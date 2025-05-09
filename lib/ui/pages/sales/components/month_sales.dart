@@ -23,7 +23,7 @@ class MonthSales extends StatelessWidget {
         3: FixedColumnWidth(MediaQuery.of(context).size.width * 0.20),
       },
       columnIndexToCompareAndDetachBetterAndWorstValue: 1,
-      columnsIndexToSum: [1],
+      columnsIndexToSum: [1, 2],
       titles: [
         PersonalizedTableCell(value: R.string.month.toUpperCase()),
         PersonalizedTableCell(

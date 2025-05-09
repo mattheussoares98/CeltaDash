@@ -20,7 +20,7 @@ class YearSales extends StatelessWidget {
         3: FixedColumnWidth(MediaQuery.of(context).size.width * 0.20),
       },
       columnIndexToCompareAndDetachBetterAndWorstValue: 1,
-      columnsIndexToSum: [1],
+      columnsIndexToSum: [1, 2],
       titles: [
         PersonalizedTableCell(value: R.string.year.toUpperCase()),
         PersonalizedTableCell(
@@ -34,9 +34,7 @@ class YearSales extends StatelessWidget {
       rowValues:
           saleMovementsByYear.map((e) => e.Year).toSet().toList().map((year) {
         final salesByCurrentYear = saleMovementsByYear
-            .filteredSales(
-              filterYear: year?.toInt(),
-            )
+            .filteredSales(filterYear: year?.toInt())
             .map((e) => e.toViewModel())
             .toList();
 
