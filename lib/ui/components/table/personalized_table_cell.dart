@@ -32,7 +32,7 @@ class PersonalizedTableCell extends StatelessWidget {
     }
 
     if (value is int) {
-      return value.toString();
+      return value.toString().toBrazilianNumber(0);
     }
 
     throw Exception("Write String, double or int type");
