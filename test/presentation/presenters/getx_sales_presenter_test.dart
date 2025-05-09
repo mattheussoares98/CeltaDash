@@ -248,6 +248,19 @@ void main() {
         expect(sut.saleMovementsByMonth, sales);
         expect(sut.saleMovementsByYear, sales);
       });
+
+      test("Should update saleMovements from resumePresenter as well",
+          () async {
+        await sut.getSales(
+          resumePresenter: resumePresenter,
+          homePresenter: homePresenter,
+          searchByYear: true,
+        );
+
+        verify(() =>
+                resumePresenter.getSales(homePresenter, forceRefresh: true))
+            .called(1);
+      });
     });
   });
 }
