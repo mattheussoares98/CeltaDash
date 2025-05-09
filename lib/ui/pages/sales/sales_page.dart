@@ -82,7 +82,7 @@ class _SalesPageState extends State<SalesPage>
           await reloadSales(homePresenter, forceRefresh: true);
         },
         onTapRefresh: () async {
-          await reloadSales(homePresenter);
+          await reloadSales(homePresenter, forceRefresh: true);
         },
         onChangeDate: (_) async {
           await reloadSales(homePresenter);
@@ -93,7 +93,13 @@ class _SalesPageState extends State<SalesPage>
           builder: (context, snapshot) {
             return Obx(() {
               Get.put<SalesPresenter>(widget.presenter);
-              final saleMovements = widget.presenter.saleMovements;
+              final saleMovements = widget.presenter.saleMovements
+                  ?.filteredSales(
+                    enterprise: homePresenter.selectedEnterprise,
+                  )
+                  .map((e) => e.toViewModel())
+                  .toList();
+
               final uniqueHours = saleMovements == null
                   ? <String>[]
                   : saleMovements
@@ -117,6 +123,8 @@ class _SalesPageState extends State<SalesPage>
                         saleMovements: saleMovements,
                         uniqueHours: uniqueHours,
                       ),
+                    if (filterByDay && saleMovements != null)
+                      DayTable(saleMovements: saleMovements)
                   ],
                 ),
               );
