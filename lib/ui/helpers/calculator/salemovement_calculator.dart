@@ -1,3 +1,4 @@
+import '../../../ui/helpers/helpers.dart';
 import '../../../data/models/models.dart';
 import '../../pages/pages.dart';
 
@@ -162,5 +163,22 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
       hour: selectedHour.key,
       value: selectedHour.value,
     );
+  }
+
+  /// All distinct, non-null hour strings in your list.
+  List<String> get uniqueHours =>
+      map((e) => e.Hour).whereType<String>().toSet().toList();
+
+  double totalForHourOnDate(String hour, DateTime date) => where((e) =>
+          e.Hour == hour &&
+          e.Date?.year == date.year &&
+          e.Date?.month == date.month &&
+          e.Date?.day == date.day)
+      .fold(0.0, (sum, e) => sum + (e.LiquidValue?.toDouble() ?? 0));
+
+  double differenceForHour(double day1, double day2) {
+    if (day1 == 0 && day2 == 0) return 0.0;
+    if (day1 == 0) return -100.0;
+    return ((day1 - day2) / day1) * 100;
   }
 }

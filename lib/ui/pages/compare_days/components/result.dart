@@ -6,12 +6,10 @@ import '../../../../ui/helpers/helpers.dart';
 import '../../pages.dart';
 
 class Result extends StatelessWidget {
-  final double Function(double day1, double day2) calculateDifferencePercentage;
   final DateTime firstDay;
   final DateTime secondDay;
   const Result({
     super.key,
-    required this.calculateDifferencePercentage,
     required this.firstDay,
     required this.secondDay,
   });
@@ -50,10 +48,8 @@ class Result extends StatelessWidget {
             children: [
               TextSpan(text: R.string.sold.toLowerCase()),
               TextSpan(
-                text: " ${calculateDifferencePercentage(
-                  firstDayTotalLiquid,
-                  secondDayTotalLiquid,
-                ).toString().toBrazilianNumber()}% ",
+                text:
+                    "${compareDaysPresenter.saleMovements!.differenceForHour(firstDayTotalLiquid, secondDayTotalLiquid).toString().toBrazilianNumber()}%",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: firstDayTotalLiquid > secondDayTotalLiquid

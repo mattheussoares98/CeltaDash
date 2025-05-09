@@ -7,12 +7,10 @@ import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
 class CompareTable extends StatelessWidget {
-  final double Function(double day1, double day2) calculateDifferencePercentage;
   final DateTime firstDay;
   final DateTime secondDay;
   const CompareTable({
     super.key,
-    required this.calculateDifferencePercentage,
     required this.firstDay,
     required this.secondDay,
   });
@@ -53,38 +51,20 @@ class CompareTable extends StatelessWidget {
         2: FixedColumnWidth(dayWidth),
         3: FixedColumnWidth(compareDaysWidth),
       },
-      rowValues: compareDaysPresenter.saleMovements!
-          .map((e) => e.Hour)
-          .whereType<String>()
-          .toSet()
-          .toList()
-          .map((hour) {
-        final firstDayTotal = compareDaysPresenter.saleMovements!
-            .where((e) =>
-                e.Hour == hour &&
-                e.Date!.day == firstDay.day &&
-                e.Date!.month == firstDay.month &&
-                e.Date!.year == firstDay.year)
-            .map((e) => e.LiquidValue?.toDouble() ?? 0)
-            .fold(0.0, (a, b) => a + b);
-
-        final secondDayTotal = compareDaysPresenter.saleMovements!
-            .where((e) =>
-                e.Hour == hour &&
-                e.Date!.day == secondDay.day &&
-                e.Date!.month == secondDay.month &&
-                e.Date!.year == secondDay.year)
-            .map((e) => e.LiquidValue?.toDouble() ?? 0)
-            .fold(0.0, (a, b) => a + b);
-
-        final difference =
-            calculateDifferencePercentage(firstDayTotal, secondDayTotal);
+      rowValues:
+          compareDaysPresenter.saleMovements!.uniqueHours.toList().map((hour) {
+        final t1 = compareDaysPresenter.saleMovements!
+            .totalForHourOnDate(hour, firstDay);
+        final t2 = compareDaysPresenter.saleMovements!
+            .totalForHourOnDate(hour, secondDay);
+        final diff =
+            compareDaysPresenter.saleMovements!.differenceForHour(t1, t2);
 
         return [
           PersonalizedTableCell(value: hour),
-          PersonalizedTableCell(value: firstDayTotal, isMoney: true),
-          PersonalizedTableCell(value: secondDayTotal, isMoney: true),
-          PersonalizedTableCell(value: difference, isPercentage: true),
+          PersonalizedTableCell(value: t1, isMoney: true),
+          PersonalizedTableCell(value: t2, isMoney: true),
+          PersonalizedTableCell(value: diff, isPercentage: true),
         ];
       }).toList(),
     );
