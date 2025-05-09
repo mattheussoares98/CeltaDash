@@ -34,12 +34,11 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
     return Scaffold(
       appBar: DefaultAppBar(
         showEnterpriseDropdown: false,
-        onChangeDate: (newDate) {},
-        onChangeEnterprise: (changedEnterprise) async {
-          await resumePresenter.getSales(
-            homePresenter,
-            forceRefresh: !changedEnterprise,
-          );
+        onChangeDate: (newDate) async {
+          await resumePresenter.getSales(homePresenter);
+        },
+        onChangeEnterprise: (_) async {
+          await resumePresenter.getSales(homePresenter);
         },
         onTapRefresh: () async {
           await resumePresenter.getSales(homePresenter, forceRefresh: true);
