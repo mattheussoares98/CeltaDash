@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
@@ -59,6 +60,8 @@ class GetxSalesPresenter extends GetxController
         groupByYear: (searchByMonth == true || searchByYear == true) &&
             (searchByHour != true && searchByDay != true),
       );
+
+      debugPrint("stop");
 
       saleMovements = remoteSales
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())

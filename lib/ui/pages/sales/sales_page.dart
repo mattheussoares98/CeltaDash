@@ -64,7 +64,6 @@ class _SalesPageState extends State<SalesPage>
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
-    Get.put<SalesPresenter>(widget.presenter);
 
     loadingSubscription?.cancel();
     mainErrorSubscription?.cancel();
@@ -85,48 +84,60 @@ class _SalesPageState extends State<SalesPage>
           await reloadSales(homePresenter);
         },
       ),
-      body: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SelectPeriodItems(
-                  items: [
-                    SelectPeriodItems.createItem(
-                      title: R.string.hour,
-                      onTap: () {
-                        updateSelectedItem(filterByHour: true);
-                      },
+      body: Obx(() {
+        Get.put<SalesPresenter>(widget.presenter);
+        final saleMovements = widget.presenter.saleMovements;
+
+        return StreamBuilder<bool>(
+            stream: homePresenter.updateScreenStream,
+            builder: (context, snapshot) {
+              return Opacity(
+                opacity: snapshot.data == true ? 0 : 1,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SelectPeriodItems(
+                            items: [
+                              SelectPeriodItems.createItem(
+                                title: R.string.hour,
+                                onTap: () {
+                                  updateSelectedItem(filterByHour: true);
+                                },
+                              ),
+                              SelectPeriodItems.createItem(
+                                title: R.string.day,
+                                onTap: () {
+                                  updateSelectedItem(filterByDay: true);
+                                },
+                              ),
+                              SelectPeriodItems.createItem(
+                                title: R.string.month,
+                                onTap: () {
+                                  updateSelectedItem(filterByMonth: true);
+                                },
+                              ),
+                              SelectPeriodItems.createItem(
+                                title: R.string.year,
+                                onTap: () {
+                                  updateSelectedItem(filterByYear: true);
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    SelectPeriodItems.createItem(
-                      title: R.string.day,
-                      onTap: () {
-                        updateSelectedItem(filterByDay: true);
-                      },
-                    ),
-                    SelectPeriodItems.createItem(
-                      title: R.string.month,
-                      onTap: () {
-                        updateSelectedItem(filterByMonth: true);
-                      },
-                    ),
-                    SelectPeriodItems.createItem(
-                      title: R.string.year,
-                      onTap: () {
-                        updateSelectedItem(filterByYear: true);
-                      },
-                    ),
+                    if (filterByHour && saleMovements != null)
+                      HourTable(saleMovements: saleMovements),
                   ],
                 ),
-              ),
-            ],
-          ),
-          if (filterByHour && widget.presenter.saleMovements != null)
-            HourTable(),
-        ],
-      ),
+              );
+            });
+      }),
     );
   }
 }

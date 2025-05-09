@@ -6,12 +6,18 @@ import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
 class HourTable extends StatelessWidget {
-  const HourTable({super.key});
+  final List<SaleMovementViewModel> saleMovements;
+  const HourTable({super.key, required this.saleMovements});
 
   @override
   Widget build(BuildContext context) {
-    SalesPresenter salesPresenter = Get.find();
     HomePresenter homePresenter = Get.find();
+    final totalValue = saleMovements.sumLiquidValue(
+      enterprise: homePresenter.selectedEnterprise,
+      filterDay: homePresenter.selectedDate.day,
+      filterMonth: homePresenter.selectedDate.month,
+      filterYear: homePresenter.selectedDate.year,
+    );
 
     return TableItem(
       titleMinHeight: 43,
@@ -19,6 +25,8 @@ class HourTable extends StatelessWidget {
         0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.13),
       },
       columnIndexToCompareAndDetachBetterAndWorstValue: 1,
+      columnsIndexToSum: [1],
+      indexToSort: 0,
       titles: [
         PersonalizedTableCell(value: R.string.day.toUpperCase()),
         PersonalizedTableCell(
@@ -26,18 +34,17 @@ class HourTable extends StatelessWidget {
         ),
         PersonalizedTableCell(value: R.string.share.toUpperCase()),
       ],
-      rowValues: salesPresenter.saleMovements!.uniqueHours.toList().map((hour) {
-        final t1 = salesPresenter.saleMovements!
-            .totalForHourOnDate(hour, homePresenter.selectedDate);
+      rowValues: saleMovements.uniqueHours.toList().map((hour) {
+        final totalByHour =
+            saleMovements.totalForHourOnDate(hour, homePresenter.selectedDate);
 
         return [
           PersonalizedTableCell(
             value: hour,
           ),
-          PersonalizedTableCell(value: t1, isMoney: true),
+          PersonalizedTableCell(value: totalByHour, isMoney: true),
           PersonalizedTableCell(
-            value:
-                (t1 / salesPresenter.saleMovements!.uniqueHours.length) * 100,
+            value: (totalByHour / totalValue) * 100,
             isPercentage: true,
           ),
         ];
