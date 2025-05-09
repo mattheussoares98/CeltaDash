@@ -64,7 +64,7 @@ class GetxSalesPresenter extends GetxController
       final remoteSalesByYear = await loadSaleMovements.get(
         enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
         startDate: DateTime(homePresenter.selectedDate.year - 2),
-        endDate: DateTime(homePresenter.selectedDate.year),
+        endDate: DateTime(homePresenter.selectedDate.year, 12, 31),
         groupByEnterprise: true,
         groupByYear: true,
       );

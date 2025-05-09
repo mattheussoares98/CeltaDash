@@ -201,7 +201,7 @@ void main() {
         );
 
         final startDate = DateTime(homePresenter.selectedDateMock.year - 2);
-        final endDate = DateTime(homePresenter.selectedDate.year);
+        final endDate = DateTime(homePresenter.selectedDate.year, 12, 31);
 
         verify(
           () => loadSaleMovements.get(
