@@ -22,6 +22,7 @@ class GetxSalesPresenter extends GetxController
     bool? searchByDay,
     bool? searchByMonth,
     bool? searchByYear,
+    //TODO add forceRefresh
   }) async {
     mainError = null;
     isLoading = true;
@@ -31,16 +32,20 @@ class GetxSalesPresenter extends GetxController
       late DateTime endDate;
 
       if (searchByHour == true || searchByDay == true) {
+        if (homePresenter.selectedDate.month == _lastLoadedDate?.month &&
+            homePresenter.selectedDate.year == _lastLoadedDate?.year) {
+          return;
+        }
+
         startDate = DateTime(
           homePresenter.selectedDate.year,
           homePresenter.selectedDate.month,
-          homePresenter.selectedDate.day,
+          1,
         );
         endDate = DateTime(
           homePresenter.selectedDate.year,
-          homePresenter.selectedDate.month,
-          homePresenter.selectedDate.day,
-        );
+          homePresenter.selectedDate.month + 1,
+        ).subtract(Duration(days: 1));
       } else if (searchByMonth == true || searchByYear == true) {
         startDate = DateTime(homePresenter.selectedDate.year);
         endDate = DateTime(homePresenter.selectedDate.year);

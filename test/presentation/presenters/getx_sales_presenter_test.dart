@@ -120,19 +120,18 @@ void main() {
           startDate: DateTime(
             homePresenter.selectedDateMock.year,
             homePresenter.selectedDateMock.month,
-            homePresenter.selectedDateMock.day,
+            1,
           ),
           endDate: DateTime(
             homePresenter.selectedDateMock.year,
-            homePresenter.selectedDateMock.month,
-            homePresenter.selectedDateMock.day,
-          ),
+            homePresenter.selectedDateMock.month + 1,
+          ).subtract(Duration(days: 1)),
           groupByYear: false,
           groupByMonth: false,
           groupByDay: true,
           groupByHour: true,
         ),
-      );
+      ).called(1);
     });
     test("Should load sale movements with correct params when filter hour",
         () async {
@@ -145,19 +144,18 @@ void main() {
           startDate: DateTime(
             homePresenter.selectedDateMock.year,
             homePresenter.selectedDateMock.month,
-            homePresenter.selectedDateMock.day,
+            1,
           ),
           endDate: DateTime(
             homePresenter.selectedDateMock.year,
-            homePresenter.selectedDateMock.month,
-            homePresenter.selectedDateMock.day,
-          ),
+            homePresenter.selectedDateMock.month + 1,
+          ).subtract(Duration(days: 1)),
           groupByYear: false,
           groupByMonth: false,
           groupByDay: true,
           groupByHour: true,
         ),
-      );
+      ).called(1);
     });
     test("Should load sale movements with correct params when filter month",
         () async {
@@ -174,7 +172,7 @@ void main() {
           groupByDay: false,
           groupByHour: false,
         ),
-      );
+      ).called(1);
     });
     test("Should load sale movements with correct params when filter year",
         () async {
@@ -191,12 +189,54 @@ void main() {
           groupByDay: false,
           groupByHour: false,
         ),
-      );
+      ).called(1);
     });
     test("Should change last loaded date correctly", () async {
       await sut.getSales(homePresenter: homePresenter, searchByMonth: true);
 
       expect(sut.lastLoadedDate, homePresenter.selectedDateMock);
+    });
+
+    test(
+        "Should not load if is searching by hour or day and dont changed month and year",
+        () async {
+      await sut.getSales(
+        homePresenter: homePresenter,
+        searchByMonth: true,
+        searchByDay: true,
+      );
+
+      homePresenter.selectedDateMock = DateTime(
+        sut.lastLoadedDate!.year,
+        sut.lastLoadedDate!.month,
+        faker.randomGenerator.integer(28),
+      );
+
+      await sut.getSales(
+        homePresenter: homePresenter,
+        searchByHour: true,
+        searchByDay: true,
+      );
+
+      verify(
+        () => loadSaleMovements.get(
+          enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+          groupByEnterprise: true,
+          startDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month,
+            1,
+          ),
+          endDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month + 1,
+          ).subtract(Duration(days: 1)),
+          groupByYear: false,
+          groupByMonth: false,
+          groupByDay: true,
+          groupByHour: true,
+        ),
+      ).called(1);
     });
   });
 }
