@@ -36,6 +36,7 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
           alignment: Alignment.centerLeft,
           child: Text(
             widget.label ?? R.string.select,
+            maxLines: 1,
             style: const TextStyle(
               fontSize: 16,
               color: CupertinoColors.black,
