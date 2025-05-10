@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../ui/helpers/helpers.dart';
@@ -127,8 +130,16 @@ class _TableItemState extends State<TableItem> {
   }
 
   Color getColor(int rowIndex) {
-    if (rowIndex == minValueRowIndex) return Colors.red.withAlpha(120);
-    if (rowIndex == maxValueRowIndex) return Colors.green.withAlpha(120);
+    if (rowIndex == minValueRowIndex) {
+      return Platform.isIOS
+          ? CupertinoColors.destructiveRed
+          : Colors.red.withAlpha(120);
+    }
+    if (rowIndex == maxValueRowIndex) {
+      return Platform.isIOS
+          ? CupertinoColors.activeGreen
+          : Colors.green.withAlpha(120);
+    }
     if (rowIndex % 2 == 0) {
       return Theme.of(context).primaryColorLight.withAlpha(20);
     }
@@ -177,6 +188,10 @@ class _TableItemState extends State<TableItem> {
     return sumRow;
   }
 
+  Color getTableBorderColor() {
+    return Platform.isIOS ? CupertinoColors.separator : Colors.black;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -184,73 +199,89 @@ class _TableItemState extends State<TableItem> {
         children: [
           SizedBox(
             height: widget.titleMinHeight ?? 1,
-            child: Table(
-              border: TableBorder.all(color: Colors.black, width: 0.06),
-              defaultColumnWidth: FlexColumnWidth(1),
-              columnWidths: widget
-                  .tableColumnWidth /* ??
-                  {0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.1)} */
-              ,
-              children: [
-                TableRow(
-                  children: List.generate(widget.titles.length, (index) {
-                    final tableCell = widget.titles[index];
-                    return IntrinsicHeight(
-                      child: Container(
-                        constraints: BoxConstraints(
-                          minHeight: widget.titleMinHeight ?? 1,
-                        ),
-                        child: InkWell(
-                          onTap: () {
-                            setState(() {
-                              ascending = !ascending;
-                              _sortRows(index);
-                            });
-                          },
-                          child: PersonalizedTableCell(
-                            value: tableCell.value,
-                            isTitle: true,
-                          ),
-                        ),
-                      ),
-                    );
-                  }),
-                ),
-              ],
-            ),
-          ),
-          Flexible(
-            child: SingleChildScrollView(
+            child: DefaultTextStyle(
+              style: CupertinoTheme.of(context).textTheme.textStyle,
               child: Table(
-                border: TableBorder.all(color: Colors.black, width: 0.06),
+                border:
+                    TableBorder.all(color: getTableBorderColor(), width: 0.06),
                 defaultColumnWidth: FlexColumnWidth(1),
                 columnWidths: widget
                     .tableColumnWidth /* ??
                     {0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.1)} */
                 ,
                 children: [
-                  ...List.generate(
-                    sortedRows.length,
-                    //travel a list of PersonalizedTableCell
-                    (index) => TableRow(
-                      children: List.generate(
-                        sortedRows[index].length,
-                        //get each PersonalizedTableCell to insert IntrinsicHeight and center the value
-                        (i) {
-                          return IntrinsicHeight(
+                  TableRow(
+                    children: List.generate(widget.titles.length, (index) {
+                      final tableCell = widget.titles[index];
+                      return IntrinsicHeight(
+                        child: Container(
+                          constraints: BoxConstraints(
+                            minHeight: widget.titleMinHeight ?? 1,
+                          ),
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                ascending = !ascending;
+                                _sortRows(index);
+                              });
+                            },
                             child: Container(
-                              constraints: BoxConstraints(
-                                minHeight: widget.titleMinHeight ?? 1,
+                              color: CupertinoColors.systemGrey6,
+                              child: PersonalizedTableCell(
+                                value: tableCell.value,
+                                isTitle: true,
                               ),
-                              child: sortedRows[index][i],
                             ),
-                          );
-                        },
-                      ),
-                      decoration: BoxDecoration(color: getColor(index)),
-                    ),
+                          ),
+                        ),
+                      );
+                    }),
                   ),
                 ],
+              ),
+            ),
+          ),
+          Flexible(
+            child: SingleChildScrollView(
+              child: DefaultTextStyle(
+                style: CupertinoTheme.of(context).textTheme.textStyle,
+                child: Table(
+                  border: TableBorder.all(
+                    color: getTableBorderColor(),
+                    width: 0.06,
+                  ),
+                  defaultColumnWidth: FlexColumnWidth(1),
+                  columnWidths: widget
+                      .tableColumnWidth /* ??
+                      {0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.1)} */
+                  ,
+                  children: [
+                    ...List.generate(
+                      sortedRows.length,
+                      //travel a list of PersonalizedTableCell
+                      (index) => TableRow(
+                        children: List.generate(
+                          sortedRows[index].length,
+                          //get each PersonalizedTableCell to insert IntrinsicHeight and center the value
+                          (i) {
+                            return IntrinsicHeight(
+                              child: Container(
+                                constraints: BoxConstraints(
+                                  minHeight: widget.titleMinHeight ?? 1,
+                                ),
+                                child: sortedRows[index][i],
+                              ),
+                            );
+                          },
+                        ),
+                        decoration: BoxDecoration(
+                          color: getColor(index),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -258,16 +289,23 @@ class _TableItemState extends State<TableItem> {
               widget.columnsIndexToSum!.isNotEmpty)
             SizedBox(
               height: widget.titleMinHeight ?? 1,
-              child: Table(
-                border: TableBorder.all(color: Colors.black, width: 0.06),
-                defaultColumnWidth: FlexColumnWidth(1),
-                columnWidths: widget.tableColumnWidth,
-                children: [
-                  TableRow(
-                    decoration: BoxDecoration(color: Colors.grey[300]),
-                    children: _buildSumRow(),
-                  ),
-                ],
+              child: DefaultTextStyle(
+                style: CupertinoTheme.of(context).textTheme.textStyle,
+                child: Table(
+                  border: TableBorder.all(
+                      color: getTableBorderColor(), width: 0.06),
+                  defaultColumnWidth: FlexColumnWidth(1),
+                  columnWidths: widget.tableColumnWidth,
+                  children: [
+                    TableRow(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      children: _buildSumRow(),
+                    ),
+                  ],
+                ),
               ),
             ),
         ],
