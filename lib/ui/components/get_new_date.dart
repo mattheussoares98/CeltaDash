@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../main/utils/utils.dart';
@@ -18,54 +21,140 @@ class GetNewDate {
       Duration(days: reduceDaysFromInitialDate ?? 0),
     );
 
-    DateTime? validityDate = await showDatePicker(
-      context: NavigatorKey.key.currentState!.context,
-      firstDate: initialDate,
-      initialDate: now,
-      lastDate: lastDate ?? now.add(const Duration(days: 1825)),
-      locale: const Locale('pt', 'BR'),
-    );
+    DateTime? selectedDate;
 
-    if (!insertHoursAndMinutes) {
-      return validityDate;
+    if (Platform.isIOS) {
+      selectedDate = await _showCupertinoDatePicker(
+        initialDate,
+        lastDate ?? now.add(Duration(days: 1825)),
+      );
+    } else {
+      selectedDate = await showDatePicker(
+        context: NavigatorKey.key.currentState!.context,
+        firstDate: initialDate,
+        initialDate: now,
+        lastDate: lastDate ?? now.add(Duration(days: 1825)),
+        locale: const Locale('pt', 'BR'),
+      );
     }
 
-    if (validityDate != null) {
-      TimeOfDay? newTime = await showTimePicker(
+    if (selectedDate == null || !insertHoursAndMinutes) return selectedDate;
+
+    TimeOfDay? selectedTime;
+
+    if (Platform.isIOS) {
+      selectedTime = await _showCupertinoTimePicker();
+    } else {
+      selectedTime = await showTimePicker(
         context: NavigatorKey.key.currentState!.context,
         initialTime: TimeOfDay.now(),
       );
-
-      if (newTime == null) {
-        snackBarMessage(
-          NavigatorKey.key.currentState!.context,
-          R.string.dateNotUpdated,
-          Colors.red,
-        );
-      } else {
-        DateTime selectedDateTime = DateTime(
-          validityDate.year,
-          validityDate.month,
-          validityDate.day,
-          newTime.hour,
-          newTime.minute,
-        );
-
-        if (selectedDateTime.isBefore(initialDate) &&
-            canInsertDateBeforeNow == false) {
-          snackBarMessage(
-            NavigatorKey.key.currentState!.context,
-            R.string.dateNotUpdated,
-            Colors.red,
-          );
-
-          return null;
-        } else {
-          return selectedDateTime;
-        }
-      }
     }
 
-    return null;
+    if (selectedTime == null) {
+      snackBarMessage(
+        NavigatorKey.key.currentState!.context,
+        R.string.dateNotUpdated,
+        Colors.red,
+      );
+      return null;
+    }
+
+    final finalDateTime = DateTime(
+      selectedDate.year,
+      selectedDate.month,
+      selectedDate.day,
+      selectedTime.hour,
+      selectedTime.minute,
+    );
+
+    if (finalDateTime.isBefore(initialDate) &&
+        canInsertDateBeforeNow == false) {
+      snackBarMessage(
+        NavigatorKey.key.currentState!.context,
+        R.string.dateNotUpdated,
+        Colors.red,
+      );
+      return null;
+    }
+
+    return finalDateTime;
+  }
+
+  static Future<DateTime?> _showCupertinoDatePicker(
+    DateTime initialDate,
+    DateTime lastDate,
+  ) async {
+    DateTime tempPickedDate = initialDate;
+
+    return await showCupertinoModalPopup<DateTime>(
+      context: NavigatorKey.key.currentState!.context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 300,
+          color: Colors.white,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 200,
+                child: CupertinoDatePicker(
+                  mode: CupertinoDatePickerMode.date,
+                  initialDateTime: lastDate,
+                  minimumDate: initialDate,
+                  maximumDate: lastDate,
+                  onDateTimeChanged: (DateTime newDate) {
+                    tempPickedDate = newDate;
+                  },
+                ),
+              ),
+              CupertinoButton(
+                child: const Text('OK'),
+                onPressed: () => Navigator.of(context).pop(tempPickedDate),
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  static Future<TimeOfDay?> _showCupertinoTimePicker() async {
+    DateTime now = DateTime.now();
+    DateTime pickedDateTime = now;
+
+    return await showCupertinoModalPopup<TimeOfDay>(
+      context: NavigatorKey.key.currentState!.context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 300,
+          color: Colors.white,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 200,
+                child: CupertinoDatePicker(
+                  mode: CupertinoDatePickerMode.time,
+                  initialDateTime: now,
+                  use24hFormat: true,
+                  onDateTimeChanged: (DateTime newDateTime) {
+                    pickedDateTime = newDateTime;
+                  },
+                ),
+              ),
+              CupertinoButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop(
+                    TimeOfDay(
+                        hour: pickedDateTime.hour,
+                        minute: pickedDateTime.minute),
+                  );
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }
