@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -162,9 +163,9 @@ class _PaymentTypePageState extends State<PaymentTypePage>
           }),
         ],
       ),
-      bottomNavigationBar: BottomNavigation(
-        selectedPageIndex: selectedPageIndex,
-        updateSelectedPageIndex: (value) {
+      bottomNavigationBar: BottomNavBar(
+        currentIndex: selectedPageIndex,
+        onTap: (value) {
           setState(() {
             selectedPageIndex = value;
           });
@@ -174,6 +175,18 @@ class _PaymentTypePageState extends State<PaymentTypePage>
             curve: Curves.easeInOut,
           );
         },
+        items: [
+          BottomNavItem(
+            materialIcon: Icon(Icons.credit_card),
+            cupertinoIcon: Icon(CupertinoIcons.creditcard),
+            label: R.string.modalities,
+          ),
+          BottomNavItem(
+            materialIcon: Icon(Icons.receipt_long),
+            cupertinoIcon: Icon(CupertinoIcons.list_bullet),
+            label: R.string.finalizations,
+          ),
+        ],
       ),
     );
   }
