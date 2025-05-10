@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -66,7 +69,7 @@ class ChangeDatesButtons extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
-            child: ElevatedButton(
+            child: ElevatedButton.icon(
               onPressed: () async {
                 await _updateDate(
                   isFirstDate: true,
@@ -74,13 +77,17 @@ class ChangeDatesButtons extends StatelessWidget {
                   compareDaysPresenter: compareDaysPresenter,
                 );
               },
-              child: FittedBox(
+              icon: Icon(
+                Platform.isIOS ? CupertinoIcons.calendar : Icons.calendar_month,
+                color: Colors.white,
+              ),
+              label: FittedBox(
                   child: Text(DateFormat.yMd('pt_BR').format(firstDay))),
             ),
           ),
           const SizedBox(width: 8),
           Expanded(
-            child: ElevatedButton(
+            child: ElevatedButton.icon(
               onPressed: () async {
                 await _updateDate(
                   isFirstDate: false,
@@ -88,7 +95,11 @@ class ChangeDatesButtons extends StatelessWidget {
                   compareDaysPresenter: compareDaysPresenter,
                 );
               },
-              child: FittedBox(
+              icon: Icon(
+                Platform.isIOS ? CupertinoIcons.calendar : Icons.calendar_month,
+                color: Colors.white,
+              ),
+              label: FittedBox(
                   child: Text(DateFormat.yMd('pt_BR').format(secondDay))),
             ),
           ),

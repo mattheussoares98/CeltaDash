@@ -49,7 +49,7 @@ class Result extends StatelessWidget {
               TextSpan(text: R.string.sold.toLowerCase()),
               TextSpan(
                 text:
-                    "${compareDaysPresenter.saleMovements!.differenceForHour(firstDayTotalLiquid, secondDayTotalLiquid).toString().toBrazilianNumber()}%",
+                    " ${compareDaysPresenter.saleMovements!.differenceForHour(firstDayTotalLiquid, secondDayTotalLiquid).toString().toBrazilianNumber()}% ",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: firstDayTotalLiquid > secondDayTotalLiquid
