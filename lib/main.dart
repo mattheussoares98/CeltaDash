@@ -40,7 +40,7 @@ class App extends StatelessWidget with KeyboardManager {
       },
       child: GetMaterialApp(
         navigatorKey: NavigatorKey.key,
-        title: 'Celta plus',
+        title: 'Celta Dash',
         debugShowCheckedModeBanner: false,
         theme: makeAppTheme(context),
         navigatorObservers: [routeObserver],
