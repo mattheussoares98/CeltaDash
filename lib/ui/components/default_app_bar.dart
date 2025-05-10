@@ -91,6 +91,8 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                           )
                           .toList(),
                       selectedItem: selectedEnterprise,
+                      label:
+                          "${selectedEnterprise?.personalizedCode} - ${selectedEnterprise?.name}",
                     ),
                   ),
                   Padding(

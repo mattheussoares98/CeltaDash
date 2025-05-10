@@ -23,6 +23,7 @@ class PtBr implements Translation {
   String get averageSalesGroup => "Venda média do grupo";
   String get bestDayOfTheMonth => "Melhor dia do mês";
   String get bestHourOfTheDay => "Melhor horário do dia";
+  String get cancel => "Cancelar";
   String get chargeBacks => "Estornos";
   String get close => "Fechar";
   String get compareDays => "Comparar dias";
@@ -87,6 +88,8 @@ class PtBr implements Translation {
   String get section => "Seção";
   String get sections => "Seções";
   String get seeMore => "Ver mais";
+  String get select => "Selecione";
+  String get selectOneEnterprise => "Selecione uma empresa";
   String get share => "Share";
   String get sold => "Vendeu";
   String get ticketAverage => "Ticket médio";

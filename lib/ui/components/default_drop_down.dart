@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../helpers/helpers.dart';
@@ -7,12 +10,14 @@ class DefaultDropDown<T> extends StatefulWidget {
   final List<DropdownMenuItem<T>>? items;
   final Widget? hint;
   final T selectedItem;
+  final String? label;
 
   const DefaultDropDown({
     required this.onChanged,
     required this.hint,
     required this.items,
     required this.selectedItem,
+    required this.label,
     super.key,
   });
 
@@ -23,6 +28,48 @@ class DefaultDropDown<T> extends StatefulWidget {
 class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
   @override
   Widget build(BuildContext context) {
+    if (Platform.isIOS) {
+      return CupertinoButton(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+        color: CupertinoColors.systemGrey5,
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            widget.label ?? R.string.select,
+            style: const TextStyle(
+              fontSize: 16,
+              color: CupertinoColors.black,
+            ),
+          ),
+        ),
+        onPressed: () async {
+          final selected = await showCupertinoModalPopup<T>(
+            context: context,
+            builder: (_) => CupertinoActionSheet(
+              title: Text(R.string.selectOneEnterprise),
+              actions: widget.items!
+                  .map((item) => CupertinoActionSheetAction(
+                        onPressed: () {
+                          Navigator.of(context).pop(item.value);
+                        },
+                        child: item.child,
+                      ))
+                  .toList(),
+              cancelButton: CupertinoActionSheetAction(
+                isDefaultAction: true,
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(R.string.cancel),
+              ),
+            ),
+          );
+
+          if (selected != null) {
+            widget.onChanged(selected);
+          }
+        },
+      );
+    }
+
     return DropdownButtonFormField<T>(
       decoration: const InputDecoration(isDense: true),
       validator: (value) {

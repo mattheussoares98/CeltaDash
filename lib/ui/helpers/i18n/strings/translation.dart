@@ -18,6 +18,7 @@ abstract class Translation {
   String get averageSalesGroup;
   String get bestDayOfTheMonth;
   String get bestHourOfTheDay;
+  String get cancel;
   String get chargeBacks;
   String get close;
   String get compareDays;
@@ -81,6 +82,8 @@ abstract class Translation {
   String get secondDaySales;
   String get section;
   String get sections;
+  String get select;
+  String get selectOneEnterprise;
   String get share;
   String get sold;
   String get ticketAverage;
