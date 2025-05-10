@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -85,73 +84,37 @@ class _HomePageState extends State<HomePage>
       builder: (context, snapshot) {
         return Scaffold(
           body: pages[snapshot.data ?? 0],
-          bottomNavigationBar: Platform.isIOS
-              ? CupertinoTabBar(
-                  currentIndex: snapshot.data ?? 0,
-                  onTap: homePresenter.updateSelectedIndex,
-                  activeColor: Theme.of(context).primaryColorDark,
-                  inactiveColor: CupertinoColors.inactiveGray,
-                  backgroundColor: CupertinoColors.systemGrey6,
-                  items: [
-                    BottomNavigationBarItem(
-                      icon: Icon(CupertinoIcons.chart_pie),
-                      label: R.string.resume,
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(CupertinoIcons.chart_bar_alt_fill),
-                      label: R.string.indicators,
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(CupertinoIcons.money_dollar),
-                      label: R.string.sales,
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(CupertinoIcons.cart),
-                      label: R.string.products,
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(CupertinoIcons.person_2),
-                      label: R.string.team,
-                    ),
-                  ],
-                )
-              : BottomNavigationBar(
-                  currentIndex: snapshot.data ?? 0,
-                  onTap: homePresenter.updateSelectedIndex,
-                  type: BottomNavigationBarType.fixed,
-                  unselectedFontSize: 10,
-                  selectedFontSize: 12,
-                  selectedIconTheme: IconThemeData(
-                    size: 30,
-                    color: Theme.of(context).primaryColorDark,
-                  ),
-                  unselectedIconTheme: IconThemeData(
-                    size: 20,
-                    color: Theme.of(context).primaryColorLight,
-                  ),
-                  items: [
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.pie_chart),
-                      label: R.string.resume,
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.bar_chart),
-                      label: R.string.indicators,
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.monetization_on),
-                      label: R.string.sales,
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.shopping_cart_rounded),
-                      label: R.string.products,
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.person_pin_sharp),
-                      label: R.string.team,
-                    ),
-                  ],
-                ),
+          bottomNavigationBar: BottomNavBar(
+            currentIndex: snapshot.data ?? 0,
+            onTap: homePresenter.updateSelectedIndex,
+            items: [
+              BottomNavItem(
+                materialIcon: Icon(Icons.pie_chart),
+                cupertinoIcon: Icon(CupertinoIcons.chart_pie),
+                label: R.string.resume,
+              ),
+              BottomNavItem(
+                materialIcon: Icon(Icons.bar_chart),
+                cupertinoIcon: Icon(CupertinoIcons.chart_bar_alt_fill),
+                label: R.string.indicators,
+              ),
+              BottomNavItem(
+                materialIcon: Icon(Icons.monetization_on),
+                cupertinoIcon: Icon(CupertinoIcons.money_dollar),
+                label: R.string.sales,
+              ),
+              BottomNavItem(
+                materialIcon: Icon(Icons.shopping_cart_rounded),
+                cupertinoIcon: Icon(CupertinoIcons.cart),
+                label: R.string.products,
+              ),
+              BottomNavItem(
+                materialIcon: Icon(Icons.person_pin_sharp),
+                cupertinoIcon: Icon(CupertinoIcons.person_2),
+                label: R.string.team,
+              ),
+            ],
+          ),
         );
       },
     );
