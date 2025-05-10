@@ -1,4 +1,5 @@
 import 'package:celta_plus/ui/pages/group_summary/group_summary_details_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -104,8 +105,21 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
           }),
         ],
       ),
-      bottomNavigationBar: BottomBar(
-        onChangePage: (index) {
+      bottomNavigationBar: BottomNavBar(
+        currentIndex: currentIndex,
+        items: [
+          BottomNavItem(
+            materialIcon: Icon(Icons.bar_chart_rounded),
+            cupertinoIcon: Icon(CupertinoIcons.list_dash),
+            label: R.string.details,
+          ),
+          BottomNavItem(
+            materialIcon: Icon(Icons.pie_chart),
+            cupertinoIcon: Icon(CupertinoIcons.chart_pie),
+            label: R.string.resume,
+          ),
+        ],
+        onTap: (index) {
           setState(() {
             currentIndex = index;
           });
@@ -115,7 +129,6 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
             curve: Curves.easeInOut,
           );
         },
-        currentIndex: currentIndex,
       ),
     );
   }
