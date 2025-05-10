@@ -1,7 +1,9 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
 
 import '../helpers/helpers.dart';
 import '../pages/pages.dart';
@@ -36,8 +38,11 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
+    final isIOS = Platform.isIOS;
 
     return AppBar(
+      backgroundColor: isIOS ? Colors.grey[100] : null,
+      elevation: isIOS ? 0 : null,
       toolbarHeight:
           widget.showDatePicker == true && widget.showEnterpriseDropdown == true
               ? 90
@@ -91,10 +96,13 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                   Padding(
                     padding: const EdgeInsets.only(left: 8),
                     child: IconButton(
-                        onPressed: () {
-                          homePresenter.goToConfigurationsPage();
-                        },
-                        icon: Icon(Icons.settings)),
+                      onPressed: () {
+                        homePresenter.goToConfigurationsPage();
+                      },
+                      icon: Icon(
+                        isIOS ? CupertinoIcons.settings : Icons.settings,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -131,7 +139,9 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                     padding: const EdgeInsets.only(left: 8),
                     child: IconButton(
                       onPressed: widget.onTapRefresh,
-                      icon: Icon(Icons.refresh),
+                      icon: Icon(
+                        isIOS ? CupertinoIcons.refresh : Icons.refresh,
+                      ),
                     ),
                   )
                 ],
