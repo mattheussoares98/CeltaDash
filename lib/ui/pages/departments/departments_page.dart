@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -133,9 +134,9 @@ class _DepartmentsPageState extends State<DepartmentsPage>
           }),
         ],
       ),
-      bottomNavigationBar: BottomNavigation(
-        selectedPageIndex: selectedPageIndex,
-        updateSelectedPageIndex: (value) {
+      bottomNavigationBar: BottomNavBar(
+        currentIndex: selectedPageIndex,
+        onTap: (value) {
           setState(() {
             selectedPageIndex = value;
           });
@@ -145,6 +146,18 @@ class _DepartmentsPageState extends State<DepartmentsPage>
             curve: Curves.bounceOut,
           );
         },
+        items: [
+          BottomNavItem(
+            materialIcon: Icon(Icons.apartment),
+            cupertinoIcon: Icon(CupertinoIcons.building_2_fill),
+            label: R.string.departments,
+          ),
+          BottomNavItem(
+            materialIcon: Icon(Icons.view_module),
+            cupertinoIcon: Icon(CupertinoIcons.square_grid_2x2),
+            label: R.string.sections,
+          ),
+        ],
       ),
     );
   }
