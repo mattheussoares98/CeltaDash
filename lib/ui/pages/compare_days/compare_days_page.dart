@@ -73,49 +73,51 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
         },
         showDatePicker: false,
       ),
-      body: Obx(() {
-        Get.put<CompareDaysPresenter>(widget.presenter);
-
-        final saleMovements = widget.presenter.saleMovements;
-
-        return StreamBuilder<bool>(
-            stream: homePresenter.updateScreenStream,
-            builder: (context, snapshot) {
-              return Opacity(
-                opacity: snapshot.data == true ? 0 : 1,
-                child: Column(
-                  children: [
-                    ChangeDatesButtons(
-                      firstDay: widget.presenter.selectedFirstDay ?? firstDay,
-                      secondDay:
-                          widget.presenter.selectedSecondDay ?? secondDay,
-                    ),
-                    if (saleMovements != null &&
-                        widget.presenter.selectedFirstDay != null &&
-                        widget.presenter.selectedSecondDay != null)
-                      Expanded(
-                        child: Column(
-                          children: [
-                            CompareTable(
-                              firstDay:
-                                  widget.presenter.selectedFirstDay ?? firstDay,
-                              secondDay: widget.presenter.selectedSecondDay ??
-                                  secondDay,
-                            ),
-                            Result(
-                              firstDay:
-                                  widget.presenter.selectedFirstDay ?? firstDay,
-                              secondDay: widget.presenter.selectedSecondDay ??
-                                  secondDay,
-                            ),
-                          ],
-                        ),
+      body: SafeArea(
+        child: Obx(() {
+          Get.put<CompareDaysPresenter>(widget.presenter);
+        
+          final saleMovements = widget.presenter.saleMovements;
+        
+          return StreamBuilder<bool>(
+              stream: homePresenter.updateScreenStream,
+              builder: (context, snapshot) {
+                return Opacity(
+                  opacity: snapshot.data == true ? 0 : 1,
+                  child: Column(
+                    children: [
+                      ChangeDatesButtons(
+                        firstDay: widget.presenter.selectedFirstDay ?? firstDay,
+                        secondDay:
+                            widget.presenter.selectedSecondDay ?? secondDay,
                       ),
-                  ],
-                ),
-              );
-            });
-      }),
+                      if (saleMovements != null &&
+                          widget.presenter.selectedFirstDay != null &&
+                          widget.presenter.selectedSecondDay != null)
+                        Expanded(
+                          child: Column(
+                            children: [
+                              CompareTable(
+                                firstDay:
+                                    widget.presenter.selectedFirstDay ?? firstDay,
+                                secondDay: widget.presenter.selectedSecondDay ??
+                                    secondDay,
+                              ),
+                              Result(
+                                firstDay:
+                                    widget.presenter.selectedFirstDay ?? firstDay,
+                                secondDay: widget.presenter.selectedSecondDay ??
+                                    secondDay,
+                              ),
+                            ],
+                          ),
+                        ),
+                    ],
+                  ),
+                );
+              });
+        }),
+      ),
     );
   }
 }
