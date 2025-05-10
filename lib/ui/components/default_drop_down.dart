@@ -33,7 +33,7 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
         color: CupertinoColors.systemGrey5,
         child: Align(
-          alignment: Alignment.centerLeft,
+          alignment: Alignment.center,
           child: Text(
             widget.label ?? R.string.select,
             maxLines: 1,
