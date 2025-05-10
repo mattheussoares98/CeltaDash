@@ -1,5 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'dart:io' show Platform;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -26,7 +28,6 @@ class _PeriodItems extends State<SelectPeriodItems> {
   @override
   void initState() {
     super.initState();
-
     if (widget.items.isNotEmpty) {
       selected = widget.items.first.title;
     }
@@ -35,10 +36,32 @@ class _PeriodItems extends State<SelectPeriodItems> {
   @override
   Widget build(BuildContext context) {
     if (widget.items.isEmpty) {
-      return Text("Empty items. You must create items");
+      return const Text("Empty items. You must create items");
     }
+
     HomePresenter homePresenter = Get.find();
 
+    if (Platform.isIOS) {
+      // iOS-style segmented control
+      return CupertinoSegmentedControl<String>(
+        groupValue: selected,
+        children: {
+          for (var item in widget.items)
+            item.title: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              child: Text(item.title),
+            ),
+        },
+        onValueChanged: (newValue) {
+          setState(() => selected = newValue);
+          widget.items.firstWhere((e) => e.title == selected).onTap();
+          homePresenter.updateScreen();
+        },
+        padding: const EdgeInsets.all(8),
+      );
+    }
+
+    // Material-style segmented control
     return SegmentedButton<String>(
       segments: List.generate(widget.items.length, (i) {
         return ButtonSegment(
@@ -52,7 +75,7 @@ class _PeriodItems extends State<SelectPeriodItems> {
         setState(() {
           selected = newSelection.first;
         });
-        widget.items.where((e) => e.title == selected).first.onTap();
+        widget.items.firstWhere((e) => e.title == selected).onTap();
         homePresenter.updateScreen();
       },
       style: ButtonStyle(
