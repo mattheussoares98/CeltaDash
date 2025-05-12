@@ -8,7 +8,7 @@ class AnimatedCircleProgress extends StatefulWidget {
   final double height;
   final double width;
   final ScrollController
-  scrollController; //need to repeat the animation when hide from the page and appears agein
+      scrollController; //need to repeat the animation when hide from the page and appears agein
 
   const AnimatedCircleProgress({
     super.key,
@@ -77,41 +77,46 @@ class _AnimatedCircleProgressState extends State<AnimatedCircleProgress>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
+      width: widget.width,
+      height: widget.height,
       key: _widgetKey,
-      child: AnimatedBuilder(
-        animation: _progressAnimation,
-        builder: (context, child) {
-          return Stack(
-            alignment: Alignment.center,
-            children: [
-              CustomPaint(
-                size: Size(widget.width, widget.height),
-                painter: _ProgressCirclePainter(
-                  progress: _progressAnimation.value,
-                  backgroundColor: Theme.of(
-                    context,
-                  ).primaryColorLight.withAlpha(15),
-                  progressColor: Colors.green,
-                ),
-              ),
-              SizedBox(
-                width: widget.width * 0.8,
-                height: widget.height * 0.8,
-                child: FittedBox(
-                  child: Text(
-                    widget.value
-                        .toString()
-                        .toBrazilianNumber()
-                        .addBrazilianCoin(),
-                    style: Theme.of(context).textTheme.headlineMedium,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+        return AnimatedBuilder(
+          animation: _progressAnimation,
+          builder: (context, child) {
+            return Stack(
+              alignment: Alignment.center,
+              children: [
+                CustomPaint(
+                  size: Size(constraints.maxWidth, constraints.maxHeight),
+                  painter: _ProgressCirclePainter(
+                    progress: _progressAnimation.value,
+                    backgroundColor: Theme.of(
+                      context,
+                    ).primaryColorLight.withAlpha(15),
+                    progressColor: Colors.green,
                   ),
                 ),
-              ),
-            ],
-          );
-        },
-      ),
+                SizedBox(
+                  width: constraints.maxWidth * 0.7,
+                  height: constraints.maxHeight * 0.7,
+                  child: FittedBox(
+                    child: Text(
+                      widget.value
+                          .toString()
+                          .toBrazilianNumber()
+                          .addBrazilianCoin(),
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      }),
     );
   }
 }
@@ -129,18 +134,16 @@ class _ProgressCirclePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final Paint backgroundPaint =
-        Paint()
-          ..color = backgroundColor
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 10;
+    final Paint backgroundPaint = Paint()
+      ..color = backgroundColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 10;
 
-    final Paint progressPaint =
-        Paint()
-          ..color = progressColor
-          ..style = PaintingStyle.stroke
-          ..strokeCap = StrokeCap.round
-          ..strokeWidth = 10;
+    final Paint progressPaint = Paint()
+      ..color = progressColor
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round
+      ..strokeWidth = 10;
 
     final center = Offset(size.width / 2, size.height / 2);
     final radius = (size.width - 5) / 2;
