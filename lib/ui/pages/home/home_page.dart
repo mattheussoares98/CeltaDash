@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage>
 
   final pages = <Widget>[
     makeResumePage(),
-    makeIndicatorsPage(),
+    // makeIndicatorsPage(),
     makeSalesPage(),
     // ProductsPage(),
     // makeTeamPage(),
@@ -93,11 +93,11 @@ class _HomePageState extends State<HomePage>
                 cupertinoIcon: Icon(CupertinoIcons.chart_pie),
                 label: R.string.resume,
               ),
-              BottomNavItem(
-                materialIcon: Icon(Icons.bar_chart),
-                cupertinoIcon: Icon(CupertinoIcons.chart_bar_alt_fill),
-                label: R.string.indicators,
-              ),
+              // BottomNavItem(
+              //   materialIcon: Icon(Icons.bar_chart),
+              //   cupertinoIcon: Icon(CupertinoIcons.chart_bar_alt_fill),
+              //   label: R.string.indicators,
+              // ),
               BottomNavItem(
                 materialIcon: Icon(Icons.monetization_on),
                 cupertinoIcon: Icon(CupertinoIcons.money_dollar),
