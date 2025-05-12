@@ -76,7 +76,8 @@ class GetxLoginPresenter extends GetxController
 
         await localStorage.put(
           DatabaseKeys.enterprise,
-          FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson(),
+          FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
+              .toJson(),
         );
         navigateTo.navigate(pageRoute: PageRoutes.home, clear: true);
       }
@@ -84,8 +85,10 @@ class GetxLoginPresenter extends GetxController
       switch (e) {
         case DomainError.enterpriseNotFound:
           mainError = UIError.enterpriseNotFound;
+          break;
         case DomainError.updateCeltaBs:
           mainError = UIError.updateCeltaBs;
+          break;
         default:
           mainError = UIError.unexpected;
       }
