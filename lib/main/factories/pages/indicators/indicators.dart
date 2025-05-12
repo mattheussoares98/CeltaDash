@@ -1,0 +1,1 @@
+export './indicators_page_factory.dart';

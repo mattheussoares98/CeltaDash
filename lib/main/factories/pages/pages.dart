@@ -2,6 +2,7 @@ export 'compare_days/compare_days.dart';
 export 'configurations/configurations.dart';
 export 'goal_history/goal_history.dart';
 export 'group_summary/group_summary.dart';
+export 'indicators/indicators.dart';
 export 'home/home.dart';
 export 'login/login.dart';
 export 'operators_charge_backs/operators_charge_backs.dart';
