@@ -13,15 +13,21 @@ class FirebaseAdapter implements FirebaseStorage {
     String? fieldToSearch,
     String? valueToSearch,
   }) async {
-    if (fieldToSearch == null || valueToSearch == null) {
-      return doc == null
-          ? await instance.collection(collection).get()
-          : await instance.collection(collection).doc(doc).get();
-    } else {
-      return await instance
-          .collection(collection)
-          .where(fieldToSearch, isEqualTo: valueToSearch)
-          .get();
+    try {
+      if (fieldToSearch == null || valueToSearch == null) {
+        return doc == null
+            ? await instance.collection(collection).get()
+            : await instance.collection(collection).doc(doc).get();
+      } else {
+        return await instance
+            .collection(collection)
+            .where(fieldToSearch, isEqualTo: valueToSearch)
+            .get();
+      }
+    } on FirebaseException {
+      throw DomainError.unexpected;
+    } catch (e) {
+      throw DomainError.unexpected;
     }
   }
 
@@ -33,19 +39,25 @@ class FirebaseAdapter implements FirebaseStorage {
     required DocumentReference<Map<String, dynamic>> documentReference,
     required Map<String, dynamic>? data,
   }) async {
-    final json = data;
-    if (increment != null) {
-      json!.addAll(increment.first!);
-    }
-    if (arrayUnion != null) {
-      json!.addAll(arrayUnion.first!);
-    }
+    try {
+      final json = data;
+      if (increment != null) {
+        json!.addAll(increment.first!);
+      }
+      if (arrayUnion != null) {
+        json!.addAll(arrayUnion.first!);
+      }
 
-    if ((increment == null && arrayUnion == null && data == null) ||
-        json == null) {
+      if ((increment == null && arrayUnion == null && data == null) ||
+          json == null) {
+        throw DomainError.unexpected;
+      }
+
+      await documentReference.set(json, SetOptions(merge: merge == true));
+    } on FirebaseException {
+      throw DomainError.unexpected;
+    } catch (e) {
       throw DomainError.unexpected;
     }
-
-    await documentReference.set(json, SetOptions(merge: merge == true));
   }
 }
