@@ -133,6 +133,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                       },
                       label: Text(
                         "${DateFormat('dd/MM/yyyy').format(homePresenter.selectedDate)}  ${DateFormat('EEEE', 'pt_BR').format(homePresenter.selectedDate)}",
+                        maxLines: 1,
                       ),
                       icon: Icon(Icons.date_range, color: Colors.white),
                     ),
