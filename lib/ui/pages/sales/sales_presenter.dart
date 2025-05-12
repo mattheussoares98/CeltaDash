@@ -9,13 +9,21 @@ abstract class SalesPresenter implements Listenable {
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
 
+  bool get filterByHour;
+  bool get filterByDay;
+  bool get filterByMonth;
+  bool get filterByYear;
+
   Future<void> getSales({
     required HomePresenter homePresenter,
     required ResumePresenter resumePresenter,
-    bool? searchByHour,
-    bool? searchByDay,
-    bool? searchByMonth,
-    bool? searchByYear,
     bool? forceRefresh,
+  });
+
+  void updateSelectedPeriod({
+    bool? filterByHour,
+    bool? filterByDay,
+    bool? filterByMonth,
+    bool? filterByYear,
   });
 }

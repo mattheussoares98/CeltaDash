@@ -22,6 +22,10 @@ void main() {
   late LoadSaleMovementsSpy loadSaleMovements;
 
   late List<SaleMovementEntity> saleMovementEntities;
+  late bool filterByDay;
+  late bool filterByHour;
+  late bool filterByMonth;
+  late bool filterByYear;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
@@ -75,10 +79,6 @@ void main() {
         await sut.getSales(
           resumePresenter: resumePresenter,
           homePresenter: homePresenter,
-          searchByHour: true,
-          searchByDay: true,
-          searchByMonth: true,
-          searchByYear: true,
         );
       });
       test("Should emit correct values on error", () async {
@@ -88,97 +88,23 @@ void main() {
           emitsInOrder([null, UIError.unexpected]),
         );
 
-        loadSaleMovements.mockGetError();
+        resumePresenter.mockGetSalesError();
 
         await sut.getSales(
           resumePresenter: resumePresenter,
           homePresenter: homePresenter,
-          searchByMonth: true,
-          searchByYear: true,
         );
-      });
-      test("Should emit correct values when dont filter any period of time",
-          () async {
-        expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
-        expectLater(
-          sut.mainErrorStream,
-          emitsInOrder([null, UIError.unexpected]),
-        );
-
-        await sut.getSales(
-          resumePresenter: resumePresenter,
-          homePresenter: homePresenter,
-          searchByHour: false,
-          searchByDay: false,
-          searchByMonth: false,
-          searchByYear: false,
-        );
-      });
-    });
-    group("Sale movements get sales", () {
-      test("Should call resumePresenter.getSales when filter day", () async {
-        await sut.getSales(
-          resumePresenter: resumePresenter,
-          homePresenter: homePresenter,
-          searchByDay: true,
-        );
-
-        verify(
-          () => resumePresenter.getSales(homePresenter),
-        ).called(1);
-      });
-      test("Should load resumePresenter.getSales when filter hour", () async {
-        await sut.getSales(
-          resumePresenter: resumePresenter,
-          homePresenter: homePresenter,
-          searchByHour: true,
-        );
-
-        verify(
-          () => resumePresenter.getSales(homePresenter),
-        ).called(1);
-      });
-
-      test(
-          "Should resumePresenter.getSales with correct params if pass the same date and force refresh",
-          () async {
-        await sut.getSales(
-          resumePresenter: resumePresenter,
-          homePresenter: homePresenter,
-          searchByMonth: true,
-          searchByDay: true,
-          forceRefresh: true,
-        );
-
-        verify(
-          () => resumePresenter.getSales(homePresenter, forceRefresh: true),
-        ).called(1);
-      });
-
-      test(
-          "Should resumePresenter.getSales with correct params if pass the same date and dont force refresh",
-          () async {
-        await sut.getSales(
-          resumePresenter: resumePresenter,
-          homePresenter: homePresenter,
-          searchByMonth: true,
-          searchByDay: true,
-          forceRefresh: false,
-        );
-
-        verify(
-          () => resumePresenter.getSales(homePresenter, forceRefresh: false),
-        ).called(1);
       });
     });
 
     group("Sale movements by month && year", () {
       test("Should load sale movements with correct params to filter month",
           () async {
+        sut.updateSelectedPeriod(filterByMonth: true);
+
         await sut.getSales(
           resumePresenter: resumePresenter,
           homePresenter: homePresenter,
-          searchByMonth: true,
         );
 
         verify(
@@ -194,10 +120,10 @@ void main() {
       });
       test("Should load sale movements with correct params to filter year",
           () async {
+        sut.updateSelectedPeriod(filterByYear: true);
         await sut.getSales(
           resumePresenter: resumePresenter,
           homePresenter: homePresenter,
-          searchByYear: true,
         );
 
         final startDate = DateTime(homePresenter.selectedDateMock.year - 2);
@@ -215,11 +141,10 @@ void main() {
       });
 
       test("Should not load sale movements when filter day or hour", () async {
+        sut.updateSelectedPeriod(filterByDay: true, filterByHour: true);
         await sut.getSales(
           resumePresenter: resumePresenter,
           homePresenter: homePresenter,
-          searchByHour: true,
-          searchByDay: true,
         );
 
         verifyNever(
@@ -236,10 +161,10 @@ void main() {
       test(
           "Should update saleMovements by month and sale movements by year correctly",
           () async {
+        sut.updateSelectedPeriod(filterByYear: true);
         await sut.getSales(
           resumePresenter: resumePresenter,
           homePresenter: homePresenter,
-          searchByYear: true,
         );
 
         final sales = saleMovementEntities
@@ -251,16 +176,43 @@ void main() {
 
       test("Should update saleMovements from resumePresenter as well",
           () async {
+        sut.updateSelectedPeriod(filterByYear: true);
         await sut.getSales(
           resumePresenter: resumePresenter,
           homePresenter: homePresenter,
-          searchByYear: true,
         );
 
         verify(() =>
                 resumePresenter.getSales(homePresenter, forceRefresh: true))
             .called(1);
       });
+    });
+  });
+
+  group("Update selected period", () {
+    test("Should update values correctly", () {
+      filterByDay = faker.randomGenerator.boolean();
+      filterByHour = faker.randomGenerator.boolean();
+      filterByMonth = faker.randomGenerator.boolean();
+      filterByYear = faker.randomGenerator.boolean();
+
+      sut.updateSelectedPeriod(
+        filterByDay: filterByDay,
+        filterByHour: filterByHour,
+        filterByMonth: filterByMonth,
+        filterByYear: filterByYear,
+      );
+
+      expect(sut.filterByHour, filterByHour);
+      expect(sut.filterByDay, filterByDay);
+      expect(sut.filterByMonth, filterByMonth);
+      expect(sut.filterByYear, filterByYear);
+    });
+    test("Should start with correct values", () {
+      expect(sut.filterByHour, true);
+      expect(sut.filterByDay, false);
+      expect(sut.filterByMonth, false);
+      expect(sut.filterByYear, false);
     });
   });
 }

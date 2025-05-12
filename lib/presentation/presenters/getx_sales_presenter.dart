@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
-import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
 import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
@@ -18,30 +17,12 @@ class GetxSalesPresenter extends GetxController
   Future<void> getSales({
     required HomePresenter homePresenter,
     required ResumePresenter resumePresenter,
-    bool? searchByHour,
-    bool? searchByDay,
-    bool? searchByMonth,
-    bool? searchByYear,
     bool? forceRefresh,
   }) async {
     mainError = null;
     isLoading = true;
 
     try {
-      if (searchByHour != true &&
-          searchByDay != true &&
-          searchByMonth != true &&
-          searchByYear != true &&
-          forceRefresh != true) {
-        throw DomainError.unexpected;
-      } else if (searchByHour == true || searchByDay == true) {
-        await resumePresenter.getSales(
-          homePresenter,
-          forceRefresh: forceRefresh,
-        );
-        return;
-      }
-
       //if update sales by month and year, must update resume as well to make both equals
       //dont needs to wait
       resumePresenter.getSales(homePresenter, forceRefresh: true);
@@ -79,6 +60,19 @@ class GetxSalesPresenter extends GetxController
     }
   }
 
+  @override
+  void updateSelectedPeriod({
+    bool? filterByHour,
+    bool? filterByDay,
+    bool? filterByMonth,
+    bool? filterByYear,
+  }) {
+    _filterByHour = filterByHour ?? false;
+    _filterByDay = filterByDay ?? false;
+    _filterByMonth = filterByMonth ?? false;
+    _filterByYear = filterByYear ?? false;
+  }
+
   final _saleMovementsByYear = Rx<List<SaleMovementViewModel>?>(null);
   @override
   List<SaleMovementViewModel>? get saleMovementsByYear =>
@@ -92,4 +86,20 @@ class GetxSalesPresenter extends GetxController
       _saleMovementsByMonth.value;
   set salesByMonth(List<SaleMovementViewModel>? value) =>
       _saleMovementsByMonth.value = value;
+
+  bool _filterByHour = true;
+  @override
+  bool get filterByHour => _filterByHour;
+
+  bool _filterByDay = false;
+  @override
+  bool get filterByDay => _filterByDay;
+
+  bool _filterByMonth = false;
+  @override
+  bool get filterByMonth => _filterByMonth;
+
+  bool _filterByYear = false;
+  @override
+  bool get filterByYear => _filterByYear;
 }

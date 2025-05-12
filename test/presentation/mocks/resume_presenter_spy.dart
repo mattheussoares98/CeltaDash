@@ -1,3 +1,4 @@
+import 'package:celta_plus/domain/helpers/helpers.dart';
 import 'package:celta_plus/ui/pages/pages.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -15,7 +16,12 @@ class ResumePresenterSpy extends Mock implements ResumePresenter {
     when(() => this.goToSetGoalPage()).thenAnswer((any) => any);
     when(() => this.goToGoalHistoryPage()).thenAnswer((any) => any);
     when(() => this.goToGroupSummaryPage()).thenAnswer((any) => any);
-    when(() => this.getSales(any(), forceRefresh: any(named: "forceRefresh")))
-        .thenAnswer((any) async => any);
+    this._mockGetSalesCall().thenAnswer((any) async => any);
+  }
+
+  When _mockGetSalesCall() => when(
+      () => this.getSales(any(), forceRefresh: any(named: "forceRefresh")));
+  void mockGetSalesError() {
+    this._mockGetSalesCall().thenThrow(DomainError.unexpected);
   }
 }

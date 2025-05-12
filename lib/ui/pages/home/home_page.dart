@@ -40,8 +40,6 @@ class _HomePageState extends State<HomePage>
         await salesPresenter.getSales(
           homePresenter: homePresenter,
           resumePresenter: resumePresenter,
-          searchByMonth: true,
-          searchByYear: true,
         );
       }
     });

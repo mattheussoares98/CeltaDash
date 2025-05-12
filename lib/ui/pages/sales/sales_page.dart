@@ -21,47 +21,11 @@ class _SalesPageState extends State<SalesPage>
   StreamSubscription? loadingSubscription;
   StreamSubscription? mainErrorSubscription;
 
-  bool filterByHour = true;
-  bool filterByDay = false;
-  bool filterByMonth = false;
-  bool filterByYear = false;
-
   @override
   void dispose() {
     super.dispose();
     loadingSubscription?.cancel();
     mainErrorSubscription?.cancel();
-  }
-
-  void updateSelectedItem({
-    bool? filterByHour,
-    bool? filterByDay,
-    bool? filterByMonth,
-    bool? filterByYear,
-  }) {
-    setState(() {
-      this.filterByHour = filterByHour ?? false;
-      this.filterByDay = filterByDay ?? false;
-      this.filterByMonth = filterByMonth ?? false;
-      this.filterByYear = filterByYear ?? false;
-    });
-  } //TODO move this to presenter
-
-  Future<void> reloadSales({
-    required HomePresenter homePresenter,
-    required ResumePresenter resumePresenter,
-    required SalesPresenter salesPresenter,
-    bool? forceRefresh,
-  }) async {
-    await salesPresenter.getSales(
-      homePresenter: homePresenter,
-      resumePresenter: resumePresenter,
-      searchByHour: filterByHour,
-      searchByDay: filterByDay,
-      searchByMonth: filterByMonth,
-      searchByYear: filterByYear,
-      forceRefresh: forceRefresh,
-    );
   }
 
   @override
@@ -80,25 +44,22 @@ class _SalesPageState extends State<SalesPage>
     return Scaffold(
       appBar: DefaultAppBar(
         onChangeEnterprise: (_) async {
-          await reloadSales(
+          await salesPresenter.getSales(
             homePresenter: homePresenter,
             resumePresenter: resumePresenter,
-            salesPresenter: salesPresenter,
           );
         },
         onTapRefresh: () async {
-          await reloadSales(
+          await salesPresenter.getSales(
             homePresenter: homePresenter,
             resumePresenter: resumePresenter,
-            salesPresenter: salesPresenter,
             forceRefresh: true,
           );
         },
         onChangeDate: (_) async {
-          await reloadSales(
+          await salesPresenter.getSales(
             homePresenter: homePresenter,
             resumePresenter: resumePresenter,
-            salesPresenter: salesPresenter,
           );
         },
       ),
@@ -131,21 +92,24 @@ class _SalesPageState extends State<SalesPage>
                 opacity: snapshot.data == true ? 0 : 1,
                 child: Column(
                   children: [
-                    PeriodItems(updateSelectedItem: updateSelectedItem),
-                    if (filterByHour &&
+                    PeriodItems(
+                        updateSelectedItem:
+                            salesPresenter.updateSelectedPeriod),
+                    if (salesPresenter.filterByHour &&
                         resumeSaleMovements != null &&
                         uniqueHours.isNotEmpty)
                       HourTable(
                         resumeSaleMovements: resumeSaleMovements,
                         uniqueHours: uniqueHours,
                       ),
-                    if (filterByDay && resumeSaleMovements != null)
+                    if (salesPresenter.filterByDay &&
+                        resumeSaleMovements != null)
                       DayTable(resumeSaleMovements: resumeSaleMovements),
-                    if (filterByMonth &&
+                    if (salesPresenter.filterByMonth &&
                         saleMovementsByMonth != null &&
                         saleMovementsByMonth.isNotEmpty)
                       MonthSales(saleMovementsByMonth: saleMovementsByMonth),
-                    if (filterByYear &&
+                    if (salesPresenter.filterByYear &&
                         saleMovementsByYear != null &&
                         saleMovementsByYear.isNotEmpty)
                       YearSales(saleMovementsByYear: saleMovementsByYear),
