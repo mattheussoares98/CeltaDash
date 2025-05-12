@@ -23,10 +23,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -72,6 +69,15 @@ class DefaultFirebaseOptions {
     authDomain: 'celta-dash.firebaseapp.com',
     storageBucket: 'celta-dash.firebasestorage.app',
     measurementId: 'G-T35LL6LH4F',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyBVV-Sl1cWNochCU1DnbUVdaVQR0FqEKJk',
+    appId: '1:525012960806:ios:bf12237327708af000c8e7',
+    messagingSenderId: '525012960806',
+    projectId: 'celta-dash',
+    storageBucket: 'celta-dash.firebasestorage.app',
+    iosBundleId: 'br.com.celtaware.dash',
   );
 
 }
