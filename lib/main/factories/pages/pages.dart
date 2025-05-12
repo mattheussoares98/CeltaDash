@@ -10,6 +10,7 @@ export 'operators_discounts/operators_discounts.dart';
 export 'operators_productivity/operators_productivity.dart';
 export 'operators_sales/operators_sales.dart';
 export 'payments_type/payments_type.dart';
+export 'products/products.dart';
 export 'profitability/profitability.dart';
 export 'resume/resume.dart';
 export 'sales/sales.dart';
