@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+import '../../data/models/models.dart';
 import '../../domain/usecases/usecases.dart';
 import '../../presentation/mixins/mixins.dart';
 import '../../ui/helpers/helpers.dart';
@@ -17,7 +18,7 @@ class GetxProductsPresenter extends GetxController
     isLoading = true;
     mainError = null;
     try {
-      await loadSaleMovements.get(
+      final response = await loadSaleMovements.get(
         startDate: DateTime(
           homePresenter.selectedDate.year,
           homePresenter.selectedDate.month,
@@ -27,10 +28,17 @@ class GetxProductsPresenter extends GetxController
           homePresenter.selectedDate.year,
           homePresenter.selectedDate.month + 1,
         ).subtract(Duration(days: 1)),
+        groupByDay: true,
         groupByProduct: true,
         groupByEnterprise: true,
-        groupByDay: true,
+        enterpriseIds: homePresenter.selectedEnterprise == null
+            ? []
+            : [homePresenter.selectedEnterprise!.id!.toInt()],
       );
+
+      saleMovements = (response as List)
+          .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+          .toList();
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {
