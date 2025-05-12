@@ -45,7 +45,7 @@ class _SalesPageState extends State<SalesPage>
       this.filterByMonth = filterByMonth ?? false;
       this.filterByYear = filterByYear ?? false;
     });
-  }
+  } //TODO move this to presenter
 
   Future<void> reloadSales({
     required HomePresenter homePresenter,
