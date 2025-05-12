@@ -276,7 +276,7 @@ class _TableItemState extends State<TableItem> {
                         ),
                         decoration: BoxDecoration(
                           color: getColor(index),
-                          borderRadius: BorderRadius.circular(8),
+                          // borderRadius: BorderRadius.circular(8),
                         ),
                       ),
                     ),
@@ -300,7 +300,7 @@ class _TableItemState extends State<TableItem> {
                     TableRow(
                       decoration: BoxDecoration(
                         color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(8),
+                        // borderRadius: BorderRadius.circular(8),
                       ),
                       children: _buildSumRow(),
                     ),
