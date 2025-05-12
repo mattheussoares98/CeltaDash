@@ -55,13 +55,15 @@ void main() {
     password = faker.internet.password();
 
     response = SoapResponseModel(
-      response: FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson()
-        ..["AccessKey"] = faker.lorem.sentence(),
+      response:
+          FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson()
+            ..["AccessKey"] = faker.lorem.sentence(),
       responseType: SoapResponseType.success,
     );
     mockedFirebaseGet = MockedFirebaseGet(
       dataToReturn:
-          FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson(),
+          FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
+              .toJson(),
     );
   }
 
@@ -251,8 +253,10 @@ void main() {
       );
 
       verify(
-        () => localStorage.put(DatabaseKeys.enterprise,
-            FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson()),
+        () => localStorage.put(
+            DatabaseKeys.enterprise,
+            FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
+                .toJson()),
       ).called(1);
     });
     test("Should update EnterpriseBuilder correctly when login is successful",
@@ -266,7 +270,8 @@ void main() {
 
       expect(
         EnterpriseBuilder.entity,
-        FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toEntity(),
+        FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
+            .toEntity(),
       );
     });
     test("Should update EnterpriseBuilder correctly when login bs throws",
@@ -309,7 +314,8 @@ void main() {
       remoteLogin.mockLogin(
         SoapResponseModel(
           response:
-              FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson()
+              FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
+                  .toJson()
                 ..["AccessKey"] = null,
           responseType: SoapResponseType.success,
         ),
@@ -331,7 +337,8 @@ void main() {
       remoteLogin.mockLogin(
         SoapResponseModel(
           response:
-              FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson()
+              FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
+                  .toJson()
                 ..["AccessKey"] = null,
           responseType: SoapResponseType.success,
         ),
@@ -349,6 +356,32 @@ void main() {
       );
 
       verifyNever(() => navigateTo.navigate(pageRoute: PageRoutes.login));
+    });
+    test("Should remove white spaces after last name", () async {
+      final user = "${faker.person.name()}  ${faker.person.name()}";
+
+      await sut.login(
+        enterpriseName: enterpriseName,
+        user: "$user  ",
+        password: password,
+        showBsErrorMessage: (_) {},
+      );
+
+      verify(
+        () => remoteLogin.login(user: user, password: password),
+      ).called(1);
+    });
+    test("Should update customer name correctly in Entity", () async {
+      final user = "${faker.person.name()}  ${faker.person.name()}";
+
+      await sut.login(
+        enterpriseName: enterpriseName,
+        user: "$user  ",
+        password: password,
+        showBsErrorMessage: (_) {},
+      );
+
+      expect(EnterpriseBuilder.entity?.bsUser?.name, user.trimRight());
     });
   });
   group("On change enterprise name", () {

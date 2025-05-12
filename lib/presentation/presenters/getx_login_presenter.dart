@@ -50,14 +50,17 @@ class GetxLoginPresenter extends GetxController
           baseUrl: enterpriseData["baseUrl"],
           enterpriseName: enterpriseName,
           bsUser: BsUserEntity(
-            name: user,
+            name: user.trimRight(),
             AccessKey: null,
             CrossIdentity_Usuario: null,
           ),
         );
       }
 
-      final response = await remoteLogin.login(user: user, password: password);
+      final response = await remoteLogin.login(
+        user: user.trimRight(),
+        password: password,
+      );
 
       if (response.responseType == SoapResponseType.error) {
         showBsErrorMessage(response.response);
@@ -67,7 +70,7 @@ class GetxLoginPresenter extends GetxController
         EnterpriseBuilder.entity = FirebaseEnterpriseEntity(
           baseUrl: EnterpriseBuilder.entity?.baseUrl,
           bsUser: BsUserEntity(
-            name: user,
+            name: user.trimRight(),
             AccessKey: response.response["AccessKey"],
             CrossIdentity_Usuario: response.response["CrossIdentity_Usuario"],
           ),
