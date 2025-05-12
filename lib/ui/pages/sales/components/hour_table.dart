@@ -27,21 +27,19 @@ class HourTable extends StatelessWidget {
     return TableItem(
       titleMinHeight: 43,
       tableColumnWidth: {
-        0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.13),
-        2: FixedColumnWidth(MediaQuery.of(context).size.width * 0.20),
-        3: FixedColumnWidth(MediaQuery.of(context).size.width * 0.20),
+        0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.12),
+        2: FixedColumnWidth(MediaQuery.of(context).size.width * 0.19),
+        3: FixedColumnWidth(MediaQuery.of(context).size.width * 0.16),
+        4: FixedColumnWidth(MediaQuery.of(context).size.width * 0.16),
       },
       columnIndexToCompareAndDetachBetterAndWorstValue: 1,
-      columnsIndexToSum: [1],
+      columnsIndexToSum: [1, 2],
       indexToSort: 0,
       titles: [
         PersonalizedTableCell(value: R.string.hour.toUpperCase()),
-        PersonalizedTableCell(
-          value: R.string.totalSales.toUpperCase(),
-        ),
-        PersonalizedTableCell(
-          value: R.string.salesQuantityAbbreviated.toUpperCase(),
-        ),
+        PersonalizedTableCell(value: R.string.revenue.toUpperCase()),
+        PersonalizedTableCell(value: R.string.sales.toUpperCase()),
+        PersonalizedTableCell(value: R.string.ticketAverage.toUpperCase()),
         PersonalizedTableCell(value: R.string.share.toUpperCase()),
       ],
       rowValues: uniqueHours.map((hour) {
@@ -64,6 +62,10 @@ class HourTable extends StatelessWidget {
           PersonalizedTableCell(value: hour),
           PersonalizedTableCell(value: totalByHour, isMoney: true),
           PersonalizedTableCell(value: salesByHour),
+          PersonalizedTableCell(
+            value: totalByHour / salesByHour,
+            isMoney: true,
+          ),
           PersonalizedTableCell(
             value: (totalByHour / totalValue) * 100,
             isPercentage: true,

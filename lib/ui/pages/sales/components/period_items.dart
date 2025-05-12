@@ -18,35 +18,37 @@ class PeriodItems extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SelectPeriodItems(
-            items: [
-              SelectPeriodItems.createItem(
-                title: R.string.hours,
-                onTap: () {
-                  updateSelectedItem(filterByHour: true);
-                },
-              ),
-              SelectPeriodItems.createItem(
-                title: R.string.days,
-                onTap: () {
-                  updateSelectedItem(filterByDay: true);
-                },
-              ),
-              SelectPeriodItems.createItem(
-                title: R.string.months,
-                onTap: () {
-                  updateSelectedItem(filterByMonth: true);
-                },
-              ),
-              SelectPeriodItems.createItem(
-                title: R.string.years,
-                onTap: () {
-                  updateSelectedItem(filterByYear: true);
-                },
-              ),
-            ],
+        Flexible(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SelectPeriodItems(
+              items: [
+                SelectPeriodItems.createItem(
+                  title: R.string.hours,
+                  onTap: () {
+                    updateSelectedItem(filterByHour: true);
+                  },
+                ),
+                SelectPeriodItems.createItem(
+                  title: R.string.days,
+                  onTap: () {
+                    updateSelectedItem(filterByDay: true);
+                  },
+                ),
+                SelectPeriodItems.createItem(
+                  title: R.string.months,
+                  onTap: () {
+                    updateSelectedItem(filterByMonth: true);
+                  },
+                ),
+                SelectPeriodItems.createItem(
+                  title: R.string.years,
+                  onTap: () {
+                    updateSelectedItem(filterByYear: true);
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ],

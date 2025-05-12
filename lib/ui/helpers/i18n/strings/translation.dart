@@ -70,6 +70,7 @@ abstract class Translation {
   String get profitability;
   String get quantityAbbreviated;
   String get resume;
+  String get revenue;
   String get sales;
   String get salesOfTheDay;
   String get salesOfTheMonth;

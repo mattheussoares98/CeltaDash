@@ -18,20 +18,18 @@ class MonthSales extends StatelessWidget {
     return TableItem(
       titleMinHeight: 43,
       tableColumnWidth: {
-        0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.13),
-        2: FixedColumnWidth(MediaQuery.of(context).size.width * 0.20),
-        3: FixedColumnWidth(MediaQuery.of(context).size.width * 0.20),
+        0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.12),
+        2: FixedColumnWidth(MediaQuery.of(context).size.width * 0.19),
+        3: FixedColumnWidth(MediaQuery.of(context).size.width * 0.16),
+        4: FixedColumnWidth(MediaQuery.of(context).size.width * 0.16),
       },
       columnIndexToCompareAndDetachBetterAndWorstValue: 1,
       columnsIndexToSum: [1, 2],
       titles: [
         PersonalizedTableCell(value: R.string.month.toUpperCase()),
-        PersonalizedTableCell(
-          value: R.string.totalSales.toUpperCase(),
-        ),
-        PersonalizedTableCell(
-          value: R.string.salesQuantityAbbreviated.toUpperCase(),
-        ),
+        PersonalizedTableCell(value: R.string.revenue.toUpperCase()),
+        PersonalizedTableCell(value: R.string.sales.toUpperCase()),
+        PersonalizedTableCell(value: R.string.ticketAverage.toUpperCase()),
         PersonalizedTableCell(value: R.string.share.toUpperCase()),
       ],
       rowValues: List.generate(DateTime.now().month, (index) {
@@ -50,6 +48,7 @@ class MonthSales extends StatelessWidget {
             .substring(0, 3);
 
         final totalLiquidByMonth = salesOfCurrentMonth.sumLiquidValue();
+        final totalQuantityByMonth = salesOfCurrentMonth.quantitySales();
 
         return [
           PersonalizedTableCell(value: monthAbbreviation),
@@ -57,7 +56,11 @@ class MonthSales extends StatelessWidget {
             value: totalLiquidByMonth,
             isMoney: true,
           ),
-          PersonalizedTableCell(value: salesOfCurrentMonth.quantitySales()),
+          PersonalizedTableCell(value: totalQuantityByMonth),
+          PersonalizedTableCell(
+            value: totalLiquidByMonth / totalQuantityByMonth,
+            isMoney: true,
+          ),
           PersonalizedTableCell(
             value: (totalLiquidByMonth / totalLiquidByYear) * 100,
             isPercentage: true,
