@@ -12,6 +12,7 @@ abstract class Translation {
   String get msgWriteSomething;
 
   String get anothersEnterprises;
+  String get anothersProducts;
   String get all;
   String get averageDailySale;
   String get averagePrice;

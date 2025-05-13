@@ -19,6 +19,8 @@ class _ProductsPageState extends State<ProductsPage> {
     final sorted = [...saleMovements]..sort((a, b) =>
         (b.LiquidValue?.toDouble() ?? 0)
             .compareTo(a.LiquidValue?.toDouble() ?? 0));
+    sorted.sort((a, b) => (b.LiquidValue?.toDouble() ?? 0)
+        .compareTo(a.LiquidValue?.toDouble() ?? 0));
 
     List<List<PersonalizedTableCell>> top200 = [];
     double othersTotalValue = 0;
@@ -51,13 +53,15 @@ class _ProductsPageState extends State<ProductsPage> {
       final combinedTicketAverage = othersTotalValue /
           (othersTotalQuantity == 0 ? 1 : othersTotalQuantity);
 
-      top200.add([
-        PersonalizedTableCell(value: "0"),
-        PersonalizedTableCell(value: "Outros produtos" + ""),
-        PersonalizedTableCell(value: othersTotalValue, isMoney: true),
-        PersonalizedTableCell(value: othersTotalQuantity),
-        PersonalizedTableCell(value: combinedTicketAverage, isMoney: true),
-      ]);
+      top200.insert(
+          0,
+          ([
+            PersonalizedTableCell(value: 0),
+            PersonalizedTableCell(value: R.string.anothersProducts),
+            PersonalizedTableCell(value: othersTotalValue, isMoney: true),
+            PersonalizedTableCell(value: othersTotalQuantity),
+            PersonalizedTableCell(value: combinedTicketAverage, isMoney: true),
+          ]));
     }
 
     return top200;
@@ -96,14 +100,15 @@ class _ProductsPageState extends State<ProductsPage> {
               TableItem(
                 titleMinHeight: 43,
                 tableColumnWidth: {
-                  0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.1),//TODO test this in windows resizing the page
+                  0: FixedColumnWidth(MediaQuery.of(context).size.width *
+                      0.1), //TODO test this in windows resizing the page
                   2: FixedColumnWidth(MediaQuery.of(context).size.width * 0.2),
                   3: FixedColumnWidth(MediaQuery.of(context).size.width * 0.1),
                   4: FixedColumnWidth(MediaQuery.of(context).size.width * 0.16),
                 },
                 columnIndexToCompareAndDetachBetterAndWorstValue: 2,
                 columnsIndexToSum: [2, 3],
-                indexToSort: 0,
+                // indexToSort: 0,
                 titles: [
                   PersonalizedTableCell(
                     value: R.string.positionAbbreviated.toUpperCase(),
