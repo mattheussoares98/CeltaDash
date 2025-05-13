@@ -59,90 +59,96 @@ class _DepartmentsPageState extends State<DepartmentsPage>
     mainErrorSubscription =
         handleMainError(context, departmentsPresenter.mainErrorStream);
 
-    return Scaffold(
-      appBar: DefaultAppBar(
-        onChangeEnterprise: (_) async {
-          await departmentsPresenter.getSales(homePresenter);
-        },
-        onChangeDate: (_) async {
-          await departmentsPresenter.getSales(homePresenter);
-        },
-        onTapRefresh: () async {
-          await departmentsPresenter.getSales(
-            homePresenter,
-            forceRefresh: true,
-          );
-        },
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SelectDayOrMonth(updateSelectedMonth: updateSelectedMonth),
-          ),
-          Obx(() {
-            final saleMovements = departmentsPresenter.saleMovements
-                ?.filteredSales(
-                  enterprise: homePresenter.selectedEnterprise,
-                )
-                .map((e) => e.toViewModel())
-                .where((e) => filter(e, homePresenter))
-                .toList();
+    return StreamBuilder<bool>(
+        stream: departmentsPresenter.isLoadingStream,
+        builder: (context, isLoadingDepartments) {
+          return Scaffold(
+            appBar: DefaultAppBar(
+              isLoading: isLoadingDepartments.data == true,
+              onChangeEnterprise: (_) async {
+                await departmentsPresenter.getSales(homePresenter);
+              },
+              onChangeDate: (_) async {
+                await departmentsPresenter.getSales(homePresenter);
+              },
+              onTapRefresh: () async {
+                await departmentsPresenter.getSales(
+                  homePresenter,
+                  forceRefresh: true,
+                );
+              },
+            ),
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SelectDayOrMonth(
+                      updateSelectedMonth: updateSelectedMonth),
+                ),
+                Obx(() {
+                  final saleMovements = departmentsPresenter.saleMovements
+                      ?.filteredSales(
+                        enterprise: homePresenter.selectedEnterprise,
+                      )
+                      .map((e) => e.toViewModel())
+                      .where((e) => filter(e, homePresenter))
+                      .toList();
 
-            if (saleMovements == null || saleMovements.isEmpty) {
-              return SizedBox.shrink();
-            }
+                  if (saleMovements == null || saleMovements.isEmpty) {
+                    return SizedBox.shrink();
+                  }
 
-            return StreamBuilder<bool>(
-                stream: homePresenter.updateScreenStream,
-                builder: (context, snapshot) {
-                  return Expanded(
-                    child: Opacity(
-                      opacity: snapshot.data == true ? 0 : 1,
-                      child: PageView(
-                        controller: pageController,
-                        onPageChanged: (value) {
-                          setState(() {
-                            selectedPageIndex = value;
-                          });
-                        },
-                        children: [
-                          Departments(saleMovements: saleMovements),
-                          Sections(saleMovements: saleMovements),
-                        ],
-                      ),
-                    ),
-                  );
+                  return StreamBuilder<bool>(
+                      stream: homePresenter.updateScreenStream,
+                      builder: (context, snapshot) {
+                        return Expanded(
+                          child: Opacity(
+                            opacity: snapshot.data == true ? 0 : 1,
+                            child: PageView(
+                              controller: pageController,
+                              onPageChanged: (value) {
+                                setState(() {
+                                  selectedPageIndex = value;
+                                });
+                              },
+                              children: [
+                                Departments(saleMovements: saleMovements),
+                                Sections(saleMovements: saleMovements),
+                              ],
+                            ),
+                          ),
+                        );
+                      });
+                }),
+              ],
+            ),
+            bottomNavigationBar: BottomNavBar(
+              currentIndex: selectedPageIndex,
+              onTap: (value) {
+                setState(() {
+                  selectedPageIndex = value;
                 });
-          }),
-        ],
-      ),
-      bottomNavigationBar: BottomNavBar(
-        currentIndex: selectedPageIndex,
-        onTap: (value) {
-          setState(() {
-            selectedPageIndex = value;
-          });
-          pageController.animateToPage(
-            value,
-            duration: Duration(milliseconds: 300),
-            curve: Curves.bounceOut,
+                pageController.animateToPage(
+                  value,
+                  duration: Duration(milliseconds: 300),
+                  curve: Curves.bounceOut,
+                );
+              },
+              items: [
+                BottomNavItem(
+                  materialIcon: Icon(Icons.apartment),
+                  cupertinoIcon: Icon(CupertinoIcons.building_2_fill),
+                  label: R.string.departments,
+                ),
+                BottomNavItem(
+                  materialIcon: Icon(Icons.view_module),
+                  cupertinoIcon: Icon(CupertinoIcons.square_grid_2x2),
+                  label: R.string.sections,
+                ),
+              ],
+            ),
           );
-        },
-        items: [
-          BottomNavItem(
-            materialIcon: Icon(Icons.apartment),
-            cupertinoIcon: Icon(CupertinoIcons.building_2_fill),
-            label: R.string.departments,
-          ),
-          BottomNavItem(
-            materialIcon: Icon(Icons.view_module),
-            cupertinoIcon: Icon(CupertinoIcons.square_grid_2x2),
-            label: R.string.sections,
-          ),
-        ],
-      ),
-    );
+        });
   }
 }
