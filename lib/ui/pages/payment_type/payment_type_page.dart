@@ -11,11 +11,7 @@ import '../pages.dart';
 import 'components/components.dart';
 
 class PaymentTypePage extends StatefulWidget {
-  final PaymentTypePresenter paymentTypePresenter;
-  const PaymentTypePage({
-    super.key,
-    required this.paymentTypePresenter,
-  });
+  const PaymentTypePage({super.key});
 
   @override
   State<PaymentTypePage> createState() => _PaymentTypePageState();
@@ -25,27 +21,14 @@ class _PaymentTypePageState extends State<PaymentTypePage>
     with LoadingManager, UIErrorManager {
   bool selectedMonth = false;
   int selectedPageIndex = 0;
-  StreamSubscription? loadingSubscription;
+  // StreamSubscription? loadingSubscription;
   StreamSubscription? mainErrorSubscription;
   final pageController = PageController();
 
   @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (mounted) {
-        HomePresenter homePresenter = Get.find();
-
-        await widget.paymentTypePresenter.getSales(homePresenter);
-      }
-    });
-  }
-
-  @override
   void dispose() {
     super.dispose();
-    loadingSubscription?.cancel();
+    // loadingSubscription?.cancel();
     mainErrorSubscription?.cancel();
     pageController.dispose();
   }
@@ -72,122 +55,129 @@ class _PaymentTypePageState extends State<PaymentTypePage>
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
+    PaymentTypePresenter paymentTypePresenter = Get.find();
 
-    loadingSubscription?.cancel();
+    // loadingSubscription?.cancel();
     mainErrorSubscription?.cancel();
-    loadingSubscription =
-        handleLoading(context, widget.paymentTypePresenter.isLoadingStream);
+    // loadingSubscription =
+    //     handleLoading(context, paymentTypePresenter.isLoadingStream);
     mainErrorSubscription =
-        handleMainError(context, widget.paymentTypePresenter.mainErrorStream);
+        handleMainError(context, paymentTypePresenter.mainErrorStream);
 
-    return Scaffold(
-      appBar: DefaultAppBar(
-        onChangeEnterprise: (_) async {
-          await widget.paymentTypePresenter.getSales(homePresenter);
-        },
-        onTapRefresh: () async {
-          await widget.paymentTypePresenter
-              .getSales(homePresenter, forceRefresh: true);
-        },
-        onChangeDate: (newDate) async {
-          await widget.paymentTypePresenter.getSales(homePresenter);
-        },
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SelectDayOrMonthButtons(
-              selectedMonth: selectedMonth,
-              updateSelectedMonth: updateSelectedMonth,
+    return StreamBuilder<bool>(
+        stream: paymentTypePresenter.isLoadingStream,
+        builder: (context, isLoadingPayments) {
+          return Scaffold(
+            appBar: DefaultAppBar(
+              isLoading: isLoadingPayments.data == true,
+              onChangeEnterprise: (_) async {
+                await paymentTypePresenter.getSales(homePresenter);
+              },
+              onTapRefresh: () async {
+                await paymentTypePresenter.getSales(homePresenter,
+                    forceRefresh: true);
+              },
+              onChangeDate: (newDate) async {
+                await paymentTypePresenter.getSales(homePresenter);
+              },
             ),
-          ),
-          Obx(() {
-            final saleMovementsByFinalizations =
-                widget.paymentTypePresenter.saleMovementsByFinalizations
-                    ?.filteredSales(
-                      enterprise: homePresenter.selectedEnterprise,
-                    )
-                    .map((e) => e.toViewModel());
-
-            final saleMovementsByModalities =
-                widget.paymentTypePresenter.saleMovements
-                    ?.filteredSales(
-                      enterprise: homePresenter.selectedEnterprise,
-                    )
-                    .map((e) => e.toViewModel());
-
-            if (saleMovementsByFinalizations == null ||
-                saleMovementsByFinalizations.isEmpty ||
-                saleMovementsByModalities == null ||
-                saleMovementsByModalities.isEmpty) {
-              return SizedBox.shrink();
-            }
-
-            return StreamBuilder<bool>(
-              stream: homePresenter.updateScreenStream,
-              builder: (context, snapshot) {
-                return Expanded(
-                  child: Opacity(
-                    opacity: snapshot.data == true ? 0 : 1,
-                    child: PageView(
-                      controller: pageController,
-                      onPageChanged: (value) {
-                        setState(() {
-                          selectedPageIndex = value;
-                        });
-                      },
-                      children: [
-                        PaymentsModalities(
-                          filterByFinalizations: false,
-                          saleMovements: saleMovementsByModalities.where(
-                            (element) {
-                              return filter(element, homePresenter);
-                            },
-                          ).toList(),
-                        ),
-                        PaymentsModalities(
-                          filterByFinalizations: true,
-                          saleMovements: saleMovementsByFinalizations.where(
-                            (element) {
-                              return filter(element, homePresenter);
-                            },
-                          ).toList(),
-                        ),
-                      ],
-                    ),
+            body: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SelectDayOrMonthButtons(
+                    selectedMonth: selectedMonth,
+                    updateSelectedMonth: updateSelectedMonth,
                   ),
+                ),
+                Obx(() {
+                  final saleMovementsByFinalizations =
+                      paymentTypePresenter.saleMovementsByFinalizations
+                          ?.filteredSales(
+                            enterprise: homePresenter.selectedEnterprise,
+                          )
+                          .map((e) => e.toViewModel());
+
+                  final saleMovementsByModalities =
+                      paymentTypePresenter.saleMovements
+                          ?.filteredSales(
+                            enterprise: homePresenter.selectedEnterprise,
+                          )
+                          .map((e) => e.toViewModel());
+
+                  if (saleMovementsByFinalizations == null ||
+                      saleMovementsByFinalizations.isEmpty ||
+                      saleMovementsByModalities == null ||
+                      saleMovementsByModalities.isEmpty) {
+                    return SizedBox.shrink();
+                  }
+
+                  return StreamBuilder<bool>(
+                    stream: homePresenter.updateScreenStream,
+                    builder: (context, snapshot) {
+                      return Expanded(
+                        child: Opacity(
+                          opacity: snapshot.data == true ? 0 : 1,
+                          child: PageView(
+                            controller: pageController,
+                            onPageChanged: (value) {
+                              setState(() {
+                                selectedPageIndex = value;
+                              });
+                            },
+                            children: [
+                              PaymentsModalities(
+                                filterByFinalizations: false,
+                                saleMovements: saleMovementsByModalities.where(
+                                  (element) {
+                                    return filter(element, homePresenter);
+                                  },
+                                ).toList(),
+                              ),
+                              PaymentsModalities(
+                                filterByFinalizations: true,
+                                saleMovements:
+                                    saleMovementsByFinalizations.where(
+                                  (element) {
+                                    return filter(element, homePresenter);
+                                  },
+                                ).toList(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }),
+              ],
+            ),
+            bottomNavigationBar: BottomNavBar(
+              currentIndex: selectedPageIndex,
+              onTap: (value) {
+                setState(() {
+                  selectedPageIndex = value;
+                });
+                pageController.animateToPage(
+                  value,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
                 );
               },
-            );
-          }),
-        ],
-      ),
-      bottomNavigationBar: BottomNavBar(
-        currentIndex: selectedPageIndex,
-        onTap: (value) {
-          setState(() {
-            selectedPageIndex = value;
-          });
-          pageController.animateToPage(
-            value,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
+              items: [
+                BottomNavItem(
+                  materialIcon: Icon(Icons.credit_card),
+                  cupertinoIcon: Icon(CupertinoIcons.creditcard),
+                  label: R.string.modalities,
+                ),
+                BottomNavItem(
+                  materialIcon: Icon(Icons.receipt_long),
+                  cupertinoIcon: Icon(CupertinoIcons.list_bullet),
+                  label: R.string.finalizations,
+                ),
+              ],
+            ),
           );
-        },
-        items: [
-          BottomNavItem(
-            materialIcon: Icon(Icons.credit_card),
-            cupertinoIcon: Icon(CupertinoIcons.creditcard),
-            label: R.string.modalities,
-          ),
-          BottomNavItem(
-            materialIcon: Icon(Icons.receipt_long),
-            cupertinoIcon: Icon(CupertinoIcons.list_bullet),
-            label: R.string.finalizations,
-          ),
-        ],
-      ),
-    );
+        });
   }
 }
