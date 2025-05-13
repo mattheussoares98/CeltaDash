@@ -39,7 +39,8 @@ class _ProductsPageState extends State<ProductsPage> {
         top200.add([
           PersonalizedTableCell(value: index + 1),
           PersonalizedTableCell(value: productName),
-          PersonalizedTableCell(value: sale.LiquidValue, isMoney: true),
+          PersonalizedTableCell(
+              value: sale.LiquidValue?.toDouble(), isMoney: true),
           PersonalizedTableCell(value: sale.QuantitySales),
           PersonalizedTableCell(value: ticketAverage, isMoney: true),
         ]);
