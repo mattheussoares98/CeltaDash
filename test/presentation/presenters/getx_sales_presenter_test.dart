@@ -288,6 +288,71 @@ void main() {
           ),
         ).called(2);
       });
+      test("Should update lastEnterpriseLoadedData", () async {
+        await sut.getSales(
+          resumePresenter: resumePresenter,
+          homePresenter: homePresenter,
+        );
+
+        expect(
+          sut.lastEnterpriseLoadedData,
+          homePresenter.selectedEnterpriseMock,
+        );
+      });
+      test("Should not load again if dont change the enterprise", () async {
+        await sut.getSales(
+          resumePresenter: resumePresenter,
+          homePresenter: homePresenter,
+        );
+        await sut.getSales(
+          resumePresenter: resumePresenter,
+          homePresenter: homePresenter,
+        );
+
+        verify(
+          () => loadSaleMovements.get(
+            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+            groupByEnterprise: true,
+            groupByYear: true,
+            startDate: DateTime(homePresenter.selectedDateMock.year - 2),
+            endDate: DateTime(homePresenter.selectedDateMock.year, 12, 31),
+          ),
+        ).called(1);
+      });
+      test("Should load again if change the enterprise", () async {
+        await sut.getSales(
+          resumePresenter: resumePresenter,
+          homePresenter: homePresenter,
+        );
+        verify(
+          () => loadSaleMovements.get(
+            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+            groupByEnterprise: true,
+            groupByYear: true,
+            startDate: DateTime(homePresenter.selectedDateMock.year - 2),
+            endDate: DateTime(homePresenter.selectedDateMock.year, 12, 31),
+          ),
+        ).called(1);
+
+        homePresenter.selectedEnterpriseMock =
+            EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
+                .toViewModel();
+
+        await sut.getSales(
+          resumePresenter: resumePresenter,
+          homePresenter: homePresenter,
+        );
+
+        verify(
+          () => loadSaleMovements.get(
+            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+            groupByEnterprise: true,
+            groupByYear: true,
+            startDate: DateTime(homePresenter.selectedDateMock.year - 2),
+            endDate: DateTime(homePresenter.selectedDateMock.year, 12, 31),
+          ),
+        ).called(1);
+      });
     });
   });
 
