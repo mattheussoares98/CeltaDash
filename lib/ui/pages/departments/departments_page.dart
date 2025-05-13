@@ -11,11 +11,7 @@ import '../pages.dart';
 import 'components/components.dart';
 
 class DepartmentsPage extends StatefulWidget {
-  final DepartmentsPresenter departmentsPresenter;
-  const DepartmentsPage({
-    super.key,
-    required this.departmentsPresenter,
-  });
+  const DepartmentsPage({super.key});
 
   @override
   State<DepartmentsPage> createState() => _DepartmentsPageState();
@@ -25,27 +21,14 @@ class _DepartmentsPageState extends State<DepartmentsPage>
     with LoadingManager, UIErrorManager {
   bool selectedMonth = false;
   int selectedPageIndex = 0;
-  StreamSubscription? loadingSubscription;
+  // StreamSubscription? loadingSubscription;
   StreamSubscription? mainErrorSubscription;
   final pageController = PageController();
 
   @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (mounted) {
-        HomePresenter homePresenter = Get.find();
-
-        await widget.departmentsPresenter.getSales(homePresenter);
-      }
-    });
-  }
-
-  @override
   void dispose() {
     super.dispose();
-    loadingSubscription?.cancel();
+    // loadingSubscription?.cancel();
     mainErrorSubscription?.cancel();
     pageController.dispose();
   }
@@ -67,24 +50,25 @@ class _DepartmentsPageState extends State<DepartmentsPage>
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
+    DepartmentsPresenter departmentsPresenter = Get.find();
 
-    loadingSubscription?.cancel();
+    // loadingSubscription?.cancel();
     mainErrorSubscription?.cancel();
-    loadingSubscription =
-        handleLoading(context, widget.departmentsPresenter.isLoadingStream);
+    // loadingSubscription =
+    //     handleLoading(context, departmentsPresenter.isLoadingStream);
     mainErrorSubscription =
-        handleMainError(context, widget.departmentsPresenter.mainErrorStream);
+        handleMainError(context, departmentsPresenter.mainErrorStream);
 
     return Scaffold(
       appBar: DefaultAppBar(
         onChangeEnterprise: (_) async {
-          await widget.departmentsPresenter.getSales(homePresenter);
+          await departmentsPresenter.getSales(homePresenter);
         },
         onChangeDate: (_) async {
-          await widget.departmentsPresenter.getSales(homePresenter);
+          await departmentsPresenter.getSales(homePresenter);
         },
         onTapRefresh: () async {
-          await widget.departmentsPresenter.getSales(
+          await departmentsPresenter.getSales(
             homePresenter,
             forceRefresh: true,
           );
@@ -98,7 +82,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
             child: SelectDayOrMonth(updateSelectedMonth: updateSelectedMonth),
           ),
           Obx(() {
-            final saleMovements = widget.departmentsPresenter.saleMovements
+            final saleMovements = departmentsPresenter.saleMovements
                 ?.filteredSales(
                   enterprise: homePresenter.selectedEnterprise,
                 )

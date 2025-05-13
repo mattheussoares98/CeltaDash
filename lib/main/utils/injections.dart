@@ -66,7 +66,7 @@ Future<void> _initHive() async {
 }
 
 void _insertGetPresenters() {
-  Get.put<HomePresenter>(makeGetxHomePresenter());
+  Get.put<DepartmentsPresenter>(makeGetxDepartmentsPresenter());
   Get.put<HomePresenter>(makeGetxHomePresenter());
   Get.put<LoginPresenter>(makeGetxLoginPresenter());
   Get.put<PaymentTypePresenter>(makeGetxPaymentTypePresenter());
