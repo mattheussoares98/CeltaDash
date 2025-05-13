@@ -7,5 +7,7 @@ abstract class ProductsPresenter implements Listenable {
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
   List<SaleMovementViewModel>? get saleMovements;
+  DateTime? get lastDateLoadedData;
+
   Future<void> loadProducts(HomePresenter homePresenter, {bool? forceRefresh});
 }

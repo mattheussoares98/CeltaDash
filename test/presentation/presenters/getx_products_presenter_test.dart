@@ -3,6 +3,7 @@ import 'package:celta_plus/domain/entities/entities.dart';
 import 'package:celta_plus/main/builders/builders.dart';
 import 'package:celta_plus/presentation/presenters/presenters.dart';
 import 'package:celta_plus/ui/helpers/helpers.dart';
+import 'package:faker/faker.dart';
 
 import 'package:get/get.dart';
 
@@ -51,6 +52,7 @@ void main() {
     homePresenter.selectedEnterpriseMock =
         EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
             .toViewModel();
+    homePresenter.selectedDateMock = faker.date.dateTime();
   }
 
   setUp(() {
@@ -81,21 +83,17 @@ void main() {
     test("Should call load sale movements with correct values", () async {
       await sut.loadProducts(homePresenter);
 
-      final startDate = DateTime(
-        homePresenter.selectedDate.year,
-        homePresenter.selectedDate.month,
-        1,
-      );
-
-      final endDate = DateTime(
-        homePresenter.selectedDate.year,
-        homePresenter.selectedDate.month + 1,
-      ).subtract(Duration(days: 1));
-
       verify(
         () => loadSaleMovements.get(
-          startDate: startDate,
-          endDate: endDate,
+          startDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month,
+            1,
+          ),
+          endDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month + 1,
+          ).subtract(Duration(days: 1)),
           groupByDay: true,
           groupByProduct: true,
           groupByEnterprise: true,
@@ -113,6 +111,81 @@ void main() {
             .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
             .toList(),
       );
+    });
+    test("Should update lastDateLoadedData correctly", () async {
+      await sut.loadProducts(homePresenter);
+
+      expect(sut.lastDateLoadedData, homePresenter.selectedDateMock);
+    });
+    test(
+        "Should not load again if lastDateLoadedData is equal homePresenter.selectedDate",
+        () async {
+      await sut.loadProducts(homePresenter);
+      await sut.loadProducts(homePresenter);
+
+      verify(
+        () => loadSaleMovements.get(
+          startDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month,
+            1,
+          ),
+          endDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month + 1,
+          ).subtract(Duration(days: 1)),
+          groupByDay: true,
+          groupByProduct: true,
+          groupByEnterprise: true,
+          enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+        ),
+      ).called(1);
+    });
+    test("Should load again if change the date", () async {
+      await sut.loadProducts(homePresenter);
+      homePresenter.selectedDateMock = faker.date.dateTime();
+
+      await sut.loadProducts(homePresenter);
+
+      verify(
+        () => loadSaleMovements.get(
+          startDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month,
+            1,
+          ),
+          endDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month + 1,
+          ).subtract(Duration(days: 1)),
+          groupByDay: true,
+          groupByProduct: true,
+          groupByEnterprise: true,
+          enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+        ),
+      ).called(1);
+    });
+    test("Should load again if force refresh", () async {
+      await sut.loadProducts(homePresenter);
+      await sut.loadProducts(homePresenter, forceRefresh: true);
+
+      verify(
+        () => loadSaleMovements.get(
+          startDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month,
+            1,
+          ),
+          endDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month + 1,
+          ).subtract(Duration(days: 1)),
+          groupByDay: true,
+          groupByProduct: true,
+          groupByEnterprise: true,
+          enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+        ),
+      ).called(2);
     });
   });
 }

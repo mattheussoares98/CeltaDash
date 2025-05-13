@@ -21,16 +21,26 @@ class GetxProductsPresenter extends GetxController
     isLoading = true;
     mainError = null;
     try {
+      if (forceRefresh != true &&
+          _lastDateLoadedData?.year == homePresenter.selectedDate.year &&
+          _lastDateLoadedData?.month == homePresenter.selectedDate.month &&
+          _lastDateLoadedData?.day == homePresenter.selectedDate.day) {
+        return;
+      }
+      final now = DateTime.now();
       final response = await loadSaleMovements.get(
-        startDate: DateTime(
-          homePresenter.selectedDate.year,
-          homePresenter.selectedDate.month,
-          1,
-        ),
-        endDate: DateTime(
-          homePresenter.selectedDate.year,
-          homePresenter.selectedDate.month + 1,
-        ).subtract(Duration(days: 1)),
+        startDate: now,
+        endDate: now,
+        //TODO fix this start and end after Cardoso fix problems to load data. Is returing a lot of data, this is why I am filtering only one day
+        // startDate: DateTime(
+        //   homePresenter.selectedDate.year,
+        //   homePresenter.selectedDate.month,
+        //   1,
+        // ),
+        // endDate: DateTime(
+        //   homePresenter.selectedDate.year,
+        //   homePresenter.selectedDate.month + 1,
+        // ).subtract(Duration(days: 1)),
         groupByDay: true,
         groupByProduct: true,
         groupByEnterprise: true,
@@ -42,10 +52,16 @@ class GetxProductsPresenter extends GetxController
       saleMovements = (response as List)
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
           .toList();
+
+      _lastDateLoadedData = homePresenter.selectedDate;
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {
       isLoading = false;
     }
   }
+
+  DateTime? _lastDateLoadedData;
+  @override
+  DateTime? get lastDateLoadedData => _lastDateLoadedData;
 }
