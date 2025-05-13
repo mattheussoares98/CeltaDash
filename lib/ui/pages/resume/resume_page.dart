@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../ui/helpers/helpers.dart';
 import '../../mixins/mixins.dart';
 import '../pages.dart';
 import 'components/components.dart';
@@ -45,7 +44,6 @@ class _ResumePageState extends State<ResumePage>
   @override
   Widget build(BuildContext context) {
     ResumePresenter resumePresenter = Get.find();
-    HomePresenter homePresenter = Get.find();
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -56,18 +54,7 @@ class _ResumePageState extends State<ResumePage>
             final saleMovements = resumePresenter.saleMovements;
 
             if (saleMovements == null) {
-              return Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        await resumePresenter.getSales(homePresenter);
-                      },
-                      child: Text(R.string.searchAgain),
-                    ),
-                  ),
-                ],
-              );
+              return SizedBox.shrink();
             }
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
