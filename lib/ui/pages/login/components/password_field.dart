@@ -41,9 +41,15 @@ class _PasswordFieldState extends State<PasswordField> {
           context: context,
           hintText: R.string.password,
           labelText: R.string.password,
-          prefixIcon: const Icon(Icons.lock),
+          prefixIcon: Icon(
+            Icons.lock,
+            color: Theme.of(context).primaryColorDark,
+          ),
           suffixIcon: IconButton(
-            icon: Icon(showPassword ? Icons.visibility_off : Icons.visibility),
+            icon: Icon(
+              showPassword ? Icons.visibility_off : Icons.visibility,
+              color: Theme.of(context).primaryColorDark,
+            ),
             onPressed: () {
               setState(() {
                 showPassword = !showPassword;

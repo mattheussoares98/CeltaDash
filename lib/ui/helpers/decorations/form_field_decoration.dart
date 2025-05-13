@@ -33,14 +33,14 @@ class FormFieldDecoration {
           fontSize: fontSize ?? StringSize.size,
         ),
         labelStyle: TextStyle(
-          color: Theme.of(context).primaryColor,
-          fontWeight: FontWeight.normal,
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
           fontStyle: FontStyle.italic,
           fontSize: fontSize ?? StringSize.size,
         ),
         floatingLabelStyle: TextStyle(
-          color: Theme.of(context).primaryColor,
-          fontWeight: FontWeight.normal,
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
           fontSize: fontSize ?? StringSize.size,
         ),
         disabledBorder: OutlineInputBorder(

@@ -5,15 +5,13 @@ import 'package:flutter/material.dart';
 import '../../../ui/helpers/helpers.dart';
 
 ThemeData makeAppTheme(BuildContext context) {
+  const primaryColor = Colors.blue;
+  const primaryColorDark = Colors.blueAccent;
+  const primaryColorLight = Colors.lightBlue;
+  const secondaryColor = CupertinoColors.systemGreen;
+  final disabledColor = CupertinoColors.inactiveGray;
+  const dividerColor = CupertinoColors.separator;
   if (Platform.isIOS) {
-    // iOS Style Theme
-    const primaryColor = CupertinoColors.black;
-    const primaryColorDark = CupertinoColors.black;
-    const primaryColorLight = CupertinoColors.separator;
-    const secondaryColor = CupertinoColors.systemGreen;
-    final disabledColor = CupertinoColors.inactiveGray;
-    const dividerColor = CupertinoColors.separator;
-
     const textTheme = TextTheme(
       displayLarge: TextStyle(
         fontSize: 20,
@@ -105,12 +103,6 @@ ThemeData makeAppTheme(BuildContext context) {
   }
 
   // Default (Android / Web / Others)
-  const primaryColor = Colors.black54;
-  const primaryColorDark = Colors.black87;
-  const primaryColorLight = Colors.black38;
-  const secondaryColor = Color.fromARGB(255, 76, 175, 80);
-  final disabledColor = Colors.grey[400];
-  const dividerColor = Colors.grey;
   const textTheme = TextTheme(
     displayLarge: TextStyle(
       fontSize: 20,
@@ -127,7 +119,7 @@ ThemeData makeAppTheme(BuildContext context) {
     ),
     disabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
-      borderSide: BorderSide(width: 1, color: disabledColor!),
+      borderSide: BorderSide(width: 1, color: disabledColor),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),

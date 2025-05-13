@@ -38,7 +38,10 @@ class EmailField extends StatelessWidget {
           context: context,
           hintText: R.string.user,
           labelText: R.string.user,
-          prefixIcon: const Icon(Icons.person),
+          prefixIcon: Icon(
+            Icons.person,
+            color: Theme.of(context).primaryColorDark,
+          ),
         ),
       ),
     );

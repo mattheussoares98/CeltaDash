@@ -131,14 +131,10 @@ class _TableItemState extends State<TableItem> {
 
   Color getColor(int rowIndex) {
     if (rowIndex == minValueRowIndex) {
-      return Platform.isIOS
-          ? CupertinoColors.destructiveRed
-          : Colors.red.withAlpha(120);
+      return Colors.red.withAlpha(120);
     }
     if (rowIndex == maxValueRowIndex) {
-      return Platform.isIOS
-          ? CupertinoColors.activeGreen
-          : Colors.green.withAlpha(120);
+      return Colors.green.withAlpha(120);
     }
     if (rowIndex % 2 == 0) {
       return Theme.of(context).primaryColorLight.withAlpha(20);

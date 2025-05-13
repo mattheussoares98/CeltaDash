@@ -58,7 +58,7 @@ class PersonalizedTableCell extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 10,
-                        color: Theme.of(context).primaryColor,
+                        color: Colors.black,
                       ),
                     ),
                   TextSpan(
@@ -75,7 +75,7 @@ class PersonalizedTableCell extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 10,
-                        color: Theme.of(context).primaryColor,
+                        color: Colors.black,
                       ),
                     ),
                 ],
@@ -86,7 +86,7 @@ class PersonalizedTableCell extends StatelessWidget {
                 subtile!,
                 style: TextStyle(
                   fontSize: 12,
-                  color: Theme.of(context).primaryColor,
+                  color: Colors.black,
                 ),
               ),
           ],
