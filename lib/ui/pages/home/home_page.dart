@@ -73,7 +73,7 @@ class _HomePageState extends State<HomePage>
 
     return StreamBuilder<int>(
       stream: homePresenter.currentPageIndexStream,
-      builder: (context, snapshot) {
+      builder: (context, currentIndex) {
         return StreamBuilder<bool>(
             stream: productsPresenter.isLoadingStream,
             builder: (context, isLoadingProducts) {
@@ -85,9 +85,12 @@ class _HomePageState extends State<HomePage>
                         builder: (context, isLoadingSales) {
                           return Scaffold(
                             appBar: DefaultAppBar(
-                              isLoading: isLoadingSales.data == true ||
-                                  isLoadingResume.data == true ||
-                                  isLoadingProducts.data == true,
+                              isLoading: (isLoadingSales.data == true &&
+                                      currentIndex.data == 1) ||
+                                  (isLoadingResume.data == true &&
+                                      currentIndex.data == 0) ||
+                                  (isLoadingProducts.data == true &&
+                                      currentIndex.data == 2),
                               onChangeEnterprise: (_) {
                                 reloadData();
                               },
@@ -98,9 +101,9 @@ class _HomePageState extends State<HomePage>
                                 reloadData(forceRefresh: true);
                               },
                             ),
-                            body: pages[snapshot.data ?? 0],
+                            body: pages[currentIndex.data ?? 0],
                             bottomNavigationBar: BottomNavBar(
-                              currentIndex: snapshot.data ?? 0,
+                              currentIndex: currentIndex.data ?? 0,
                               onTap: homePresenter.updateSelectedIndex,
                               items: [
                                 BottomNavItem(
