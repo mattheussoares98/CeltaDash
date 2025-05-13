@@ -73,7 +73,6 @@ class _ProductsPageState extends State<ProductsPage> {
     HomePresenter homePresenter = Get.find();
 
     return Scaffold(
-      //TODO udpate screen when change enterprise
       body: StreamBuilder<bool>(
           stream: homePresenter.updateScreenStream,
           builder: (context, updateScreen) {
