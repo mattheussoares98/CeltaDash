@@ -9,6 +9,7 @@ abstract class SalesPresenter implements Listenable {
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
   DateTime? get lastDateLoadedData;
+  EnterpriseViewModel? get lastEnterpriseLoadedData;
 
   bool get filterByHour;
   bool get filterByDay;
