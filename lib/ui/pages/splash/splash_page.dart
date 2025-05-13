@@ -15,7 +15,7 @@ class SplashPage extends StatelessWidget {
       body: Center(
         child: Image.asset(
           key: const Key("loading"),
-          'lib/ui/assets/images/wait.gif',
+          'lib/ui/assets/images/CeltaLogo-withoutbg.png',
         ),
       ),
     );
