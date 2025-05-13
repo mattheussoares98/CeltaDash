@@ -56,6 +56,10 @@ class _PaymentTypePageState extends State<PaymentTypePage>
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
     PaymentTypePresenter paymentTypePresenter = Get.find();
+    DepartmentsPresenter departmentsPresenter = Get.find();
+    SalesPresenter salesPresenter = Get.find();
+    ResumePresenter resumePresenter = Get.find();
+    ProductsPresenter productsPresenter = Get.find();
 
     // loadingSubscription?.cancel();
     mainErrorSubscription?.cancel();
@@ -70,15 +74,33 @@ class _PaymentTypePageState extends State<PaymentTypePage>
           return Scaffold(
             appBar: DefaultAppBar(
               isLoading: isLoadingPayments.data == true,
-              onChangeEnterprise: (_) async {
-                await paymentTypePresenter.getSales(homePresenter);
+              onChangeEnterprise: (_) {
+                homePresenter.reloadAllData(
+                  salesPresenter,
+                  resumePresenter,
+                  paymentTypePresenter,
+                  productsPresenter,
+                  departmentsPresenter,
+                );
               },
-              onTapRefresh: () async {
-                await paymentTypePresenter.getSales(homePresenter,
-                    forceRefresh: true);
+              onChangeDate: (_) {
+                homePresenter.reloadAllData(
+                  salesPresenter,
+                  resumePresenter,
+                  paymentTypePresenter,
+                  productsPresenter,
+                  departmentsPresenter,
+                );
               },
-              onChangeDate: (newDate) async {
-                await paymentTypePresenter.getSales(homePresenter);
+              onTapRefresh: () {
+                homePresenter.reloadAllData(
+                  salesPresenter,
+                  resumePresenter,
+                  paymentTypePresenter,
+                  productsPresenter,
+                  departmentsPresenter,
+                  forceRefresh: true,
+                );
               },
             ),
             body: Column(
