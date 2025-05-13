@@ -92,7 +92,7 @@ class _HomePageState extends State<HomePage>
                                   (isLoadingProducts.data == true &&
                                       currentIndex.data == 2),
                               onChangeEnterprise: (_) {
-                                reloadData(forceRefresh: true);
+                                reloadData();
                               },
                               onChangeDate: (_) {
                                 reloadData();
