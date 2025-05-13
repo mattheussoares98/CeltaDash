@@ -51,6 +51,10 @@ class _DepartmentsPageState extends State<DepartmentsPage>
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
     DepartmentsPresenter departmentsPresenter = Get.find();
+    SalesPresenter salesPresenter = Get.find();
+    ResumePresenter resumePresenter = Get.find();
+    PaymentTypePresenter paymentTypePresenter = Get.find();
+    ProductsPresenter productsPresenter = Get.find();
 
     // loadingSubscription?.cancel();
     mainErrorSubscription?.cancel();
@@ -66,14 +70,30 @@ class _DepartmentsPageState extends State<DepartmentsPage>
             appBar: DefaultAppBar(
               isLoading: isLoadingDepartments.data == true,
               onChangeEnterprise: (_) async {
-                await departmentsPresenter.getSales(homePresenter);
+                homePresenter.reloadAllData(
+                  salesPresenter,
+                  resumePresenter,
+                  paymentTypePresenter,
+                  productsPresenter,
+                  departmentsPresenter,
+                );
               },
               onChangeDate: (_) async {
-                await departmentsPresenter.getSales(homePresenter);
+                homePresenter.reloadAllData(
+                  salesPresenter,
+                  resumePresenter,
+                  paymentTypePresenter,
+                  productsPresenter,
+                  departmentsPresenter,
+                );
               },
               onTapRefresh: () async {
-                await departmentsPresenter.getSales(
-                  homePresenter,
+                homePresenter.reloadAllData(
+                  salesPresenter,
+                  resumePresenter,
+                  paymentTypePresenter,
+                  productsPresenter,
+                  departmentsPresenter,
                   forceRefresh: true,
                 );
               },
