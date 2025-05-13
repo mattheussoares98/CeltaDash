@@ -28,6 +28,20 @@ class _SalesPageState extends State<SalesPage>
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        SalesPresenter salesPresenter = Get.find();
+        setState(() {
+          salesPresenter.updateSelectedPeriod(filterByHour: true);
+        });
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
     ResumePresenter resumePresenter = Get.find();
