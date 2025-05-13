@@ -15,6 +15,7 @@ class DefaultAppBar extends StatefulWidget implements PreferredSizeWidget {
   final void Function(DateTime newDate)? onChangeDate;
   final bool? showDatePicker;
   final bool? showEnterpriseDropdown;
+  final bool? isLoading;
   const DefaultAppBar({
     super.key,
     required this.onChangeEnterprise,
@@ -22,6 +23,7 @@ class DefaultAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.showEnterpriseDropdown = true,
     this.onTapRefresh,
     this.onChangeDate,
+    this.isLoading,
   });
 
   @override
@@ -113,24 +115,26 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                 children: [
                   Expanded(
                     child: ElevatedButton.icon(
-                      onPressed: () async {
-                        final newDate = await GetNewDate.get(
-                          reduceDaysFromInitialDate: 1825,
-                          canInsertDateBeforeNow: true,
-                          insertHoursAndMinutes: false,
-                          lastDate: DateTime.now(),
-                        );
+                      onPressed: widget.isLoading == true
+                          ? null
+                          : () async {
+                              final newDate = await GetNewDate.get(
+                                reduceDaysFromInitialDate: 1825,
+                                canInsertDateBeforeNow: true,
+                                insertHoursAndMinutes: false,
+                                lastDate: DateTime.now(),
+                              );
 
-                        if (newDate != null &&
-                            newDate != homePresenter.selectedDate) {
-                          setState(() {
-                            homePresenter.updateSelectedDate(newDate);
-                          });
-                          if (widget.onChangeDate != null) {
-                            widget.onChangeDate!(newDate);
-                          }
-                        }
-                      },
+                              if (newDate != null &&
+                                  newDate != homePresenter.selectedDate) {
+                                setState(() {
+                                  homePresenter.updateSelectedDate(newDate);
+                                });
+                                if (widget.onChangeDate != null) {
+                                  widget.onChangeDate!(newDate);
+                                }
+                              }
+                            },
                       label: Text(
                         "${DateFormat('dd/MM/yyyy').format(homePresenter.selectedDate)}  ${DateFormat('EEEE', 'pt_BR').format(homePresenter.selectedDate)}",
                         maxLines: 1,
@@ -141,10 +145,19 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                   Padding(
                     padding: const EdgeInsets.only(left: 8),
                     child: IconButton(
-                      onPressed: widget.onTapRefresh,
-                      icon: Icon(
-                        isIOS ? CupertinoIcons.refresh : Icons.refresh,
-                      ),
+                      onPressed:
+                          widget.isLoading == true ? null : widget.onTapRefresh,
+                      icon: widget.isLoading == true
+                          ? SizedBox(
+                              height: 25,
+                              width: 25,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : Icon(
+                              isIOS ? CupertinoIcons.refresh : Icons.refresh,
+                            ),
                     ),
                   )
                 ],

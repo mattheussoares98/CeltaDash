@@ -88,52 +88,64 @@ class _HomePageState extends State<HomePage>
     return StreamBuilder<int>(
       stream: homePresenter.currentPageIndexStream,
       builder: (context, snapshot) {
-        return Scaffold(
-          appBar: DefaultAppBar(
-            onChangeEnterprise: (changedEnterprise) async {
-              reloadData(homePresenter, salesPresenter, resumePresenter);
-            },
-            onChangeDate: (newDate) async {
-              reloadData(homePresenter, salesPresenter, resumePresenter);
-            },
-            onTapRefresh: () async {
-              reloadData(
-                homePresenter,
-                salesPresenter,
-                resumePresenter,
-                forceRefresh: true,
-              );
-            },
-          ),
-          body: pages[snapshot.data ?? 0],
-          bottomNavigationBar: BottomNavBar(
-            currentIndex: snapshot.data ?? 0,
-            onTap: homePresenter.updateSelectedIndex,
-            items: [
-              BottomNavItem(
-                materialIcon: Icon(Icons.pie_chart),
-                cupertinoIcon: Icon(CupertinoIcons.chart_pie),
-                label: R.string.resume,
-              ),
-              BottomNavItem(
-                materialIcon: Icon(Icons.monetization_on),
-                cupertinoIcon: Icon(CupertinoIcons.money_dollar),
-                label: R.string.sales,
-              ),
-              BottomNavItem(
-                materialIcon: Icon(Icons.shopping_cart_rounded),
-                cupertinoIcon: Icon(CupertinoIcons.cart),
-                label: R.string.products,
-              ),
-              // BottomNavItem(
-              //   materialIcon: Icon(Icons.person_pin_sharp),
-              //   cupertinoIcon: Icon(CupertinoIcons.person_2),
-              //   label: R.string.team,
-              // ),
-              //TODO implement
-            ],
-          ),
-        );
+        return StreamBuilder<bool>(
+            stream: resumePresenter.isLoadingStream,
+            builder: (context, isLoadingResume) {
+              return StreamBuilder<bool>(
+                  stream: salesPresenter.isLoadingStream,
+                  builder: (context, isLoadingSales) {
+                    return Scaffold(
+                      appBar: DefaultAppBar(
+                        isLoading: isLoadingSales.data == true ||
+                            isLoadingResume.data == true,
+                        onChangeEnterprise: (changedEnterprise) async {
+                          reloadData(
+                              homePresenter, salesPresenter, resumePresenter);
+                        },
+                        onChangeDate: (newDate) async {
+                          reloadData(
+                              homePresenter, salesPresenter, resumePresenter);
+                        },
+                        onTapRefresh: () async {
+                          reloadData(
+                            homePresenter,
+                            salesPresenter,
+                            resumePresenter,
+                            forceRefresh: true,
+                          );
+                        },
+                      ),
+                      body: pages[snapshot.data ?? 0],
+                      bottomNavigationBar: BottomNavBar(
+                        currentIndex: snapshot.data ?? 0,
+                        onTap: homePresenter.updateSelectedIndex,
+                        items: [
+                          BottomNavItem(
+                            materialIcon: Icon(Icons.pie_chart),
+                            cupertinoIcon: Icon(CupertinoIcons.chart_pie),
+                            label: R.string.resume,
+                          ),
+                          BottomNavItem(
+                            materialIcon: Icon(Icons.monetization_on),
+                            cupertinoIcon: Icon(CupertinoIcons.money_dollar),
+                            label: R.string.sales,
+                          ),
+                          BottomNavItem(
+                            materialIcon: Icon(Icons.shopping_cart_rounded),
+                            cupertinoIcon: Icon(CupertinoIcons.cart),
+                            label: R.string.products,
+                          ),
+                          // BottomNavItem(
+                          //   materialIcon: Icon(Icons.person_pin_sharp),
+                          //   cupertinoIcon: Icon(CupertinoIcons.person_2),
+                          //   label: R.string.team,
+                          // ),
+                          //TODO implement
+                        ],
+                      ),
+                    );
+                  });
+            });
       },
     );
   }
