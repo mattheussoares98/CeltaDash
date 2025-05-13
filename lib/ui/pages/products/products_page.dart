@@ -70,63 +70,83 @@ class _ProductsPageState extends State<ProductsPage> {
   @override
   Widget build(BuildContext context) {
     ProductsPresenter productsPresenter = Get.find();
+    HomePresenter homePresenter = Get.find();
 
     return Scaffold(
       //TODO udpate screen when change enterprise
-      body: Obx(() {
-        final saleMovements = productsPresenter.saleMovements;
+      body: StreamBuilder<bool>(
+          stream: homePresenter.updateScreenStream,
+          builder: (context, updateScreen) {
+            return Obx(() {
+              final saleMovements = productsPresenter.saleMovements;
+              final saleMovementsByEnterprise = saleMovements
+                  ?.where((e) =>
+                      e.EnterpriseId == homePresenter.selectedEnterprise?.id)
+                  .toList();
 
-        return Column(
-          children: [
-            // Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   child: SelectPeriodItems(
-            //     items: [
-            //       SelectPeriodItems.createItem(
-            //         title:
-            //             "200+ ${DateFormat.MMMd("pt_BR").format(DateTime.now())}",
-            //         onTap: () {},
-            //       ),
-            //       SelectPeriodItems.createItem(
-            //         title:
-            //             "200+ ${DateFormat.MMMd("pt_BR").format(DateTime.now().subtract(Duration(days: 1)))}",
-            //         onTap: () {},
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            //TODO add period items after Cardoso fix problems to load data
-            const SizedBox(height: 10),
-            if (saleMovements != null && saleMovements.isNotEmpty)
-              TableItem(
-                titleMinHeight: 43,
-                tableColumnWidth: {
-                  0: FixedColumnWidth(MediaQuery.of(context).size.width *
-                      0.1), //TODO test this in windows resizing the page
-                  2: FixedColumnWidth(MediaQuery.of(context).size.width * 0.2),
-                  3: FixedColumnWidth(MediaQuery.of(context).size.width * 0.1),
-                  4: FixedColumnWidth(MediaQuery.of(context).size.width * 0.16),
-                },
-                columnIndexToCompareAndDetachBetterAndWorstValue: 2,
-                columnsIndexToSum: [2, 3],
-                // indexToSort: 0,
-                titles: [
-                  PersonalizedTableCell(
-                    value: R.string.positionAbbreviated.toUpperCase(),
-                  ),
-                  PersonalizedTableCell(value: R.string.product.toUpperCase()),
-                  PersonalizedTableCell(value: R.string.revenue.toUpperCase()),
-                  PersonalizedTableCell(
-                    value: R.string.quantityAbbreviated.toUpperCase(),
-                  ),
-                  PersonalizedTableCell(
-                      value: R.string.averagePrice.toUpperCase()),
-                ],
-                rowValues: constructRows(saleMovements),
-              ),
-          ],
-        );
-      }),
+              return Opacity(
+                opacity: updateScreen.data == true ? 0 : 1,
+                child: Column(
+                  children: [
+                    // Padding(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   child: SelectPeriodItems(
+                    //     items: [
+                    //       SelectPeriodItems.createItem(
+                    //         title:
+                    //             "200+ ${DateFormat.MMMd("pt_BR").format(DateTime.now())}",
+                    //         onTap: () {},
+                    //       ),
+                    //       SelectPeriodItems.createItem(
+                    //         title:
+                    //             "200+ ${DateFormat.MMMd("pt_BR").format(DateTime.now().subtract(Duration(days: 1)))}",
+                    //         onTap: () {},
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    //TODO add period items after Cardoso fix problems to load data
+                    const SizedBox(height: 10),
+                    if (saleMovementsByEnterprise != null &&
+                        saleMovementsByEnterprise.isNotEmpty)
+                      TableItem(
+                        titleMinHeight: 43,
+                        tableColumnWidth: {
+                          0: FixedColumnWidth(MediaQuery.of(context)
+                                  .size
+                                  .width *
+                              0.1), //TODO test this in windows resizing the page
+                          2: FixedColumnWidth(
+                              MediaQuery.of(context).size.width * 0.2),
+                          3: FixedColumnWidth(
+                              MediaQuery.of(context).size.width * 0.1),
+                          4: FixedColumnWidth(
+                              MediaQuery.of(context).size.width * 0.16),
+                        },
+                        columnIndexToCompareAndDetachBetterAndWorstValue: 2,
+                        columnsIndexToSum: [2, 3],
+                        // indexToSort: 0,
+                        titles: [
+                          PersonalizedTableCell(
+                            value: R.string.positionAbbreviated.toUpperCase(),
+                          ),
+                          PersonalizedTableCell(
+                              value: R.string.product.toUpperCase()),
+                          PersonalizedTableCell(
+                              value: R.string.revenue.toUpperCase()),
+                          PersonalizedTableCell(
+                            value: R.string.quantityAbbreviated.toUpperCase(),
+                          ),
+                          PersonalizedTableCell(
+                              value: R.string.averagePrice.toUpperCase()),
+                        ],
+                        rowValues: constructRows(saleMovementsByEnterprise),
+                      ),
+                  ],
+                ),
+              );
+            });
+          }),
     );
   }
 }
