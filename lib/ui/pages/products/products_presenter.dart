@@ -8,6 +8,7 @@ abstract class ProductsPresenter implements Listenable {
   Stream<bool> get isLoadingStream;
   List<SaleMovementViewModel>? get saleMovements;
   DateTime? get lastDateLoadedData;
+  EnterpriseViewModel? get lastEnterpriseLoadedData;
 
   Future<void> loadProducts(HomePresenter homePresenter, {bool? forceRefresh});
 }

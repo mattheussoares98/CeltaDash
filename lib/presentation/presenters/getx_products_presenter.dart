@@ -22,9 +22,10 @@ class GetxProductsPresenter extends GetxController
     mainError = null;
     try {
       if (forceRefresh != true &&
-          _lastDateLoadedData?.year == homePresenter.selectedDate.year &&
-          _lastDateLoadedData?.month == homePresenter.selectedDate.month &&
-          _lastDateLoadedData?.day == homePresenter.selectedDate.day) {
+          (homePresenter.selectedEnterprise == _lastEnterpriseLoadedData) &&
+          (_lastDateLoadedData?.year == homePresenter.selectedDate.year &&
+              _lastDateLoadedData?.month == homePresenter.selectedDate.month &&
+              _lastDateLoadedData?.day == homePresenter.selectedDate.day)) {
         return;
       }
       final date = homePresenter.selectedDate;
@@ -55,6 +56,7 @@ class GetxProductsPresenter extends GetxController
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
           .toList();
 
+      _lastEnterpriseLoadedData = homePresenter.selectedEnterprise;
       _lastDateLoadedData = homePresenter.selectedDate;
     } catch (e) {
       mainError = UIError.unexpected;
@@ -66,4 +68,9 @@ class GetxProductsPresenter extends GetxController
   DateTime? _lastDateLoadedData;
   @override
   DateTime? get lastDateLoadedData => _lastDateLoadedData;
+
+  EnterpriseViewModel? _lastEnterpriseLoadedData;
+  @override
+  EnterpriseViewModel? get lastEnterpriseLoadedData =>
+      _lastEnterpriseLoadedData;
 }

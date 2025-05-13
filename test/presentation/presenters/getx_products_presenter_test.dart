@@ -187,5 +187,80 @@ void main() {
         ),
       ).called(2);
     });
+    test("Should update last loaded enterprise", () async {
+      await sut.loadProducts(homePresenter);
+
+      expect(
+        sut.lastEnterpriseLoadedData,
+        homePresenter.selectedEnterpriseMock,
+      );
+    });
+    test("Should load again if change the selected enterprise", () async {
+      await sut.loadProducts(homePresenter);
+
+      verify(
+        () => loadSaleMovements.get(
+          startDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month,
+            1,
+          ),
+          endDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month + 1,
+          ).subtract(Duration(days: 1)),
+          groupByDay: true,
+          groupByProduct: true,
+          groupByEnterprise: true,
+          enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+        ),
+      ).called(1);
+
+      homePresenter.selectedEnterpriseMock =
+          EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
+              .toViewModel();
+      await sut.loadProducts(homePresenter);
+
+      verify(
+        () => loadSaleMovements.get(
+          startDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month,
+            1,
+          ),
+          endDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month + 1,
+          ).subtract(Duration(days: 1)),
+          groupByDay: true,
+          groupByProduct: true,
+          groupByEnterprise: true,
+          enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+        ),
+      ).called(1);
+    });
+    test("Should not load again if dont change the selected enterprise",
+        () async {
+      await sut.loadProducts(homePresenter);
+      await sut.loadProducts(homePresenter);
+
+      verify(
+        () => loadSaleMovements.get(
+          startDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month,
+            1,
+          ),
+          endDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month + 1,
+          ).subtract(Duration(days: 1)),
+          groupByDay: true,
+          groupByProduct: true,
+          groupByEnterprise: true,
+          enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+        ),
+      ).called(1);
+    });
   });
 }
