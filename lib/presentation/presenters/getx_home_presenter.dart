@@ -85,4 +85,24 @@ class GetxHomePresenter extends GetxController
       needUpdateScreen = false;
     });
   }
+
+  @override
+  void reloadAllData(
+    SalesPresenter salesPresenter,
+    ResumePresenter resumePresenter,
+    PaymentTypePresenter paymentTypePresenter,
+    ProductsPresenter productsPresenter,
+    DepartmentsPresenter departmentsPresenter, {
+    bool? forceRefresh,
+  }) {
+    salesPresenter.getSales(
+      homePresenter: this,
+      resumePresenter: resumePresenter,
+      forceRefresh: forceRefresh,
+    );
+    resumePresenter.getSales(this, forceRefresh: forceRefresh);
+    paymentTypePresenter.getSales(this, forceRefresh: forceRefresh);
+    productsPresenter.loadProducts(this, forceRefresh: forceRefresh);
+    departmentsPresenter.getSales(this, forceRefresh: forceRefresh);
+  }
 }

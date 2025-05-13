@@ -19,4 +19,12 @@ abstract class HomePresenter implements Listenable {
   });
 
   void updateSelectedEnterprise(EnterpriseViewModel? enterprise);
+  void reloadAllData(
+    SalesPresenter salesPresenter,
+    ResumePresenter resumePresenter,
+    PaymentTypePresenter paymentTypePresenter,
+    ProductsPresenter productsPresenter,
+    DepartmentsPresenter departmentsPresenter, {
+    bool? forceRefresh,
+  });
 }

@@ -12,9 +12,16 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../data/mocks/mocks.dart';
 import '../../domain/mocks/mocks.dart';
+import '../mocks/mocks.dart';
 
 void main() {
   late GetxHomePresenter sut;
+
+  late SalesPresenterSpy salesPresenter;
+  late ResumePresenterSpy resumePresenter;
+  late PaymentTypePresenterSpy paymentTypePresenter;
+  late ProductsPresenterSpy productsPresenter;
+  late DepartmentsPresenterSpy departmentsPresenter;
 
   late NavigateToSpy navigateTo;
   late RemoteLoadEnterprisesSpy remoteLoadEnterprises;
@@ -34,6 +41,11 @@ void main() {
       navigateTo: navigateTo,
       loadEnterprises: remoteLoadEnterprises,
     );
+    salesPresenter = SalesPresenterSpy();
+    resumePresenter = ResumePresenterSpy();
+    paymentTypePresenter = PaymentTypePresenterSpy();
+    productsPresenter = ProductsPresenterSpy();
+    departmentsPresenter = DepartmentsPresenterSpy();
   }
 
   void initEntities() {
@@ -55,7 +67,8 @@ void main() {
   });
 
   setUpAll(() {
-    registerFallbackValue("");
+    registerFallbackValue(HomePresenterSpy());
+    registerFallbackValue(ResumePresenterSpy());
   });
 
   group("Change page index", () {
@@ -181,6 +194,89 @@ void main() {
       expectLater(sut.updateScreenStream, emitsInOrder([true, false]));
 
       sut.updateScreen();
+    });
+  });
+
+  group("Reload all data", () {
+    test("Should call sales presenter get sales", () {
+      final forceRefresh = faker.randomGenerator.boolean();
+
+      sut.reloadAllData(
+        salesPresenter,
+        resumePresenter,
+        paymentTypePresenter,
+        productsPresenter,
+        departmentsPresenter,
+        forceRefresh: forceRefresh,
+      );
+
+      verify(() => salesPresenter.getSales(
+          homePresenter: sut,
+          resumePresenter: resumePresenter,
+          forceRefresh: forceRefresh)).called(1);
+    });
+    test("Should call resume presenter get sales", () {
+      final forceRefresh = faker.randomGenerator.boolean();
+
+      sut.reloadAllData(
+        salesPresenter,
+        resumePresenter,
+        paymentTypePresenter,
+        productsPresenter,
+        departmentsPresenter,
+        forceRefresh: forceRefresh,
+      );
+
+      verify(() => resumePresenter.getSales(sut, forceRefresh: forceRefresh))
+          .called(1);
+    });
+    test("Should call paymet type presenter get sales", () {
+      final forceRefresh = faker.randomGenerator.boolean();
+
+      sut.reloadAllData(
+        salesPresenter,
+        resumePresenter,
+        paymentTypePresenter,
+        productsPresenter,
+        departmentsPresenter,
+        forceRefresh: forceRefresh,
+      );
+
+      verify(() =>
+              paymentTypePresenter.getSales(sut, forceRefresh: forceRefresh))
+          .called(1);
+    });
+    test("Should call products presenter get sales", () {
+      final forceRefresh = faker.randomGenerator.boolean();
+
+      sut.reloadAllData(
+        salesPresenter,
+        resumePresenter,
+        paymentTypePresenter,
+        productsPresenter,
+        departmentsPresenter,
+        forceRefresh: forceRefresh,
+      );
+
+      verify(() =>
+              productsPresenter.loadProducts(sut, forceRefresh: forceRefresh))
+          .called(1);
+    });
+    test("Should call departments presenter get sales", () {
+      final forceRefresh = faker.randomGenerator.boolean();
+
+      sut.reloadAllData(
+        salesPresenter,
+        resumePresenter,
+        paymentTypePresenter,
+        productsPresenter,
+        departmentsPresenter,
+        forceRefresh: forceRefresh,
+      );
+
+      verify(() =>
+              departmentsPresenter.getSales(sut, forceRefresh: forceRefresh))
+          .called(1);
     });
   });
 }
