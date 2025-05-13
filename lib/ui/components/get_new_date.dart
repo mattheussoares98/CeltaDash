@@ -85,7 +85,7 @@ class GetNewDate {
     DateTime initialDate,
     DateTime lastDate,
   ) async {
-    DateTime tempPickedDate = initialDate;
+    DateTime? tempPickedDate = lastDate;
 
     return await showCupertinoModalPopup<DateTime>(
       context: NavigatorKey.key.currentState!.context,
