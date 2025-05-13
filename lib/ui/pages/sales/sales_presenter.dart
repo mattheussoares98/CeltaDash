@@ -8,6 +8,7 @@ abstract class SalesPresenter implements Listenable {
   List<SaleMovementViewModel>? get saleMovementsByYear;
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
+  DateTime? get lastDateLoadedData;
 
   bool get filterByHour;
   bool get filterByDay;

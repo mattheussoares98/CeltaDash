@@ -23,7 +23,11 @@ class GetxSalesPresenter extends GetxController
     isLoading = true;
 
     try {
-      //TODO add last loaded data
+      if (homePresenter.selectedDate.year == _lastDateLoadedData?.year &&
+          forceRefresh != true) {
+        return;
+      }
+
       final remoteSalesByMonth = await loadSaleMovements.get(
         enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
         startDate: DateTime(homePresenter.selectedDate.year, 1, 1),
@@ -34,7 +38,6 @@ class GetxSalesPresenter extends GetxController
         groupByMonth: true,
         groupByYear: true,
       );
-
       salesByMonth = remoteSalesByMonth
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
           .toList();
@@ -50,6 +53,8 @@ class GetxSalesPresenter extends GetxController
       salesByYear = remoteSalesByYear
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
           .toList();
+
+      _lastDateLoadedData = homePresenter.selectedDate;
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {
@@ -99,4 +104,8 @@ class GetxSalesPresenter extends GetxController
   bool _filterByYear = false;
   @override
   bool get filterByYear => _filterByYear;
+
+  DateTime? _lastDateLoadedData;
+  @override
+  DateTime? get lastDateLoadedData => _lastDateLoadedData;
 }
