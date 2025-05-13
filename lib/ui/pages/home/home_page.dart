@@ -35,12 +35,7 @@ class _HomePageState extends State<HomePage>
           snackBarMessage(context, error, Colors.red);
         });
 
-        await resumePresenter.getSales(homePresenter);
-
-        await salesPresenter.getSales(
-          homePresenter: homePresenter,
-          resumePresenter: resumePresenter,
-        );
+        reloadData(homePresenter, salesPresenter, resumePresenter);
       }
     });
   }
@@ -51,6 +46,20 @@ class _HomePageState extends State<HomePage>
 
     resumeLoadingSubscription?.cancel();
     resumeMainErrorSubscription?.cancel();
+  }
+
+  Future<void> reloadData(
+    HomePresenter homePresenter,
+    SalesPresenter salesPresenter,
+    ResumePresenter resumePresenter, {
+    bool? forceRefresh,
+  }) async {
+    resumePresenter.getSales(homePresenter, forceRefresh: forceRefresh);
+    salesPresenter.getSales(
+      homePresenter: homePresenter,
+      resumePresenter: resumePresenter,
+      forceRefresh: forceRefresh,
+    );
   }
 
   final pages = <Widget>[
@@ -65,6 +74,7 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
     ResumePresenter resumePresenter = Get.find();
+    SalesPresenter salesPresenter = Get.find();
 
     resumeLoadingSubscription?.cancel();
     resumeMainErrorSubscription?.cancel();
@@ -81,6 +91,22 @@ class _HomePageState extends State<HomePage>
       stream: homePresenter.currentPageIndexStream,
       builder: (context, snapshot) {
         return Scaffold(
+          appBar: DefaultAppBar(
+            onChangeEnterprise: (changedEnterprise) async {
+              reloadData(homePresenter, salesPresenter, resumePresenter);
+            },
+            onChangeDate: (newDate) async {
+              reloadData(homePresenter, salesPresenter, resumePresenter);
+            },
+            onTapRefresh: () async {
+              reloadData(
+                homePresenter,
+                salesPresenter,
+                resumePresenter,
+                forceRefresh: true,
+              );
+            },
+          ),
           body: pages[snapshot.data ?? 0],
           bottomNavigationBar: BottomNavBar(
             currentIndex: snapshot.data ?? 0,

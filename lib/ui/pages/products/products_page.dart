@@ -15,28 +15,22 @@ class ProductsPage extends StatefulWidget {
 }
 
 class _ProductsPageState extends State<ProductsPage> {
-  final rows =
-      List.generate(DateTime.now().day, (_) {
-        final totalSales = Random().nextDouble() * 50000;
-        final quantity = Random().nextInt(100) * Random().nextDouble();
-        final Map<String, dynamic> row = {
-          'totalSales': totalSales,
-          'quantity': quantity,
-          'product': faker.food.cuisine(),
-        };
-        return row;
-      }).toList();
+  final rows = List.generate(DateTime.now().day, (_) {
+    final totalSales = Random().nextDouble() * 50000;
+    final quantity = Random().nextInt(100) * Random().nextDouble();
+    final Map<String, dynamic> row = {
+      'totalSales': totalSales,
+      'quantity': quantity,
+      'product': faker.food.cuisine(),
+    };
+    return row;
+  }).toList();
 
   @override
   Widget build(BuildContext context) {
     rows.sort((a, b) => a['totalSales']!.compareTo(b['totalSales']!));
 
     return Scaffold(
-      appBar: DefaultAppBar(
-        onChangeEnterprise: (_) {
-          debugPrint("Search sales again");
-        },
-      ),
       body: Column(
         children: [
           Padding(
@@ -74,24 +68,23 @@ class _ProductsPageState extends State<ProductsPage> {
               ),
               PersonalizedTableCell(value: R.string.averagePrice.toUpperCase()),
             ],
-            rowValues:
-                rows.asMap().entries.map((entry) {
-                  final index = entry.key;
-                  final item = entry.value;
-                  final totalSales = item['totalSales']!;
-                  final quantity = item['quantity']!;
+            rowValues: rows.asMap().entries.map((entry) {
+              final index = entry.key;
+              final item = entry.value;
+              final totalSales = item['totalSales']!;
+              final quantity = item['quantity']!;
 
-                  return [
-                    PersonalizedTableCell(value: index + 1),
-                    PersonalizedTableCell(value: item['product']),
-                    PersonalizedTableCell(value: totalSales, isMoney: true),
-                    PersonalizedTableCell(value: quantity),
-                    PersonalizedTableCell(
-                      value: totalSales / quantity,
-                      isMoney: true,
-                    ),
-                  ];
-                }).toList(),
+              return [
+                PersonalizedTableCell(value: index + 1),
+                PersonalizedTableCell(value: item['product']),
+                PersonalizedTableCell(value: totalSales, isMoney: true),
+                PersonalizedTableCell(value: quantity),
+                PersonalizedTableCell(
+                  value: totalSales / quantity,
+                  isMoney: true,
+                ),
+              ];
+            }).toList(),
           ),
         ],
       ),

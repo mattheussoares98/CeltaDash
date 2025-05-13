@@ -23,10 +23,7 @@ class GetxSalesPresenter extends GetxController
     isLoading = true;
 
     try {
-      //if update sales by month and year, must update resume as well to make both equals
-      //dont needs to wait
-      resumePresenter.getSales(homePresenter, forceRefresh: true);
-
+      //TODO add last loaded data
       final remoteSalesByMonth = await loadSaleMovements.get(
         enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
         startDate: DateTime(homePresenter.selectedDate.year, 1, 1),

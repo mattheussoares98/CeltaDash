@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../ui/helpers/helpers.dart';
-import '../../components/components.dart';
 import '../../mixins/mixins.dart';
 import '../pages.dart';
 import 'components/components.dart';
@@ -49,17 +48,6 @@ class _ResumePageState extends State<ResumePage>
     HomePresenter homePresenter = Get.find();
 
     return Scaffold(
-      appBar: DefaultAppBar(
-        onChangeEnterprise: (changedEnterprise) async {
-          await resumePresenter.getSales(homePresenter);
-        },
-        onChangeDate: (newDate) async {
-          await resumePresenter.getSales(homePresenter);
-        },
-        onTapRefresh: () async {
-          await resumePresenter.getSales(homePresenter, forceRefresh: true);
-        },
-      ),
       body: SingleChildScrollView(
         controller: scrollController,
         child: Padding(

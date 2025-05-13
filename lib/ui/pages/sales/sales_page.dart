@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../ui/mixins/mixins.dart';
-import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 import '../pages.dart';
 import 'components/components.dart';
@@ -42,27 +41,6 @@ class _SalesPageState extends State<SalesPage>
         handleMainError(context, salesPresenter.mainErrorStream);
 
     return Scaffold(
-      appBar: DefaultAppBar(
-        onChangeEnterprise: (_) async {
-          await salesPresenter.getSales(
-            homePresenter: homePresenter,
-            resumePresenter: resumePresenter,
-          );
-        },
-        onTapRefresh: () async {
-          await salesPresenter.getSales(
-            homePresenter: homePresenter,
-            resumePresenter: resumePresenter,
-            forceRefresh: true,
-          );
-        },
-        onChangeDate: (_) async {
-          await salesPresenter.getSales(
-            homePresenter: homePresenter,
-            resumePresenter: resumePresenter,
-          );
-        },
-      ),
       body: StreamBuilder<bool>(
           stream: homePresenter.updateScreenStream,
           builder: (context, snapshot) {
