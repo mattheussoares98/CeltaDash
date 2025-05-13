@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,8 +17,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with LoadingManager, UIErrorManager {
-  StreamSubscription? resumeLoadingSubscription;
-  StreamSubscription? resumeMainErrorSubscription;
+  // StreamSubscription? resumeLoadingSubscription;
+  // StreamSubscription? resumeMainErrorSubscription;
   @override
   void initState() {
     super.initState();
@@ -44,8 +42,8 @@ class _HomePageState extends State<HomePage>
   void dispose() {
     super.dispose();
 
-    resumeLoadingSubscription?.cancel();
-    resumeMainErrorSubscription?.cancel();
+    // resumeLoadingSubscription?.cancel();
+    // resumeMainErrorSubscription?.cancel();
   }
 
   Future<void> reloadData(
@@ -76,16 +74,16 @@ class _HomePageState extends State<HomePage>
     ResumePresenter resumePresenter = Get.find();
     SalesPresenter salesPresenter = Get.find();
 
-    resumeLoadingSubscription?.cancel();
-    resumeMainErrorSubscription?.cancel();
-    resumeLoadingSubscription = handleLoading(
-      context,
-      resumePresenter.isLoadingStream,
-    );
-    resumeMainErrorSubscription = handleMainError(
-      context,
-      resumePresenter.mainErrorStream,
-    );
+    // resumeLoadingSubscription?.cancel();
+    // resumeMainErrorSubscription?.cancel();
+    // resumeLoadingSubscription = handleLoading(
+    //   context,
+    //   resumePresenter.isLoadingStream,
+    // );
+    // resumeMainErrorSubscription = handleMainError(
+    //   context,
+    //   resumePresenter.mainErrorStream,
+    // );
 
     return StreamBuilder<int>(
       stream: homePresenter.currentPageIndexStream,

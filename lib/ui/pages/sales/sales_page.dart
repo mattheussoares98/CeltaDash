@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,14 +15,14 @@ class SalesPage extends StatefulWidget {
 
 class _SalesPageState extends State<SalesPage>
     with LoadingManager, UIErrorManager {
-  StreamSubscription? loadingSubscription;
-  StreamSubscription? mainErrorSubscription;
+  // StreamSubscription? loadingSubscription;
+  // StreamSubscription? mainErrorSubscription;
 
   @override
   void dispose() {
     super.dispose();
-    loadingSubscription?.cancel();
-    mainErrorSubscription?.cancel();
+    // loadingSubscription?.cancel();
+    // mainErrorSubscription?.cancel();
   }
 
   @override
@@ -33,12 +31,12 @@ class _SalesPageState extends State<SalesPage>
     ResumePresenter resumePresenter = Get.find();
     SalesPresenter salesPresenter = Get.find();
 
-    loadingSubscription?.cancel();
-    mainErrorSubscription?.cancel();
-    loadingSubscription =
-        handleLoading(context, salesPresenter.isLoadingStream);
-    mainErrorSubscription =
-        handleMainError(context, salesPresenter.mainErrorStream);
+    // loadingSubscription?.cancel();
+    // mainErrorSubscription?.cancel();
+    // loadingSubscription =
+    //     handleLoading(context, salesPresenter.isLoadingStream);
+    // mainErrorSubscription =
+    //     handleMainError(context, salesPresenter.mainErrorStream);
 
     return Scaffold(
       body: StreamBuilder<bool>(
