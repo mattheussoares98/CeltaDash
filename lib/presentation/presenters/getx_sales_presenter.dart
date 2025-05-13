@@ -24,7 +24,6 @@ class GetxSalesPresenter extends GetxController
 
     try {
       if (homePresenter.selectedDate.year == _lastDateLoadedData?.year &&
-          homePresenter.selectedEnterprise == _lastEnterpriseLoadedData &&
           forceRefresh != true) {
         return;
       }
@@ -56,7 +55,6 @@ class GetxSalesPresenter extends GetxController
           .toList();
 
       _lastDateLoadedData = homePresenter.selectedDate;
-      _lastEnterpriseLoadedData = homePresenter.selectedEnterprise;
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {
@@ -110,9 +108,4 @@ class GetxSalesPresenter extends GetxController
   DateTime? _lastDateLoadedData;
   @override
   DateTime? get lastDateLoadedData => _lastDateLoadedData;
-
-  EnterpriseViewModel? _lastEnterpriseLoadedData;
-  @override
-  EnterpriseViewModel? get lastEnterpriseLoadedData =>
-      _lastEnterpriseLoadedData;
 }

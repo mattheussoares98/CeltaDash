@@ -288,17 +288,7 @@ void main() {
           ),
         ).called(2);
       });
-      test("Should update lastEnterpriseLoadedData", () async {
-        await sut.getSales(
-          resumePresenter: resumePresenter,
-          homePresenter: homePresenter,
-        );
 
-        expect(
-          sut.lastEnterpriseLoadedData,
-          homePresenter.selectedEnterpriseMock,
-        );
-      });
       test("Should not load again if dont change the enterprise", () async {
         await sut.getSales(
           resumePresenter: resumePresenter,
