@@ -163,7 +163,6 @@ void main() {
       ).subtract(Duration(days: 1));
 
       verify(() => loadSaleMovements.get(
-            enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
             startDate: startDate,
             endDate: endDate,
             groupByDay: true,
@@ -201,7 +200,6 @@ void main() {
       await sut.getSales(homePresenter);
 
       verify(() => loadSaleMovements.get(
-            enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
             startDate: DateTime(
               homePresenter.selectedDateMock.year,
               homePresenter.selectedDateMock.month,
@@ -231,7 +229,6 @@ void main() {
       await sut.getSales(homePresenter, forceRefresh: true);
 
       verify(() => loadSaleMovements.get(
-            enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
             startDate: DateTime(
               homePresenter.selectedDateMock.year,
               homePresenter.selectedDateMock.month,
