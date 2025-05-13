@@ -29,7 +29,7 @@ class DefaultAppBar extends StatefulWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => Size.fromHeight(
       this.showDatePicker == true && this.showEnterpriseDropdown == true
-          ? 90
+          ? 100
           : 60);
 
   @override
@@ -47,7 +47,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
       elevation: isIOS ? 0 : null,
       toolbarHeight:
           widget.showDatePicker == true && widget.showEnterpriseDropdown == true
-              ? 90
+              ? 100
               : 60,
       title: Obx(() {
         final enterprises = homePresenter.enterprises;
