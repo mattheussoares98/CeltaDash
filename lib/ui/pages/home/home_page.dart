@@ -28,20 +28,12 @@ class _HomePageState extends State<HomePage>
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
         HomePresenter homePresenter = Get.find();
-        ResumePresenter resumePresenter = Get.find();
-        SalesPresenter salesPresenter = Get.find();
-        ProductsPresenter productsPresenter = Get.find();
 
         await homePresenter.getBsEnterprises(showBsErrorMessage: (error) {
           snackBarMessage(context, error, Colors.red);
         });
 
-        reloadData(
-          productsPresenter,
-          homePresenter,
-          salesPresenter,
-          resumePresenter,
-        );
+        reloadData();
       }
     });
   }
@@ -54,13 +46,16 @@ class _HomePageState extends State<HomePage>
     resumeMainErrorSubscription?.cancel();
   }
 
-  Future<void> reloadData(
-    ProductsPresenter productsPresenter,
-    HomePresenter homePresenter,
-    SalesPresenter salesPresenter,
-    ResumePresenter resumePresenter, {
+  Future<void> reloadData({
     bool? forceRefresh,
   }) async {
+    ProductsPresenter productsPresenter = Get.find();
+    HomePresenter homePresenter = Get.find();
+    SalesPresenter salesPresenter = Get.find();
+    ResumePresenter resumePresenter = Get.find();
+    PaymentTypePresenter paymentTypePresenter = Get.find();
+
+    paymentTypePresenter.getSales(homePresenter);
     resumePresenter.getSales(homePresenter, forceRefresh: forceRefresh);
     salesPresenter.getSales(
       homePresenter: homePresenter,
@@ -83,7 +78,6 @@ class _HomePageState extends State<HomePage>
     HomePresenter homePresenter = Get.find();
     ResumePresenter resumePresenter = Get.find();
     SalesPresenter salesPresenter = Get.find();
-    ProductsPresenter productsPresenter = Get.find();
 
     // resumeLoadingSubscription = handleLoading(
     //   context,
@@ -113,30 +107,14 @@ class _HomePageState extends State<HomePage>
                       appBar: DefaultAppBar(
                         isLoading: isLoadingSales.data == true ||
                             isLoadingResume.data == true,
-                        onChangeEnterprise: (changedEnterprise) async {
-                          reloadData(
-                            productsPresenter,
-                            homePresenter,
-                            salesPresenter,
-                            resumePresenter,
-                          );
+                        onChangeEnterprise: (_) async {
+                          reloadData();
                         },
-                        onChangeDate: (newDate) async {
-                          reloadData(
-                            productsPresenter,
-                            homePresenter,
-                            salesPresenter,
-                            resumePresenter,
-                          );
+                        onChangeDate: (_) async {
+                          reloadData();
                         },
                         onTapRefresh: () async {
-                          reloadData(
-                            productsPresenter,
-                            homePresenter,
-                            salesPresenter,
-                            resumePresenter,
-                            forceRefresh: true,
-                          );
+                          reloadData(forceRefresh: true);
                         },
                       ),
                       body: pages[snapshot.data ?? 0],
