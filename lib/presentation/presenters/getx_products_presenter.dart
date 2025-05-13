@@ -27,10 +27,10 @@ class GetxProductsPresenter extends GetxController
           _lastDateLoadedData?.day == homePresenter.selectedDate.day) {
         return;
       }
-      final now = DateTime.now();
+      final date = homePresenter.selectedDate;
       final response = await loadSaleMovements.get(
-        startDate: now,
-        endDate: now,
+        startDate: DateTime(date.year, date.month, date.day, 0, 0, 0),
+        endDate: DateTime(date.year, date.month, date.day, 23, 59, 59),
         //TODO fix this start and end after Cardoso fix problems to load data. Is returing a lot of data, this is why I am filtering only one day
         // startDate: DateTime(
         //   homePresenter.selectedDate.year,
