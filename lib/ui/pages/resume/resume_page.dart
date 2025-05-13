@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,6 +17,7 @@ class ResumePage extends StatefulWidget {
 class _ResumePageState extends State<ResumePage>
     with UIErrorManager, LoadingManager, RouteAware {
   final scrollController = ScrollController();
+  StreamSubscription? mainErrorSubscription;
 
   @override
   void dispose() {
@@ -23,6 +26,7 @@ class _ResumePageState extends State<ResumePage>
     routeObserver.unsubscribe(this);
 
     scrollController.dispose();
+    mainErrorSubscription?.cancel();
   }
 
   @override
@@ -44,6 +48,14 @@ class _ResumePageState extends State<ResumePage>
   @override
   Widget build(BuildContext context) {
     ResumePresenter resumePresenter = Get.find();
+
+    // resumeLoadingSubscription = handleLoading(
+    //   context,
+    //   resumePresenter.isLoadingStream,
+    // );
+    mainErrorSubscription?.cancel();
+    mainErrorSubscription =
+        handleMainError(context, resumePresenter.mainErrorStream);
 
     return Scaffold(
       body: SingleChildScrollView(

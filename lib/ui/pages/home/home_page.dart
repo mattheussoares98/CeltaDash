@@ -19,8 +19,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with LoadingManager, UIErrorManager {
-  StreamSubscription? salesMainErrorSubscription;
-  StreamSubscription? resumeMainErrorSubscription;
   @override
   void initState() {
     super.initState();
@@ -36,14 +34,6 @@ class _HomePageState extends State<HomePage>
         reloadData();
       }
     });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    salesMainErrorSubscription?.cancel();
-    resumeMainErrorSubscription?.cancel();
   }
 
   Future<void> reloadData({
@@ -78,21 +68,6 @@ class _HomePageState extends State<HomePage>
     HomePresenter homePresenter = Get.find();
     ResumePresenter resumePresenter = Get.find();
     SalesPresenter salesPresenter = Get.find();
-
-    // resumeLoadingSubscription = handleLoading(
-    //   context,
-    //   resumePresenter.isLoadingStream,
-    // );
-    salesMainErrorSubscription?.cancel();
-    resumeMainErrorSubscription?.cancel();
-    resumeMainErrorSubscription = handleMainError(
-      context,
-      resumePresenter.mainErrorStream,
-    );
-    salesMainErrorSubscription = handleMainError(
-      context,
-      salesPresenter.mainErrorStream,
-    );
 
     return StreamBuilder<int>(
       stream: homePresenter.currentPageIndexStream,
