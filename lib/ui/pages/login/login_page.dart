@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 import '../../../main/builders/builders.dart';
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
@@ -97,33 +96,39 @@ class _LoginPageState extends State<LoginPage>
         padding: const EdgeInsets.all(8.0),
         child: Form(
           key: formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              EnterpriseField(
-                enterpriseController: enterpriseController,
-                enterpriseFocusNode: enterpriseFocusNode,
-                emailFocusNode: userFocusNode,
-              ),
-              EmailField(
-                emailController: userController,
-                emailFocusNode: userFocusNode,
-                passwordFocusNode: passwordFocusNode,
-              ),
-              PasswordField(
-                passwordController: passwordController,
-                login: () async {
-                  await login(loginPresenter);
-                },
-                passwordFocusNode: passwordFocusNode,
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  await login(loginPresenter);
-                },
-                child: Text(R.string.enter),
-              ),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  "lib/ui/assets/images/CeltaLogo-withoutbg.png",
+                  height: MediaQuery.of(context).size.height * 0.3,
+                ),
+                EnterpriseField(
+                  enterpriseController: enterpriseController,
+                  enterpriseFocusNode: enterpriseFocusNode,
+                  emailFocusNode: userFocusNode,
+                ),
+                EmailField(
+                  emailController: userController,
+                  emailFocusNode: userFocusNode,
+                  passwordFocusNode: passwordFocusNode,
+                ),
+                PasswordField(
+                  passwordController: passwordController,
+                  login: () async {
+                    await login(loginPresenter);
+                  },
+                  passwordFocusNode: passwordFocusNode,
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    await login(loginPresenter);
+                  },
+                  child: Text(R.string.enter),
+                ),
+              ],
+            ),
           ),
         ),
       ),
