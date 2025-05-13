@@ -27,6 +27,7 @@ class _HomePageState extends State<HomePage>
       if (mounted) {
         HomePresenter homePresenter = Get.find();
 
+        homePresenter.updateSelectedIndex(0);
         await homePresenter.getBsEnterprises(showBsErrorMessage: (error) {
           snackBarMessage(context, error, Colors.red);
         });
