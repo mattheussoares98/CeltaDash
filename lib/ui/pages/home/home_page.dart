@@ -44,15 +44,16 @@ class _HomePageState extends State<HomePage>
     SalesPresenter salesPresenter = Get.find();
     ResumePresenter resumePresenter = Get.find();
     PaymentTypePresenter paymentTypePresenter = Get.find();
+    DepartmentsPresenter departmentsPresenter = Get.find();
 
-    paymentTypePresenter.getSales(homePresenter);
-    resumePresenter.getSales(homePresenter, forceRefresh: forceRefresh);
-    salesPresenter.getSales(
-      homePresenter: homePresenter,
-      resumePresenter: resumePresenter,
+    homePresenter.reloadAllData(
+      salesPresenter,
+      resumePresenter,
+      paymentTypePresenter,
+      productsPresenter,
+      departmentsPresenter,
       forceRefresh: forceRefresh,
     );
-    productsPresenter.loadProducts(homePresenter, forceRefresh: forceRefresh);
   }
 
   final pages = <Widget>[
