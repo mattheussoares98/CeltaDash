@@ -30,12 +30,18 @@ class _HomePageState extends State<HomePage>
         HomePresenter homePresenter = Get.find();
         ResumePresenter resumePresenter = Get.find();
         SalesPresenter salesPresenter = Get.find();
+        ProductsPresenter productsPresenter = Get.find();
 
         await homePresenter.getBsEnterprises(showBsErrorMessage: (error) {
           snackBarMessage(context, error, Colors.red);
         });
 
-        reloadData(homePresenter, salesPresenter, resumePresenter);
+        reloadData(
+          productsPresenter,
+          homePresenter,
+          salesPresenter,
+          resumePresenter,
+        );
       }
     });
   }
@@ -49,6 +55,7 @@ class _HomePageState extends State<HomePage>
   }
 
   Future<void> reloadData(
+    ProductsPresenter productsPresenter,
     HomePresenter homePresenter,
     SalesPresenter salesPresenter,
     ResumePresenter resumePresenter, {
@@ -60,6 +67,7 @@ class _HomePageState extends State<HomePage>
       resumePresenter: resumePresenter,
       forceRefresh: forceRefresh,
     );
+    productsPresenter.loadProducts(homePresenter, forceRefresh: forceRefresh);
   }
 
   final pages = <Widget>[
@@ -75,6 +83,7 @@ class _HomePageState extends State<HomePage>
     HomePresenter homePresenter = Get.find();
     ResumePresenter resumePresenter = Get.find();
     SalesPresenter salesPresenter = Get.find();
+    ProductsPresenter productsPresenter = Get.find();
 
     // resumeLoadingSubscription = handleLoading(
     //   context,
@@ -106,14 +115,23 @@ class _HomePageState extends State<HomePage>
                             isLoadingResume.data == true,
                         onChangeEnterprise: (changedEnterprise) async {
                           reloadData(
-                              homePresenter, salesPresenter, resumePresenter);
+                            productsPresenter,
+                            homePresenter,
+                            salesPresenter,
+                            resumePresenter,
+                          );
                         },
                         onChangeDate: (newDate) async {
                           reloadData(
-                              homePresenter, salesPresenter, resumePresenter);
+                            productsPresenter,
+                            homePresenter,
+                            salesPresenter,
+                            resumePresenter,
+                          );
                         },
                         onTapRefresh: () async {
                           reloadData(
+                            productsPresenter,
                             homePresenter,
                             salesPresenter,
                             resumePresenter,

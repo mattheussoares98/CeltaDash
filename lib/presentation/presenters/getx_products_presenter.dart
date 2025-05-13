@@ -14,7 +14,10 @@ class GetxProductsPresenter extends GetxController
   GetxProductsPresenter({required this.loadSaleMovements});
 
   @override
-  Future<void> loadProducts(HomePresenter homePresenter) async {
+  Future<void> loadProducts(
+    HomePresenter homePresenter, {
+    bool? forceRefresh,
+  }) async {
     isLoading = true;
     mainError = null;
     try {
