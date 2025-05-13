@@ -46,7 +46,9 @@ class GetxProductsPresenter extends GetxController
         groupByEnterprise: true,
         enterpriseIds: homePresenter.selectedEnterprise == null
             ? []
-            : [homePresenter.selectedEnterprise!.id!.toInt()],
+            : [
+                homePresenter.selectedEnterprise!.id!.toInt()
+              ], //TODO create a getter to verify if changed the enterprise
       );
 
       saleMovements = (response as List)

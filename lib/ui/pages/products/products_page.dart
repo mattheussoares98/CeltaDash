@@ -72,6 +72,7 @@ class _ProductsPageState extends State<ProductsPage> {
     ProductsPresenter productsPresenter = Get.find();
 
     return Scaffold(
+      //TODO udpate screen when change enterprise
       body: Obx(() {
         final saleMovements = productsPresenter.saleMovements;
 

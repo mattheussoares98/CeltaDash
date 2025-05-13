@@ -23,6 +23,7 @@ class GetxSalesPresenter extends GetxController
     isLoading = true;
 
     try {
+      //TODO create a getter to verify if was changed the enterprise
       if (homePresenter.selectedDate.year == _lastDateLoadedData?.year &&
           forceRefresh != true) {
         return;

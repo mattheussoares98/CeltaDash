@@ -83,13 +83,13 @@ class _HomePageState extends State<HomePage>
                       appBar: DefaultAppBar(
                         isLoading: isLoadingSales.data == true ||
                             isLoadingResume.data == true,
-                        onChangeEnterprise: (_) async {
+                        onChangeEnterprise: (_) {
                           reloadData();
                         },
-                        onChangeDate: (_) async {
+                        onChangeDate: (_) {
                           reloadData();
                         },
-                        onTapRefresh: () async {
+                        onTapRefresh: () {
                           reloadData(forceRefresh: true);
                         },
                       ),
