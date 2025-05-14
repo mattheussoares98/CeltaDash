@@ -31,16 +31,17 @@ class FormFieldDecoration {
         hintStyle: TextStyle(
           color: Colors.grey,
           fontSize: fontSize ?? StringSize.size,
+          // fontWeight: FontWeight.bold,
         ),
         labelStyle: TextStyle(
           color: Colors.black,
-          fontWeight: FontWeight.bold,
+          // fontWeight: FontWeight.bold,
           fontStyle: FontStyle.italic,
           fontSize: fontSize ?? StringSize.size,
         ),
         floatingLabelStyle: TextStyle(
           color: Colors.black,
-          fontWeight: FontWeight.bold,
+          // fontWeight: FontWeight.bold,
           fontSize: fontSize ?? StringSize.size,
         ),
         disabledBorder: OutlineInputBorder(
