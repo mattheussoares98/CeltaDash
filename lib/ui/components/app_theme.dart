@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import '../../../ui/helpers/helpers.dart';
 
 ThemeData makeAppTheme(BuildContext context) {
-  const primaryColor = Colors.blue;
-  const primaryColorDark = Colors.blueAccent;
-  const primaryColorLight = Colors.lightBlue;
+  const primaryColor = Colors.black;
+  const primaryColorDark = Colors.black;
+  const primaryColorLight = Colors.black54;
   const secondaryColor = CupertinoColors.systemGreen;
   final disabledColor = CupertinoColors.inactiveGray;
   const dividerColor = CupertinoColors.separator;
