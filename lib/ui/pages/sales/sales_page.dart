@@ -58,57 +58,65 @@ class _SalesPageState extends State<SalesPage>
       body: StreamBuilder<bool>(
           stream: homePresenter.updateScreenStream,
           builder: (context, snapshot) {
-            return Obx(() {
-              final resumeSaleMovements = resumePresenter.saleMovements
-                  ?.filteredSales(
-                    enterprise: homePresenter.selectedEnterprise,
-                  )
-                  .map((e) => e.toViewModel())
-                  .toList();
+            return Column(
+              children: [
+                PeriodItems(
+                    updateSelectedItem: salesPresenter.updateSelectedPeriod),
+                Expanded(
+                  child: Obx(() {
+                    final resumeSaleMovements = resumePresenter.saleMovements
+                        ?.filteredSales(
+                          enterprise: homePresenter.selectedEnterprise,
+                        )
+                        .map((e) => e.toViewModel())
+                        .toList();
 
-              final uniqueHours = resumeSaleMovements == null
-                  ? <String>[]
-                  : resumeSaleMovements
-                      .uniqueHours(
-                        enterprise: homePresenter.selectedEnterprise,
-                        filterDay: homePresenter.selectedDate.day,
-                        filterMonth: homePresenter.selectedDate.month,
-                        filterYear: homePresenter.selectedDate.year,
-                      )
-                      .toList();
+                    final uniqueHours = resumeSaleMovements == null
+                        ? <String>[]
+                        : resumeSaleMovements
+                            .uniqueHours(
+                              enterprise: homePresenter.selectedEnterprise,
+                              filterDay: homePresenter.selectedDate.day,
+                              filterMonth: homePresenter.selectedDate.month,
+                              filterYear: homePresenter.selectedDate.year,
+                            )
+                            .toList();
 
-              final saleMovementsByMonth = salesPresenter.saleMovementsByMonth;
-              final saleMovementsByYear = salesPresenter.saleMovementsByYear;
+                    final saleMovementsByMonth =
+                        salesPresenter.saleMovementsByMonth;
+                    final saleMovementsByYear =
+                        salesPresenter.saleMovementsByYear;
 
-              return Opacity(
-                opacity: snapshot.data == true ? 0 : 1,
-                child: Column(
-                  children: [
-                    PeriodItems(
-                        updateSelectedItem:
-                            salesPresenter.updateSelectedPeriod),
-                    if (salesPresenter.filterByHour &&
-                        resumeSaleMovements != null &&
-                        uniqueHours.isNotEmpty)
-                      HourTable(
-                        resumeSaleMovements: resumeSaleMovements,
-                        uniqueHours: uniqueHours,
+                    return Opacity(
+                      opacity: snapshot.data == true ? 0 : 1,
+                      child: Column(
+                        children: [
+                          if (salesPresenter.filterByHour &&
+                              resumeSaleMovements != null &&
+                              uniqueHours.isNotEmpty)
+                            HourTable(
+                              resumeSaleMovements: resumeSaleMovements,
+                              uniqueHours: uniqueHours,
+                            ),
+                          if (salesPresenter.filterByDay &&
+                              resumeSaleMovements != null)
+                            DayTable(resumeSaleMovements: resumeSaleMovements),
+                          if (salesPresenter.filterByMonth &&
+                              saleMovementsByMonth != null &&
+                              saleMovementsByMonth.isNotEmpty)
+                            MonthSales(
+                                saleMovementsByMonth: saleMovementsByMonth),
+                          if (salesPresenter.filterByYear &&
+                              saleMovementsByYear != null &&
+                              saleMovementsByYear.isNotEmpty)
+                            YearSales(saleMovementsByYear: saleMovementsByYear),
+                        ],
                       ),
-                    if (salesPresenter.filterByDay &&
-                        resumeSaleMovements != null)
-                      DayTable(resumeSaleMovements: resumeSaleMovements),
-                    if (salesPresenter.filterByMonth &&
-                        saleMovementsByMonth != null &&
-                        saleMovementsByMonth.isNotEmpty)
-                      MonthSales(saleMovementsByMonth: saleMovementsByMonth),
-                    if (salesPresenter.filterByYear &&
-                        saleMovementsByYear != null &&
-                        saleMovementsByYear.isNotEmpty)
-                      YearSales(saleMovementsByYear: saleMovementsByYear),
-                  ],
+                    );
+                  }),
                 ),
-              );
-            });
+              ],
+            );
           }),
     );
   }

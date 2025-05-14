@@ -42,26 +42,38 @@ class _PeriodItems extends State<SelectPeriodItems> {
     HomePresenter homePresenter = Get.find();
 
     if (Platform.isIOS) {
-      // iOS-style segmented control
-      return CupertinoSegmentedControl<String>(
-        groupValue: selected,
-        children: {
-          for (var item in widget.items)
-            item.title: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              child: Text(item.title),
-            ),
-        },
-        onValueChanged: (newValue) {
-          setState(() => selected = newValue);
-          widget.items.firstWhere((e) => e.title == selected).onTap();
-          homePresenter.updateScreen();
-        },
+      return Padding(
         padding: const EdgeInsets.all(8),
+        child: CupertinoSlidingSegmentedControl<String>(
+          children: {
+            for (var item in widget.items)
+              item.title: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                child: Text(
+                  item.title,
+                  selectionColor: selected == item.title
+                      ? CupertinoColors.white // text for selected segment
+                      : Theme.of(context).primaryColorDark,
+                  style: TextStyle(
+                    color: CupertinoColors.white,
+                  ),
+                ),
+              ),
+          },
+          groupValue: selected,
+          thumbColor: Theme.of(context).primaryColorDark,
+          backgroundColor: Theme.of(context).primaryColorLight.withAlpha(100),
+          onValueChanged: (newValue) {
+            if (newValue == null) return;
+            selected = newValue;
+            widget.items.firstWhere((e) => e.title == newValue).onTap();
+            homePresenter.updateScreen();
+          },
+        ),
       );
     }
 
-    // Material-style segmented control
     return SegmentedButton<String>(
       segments: List.generate(widget.items.length, (i) {
         return ButtonSegment(
