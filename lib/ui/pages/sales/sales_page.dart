@@ -83,9 +83,21 @@ class _SalesPageState extends State<SalesPage>
                             .toList();
 
                     final saleMovementsByMonth =
-                        salesPresenter.saleMovementsByMonth;
+                        salesPresenter.saleMovementsByMonth
+                            ?.filteredSales(
+                              enterprise: homePresenter.selectedEnterprise,
+                              filterYear: homePresenter.selectedDate.year,
+                            )
+                            .map((e) => e.toViewModel())
+                            .toList();
+
                     final saleMovementsByYear =
-                        salesPresenter.saleMovementsByYear;
+                        salesPresenter.saleMovementsByYear
+                            ?.filteredSales(
+                              enterprise: homePresenter.selectedEnterprise,
+                            )
+                            .map((e) => e.toViewModel())
+                            .toList();
 
                     return Opacity(
                       opacity: snapshot.data == true ? 0 : 1,
