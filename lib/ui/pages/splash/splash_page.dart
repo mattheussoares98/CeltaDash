@@ -13,9 +13,7 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   late AnimationController _opacityController;
-  late AnimationController _scaleController;
   late Animation<double> _opacityAnimation;
-  late Animation<double> _scaleAnimation;
 
   @override
   void initState() {
@@ -28,24 +26,11 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     )..repeat(reverse: true);
     _opacityAnimation =
         Tween<double>(begin: 0.3, end: 1.0).animate(_opacityController);
-
-    _scaleController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 500),
-    );
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 100).animate(
-      CurvedAnimation(parent: _scaleController, curve: Curves.easeInOut),
-    );
-
-    Future.delayed(Duration(milliseconds: 1700), () {
-      _scaleController.forward();
-    });
   }
 
   @override
   void dispose() {
     _opacityController.dispose();
-    _scaleController.dispose();
     super.dispose();
   }
 
@@ -54,16 +39,13 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     return Scaffold(
       body: Center(
         child: AnimatedBuilder(
-          animation: Listenable.merge([_opacityController, _scaleController]),
+          animation: Listenable.merge([_opacityController]),
           builder: (context, child) {
             return Opacity(
               opacity: _opacityAnimation.value,
-              child: Transform.scale(
-                scale: _scaleAnimation.value,
-                child: Image.asset(
-                  'lib/ui/assets/images/CeltaLogo-withoutbg.png',
-                  key: const Key("loading"),
-                ),
+              child: Image.asset(
+                'lib/ui/assets/images/CeltaLogo-withoutbg.png',
+                key: const Key("loading"),
               ),
             );
           },
