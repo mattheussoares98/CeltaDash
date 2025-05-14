@@ -1,0 +1,1 @@
+export './more_page_factory.dart';

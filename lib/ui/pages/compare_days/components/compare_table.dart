@@ -39,7 +39,7 @@ class CompareTable extends StatelessWidget {
           value: DateFormat.yMd('pt_BR')
               .format(compareDaysPresenter.selectedSecondDay!),
         ),
-        PersonalizedTableCell(value: R.string.differente),
+        PersonalizedTableCell(value: R.string.difference),
       ],
       titleMinHeight: 40,
       indexToSort: 0,

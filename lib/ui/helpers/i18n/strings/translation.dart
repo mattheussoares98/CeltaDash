@@ -34,7 +34,7 @@ abstract class Translation {
   String get department;
   String get departments;
   String get details;
-  String get differente;
+  String get difference;
   String get discounts;
   String get email;
   String get enter;
@@ -57,6 +57,7 @@ abstract class Translation {
   String get month;
   String get months;
   String get monthlyAnalysis;
+  String get more;
   String get moreDetails;
   String get no;
   String get of;

@@ -39,7 +39,7 @@ class PtBr implements Translation {
   String get department => "Departamento";
   String get departments => "Departamentos";
   String get details => "Detalhes";
-  String get differente => "Diferença";
+  String get difference => "Diferença";
   String get discounts => "Descontos";
   String get email => "E-mail";
   String get enter => "Entrar";
@@ -62,6 +62,7 @@ class PtBr implements Translation {
   String get month => "Mês";
   String get months => "Meses";
   String get monthlyAnalysis => "Análise mensal";
+  String get more => "Mais";
   String get moreDetails => "Mais detalhes";
   String get no => "Não";
   String get of => "De";

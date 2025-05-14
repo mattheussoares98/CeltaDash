@@ -62,6 +62,7 @@ class _HomePageState extends State<HomePage>
     // makeIndicatorsPage(),//Dont make sense use this pages because is similar salesPage
     makeSalesPage(),
     makeProductsPage(),
+    makeMorePage(),
     // makeTeamPage(),
   ];
 
@@ -85,23 +86,25 @@ class _HomePageState extends State<HomePage>
                         stream: salesPresenter.isLoadingStream,
                         builder: (context, isLoadingSales) {
                           return Scaffold(
-                            appBar: DefaultAppBar(
-                              isLoading: (isLoadingSales.data == true &&
-                                      currentIndex.data == 1) ||
-                                  (isLoadingResume.data == true &&
-                                      currentIndex.data == 0) ||
-                                  (isLoadingProducts.data == true &&
-                                      currentIndex.data == 2),
-                              onChangeEnterprise: (_) {
-                                reloadData();
-                              },
-                              onChangeDate: (_) {
-                                reloadData();
-                              },
-                              onTapRefresh: () {
-                                reloadData(forceRefresh: true);
-                              },
-                            ),
+                            appBar: currentIndex.data == 3
+                                ? null
+                                : DefaultAppBar(
+                                    isLoading: (isLoadingSales.data == true &&
+                                            currentIndex.data == 1) ||
+                                        (isLoadingResume.data == true &&
+                                            currentIndex.data == 0) ||
+                                        (isLoadingProducts.data == true &&
+                                            currentIndex.data == 2),
+                                    onChangeEnterprise: (_) {
+                                      reloadData();
+                                    },
+                                    onChangeDate: (_) {
+                                      reloadData();
+                                    },
+                                    onTapRefresh: () {
+                                      reloadData(forceRefresh: true);
+                                    },
+                                  ),
                             body: pages[currentIndex.data ?? 0],
                             bottomNavigationBar: BottomNavBar(
                               currentIndex: currentIndex.data ?? 0,
@@ -123,6 +126,11 @@ class _HomePageState extends State<HomePage>
                                       Icon(Icons.shopping_cart_rounded),
                                   cupertinoIcon: Icon(CupertinoIcons.cart),
                                   label: R.string.products,
+                                ),
+                                BottomNavItem(
+                                  materialIcon: Icon(Icons.description),
+                                  cupertinoIcon: Icon(CupertinoIcons.doc_text),
+                                  label: R.string.more,
                                 ),
                                 // BottomNavItem(
                                 //   materialIcon: Icon(Icons.person_pin_sharp),
