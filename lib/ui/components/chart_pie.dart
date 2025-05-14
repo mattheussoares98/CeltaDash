@@ -122,16 +122,22 @@ class _ChartPieState extends State<ChartPie> {
                   PieChartData(
                     pieTouchData: PieTouchData(
                       touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                        final newIndex = pieTouchResponse
+                            ?.touchedSection?.touchedSectionIndex;
                         setState(() {
                           if (!event.isInterestedForInteractions ||
-                              pieTouchResponse == null ||
-                              pieTouchResponse.touchedSection == null) {
-                            selectedIndex = -1;
+                              newIndex == null ||
+                              newIndex == -1) {
                             return;
                           }
-                          selectedIndex = pieTouchResponse
+                          selectedIndex = pieTouchResponse!
                               .touchedSection!.touchedSectionIndex;
                         });
+
+                        // setState(() {
+                        //   selectedIndex = pieTouchResponse!
+                        //       .touchedSection!.touchedSectionIndex;
+                        // });
                       },
                     ),
                     borderData: null,
