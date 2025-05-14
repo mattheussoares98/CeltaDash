@@ -17,7 +17,7 @@ class SalesInformations extends StatelessWidget {
   const SalesInformations({
     required this.title,
     required this.totalSales,
-    this.goal = 0,
+    this.goal,
     this.rightChildren,
     this.topChildren,
     this.bottomChildren,
@@ -49,13 +49,13 @@ class SalesInformations extends StatelessWidget {
               children: [
                 Expanded(
                   child: SizedBox(
-                    width: 200,
-                    height: 200,
+                    width: goal == null ? 170 : 200,
+                    height: goal == null ? 170 : 200,
                     child: Column(
                       children: [
                         AnimatedCircleProgress(
                           value: totalSales,
-                          maximum: goal ?? 0,
+                          maximum: goal ?? totalSales,
                           width: 170,
                           height: 170,
                           scrollController: scrollController,
