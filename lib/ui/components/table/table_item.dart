@@ -298,7 +298,16 @@ class _TableItemState extends State<TableItem> {
                         color: Colors.grey[300],
                         // borderRadius: BorderRadius.circular(8),
                       ),
-                      children: _buildSumRow(),
+                      children: _buildSumRow()
+                          .map((e) => IntrinsicHeight(
+                                child: Container(
+                                  constraints: BoxConstraints(
+                                    minHeight: widget.titleMinHeight ?? 1,
+                                  ),
+                                  child: e,
+                                ),
+                              ))
+                          .toList(),
                     ),
                   ],
                 ),

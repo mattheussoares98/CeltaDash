@@ -112,14 +112,12 @@ class _ProductsPageState extends State<ProductsPage> {
                       TableItem(
                         titleMinHeight: 43,
                         tableColumnWidth: {
-                          0: FixedColumnWidth(MediaQuery.of(context)
-                                  .size
-                                  .width *
-                              0.1), //TODO test this in windows resizing the page
+                          0: FixedColumnWidth(
+                              MediaQuery.of(context).size.width * 0.1),
                           2: FixedColumnWidth(
                               MediaQuery.of(context).size.width * 0.2),
                           3: FixedColumnWidth(
-                              MediaQuery.of(context).size.width * 0.1),
+                              MediaQuery.of(context).size.width * 0.13),
                           4: FixedColumnWidth(
                               MediaQuery.of(context).size.width * 0.16),
                         },
