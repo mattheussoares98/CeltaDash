@@ -37,8 +37,8 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
           child: Text(
             widget.label ?? R.string.select,
             maxLines: 1,
-            style: const TextStyle(
-              fontSize: 16,
+            style: TextStyle(
+              fontSize: StringSize.size,
               color: CupertinoColors.black,
             ),
           ),
