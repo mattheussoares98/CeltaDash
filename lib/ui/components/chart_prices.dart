@@ -48,10 +48,10 @@ class ChartPrices extends StatelessWidget {
                       return FlSpot(index.toDouble(), item.value);
                     }).toList(),
                     dotData: const FlDotData(show: false),
-                    color: Theme.of(context).primaryColor,
+                    color: Theme.of(context).secondaryHeaderColor,
                     barWidth: 0.6,
                     shadow: Shadow(
-                      color: Theme.of(context).primaryColor,
+                      color: Theme.of(context).secondaryHeaderColor,
                       blurRadius: 2,
                     ),
                     belowBarData: BarAreaData(
@@ -60,10 +60,10 @@ class ChartPrices extends StatelessWidget {
                         colors: [
                           Theme.of(
                             context,
-                          ).primaryColor.withValues(alpha: 0.2),
+                          ).secondaryHeaderColor.withValues(alpha: 0.2),
                           Theme.of(
                             context,
-                          ).primaryColor.withValues(alpha: 0.0),
+                          ).secondaryHeaderColor.withValues(alpha: 0.0),
                         ],
                         stops: const [0.5, 1.0],
                         begin: Alignment.topCenter,
@@ -92,9 +92,9 @@ class ChartPrices extends StatelessWidget {
                           getDotPainter: (spot, percent, barData, index) {
                             return FlDotCirclePainter(
                               radius: 6,
-                              color: Theme.of(context).primaryColor,
+                              color: Theme.of(context).secondaryHeaderColor,
                               strokeWidth: 0,
-                              strokeColor: Theme.of(context).primaryColor,
+                              strokeColor: Theme.of(context).secondaryHeaderColor,
                             );
                           },
                         ),
@@ -110,14 +110,14 @@ class ChartPrices extends StatelessWidget {
                         return LineTooltipItem(
                           '',
                           TextStyle(
-                            color: Theme.of(context).primaryColor,
+                            color: Theme.of(context).secondaryHeaderColor,
                             fontWeight: FontWeight.bold,
                           ),
                           children: [
                             TextSpan(
                               text: DateFormat('dd/MM/yyyy').format(date),
                               style: TextStyle(
-                                color: Theme.of(context).primaryColor,
+                                color: Theme.of(context).secondaryHeaderColor,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -125,7 +125,7 @@ class ChartPrices extends StatelessWidget {
                               text:
                                   '\n${price.toString().toBrazilianNumber().addBrazilianCoin()}',
                               style: TextStyle(
-                                color: Theme.of(context).primaryColor,
+                                color: Theme.of(context).secondaryHeaderColor,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
                               ),
@@ -188,7 +188,7 @@ class ChartPrices extends StatelessWidget {
                             child: Text(
                               DateFormat('dd/MM').format(date),
                               style: TextStyle(
-                                color: Theme.of(context).primaryColor,
+                                color: Theme.of(context).secondaryHeaderColor,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -232,7 +232,7 @@ class _ChartTitle extends StatelessWidget {
         Text(
           getOldestAndNewestDates(),
           style: TextStyle(
-            color: Theme.of(context).primaryColor,
+            color: Theme.of(context).secondaryHeaderColor,
             fontWeight: FontWeight.bold,
           ),
         ),

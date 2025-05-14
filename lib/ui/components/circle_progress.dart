@@ -96,7 +96,7 @@ class _AnimatedCircleProgressState extends State<AnimatedCircleProgress>
                     backgroundColor: Theme.of(
                       context,
                     ).primaryColorLight.withAlpha(15),
-                    progressColor: Theme.of(context).primaryColor,
+                    progressColor: Theme.of(context).secondaryHeaderColor,
                   ),
                 ),
                 SizedBox(
