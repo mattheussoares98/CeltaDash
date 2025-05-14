@@ -81,7 +81,7 @@ class GetxHomePresenter extends GetxController
   @override
   void updateScreen() {
     needUpdateScreen = true;
-    Future.delayed(Duration(milliseconds: 50), () {
+    Future.delayed(Duration(milliseconds: 1), () {
       needUpdateScreen = false;
     });
   }
