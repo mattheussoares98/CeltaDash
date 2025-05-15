@@ -109,8 +109,9 @@ void main() {
 
     await sut.checkPageToGo(durationInSeconds: 0);
 
-    verify(() => navigateTo.navigate(
-        pageRoute: PageRoutes.allCustomers, clear: true)).called(1);
+    verify(
+      () => navigateTo.navigate(pageRoute: PageRoutes.webLogin, clear: true),
+    ).called(1);
   });
   test("Should call verify platform", () async {
     getPlatform.mockGet(PlatformType.web);

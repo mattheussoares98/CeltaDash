@@ -26,7 +26,7 @@ class GetxSplashPresenter extends GetxController implements SplashPresenter {
 
       final platform = getPlatform.get();
       if (platform == PlatformType.web) {
-        navigateTo.navigate(pageRoute: PageRoutes.allCustomers, clear: true);
+        navigateTo.navigate(pageRoute: PageRoutes.webLogin, clear: true);
         //TODO create web login page and navigate to this page
         return;
       }
