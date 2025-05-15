@@ -19,8 +19,6 @@ class _ProductsPageState extends State<ProductsPage> {
     final sorted = [...saleMovements]..sort((a, b) =>
         (b.LiquidValue?.toDouble() ?? 0)
             .compareTo(a.LiquidValue?.toDouble() ?? 0));
-    sorted.sort((a, b) => (b.LiquidValue?.toDouble() ?? 0)
-        .compareTo(a.LiquidValue?.toDouble() ?? 0));
 
     List<List<PersonalizedTableCell>> top200 = [];
     double othersTotalValue = 0;
