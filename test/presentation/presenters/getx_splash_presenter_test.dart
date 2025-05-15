@@ -46,6 +46,7 @@ void main() {
   void initMockSuccess() {
     localStorage.mockGet(
         FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson());
+    getPlatform.mockGet(PlatformType.android);
   }
 
   setUp(() {
