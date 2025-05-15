@@ -11,10 +11,12 @@ class GetxHomePresenter extends GetxController
     implements HomePresenter {
   final NavigateTo navigateTo;
   final LoadEnterprises loadEnterprises;
+  final FirebaseManager firebaseManager;
 
   GetxHomePresenter({
     required this.navigateTo,
     required this.loadEnterprises,
+    required this.firebaseManager,
   });
 
   @override

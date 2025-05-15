@@ -3,7 +3,7 @@ import 'package:celta_plus/domain/helpers/helpers.dart';
 import 'package:celta_plus/domain/usecases/usecases.dart';
 import 'package:mocktail/mocktail.dart';
 
-class RemoteLoadEnterprisesSpy extends Mock implements LoadEnterprises {
+class LoadEnterprisesSpy extends Mock implements LoadEnterprises {
   When _mockGetCall() => when(() => this.get());
 
   void mockGet(List<EnterpriseEntity> entities) {

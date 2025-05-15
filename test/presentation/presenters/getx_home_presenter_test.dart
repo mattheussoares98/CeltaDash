@@ -24,7 +24,8 @@ void main() {
   late DepartmentsPresenterSpy departmentsPresenter;
 
   late NavigateToSpy navigateTo;
-  late RemoteLoadEnterprisesSpy remoteLoadEnterprises;
+  late LoadEnterprisesSpy loadEnterprises;
+  late FirebaseManagerSpy firebaseManager;
 
   late List<EnterpriseEntity> enterprises;
 
@@ -33,13 +34,17 @@ void main() {
 
   void initUsecases() {
     navigateTo = NavigateToSpy();
-    remoteLoadEnterprises = RemoteLoadEnterprisesSpy();
+    loadEnterprises = LoadEnterprisesSpy();
+    firebaseManager = FirebaseManagerSpy(
+      mockedFirebaseGet: MockedFirebaseGet(dataToReturn: null),
+    );
   }
 
   void initPresenters() {
     sut = GetxHomePresenter(
       navigateTo: navigateTo,
-      loadEnterprises: remoteLoadEnterprises,
+      loadEnterprises: loadEnterprises,
+      firebaseManager: firebaseManager,
     );
     salesPresenter = SalesPresenterSpy();
     resumePresenter = ResumePresenterSpy();
@@ -56,7 +61,7 @@ void main() {
   }
 
   void initMockSuccess() {
-    remoteLoadEnterprises.mockGet(enterprises);
+    loadEnterprises.mockGet(enterprises);
   }
 
   setUp(() {
@@ -133,7 +138,7 @@ void main() {
         emitsInOrder([null, UIError.unexpected]),
       );
 
-      remoteLoadEnterprises.mockGetError();
+      loadEnterprises.mockGetError();
 
       await sut.getBsEnterprises(showBsErrorMessage: (_) {});
     });
@@ -154,7 +159,7 @@ void main() {
           EnterpriseModel.fromEntity(enterprises[1]).toViewModel();
       sut.updateSelectedEnterprise(secondEnterprise);
 
-      remoteLoadEnterprises.mockGetError();
+      loadEnterprises.mockGetError();
       await sut.getBsEnterprises(showBsErrorMessage: (_) {});
 
       expect(sut.selectedEnterprise, secondEnterprise);
@@ -162,7 +167,7 @@ void main() {
     test("Should call remoteLoadEnterprises", () async {
       await sut.getBsEnterprises(showBsErrorMessage: (_) {});
 
-      verify(() => remoteLoadEnterprises.get()).called(1);
+      verify(() => loadEnterprises.get()).called(1);
     });
   });
 
