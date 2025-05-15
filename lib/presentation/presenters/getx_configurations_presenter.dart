@@ -36,7 +36,7 @@ class GetxConfigurationsPresenter extends GetxController
           AccessKey: null,
           CrossIdentity_Usuario: null,
         ),
-        subEnterprises: null,
+        firebaseSubEnterprises: null,
       );
 
       await localStorage.put(

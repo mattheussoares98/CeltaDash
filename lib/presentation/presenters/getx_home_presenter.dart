@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
+import '../../domain/entities/entities.dart';
 import '../../domain/usecases/usecases.dart';
+import '../../main/builders/builders.dart';
 import '../../presentation/mixins/mixins.dart';
 import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
@@ -35,6 +38,16 @@ class GetxHomePresenter extends GetxController
     navigateTo.navigate(pageRoute: PageRoutes.configurations);
   }
 
+  List<EnterpriseEntity> _getMissingEnterprises(
+    List<EnterpriseEntity> enterprises,
+    List<EnterpriseEntity> enterprisesToCompare,
+  ) {
+    return enterprises.where((e) {
+      return !enterprisesToCompare
+          .any((sub) => sub.cnpj == e.cnpj && sub.id == e.id);
+    }).toList();
+  }
+
   @override
   Future<void> getBsEnterprises({
     required void Function(String) showBsErrorMessage,
@@ -42,26 +55,57 @@ class GetxHomePresenter extends GetxController
     isLoading = true;
     mainError = null;
     try {
-      final enterprises = await loadEnterprises.get();
+      final enterprisesInBs = await loadEnterprises.get();
 
-      // final subEnterprises = EnterpriseBuilder.entity?.subEnterprises ?? [];
-      // final missingEnterprises = enterprises.where((e) {
-      //   return !subEnterprises
-      //       .any((sub) => sub.cnpj == e.cnpj && sub.id == e.id);
-      // }).toList();
+      final missingLocal = _getMissingEnterprises(
+        enterprisesInBs,
+        EnterpriseBuilder.entity?.firebaseSubEnterprises ?? [],
+      );
 
-      // if (missingEnterprises.isNotEmpty) {
-      //   //TODO add missing enterprises in firebase
-      //   await firebaseManager.put(
-      //     documentReference: FirebaseFirestore.instance.collection("enterprises").doc(
-      //       EnterpriseBuilder.entity.
-      //     ),
-      //     data: data,
-      //     merge: true,
-      //   );
-      // }
+      if (missingLocal.isNotEmpty) {
+        final firebaseEnterprise = await firebaseManager.get(
+          collection: "enterprises",
+          doc: EnterpriseBuilder.entity?.firebaseId,
+        );
 
-      _bsEnterprises.value = enterprises
+        final firebaseSubEnterprises = firebaseEnterprise
+            .data()["subEnterprises"]
+            ?.map<EnterpriseEntity>(
+                (e) => EnterpriseModel.fromJson(e).toEntity())
+            .toList();
+
+        final missingRemote = _getMissingEnterprises(
+          enterprisesInBs,
+          firebaseSubEnterprises,
+        );
+
+        if (missingRemote.isNotEmpty) {
+          await firebaseManager.put(
+            documentReference:
+                FirebaseFirestore.instance.collection("enterprises").doc(
+                      EnterpriseBuilder.entity?.firebaseId,
+                    ),
+            data: {
+              "subEnterprises": missingLocal
+                  .map((e) => EnterpriseModel.fromEntity(e).toJson())
+                  .toList()
+            },
+            merge: true,
+          );
+          EnterpriseBuilder.entity = FirebaseEnterpriseEntity(
+            baseUrl: EnterpriseBuilder.entity?.baseUrl,
+            enterpriseName: EnterpriseBuilder.entity?.enterpriseName,
+            bsUser: EnterpriseBuilder.entity?.bsUser,
+            firebaseSubEnterprises: [
+              ...firebaseSubEnterprises,
+              ...missingLocal
+            ],
+            firebaseId: EnterpriseBuilder.entity?.firebaseId,
+          );
+        }
+      }
+
+      _bsEnterprises.value = enterprisesInBs
           .map((e) => EnterpriseModel.fromEntity(e).toViewModel())
           .toList();
       _selectedEnterprise.value = _bsEnterprises.value?.first;

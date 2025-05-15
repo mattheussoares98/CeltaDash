@@ -298,7 +298,7 @@ void main() {
         FirebaseEnterpriseEntity(
           baseUrl: mockedFirebaseGet.data()["baseUrl"],
           firebaseId: mockedFirebaseGet.id,
-          subEnterprises: mockedFirebaseGet
+          firebaseSubEnterprises: mockedFirebaseGet
               .data()["subEnterprises"]
               ?.map<EnterpriseEntity>(
                   (e) => EnterpriseModel.fromJson(e).toEntity())
@@ -399,7 +399,7 @@ void main() {
         FirebaseEnterpriseEntity(
           baseUrl: null,
           enterpriseName: EnterpriseBuilder.entity?.enterpriseName,
-          subEnterprises: null,
+          firebaseSubEnterprises: null,
           firebaseId: null,
           bsUser: BsUserEntity(
             name: EnterpriseBuilder.entity?.bsUser?.name,

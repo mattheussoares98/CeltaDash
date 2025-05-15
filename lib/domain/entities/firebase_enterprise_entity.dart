@@ -5,18 +5,20 @@ class FirebaseEnterpriseEntity extends Equatable {
   final String? baseUrl;
   final String? enterpriseName;
   final BsUserEntity? bsUser;
-  final List<EnterpriseEntity>?
-      subEnterprises; //save in firebase the same enterprise that return in RemoteLoadEnterprises
+  final List<
+          EnterpriseEntity>? //TODO change this entity to firebaseSubEnterprise because after that will have different params
+      firebaseSubEnterprises;
   final String? firebaseId;
 
   const FirebaseEnterpriseEntity({
     required this.baseUrl,
     required this.enterpriseName,
     required this.bsUser,
-    required this.subEnterprises,
+    required this.firebaseSubEnterprises,
     required this.firebaseId,
   });
 
   @override
-  List<Object?> get props => [baseUrl, enterpriseName, bsUser, subEnterprises, firebaseId];
+  List<Object?> get props =>
+      [baseUrl, enterpriseName, bsUser, firebaseSubEnterprises, firebaseId];
 }

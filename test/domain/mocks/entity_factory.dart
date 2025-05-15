@@ -11,7 +11,7 @@ class EntityFactory {
         enterpriseName: faker.company.name(),
         bsUser: makeBsUserEntity(),
         firebaseId: faker.guid.guid(),
-        subEnterprises: <EnterpriseEntity>[
+        firebaseSubEnterprises: <EnterpriseEntity>[
           makeEnterpriseEntity(),
           makeEnterpriseEntity(),
           makeEnterpriseEntity(),
@@ -41,8 +41,8 @@ class EntityFactory {
       bsUser: bsUser,
       enterpriseName:
           annullEnterpriseName == true ? null : enterprise?.enterpriseName,
-      subEnterprises:
-          annullSubEnterprises == true ? null : enterprise?.subEnterprises,
+      firebaseSubEnterprises:
+          annullSubEnterprises == true ? null : enterprise?.firebaseSubEnterprises,
       firebaseId: annulFirebaseId == true ? null : enterprise?.firebaseId,
     );
   }

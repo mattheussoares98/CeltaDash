@@ -44,7 +44,7 @@ class FirebaseEnterpriseModel extends Equatable {
         enterpriseName: entity.enterpriseName,
         firebaseId: entity.firebaseId,
         bsUser: BsUserModel.fromEntity(entity.bsUser),
-        subEnterprises: entity.subEnterprises
+        subEnterprises: entity.firebaseSubEnterprises
             ?.map((e) => EnterpriseModel.fromEntity(e))
             .toList(),
       );
@@ -62,6 +62,6 @@ class FirebaseEnterpriseModel extends Equatable {
         enterpriseName: enterpriseName,
         firebaseId: firebaseId,
         bsUser: bsUser?.toEntity(),
-        subEnterprises: subEnterprises?.map((e) => e.toEntity()).toList(),
+        firebaseSubEnterprises: subEnterprises?.map((e) => e.toEntity()).toList(),
       );
 }
