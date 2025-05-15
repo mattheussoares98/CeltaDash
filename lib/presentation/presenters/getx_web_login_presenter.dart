@@ -26,7 +26,7 @@ class GetxWebLoginPresenter extends GetxController
     try {
       await loginManagement.login(email: email, password: password);
       await navigateTo.navigate(
-        pageRoute: PageRoutes.webEnterprises,
+        pageRoute: PageRoutes.webCustomers,
         clear: true,
       );
     } catch (e) {
@@ -50,12 +50,11 @@ class GetxWebLoginPresenter extends GetxController
   }
 
   @override
-  Future<void> navigateToWebConfigurationsPageIfAlreadyLoggedIn() async {
+  Future<void> goToWebCustomersIfStillLogged() async {
     isLoading = true;
     bool isLogged = await loginManagement.isLoggedIn();
     if (isLogged) {
-      navigateTo.navigate(
-          pageRoute: PageRoutes.webEnterprises, clear: true);
+      navigateTo.navigate(pageRoute: PageRoutes.webCustomers, clear: true);
     }
     isLoading = false;
   }

@@ -8,11 +8,6 @@ class GetPages {
 
   static final getPages = [
     GetPage(
-      name: PageRoutes.allCustomers,
-      page: makeAllCustomersPage,
-      transition: Transition.fadeIn,
-    ),
-    GetPage(
       name: PageRoutes.compareDays,
       page: makeCompareDaysPage,
       transition: Transition.fadeIn,
@@ -95,6 +90,11 @@ class GetPages {
     GetPage(
       name: PageRoutes.splash,
       page: makeTeamPage,
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
+      name: PageRoutes.webCustomers,
+      page: makeWebCustomersPage,
       transition: Transition.fadeIn,
     ),
     GetPage(

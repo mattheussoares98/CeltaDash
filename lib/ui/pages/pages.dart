@@ -1,4 +1,3 @@
-export './all_customers/all_customers.dart';
 export './compare_days/compare_days.dart';
 export './configurations/configurations.dart';
 export './departments/departments.dart';
@@ -21,4 +20,5 @@ export './sallers_sales/sallers_sales.dart';
 export './set_goal/set_goal.dart';
 export './splash/splash.dart';
 export './team/team.dart';
+export './web_customers/web_customers.dart';
 export './web_login/web_login.dart';

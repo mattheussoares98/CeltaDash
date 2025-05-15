@@ -76,12 +76,12 @@ void main() {
             password: password,
           )).called(1);
     });
-    test("Should call navigateTo WebEnterprises in success", () async {
+    test("Should call navigateTo web customers in success", () async {
       await sut.doLogin(email: email, password: password);
 
       verify(
         () => navigateTo.navigate(
-            pageRoute: PageRoutes.webEnterprises, clear: true),
+            pageRoute: PageRoutes.webCustomers, clear: true),
       ).called(1);
     });
   });

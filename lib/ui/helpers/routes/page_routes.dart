@@ -1,5 +1,4 @@
 class PageRoutes {
-  static const String allCustomers = "/all_customers";
   static const String compareDays = "/daily_analysis";
   static const String configurations = "/configurations";
   static const String departments = "/departments";
@@ -16,5 +15,6 @@ class PageRoutes {
   static const String setGoal = "/set_goal";
   static const String splash = "/splash";
   static const String paymentsType = "/payments_type";
+  static const String webCustomers = "/web_customers";
   static const String webLogin = "/web_login";
 }
