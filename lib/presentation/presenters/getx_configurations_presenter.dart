@@ -35,10 +35,13 @@ class GetxConfigurationsPresenter extends GetxController
           AccessKey: null,
           CrossIdentity_Usuario: null,
         ),
+        subEnterprises: null,
       );
 
-      await localStorage.put(DatabaseKeys.enterprise,
-          FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson());
+      await localStorage.put(
+          DatabaseKeys.enterprise,
+          FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
+              .toJson());
 
       navigateTo.navigate(pageRoute: PageRoutes.splash, clear: true);
     } catch (e) {

@@ -297,6 +297,10 @@ void main() {
         EnterpriseBuilder.entity,
         FirebaseEnterpriseEntity(
           baseUrl: mockedFirebaseGet.data()["baseUrl"],
+          subEnterprises: mockedFirebaseGet
+              .data()["subEnterprises"]
+              ?.map<EnterpriseEntity>((e) => EnterpriseModel.fromJson(e).toEntity())
+              .toList(),
           bsUser: BsUserEntity(
             name: user,
             AccessKey: null,
@@ -393,6 +397,7 @@ void main() {
         FirebaseEnterpriseEntity(
           baseUrl: null,
           enterpriseName: EnterpriseBuilder.entity?.enterpriseName,
+          subEnterprises: null,
           bsUser: BsUserEntity(
             name: EnterpriseBuilder.entity?.bsUser?.name,
             AccessKey: null,

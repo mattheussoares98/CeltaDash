@@ -41,6 +41,7 @@ void main() {
     EnterpriseBuilder.entity = EntityFactory.makeFirebaseEnterpriseEntity();
     enterpriseOnLogout = FirebaseEnterpriseEntity(
       baseUrl: null,
+      subEnterprises: null,
       enterpriseName: EnterpriseBuilder.entity?.enterpriseName,
       bsUser: BsUserEntity(
         name: EnterpriseBuilder.entity?.bsUser?.name,

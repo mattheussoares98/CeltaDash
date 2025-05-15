@@ -44,6 +44,9 @@ class GetxHomePresenter extends GetxController
     try {
       final enterprises = await loadEnterprises.get();
 
+      //TODO add sub enterprises in firebase
+      //TODO bsEnterprises length is greater than firebase cnpjs, then, need to add missing CNPJs in firebase
+
       _bsEnterprises.value = enterprises
           .map((e) => EnterpriseModel.fromEntity(e).toViewModel())
           .toList();
