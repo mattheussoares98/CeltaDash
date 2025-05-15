@@ -1,4 +1,5 @@
 class PageRoutes {
+  static const String allCustomers = "/all_customers";
   static const String compareDays = "/daily_analysis";
   static const String configurations = "/configurations";
   static const String departments = "/departments";
