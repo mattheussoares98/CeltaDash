@@ -97,5 +97,10 @@ class GetPages {
       page: makeTeamPage,
       transition: Transition.fadeIn,
     ),
+    GetPage(
+      name: PageRoutes.webLogin,
+      page: makeWebLoginPage,
+      transition: Transition.fadeIn,
+    ),
   ];
 }

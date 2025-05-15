@@ -21,3 +21,4 @@ export './sallers_sales/sallers_sales.dart';
 export './set_goal/set_goal.dart';
 export './splash/splash.dart';
 export './team/team.dart';
+export './web_login/web_login.dart';
