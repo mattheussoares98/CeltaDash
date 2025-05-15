@@ -300,8 +300,8 @@ void main() {
           firebaseId: mockedFirebaseGet.id,
           firebaseSubEnterprises: mockedFirebaseGet
               .data()["subEnterprises"]
-              ?.map<EnterpriseEntity>(
-                  (e) => EnterpriseModel.fromJson(e).toEntity())
+              ?.map<FirebaseSubEnterpriseEntity>(
+                  (e) => FirebaseSubEnterpriseModel.fromJson(e).toEntity())
               .toList(),
           bsUser: BsUserEntity(
             name: user,

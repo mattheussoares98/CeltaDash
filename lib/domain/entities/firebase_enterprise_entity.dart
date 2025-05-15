@@ -5,9 +5,7 @@ class FirebaseEnterpriseEntity extends Equatable {
   final String? baseUrl;
   final String? enterpriseName;
   final BsUserEntity? bsUser;
-  final List<
-          EnterpriseEntity>? //TODO change this entity to firebaseSubEnterprise because after that will have different params
-      firebaseSubEnterprises;
+  final List<FirebaseSubEnterpriseEntity>? firebaseSubEnterprises;
   final String? firebaseId;
 
   const FirebaseEnterpriseEntity({

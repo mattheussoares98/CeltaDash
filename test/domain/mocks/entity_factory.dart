@@ -11,10 +11,10 @@ class EntityFactory {
         enterpriseName: faker.company.name(),
         bsUser: makeBsUserEntity(),
         firebaseId: faker.guid.guid(),
-        firebaseSubEnterprises: <EnterpriseEntity>[
-          makeEnterpriseEntity(),
-          makeEnterpriseEntity(),
-          makeEnterpriseEntity(),
+        firebaseSubEnterprises: <FirebaseSubEnterpriseEntity>[
+          makeFirebaseSubEnterpriseEntity(),
+          makeFirebaseSubEnterpriseEntity(),
+          makeFirebaseSubEnterpriseEntity(),
         ],
       );
 
@@ -41,8 +41,9 @@ class EntityFactory {
       bsUser: bsUser,
       enterpriseName:
           annullEnterpriseName == true ? null : enterprise?.enterpriseName,
-      firebaseSubEnterprises:
-          annullSubEnterprises == true ? null : enterprise?.firebaseSubEnterprises,
+      firebaseSubEnterprises: annullSubEnterprises == true
+          ? null
+          : enterprise?.firebaseSubEnterprises,
       firebaseId: annulFirebaseId == true ? null : enterprise?.firebaseId,
     );
   }
@@ -76,5 +77,13 @@ class EntityFactory {
         name: faker.company.name(),
         personalizedCode: faker.randomGenerator.integer(10).toString(),
         cnpj: faker.guid.guid(),
+      );
+
+  static FirebaseSubEnterpriseEntity makeFirebaseSubEnterpriseEntity() =>
+      FirebaseSubEnterpriseEntity(
+        cnpj: faker.guid.guid(),
+        id: faker.randomGenerator.integer(100),
+        name: faker.company.name(),
+        personalizedCode: faker.randomGenerator.integer(10).toString(),
       );
 }

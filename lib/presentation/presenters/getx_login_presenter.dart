@@ -56,8 +56,8 @@ class GetxLoginPresenter extends GetxController
             CrossIdentity_Usuario: null,
           ),
           firebaseSubEnterprises: enterpriseData["subEnterprises"]
-              ?.map<EnterpriseEntity>(
-                  (e) => EnterpriseModel.fromJson(e).toEntity())
+              ?.map<FirebaseSubEnterpriseEntity>(
+                  (e) => FirebaseSubEnterpriseModel.fromJson(e).toEntity())
               .toList(),
         );
       }

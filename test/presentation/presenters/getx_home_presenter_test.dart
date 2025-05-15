@@ -205,8 +205,18 @@ void main() {
       test(
           "Should NOT get firebase sub enterprises if is not missing enterprises locally",
           () async {
-        loadEnterprises
-            .mockGet(EnterpriseBuilder.entity!.firebaseSubEnterprises!);
+        loadEnterprises.mockGet(
+          EnterpriseBuilder.entity!.firebaseSubEnterprises!
+              .map(
+                (e) => EnterpriseEntity(
+                  id: e.id,
+                  name: e.name,
+                  personalizedCode: e.personalizedCode,
+                  cnpj: e.cnpj,
+                ),
+              )
+              .toList(),
+        );
 
         await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
 
@@ -233,8 +243,18 @@ void main() {
         ).called(1);
       });
       test("Should no call to put enterprises if is not missing", () async {
-        loadEnterprises
-            .mockGet(EnterpriseBuilder.entity!.firebaseSubEnterprises!);
+        loadEnterprises.mockGet(
+          EnterpriseBuilder.entity!.firebaseSubEnterprises!
+              .map(
+                (e) => EnterpriseEntity(
+                  id: e.id,
+                  name: e.name,
+                  personalizedCode: e.personalizedCode,
+                  cnpj: e.cnpj,
+                ),
+              )
+              .toList(),
+        );
 
         await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
 
@@ -285,7 +305,14 @@ void main() {
             firebaseId: EnterpriseBuilder.entity?.firebaseId,
             firebaseSubEnterprises: [
               ...oldEnterprises,
-              ...enterprisesInBs,
+              ...enterprisesInBs.map(
+                (e) => FirebaseSubEnterpriseEntity(
+                  id: e.id,
+                  name: e.name,
+                  personalizedCode: e.personalizedCode,
+                  cnpj: e.cnpj,
+                ),
+              ),
             ],
           ),
         );

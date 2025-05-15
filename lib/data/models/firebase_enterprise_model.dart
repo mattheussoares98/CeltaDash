@@ -7,7 +7,7 @@ class FirebaseEnterpriseModel extends Equatable {
   final String? baseUrl;
   final String? enterpriseName;
   final BsUserModel? bsUser;
-  final List<EnterpriseModel>?
+  final List<FirebaseSubEnterpriseModel>?
       subEnterprises; //save in firebase the same enterprise that return in RemoteLoadEnterprises
   final String? firebaseId;
 
@@ -34,7 +34,8 @@ class FirebaseEnterpriseModel extends Equatable {
             ? null
             : BsUserModel.fromJson(json['bsUser']),
         subEnterprises: json["subEnterprises"]
-            ?.map<EnterpriseModel>((x) => EnterpriseModel.fromJson(x))
+            ?.map<FirebaseSubEnterpriseModel>(
+                (x) => FirebaseSubEnterpriseModel.fromJson(x))
             .toList(),
       );
 
@@ -45,7 +46,9 @@ class FirebaseEnterpriseModel extends Equatable {
         firebaseId: entity.firebaseId,
         bsUser: BsUserModel.fromEntity(entity.bsUser),
         subEnterprises: entity.firebaseSubEnterprises
-            ?.map((e) => EnterpriseModel.fromEntity(e))
+            ?.map(
+              (e) => FirebaseSubEnterpriseModel.fromEntity(e),
+            )
             .toList(),
       );
 
@@ -62,6 +65,7 @@ class FirebaseEnterpriseModel extends Equatable {
         enterpriseName: enterpriseName,
         firebaseId: firebaseId,
         bsUser: bsUser?.toEntity(),
-        firebaseSubEnterprises: subEnterprises?.map((e) => e.toEntity()).toList(),
+        firebaseSubEnterprises:
+            subEnterprises?.map((e) => e.toEntity()).toList(),
       );
 }
