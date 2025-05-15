@@ -1,4 +1,5 @@
 import 'package:celta_plus/data/models/models.dart';
+import 'package:celta_plus/domain/helpers/helpers.dart';
 import 'package:celta_plus/infra/helpers/helpers.dart';
 import 'package:celta_plus/main/builders/builders.dart';
 import 'package:celta_plus/presentation/presenters/presenters.dart';
@@ -101,5 +102,21 @@ void main() {
     await sut.checkPageToGo(durationInSeconds: 0);
 
     expect(EnterpriseBuilder.entity, newEnterprise);
+  });
+
+  test("Should navigate to all customers page if is web platform", () async {
+    getPlatform.mockGet(PlatformType.web);
+
+    await sut.checkPageToGo(durationInSeconds: 0);
+
+    verify(() => navigateTo.navigate(
+        pageRoute: PageRoutes.allCustomers, clear: true)).called(1);
+  });
+  test("Should call verify platform", () async {
+    getPlatform.mockGet(PlatformType.web);
+
+    await sut.checkPageToGo(durationInSeconds: 0);
+
+    verify(() => getPlatform.get()).called(1);
   });
 }

@@ -6,7 +6,7 @@ class GetPlatformTypeSpy extends Mock implements GetPlatformType {
   When _mockGetCall() => when(() => this.get());
 
   void mockGet(PlatformType platform) {
-    this._mockGetCall().thenAnswer((any) async => platform);
+    this._mockGetCall().thenAnswer((any) => platform);
   }
 
   void mockGetError() {

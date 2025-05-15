@@ -24,6 +24,13 @@ class GetxSplashPresenter extends GetxController implements SplashPresenter {
     try {
       await Future.delayed(Duration(seconds: durationInSeconds));
 
+      final platform = getPlatform.get();
+      if (platform == PlatformType.web) {
+        navigateTo.navigate(pageRoute: PageRoutes.allCustomers, clear: true);
+        //TODO create web login page and navigate to this page
+        return;
+      }
+
       final enterprise = await localStorage.get(DatabaseKeys.enterprise);
       if (enterprise != null) {
         EnterpriseBuilder.entity =
