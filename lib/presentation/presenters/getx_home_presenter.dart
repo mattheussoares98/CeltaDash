@@ -15,11 +15,13 @@ class GetxHomePresenter extends GetxController
   final NavigateTo navigateTo;
   final LoadEnterprises loadEnterprises;
   final FirebaseManager firebaseManager;
+  final LocalStorage localStorage;
 
   GetxHomePresenter({
     required this.navigateTo,
     required this.loadEnterprises,
     required this.firebaseManager,
+    required this.localStorage,
   });
 
   @override
@@ -51,12 +53,14 @@ class GetxHomePresenter extends GetxController
   @override
   Future<void> getBsEnterprises({
     required void Function(String) showBsErrorMessage,
+    required DocumentReference<Map<String, dynamic>> docRef,
   }) async {
     isLoading = true;
     mainError = null;
     try {
       final enterprisesInBs = await loadEnterprises.get();
 
+      //TODO create new function to test this
       final missingLocal = _getMissingEnterprises(
         enterprisesInBs,
         EnterpriseBuilder.entity?.firebaseSubEnterprises ?? [],
@@ -81,10 +85,7 @@ class GetxHomePresenter extends GetxController
 
         if (missingRemote.isNotEmpty) {
           await firebaseManager.put(
-            documentReference:
-                FirebaseFirestore.instance.collection("enterprises").doc(
-                      EnterpriseBuilder.entity?.firebaseId,
-                    ),
+            documentReference: docRef,
             data: {
               "subEnterprises": missingLocal
                   .map((e) => EnterpriseModel.fromEntity(e).toJson())

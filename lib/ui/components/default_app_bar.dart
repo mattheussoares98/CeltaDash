@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../main/builders/builders.dart';
 import '../helpers/helpers.dart';
 import '../pages/pages.dart';
 import 'components.dart';
@@ -56,13 +58,19 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
         if (enterprises == null) {
           return ElevatedButton(
             onPressed: () async {
-              await homePresenter.getBsEnterprises(showBsErrorMessage: (error) {
-                snackBarMessage(
-                  context,
-                  error,
-                  Colors.red,
-                );
-              });
+              await homePresenter.getBsEnterprises(
+                docRef:
+                    FirebaseFirestore.instance.collection("enterprises").doc(
+                          EnterpriseBuilder.entity?.firebaseId,
+                        ),
+                showBsErrorMessage: (error) {
+                  snackBarMessage(
+                    context,
+                    error,
+                    Colors.red,
+                  );
+                },
+              );
             },
             child: Text(R.string.loadEnterprises),
           );

@@ -1,5 +1,6 @@
 import 'package:celta_plus/data/models/models.dart';
 import 'package:celta_plus/domain/entities/entities.dart';
+import 'package:celta_plus/infra/helpers/helpers.dart';
 import 'package:celta_plus/presentation/presenters/presenters.dart';
 import 'package:celta_plus/ui/helpers/helpers.dart';
 import 'package:faker/faker.dart';
@@ -15,6 +16,9 @@ import '../../domain/mocks/mocks.dart';
 import '../mocks/mocks.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Get.testMode = true;
+
   late GetxHomePresenter sut;
 
   late SalesPresenterSpy salesPresenter;
@@ -26,17 +30,18 @@ void main() {
   late NavigateToSpy navigateTo;
   late LoadEnterprisesSpy loadEnterprises;
   late FirebaseManagerSpy firebaseManager;
+  late LocalStorageSpy localStorage;
 
   late List<EnterpriseEntity> enterprises;
-
-  WidgetsFlutterBinding.ensureInitialized();
-  Get.testMode = true;
+  late MockedFirebaseGet mockedFirebaseGet;
+  late DocumentReferenceFake docRef;
 
   void initUsecases() {
     navigateTo = NavigateToSpy();
     loadEnterprises = LoadEnterprisesSpy();
+    localStorage = LocalStorageSpy();
     firebaseManager = FirebaseManagerSpy(
-      mockedFirebaseGet: MockedFirebaseGet(dataToReturn: null),
+      mockedFirebaseGet: mockedFirebaseGet,
     );
   }
 
@@ -45,6 +50,7 @@ void main() {
       navigateTo: navigateTo,
       loadEnterprises: loadEnterprises,
       firebaseManager: firebaseManager,
+      localStorage: localStorage,
     );
     salesPresenter = SalesPresenterSpy();
     resumePresenter = ResumePresenterSpy();
@@ -58,22 +64,40 @@ void main() {
       EntityFactory.makeEnterpriseEntity(),
       EntityFactory.makeEnterpriseEntity(),
     ];
+    mockedFirebaseGet = MockedFirebaseGet(
+      dataToReturn: FirebaseEnterpriseModel.fromEntity(
+              EntityFactory.makeFirebaseEnterpriseEntity())
+          .toJson(),
+    );
+    docRef = DocumentReferenceFake();
   }
 
   void initMockSuccess() {
     loadEnterprises.mockGet(enterprises);
+    firebaseManager.mockGet(mockedFirebaseGet);
+    firebaseManager.mockPut();
+    // firebaseManager.mockGet(
+    //   MockedFirebaseGet(
+    //     dataToReturn:
+    //         FirebaseEnterpriseModel.fromEntity(firebaseLoadedEnterprise)
+    //             .toJson(),
+    //   ),
+    // );
   }
 
   setUp(() {
-    initUsecases();
-    initPresenters();
     initEntities();
+    initUsecases();
     initMockSuccess();
+    initPresenters();
   });
 
-  setUpAll(() {
+  setUpAll(() async {
     registerFallbackValue(HomePresenterSpy());
     registerFallbackValue(ResumePresenterSpy());
+    for (var key in DatabaseKeys.values) {
+      registerFallbackValue(key);
+    }
   });
 
   group("Change page index", () {
@@ -129,7 +153,7 @@ void main() {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(sut.mainErrorStream, emits(null));
 
-      await sut.getBsEnterprises(showBsErrorMessage: (_) {});
+      await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
     });
     test("Should emit correct values on error", () async {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
@@ -140,11 +164,11 @@ void main() {
 
       loadEnterprises.mockGetError();
 
-      await sut.getBsEnterprises(showBsErrorMessage: (_) {});
+      await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
     });
 
     test("Should update selected enterprise correctly", () async {
-      await sut.getBsEnterprises(showBsErrorMessage: (_) {});
+      await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
 
       expect(
         sut.selectedEnterprise,
@@ -153,19 +177,19 @@ void main() {
     });
     test("Should not update selected enterprise if already has one selected",
         () async {
-      await sut.getBsEnterprises(showBsErrorMessage: (_) {});
+      await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
 
       final secondEnterprise =
           EnterpriseModel.fromEntity(enterprises[1]).toViewModel();
       sut.updateSelectedEnterprise(secondEnterprise);
 
       loadEnterprises.mockGetError();
-      await sut.getBsEnterprises(showBsErrorMessage: (_) {});
+      await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
 
       expect(sut.selectedEnterprise, secondEnterprise);
     });
     test("Should call remoteLoadEnterprises", () async {
-      await sut.getBsEnterprises(showBsErrorMessage: (_) {});
+      await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
 
       verify(() => loadEnterprises.get()).called(1);
     });

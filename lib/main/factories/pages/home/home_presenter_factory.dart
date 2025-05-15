@@ -6,4 +6,5 @@ HomePresenter makeGetxHomePresenter() => GetxHomePresenter(
       navigateTo: makeGetxNavigateTo(),
       loadEnterprises: makeBsRemoteLoadEnterprises(),
       firebaseManager: makeRemoteFirebaseManager(),
+      localStorage: makeHiveLocalStorage(),
     );
