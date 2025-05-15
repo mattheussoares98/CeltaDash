@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../data/models/models.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/usecases/usecases.dart';
+import '../../infra/helpers/helpers.dart';
 import '../../main/builders/builders.dart';
 import '../../presentation/mixins/mixins.dart';
 import '../../ui/helpers/helpers.dart';
@@ -103,6 +104,10 @@ class GetxHomePresenter extends GetxController
             ],
             firebaseId: EnterpriseBuilder.entity?.firebaseId,
           );
+          await localStorage.put(
+              DatabaseKeys.enterprise,
+              FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
+                  .toJson());
         }
       }
 
