@@ -3,6 +3,7 @@ import '../../../../ui/pages/pages.dart';
 import '../../factories.dart';
 
 SplashPresenter makeGetxSplashPresenter() => GetxSplashPresenter(
-  navigateTo: makeGetxNavigateTo(),
-  localStorage: makeHiveLocalStorage(),
-);
+      navigateTo: makeGetxNavigateTo(),
+      localStorage: makeHiveLocalStorage(),
+      getPlatform: makeLocalGetPlatform(),
+    );

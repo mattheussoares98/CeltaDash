@@ -1,0 +1,1 @@
+export './local_get_platform.dart';

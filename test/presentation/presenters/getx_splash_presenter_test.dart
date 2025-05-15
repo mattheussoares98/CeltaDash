@@ -19,6 +19,7 @@ void main() {
 
   late NavigateToSpy navigateTo;
   late LocalStorageSpy localStorage;
+  late GetPlatformTypeSpy getPlatform;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
@@ -26,12 +27,14 @@ void main() {
   void initUsecases() {
     navigateTo = NavigateToSpy();
     localStorage = LocalStorageSpy();
+    getPlatform = GetPlatformTypeSpy();
   }
 
   void initPresenters() {
     sut = GetxSplashPresenter(
       navigateTo: navigateTo,
       localStorage: localStorage,
+      getPlatform: getPlatform,
     );
   }
 
@@ -92,7 +95,8 @@ void main() {
   test("Should update EnterpriseBuilder.entity correctly", () async {
     final newEnterprise = EntityFactory.makeFirebaseEnterpriseEntity();
 
-    localStorage.mockGet(FirebaseEnterpriseModel.fromEntity(newEnterprise).toJson());
+    localStorage
+        .mockGet(FirebaseEnterpriseModel.fromEntity(newEnterprise).toJson());
 
     await sut.checkPageToGo(durationInSeconds: 0);
 
