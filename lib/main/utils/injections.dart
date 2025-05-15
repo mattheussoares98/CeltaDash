@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:celta_plus/main/factories/pages/web_login/getx_web_login_presenter_factory.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:get/get.dart';
@@ -76,4 +77,5 @@ void _insertGetPresenters() {
   Get.put<ResumePresenter>(makeGetxResumePresenter());
   Get.put<SalesPresenter>(makeGetxSalesPresenter());
   Get.put<SplashPresenter>(makeGetxSplashPresenter());
+  Get.put<WebLoginPresenter>(makeGetxWebLoginPresenter());
 }

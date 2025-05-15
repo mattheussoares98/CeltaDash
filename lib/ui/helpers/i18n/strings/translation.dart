@@ -52,6 +52,7 @@ abstract class Translation {
   String get indicators;
   String get insertGoal;
   String get loadEnterprises;
+  String get login;
   String get logout;
   String get modalities;
   String get month;

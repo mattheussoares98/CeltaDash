@@ -9,11 +9,11 @@ class GetxWebLoginPresenter extends GetxController
     with LoadingManager, UIErrorManager
     implements WebLoginPresenter {
   final NavigateTo navigateTo;
-  final FirebaseLoginManagement loginManagement;
+  final FirebaseLoginManagement firebaseLoginManagement;
 
   GetxWebLoginPresenter({
     required this.navigateTo,
-    required this.loginManagement,
+    required this.firebaseLoginManagement,
   });
 
   @override
@@ -24,7 +24,7 @@ class GetxWebLoginPresenter extends GetxController
     isLoading = true;
     mainError = null;
     try {
-      await loginManagement.login(email: email, password: password);
+      await firebaseLoginManagement.login(email: email, password: password);
       await navigateTo.navigate(
         pageRoute: PageRoutes.webCustomers,
         clear: true,
@@ -41,7 +41,7 @@ class GetxWebLoginPresenter extends GetxController
     isLoading = true;
     mainError = null;
     try {
-      await loginManagement.logout();
+      await firebaseLoginManagement.logout();
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {
@@ -52,7 +52,7 @@ class GetxWebLoginPresenter extends GetxController
   @override
   Future<void> goToWebCustomersIfStillLogged() async {
     isLoading = true;
-    bool isLogged = await loginManagement.isLoggedIn();
+    bool isLogged = await firebaseLoginManagement.isLoggedIn();
     if (isLogged) {
       navigateTo.navigate(pageRoute: PageRoutes.webCustomers, clear: true);
     }

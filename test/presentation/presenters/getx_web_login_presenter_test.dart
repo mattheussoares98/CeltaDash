@@ -32,7 +32,7 @@ void main() {
   initPresenters() {
     sut = GetxWebLoginPresenter(
       navigateTo: navigateTo,
-      loginManagement: firebaseLoginManagement,
+      firebaseLoginManagement: firebaseLoginManagement,
     );
   }
 
