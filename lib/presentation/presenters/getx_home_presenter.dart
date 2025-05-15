@@ -61,7 +61,6 @@ class GetxHomePresenter extends GetxController
     try {
       final enterprisesInBs = await loadEnterprises.get();
 
-      //TODO create new function to test this
       final missingLocal = _getMissingEnterprises(
         enterprisesInBs,
         EnterpriseBuilder.entity?.firebaseSubEnterprises ?? [],

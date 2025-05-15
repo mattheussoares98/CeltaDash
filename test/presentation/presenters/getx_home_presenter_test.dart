@@ -1,6 +1,7 @@
 import 'package:celta_plus/data/models/models.dart';
 import 'package:celta_plus/domain/entities/entities.dart';
 import 'package:celta_plus/infra/helpers/helpers.dart';
+import 'package:celta_plus/main/builders/builders.dart';
 import 'package:celta_plus/presentation/presenters/presenters.dart';
 import 'package:celta_plus/ui/helpers/helpers.dart';
 import 'package:faker/faker.dart';
@@ -32,7 +33,7 @@ void main() {
   late FirebaseManagerSpy firebaseManager;
   late LocalStorageSpy localStorage;
 
-  late List<EnterpriseEntity> enterprises;
+  late List<EnterpriseEntity> enterprisesInBs;
   late MockedFirebaseGet mockedFirebaseGet;
   late DocumentReferenceFake docRef;
 
@@ -60,29 +61,22 @@ void main() {
   }
 
   void initEntities() {
-    enterprises = [
+    EnterpriseBuilder.entity = EntityFactory.makeFirebaseEnterpriseEntity();
+    enterprisesInBs = [
       EntityFactory.makeEnterpriseEntity(),
       EntityFactory.makeEnterpriseEntity(),
     ];
     mockedFirebaseGet = MockedFirebaseGet(
-      dataToReturn: FirebaseEnterpriseModel.fromEntity(
-              EntityFactory.makeFirebaseEnterpriseEntity())
-          .toJson(),
+      dataToReturn:
+          FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
+              .toJson(),
     );
     docRef = DocumentReferenceFake();
   }
 
   void initMockSuccess() {
-    loadEnterprises.mockGet(enterprises);
+    loadEnterprises.mockGet(enterprisesInBs);
     firebaseManager.mockGet(mockedFirebaseGet);
-    firebaseManager.mockPut();
-    // firebaseManager.mockGet(
-    //   MockedFirebaseGet(
-    //     dataToReturn:
-    //         FirebaseEnterpriseModel.fromEntity(firebaseLoadedEnterprise)
-    //             .toJson(),
-    //   ),
-    // );
   }
 
   setUp(() {
@@ -95,6 +89,7 @@ void main() {
   setUpAll(() async {
     registerFallbackValue(HomePresenterSpy());
     registerFallbackValue(ResumePresenterSpy());
+    registerFallbackValue(EntityFactory.makeFirebaseEnterpriseEntity());
     for (var key in DatabaseKeys.values) {
       registerFallbackValue(key);
     }
@@ -172,7 +167,7 @@ void main() {
 
       expect(
         sut.selectedEnterprise,
-        EnterpriseModel.fromEntity(enterprises.first).toViewModel(),
+        EnterpriseModel.fromEntity(enterprisesInBs.first).toViewModel(),
       );
     });
     test("Should not update selected enterprise if already has one selected",
@@ -180,7 +175,7 @@ void main() {
       await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
 
       final secondEnterprise =
-          EnterpriseModel.fromEntity(enterprises[1]).toViewModel();
+          EnterpriseModel.fromEntity(enterprisesInBs[1]).toViewModel();
       sut.updateSelectedEnterprise(secondEnterprise);
 
       loadEnterprises.mockGetError();
@@ -193,12 +188,117 @@ void main() {
 
       verify(() => loadEnterprises.get()).called(1);
     });
+
+    group("Update sub enterprises in firebase", () {
+      test(
+          "Should get firebase sub enterprises if is missing enterprises locally",
+          () async {
+        await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
+
+        verify(
+          () => firebaseManager.get(
+            collection: "enterprises",
+            doc: EnterpriseBuilder.entity?.firebaseId,
+          ),
+        ).called(1);
+      });
+      test(
+          "Should NOT get firebase sub enterprises if is not missing enterprises locally",
+          () async {
+        loadEnterprises
+            .mockGet(EnterpriseBuilder.entity!.firebaseSubEnterprises!);
+
+        await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
+
+        verifyNever(
+          () => firebaseManager.get(
+            collection: "enterprises",
+            doc: EnterpriseBuilder.entity?.firebaseId,
+          ),
+        );
+      });
+      test("Should update add missing enterprises in firebase", () async {
+        await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
+
+        verify(
+          () => firebaseManager.put(
+            documentReference: docRef,
+            merge: true,
+            data: {
+              "subEnterprises": enterprisesInBs
+                  .map((e) => EnterpriseModel.fromEntity(e).toJson())
+                  .toList()
+            },
+          ),
+        ).called(1);
+      });
+      test("Should no call to put enterprises if is not missing", () async {
+        loadEnterprises
+            .mockGet(EnterpriseBuilder.entity!.firebaseSubEnterprises!);
+
+        await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
+
+        verifyNever(
+          () => firebaseManager.put(
+            documentReference: docRef,
+            merge: true,
+            data: {
+              "subEnterprises": enterprisesInBs
+                  .map((e) => EnterpriseModel.fromEntity(e).toJson())
+                  .toList()
+            },
+          ),
+        );
+      });
+      test("Should update enterprise locally", () async {
+        await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
+
+        verify(
+          () => localStorage.put(
+            DatabaseKeys.enterprise,
+            FirebaseEnterpriseModel.fromEntity(
+              FirebaseEnterpriseEntity(
+                baseUrl: EnterpriseBuilder.entity?.baseUrl,
+                enterpriseName: EnterpriseBuilder.entity?.enterpriseName,
+                bsUser: EnterpriseBuilder.entity?.bsUser,
+                firebaseId: EnterpriseBuilder.entity?.firebaseId,
+                firebaseSubEnterprises:
+                    EnterpriseBuilder.entity!.firebaseSubEnterprises,
+              ),
+            ).toJson(),
+          ),
+        );
+      });
+      test("Should update EnterpriseBuilder correctly", () async {
+        final oldEnterprises = [
+          ...EnterpriseBuilder.entity!.firebaseSubEnterprises!
+        ];
+
+        await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
+
+        expect(
+          EnterpriseBuilder.entity,
+          FirebaseEnterpriseEntity(
+            baseUrl: EnterpriseBuilder.entity?.baseUrl,
+            enterpriseName: EnterpriseBuilder.entity?.enterpriseName,
+            bsUser: EnterpriseBuilder.entity?.bsUser,
+            firebaseId: EnterpriseBuilder.entity?.firebaseId,
+            firebaseSubEnterprises: [
+              ...oldEnterprises,
+              ...enterprisesInBs,
+            ],
+          ),
+        );
+      });
+    });
   });
 
   group("Update selected enterprise", () {
     test("Should update selected enterprise correctly", () {
-      final first = EnterpriseModel.fromEntity(enterprises.first).toViewModel();
-      final second = EnterpriseModel.fromEntity(enterprises.last).toViewModel();
+      final first =
+          EnterpriseModel.fromEntity(enterprisesInBs.first).toViewModel();
+      final second =
+          EnterpriseModel.fromEntity(enterprisesInBs.last).toViewModel();
 
       sut.updateSelectedEnterprise(first);
       expect(sut.selectedEnterprise, first);
@@ -213,7 +313,7 @@ void main() {
       expectLater(sut.updateScreenStream, emitsInOrder([true, false]));
 
       sut.updateSelectedEnterprise(
-        EnterpriseModel.fromEntity(enterprises.first).toViewModel(),
+        EnterpriseModel.fromEntity(enterprisesInBs.first).toViewModel(),
       );
     });
   });

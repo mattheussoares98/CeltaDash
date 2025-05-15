@@ -1,6 +1,7 @@
 import 'package:celta_plus/domain/helpers/helpers.dart';
 import 'package:celta_plus/domain/usecases/usecases.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:equatable/equatable.dart';
 import 'package:faker/faker.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -8,13 +9,17 @@ import 'package:mocktail/mocktail.dart';
 class DocumentReferenceFake extends Fake
     implements DocumentReference<Map<String, dynamic>> {}
 
-class MockedFirebaseGet {
+// ignore: must_be_immutable
+class MockedFirebaseGet extends Equatable {
   final dynamic dataToReturn;
 
   MockedFirebaseGet({required this.dataToReturn});
 
   dynamic data() => dataToReturn;
   String id = faker.guid.guid();
+
+  @override
+  List<Object?> get props => [dataToReturn, data(), id];
 }
 
 class FirebaseManagerSpy extends Mock implements FirebaseManager {
