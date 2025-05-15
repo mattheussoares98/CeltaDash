@@ -9,7 +9,7 @@ class GetxWebLoginPresenter extends GetxController
     with LoadingManager, UIErrorManager
     implements WebLoginPresenter {
   final NavigateTo navigateTo;
-  final LoginManagement loginManagement;
+  final FirebaseLoginManagement loginManagement;
 
   GetxWebLoginPresenter({
     required this.navigateTo,
