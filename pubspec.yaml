@@ -52,6 +52,7 @@ dependencies:
   firebase_crashlytics: ^4.3.5
   firebase_analytics: ^11.4.5
   icons_launcher: ^3.0.0 #dart run icons_launcher:create
+  firebase_auth: ^5.5.3
 
 icons_launcher:
   image_path: "lib/ui/assets/dev_assets/CeltaDashIcon.png"
