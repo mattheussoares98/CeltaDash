@@ -9,25 +9,32 @@ class FirebaseEnterpriseModel extends Equatable {
   final BsUserModel? bsUser;
   final List<EnterpriseModel>?
       subEnterprises; //save in firebase the same enterprise that return in RemoteLoadEnterprises
+  final String? firebaseId;
 
   const FirebaseEnterpriseModel({
     required this.baseUrl,
     required this.enterpriseName,
     required this.bsUser,
     required this.subEnterprises,
+    required this.firebaseId,
   });
 
   @override
-  List<Object?> get props => [baseUrl, enterpriseName, bsUser];
+  List<Object?> get props => [baseUrl, enterpriseName, bsUser, firebaseId];
 
-  factory FirebaseEnterpriseModel.fromJson(Map json) => FirebaseEnterpriseModel(
+  factory FirebaseEnterpriseModel.fromJson(
+    Map json, {
+    String? documentId,
+  }) =>
+      FirebaseEnterpriseModel(
         baseUrl: json['baseUrl'],
         enterpriseName: json['enterpriseName'],
+        firebaseId: documentId ?? json['firebaseId'],
         bsUser: json['bsUser'] == null
             ? null
             : BsUserModel.fromJson(json['bsUser']),
         subEnterprises: json["subEnterprises"]
-            ?.map((x) => EnterpriseModel.fromJson(x))
+            ?.map<EnterpriseModel>((x) => EnterpriseModel.fromJson(x))
             .toList(),
       );
 
@@ -35,6 +42,7 @@ class FirebaseEnterpriseModel extends Equatable {
       FirebaseEnterpriseModel(
         baseUrl: entity.baseUrl,
         enterpriseName: entity.enterpriseName,
+        firebaseId: entity.firebaseId,
         bsUser: BsUserModel.fromEntity(entity.bsUser),
         subEnterprises: entity.subEnterprises
             ?.map((e) => EnterpriseModel.fromEntity(e))
@@ -44,6 +52,7 @@ class FirebaseEnterpriseModel extends Equatable {
   Map<String, dynamic> toJson() => {
         'baseUrl': baseUrl,
         'enterpriseName': enterpriseName,
+        'firebaseId': firebaseId,
         'bsUser': bsUser?.toJson(),
         'subEnterprises': subEnterprises?.map((e) => e.toJson()).toList(),
       };
@@ -51,6 +60,7 @@ class FirebaseEnterpriseModel extends Equatable {
   FirebaseEnterpriseEntity toEntity() => FirebaseEnterpriseEntity(
         baseUrl: baseUrl,
         enterpriseName: enterpriseName,
+        firebaseId: firebaseId,
         bsUser: bsUser?.toEntity(),
         subEnterprises: subEnterprises?.map((e) => e.toEntity()).toList(),
       );

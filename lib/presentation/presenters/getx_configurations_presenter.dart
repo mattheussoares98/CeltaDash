@@ -30,6 +30,7 @@ class GetxConfigurationsPresenter extends GetxController
       EnterpriseBuilder.entity = FirebaseEnterpriseEntity(
         baseUrl: null,
         enterpriseName: oldEnterprise?.enterpriseName,
+        firebaseId: null,
         bsUser: BsUserEntity(
           name: oldEnterprise?.bsUser?.name,
           AccessKey: null,

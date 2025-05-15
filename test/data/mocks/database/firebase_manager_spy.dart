@@ -1,6 +1,7 @@
 import 'package:celta_plus/domain/helpers/helpers.dart';
 import 'package:celta_plus/domain/usecases/usecases.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:faker/faker.dart';
 import 'package:mocktail/mocktail.dart';
 
 // ignore: subtype_of_sealed_class
@@ -13,6 +14,7 @@ class MockedFirebaseGet {
   MockedFirebaseGet({required this.dataToReturn});
 
   dynamic data() => dataToReturn;
+  String id = faker.guid.guid();
 }
 
 class FirebaseManagerSpy extends Mock implements FirebaseManager {
@@ -24,14 +26,14 @@ class FirebaseManagerSpy extends Mock implements FirebaseManager {
   }
 
   When _mockPutCall() => when(
-    () => this.put(
-      documentReference: any(named: "documentReference"),
-      data: any(named: "data"),
-      arrayUnion: any(named: "arrayUnion"),
-      increment: any(named: "increment"),
-      merge: any(named: "merge"),
-    ),
-  );
+        () => this.put(
+          documentReference: any(named: "documentReference"),
+          data: any(named: "data"),
+          arrayUnion: any(named: "arrayUnion"),
+          increment: any(named: "increment"),
+          merge: any(named: "merge"),
+        ),
+      );
   void mockPut() {
     this._mockPutCall().thenAnswer((any) async => any);
   }
@@ -41,13 +43,13 @@ class FirebaseManagerSpy extends Mock implements FirebaseManager {
   }
 
   When _mockGetCall() => when(
-    () => this.get(
-      collection: any(named: "collection"),
-      doc: any(named: "doc"),
-      fieldToSearch: any(named: "fieldToSearch"),
-      valueToSearch: any(named: "valueToSearch"),
-    ),
-  );
+        () => this.get(
+          collection: any(named: "collection"),
+          doc: any(named: "doc"),
+          fieldToSearch: any(named: "fieldToSearch"),
+          valueToSearch: any(named: "valueToSearch"),
+        ),
+      );
   void mockGet(MockedFirebaseGet value) {
     this._mockGetCall().thenAnswer((any) async => value);
   }

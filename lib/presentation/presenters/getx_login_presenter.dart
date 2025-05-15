@@ -48,6 +48,7 @@ class GetxLoginPresenter extends GetxController
 
         EnterpriseBuilder.entity = FirebaseEnterpriseEntity(
           baseUrl: enterpriseData["baseUrl"],
+          firebaseId: enterprise.id,
           enterpriseName: enterpriseName,
           bsUser: BsUserEntity(
             name: user.trimRight(),
@@ -55,7 +56,8 @@ class GetxLoginPresenter extends GetxController
             CrossIdentity_Usuario: null,
           ),
           subEnterprises: enterpriseData["subEnterprises"]
-              ?.map<EnterpriseEntity>((e) => EnterpriseModel.fromJson(e).toEntity())
+              ?.map<EnterpriseEntity>(
+                  (e) => EnterpriseModel.fromJson(e).toEntity())
               .toList(),
         );
       }
@@ -73,6 +75,7 @@ class GetxLoginPresenter extends GetxController
         EnterpriseBuilder.entity = FirebaseEnterpriseEntity(
           baseUrl: EnterpriseBuilder.entity?.baseUrl,
           subEnterprises: EnterpriseBuilder.entity?.subEnterprises,
+          firebaseId: EnterpriseBuilder.entity?.firebaseId,
           bsUser: BsUserEntity(
             name: user.trimRight(),
             AccessKey: response.response["AccessKey"],
@@ -112,6 +115,7 @@ class GetxLoginPresenter extends GetxController
       baseUrl: null,
       subEnterprises: null,
       enterpriseName: oldEnterprise?.enterpriseName,
+      firebaseId: null,
       bsUser: BsUserEntity(
         name: oldEnterprise?.bsUser?.name,
         AccessKey: null,

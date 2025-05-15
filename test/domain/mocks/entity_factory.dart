@@ -10,6 +10,7 @@ class EntityFactory {
         baseUrl: faker.internet.httpUrl(),
         enterpriseName: faker.company.name(),
         bsUser: makeBsUserEntity(),
+        firebaseId: faker.guid.guid(),
         subEnterprises: <EnterpriseEntity>[
           makeEnterpriseEntity(),
           makeEnterpriseEntity(),
@@ -23,7 +24,8 @@ class EntityFactory {
     bool? anullUserAccessKey,
     bool? anullUserCrossIdentity,
     bool? annullEnterpriseName,
-    bool? annullSubEnterprises, //TODO test this
+    bool? annullSubEnterprises,
+    bool? annulFirebaseId,
   }) {
     final enterprise = EnterpriseBuilder.entity;
     final bsUser = BsUserEntity(
@@ -41,6 +43,7 @@ class EntityFactory {
           annullEnterpriseName == true ? null : enterprise?.enterpriseName,
       subEnterprises:
           annullSubEnterprises == true ? null : enterprise?.subEnterprises,
+      firebaseId: annulFirebaseId == true ? null : enterprise?.firebaseId,
     );
   }
 
