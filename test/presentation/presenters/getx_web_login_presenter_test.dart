@@ -9,6 +9,7 @@ import 'package:flutter/widgets.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../data/mocks/mocks.dart';
+import '../../data/usecases/usecases.dart';
 import '../../domain/mocks/mocks.dart';
 
 void main() {
@@ -18,20 +19,20 @@ void main() {
   late GetxWebLoginPresenter sut;
 
   late NavigateToSpy navigateTo;
-  late LoginManagementSpy loginManagement;
+  late FirebaseLoginManagementSpy firebaseLoginManagement;
 
   late String email;
   late String password;
 
   initUseCases() {
     navigateTo = NavigateToSpy();
-    loginManagement = LoginManagementSpy();
+    firebaseLoginManagement = FirebaseLoginManagementSpy();
   }
 
   initPresenters() {
     sut = GetxWebLoginPresenter(
       navigateTo: navigateTo,
-      loginManagement: loginManagement,
+      loginManagement: firebaseLoginManagement,
     );
   }
 
@@ -64,13 +65,13 @@ void main() {
       expectLater(
           sut.mainErrorStream, emitsInOrder([null, UIError.unexpected]));
 
-      loginManagement.mockLoginError();
+      firebaseLoginManagement.mockLoginError();
       await sut.doLogin(email: email, password: password);
     });
     test("Should call login with correct values", () async {
       await sut.doLogin(email: email, password: password);
 
-      verify(() => loginManagement.login(
+      verify(() => firebaseLoginManagement.login(
             email: email,
             password: password,
           )).called(1);
@@ -96,13 +97,13 @@ void main() {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(sut.mainErrorStream, emits(null));
 
-      loginManagement.mockLogoutError();
+      firebaseLoginManagement.mockLogoutError();
       await sut.doLogout();
     });
     test("Should call loginManagement.logout", () async {
       await sut.doLogout();
 
-      verify(() => loginManagement.logout()).called(1);
+      verify(() => firebaseLoginManagement.logout()).called(1);
     });
   });
 }
