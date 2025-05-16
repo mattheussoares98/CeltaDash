@@ -7,12 +7,14 @@ class BottomNavBar extends StatelessWidget {
   final List<BottomNavItem> items;
   final int currentIndex;
   final void Function(int index) onTap;
+  final bool showLabels;
 
   const BottomNavBar({
     super.key,
     required this.currentIndex,
     required this.onTap,
     required this.items,
+    required this.showLabels,
   });
 
   @override
@@ -29,7 +31,7 @@ class BottomNavBar extends StatelessWidget {
             .map(
               (item) => BottomNavigationBarItem(
                 icon: item.cupertinoIcon,
-                label: "",
+                label: item.label,
               ),
             )
             .toList(),
@@ -42,8 +44,8 @@ class BottomNavBar extends StatelessWidget {
       type: BottomNavigationBarType.fixed,
       unselectedFontSize: 10,
       selectedFontSize: 12,
-      showSelectedLabels: false,
-      showUnselectedLabels: false,
+      showSelectedLabels: showLabels,
+      showUnselectedLabels: showLabels,
       selectedIconTheme: IconThemeData(
         size: 30,
         color: Theme.of(context).primaryColorDark,
@@ -67,11 +69,11 @@ class BottomNavBar extends StatelessWidget {
 class BottomNavItem {
   final Icon materialIcon;
   final Icon cupertinoIcon;
-  final String label;
+  final String? label;
 
   const BottomNavItem({
     required this.materialIcon,
     required this.cupertinoIcon,
-    required this.label,
+    this.label,
   });
 }

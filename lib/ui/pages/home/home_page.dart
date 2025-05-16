@@ -116,6 +116,7 @@ class _HomePageState extends State<HomePage>
                             bottomNavigationBar: BottomNavBar(
                               currentIndex: currentIndex.data ?? 0,
                               onTap: homePresenter.updateSelectedIndex,
+                              showLabels: false,
                               items: [
                                 BottomNavItem(
                                   materialIcon: Icon(Icons.pie_chart),
