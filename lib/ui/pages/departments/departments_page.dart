@@ -150,11 +150,13 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                 setState(() {
                   selectedPageIndex = value;
                 });
-                pageController.animateToPage(
-                  value,
-                  duration: Duration(milliseconds: 300),
-                  curve: Curves.bounceOut,
-                );
+                if (pageController.hasClients) {
+                  pageController.animateToPage(
+                    value,
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.bounceOut,
+                  );
+                }
               },
               items: [
                 BottomNavItem(

@@ -181,11 +181,13 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                 setState(() {
                   selectedPageIndex = value;
                 });
-                pageController.animateToPage(
-                  value,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                );
+                if (pageController.hasClients) {
+                  pageController.animateToPage(
+                    value,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  );
+                }
               },
               items: [
                 BottomNavItem(

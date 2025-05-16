@@ -124,11 +124,13 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
           setState(() {
             currentIndex = index;
           });
-          pageController.animateToPage(
-            index,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-          );
+          if (pageController.hasClients) {
+            pageController.animateToPage(
+              index,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            );
+          }
         },
       ),
     );
