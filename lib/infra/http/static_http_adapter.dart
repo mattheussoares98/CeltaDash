@@ -47,7 +47,7 @@ class StaticHttpAdapter implements HttpClient {
             client.put(Uri.parse(url), headers: defaultHeaders, body: jsonBody);
       }
       if (futureResponse != null) {
-        response = await futureResponse.timeout(const Duration(seconds: 60));
+        response = await futureResponse.timeout(const Duration(seconds: 30));
       }
     } catch (error) {
       debugPrint(error.toString());
