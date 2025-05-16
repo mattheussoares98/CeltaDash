@@ -102,4 +102,9 @@ class GetxCompareDaysPresenter extends GetxController
   DateTime? _selectedSecondDay;
   @override
   DateTime? get selectedSecondDay => _selectedSecondDay;
+
+  @override
+  void clear() {
+    saleMovements = null;
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../ui/components/components.dart';
 import '../../helpers/helpers.dart';
@@ -29,7 +30,13 @@ class ConfigurationsPage extends StatelessWidget {
                   titleMessage: R.string.msgReallyWantLogout,
                   content: null,
                   onPress: () async {
-                    await configurationsPresenter.doLogout();
+                    await configurationsPresenter.doLogout(
+                      departmentsPresenter: Get.find<DepartmentsPresenter>(),
+                      paymentTypePresenter: Get.find<PaymentTypePresenter>(),
+                      salesPresenter: Get.find<SalesPresenter>(),
+                      productsPresenter: Get.find<ProductsPresenter>(),
+                      resumePresenter: Get.find<ResumePresenter>(),
+                    );
                   },
                 );
               },

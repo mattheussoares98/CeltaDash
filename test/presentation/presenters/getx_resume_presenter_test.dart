@@ -246,4 +246,21 @@ void main() {
           )).called(2);
     });
   });
+
+  group("Clear", () {
+    test("Should clear all sales", () async {
+      await sut.getSales(homePresenter);
+      expect(sut.saleMovements, isNotNull);
+
+      sut.clear();
+      expect(sut.saleMovements, null);
+    });
+    test("Should clear last loaded data", () async {
+      await sut.getSales(homePresenter);
+      expect(sut.lastDateLoadedData, isNotNull);
+
+      sut.clear();
+      expect(sut.lastDateLoadedData, null);
+    });
+  });
 }

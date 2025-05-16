@@ -11,4 +11,5 @@ abstract class ProductsPresenter implements Listenable {
   EnterpriseViewModel? get lastEnterpriseLoadedData;
 
   Future<void> loadProducts(HomePresenter homePresenter, {bool? forceRefresh});
+  void clear();
 }

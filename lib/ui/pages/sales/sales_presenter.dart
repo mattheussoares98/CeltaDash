@@ -28,4 +28,6 @@ abstract class SalesPresenter implements Listenable {
     bool? filterByMonth,
     bool? filterByYear,
   });
+
+  void clear();
 }

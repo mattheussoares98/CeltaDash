@@ -204,4 +204,18 @@ void main() {
       ).called(1);
     });
   });
+
+  group("Clear", () {
+    test("Should clear sale movements", () async {
+      await sut.getSales(
+        firstDay: firstDay,
+        secondDay: secondDay,
+        homePresenter: homePresenter,
+      );
+      expect(sut.saleMovements, isNotNull);
+
+      sut.clear();
+      expect(sut.saleMovements, isNull);
+    });
+  });
 }

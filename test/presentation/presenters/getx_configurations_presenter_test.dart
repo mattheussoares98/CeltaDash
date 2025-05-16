@@ -13,9 +13,15 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../data/mocks/mocks.dart';
 import '../../domain/mocks/mocks.dart';
+import '../mocks/mocks.dart';
 
 void main() {
   late GetxConfigurationsPresenter sut;
+  late DepartmentsPresenterSpy departmentsPresenter;
+  late PaymentTypePresenterSpy paymentTypePresenter;
+  late SalesPresenterSpy salesPresenter;
+  late ProductsPresenterSpy productsPresenter;
+  late ResumePresenterSpy resumePresenter;
 
   late NavigateToSpy navigateTo;
   late LocalStorageSpy localStorage;
@@ -35,6 +41,11 @@ void main() {
       navigateTo: navigateTo,
       localStorage: localStorage,
     );
+    departmentsPresenter = DepartmentsPresenterSpy();
+    paymentTypePresenter = PaymentTypePresenterSpy();
+    salesPresenter = SalesPresenterSpy();
+    productsPresenter = ProductsPresenterSpy();
+    resumePresenter = ResumePresenterSpy();
   }
 
   void initEntities() {
@@ -65,28 +76,55 @@ void main() {
     initMockSuccess();
   });
 
-  setUpAll(() {});
+  setUpAll(() {
+    registerFallbackValue(HomePresenterSpy());
+    registerFallbackValue(ResumePresenterSpy());
+  });
 
   group("Do logout", () {
     test("Should emit correct values on success", () async {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(sut.mainErrorStream, emits(null));
 
-      await sut.doLogout();
+      await sut.doLogout(
+        departmentsPresenter: departmentsPresenter,
+        paymentTypePresenter: paymentTypePresenter,
+        salesPresenter: salesPresenter,
+        productsPresenter: productsPresenter,
+        resumePresenter: resumePresenter,
+      );
     });
     test("Should emit correct values on error", () async {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(sut.mainErrorStream, emits(null));
 
-      await sut.doLogout();
+      await sut.doLogout(
+        departmentsPresenter: departmentsPresenter,
+        paymentTypePresenter: paymentTypePresenter,
+        salesPresenter: salesPresenter,
+        productsPresenter: productsPresenter,
+        resumePresenter: resumePresenter,
+      );
     });
     test("Should update enterprise correctly", () async {
-      await sut.doLogout();
+      await sut.doLogout(
+        departmentsPresenter: departmentsPresenter,
+        paymentTypePresenter: paymentTypePresenter,
+        salesPresenter: salesPresenter,
+        productsPresenter: productsPresenter,
+        resumePresenter: resumePresenter,
+      );
 
       expect(EnterpriseBuilder.entity, enterpriseOnLogout);
     });
     test("Should call localStorage.put correctly", () async {
-      await sut.doLogout();
+      await sut.doLogout(
+        departmentsPresenter: departmentsPresenter,
+        paymentTypePresenter: paymentTypePresenter,
+        salesPresenter: salesPresenter,
+        productsPresenter: productsPresenter,
+        resumePresenter: resumePresenter,
+      );
 
       verify(() => localStorage.put(
             DatabaseKeys.enterprise,
@@ -94,12 +132,33 @@ void main() {
           )).called(1);
     });
     test("Should call navigateTo with correct value", () async {
-      await sut.doLogout();
+      await sut.doLogout(
+        departmentsPresenter: departmentsPresenter,
+        paymentTypePresenter: paymentTypePresenter,
+        salesPresenter: salesPresenter,
+        productsPresenter: productsPresenter,
+        resumePresenter: resumePresenter,
+      );
 
       verify(() => navigateTo.navigate(
             pageRoute: PageRoutes.splash,
             clear: true,
           )).called(1);
+    });
+    test("Should clear data in all presenters", () async {
+      await sut.doLogout(
+        departmentsPresenter: departmentsPresenter,
+        paymentTypePresenter: paymentTypePresenter,
+        salesPresenter: salesPresenter,
+        productsPresenter: productsPresenter,
+        resumePresenter: resumePresenter,
+      );
+
+      verify(() => departmentsPresenter.clear()).called(1);
+      verify(() => paymentTypePresenter.clear()).called(1);
+      verify(() => salesPresenter.clear()).called(1);
+      verify(() => productsPresenter.clear()).called(1);
+      verify(() => resumePresenter.clear()).called(1);
     });
   });
 }

@@ -334,7 +334,7 @@ void main() {
           ),
         ).called(1);
 
-        homePresenter.selectedEnterpriseMock = 
+        homePresenter.selectedEnterpriseMock =
             EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
                 .toViewModel();
         await sut.getSales(
@@ -379,6 +379,27 @@ void main() {
       expect(sut.filterByDay, false);
       expect(sut.filterByMonth, false);
       expect(sut.filterByYear, false);
+    });
+  });
+
+  group("Clear", () {
+    test("Should clear sale movements", () async {
+      await sut.getSales(
+          homePresenter: homePresenter, resumePresenter: resumePresenter);
+      expect(sut.saleMovementsByMonth, isNotNull);
+      expect(sut.saleMovementsByYear, isNotNull);
+
+      sut.clear();
+      expect(sut.saleMovementsByMonth, isNull);
+      expect(sut.saleMovementsByYear, isNull);
+    });
+    test("Should clear last loaded data", () async {
+      await sut.getSales(
+          homePresenter: homePresenter, resumePresenter: resumePresenter);
+      expect(sut.lastDateLoadedData, isNotNull);
+
+      sut.clear();
+      expect(sut.lastDateLoadedData, isNull);
     });
   });
 }

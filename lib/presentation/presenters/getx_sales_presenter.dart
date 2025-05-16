@@ -77,6 +77,13 @@ class GetxSalesPresenter extends GetxController
     _filterByYear = filterByYear ?? false;
   }
 
+  @override
+  void clear() {
+    _saleMovementsByMonth.value = null;
+    _saleMovementsByYear.value = null;
+    _lastDateLoadedData = null;
+  }
+
   final _saleMovementsByYear = Rx<List<SaleMovementViewModel>?>(null);
   @override
   List<SaleMovementViewModel>? get saleMovementsByYear =>

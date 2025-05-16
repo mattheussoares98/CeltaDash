@@ -83,4 +83,11 @@ class GetxPaymentTypePresenter extends GetxController
   DateTime? _lastDateLoadedData;
   @override
   DateTime? get lastDateLoadedData => _lastDateLoadedData;
+
+  @override
+  void clear() {
+    _saleMovementsFinalizations.value = null;
+    saleMovements = null;
+    _lastDateLoadedData = null;
+  }
 }

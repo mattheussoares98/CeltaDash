@@ -96,4 +96,10 @@ class GetxResumePresenter extends GetxController
   DateTime? _lastDateLoadedData;
   @override
   DateTime? get lastDateLoadedData => _lastDateLoadedData;
+
+  @override
+  void clear() {
+    saleMovements = null;
+    _lastDateLoadedData = null;
+  }
 }
