@@ -40,6 +40,7 @@ abstract class Translation {
   String get discounts;
   String get email;
   String get empty;
+  String get emptySubEnterprises;
   String get enter;
   String get enterprise;
   String get enterprises;

@@ -13,17 +13,18 @@ class SubEnterprises extends StatelessWidget {
 
     return Column(
       children: [
-        if ((webEnterprisesPresenter
-                    .selectedEnterprise?.firebaseSubEnterprises?.length ??
-                0) >
-            0)
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              R.string.subEnterprises,
-              style: Theme.of(context).textTheme.displayLarge,
-            ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            (webEnterprisesPresenter.selectedEnterprise?.firebaseSubEnterprises
+                            ?.length ??
+                        0) >
+                    0
+                ? R.string.subEnterprises
+                : R.string.emptySubEnterprises,
+            style: Theme.of(context).textTheme.displayLarge,
           ),
+        ),
         ListView.builder(
           shrinkWrap: true,
           itemCount: webEnterprisesPresenter

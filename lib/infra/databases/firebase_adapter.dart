@@ -22,7 +22,8 @@ class FirebaseAdapter implements FirebaseStorage {
         return await instance
             .collection(collection)
             .where(fieldToSearch, isEqualTo: valueToSearch)
-            .get();
+            .get()
+            .timeout(Duration(seconds: 30));
       }
     } on FirebaseException {
       throw DomainError.unexpected;
@@ -53,7 +54,9 @@ class FirebaseAdapter implements FirebaseStorage {
         throw DomainError.unexpected;
       }
 
-      await documentReference.set(json, SetOptions(merge: merge == true));
+      await documentReference
+          .set(json, SetOptions(merge: merge == true))
+          .timeout(Duration(seconds: 30));
     } on FirebaseException {
       throw DomainError.unexpected;
     } catch (e) {
