@@ -42,6 +42,7 @@ class PtBr implements Translation {
   String get difference => "Diferença";
   String get discounts => "Descontos";
   String get email => "E-mail";
+  String get empty => "Vazio";
   String get enter => "Entrar";
   String get enterprise => "Empresa";
   String get enterprises => "Empresas";
@@ -66,6 +67,7 @@ class PtBr implements Translation {
   String get more => "Mais";
   String get moreDetails => "Mais detalhes";
   String get no => "Não";
+  String get noData => "Não há dados";
   String get of => "De";
   String get operators => "Operadores";
   String get password => "Senha";

@@ -37,6 +37,7 @@ abstract class Translation {
   String get difference;
   String get discounts;
   String get email;
+  String get empty;
   String get enter;
   String get enterprise;
   String get enterprises;
@@ -61,6 +62,7 @@ abstract class Translation {
   String get more;
   String get moreDetails;
   String get no;
+  String get noData;
   String get of;
   String get operators;
   String get password;

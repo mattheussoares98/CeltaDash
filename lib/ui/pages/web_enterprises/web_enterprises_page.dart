@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
+import '../../helpers/helpers.dart';
+import '../../mixins/mixins.dart';
 import '../pages.dart';
 
 class WebCustomersPage extends StatefulWidget {
@@ -10,7 +14,10 @@ class WebCustomersPage extends StatefulWidget {
   State<WebCustomersPage> createState() => _WebCustomersPageState();
 }
 
-class _WebCustomersPageState extends State<WebCustomersPage> {
+class _WebCustomersPageState extends State<WebCustomersPage>
+    with LoadingManager, UIErrorManager {
+  StreamSubscription? loadingSubscription;
+  StreamSubscription? mainErrorSubscription;
   @override
   void initState() {
     super.initState();
@@ -23,7 +30,22 @@ class _WebCustomersPageState extends State<WebCustomersPage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    loadingSubscription?.cancel();
+    mainErrorSubscription?.cancel();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    loadingSubscription?.cancel();
+    mainErrorSubscription?.cancel();
+
+    loadingSubscription =
+        handleLoading(context, widget.presenter.isLoadingStream);
+    mainErrorSubscription =
+        handleMainError(context, widget.presenter.mainErrorStream);
+
     return Scaffold(
       appBar: AppBar(
         title: Text("WEB ENTERPRISES PAGE"),
@@ -36,7 +58,42 @@ class _WebCustomersPageState extends State<WebCustomersPage> {
           ),
         ],
       ),
-      body: Center(child: Text("WEB ENTERPRISES")),
+      body: StreamBuilder<List<FirebaseEnterpriseViewModel>?>(
+          stream: widget.presenter.enterprisesStream,
+          builder: (context, snapshot) {
+            if (snapshot.data == null) {
+              return Center(
+                child: Text(R.string.empty),
+              );
+            }
+            return ListView.builder(
+              shrinkWrap: true,
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                final enterprise = snapshot.data![index];
+                return Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    child: Row(
+                      children: [
+                        Expanded(child: Text("${enterprise.enterpriseName}")),
+                        IconButton(
+                          onPressed: () {},
+                          icon: Icon(Icons.mode_rounded),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
+          }),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {},
+      ),
     );
   }
 }
