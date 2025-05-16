@@ -45,7 +45,12 @@ class GetxWebEnterprisesPresenter extends GetxController
       _enterprises.value = enterprises;
 
   @override
-  void goToEnterpriseDetails() {
+  void goToEnterpriseDetails(FirebaseEnterpriseViewModel enterprise) {
+    _selectedEnterprise = enterprise;
     navigateTo.navigate(pageRoute: PageRoutes.webEnterpriseDetails);
   }
+
+  FirebaseEnterpriseViewModel? _selectedEnterprise;
+  @override
+  FirebaseEnterpriseViewModel? get selectedEnterprise => _selectedEnterprise;
 }

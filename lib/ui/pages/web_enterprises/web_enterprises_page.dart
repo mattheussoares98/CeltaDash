@@ -39,6 +39,10 @@ class _WebEnterprisesPageState extends State<WebEnterprisesPage>
     mainErrorSubscription?.cancel();
   }
 
+  void onTap(FirebaseEnterpriseViewModel enterprise) {
+    widget.presenter.goToEnterpriseDetails(enterprise);
+  }
+
   @override
   Widget build(BuildContext context) {
     loadingSubscription?.cancel();
@@ -78,12 +82,16 @@ class _WebEnterprisesPageState extends State<WebEnterprisesPage>
                   padding:
                       const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                   child: ElevatedButton(
-                    onPressed: widget.presenter.goToEnterpriseDetails,
+                    onPressed: () {
+                      onTap(enterprise);
+                    },
                     child: Row(
                       children: [
                         Expanded(child: Text("${enterprise.enterpriseName}")),
                         IconButton(
-                          onPressed: widget.presenter.goToEnterpriseDetails,
+                          onPressed: () {
+                            onTap(enterprise);
+                          },
                           icon: Icon(Icons.mode_rounded),
                         ),
                       ],
@@ -94,7 +102,9 @@ class _WebEnterprisesPageState extends State<WebEnterprisesPage>
             );
           }),
       floatingActionButton: FloatingActionButton(
-        onPressed: widget.presenter.goToEnterpriseDetails,
+        onPressed: () {
+          //TODO new function to add enterprise
+        },
         child: Icon(Icons.add),
       ),
     );

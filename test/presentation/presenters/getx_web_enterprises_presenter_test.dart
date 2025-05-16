@@ -1,5 +1,6 @@
 import 'package:celta_plus/data/models/models.dart';
 import 'package:celta_plus/domain/entities/entities.dart';
+import 'package:celta_plus/main/builders/builders.dart';
 import 'package:celta_plus/presentation/presenters/presenters.dart';
 import 'package:celta_plus/ui/helpers/helpers.dart';
 
@@ -37,6 +38,7 @@ void main() {
   }
 
   void initEntities() {
+    EnterpriseBuilder.entity = EntityFactory.makeFirebaseEnterpriseEntity();
     firebaseEnterprises = [
       EntityFactory.makeFirebaseEnterpriseEntity(),
       EntityFactory.makeFirebaseEnterpriseEntity(),
@@ -66,7 +68,7 @@ void main() {
     registerFallbackValue("");
   });
 
-  group("Load customers", () {
+  group("Load enterprises", () {
     test("Should emit correct values on success", () async {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(sut.mainErrorStream, emits(null));
@@ -96,11 +98,22 @@ void main() {
 
   group("Navigation", () {
     test("Should navigate to web enterprise details correctly", () {
-      sut.goToEnterpriseDetails();
+      sut.goToEnterpriseDetails(
+          FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
+              .toViewModel());
 
       verify(() =>
               navigateTo.navigate(pageRoute: PageRoutes.webEnterpriseDetails))
           .called(1);
+    });
+
+    test("Should update selected enterprise correctly", () {
+      final enterprise = FirebaseEnterpriseModel.fromEntity(
+              EntityFactory.makeFirebaseEnterpriseEntity())
+          .toViewModel();
+
+      sut.goToEnterpriseDetails(enterprise);
+      expect(sut.selectedEnterprise, enterprise);
     });
   });
 }

@@ -7,7 +7,8 @@ abstract class WebEnterprisesPresenter implements Listenable {
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
   Stream<List<FirebaseEnterpriseViewModel>?> get enterprisesStream;
+  FirebaseEnterpriseViewModel? get selectedEnterprise;
 
   Future<void> getEnterprises();
-  void goToEnterpriseDetails();
+  void goToEnterpriseDetails(FirebaseEnterpriseViewModel enterprise);
 }
