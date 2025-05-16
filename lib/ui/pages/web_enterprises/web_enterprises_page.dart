@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../helpers/helpers.dart';
 import '../../mixins/mixins.dart';
@@ -24,6 +25,8 @@ class _WebEnterprisesPageState extends State<WebEnterprisesPage>
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
+        Get.put<WebEnterprisesPresenter>(widget.presenter);
+
         await widget.presenter.getEnterprises();
       }
     });
