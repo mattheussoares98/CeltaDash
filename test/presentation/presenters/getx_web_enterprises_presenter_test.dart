@@ -3,6 +3,7 @@ import 'package:celta_plus/domain/entities/entities.dart';
 import 'package:celta_plus/main/builders/builders.dart';
 import 'package:celta_plus/presentation/presenters/presenters.dart';
 import 'package:celta_plus/ui/helpers/helpers.dart';
+import 'package:celta_plus/ui/pages/web_enterprises/web_enterprises.dart';
 import 'package:faker/faker.dart';
 
 import 'package:get/get.dart';
@@ -186,6 +187,41 @@ void main() {
 
       await sut.changeEnterpriseUrl(
         newUrl: enterpriseViewModel.baseUrl!,
+        docRef: docRef,
+      );
+    });
+    test("Should emit correct values when change enterprise", () async {
+      final selectedEnterprise =
+          FirebaseEnterpriseModel.fromEntity(firebaseEnterprises.first)
+              .toViewModel();
+      final enterpriseUpdated = FirebaseEnterpriseViewModel(
+        baseUrl: faker.internet.httpUrl(),
+        enterpriseName: selectedEnterprise.enterpriseName,
+        firebaseSubEnterprises: selectedEnterprise.firebaseSubEnterprises,
+        firebaseId: selectedEnterprise.firebaseId,
+      );
+
+      final loadedEnterprises = firebaseEnterprises
+          .map((e) => FirebaseEnterpriseModel.fromEntity(e).toViewModel())
+          .toList();
+
+      final index = loadedEnterprises.indexOf(selectedEnterprise);
+      final enterprisesUpdateds = [...loadedEnterprises];
+      enterprisesUpdateds[index] = enterpriseUpdated;
+
+      expectLater(
+        sut.enterprisesStream,
+        emitsInOrder([
+          loadedEnterprises,
+          enterprisesUpdateds,
+        ]),
+      );
+
+      await sut.getEnterprises();
+      sut.goToEnterpriseDetails(selectedEnterprise);
+
+      await sut.changeEnterpriseUrl(
+        newUrl: enterpriseUpdated.baseUrl!,
         docRef: docRef,
       );
     });

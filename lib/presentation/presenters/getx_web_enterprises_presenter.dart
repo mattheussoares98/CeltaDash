@@ -80,6 +80,15 @@ class GetxWebEnterprisesPresenter extends GetxController
         firebaseSubEnterprises: _selectedEnterprise?.firebaseSubEnterprises,
         firebaseId: _selectedEnterprise?.firebaseId,
       );
+
+      int? index = _enterprises.value
+          ?.indexWhere((e) => e.firebaseId == _selectedEnterprise?.firebaseId);
+
+      if (index != null && index != -1) {
+        final oldEnterprises = [..._enterprises.value!];
+        oldEnterprises[index] = _selectedEnterprise!;
+        _enterprises.value = oldEnterprises;
+      }
     } on DomainError catch (e) {
       switch (e) {
         case DomainError.sameUrl:
