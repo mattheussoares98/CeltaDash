@@ -60,8 +60,6 @@ class _SalesPageState extends State<SalesPage>
           builder: (context, snapshot) {
             return Column(
               children: [
-                PeriodItems(
-                    updateSelectedItem: salesPresenter.updateSelectedPeriod),
                 Expanded(
                   child: Obx(() {
                     final resumeSaleMovements = resumePresenter.saleMovements
@@ -71,16 +69,20 @@ class _SalesPageState extends State<SalesPage>
                         .map((e) => e.toViewModel())
                         .toList();
 
-                    final uniqueHours = resumeSaleMovements == null
-                        ? <String>[]
-                        : resumeSaleMovements
-                            .uniqueHours(
-                              enterprise: homePresenter.selectedEnterprise,
-                              filterDay: homePresenter.selectedDate.day,
-                              filterMonth: homePresenter.selectedDate.month,
-                              filterYear: homePresenter.selectedDate.year,
-                            )
-                            .toList();
+                    if (resumeSaleMovements == null ||
+                        resumeSaleMovements.isEmpty) {
+                      return Image.asset(
+                          "lib/ui/assets/images/empty_sales.png");
+                    }
+
+                    final uniqueHours = resumeSaleMovements
+                        .uniqueHours(
+                          enterprise: homePresenter.selectedEnterprise,
+                          filterDay: homePresenter.selectedDate.day,
+                          filterMonth: homePresenter.selectedDate.month,
+                          filterYear: homePresenter.selectedDate.year,
+                        )
+                        .toList();
 
                     final saleMovementsByMonth =
                         salesPresenter.saleMovementsByMonth
@@ -99,31 +101,40 @@ class _SalesPageState extends State<SalesPage>
                             .map((e) => e.toViewModel())
                             .toList();
 
-                    return Opacity(
-                      opacity: snapshot.data == true ? 0 : 1,
-                      child: Column(
-                        children: [
-                          if (salesPresenter.filterByHour &&
-                              resumeSaleMovements != null &&
-                              uniqueHours.isNotEmpty)
-                            HourTable(
-                              resumeSaleMovements: resumeSaleMovements,
-                              uniqueHours: uniqueHours,
+                    return Column(
+                      children: [
+                        PeriodItems(
+                            updateSelectedItem:
+                                salesPresenter.updateSelectedPeriod),
+                        Expanded(
+                          child: Opacity(
+                            opacity: snapshot.data == true ? 0 : 1,
+                            child: Column(
+                              children: [
+                                if (salesPresenter.filterByHour &&
+                                    uniqueHours.isNotEmpty)
+                                  HourTable(
+                                    resumeSaleMovements: resumeSaleMovements,
+                                    uniqueHours: uniqueHours,
+                                  ),
+                                if (salesPresenter.filterByDay)
+                                  DayTable(
+                                      resumeSaleMovements: resumeSaleMovements),
+                                if (salesPresenter.filterByMonth &&
+                                    saleMovementsByMonth != null &&
+                                    saleMovementsByMonth.isNotEmpty)
+                                  MonthSales(
+                                      saleMovementsByMonth: saleMovementsByMonth),
+                                if (salesPresenter.filterByYear &&
+                                    saleMovementsByYear != null &&
+                                    saleMovementsByYear.isNotEmpty)
+                                  YearSales(
+                                      saleMovementsByYear: saleMovementsByYear),
+                              ],
                             ),
-                          if (salesPresenter.filterByDay &&
-                              resumeSaleMovements != null)
-                            DayTable(resumeSaleMovements: resumeSaleMovements),
-                          if (salesPresenter.filterByMonth &&
-                              saleMovementsByMonth != null &&
-                              saleMovementsByMonth.isNotEmpty)
-                            MonthSales(
-                                saleMovementsByMonth: saleMovementsByMonth),
-                          if (salesPresenter.filterByYear &&
-                              saleMovementsByYear != null &&
-                              saleMovementsByYear.isNotEmpty)
-                            YearSales(saleMovementsByYear: saleMovementsByYear),
-                        ],
-                      ),
+                          ),
+                        ),
+                      ],
                     );
                   }),
                 ),

@@ -85,6 +85,7 @@ class _ProductsPageState extends State<ProductsPage> {
               return Opacity(
                 opacity: updateScreen.data == true ? 0 : 1,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // Padding(
                     //   padding: const EdgeInsets.all(8.0),
@@ -105,6 +106,10 @@ class _ProductsPageState extends State<ProductsPage> {
                     // ),
                     //TODO add period items after Cardoso fix problems to load data
                     const SizedBox(height: 10),
+                    if ((saleMovements == null || saleMovements.isEmpty) &&
+                        (saleMovementsByEnterprise == null ||
+                            saleMovementsByEnterprise.isEmpty))
+                      Image.asset("lib/ui/assets/images/empty_sales.png"),
                     if (saleMovementsByEnterprise != null &&
                         saleMovementsByEnterprise.isNotEmpty)
                       TableItem(
