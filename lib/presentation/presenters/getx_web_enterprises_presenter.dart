@@ -1,3 +1,4 @@
+import 'package:celta_plus/ui/pages/web_enterprises/firebase_enterprise_view_model.dart';
 import 'package:get/get.dart';
 
 import '../../domain/usecases/usecases.dart';
@@ -34,4 +35,11 @@ class GetxWebEnterprisesPresenter extends GetxController
       isLoading = false;
     }
   }
+
+  final Rx<List<FirebaseEnterpriseViewModel>?> _enterprises = Rx(null);
+  @override
+  Stream<List<FirebaseEnterpriseViewModel>?> get enterprisesStream =>
+      _enterprises.stream;
+  set enterprises(List<FirebaseEnterpriseViewModel>? enterprises) =>
+      _enterprises.value = enterprises;
 }
