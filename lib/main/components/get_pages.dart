@@ -93,6 +93,11 @@ class GetPages {
       transition: Transition.fadeIn,
     ),
     GetPage(
+      name: PageRoutes.webEnterpriseDetails,
+      page: makeWebEnterpriseDetailsPage,
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
       name: PageRoutes.webEnterprises,
       page: makeWebEnterprisesPage,
       transition: Transition.fadeIn,
