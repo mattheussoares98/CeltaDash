@@ -114,11 +114,21 @@ class GetxWebEnterprisesPresenter extends GetxController
       await firebaseManager.put(
         documentReference: docRef,
         data: {
-          "baseUrl": baseUrl,
-          "enterpriseName":
-              enterpriseName, //TODO remove white spaces and convert to lowercase
+          "baseUrl": baseUrl.toLowerCase().removeWhiteSpaces(),
+          "enterpriseName": enterpriseName.toLowerCase().removeWhiteSpaces(),
         },
       );
+
+      final oldEnterprises = [...?_enterprises.value];
+      _enterprises.value = [
+        ...oldEnterprises,
+        FirebaseEnterpriseViewModel(
+          baseUrl: baseUrl.toLowerCase().removeWhiteSpaces(),
+          enterpriseName: enterpriseName.toLowerCase().removeWhiteSpaces(),
+          firebaseSubEnterprises: null,
+          firebaseId: enterpriseName.toLowerCase().removeWhiteSpaces(),
+        ),
+      ];
     } on DomainError catch (e) {
       switch (e) {
         case DomainError.sameUrl:

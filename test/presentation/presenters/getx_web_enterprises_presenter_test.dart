@@ -226,4 +226,92 @@ void main() {
       );
     });
   });
+
+  group("Add new enterprise", () {
+    test("Should emit correct values on success", () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(sut.mainErrorStream, emits(null));
+
+      await sut.addNewEnterprise(
+        baseUrl: faker.internet.httpsUrl(),
+        enterpriseName: docRef.id,
+        docRef: docRef,
+      );
+    });
+    test("Should emit correct values on error", () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(
+        sut.mainErrorStream,
+        emitsInOrder([null, UIError.unexpected]),
+      );
+
+      firebaseManager.mockPutError();
+
+      await sut.addNewEnterprise(
+        baseUrl: faker.internet.httpsUrl(),
+        enterpriseName: docRef.id,
+        docRef: docRef,
+      );
+    });
+    test("Should call firebase manager with correct values", () async {
+      final baseUrl = faker.internet.httpsUrl();
+
+      await sut.addNewEnterprise(
+        baseUrl: baseUrl,
+        enterpriseName: docRef.id,
+        docRef: docRef,
+      );
+
+      verify(() => firebaseManager.put(
+            documentReference: docRef,
+            data: {"baseUrl": baseUrl, "enterpriseName": docRef.id},
+          )).called(1);
+    });
+    test("Should save url without spaces and convert to lowercase", () async {
+      final baseUrl = faker.lorem.sentence();
+
+      await sut.addNewEnterprise(
+        baseUrl: baseUrl,
+        enterpriseName: docRef.id,
+        docRef: docRef,
+      );
+
+      verify(() => firebaseManager.put(
+            documentReference: docRef,
+            data: {
+              "baseUrl": baseUrl.toLowerCase().removeWhiteSpaces(),
+              "enterpriseName": docRef.id.toLowerCase().removeWhiteSpaces(),
+            },
+          )).called(1);
+    });
+    test("Should save the new enterprise locally", () async {
+      final oldEnterprises = firebaseEnterprises
+          .map((e) => FirebaseEnterpriseModel.fromEntity(e).toViewModel())
+          .toList();
+      final baseUrl = faker.internet.httpsUrl();
+      final newEnterprises = [
+        ...oldEnterprises,
+        FirebaseEnterpriseViewModel(
+          baseUrl: baseUrl.toLowerCase().removeWhiteSpaces(),
+          enterpriseName: docRef.id.toLowerCase().removeWhiteSpaces(),
+          firebaseId: docRef.id.toLowerCase().removeWhiteSpaces(),
+          firebaseSubEnterprises: null,
+        ),
+      ];
+
+      expectLater(
+          sut.enterprisesStream,
+          emitsInOrder([
+            oldEnterprises,
+            newEnterprises,
+          ]));
+
+      await sut.getEnterprises();
+      await sut.addNewEnterprise(
+        baseUrl: baseUrl,
+        enterpriseName: docRef.id,
+        docRef: docRef,
+      );
+    });
+  });
 }

@@ -2,6 +2,7 @@ import 'package:celta_plus/domain/helpers/helpers.dart';
 import 'package:celta_plus/domain/usecases/usecases.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:faker/faker.dart';
 import 'package:mocktail/mocktail.dart';
 
 // ignore: unused_element
@@ -14,7 +15,10 @@ class FakeDoc {
 
 // ignore: subtype_of_sealed_class
 class DocumentReferenceFake extends Fake
-    implements DocumentReference<Map<String, dynamic>> {}
+    implements DocumentReference<Map<String, dynamic>> {
+  @override
+  final String id = faker.guid.guid();
+}
 
 // ignore: must_be_immutable
 class MockedFirebaseGet extends Equatable {
@@ -63,7 +67,7 @@ class FirebaseManagerSpy extends Mock implements FirebaseManager {
   }
 
   void mockPutError() {
-    this._mockPutCall().thenThrow(Exception());
+    this._mockPutCall().thenThrow(DomainError.unexpected);
   }
 
   When _mockGetCall() => when(

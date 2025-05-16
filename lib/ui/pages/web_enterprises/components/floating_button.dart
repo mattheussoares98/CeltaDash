@@ -91,7 +91,9 @@ class _FloatingButtonState extends State<FloatingButton> {
                   enterpriseName: enterpriseNameController.text,
                   docRef:
                       FirebaseFirestore.instance.collection("enterprises").doc(
-                            enterpriseNameController.text,
+                            enterpriseNameController.text
+                                .toLowerCase()
+                                .removeWhiteSpaces(),
                           ),
                 );
                 Navigator.of(context).pop();
