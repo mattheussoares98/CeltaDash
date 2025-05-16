@@ -16,4 +16,9 @@ abstract class WebEnterprisesPresenter implements Listenable {
     required String newUrl,
     required DocumentReference<Map<String, dynamic>> docRef,
   });
+  Future<void> addNewEnterprise({
+    required String baseUrl,
+    required String enterpriseName,
+    required DocumentReference<Map<String, dynamic>> docRef,
+  });
 }

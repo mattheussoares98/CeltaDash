@@ -17,6 +17,7 @@ class PtBr implements Translation {
   String get msgVeryShortField => "Campo muito curto";
   String get msgWriteSomething => "Digite algo";
 
+  String get add => "Adicionar";
   String get anothersEnterprises => "Outras empresas";
   String get anothersProducts => "Outros produtos";
   String get all => "Todas";
@@ -48,6 +49,7 @@ class PtBr implements Translation {
   String get emptySubEnterprises => "Não há sub-empresas";
   String get enter => "Entrar";
   String get enterprise => "Empresa";
+  String get enterpriseName => "Nome da empresa";
   String get enterprises => "Empresas";
   String get finalizations => "Finalizadoras";
   String get firstDaySales => "Vendas do primeiro dia";
@@ -69,6 +71,7 @@ class PtBr implements Translation {
   String get monthlyAnalysis => "Análise mensal";
   String get more => "Mais";
   String get moreDetails => "Mais detalhes";
+  String get newEnterprise => "Nova empresa";
   String get no => "Não";
   String get noData => "Não há dados";
   String get of => "De";
@@ -92,6 +95,7 @@ class PtBr implements Translation {
   String get salesQuantityAverage => "Quantidade de vendas (média)";
   String get salesUntilNow => "Vendas até agora";
   String get sallers => "Vendedores";
+  String get save => "Salvar";
   String get searchAgain => "Pesquisar novamente";
   String get secondDaySales => "Vendas do segundo dia";
   String get section => "Seção";

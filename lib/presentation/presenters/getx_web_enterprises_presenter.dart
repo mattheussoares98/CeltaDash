@@ -101,4 +101,34 @@ class GetxWebEnterprisesPresenter extends GetxController
       isLoading = false;
     }
   }
+
+  @override
+  Future<void> addNewEnterprise({
+    required String baseUrl,
+    required String enterpriseName,
+    required DocumentReference<Map<String, dynamic>> docRef,
+  }) async {
+    isLoading = true;
+    mainError = null;
+    try {
+      await firebaseManager.put(
+        documentReference: docRef,
+        data: {
+          "baseUrl": baseUrl,
+          "enterpriseName":
+              enterpriseName, //TODO remove white spaces and convert to lowercase
+        },
+      );
+    } on DomainError catch (e) {
+      switch (e) {
+        case DomainError.sameUrl:
+          mainError = UIError.sameUrl;
+          break;
+        default:
+          mainError = UIError.unexpected;
+      }
+    } finally {
+      isLoading = false;
+    }
+  }
 }

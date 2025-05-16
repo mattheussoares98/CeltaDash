@@ -1,7 +1,10 @@
+import 'package:celta_plus/presentation/protocols/protocols.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../main/composites/composites.dart';
+import '../../../../validation/validators/validators.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
@@ -45,6 +48,12 @@ class BaseUrlField extends StatelessWidget {
             icon: Icon(Icons.save),
           ),
         ),
+        validator: (value) {
+          return ValidationComposite([
+            RequiredFieldValidation(),
+            //TODO create url validator
+          ]).validate(value)?.description;
+        },
         onFieldSubmitted: (_) async {
           await onPressed(webEnterprisesPresenter);
         },

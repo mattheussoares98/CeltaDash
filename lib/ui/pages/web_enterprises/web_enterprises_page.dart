@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import '../../helpers/helpers.dart';
 import '../../mixins/mixins.dart';
 import '../pages.dart';
+import 'components/components.dart';
 
 class WebEnterprisesPage extends StatefulWidget {
   final WebEnterprisesPresenter presenter;
@@ -19,6 +20,7 @@ class _WebEnterprisesPageState extends State<WebEnterprisesPage>
     with LoadingManager, UIErrorManager {
   StreamSubscription? loadingSubscription;
   StreamSubscription? mainErrorSubscription;
+
   @override
   void initState() {
     super.initState();
@@ -55,7 +57,7 @@ class _WebEnterprisesPageState extends State<WebEnterprisesPage>
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("WEB ENTERPRISES PAGE"),
+        title: Text(R.string.enterprises),
         actions: [
           IconButton(
             onPressed: () async {
@@ -101,12 +103,7 @@ class _WebEnterprisesPageState extends State<WebEnterprisesPage>
               },
             );
           }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          //TODO new function to add enterprise
-        },
-        child: Icon(Icons.add),
-      ),
+      floatingActionButton: FloatingButton(),
     );
   }
 }

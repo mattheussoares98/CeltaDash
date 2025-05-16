@@ -12,6 +12,7 @@ abstract class Translation {
   String get msgVeryShortField;
   String get msgWriteSomething;
 
+  String get add;
   String get anothersEnterprises;
   String get anothersProducts;
   String get all;
@@ -43,6 +44,7 @@ abstract class Translation {
   String get emptySubEnterprises;
   String get enter;
   String get enterprise;
+  String get enterpriseName;
   String get enterprises;
   String get firstDaySales;
   String get finalizations;
@@ -64,6 +66,7 @@ abstract class Translation {
   String get monthlyAnalysis;
   String get more;
   String get moreDetails;
+  String get newEnterprise;
   String get no;
   String get noData;
   String get of;
@@ -87,6 +90,7 @@ abstract class Translation {
   String get salesQuantityAverage;
   String get salesUntilNow;
   String get sallers;
+  String get save;
   String get searchAgain;
   String get secondDaySales;
   String get section;
