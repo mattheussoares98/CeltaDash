@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../../domain/entities/entities.dart';
+import '../../ui/pages/pages.dart';
 import './models.dart';
 
 class FirebaseEnterpriseModel extends Equatable {
@@ -67,5 +68,26 @@ class FirebaseEnterpriseModel extends Equatable {
         bsUser: bsUser?.toEntity(),
         firebaseSubEnterprises:
             subEnterprises?.map((e) => e.toEntity()).toList(),
+      );
+
+  factory FirebaseEnterpriseModel.fromViewModel(
+    FirebaseEnterpriseViewModel viewModel,
+  ) =>
+      FirebaseEnterpriseModel(
+        baseUrl: viewModel.baseUrl,
+        enterpriseName: viewModel.enterpriseName,
+        firebaseId: viewModel.firebaseId,
+        bsUser: null,
+        subEnterprises: viewModel.firebaseSubEnterprises
+            ?.map((e) => FirebaseSubEnterpriseModel.fromViewModel(e))
+            .toList(),
+      );
+
+  FirebaseEnterpriseViewModel toViewModel() => FirebaseEnterpriseViewModel(
+        baseUrl: baseUrl,
+        enterpriseName: enterpriseName,
+        firebaseId: firebaseId,
+        firebaseSubEnterprises:
+            subEnterprises?.map((e) => e.toViewModel()).toList(),
       );
 }

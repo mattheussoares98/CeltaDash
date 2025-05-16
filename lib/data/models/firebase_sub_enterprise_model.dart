@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../ui/helpers/helpers.dart';
 import '../../domain/entities/entities.dart';
+import '../../ui/pages/pages.dart';
 
 class FirebaseSubEnterpriseModel extends Equatable {
   final int? id;
@@ -54,20 +56,22 @@ class FirebaseSubEnterpriseModel extends Equatable {
         cnpj: cnpj,
       );
 
-  // factory FirebaseSubEnterpriseModel.fromViewModel(
-  //     EnterpriseViewModel viewModel) {
-  //   return FirebaseSubEnterpriseModel(
-  //     id: viewModel.id?.toInt(),
-  //     name: viewModel.name,
-  //     personalizedCode: viewModel.personalizedCode,
-  //     cnpj: viewModel.cnpj,
-  //   );
-  // }
+  factory FirebaseSubEnterpriseModel.fromViewModel(
+    FirebaseSubEnterpriseViewModel viewModel,
+  ) {
+    return FirebaseSubEnterpriseModel(
+      id: viewModel.id?.toInt(),
+      name: viewModel.name,
+      personalizedCode: viewModel.personalizedCode,
+      cnpj: viewModel.cnpj,
+    );
+  }
 
-  // EnterpriseViewModel toViewModel() => EnterpriseViewModel(
-  //       id: id.toString(),
-  //       name: name,
-  //       personalizedCode: personalizedCode,
-  //       cnpj: cnpj,
-  //     );
+  FirebaseSubEnterpriseViewModel toViewModel() =>
+      FirebaseSubEnterpriseViewModel(
+        id: id.toString(),
+        name: name,
+        personalizedCode: personalizedCode,
+        cnpj: cnpj,
+      );
 }
