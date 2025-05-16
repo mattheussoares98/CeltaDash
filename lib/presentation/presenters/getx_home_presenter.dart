@@ -41,14 +41,24 @@ class GetxHomePresenter extends GetxController
     navigateTo.navigate(pageRoute: PageRoutes.configurations);
   }
 
-  List<EnterpriseEntity> _getMissingEnterprises(
+  List<FirebaseSubEnterpriseEntity> _getMissingEnterprises(
     List<EnterpriseEntity> enterprises,
     List<FirebaseSubEnterpriseEntity> enterprisesToCompare,
   ) {
-    return enterprises.where((e) {
-      return !enterprisesToCompare
-          .any((sub) => sub.cnpj == e.cnpj && sub.id == e.id);
-    }).toList();
+    return enterprises
+        .where((e) {
+          return !enterprisesToCompare
+              .any((sub) => sub.cnpj == e.cnpj && sub.id == e.id);
+        })
+        .map(
+          (e) => FirebaseSubEnterpriseEntity(
+            id: e.id,
+            name: e.name,
+            personalizedCode: e.personalizedCode,
+            cnpj: e.cnpj,
+          ),
+        )
+        .toList();
   }
 
   @override
@@ -87,20 +97,17 @@ class GetxHomePresenter extends GetxController
         if (missingRemote.isNotEmpty) {
           await firebaseManager.put(
             documentReference: docRef,
-            data: {
-              "subEnterprises": missingLocal
-                  .map(
-                    (e) => FirebaseSubEnterpriseModel.fromEntity(
-                      FirebaseSubEnterpriseEntity(
-                        id: e.id,
-                        name: e.name,
-                        personalizedCode: e.personalizedCode,
-                        cnpj: e.cnpj,
-                      ),
-                    ).toJson(),
-                  )
-                  .toList()
-            },
+            arrayUnion: [
+              {
+                "subEnterprises": FieldValue.arrayUnion(
+                  missingLocal
+                      .map((e) =>
+                          FirebaseSubEnterpriseModel.fromEntity(e).toJson())
+                      .toList(),
+                ),
+              }
+            ],
+            data: {},
             merge: true,
           );
           EnterpriseBuilder.entity = FirebaseEnterpriseEntity(
@@ -109,14 +116,7 @@ class GetxHomePresenter extends GetxController
             bsUser: EnterpriseBuilder.entity?.bsUser,
             firebaseSubEnterprises: [
               ...firebaseSubEnterprises,
-              ...missingLocal.map(
-                (e) => FirebaseSubEnterpriseEntity(
-                  id: e.id,
-                  name: e.name,
-                  personalizedCode: e.personalizedCode,
-                  cnpj: e.cnpj,
-                ),
-              ),
+              ...missingLocal,
             ],
             firebaseId: EnterpriseBuilder.entity?.firebaseId,
           );

@@ -4,6 +4,7 @@ import 'package:celta_plus/infra/helpers/helpers.dart';
 import 'package:celta_plus/main/builders/builders.dart';
 import 'package:celta_plus/presentation/presenters/presenters.dart';
 import 'package:celta_plus/ui/helpers/helpers.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:faker/faker.dart';
 
 import 'package:get/get.dart';
@@ -232,14 +233,24 @@ void main() {
 
         verify(
           () => firebaseManager.put(
-            documentReference: docRef,
-            merge: true,
-            data: {
-              "subEnterprises": enterprisesInBs
-                  .map((e) => EnterpriseModel.fromEntity(e).toJson())
-                  .toList()
-            },
-          ),
+              documentReference: docRef,
+              merge: true,
+              data: {},
+              arrayUnion: [
+                {
+                  "subEnterprises": FieldValue.arrayUnion(
+                    enterprisesInBs
+                        .map((e) => FirebaseSubEnterpriseModel.fromEntity(
+                                FirebaseSubEnterpriseEntity(
+                              id: e.id,
+                              name: e.name,
+                              personalizedCode: e.personalizedCode,
+                              cnpj: e.cnpj,
+                            )).toJson())
+                        .toList(),
+                  ),
+                }
+              ]),
         ).called(1);
       });
       test("Should no call to put enterprises if is not missing", () async {
