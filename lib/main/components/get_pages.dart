@@ -94,7 +94,7 @@ class GetPages {
     ),
     GetPage(
       name: PageRoutes.webEnterprises,
-      page: makeWebCustomersPage,
+      page: makeWebEnterprisesPage,
       transition: Transition.fadeIn,
     ),
     GetPage(

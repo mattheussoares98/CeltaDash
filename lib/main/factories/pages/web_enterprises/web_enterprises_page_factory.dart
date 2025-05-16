@@ -1,6 +1,6 @@
 import '../../../../ui/pages/pages.dart';
 import '../../factories.dart';
 
-WebCustomersPage makeWebCustomersPage() => WebCustomersPage(
+WebEnterprisesPage makeWebEnterprisesPage() => WebEnterprisesPage(
       presenter: makeGetxWebEnterprisesPresenter(),
     );

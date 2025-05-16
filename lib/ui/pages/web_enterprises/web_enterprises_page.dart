@@ -6,15 +6,15 @@ import '../../helpers/helpers.dart';
 import '../../mixins/mixins.dart';
 import '../pages.dart';
 
-class WebCustomersPage extends StatefulWidget {
+class WebEnterprisesPage extends StatefulWidget {
   final WebEnterprisesPresenter presenter;
-  const WebCustomersPage({super.key, required this.presenter});
+  const WebEnterprisesPage({super.key, required this.presenter});
 
   @override
-  State<WebCustomersPage> createState() => _WebCustomersPageState();
+  State<WebEnterprisesPage> createState() => _WebEnterprisesPageState();
 }
 
-class _WebCustomersPageState extends State<WebCustomersPage>
+class _WebEnterprisesPageState extends State<WebEnterprisesPage>
     with LoadingManager, UIErrorManager {
   StreamSubscription? loadingSubscription;
   StreamSubscription? mainErrorSubscription;
