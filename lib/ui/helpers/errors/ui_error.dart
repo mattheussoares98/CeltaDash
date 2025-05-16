@@ -3,6 +3,7 @@ import '../helpers.dart';
 enum UIError {
   enterpriseNotFound,
   sameDays,
+  sameUrl,
   unexpected,
   updateCeltaBs,
 }
@@ -14,6 +15,8 @@ extension UIErrorExtension on UIError {
         return R.string.msgEnterpriseNotFound;
       case UIError.sameDays:
         return R.string.msgCantCompareSameDays;
+      case UIError.sameUrl:
+        return R.string.msgSameUrl;
       case UIError.unexpected:
         return R.string.msgUnexpectedError;
       case UIError.updateCeltaBs:

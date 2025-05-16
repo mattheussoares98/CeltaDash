@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
+import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
 import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
@@ -63,6 +64,10 @@ class GetxWebEnterprisesPresenter extends GetxController
     isLoading = true;
     mainError = null;
     try {
+      if (newUrl == _selectedEnterprise?.baseUrl) {
+        throw DomainError.sameUrl;
+      }
+
       await firebaseManager.put(
         documentReference: docRef,
         data: {"baseUrl": newUrl},
@@ -75,8 +80,14 @@ class GetxWebEnterprisesPresenter extends GetxController
         firebaseSubEnterprises: _selectedEnterprise?.firebaseSubEnterprises,
         firebaseId: _selectedEnterprise?.firebaseId,
       );
-    } catch (e) {
-      mainError = UIError.unexpected;
+    } on DomainError catch (e) {
+      switch (e) {
+        case DomainError.sameUrl:
+          mainError = UIError.sameUrl;
+          break;
+        default:
+          mainError = UIError.unexpected;
+      }
     } finally {
       isLoading = false;
     }

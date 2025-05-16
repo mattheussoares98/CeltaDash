@@ -155,5 +155,39 @@ void main() {
 
       expect(sut.selectedEnterprise?.baseUrl, newUrl);
     });
+
+    test("Should not call firebae put when urls are equals", () async {
+      final enterpriseViewModel =
+          FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
+              .toViewModel();
+      sut.goToEnterpriseDetails(enterpriseViewModel);
+
+      await sut.changeEnterpriseUrl(
+        newUrl: enterpriseViewModel.baseUrl!,
+        docRef: docRef,
+      );
+
+      verifyNever(
+        () => firebaseManager.put(
+          documentReference: docRef,
+          data: {"baseUrl": enterpriseViewModel.baseUrl!},
+          merge: true,
+        ),
+      );
+    });
+    test("Should emit correct error when is the same url", () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(sut.mainErrorStream, emitsInOrder([null, UIError.sameUrl]));
+
+      final enterpriseViewModel =
+          FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
+              .toViewModel();
+      sut.goToEnterpriseDetails(enterpriseViewModel);
+
+      await sut.changeEnterpriseUrl(
+        newUrl: enterpriseViewModel.baseUrl!,
+        docRef: docRef,
+      );
+    });
   });
 }
