@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-
 import '../../../../data/models/models.dart';
 import '../../../../ui/helpers/helpers.dart';
 import '../../pages.dart';
@@ -13,6 +12,14 @@ class MonthlyAnalysis extends StatelessWidget {
   final List<SaleMovementViewModel> saleMovements;
   const MonthlyAnalysis({super.key, required this.saleMovements});
 
+  bool isToday(DateTime? date) {
+    final now = DateTime.now();
+
+    return date?.day == now.day &&
+        date?.month == now.month &&
+        date?.year == now.year;
+  }
+
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
@@ -20,7 +27,8 @@ class MonthlyAnalysis extends StatelessWidget {
     final datesAndValues = (saleMovements
             .where((e) =>
                 e.EnterpriseId == homePresenter.selectedEnterprise?.id &&
-                e.Date?.month == homePresenter.selectedDate.month)
+                e.Date?.month == homePresenter.selectedDate.month &&
+                !isToday(e.Date))
             .map((e) => e.Date!.day)
             .toSet()
             .toList()
