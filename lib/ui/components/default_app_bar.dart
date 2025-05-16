@@ -139,6 +139,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                                   homePresenter.updateSelectedDate(newDate);
                                 });
                                 if (widget.onChangeDate != null) {
+                                  homePresenter.updateScreen();
                                   widget.onChangeDate!(newDate);
                                 }
                               }
