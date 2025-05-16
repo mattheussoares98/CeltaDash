@@ -14,7 +14,6 @@ class RemoteFirebaseManager implements FirebaseManager {
     String? fieldToSearch,
     String? valueToSearch,
   }) async {
-    
     return await firebaseStorage.get(
       collection: collection,
       doc: doc,
@@ -29,7 +28,7 @@ class RemoteFirebaseManager implements FirebaseManager {
     List<Map<String, FieldValue>?>? arrayUnion,
     bool? merge,
     required DocumentReference<Map<String, dynamic>> documentReference,
-    required Map<String, dynamic>? data,
+    required Map<String, dynamic> data,
   }) async {
     await firebaseStorage.put(
       documentReference: documentReference,

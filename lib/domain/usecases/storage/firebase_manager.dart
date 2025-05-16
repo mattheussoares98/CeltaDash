@@ -13,6 +13,6 @@ abstract class FirebaseManager {
     List<Map<String, FieldValue>?>? arrayUnion,
     bool? merge,
     required DocumentReference<Map<String, dynamic>> documentReference,
-    required Map<String, dynamic>? data,
+    required Map<String, dynamic> data,
   });
 }
