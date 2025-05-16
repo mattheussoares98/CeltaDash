@@ -6,8 +6,8 @@ class WebCustomersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Customers Management")),
-      body: Center(child: Text("Customers Management")),
+      appBar: AppBar(title: Text("WEB ENTERPRISES PAGE")),
+      body: Center(child: Text("WEB ENTERPRISES")),
     );
   }
 }

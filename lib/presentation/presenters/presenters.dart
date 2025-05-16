@@ -9,4 +9,5 @@ export './getx_resume_presenter.dart';
 export './getx_sales_presenter.dart';
 export './getx_splash_presenter.dart';
 export './getx_team_presenter.dart';
+export './getx_web_enterprises_presenter.dart';
 export './getx_web_login_presenter.dart';

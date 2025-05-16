@@ -2,9 +2,10 @@ import 'package:flutter/widgets.dart';
 
 import '../../helpers/helpers.dart';
 
-abstract class WebCustomersPresenter implements Listenable {
+abstract class WebEnterprisesPresenter implements Listenable {
+  Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
-  Stream<UIError> get mainErrorStream;
+  //TODO create FirebaseEnterpriseViewModel
 
   Future<void> getCustomers();
 }
