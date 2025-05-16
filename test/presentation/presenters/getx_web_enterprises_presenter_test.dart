@@ -3,6 +3,7 @@ import 'package:celta_plus/domain/entities/entities.dart';
 import 'package:celta_plus/main/builders/builders.dart';
 import 'package:celta_plus/presentation/presenters/presenters.dart';
 import 'package:celta_plus/ui/helpers/helpers.dart';
+import 'package:faker/faker.dart';
 
 import 'package:get/get.dart';
 
@@ -21,6 +22,7 @@ void main() {
 
   late List<FirebaseEnterpriseEntity> firebaseEnterprises;
   late MockedFirebaseGet mockedFirebaseGet;
+  late DocumentReferenceFake docRef;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
@@ -53,6 +55,7 @@ void main() {
         ),
       ],
     );
+    docRef = DocumentReferenceFake();
   }
 
   void initMockSuccess() {}
@@ -114,6 +117,43 @@ void main() {
 
       sut.goToEnterpriseDetails(enterprise);
       expect(sut.selectedEnterprise, enterprise);
+    });
+  });
+
+  group("Change enterprise url", () {
+    test("Should call firebase manager correctly", () async {
+      final enterpriseViewModel =
+          FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
+              .toViewModel();
+      sut.goToEnterpriseDetails(enterpriseViewModel);
+      final newUrl = faker.internet.httpUrl();
+
+      await sut.changeEnterpriseUrl(
+        newUrl: newUrl,
+        docRef: docRef,
+      );
+
+      verify(
+        () => firebaseManager.put(
+          documentReference: docRef,
+          data: {"baseUrl": newUrl},
+          merge: true,
+        ),
+      ).called(1);
+    });
+    test("Should update selected enterprise correctly", () async {
+      final enterpriseViewModel =
+          FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
+              .toViewModel();
+      sut.goToEnterpriseDetails(enterpriseViewModel);
+      final newUrl = faker.internet.httpUrl();
+
+      await sut.changeEnterpriseUrl(
+        newUrl: newUrl,
+        docRef: docRef,
+      );
+
+      expect(sut.selectedEnterprise?.baseUrl, newUrl);
     });
   });
 }

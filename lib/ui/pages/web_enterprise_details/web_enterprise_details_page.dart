@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -19,12 +20,27 @@ class _WebEnterpriseDetailsPageState extends State<WebEnterpriseDetailsPage>
     with LoadingManager, UIErrorManager {
   StreamSubscription? loadingSubscription;
   StreamSubscription? mainErrorSubscription;
+  final urlController = TextEditingController();
 
   @override
   void dispose() {
     super.dispose();
     loadingSubscription?.cancel();
     mainErrorSubscription?.cancel();
+    urlController.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    final webEnterprisePresenter = Get.find<WebEnterprisesPresenter>();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted && webEnterprisePresenter.selectedEnterprise != null) {
+        urlController.text =
+            webEnterprisePresenter.selectedEnterprise?.baseUrl ?? "";
+      }
+    });
   }
 
   @override
@@ -54,6 +70,31 @@ class _WebEnterpriseDetailsPageState extends State<WebEnterpriseDetailsPage>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("${R.string.url}: ${selectedEnterprise.baseUrl}"),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: TextFormField(
+                        decoration: FormFieldDecoration.decoration(
+                          context: context,
+                          labelText: R.string.url,
+                          hintText: R.string.url,
+                          suffixIcon: IconButton(
+                            onPressed: () async {
+                              await webEnterprisesPresenter.changeEnterpriseUrl(
+                                newUrl: urlController.text,
+                                docRef: FirebaseFirestore.instance
+                                    .collection("enterprises")
+                                    .doc(
+                                      selectedEnterprise.firebaseId,
+                                    ),
+                              );
+                              setState(() {});
+                            },
+                            icon: Icon(Icons.save),
+                          ),
+                        ),
+                        controller: urlController,
+                      ),
+                    ),
                     if ((selectedEnterprise.firebaseSubEnterprises?.length ??
                             0) >
                         0)

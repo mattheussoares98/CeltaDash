@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
@@ -53,4 +54,31 @@ class GetxWebEnterprisesPresenter extends GetxController
   FirebaseEnterpriseViewModel? _selectedEnterprise;
   @override
   FirebaseEnterpriseViewModel? get selectedEnterprise => _selectedEnterprise;
+
+  @override
+  Future<void> changeEnterpriseUrl({
+    required String newUrl,
+    required DocumentReference<Map<String, dynamic>> docRef,
+  }) async {
+    isLoading = true;
+    mainError = null;
+    try {
+      await firebaseManager.put(
+        documentReference: docRef,
+        data: {"baseUrl": newUrl},
+        merge: true,
+      );
+
+      _selectedEnterprise = FirebaseEnterpriseViewModel(
+        baseUrl: newUrl,
+        enterpriseName: _selectedEnterprise?.enterpriseName,
+        firebaseSubEnterprises: _selectedEnterprise?.firebaseSubEnterprises,
+        firebaseId: _selectedEnterprise?.firebaseId,
+      );
+    } catch (e) {
+      mainError = UIError.unexpected;
+    } finally {
+      isLoading = false;
+    }
+  }
 }
