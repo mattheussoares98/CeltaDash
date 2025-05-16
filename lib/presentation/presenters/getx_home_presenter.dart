@@ -82,7 +82,7 @@ class GetxHomePresenter extends GetxController
           doc: EnterpriseBuilder.entity?.firebaseId,
         );
 
-        List<FirebaseSubEnterpriseEntity> firebaseSubEnterprises =
+        List<FirebaseSubEnterpriseEntity>? firebaseSubEnterprises =
             firebaseEnterprise
                 .data()["subEnterprises"]
                 ?.map<FirebaseSubEnterpriseEntity>(
@@ -91,7 +91,7 @@ class GetxHomePresenter extends GetxController
 
         final missingRemote = _getMissingEnterprises(
           enterprisesInBs,
-          firebaseSubEnterprises,
+          firebaseSubEnterprises ?? [],
         );
 
         if (missingRemote.isNotEmpty) {
@@ -115,7 +115,7 @@ class GetxHomePresenter extends GetxController
             enterpriseName: EnterpriseBuilder.entity?.enterpriseName,
             bsUser: EnterpriseBuilder.entity?.bsUser,
             firebaseSubEnterprises: [
-              ...firebaseSubEnterprises,
+              ...?firebaseSubEnterprises,
               ...missingLocal,
             ],
             firebaseId: EnterpriseBuilder.entity?.firebaseId,
