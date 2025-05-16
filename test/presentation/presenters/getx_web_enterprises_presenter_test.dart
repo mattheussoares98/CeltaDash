@@ -76,7 +76,7 @@ void main() {
               .map((e) => FirebaseEnterpriseModel.fromEntity(e).toViewModel())
               .toList()));
 
-      await sut.getCustomers();
+      await sut.getEnterprises();
     });
     test("Should emit correct values on error", () async {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
@@ -85,12 +85,22 @@ void main() {
 
       firebaseManager.mockGetError();
 
-      await sut.getCustomers();
+      await sut.getEnterprises();
     });
     test("Should call firebaseManager get with correct values", () async {
-      await sut.getCustomers();
+      await sut.getEnterprises();
 
       verify(() => firebaseManager.get(collection: "enterprises")).called(1);
+    });
+  });
+
+  group("Navigation", () {
+    test("Should navigate to web enterprise details correctly", () {
+      sut.goToEnterpriseDetails();
+
+      verify(() =>
+              navigateTo.navigate(pageRoute: PageRoutes.webEnterpriseDetails))
+          .called(1);
     });
   });
 }

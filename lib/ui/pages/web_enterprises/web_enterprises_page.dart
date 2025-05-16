@@ -24,7 +24,7 @@ class _WebCustomersPageState extends State<WebCustomersPage>
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
-        await widget.presenter.getCustomers();
+        await widget.presenter.getEnterprises();
       }
     });
   }
@@ -52,7 +52,7 @@ class _WebCustomersPageState extends State<WebCustomersPage>
         actions: [
           IconButton(
             onPressed: () async {
-              await widget.presenter.getCustomers();
+              await widget.presenter.getEnterprises();
             },
             icon: Icon(Icons.refresh),
           ),
@@ -75,12 +75,12 @@ class _WebCustomersPageState extends State<WebCustomersPage>
                   padding:
                       const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: widget.presenter.goToEnterpriseDetails,
                     child: Row(
                       children: [
                         Expanded(child: Text("${enterprise.enterpriseName}")),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: widget.presenter.goToEnterpriseDetails,
                           icon: Icon(Icons.mode_rounded),
                         ),
                       ],
@@ -91,8 +91,8 @@ class _WebCustomersPageState extends State<WebCustomersPage>
             );
           }),
       floatingActionButton: FloatingActionButton(
+        onPressed: widget.presenter.goToEnterpriseDetails,
         child: Icon(Icons.add),
-        onPressed: () {},
       ),
     );
   }

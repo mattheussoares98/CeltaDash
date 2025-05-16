@@ -26,7 +26,7 @@ class GetxWebLoginPresenter extends GetxController
     try {
       await firebaseLoginManagement.login(email: email, password: password);
       await navigateTo.navigate(
-        pageRoute: PageRoutes.webCustomers,
+        pageRoute: PageRoutes.webEnterprises,
         clear: true,
       );
     } catch (e) {
@@ -54,7 +54,7 @@ class GetxWebLoginPresenter extends GetxController
     isLoading = true;
     bool isLogged = await firebaseLoginManagement.isLoggedIn();
     if (isLogged) {
-      navigateTo.navigate(pageRoute: PageRoutes.webCustomers, clear: true);
+      navigateTo.navigate(pageRoute: PageRoutes.webEnterprises, clear: true);
     }
     isLoading = false;
   }

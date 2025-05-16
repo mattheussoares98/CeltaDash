@@ -15,6 +15,7 @@ class PageRoutes {
   static const String setGoal = "/set_goal";
   static const String splash = "/splash";
   static const String paymentsType = "/payments_type";
-  static const String webCustomers = "/web_customers";
+  static const String webEnterprises = "/web_enterprises";
+  static const String webEnterpriseDetails = "/web_enterprises_details";
   static const String webLogin = "/web_login";
 }

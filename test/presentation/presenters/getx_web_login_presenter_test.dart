@@ -81,7 +81,7 @@ void main() {
 
       verify(
         () => navigateTo.navigate(
-            pageRoute: PageRoutes.webCustomers, clear: true),
+            pageRoute: PageRoutes.webEnterprises, clear: true),
       ).called(1);
     });
   });

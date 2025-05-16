@@ -1,4 +1,3 @@
-import 'package:celta_plus/ui/pages/web_enterprises/firebase_enterprise_view_model.dart';
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
@@ -19,7 +18,7 @@ class GetxWebEnterprisesPresenter extends GetxController
   });
 
   @override
-  Future<void> getCustomers() async {
+  Future<void> getEnterprises() async {
     isLoading = true;
     mainError = null;
     try {
@@ -44,4 +43,9 @@ class GetxWebEnterprisesPresenter extends GetxController
       _enterprises.stream;
   set enterprises(List<FirebaseEnterpriseViewModel>? enterprises) =>
       _enterprises.value = enterprises;
+
+  @override
+  void goToEnterpriseDetails() {
+    navigateTo.navigate(pageRoute: PageRoutes.webEnterpriseDetails);
+  }
 }

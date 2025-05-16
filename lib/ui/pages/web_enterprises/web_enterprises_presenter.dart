@@ -8,5 +8,6 @@ abstract class WebEnterprisesPresenter implements Listenable {
   Stream<bool> get isLoadingStream;
   Stream<List<FirebaseEnterpriseViewModel>?> get enterprisesStream;
 
-  Future<void> getCustomers();
+  Future<void> getEnterprises();
+  void goToEnterpriseDetails();
 }
