@@ -117,31 +117,33 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                   return StreamBuilder<bool>(
                       stream: homePresenter.updateScreenStream,
                       builder: (context, snapshot) {
-                        return Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: SelectDayOrMonth(
-                                  updateSelectedMonth: updateSelectedMonth),
-                            ),
-                            Expanded(
-                              child: Opacity(
-                                opacity: snapshot.data == true ? 0 : 1,
-                                child: PageView(
-                                  controller: pageController,
-                                  onPageChanged: (value) {
-                                    setState(() {
-                                      selectedPageIndex = value;
-                                    });
-                                  },
-                                  children: [
-                                    Departments(saleMovements: saleMovements),
-                                    Sections(saleMovements: saleMovements),
-                                  ],
+                        return Expanded(
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: SelectDayOrMonth(
+                                    updateSelectedMonth: updateSelectedMonth),
+                              ),
+                              Expanded(
+                                child: Opacity(
+                                  opacity: snapshot.data == true ? 0 : 1,
+                                  child: PageView(
+                                    controller: pageController,
+                                    onPageChanged: (value) {
+                                      setState(() {
+                                        selectedPageIndex = value;
+                                      });
+                                    },
+                                    children: [
+                                      Departments(saleMovements: saleMovements),
+                                      Sections(saleMovements: saleMovements),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         );
                       });
                 }),
