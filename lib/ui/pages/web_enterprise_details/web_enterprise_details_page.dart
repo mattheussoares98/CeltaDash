@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../helpers/helpers.dart';
 import '../../mixins/mixins.dart';
 import '../pages.dart';
+import 'components/components.dart';
 
 class WebEnterpriseDetailsPage extends StatefulWidget {
   const WebEnterpriseDetailsPage({super.key});
@@ -21,6 +21,7 @@ class _WebEnterpriseDetailsPageState extends State<WebEnterpriseDetailsPage>
   StreamSubscription? loadingSubscription;
   StreamSubscription? mainErrorSubscription;
   final urlController = TextEditingController();
+  bool showChangeBaseUrl = false;
 
   @override
   void dispose() {
@@ -69,66 +70,24 @@ class _WebEnterpriseDetailsPageState extends State<WebEnterpriseDetailsPage>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("${R.string.url}: ${selectedEnterprise.baseUrl}"),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: TextFormField(
-                        decoration: FormFieldDecoration.decoration(
-                          context: context,
-                          labelText: R.string.url,
-                          hintText: R.string.url,
-                          suffixIcon: IconButton(
-                            onPressed: () async {
-                              await webEnterprisesPresenter.changeEnterpriseUrl(
-                                newUrl: urlController.text,
-                                docRef: FirebaseFirestore.instance
-                                    .collection("enterprises")
-                                    .doc(
-                                      selectedEnterprise.firebaseId,
-                                    ),
-                              );
-                              setState(() {});
-                            },
-                            icon: Icon(Icons.save),
-                          ),
-                        ),
-                        controller: urlController,
-                      ),
-                    ),
-                    if ((selectedEnterprise.firebaseSubEnterprises?.length ??
-                            0) >
-                        0)
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          R.string.subEnterprises,
-                          style: Theme.of(context).textTheme.displayLarge,
-                        ),
-                      ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount:
-                          selectedEnterprise.firebaseSubEnterprises?.length ??
-                              0,
-                      itemBuilder: (context, index) {
-                        final subEnterprise =
-                            selectedEnterprise.firebaseSubEnterprises?[index];
-                        return Container(
-                          decoration: ContainerDecoration.decoration,
-                          padding: EdgeInsets.all(8),
-                          margin: EdgeInsets.symmetric(vertical: 4),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "${subEnterprise?.personalizedCode} - ${subEnterprise?.name}",
-                              ),
-                              Text("${R.string.cnpj}: ${subEnterprise?.cnpj}"),
-                            ],
-                          ),
-                        );
+                    BaseUrl(
+                      updateShowChangeBaseUrl: () {
+                        setState(() {
+                          showChangeBaseUrl = !showChangeBaseUrl;
+                        });
                       },
-                    )
+                      showChangeBaseUrl: showChangeBaseUrl,
+                    ),
+                    if (showChangeBaseUrl)
+                      BaseUrlField(
+                        urlController: urlController,
+                        onChange: () {
+                          setState(() {
+                            showChangeBaseUrl = false;
+                          });
+                        },
+                      ),
+                    SubEnterprises(),
                   ],
                 ),
               ),
