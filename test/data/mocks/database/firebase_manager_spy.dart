@@ -12,14 +12,16 @@ class DocumentReferenceFake extends Fake
 // ignore: must_be_immutable
 class MockedFirebaseGet extends Equatable {
   final dynamic dataToReturn;
-
-  MockedFirebaseGet({required this.dataToReturn});
-
   dynamic data() => dataToReturn;
   String id = faker.guid.guid();
+  dynamic docs;
+
+  MockedFirebaseGet({required this.dataToReturn}) {
+    docs = dataToReturn;
+  }
 
   @override
-  List<Object?> get props => [dataToReturn, data(), id];
+  List<Object?> get props => [dataToReturn, data(), id, docs];
 }
 
 class FirebaseManagerSpy extends Mock implements FirebaseManager {
@@ -28,6 +30,7 @@ class FirebaseManagerSpy extends Mock implements FirebaseManager {
   FirebaseManagerSpy({required this.mockedFirebaseGet}) {
     registerFallbackValue(DocumentReferenceFake());
     this.mockPut();
+    this.mockGet(mockedFirebaseGet);
   }
 
   When _mockPutCall() => when(

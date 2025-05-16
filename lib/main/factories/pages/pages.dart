@@ -1,4 +1,4 @@
-export 'web_customers/web_customers.dart';
+export 'web_customers/web_enterprises.dart';
 export './compare_days/compare_days.dart';
 export './configurations/configurations.dart';
 export './departments/departments.dart';

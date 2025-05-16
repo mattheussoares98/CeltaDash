@@ -1,6 +1,7 @@
 import 'package:celta_plus/ui/pages/web_enterprises/firebase_enterprise_view_model.dart';
 import 'package:get/get.dart';
 
+import '../../data/models/models.dart';
 import '../../domain/usecases/usecases.dart';
 import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
@@ -22,13 +23,14 @@ class GetxWebEnterprisesPresenter extends GetxController
     isLoading = true;
     mainError = null;
     try {
-      final enterprises = await firebaseManager.get(collection: "enterprises");
-      final data = enterprises.data();
-      // List<FirebaseSubEnterpriseEntity>? firebaseSubEnterprises = enterprises
-      //     .data()["subEnterprises"]
-      //     ?.map<FirebaseSubEnterpriseEntity>(
-      //         (e) => FirebaseSubEnterpriseModel.fromJson(e).toEntity())
-      //     .toList();
+      final remoteEnterprises =
+          await firebaseManager.get(collection: "enterprises");
+
+      enterprises = remoteEnterprises.docs
+          .map<FirebaseEnterpriseViewModel>((e) =>
+              FirebaseEnterpriseModel.fromJson(e.data(), documentId: e.id)
+                  .toViewModel())
+          .toList();
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {
@@ -36,7 +38,7 @@ class GetxWebEnterprisesPresenter extends GetxController
     }
   }
 
-  final Rx<List<FirebaseEnterpriseViewModel>?> _enterprises = Rx(null);
+  final _enterprises = Rx<List<FirebaseEnterpriseViewModel>?>(null);
   @override
   Stream<List<FirebaseEnterpriseViewModel>?> get enterprisesStream =>
       _enterprises.stream;
