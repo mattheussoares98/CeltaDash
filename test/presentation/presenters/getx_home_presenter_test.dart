@@ -68,9 +68,12 @@ void main() {
       EntityFactory.makeEnterpriseEntity(),
     ];
     mockedFirebaseGet = MockedFirebaseGet(
-      dataToReturn:
-          FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
-              .toJson(),
+      dataToReturn: [
+        FakeDoc(
+            FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
+                .toJson(),
+            EnterpriseBuilder.entity!.firebaseId!)
+      ],
     );
     docRef = DocumentReferenceFake();
   }

@@ -61,9 +61,13 @@ void main() {
       responseType: SoapResponseType.success,
     );
     mockedFirebaseGet = MockedFirebaseGet(
-      dataToReturn:
+      dataToReturn: [
+        FakeDoc(
           FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
               .toJson(),
+          EnterpriseBuilder.entity!.firebaseId!,
+        )
+      ],
     );
   }
 
@@ -120,7 +124,9 @@ void main() {
       EnterpriseBuilder.entity = EntityFactory.anullEnterpriseProperties(
         annullbaseUrl: true,
       );
-      firebaseManager.mockGet(MockedFirebaseGet(dataToReturn: null));
+      firebaseManager.mockGet(MockedFirebaseGet(
+        dataToReturn: null,
+      ));
 
       expectLater(
         sut.mainErrorStream,
@@ -173,7 +179,8 @@ void main() {
         annullbaseUrl: true,
       );
 
-      firebaseManager.mockGet(MockedFirebaseGet(dataToReturn: null));
+      firebaseManager
+          .mockGet(MockedFirebaseGet(dataToReturn: [FakeDoc(null, null)]));
 
       await sut.login(
         enterpriseName: enterpriseName,
@@ -292,14 +299,22 @@ void main() {
         password: password,
         showBsErrorMessage: (_) {},
       );
-
+      mockedFirebaseGet = MockedFirebaseGet(
+        dataToReturn: [
+          FakeDoc(
+            FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
+                .toJson(),
+            EnterpriseBuilder.entity!.firebaseId!,
+          )
+        ],
+      );
       expect(
         EnterpriseBuilder.entity,
         FirebaseEnterpriseEntity(
-          baseUrl: mockedFirebaseGet.data()["baseUrl"],
+          baseUrl: mockedFirebaseGet.data()!["baseUrl"],
           firebaseId: mockedFirebaseGet.id,
           firebaseSubEnterprises: mockedFirebaseGet
-              .data()["subEnterprises"]
+              .data()!["subEnterprises"]
               ?.map<FirebaseSubEnterpriseEntity>(
                   (e) => FirebaseSubEnterpriseModel.fromJson(e).toEntity())
               .toList(),

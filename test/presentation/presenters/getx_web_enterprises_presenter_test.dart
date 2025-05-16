@@ -42,9 +42,14 @@ void main() {
       EntityFactory.makeFirebaseEnterpriseEntity(),
     ];
     mockedFirebaseGet = MockedFirebaseGet(
-      dataToReturn: firebaseEnterprises
-          .map((e) => FirebaseEnterpriseModel.fromEntity(e).toJson())
-          .toList(),
+      dataToReturn: [
+        ...firebaseEnterprises.map(
+          (e) => FakeDoc(
+            FirebaseEnterpriseModel.fromEntity(e).toJson(),
+            e.firebaseId!,
+          ),
+        ),
+      ],
     );
   }
 

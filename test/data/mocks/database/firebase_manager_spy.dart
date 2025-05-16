@@ -2,8 +2,15 @@ import 'package:celta_plus/domain/helpers/helpers.dart';
 import 'package:celta_plus/domain/usecases/usecases.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:faker/faker.dart';
 import 'package:mocktail/mocktail.dart';
+
+// ignore: unused_element
+class FakeDoc {
+  final Map<String, dynamic>? _json;
+  final String? id;
+  Map<String, dynamic>? data() => _json;
+  FakeDoc(this._json, this.id);
+}
 
 // ignore: subtype_of_sealed_class
 class DocumentReferenceFake extends Fake
@@ -11,17 +18,26 @@ class DocumentReferenceFake extends Fake
 
 // ignore: must_be_immutable
 class MockedFirebaseGet extends Equatable {
-  final dynamic dataToReturn;
-  dynamic data() => dataToReturn;
-  String id = faker.guid.guid();
-  dynamic docs;
+  final List<FakeDoc>? dataToReturn;
+  late final List<FakeDoc> docs;
 
   MockedFirebaseGet({required this.dataToReturn}) {
-    docs = dataToReturn;
+    docs = dataToReturn?.map((d) => FakeDoc(d._json, d.id)).toList() ?? [];
+  }
+
+  Map<String, dynamic>? data() {
+    if (dataToReturn == null || dataToReturn!.isEmpty) return null;
+    return dataToReturn!.first.data();
+  }
+
+  /// for login path if you read the document ID
+  String? get id {
+    if (dataToReturn == null || dataToReturn!.isEmpty) return null;
+    return dataToReturn!.first.id;
   }
 
   @override
-  List<Object?> get props => [dataToReturn, data(), id, docs];
+  List<Object?> get props => [dataToReturn, docs, data(), id];
 }
 
 class FirebaseManagerSpy extends Mock implements FirebaseManager {
