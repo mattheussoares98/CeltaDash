@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import '../../../../main/composites/composites.dart';
 import '../../../../presentation/protocols/protocols.dart';
@@ -10,7 +9,8 @@ import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
 class FloatingButton extends StatefulWidget {
-  const FloatingButton({super.key});
+  final WebEnterprisesPresenter presenter;
+  const FloatingButton({super.key, required this.presenter});
 
   @override
   State<FloatingButton> createState() => _FloatingButtonState();
@@ -30,8 +30,6 @@ class _FloatingButtonState extends State<FloatingButton> {
 
   @override
   Widget build(BuildContext context) {
-    WebEnterprisesPresenter webEnterprisesPresenter = Get.find();
-
     return FloatingActionButton(
       onPressed: () {
         notificationDialog(
@@ -76,7 +74,7 @@ class _FloatingButtonState extends State<FloatingButton> {
                             return ValidationComposite([
                               RequiredFieldValidation(),
                               MinLengthValidation(size: 2),
-                              //TODO create url validator
+                              UrlFieldValidation(),
                             ]).validate(value)?.description;
                           },
                         ),
@@ -88,7 +86,7 @@ class _FloatingButtonState extends State<FloatingButton> {
             ),
             onPress: () async {
               if (formKey.currentState?.validate() == true) {
-                await webEnterprisesPresenter.addNewEnterprise(
+                await widget.presenter.addNewEnterprise(
                   baseUrl: baseUrlController.text,
                   enterpriseName: enterpriseNameController.text,
                   docRef:

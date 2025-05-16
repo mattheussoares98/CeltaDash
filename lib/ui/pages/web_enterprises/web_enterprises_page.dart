@@ -103,7 +103,7 @@ class _WebEnterprisesPageState extends State<WebEnterprisesPage>
               },
             );
           }),
-      floatingActionButton: FloatingButton(),
+      floatingActionButton: FloatingButton(presenter: widget.presenter),
     );
   }
 }

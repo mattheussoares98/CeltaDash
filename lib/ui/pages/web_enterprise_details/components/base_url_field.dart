@@ -21,6 +21,10 @@ class BaseUrlField extends StatelessWidget {
   Future<void> onPressed(
     WebEnterprisesPresenter webEnterprisesPresenter,
   ) async {
+    if (_formKey.currentState?.validate() != true) {
+      return;
+    }
+
     await webEnterprisesPresenter.changeEnterpriseUrl(
       newUrl: urlController.text,
       docRef: FirebaseFirestore.instance.collection("enterprises").doc(
@@ -30,34 +34,39 @@ class BaseUrlField extends StatelessWidget {
     onChange();
   }
 
+  static final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     WebEnterprisesPresenter webEnterprisesPresenter = Get.find();
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
-      child: TextFormField(
-        decoration: FormFieldDecoration.decoration(
-          context: context,
-          labelText: R.string.url,
-          hintText: R.string.url,
-          suffixIcon: IconButton(
-            onPressed: () async {
-              await onPressed(webEnterprisesPresenter);
-            },
-            icon: Icon(Icons.save),
+      child: Form(
+        key: _formKey,
+        child: TextFormField(
+          decoration: FormFieldDecoration.decoration(
+            context: context,
+            labelText: R.string.url,
+            hintText: R.string.url,
+            suffixIcon: IconButton(
+              onPressed: () async {
+                await onPressed(webEnterprisesPresenter);
+              },
+              icon: Icon(Icons.save),
+            ),
           ),
+          validator: (value) {
+            return ValidationComposite([
+              RequiredFieldValidation(),
+              UrlFieldValidation(),
+            ]).validate(value)?.description;
+          },
+          onFieldSubmitted: (_) async {
+            await onPressed(webEnterprisesPresenter);
+          },
+          controller: urlController,
         ),
-        validator: (value) {
-          return ValidationComposite([
-            RequiredFieldValidation(),
-            //TODO create url validator
-          ]).validate(value)?.description;
-        },
-        onFieldSubmitted: (_) async {
-          await onPressed(webEnterprisesPresenter);
-        },
-        controller: urlController,
       ),
     );
   }
