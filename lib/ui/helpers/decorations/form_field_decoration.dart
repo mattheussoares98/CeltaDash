@@ -20,6 +20,8 @@ class FormFieldDecoration {
         errorText: errorText,
         hintText: hintText,
         counterText: showCounterText == false ? "" : null,
+        suffixIconColor: Theme.of(context).colorScheme.primary,
+        prefixIconColor: Theme.of(context).colorScheme.primary,
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(
