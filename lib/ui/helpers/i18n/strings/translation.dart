@@ -22,6 +22,7 @@ abstract class Translation {
   String get cancel;
   String get chargeBacks;
   String get close;
+  String get cnpj;
   String get compareDays;
   String get comparedToDay;
   String get configurations;
@@ -92,12 +93,14 @@ abstract class Translation {
   String get selectOneEnterprise;
   String get share;
   String get sold;
+  String get subEnterprises;
   String get ticketAverage;
   String get team;
   String get total;
   String get totalSales;
   String get totalSalesGroup;
   String get trendSales;
+  String get url;
   String get user;
   String get wait;
   String get worstDayOfTheMonth;
