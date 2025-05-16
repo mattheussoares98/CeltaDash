@@ -8,6 +8,7 @@ class PtBr implements Translation {
   String get msgEnterpriseNotFound => "A empresa não foi encontrada";
   String get msgInvalidEmail => "E-mail inválido";
   String get msgInvalidField => "Campo inválido";
+  String get msgInvalidUrl => "URL inválida";
   String get msgNoSalesWereFound => "Nenhuma venda foi encontrada";
   String get msgReallyWantLogout => "Deseja realmente sair?";
   String get msgRequiredField => "Campo obrigatório";
