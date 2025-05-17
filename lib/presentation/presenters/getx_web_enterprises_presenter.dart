@@ -113,6 +113,7 @@ class GetxWebEnterprisesPresenter extends GetxController
     required DocumentReference<Map<String, dynamic>> docRef,
     required String bsUserName,
     required String bsPassword,
+    required void Function() doOnSucceeds,
   }) async {
     isLoading = true;
     mainError = null;
@@ -162,6 +163,8 @@ class GetxWebEnterprisesPresenter extends GetxController
           firebaseId: enterpriseName.toLowerCase().removeWhiteSpaces(),
         ),
       ];
+
+      doOnSucceeds();
     } on DomainError catch (e) {
       switch (e) {
         case DomainError.enterpriseAlreadyExists:

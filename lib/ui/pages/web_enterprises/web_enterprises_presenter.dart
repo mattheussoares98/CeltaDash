@@ -22,5 +22,6 @@ abstract class WebEnterprisesPresenter implements Listenable {
     required DocumentReference<Map<String, dynamic>> docRef,
     required String bsUserName,
     required String bsPassword,
+    required void Function() doOnSucceeds,
   });
 }
