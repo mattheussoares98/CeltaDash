@@ -295,7 +295,13 @@ void main() {
 
       verify(() => firebaseManager.put(
             documentReference: docRef,
-            data: {"baseUrl": baseUrl, "enterpriseName": docRef.id},
+            data: {
+              "baseUrl": baseUrl,
+              "enterpriseName": docRef.id,
+              "subEnterprises": enterprisesInBs
+                  .map((e) => EnterpriseModel.fromEntity(e).toJson())
+                  .toList(),
+            },
           )).called(1);
     });
     test("Should save url without spaces and convert to lowercase", () async {
@@ -314,6 +320,9 @@ void main() {
             data: {
               "baseUrl": baseUrl.toLowerCase().removeWhiteSpaces(),
               "enterpriseName": docRef.id.toLowerCase().removeWhiteSpaces(),
+              "subEnterprises": enterprisesInBs
+                  .map((e) => EnterpriseModel.fromEntity(e).toJson())
+                  .toList(),
             },
           )).called(1);
     });
@@ -365,16 +374,21 @@ void main() {
       );
     });
     test("Should call remoteLogin with correct values", () async {
+      final url = faker.internet.httpUrl();
       await sut.addNewEnterprise(
         bsUserName: bsUserName,
         bsPassword: bsPassword,
-        baseUrl: faker.internet.httpUrl(),
+        baseUrl: url,
         enterpriseName: mockedFirebaseGet.docs.first.data()!["enterpriseName"]!,
         docRef: docRef,
       );
 
       verify(
-        () => remoteLogin.login(user: bsUserName, password: bsPassword),
+        () => remoteLogin.login(
+          user: bsUserName,
+          password: bsPassword,
+          url: url,
+        ),
       ).called(1);
     });
     test("Should emit correct value is login throws", () async {
@@ -426,6 +440,24 @@ void main() {
         bsUserName: bsUserName,
         bsPassword: bsPassword,
       );
+    });
+    test("Should load enterprises with correct values", () async {
+      final baseUrl = faker.internet.httpUrl();
+      final enterpriseName = faker.company.name();
+
+      await sut.addNewEnterprise(
+        baseUrl: baseUrl,
+        enterpriseName: enterpriseName,
+        docRef: docRef,
+        bsUserName: bsUserName,
+        bsPassword: bsPassword,
+      );
+
+      verify(() => loadEnterprises.get(
+            url: baseUrl,
+            userName: bsUserName,
+            accessKey: bsLoginResponse.response["AccessKey"],
+          )).called(1);
     });
     test("Should add the enterprises got by bsLogin as subenterprises",
         () async {

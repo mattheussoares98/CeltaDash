@@ -135,7 +135,11 @@ class GetxWebEnterprisesPresenter extends GetxController
       } else if (loginResult.response["AccessKey"] == null) {
         throw DomainError.updateCeltaBs;
       }
-      final enterprises = await loadEnterprises.get(url: baseUrl);
+      final enterprises = await loadEnterprises.get(
+        url: baseUrl,
+        accessKey: loginResult.response["AccessKey"],
+        userName: bsUserName,
+      );
 
       await firebaseManager.put(
         documentReference: docRef,
