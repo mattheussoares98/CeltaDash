@@ -122,10 +122,18 @@ class GetxWebEnterprisesPresenter extends GetxController
         throw DomainError.enterpriseAlreadyExists;
       }
 
-      //TODO
-      //to add the subEnterprises here, need to do login in bs using the written url
-      //then, get the BSUser to get the token and use to verify if the url is valid.
-      //Finally, add subenterprises
+      final loginResult = await remoteLogin.login(
+        user: bsUserName,
+        password: bsPassword,
+      );
+
+      if (loginResult.responseType == SoapResponseType.error) {
+        throw DomainError.unexpected;
+      } else if (loginResult.response["AccessKey"] == null) {
+        throw DomainError.updateCeltaBs;
+      } else {
+        //TODO load enterprises and add as subenterprises in firebase
+      }
 
       await firebaseManager.put(
         documentReference: docRef,
@@ -149,6 +157,9 @@ class GetxWebEnterprisesPresenter extends GetxController
       switch (e) {
         case DomainError.enterpriseAlreadyExists:
           mainError = UIError.enterpriseAlreadyExists;
+          break;
+        case DomainError.updateCeltaBs:
+          mainError = UIError.updateCeltaBs;
           break;
         case DomainError.sameUrl:
           mainError = UIError.sameUrl;

@@ -27,6 +27,7 @@ void main() {
   late DocumentReferenceFake docRef;
   late String bsUserName;
   late String bsPassword;
+  late SoapResponseModel bsLoginResponse;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
@@ -64,9 +65,17 @@ void main() {
     docRef = DocumentReferenceFake();
     bsUserName = faker.internet.userName();
     bsPassword = faker.internet.password();
+    bsLoginResponse = SoapResponseModel(
+      response:
+          FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson()
+            ..["AccessKey"] = faker.lorem.sentence(),
+      responseType: SoapResponseType.success,
+    );
   }
 
-  void initMockSuccess() {}
+  void initMockSuccess() {
+    remoteLogin.mockLogin(bsLoginResponse);
+  }
 
   setUp(() {
     initEntities();
@@ -344,6 +353,69 @@ void main() {
         baseUrl: faker.internet.httpUrl(),
         enterpriseName: mockedFirebaseGet.docs.first.data()!["enterpriseName"]!,
         docRef: docRef,
+      );
+    });
+    test("Should call remoteLogin with correct values", () async {
+      await sut.addNewEnterprise(
+        bsUserName: bsUserName,
+        bsPassword: bsPassword,
+        baseUrl: faker.internet.httpUrl(),
+        enterpriseName: mockedFirebaseGet.docs.first.data()!["enterpriseName"]!,
+        docRef: docRef,
+      );
+
+      verify(
+        () => remoteLogin.login(user: bsUserName, password: bsPassword),
+      ).called(1);
+    });
+    test("Should emit correct value is login throws", () async {
+      remoteLogin.mockLogin(
+        SoapResponseModel(
+            response: faker.lorem.sentence(),
+            responseType: SoapResponseType.error),
+      );
+
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(
+        sut.mainErrorStream,
+        emitsInOrder([null, UIError.unexpected]),
+      );
+
+      await sut.addNewEnterprise(
+        bsUserName: bsUserName,
+        bsPassword: bsPassword,
+        baseUrl: faker.internet.httpUrl(),
+        enterpriseName: mockedFirebaseGet.docs.first.data()!["enterpriseName"]!,
+        docRef: docRef,
+      );
+    });
+
+    test("Should emit update bs if access key is null", () async {
+      expectLater(
+        sut.mainErrorStream,
+        emitsInOrder([null, UIError.updateCeltaBs]),
+      );
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+
+      EnterpriseBuilder.entity =
+          EntityFactory.anullEnterpriseProperties(annullbaseUrl: true);
+
+      remoteLogin.mockLogin(
+        SoapResponseModel(
+          response:
+              FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
+                  .toJson()
+                ..["AccessKey"] = null,
+          responseType: SoapResponseType.success,
+        ),
+      );
+
+      await sut.addNewEnterprise(
+        baseUrl: faker.internet.httpUrl(),
+        enterpriseName: faker.company.name(),
+        docRef: docRef,
+        bsUserName: bsUserName,
+        bsPassword: bsPassword,
       );
     });
   });
