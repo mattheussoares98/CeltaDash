@@ -161,7 +161,17 @@ class GetxWebEnterprisesPresenter extends GetxController
         FirebaseEnterpriseViewModel(
           baseUrl: baseUrl.toLowerCase().removeWhiteSpaces(),
           enterpriseName: enterpriseName.toLowerCase().removeWhiteSpaces(),
-          firebaseSubEnterprises: null,
+          firebaseSubEnterprises: enterprises
+              .map(
+                //TODO test this
+                (e) => FirebaseSubEnterpriseViewModel(
+                  id: enterpriseName,
+                  name: e.name,
+                  personalizedCode: e.personalizedCode,
+                  cnpj: e.cnpj,
+                ),
+              )
+              .toList(),
           firebaseId: enterpriseName.toLowerCase().removeWhiteSpaces(),
         ),
       ];
