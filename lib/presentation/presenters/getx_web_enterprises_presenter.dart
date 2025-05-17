@@ -111,6 +111,17 @@ class GetxWebEnterprisesPresenter extends GetxController
     isLoading = true;
     mainError = null;
     try {
+      if (_enterprises.value?.any((e) =>
+              e.enterpriseName?.toLowerCase().removeWhiteSpaces() ==
+              enterpriseName.toLowerCase().removeWhiteSpaces()) ??
+          false) {
+        //TODO if already exists enterprise with this name, throws
+        final a = "b";
+        return;
+      }
+
+      //TODO before add in firebase, search the enterprises by this url to check if the url is valid
+
       await firebaseManager.put(
         documentReference: docRef,
         data: {
