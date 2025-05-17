@@ -27,6 +27,7 @@ class SubEnterprises extends StatelessWidget {
         ),
         ListView.builder(
           shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
           itemCount: webEnterprisesPresenter
                   .selectedEnterprise?.firebaseSubEnterprises?.length ??
               0,
