@@ -21,6 +21,7 @@ void main() {
   late NavigateToSpy navigateTo;
   late FirebaseManagerSpy firebaseManager;
   late RemoteLoginSpy remoteLogin;
+  late LoadEnterprisesSpy loadEnterprises;
 
   late List<FirebaseEnterpriseEntity> firebaseEnterprises;
   late MockedFirebaseGet mockedFirebaseGet;
@@ -36,6 +37,7 @@ void main() {
     navigateTo = NavigateToSpy();
     firebaseManager = FirebaseManagerSpy(mockedFirebaseGet: mockedFirebaseGet);
     remoteLogin = RemoteLoginSpy();
+    loadEnterprises = LoadEnterprisesSpy();
   }
 
   void initPresenters() {
@@ -43,6 +45,7 @@ void main() {
       navigateTo: navigateTo,
       firebaseManager: firebaseManager,
       remoteLogin: remoteLogin,
+      loadEnterprises: loadEnterprises,
     );
   }
 
