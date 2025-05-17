@@ -61,12 +61,12 @@ class _LoginPageState extends State<LoginPage>
     loadingSubscription?.cancel();
   }
 
-  Future<void> login(LoginPresenter loginPresenter) async {
+  Future<void> login() async {
     if (formKey.currentState?.validate() != true) {
       return;
     }
 
-    await loginPresenter.login(
+    await widget.presenter.login(
       enterpriseName: enterpriseController.text,
       user: userController.text,
       password: passwordController.text,
@@ -78,17 +78,17 @@ class _LoginPageState extends State<LoginPage>
 
   @override
   Widget build(BuildContext context) {
-    LoginPresenter loginPresenter = Get.find();
+    Get.put<LoginPresenter>(widget.presenter);
     errorSubscription?.cancel();
     loadingSubscription?.cancel();
 
     errorSubscription = handleMainError(
       context,
-      loginPresenter.mainErrorStream,
+      widget.presenter.mainErrorStream,
     );
     loadingSubscription = handleLoading(
       context,
-      loginPresenter.isLoadingStream,
+      widget.presenter.isLoadingStream,
     );
 
     return Scaffold(
@@ -117,13 +117,13 @@ class _LoginPageState extends State<LoginPage>
                 PasswordField(
                   passwordController: passwordController,
                   login: () async {
-                    await login(loginPresenter);
+                    await login();
                   },
                   passwordFocusNode: passwordFocusNode,
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    await login(loginPresenter);
+                    await login();
                   },
                   child: Text(R.string.enter),
                 ),

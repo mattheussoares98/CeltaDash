@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import '../../mixins/mixins.dart';
 import '../pages.dart';
 import 'components/components.dart';
 
 class WebLoginPage extends StatefulWidget {
-  const WebLoginPage({super.key});
+  final WebLoginPresenter presenter;
+  const WebLoginPage({super.key, required this.presenter});
 
   @override
   State<WebLoginPage> createState() => _WebLoginPageState();
@@ -27,15 +27,13 @@ class _WebLoginPageState extends State<WebLoginPage>
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
-        WebLoginPresenter webLoginPresenter = Get.find();
-
-        await webLoginPresenter.goToWebCustomersIfStillLogged();
+        await widget.presenter.goToWebCustomersIfStillLogged();
       }
     });
   }
 
-  Future<void> doLogin(WebLoginPresenter webLoginPresenter) async {
-    await webLoginPresenter.doLogin(
+  Future<void> doLogin() async {
+    await widget.presenter.doLogin(
       email: emailController.text,
       password: passwordController.text,
     );
@@ -53,15 +51,13 @@ class _WebLoginPageState extends State<WebLoginPage>
 
   @override
   Widget build(BuildContext context) {
-    WebLoginPresenter webLoginPresenter = Get.find();
-
     loadingSubscription?.cancel();
     mainErrorSubscription?.cancel();
 
     loadingSubscription =
-        handleLoading(context, webLoginPresenter.isLoadingStream);
+        handleLoading(context, widget.presenter.isLoadingStream);
     mainErrorSubscription =
-        handleMainError(context, webLoginPresenter.mainErrorStream);
+        handleMainError(context, widget.presenter.mainErrorStream);
 
     return Scaffold(
       body: Padding(
@@ -76,14 +72,14 @@ class _WebLoginPageState extends State<WebLoginPage>
             const SizedBox(height: 10),
             PasswordField(
               doLogin: () async {
-                await doLogin(webLoginPresenter);
+                await doLogin();
               },
               passwordController: passwordController,
               passwordFocusNode: passwordFocusNode,
             ),
             const SizedBox(height: 10),
             LoginButton(doLogin: () async {
-              await doLogin(webLoginPresenter);
+              await doLogin();
             }),
           ],
         ),
