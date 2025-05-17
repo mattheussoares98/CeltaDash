@@ -115,12 +115,13 @@ class GetxWebEnterprisesPresenter extends GetxController
               e.enterpriseName?.toLowerCase().removeWhiteSpaces() ==
               enterpriseName.toLowerCase().removeWhiteSpaces()) ??
           false) {
-        //TODO if already exists enterprise with this name, throws
-        final a = "b";
-        return;
+        throw DomainError.enterpriseAlreadyExists;
       }
 
-      //TODO before add in firebase, search the enterprises by this url to check if the url is valid
+      //TODO
+      //to add the subEnterprises here, need to do login in bs using the written url
+      //then, get the BSUser to get the token and use to verify if the url is valid.
+      //Finally, add subenterprises
 
       await firebaseManager.put(
         documentReference: docRef,
@@ -142,6 +143,9 @@ class GetxWebEnterprisesPresenter extends GetxController
       ];
     } on DomainError catch (e) {
       switch (e) {
+        case DomainError.enterpriseAlreadyExists:
+          mainError = UIError.enterpriseAlreadyExists;
+          break;
         case DomainError.sameUrl:
           mainError = UIError.sameUrl;
           break;

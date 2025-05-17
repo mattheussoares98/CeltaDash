@@ -313,5 +313,19 @@ void main() {
         docRef: docRef,
       );
     });
+
+    test("Should emit error when already exists the enterprise", () async {
+      expectLater(
+        sut.mainErrorStream,
+        emitsInOrder([null, UIError.enterpriseAlreadyExists]),
+      );
+
+      await sut.getEnterprises();
+      await sut.addNewEnterprise(
+        baseUrl: faker.internet.httpUrl(),
+        enterpriseName: mockedFirebaseGet.docs.first.data()!["enterpriseName"]!,
+        docRef: docRef,
+      );
+    });
   });
 }

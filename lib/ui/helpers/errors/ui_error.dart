@@ -1,6 +1,7 @@
 import '../helpers.dart';
 
 enum UIError {
+  enterpriseAlreadyExists,
   enterpriseNotFound,
   sameDays,
   sameUrl,
@@ -11,6 +12,8 @@ enum UIError {
 extension UIErrorExtension on UIError {
   String get description {
     switch (this) {
+      case UIError.enterpriseAlreadyExists:
+        return R.string.msgEnterpriseAlreadyExists;
       case UIError.enterpriseNotFound:
         return R.string.msgEnterpriseNotFound;
       case UIError.sameDays:
