@@ -13,10 +13,12 @@ class GetxWebEnterprisesPresenter extends GetxController
     implements WebEnterprisesPresenter {
   final NavigateTo navigateTo;
   final FirebaseManager firebaseManager;
+  final RemoteLogin remoteLogin;
 
   GetxWebEnterprisesPresenter({
     required this.navigateTo,
     required this.firebaseManager,
+    required this.remoteLogin,
   });
 
   @override
