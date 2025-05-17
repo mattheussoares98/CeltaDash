@@ -2,6 +2,7 @@ import 'package:celta_plus/data/models/models.dart';
 import 'package:celta_plus/data/usecases/usecases.dart';
 import 'package:celta_plus/domain/entities/entities.dart';
 import 'package:celta_plus/main/builders/builders.dart';
+import 'package:faker/faker.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/widgets.dart';
@@ -79,4 +80,21 @@ void main() {
       expect(list, enterprises);
     },
   );
+
+  test("Should call httpClient with correct url if pass as param", () async {
+    final url = faker.internet.httpUrl();
+
+    await sut.get(url: url);
+
+    verify(
+      () => httpClient.request(
+        url: "$url/api/enterprises",
+        method: "get",
+        headers: {
+          "user": EnterpriseBuilder.entity?.bsUser?.name,
+          "accessKey": EnterpriseBuilder.entity?.bsUser?.AccessKey,
+        },
+      ),
+    ).called(1);
+  });
 }

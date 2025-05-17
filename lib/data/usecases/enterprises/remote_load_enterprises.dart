@@ -10,11 +10,11 @@ class RemoteLoadEnterprises implements LoadEnterprises {
   RemoteLoadEnterprises(this.httpAdapter);
 
   @override
-  Future<List<EnterpriseEntity>> get() async {
+  Future<List<EnterpriseEntity>> get({String? url}) async {
     try {
-      final url = EnterpriseBuilder.entity?.baseUrl;
+      final baseUrl = url ?? EnterpriseBuilder.entity?.baseUrl;
       final response = await httpAdapter.request(
-        url: "$url/api/enterprises",
+        url: "$baseUrl/api/enterprises",
         method: "get",
         headers: {
           "user": EnterpriseBuilder.entity?.bsUser?.name,
