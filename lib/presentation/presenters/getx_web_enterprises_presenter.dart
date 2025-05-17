@@ -109,6 +109,8 @@ class GetxWebEnterprisesPresenter extends GetxController
     required String baseUrl,
     required String enterpriseName,
     required DocumentReference<Map<String, dynamic>> docRef,
+    required String bsUserName,
+    required String bsPassword,
   }) async {
     isLoading = true;
     mainError = null;

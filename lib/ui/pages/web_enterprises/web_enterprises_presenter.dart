@@ -20,5 +20,7 @@ abstract class WebEnterprisesPresenter implements Listenable {
     required String baseUrl,
     required String enterpriseName,
     required DocumentReference<Map<String, dynamic>> docRef,
+    required String bsUserName,
+    required String bsPassword,
   });
 }

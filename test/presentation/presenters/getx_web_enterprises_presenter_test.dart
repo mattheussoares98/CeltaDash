@@ -25,6 +25,8 @@ void main() {
   late List<FirebaseEnterpriseEntity> firebaseEnterprises;
   late MockedFirebaseGet mockedFirebaseGet;
   late DocumentReferenceFake docRef;
+  late String bsUserName;
+  late String bsPassword;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
@@ -60,6 +62,8 @@ void main() {
       ],
     );
     docRef = DocumentReferenceFake();
+    bsUserName = faker.internet.userName();
+    bsPassword = faker.internet.password();
   }
 
   void initMockSuccess() {}
@@ -236,6 +240,8 @@ void main() {
       expectLater(sut.mainErrorStream, emits(null));
 
       await sut.addNewEnterprise(
+        bsUserName: bsUserName,
+        bsPassword: bsPassword,
         baseUrl: faker.internet.httpsUrl(),
         enterpriseName: docRef.id,
         docRef: docRef,
@@ -251,6 +257,8 @@ void main() {
       firebaseManager.mockPutError();
 
       await sut.addNewEnterprise(
+        bsUserName: bsUserName,
+        bsPassword: bsPassword,
         baseUrl: faker.internet.httpsUrl(),
         enterpriseName: docRef.id,
         docRef: docRef,
@@ -260,6 +268,8 @@ void main() {
       final baseUrl = faker.internet.httpsUrl();
 
       await sut.addNewEnterprise(
+        bsUserName: bsUserName,
+        bsPassword: bsPassword,
         baseUrl: baseUrl,
         enterpriseName: docRef.id,
         docRef: docRef,
@@ -274,6 +284,8 @@ void main() {
       final baseUrl = faker.lorem.sentence();
 
       await sut.addNewEnterprise(
+        bsUserName: bsUserName,
+        bsPassword: bsPassword,
         baseUrl: baseUrl,
         enterpriseName: docRef.id,
         docRef: docRef,
@@ -311,6 +323,8 @@ void main() {
 
       await sut.getEnterprises();
       await sut.addNewEnterprise(
+        bsUserName: bsUserName,
+        bsPassword: bsPassword,
         baseUrl: baseUrl,
         enterpriseName: docRef.id,
         docRef: docRef,
@@ -325,6 +339,8 @@ void main() {
 
       await sut.getEnterprises();
       await sut.addNewEnterprise(
+        bsUserName: bsUserName,
+        bsPassword: bsPassword,
         baseUrl: faker.internet.httpUrl(),
         enterpriseName: mockedFirebaseGet.docs.first.data()!["enterpriseName"]!,
         docRef: docRef,

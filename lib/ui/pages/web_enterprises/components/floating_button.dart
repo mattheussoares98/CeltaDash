@@ -87,6 +87,8 @@ class _FloatingButtonState extends State<FloatingButton> {
             onPress: () async {
               if (formKey.currentState?.validate() == true) {
                 await widget.presenter.addNewEnterprise(
+                  bsUserName: "user",
+                  bsPassword: "password",
                   baseUrl: baseUrlController.text,
                   enterpriseName: enterpriseNameController.text,
                   docRef:
