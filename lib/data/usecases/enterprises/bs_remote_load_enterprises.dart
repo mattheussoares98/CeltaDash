@@ -10,15 +10,19 @@ class BsRemoteLoadEnterprises implements LoadEnterprises {
   BsRemoteLoadEnterprises(this.httpAdapter);
 
   @override
-  Future<List<EnterpriseEntity>> get({String? url}) async {
+  Future<List<EnterpriseEntity>> get({
+    String? url,
+    String? userName,
+    String? accessKey,
+  }) async {
     try {
       final baseUrl = url ?? EnterpriseBuilder.entity?.baseUrl;
       final response = await httpAdapter.request(
         url: "$baseUrl/api/enterprises",
         method: "get",
         headers: {
-          "user": EnterpriseBuilder.entity?.bsUser?.name,
-          "accessKey": EnterpriseBuilder.entity?.bsUser?.AccessKey,
+          "user": userName ?? EnterpriseBuilder.entity?.bsUser?.name,
+          "accessKey": accessKey ?? EnterpriseBuilder.entity?.bsUser?.AccessKey,
         },
       );
 

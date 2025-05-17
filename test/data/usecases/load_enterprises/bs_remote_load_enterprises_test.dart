@@ -81,18 +81,24 @@ void main() {
     },
   );
 
-  test("Should call httpClient with correct url if pass as param", () async {
+  test("Should call httpClient with correct url if pass all params", () async {
     final url = faker.internet.httpUrl();
+    final user = faker.internet.userName();
+    final accessKey = faker.guid.guid();
 
-    await sut.get(url: url);
+    await sut.get(
+      url: url,
+      accessKey: accessKey,
+      userName: user,
+    );
 
     verify(
       () => httpClient.request(
         url: "$url/api/enterprises",
         method: "get",
         headers: {
-          "user": EnterpriseBuilder.entity?.bsUser?.name,
-          "accessKey": EnterpriseBuilder.entity?.bsUser?.AccessKey,
+          "user": user,
+          "accessKey": accessKey,
         },
       ),
     ).called(1);
