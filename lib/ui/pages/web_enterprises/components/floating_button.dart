@@ -19,6 +19,8 @@ class FloatingButton extends StatefulWidget {
 class _FloatingButtonState extends State<FloatingButton> {
   final baseUrlController = TextEditingController();
   final enterpriseNameController = TextEditingController();
+  final bsUserNameController = TextEditingController();
+  final bsPasswordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -26,6 +28,8 @@ class _FloatingButtonState extends State<FloatingButton> {
     super.dispose();
     baseUrlController.dispose();
     enterpriseNameController.dispose();
+    bsUserNameController.dispose();
+    bsPasswordController.dispose();
   }
 
   @override
@@ -78,6 +82,35 @@ class _FloatingButtonState extends State<FloatingButton> {
                             ]).validate(value)?.description;
                           },
                         ),
+                        SizedBox(height: 10),
+                        TextFormField(
+                          controller: bsUserNameController,
+                          decoration: FormFieldDecoration.decoration(
+                            context: context,
+                            labelText: R.string.bsUserName,
+                            hintText: R.string.bsUserName,
+                          ),
+                          validator: (value) {
+                            return ValidationComposite([
+                              RequiredFieldValidation(),
+                            ]).validate(value)?.description;
+                          },
+                        ),
+                        SizedBox(height: 10),
+                        TextFormField(
+                          controller: bsPasswordController,
+                          obscureText: true,
+                          decoration: FormFieldDecoration.decoration(
+                            context: context,
+                            labelText: R.string.bsPassword,
+                            hintText: R.string.bsPassword,
+                          ),
+                          validator: (value) {
+                            return ValidationComposite([
+                              RequiredFieldValidation(),
+                            ]).validate(value)?.description;
+                          },
+                        ),
                       ],
                     ),
                   )
@@ -87,8 +120,8 @@ class _FloatingButtonState extends State<FloatingButton> {
             onPress: () async {
               if (formKey.currentState?.validate() == true) {
                 await widget.presenter.addNewEnterprise(
-                  bsUserName: "user",
-                  bsPassword: "password",
+                  bsUserName: bsUserNameController.text,
+                  bsPassword: bsPasswordController.text,
                   baseUrl: baseUrlController.text,
                   enterpriseName: enterpriseNameController.text,
                   docRef:
@@ -101,11 +134,15 @@ class _FloatingButtonState extends State<FloatingButton> {
                 Navigator.of(context).pop();
                 baseUrlController.clear();
                 enterpriseNameController.clear();
+                bsUserNameController.clear();
+                bsPasswordController.clear();
               }
             },
             onCancelPress: () async {
               baseUrlController.clear();
               enterpriseNameController.clear();
+              bsUserNameController.clear();
+              bsPasswordController.clear();
             });
       },
       child: Icon(Icons.add),
