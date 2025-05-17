@@ -258,6 +258,7 @@ void main() {
       expectLater(sut.mainErrorStream, emits(null));
 
       await sut.addNewEnterprise(
+        showBsErrorMessage: (_) {},
         doOnSucceeds: () {},
         bsUserName: bsUserName,
         bsPassword: bsPassword,
@@ -276,6 +277,7 @@ void main() {
       firebaseManager.mockPutError();
 
       await sut.addNewEnterprise(
+        showBsErrorMessage: (_) {},
         doOnSucceeds: () {},
         bsUserName: bsUserName,
         bsPassword: bsPassword,
@@ -288,6 +290,7 @@ void main() {
       final baseUrl = faker.internet.httpsUrl();
 
       await sut.addNewEnterprise(
+        showBsErrorMessage: (_) {},
         doOnSucceeds: () {},
         bsUserName: bsUserName,
         bsPassword: bsPassword,
@@ -311,6 +314,7 @@ void main() {
       final baseUrl = faker.lorem.sentence();
 
       await sut.addNewEnterprise(
+        showBsErrorMessage: (_) {},
         doOnSucceeds: () {},
         bsUserName: bsUserName,
         bsPassword: bsPassword,
@@ -354,6 +358,7 @@ void main() {
 
       await sut.getEnterprises();
       await sut.addNewEnterprise(
+        showBsErrorMessage: (_) {},
         doOnSucceeds: () {},
         bsUserName: bsUserName,
         bsPassword: bsPassword,
@@ -371,6 +376,7 @@ void main() {
 
       await sut.getEnterprises();
       await sut.addNewEnterprise(
+        showBsErrorMessage: (_) {},
         doOnSucceeds: () {},
         bsUserName: bsUserName,
         bsPassword: bsPassword,
@@ -382,6 +388,7 @@ void main() {
     test("Should call remoteLogin with correct values", () async {
       final url = faker.internet.httpUrl();
       await sut.addNewEnterprise(
+        showBsErrorMessage: (_) {},
         doOnSucceeds: () {},
         bsUserName: bsUserName,
         bsPassword: bsPassword,
@@ -412,6 +419,7 @@ void main() {
       );
 
       await sut.addNewEnterprise(
+        showBsErrorMessage: (_) {},
         doOnSucceeds: () {},
         bsUserName: bsUserName,
         bsPassword: bsPassword,
@@ -442,6 +450,7 @@ void main() {
       );
 
       await sut.addNewEnterprise(
+        showBsErrorMessage: (_) {},
         doOnSucceeds: () {},
         baseUrl: faker.internet.httpUrl(),
         enterpriseName: faker.company.name(),
@@ -455,6 +464,7 @@ void main() {
       final enterpriseName = faker.company.name();
 
       await sut.addNewEnterprise(
+        showBsErrorMessage: (_) {},
         doOnSucceeds: () {},
         baseUrl: baseUrl,
         enterpriseName: enterpriseName,
@@ -475,6 +485,7 @@ void main() {
       final enterpriseName = faker.company.name();
 
       await sut.addNewEnterprise(
+        showBsErrorMessage: (_) {},
         doOnSucceeds: () {},
         baseUrl: baseUrl,
         enterpriseName: enterpriseName,

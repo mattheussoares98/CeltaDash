@@ -23,5 +23,6 @@ abstract class WebEnterprisesPresenter implements Listenable {
     required String bsUserName,
     required String bsPassword,
     required void Function() doOnSucceeds,
+    required void Function(String error) showBsErrorMessage,
   });
 }

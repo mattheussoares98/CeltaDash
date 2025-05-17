@@ -114,6 +114,7 @@ class GetxWebEnterprisesPresenter extends GetxController
     required String bsUserName,
     required String bsPassword,
     required void Function() doOnSucceeds,
+    required void Function(String error) showBsErrorMessage,
   }) async {
     isLoading = true;
     mainError = null;
@@ -132,7 +133,8 @@ class GetxWebEnterprisesPresenter extends GetxController
       );
 
       if (loginResult.responseType == SoapResponseType.error) {
-        throw DomainError.unexpected;
+        showBsErrorMessage(loginResult.response);
+        return;
       } else if (loginResult.response["AccessKey"] == null) {
         throw DomainError.updateCeltaBs;
       }
