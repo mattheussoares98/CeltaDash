@@ -29,6 +29,7 @@ void main() {
   late String bsUserName;
   late String bsPassword;
   late SoapResponseModel bsLoginResponse;
+  late List<EnterpriseEntity> enterprisesInBs;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
@@ -74,17 +75,22 @@ void main() {
             ..["AccessKey"] = faker.lorem.sentence(),
       responseType: SoapResponseType.success,
     );
+    enterprisesInBs = [
+      EntityFactory.makeEnterpriseEntity(),
+      EntityFactory.makeEnterpriseEntity(),
+    ];
   }
 
   void initMockSuccess() {
     remoteLogin.mockLogin(bsLoginResponse);
+    loadEnterprises.mockGet(enterprisesInBs);
   }
 
   setUp(() {
     initEntities();
     initUsecases();
-    initPresenters();
     initMockSuccess();
+    initPresenters();
   });
 
   setUpAll(() {
@@ -420,6 +426,32 @@ void main() {
         bsUserName: bsUserName,
         bsPassword: bsPassword,
       );
+    });
+    test("Should add the enterprises got by bsLogin as subenterprises",
+        () async {
+      final baseUrl = faker.internet.httpUrl();
+      final enterpriseName = faker.company.name();
+
+      await sut.addNewEnterprise(
+        baseUrl: baseUrl,
+        enterpriseName: enterpriseName,
+        docRef: docRef,
+        bsUserName: bsUserName,
+        bsPassword: bsPassword,
+      );
+
+      verify(
+        () => firebaseManager.put(
+          documentReference: docRef,
+          data: {
+            "baseUrl": baseUrl.toLowerCase().removeWhiteSpaces(),
+            "enterpriseName": enterpriseName.toLowerCase().removeWhiteSpaces(),
+            "subEnterprises": enterprisesInBs
+                .map((e) => EnterpriseModel.fromEntity(e).toJson())
+                .toList(),
+          },
+        ),
+      ).called(1);
     });
   });
 }

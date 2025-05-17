@@ -134,15 +134,17 @@ class GetxWebEnterprisesPresenter extends GetxController
         throw DomainError.unexpected;
       } else if (loginResult.response["AccessKey"] == null) {
         throw DomainError.updateCeltaBs;
-      } else {
-        await loadEnterprises.get();
       }
+      final enterprises = await loadEnterprises.get(url: baseUrl);
 
       await firebaseManager.put(
         documentReference: docRef,
         data: {
           "baseUrl": baseUrl.toLowerCase().removeWhiteSpaces(),
           "enterpriseName": enterpriseName.toLowerCase().removeWhiteSpaces(),
+          "subEnterprises": enterprises
+              .map((e) => EnterpriseModel.fromEntity(e).toJson())
+              .toList(),
         },
       );
 
