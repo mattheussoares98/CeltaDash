@@ -12,7 +12,7 @@ import '../../../domain/mocks/mocks.dart';
 import '../../../infra/mocks/mocks.dart';
 
 void main() {
-  late RemoteLoadEnterprises sut;
+  late BsRemoteLoadEnterprises sut;
 
   late HttpClientSpy httpClient;
 
@@ -25,7 +25,7 @@ void main() {
   }
 
   void initPresenters() {
-    sut = RemoteLoadEnterprises(httpClient);
+    sut = BsRemoteLoadEnterprises(httpClient);
   }
 
   void initEntities() {

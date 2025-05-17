@@ -4,10 +4,10 @@ import '../../../main/builders/builders.dart';
 import '../../http/http.dart';
 import '../../models/models.dart';
 
-class RemoteLoadEnterprises implements LoadEnterprises {
+class BsRemoteLoadEnterprises implements LoadEnterprises {
   final HttpClient httpAdapter;
 
-  RemoteLoadEnterprises(this.httpAdapter);
+  BsRemoteLoadEnterprises(this.httpAdapter);
 
   @override
   Future<List<EnterpriseEntity>> get({String? url}) async {
