@@ -125,6 +125,7 @@ class GetxWebEnterprisesPresenter extends GetxController
       final loginResult = await remoteLogin.login(
         user: bsUserName,
         password: bsPassword,
+        url: baseUrl,
       );
 
       if (loginResult.responseType == SoapResponseType.error) {
