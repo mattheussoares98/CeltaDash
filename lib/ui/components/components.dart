@@ -6,6 +6,7 @@ export './chart_prices.dart';
 export './circle_progress.dart';
 export './default_app_bar.dart';
 export './default_drop_down.dart';
+export './empty_sales.dart';
 export './error_message.dart';
 export './get_new_date.dart';
 export './loading_dialog.dart';

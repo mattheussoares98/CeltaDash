@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../ui/helpers/helpers.dart';
+import '../../components/components.dart';
 import '../../mixins/mixins.dart';
 import '../pages.dart';
 import 'components/components.dart';
@@ -80,7 +81,7 @@ class _ResumePageState extends State<ResumePage>
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 if (salesByEnterprise == null || salesByEnterprise.isEmpty)
-                  Image.asset("lib/ui/assets/images/empty_sales.png"),
+                  EmptySales(),
                 if (salesByEnterprise != null && salesByEnterprise.isNotEmpty)
                   Column(
                     children: [

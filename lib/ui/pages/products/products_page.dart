@@ -109,7 +109,7 @@ class _ProductsPageState extends State<ProductsPage> {
                     if ((saleMovements == null || saleMovements.isEmpty) &&
                         (saleMovementsByEnterprise == null ||
                             saleMovementsByEnterprise.isEmpty))
-                      Image.asset("lib/ui/assets/images/empty_sales.png"),
+                      EmptySales(),
                     if (saleMovementsByEnterprise != null &&
                         saleMovementsByEnterprise.isNotEmpty)
                       TableItem(
