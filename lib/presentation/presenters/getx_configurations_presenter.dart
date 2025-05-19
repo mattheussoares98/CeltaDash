@@ -21,13 +21,7 @@ class GetxConfigurationsPresenter extends GetxController
   });
 
   @override
-  Future<void> doLogout({
-    required DepartmentsPresenter departmentsPresenter,
-    required PaymentTypePresenter paymentTypePresenter,
-    required SalesPresenter salesPresenter,
-    required ProductsPresenter productsPresenter,
-    required ResumePresenter resumePresenter,
-  }) async {
+  Future<void> doLogout() async {
     isLoading = true;
     mainError = null;
     try {
@@ -51,12 +45,6 @@ class GetxConfigurationsPresenter extends GetxController
               .toJson());
 
       navigateTo.navigate(pageRoute: PageRoutes.splash, clear: true);
-
-      departmentsPresenter.clear();
-      paymentTypePresenter.clear();
-      salesPresenter.clear();
-      productsPresenter.clear();
-      resumePresenter.clear();
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {

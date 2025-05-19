@@ -86,45 +86,21 @@ void main() {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(sut.mainErrorStream, emits(null));
 
-      await sut.doLogout(
-        departmentsPresenter: departmentsPresenter,
-        paymentTypePresenter: paymentTypePresenter,
-        salesPresenter: salesPresenter,
-        productsPresenter: productsPresenter,
-        resumePresenter: resumePresenter,
-      );
+      await sut.doLogout();
     });
     test("Should emit correct values on error", () async {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(sut.mainErrorStream, emits(null));
 
-      await sut.doLogout(
-        departmentsPresenter: departmentsPresenter,
-        paymentTypePresenter: paymentTypePresenter,
-        salesPresenter: salesPresenter,
-        productsPresenter: productsPresenter,
-        resumePresenter: resumePresenter,
-      );
+      await sut.doLogout();
     });
     test("Should update enterprise correctly", () async {
-      await sut.doLogout(
-        departmentsPresenter: departmentsPresenter,
-        paymentTypePresenter: paymentTypePresenter,
-        salesPresenter: salesPresenter,
-        productsPresenter: productsPresenter,
-        resumePresenter: resumePresenter,
-      );
+      await sut.doLogout();
 
       expect(EnterpriseBuilder.entity, enterpriseOnLogout);
     });
     test("Should call localStorage.put correctly", () async {
-      await sut.doLogout(
-        departmentsPresenter: departmentsPresenter,
-        paymentTypePresenter: paymentTypePresenter,
-        salesPresenter: salesPresenter,
-        productsPresenter: productsPresenter,
-        resumePresenter: resumePresenter,
-      );
+      await sut.doLogout();
 
       verify(() => localStorage.put(
             DatabaseKeys.enterprise,
@@ -132,13 +108,7 @@ void main() {
           )).called(1);
     });
     test("Should call navigateTo with correct value", () async {
-      await sut.doLogout(
-        departmentsPresenter: departmentsPresenter,
-        paymentTypePresenter: paymentTypePresenter,
-        salesPresenter: salesPresenter,
-        productsPresenter: productsPresenter,
-        resumePresenter: resumePresenter,
-      );
+      await sut.doLogout();
 
       verify(() => navigateTo.navigate(
             pageRoute: PageRoutes.splash,
@@ -146,13 +116,7 @@ void main() {
           )).called(1);
     });
     test("Should clear data in all presenters", () async {
-      await sut.doLogout(
-        departmentsPresenter: departmentsPresenter,
-        paymentTypePresenter: paymentTypePresenter,
-        salesPresenter: salesPresenter,
-        productsPresenter: productsPresenter,
-        resumePresenter: resumePresenter,
-      );
+      await sut.doLogout();
 
       verify(() => departmentsPresenter.clear()).called(1);
       verify(() => paymentTypePresenter.clear()).called(1);
