@@ -76,6 +76,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                   paymentTypePresenter,
                   productsPresenter,
                   departmentsPresenter,
+                  forceRefresh: true,
                 );
               },
               onChangeDate: (_) async {
