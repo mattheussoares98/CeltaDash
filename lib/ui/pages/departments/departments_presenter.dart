@@ -8,7 +8,6 @@ abstract class DepartmentsPresenter implements Listenable {
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
   DateTime? get lastDateLoadedData;
-  EnterpriseViewModel? get lastEnterpriseLoadedData;
 
   Future<void> getSales(HomePresenter homePresenter, {bool? forceRefresh});
   void emitLoadingAgain();
