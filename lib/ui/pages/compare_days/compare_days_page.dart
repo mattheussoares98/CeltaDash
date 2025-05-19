@@ -76,12 +76,15 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
       body: SafeArea(
         child: Obx(() {
           Get.put<CompareDaysPresenter>(widget.presenter);
-        
+
           final saleMovements = widget.presenter.saleMovements;
-        
+
           return StreamBuilder<bool>(
               stream: homePresenter.updateScreenStream,
               builder: (context, snapshot) {
+                if (saleMovements == null || saleMovements.isEmpty) {
+                  return EmptySales();
+                }
                 return Opacity(
                   opacity: snapshot.data == true ? 0 : 1,
                   child: Column(
@@ -91,21 +94,20 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
                         secondDay:
                             widget.presenter.selectedSecondDay ?? secondDay,
                       ),
-                      if (saleMovements != null &&
-                          widget.presenter.selectedFirstDay != null &&
+                      if (widget.presenter.selectedFirstDay != null &&
                           widget.presenter.selectedSecondDay != null)
                         Expanded(
                           child: Column(
                             children: [
                               CompareTable(
-                                firstDay:
-                                    widget.presenter.selectedFirstDay ?? firstDay,
+                                firstDay: widget.presenter.selectedFirstDay ??
+                                    firstDay,
                                 secondDay: widget.presenter.selectedSecondDay ??
                                     secondDay,
                               ),
                               Result(
-                                firstDay:
-                                    widget.presenter.selectedFirstDay ?? firstDay,
+                                firstDay: widget.presenter.selectedFirstDay ??
+                                    firstDay,
                                 secondDay: widget.presenter.selectedSecondDay ??
                                     secondDay,
                               ),
