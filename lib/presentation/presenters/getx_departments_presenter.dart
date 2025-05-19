@@ -74,4 +74,12 @@ class GetxDepartmentsPresenter extends GetxController
   @override
   EnterpriseViewModel? get lastEnterpriseLoadedData =>
       _lastEnterpriseLoadedData;
+
+  @override
+  void emitLoadingAgain() {
+    if (isLoadingValue == true) {
+      isLoading = false;
+      isLoading = true;
+    }
+  }
 }

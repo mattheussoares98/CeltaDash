@@ -11,4 +11,5 @@ abstract class DepartmentsPresenter implements Listenable {
   EnterpriseViewModel? get lastEnterpriseLoadedData;
 
   Future<void> getSales(HomePresenter homePresenter, {bool? forceRefresh});
+  void emitLoadingAgain();
 }

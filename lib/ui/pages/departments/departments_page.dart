@@ -26,6 +26,18 @@ class _DepartmentsPageState extends State<DepartmentsPage>
   final pageController = PageController();
 
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        DepartmentsPresenter departmentsPresenter = Get.find();
+        departmentsPresenter.emitLoadingAgain();
+      }
+    });
+  }
+
+  @override
   void dispose() {
     super.dispose();
     // loadingSubscription?.cancel();
