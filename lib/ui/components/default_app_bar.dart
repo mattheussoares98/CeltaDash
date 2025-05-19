@@ -84,108 +84,85 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
           );
         }
         return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (widget.showEnterpriseDropdown == true)
+              DefaultDropDown<EnterpriseViewModel?>(
+                onChanged: widget.isLoading == true
+                    ? null
+                    : (e) {
+                        if (e == homePresenter.selectedEnterprise) return;
+                        homePresenter.updateSelectedEnterprise(e);
+                        widget.onChangeEnterprise(true);
+                      },
+                hint: null,
+                items: enterprises
+                    .map(
+                      (e) => DropdownMenuItem<EnterpriseViewModel?>(
+                        value: e,
+                        alignment: Alignment.center,
+                        child: Text(
+                          "${e.personalizedCode} - ${e.name}",
+                          maxLines: 1,
+                        ),
+                      ),
+                    )
+                    .toList(),
+                selectedItem: selectedEnterprise,
+                label:
+                    "${selectedEnterprise?.personalizedCode} - ${selectedEnterprise?.name}",
+              ),
+            if (widget.showDatePicker == true)
               Row(
                 children: [
                   Expanded(
-                    child: DefaultDropDown<EnterpriseViewModel?>(
-                      onChanged: widget.isLoading == true
+                    child: ElevatedButton.icon(
+                      onPressed: widget.isLoading == true
                           ? null
-                          : (e) {
-                              if (e == homePresenter.selectedEnterprise) return;
-                              homePresenter.updateSelectedEnterprise(e);
-                              widget.onChangeEnterprise(true);
+                          : () async {
+                              final newDate = await GetNewDate.get(
+                                reduceDaysFromInitialDate: 1825,
+                                canInsertDateBeforeNow: true,
+                                insertHoursAndMinutes: false,
+                                lastDate: DateTime.now(),
+                              );
+
+                              if (newDate != null &&
+                                  newDate != homePresenter.selectedDate) {
+                                setState(() {
+                                  homePresenter.updateSelectedDate(newDate);
+                                });
+                                if (widget.onChangeDate != null) {
+                                  homePresenter.updateScreen();
+                                  widget.onChangeDate!(newDate);
+                                }
+                              }
                             },
-                      hint: null,
-                      items: enterprises
-                          .map(
-                            (e) => DropdownMenuItem<EnterpriseViewModel?>(
-                              value: e,
-                              alignment: Alignment.center,
-                              child: Text(
-                                "${e.personalizedCode} - ${e.name}",
-                                maxLines: 1,
-                              ),
-                            ),
-                          )
-                          .toList(),
-                      selectedItem: selectedEnterprise,
-                      label:
-                          "${selectedEnterprise?.personalizedCode} - ${selectedEnterprise?.name}",
+                      label: Text(
+                        "${DateFormat('dd/MM/yyyy').format(homePresenter.selectedDate)}  ${DateFormat('EEEE', 'pt_BR').format(homePresenter.selectedDate)}",
+                        maxLines: 1,
+                      ),
+                      icon: Icon(Icons.date_range, color: Colors.white),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 8),
                     child: IconButton(
-                      onPressed: () {
-                        homePresenter.goToConfigurationsPage();
-                      },
-                      icon: Icon(
-                        isIOS ? CupertinoIcons.settings : Icons.settings,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            if (widget.showDatePicker == true)
-              SizedBox(
-                height: 30,
-                width: double.infinity,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: ElevatedButton.icon(
-                        onPressed: widget.isLoading == true
-                            ? null
-                            : () async {
-                                final newDate = await GetNewDate.get(
-                                  reduceDaysFromInitialDate: 1825,
-                                  canInsertDateBeforeNow: true,
-                                  insertHoursAndMinutes: false,
-                                  lastDate: DateTime.now(),
-                                );
-
-                                if (newDate != null &&
-                                    newDate != homePresenter.selectedDate) {
-                                  setState(() {
-                                    homePresenter.updateSelectedDate(newDate);
-                                  });
-                                  if (widget.onChangeDate != null) {
-                                    homePresenter.updateScreen();
-                                    widget.onChangeDate!(newDate);
-                                  }
-                                }
-                              },
-                        label: Text(
-                          "${DateFormat('dd/MM/yyyy').format(homePresenter.selectedDate)}  ${DateFormat('EEEE', 'pt_BR').format(homePresenter.selectedDate)}",
-                          maxLines: 1,
-                        ),
-                        icon: Icon(Icons.date_range, color: Colors.white),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: IconButton(
-                        onPressed: widget.isLoading == true
-                            ? null
-                            : widget.onTapRefresh,
-                        icon: widget.isLoading == true
-                            ? SizedBox(
-                                height: 25,
-                                width: 25,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                ),
-                              )
-                            : Icon(
-                                isIOS ? CupertinoIcons.refresh : Icons.refresh,
+                      onPressed:
+                          widget.isLoading == true ? null : widget.onTapRefresh,
+                      icon: widget.isLoading == true
+                          ? SizedBox(
+                              height: 25,
+                              width: 25,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
                               ),
-                      ),
-                    )
-                  ],
-                ),
+                            )
+                          : Icon(
+                              isIOS ? CupertinoIcons.refresh : Icons.refresh,
+                            ),
+                    ),
+                  )
+                ],
               ),
           ],
         );
