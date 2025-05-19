@@ -23,7 +23,8 @@ class GetxDepartmentsPresenter extends GetxController
     isLoading = true;
     mainError = null;
     try {
-      if (forceRefresh == true) {
+      if (forceRefresh == true ||
+          homePresenter.selectedEnterprise != _lastEnterpriseLoadedData) {
         //continue...
       } else if (_lastDateLoadedData?.year == homePresenter.selectedDate.year &&
           _lastDateLoadedData?.month == homePresenter.selectedDate.month) {
@@ -57,6 +58,7 @@ class GetxDepartmentsPresenter extends GetxController
           .toList();
 
       _lastDateLoadedData = homePresenter.selectedDate;
+      _lastEnterpriseLoadedData = homePresenter.selectedEnterprise;
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {
@@ -67,4 +69,9 @@ class GetxDepartmentsPresenter extends GetxController
   DateTime? _lastDateLoadedData;
   @override
   DateTime? get lastDateLoadedData => _lastDateLoadedData;
+
+  EnterpriseViewModel? _lastEnterpriseLoadedData;
+  @override
+  EnterpriseViewModel? get lastEnterpriseLoadedData =>
+      _lastEnterpriseLoadedData;
 }
