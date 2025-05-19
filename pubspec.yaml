@@ -61,6 +61,8 @@ icons_launcher:
       enable: true
     ios:
       enable: true
+    web:
+      enable: true
     windows:
       enable: true
 
