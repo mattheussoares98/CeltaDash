@@ -25,23 +25,19 @@ class _HomePageState extends State<HomePage>
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (mounted) {
-        HomePresenter homePresenter = Get.find();
+    HomePresenter homePresenter = Get.find();
 
-        homePresenter.updateSelectedIndex(0);
-        await homePresenter.getBsEnterprises(
-          docRef: FirebaseFirestore.instance.collection("enterprises").doc(
-                EnterpriseBuilder.entity?.firebaseId,
-              ),
-          showBsErrorMessage: (error) {
-            snackBarMessage(context, error, Colors.red);
-          },
-        );
+    homePresenter.updateSelectedIndex(0);
+    homePresenter.getBsEnterprises(
+      docRef: FirebaseFirestore.instance.collection("enterprises").doc(
+            EnterpriseBuilder.entity?.firebaseId,
+          ),
+      showBsErrorMessage: (error) {
+        snackBarMessage(context, error, Colors.red);
+      },
+    );
 
-        reloadData();
-      }
-    });
+    reloadData();
   }
 
   Future<void> reloadData({
