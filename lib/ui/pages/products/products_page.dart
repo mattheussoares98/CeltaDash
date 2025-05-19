@@ -82,6 +82,12 @@ class _ProductsPageState extends State<ProductsPage> {
                       e.EnterpriseId == homePresenter.selectedEnterprise?.id)
                   .toList();
 
+              if ((saleMovements == null || saleMovements.isEmpty) &&
+                  (saleMovementsByEnterprise == null ||
+                      saleMovementsByEnterprise.isEmpty)) {
+                return EmptySales();
+              }
+
               return Opacity(
                 opacity: updateScreen.data == true ? 0 : 1,
                 child: Column(
@@ -106,10 +112,6 @@ class _ProductsPageState extends State<ProductsPage> {
                     // ),
                     //TODO add period items after Cardoso fix problems to load data
                     const SizedBox(height: 10),
-                    if ((saleMovements == null || saleMovements.isEmpty) &&
-                        (saleMovementsByEnterprise == null ||
-                            saleMovementsByEnterprise.isEmpty))
-                      EmptySales(),
                     if (saleMovementsByEnterprise != null &&
                         saleMovementsByEnterprise.isNotEmpty)
                       TableItem(
