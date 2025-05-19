@@ -1,5 +1,6 @@
 abstract class Translation {
   String get msgCantCompareSameDays;
+  String get msgEnterpriseAlreadyExists;
   String get msgEnterpriseNotFound;
   String get msgInvalidEmail;
   String get msgInvalidField;
@@ -22,6 +23,8 @@ abstract class Translation {
   String get averageSalesGroup;
   String get bestDayOfTheMonth;
   String get bestHourOfTheDay;
+  String get bsPassword;
+  String get bsUserName;
   String get cancel;
   String get chargeBacks;
   String get close;

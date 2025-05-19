@@ -2,6 +2,7 @@ import 'package:celta_plus/data/models/models.dart';
 import 'package:celta_plus/data/usecases/usecases.dart';
 import 'package:celta_plus/domain/entities/entities.dart';
 import 'package:celta_plus/main/builders/builders.dart';
+import 'package:faker/faker.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/widgets.dart';
@@ -11,7 +12,7 @@ import '../../../domain/mocks/mocks.dart';
 import '../../../infra/mocks/mocks.dart';
 
 void main() {
-  late RemoteLoadEnterprises sut;
+  late BsRemoteLoadEnterprises sut;
 
   late HttpClientSpy httpClient;
 
@@ -24,7 +25,7 @@ void main() {
   }
 
   void initPresenters() {
-    sut = RemoteLoadEnterprises(httpClient);
+    sut = BsRemoteLoadEnterprises(httpClient);
   }
 
   void initEntities() {
@@ -79,4 +80,27 @@ void main() {
       expect(list, enterprises);
     },
   );
+
+  test("Should call httpClient with correct url if pass all params", () async {
+    final url = faker.internet.httpUrl();
+    final user = faker.internet.userName();
+    final accessKey = faker.guid.guid();
+
+    await sut.get(
+      url: url,
+      accessKey: accessKey,
+      userName: user,
+    );
+
+    verify(
+      () => httpClient.request(
+        url: "$url/api/enterprises",
+        method: "get",
+        headers: {
+          "user": user,
+          "accessKey": accessKey,
+        },
+      ),
+    ).called(1);
+  });
 }

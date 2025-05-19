@@ -15,6 +15,7 @@ class SoapAdapter implements SoapRequest {
     required String? typeOfResult,
     required String soapAction,
     required String serviceASMX,
+    String? url,
   }) async {
     late SoapResponseModel soapResponse;
 
@@ -43,7 +44,7 @@ class SoapAdapter implements SoapRequest {
         </soap12:Body>
       </soap12:Envelope>''';
 
-      final baseUrl = EnterpriseBuilder.entity?.baseUrl;
+      final baseUrl = url ?? EnterpriseBuilder.entity?.baseUrl;
       final response = await http.post(
         Uri.parse('$baseUrl/ccs/$serviceASMX'),
         body: envelope,

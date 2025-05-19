@@ -5,6 +5,8 @@ import './translation.dart';
 class PtBr implements Translation {
   String get msgCantCompareSameDays =>
       "Não é permitido comparar os mesmos dias";
+  String get msgEnterpriseAlreadyExists =>
+      "Já existe uma empresa cadastrada com esse nome";
   String get msgEnterpriseNotFound => "A empresa não foi encontrada";
   String get msgInvalidEmail => "E-mail inválido";
   String get msgInvalidField => "Campo inválido";
@@ -27,6 +29,8 @@ class PtBr implements Translation {
   String get averageSalesGroup => "Venda média do grupo";
   String get bestDayOfTheMonth => "Melhor dia do mês";
   String get bestHourOfTheDay => "Melhor horário do dia";
+  String get bsPassword => "Senha do BS";
+  String get bsUserName => "Usuário do BS";
   String get cancel => "Cancelar";
   String get chargeBacks => "Estornos";
   String get close => "Fechar";

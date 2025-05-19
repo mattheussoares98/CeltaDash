@@ -5,8 +5,11 @@ import 'package:mocktail/mocktail.dart';
 
 class RemoteLoginSpy extends Mock implements RemoteLogin {
   When _mockLoginCall() => when(
-        () => this
-            .login(user: any(named: "user"), password: any(named: "password")),
+        () => this.login(
+          user: any(named: "user"),
+          password: any(named: "password"),
+          url: any(named: "url"),
+        ),
       );
 
   void mockLogin(SoapResponseModel response) {

@@ -16,6 +16,7 @@ class BsRemoteLogin implements RemoteLogin {
   Future<SoapResponseModel> login({
     required String user,
     required String password,
+    String? url,
   }) async {
     try {
       final response = await soapAdapter.post(
@@ -24,6 +25,7 @@ class BsRemoteLogin implements RemoteLogin {
         soapAction: "UserCanLoginJson",
         serviceASMX: "CeltaSecurityService.asmx",
         typeOfResult: "UserCanLoginJsonResult",
+        url: url,
       );
 
       if (response.responseType == SoapResponseType.error) return response;

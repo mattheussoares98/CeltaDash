@@ -1,9 +1,7 @@
 import 'dart:io';
 
-import 'package:celta_plus/main/factories/pages/web_login/getx_web_login_presenter_factory.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:hive/hive.dart';
 
@@ -13,8 +11,6 @@ import 'package:flutter/services.dart';
 
 import '../../firebase_options.dart';
 import '../../infra/helpers/helpers.dart';
-import '../../ui/pages/pages.dart';
-import '../factories/factories.dart';
 
 Future<void> initApp() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +18,6 @@ Future<void> initApp() async {
   await _initFirebase();
   await _initHive();
   await _makeOnlyPortraitMode();
-  _insertGetPresenters();
 }
 
 Future<void> _initFirebase() async {
@@ -66,16 +61,4 @@ Future<void> _initHive() async {
   } catch (e) {
     debugPrint(e.toString());
   }
-}
-
-void _insertGetPresenters() {
-  Get.put<DepartmentsPresenter>(makeGetxDepartmentsPresenter());
-  Get.put<HomePresenter>(makeGetxHomePresenter());
-  Get.put<LoginPresenter>(makeGetxLoginPresenter());
-  Get.put<PaymentTypePresenter>(makeGetxPaymentTypePresenter());
-  Get.put<ProductsPresenter>(makeGetxProductsPresenter());
-  Get.put<ResumePresenter>(makeGetxResumePresenter());
-  Get.put<SalesPresenter>(makeGetxSalesPresenter());
-  Get.put<SplashPresenter>(makeGetxSplashPresenter());
-  Get.put<WebLoginPresenter>(makeGetxWebLoginPresenter());
 }

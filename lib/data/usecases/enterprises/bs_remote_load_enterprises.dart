@@ -4,21 +4,25 @@ import '../../../main/builders/builders.dart';
 import '../../http/http.dart';
 import '../../models/models.dart';
 
-class RemoteLoadEnterprises implements LoadEnterprises {
+class BsRemoteLoadEnterprises implements LoadEnterprises {
   final HttpClient httpAdapter;
 
-  RemoteLoadEnterprises(this.httpAdapter);
+  BsRemoteLoadEnterprises(this.httpAdapter);
 
   @override
-  Future<List<EnterpriseEntity>> get() async {
+  Future<List<EnterpriseEntity>> get({
+    String? url,
+    String? userName,
+    String? accessKey,
+  }) async {
     try {
-      final url = EnterpriseBuilder.entity?.baseUrl;
+      final baseUrl = url ?? EnterpriseBuilder.entity?.baseUrl;
       final response = await httpAdapter.request(
-        url: "$url/api/enterprises",
+        url: "$baseUrl/api/enterprises",
         method: "get",
         headers: {
-          "user": EnterpriseBuilder.entity?.bsUser?.name,
-          "accessKey": EnterpriseBuilder.entity?.bsUser?.AccessKey,
+          "user": userName ?? EnterpriseBuilder.entity?.bsUser?.name,
+          "accessKey": accessKey ?? EnterpriseBuilder.entity?.bsUser?.AccessKey,
         },
       );
 

@@ -19,6 +19,8 @@ class FloatingButton extends StatefulWidget {
 class _FloatingButtonState extends State<FloatingButton> {
   final baseUrlController = TextEditingController();
   final enterpriseNameController = TextEditingController();
+  final bsUserNameController = TextEditingController();
+  final bsPasswordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -26,6 +28,8 @@ class _FloatingButtonState extends State<FloatingButton> {
     super.dispose();
     baseUrlController.dispose();
     enterpriseNameController.dispose();
+    bsUserNameController.dispose();
+    bsPasswordController.dispose();
   }
 
   @override
@@ -39,56 +43,101 @@ class _FloatingButtonState extends State<FloatingButton> {
             confirmMessage: R.string.add,
             canPop: false,
             closeDialogOnConfirmPress: false,
-            content: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.8,
-              child: Column(
-                children: [
-                  Form(
-                    key: formKey,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min, // wrap content vertically
-                      children: [
-                        TextFormField(
-                          controller: enterpriseNameController,
-                          decoration: FormFieldDecoration.decoration(
-                            context: context,
-                            labelText: R.string.enterpriseName,
-                            hintText: R.string.enterpriseName,
+            content: Scaffold(
+              backgroundColor: Colors.transparent,
+              body: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.8,
+                child: Column(
+                  children: [
+                    Form(
+                      key: formKey,
+                      child: Column(
+                        mainAxisSize:
+                            MainAxisSize.min, // wrap content vertically
+                        children: [
+                          TextFormField(
+                            controller: enterpriseNameController,
+                            decoration: FormFieldDecoration.decoration(
+                              context: context,
+                              labelText: R.string.enterpriseName,
+                              hintText: R.string.enterpriseName,
+                            ),
+                            validator: (value) {
+                              return ValidationComposite([
+                                RequiredFieldValidation(),
+                                MinLengthValidation(size: 2),
+                              ]).validate(value)?.description;
+                            },
                           ),
-                          validator: (value) {
-                            return ValidationComposite([
-                              RequiredFieldValidation(),
-                              MinLengthValidation(size: 2),
-                            ]).validate(value)?.description;
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        TextFormField(
-                          controller: baseUrlController,
-                          decoration: FormFieldDecoration.decoration(
-                            context: context,
-                            labelText: R.string.url,
-                            hintText: R.string.url,
+                          SizedBox(height: 10),
+                          TextFormField(
+                            controller: baseUrlController,
+                            decoration: FormFieldDecoration.decoration(
+                              context: context,
+                              labelText: R.string.url,
+                              hintText: R.string.url,
+                            ),
+                            validator: (value) {
+                              return ValidationComposite([
+                                RequiredFieldValidation(),
+                                MinLengthValidation(size: 2),
+                                UrlFieldValidation(),
+                              ]).validate(value)?.description;
+                            },
                           ),
-                          validator: (value) {
-                            return ValidationComposite([
-                              RequiredFieldValidation(),
-                              MinLengthValidation(size: 2),
-                              UrlFieldValidation(),
-                            ]).validate(value)?.description;
-                          },
-                        ),
-                      ],
-                    ),
-                  )
-                ],
+                          SizedBox(height: 10),
+                          TextFormField(
+                            controller: bsUserNameController,
+                            decoration: FormFieldDecoration.decoration(
+                              context: context,
+                              labelText: R.string.bsUserName,
+                              hintText: R.string.bsUserName,
+                            ),
+                            validator: (value) {
+                              return ValidationComposite([
+                                RequiredFieldValidation(),
+                              ]).validate(value)?.description;
+                            },
+                          ),
+                          SizedBox(height: 10),
+                          TextFormField(
+                            controller: bsPasswordController,
+                            obscureText: true,
+                            decoration: FormFieldDecoration.decoration(
+                              context: context,
+                              labelText: R.string.bsPassword,
+                              hintText: R.string.bsPassword,
+                            ),
+                            validator: (value) {
+                              return ValidationComposite([
+                                RequiredFieldValidation(),
+                              ]).validate(value)?.description;
+                            },
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
             onPress: () async {
               if (formKey.currentState?.validate() == true) {
                 await widget.presenter.addNewEnterprise(
+                  bsUserName: bsUserNameController.text,
+                  bsPassword: bsPasswordController.text,
                   baseUrl: baseUrlController.text,
                   enterpriseName: enterpriseNameController.text,
+                  showBsErrorMessage: (error) {
+                    snackBarMessage(context, error, Colors.red);
+                  },
+                  doOnSucceeds: () {
+                    Navigator.of(context).pop();
+                    baseUrlController.clear();
+                    enterpriseNameController.clear();
+                    bsUserNameController.clear();
+                    bsPasswordController.clear();
+                  },
                   docRef:
                       FirebaseFirestore.instance.collection("enterprises").doc(
                             enterpriseNameController.text
@@ -96,14 +145,13 @@ class _FloatingButtonState extends State<FloatingButton> {
                                 .removeWhiteSpaces(),
                           ),
                 );
-                Navigator.of(context).pop();
-                baseUrlController.clear();
-                enterpriseNameController.clear();
               }
             },
             onCancelPress: () async {
               baseUrlController.clear();
               enterpriseNameController.clear();
+              bsUserNameController.clear();
+              bsPasswordController.clear();
             });
       },
       child: Icon(Icons.add),

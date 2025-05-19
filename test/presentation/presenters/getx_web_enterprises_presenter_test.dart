@@ -20,10 +20,16 @@ void main() {
 
   late NavigateToSpy navigateTo;
   late FirebaseManagerSpy firebaseManager;
+  late RemoteLoginSpy remoteLogin;
+  late LoadEnterprisesSpy loadEnterprises;
 
   late List<FirebaseEnterpriseEntity> firebaseEnterprises;
   late MockedFirebaseGet mockedFirebaseGet;
   late DocumentReferenceFake docRef;
+  late String bsUserName;
+  late String bsPassword;
+  late SoapResponseModel bsLoginResponse;
+  late List<EnterpriseEntity> enterprisesInBs;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
@@ -31,12 +37,16 @@ void main() {
   void initUsecases() {
     navigateTo = NavigateToSpy();
     firebaseManager = FirebaseManagerSpy(mockedFirebaseGet: mockedFirebaseGet);
+    remoteLogin = RemoteLoginSpy();
+    loadEnterprises = LoadEnterprisesSpy();
   }
 
   void initPresenters() {
     sut = GetxWebEnterprisesPresenter(
       navigateTo: navigateTo,
       firebaseManager: firebaseManager,
+      remoteLogin: remoteLogin,
+      loadEnterprises: loadEnterprises,
     );
   }
 
@@ -57,15 +67,30 @@ void main() {
       ],
     );
     docRef = DocumentReferenceFake();
+    bsUserName = faker.internet.userName();
+    bsPassword = faker.internet.password();
+    bsLoginResponse = SoapResponseModel(
+      response:
+          FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson()
+            ..["AccessKey"] = faker.lorem.sentence(),
+      responseType: SoapResponseType.success,
+    );
+    enterprisesInBs = [
+      EntityFactory.makeEnterpriseEntity(),
+      EntityFactory.makeEnterpriseEntity(),
+    ];
   }
 
-  void initMockSuccess() {}
+  void initMockSuccess() {
+    remoteLogin.mockLogin(bsLoginResponse);
+    loadEnterprises.mockGet(enterprisesInBs);
+  }
 
   setUp(() {
     initEntities();
     initUsecases();
-    initPresenters();
     initMockSuccess();
+    initPresenters();
   });
 
   setUpAll(() {
@@ -233,6 +258,10 @@ void main() {
       expectLater(sut.mainErrorStream, emits(null));
 
       await sut.addNewEnterprise(
+        showBsErrorMessage: (_) {},
+        doOnSucceeds: () {},
+        bsUserName: bsUserName,
+        bsPassword: bsPassword,
         baseUrl: faker.internet.httpsUrl(),
         enterpriseName: docRef.id,
         docRef: docRef,
@@ -248,6 +277,10 @@ void main() {
       firebaseManager.mockPutError();
 
       await sut.addNewEnterprise(
+        showBsErrorMessage: (_) {},
+        doOnSucceeds: () {},
+        bsUserName: bsUserName,
+        bsPassword: bsPassword,
         baseUrl: faker.internet.httpsUrl(),
         enterpriseName: docRef.id,
         docRef: docRef,
@@ -257,6 +290,10 @@ void main() {
       final baseUrl = faker.internet.httpsUrl();
 
       await sut.addNewEnterprise(
+        showBsErrorMessage: (_) {},
+        doOnSucceeds: () {},
+        bsUserName: bsUserName,
+        bsPassword: bsPassword,
         baseUrl: baseUrl,
         enterpriseName: docRef.id,
         docRef: docRef,
@@ -264,13 +301,23 @@ void main() {
 
       verify(() => firebaseManager.put(
             documentReference: docRef,
-            data: {"baseUrl": baseUrl, "enterpriseName": docRef.id},
+            data: {
+              "baseUrl": baseUrl,
+              "enterpriseName": docRef.id,
+              "subEnterprises": enterprisesInBs
+                  .map((e) => EnterpriseModel.fromEntity(e).toJson())
+                  .toList(),
+            },
           )).called(1);
     });
     test("Should save url without spaces and convert to lowercase", () async {
       final baseUrl = faker.lorem.sentence();
 
       await sut.addNewEnterprise(
+        showBsErrorMessage: (_) {},
+        doOnSucceeds: () {},
+        bsUserName: bsUserName,
+        bsPassword: bsPassword,
         baseUrl: baseUrl,
         enterpriseName: docRef.id,
         docRef: docRef,
@@ -281,6 +328,9 @@ void main() {
             data: {
               "baseUrl": baseUrl.toLowerCase().removeWhiteSpaces(),
               "enterpriseName": docRef.id.toLowerCase().removeWhiteSpaces(),
+              "subEnterprises": enterprisesInBs
+                  .map((e) => EnterpriseModel.fromEntity(e).toJson())
+                  .toList(),
             },
           )).called(1);
     });
@@ -308,10 +358,154 @@ void main() {
 
       await sut.getEnterprises();
       await sut.addNewEnterprise(
+        showBsErrorMessage: (_) {},
+        doOnSucceeds: () {},
+        bsUserName: bsUserName,
+        bsPassword: bsPassword,
         baseUrl: baseUrl,
         enterpriseName: docRef.id,
         docRef: docRef,
       );
+    });
+
+    test("Should emit error when already exists the enterprise", () async {
+      expectLater(
+        sut.mainErrorStream,
+        emitsInOrder([null, UIError.enterpriseAlreadyExists]),
+      );
+
+      await sut.getEnterprises();
+      await sut.addNewEnterprise(
+        showBsErrorMessage: (_) {},
+        doOnSucceeds: () {},
+        bsUserName: bsUserName,
+        bsPassword: bsPassword,
+        baseUrl: faker.internet.httpUrl(),
+        enterpriseName: mockedFirebaseGet.docs.first.data()!["enterpriseName"]!,
+        docRef: docRef,
+      );
+    });
+    test("Should call remoteLogin with correct values", () async {
+      final url = faker.internet.httpUrl();
+      await sut.addNewEnterprise(
+        showBsErrorMessage: (_) {},
+        doOnSucceeds: () {},
+        bsUserName: bsUserName,
+        bsPassword: bsPassword,
+        baseUrl: url,
+        enterpriseName: mockedFirebaseGet.docs.first.data()!["enterpriseName"]!,
+        docRef: docRef,
+      );
+
+      verify(
+        () => remoteLogin.login(
+          user: bsUserName,
+          password: bsPassword,
+          url: url,
+        ),
+      ).called(1);
+    });
+    test("Should emit correct value is login throws", () async {
+      remoteLogin.mockLogin(
+        SoapResponseModel(
+            response: faker.lorem.sentence(),
+            responseType: SoapResponseType.error),
+      );
+
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(
+        sut.mainErrorStream,
+        emitsInOrder([null, UIError.unexpected]),
+      );
+
+      await sut.addNewEnterprise(
+        showBsErrorMessage: (_) {},
+        doOnSucceeds: () {},
+        bsUserName: bsUserName,
+        bsPassword: bsPassword,
+        baseUrl: faker.internet.httpUrl(),
+        enterpriseName: mockedFirebaseGet.docs.first.data()!["enterpriseName"]!,
+        docRef: docRef,
+      );
+    });
+
+    test("Should emit update bs if access key is null", () async {
+      expectLater(
+        sut.mainErrorStream,
+        emitsInOrder([null, UIError.updateCeltaBs]),
+      );
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+
+      EnterpriseBuilder.entity =
+          EntityFactory.anullEnterpriseProperties(annullbaseUrl: true);
+
+      remoteLogin.mockLogin(
+        SoapResponseModel(
+          response:
+              FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
+                  .toJson()
+                ..["AccessKey"] = null,
+          responseType: SoapResponseType.success,
+        ),
+      );
+
+      await sut.addNewEnterprise(
+        showBsErrorMessage: (_) {},
+        doOnSucceeds: () {},
+        baseUrl: faker.internet.httpUrl(),
+        enterpriseName: faker.company.name(),
+        docRef: docRef,
+        bsUserName: bsUserName,
+        bsPassword: bsPassword,
+      );
+    });
+    test("Should load enterprises with correct values", () async {
+      final baseUrl = faker.internet.httpUrl();
+      final enterpriseName = faker.company.name();
+
+      await sut.addNewEnterprise(
+        showBsErrorMessage: (_) {},
+        doOnSucceeds: () {},
+        baseUrl: baseUrl,
+        enterpriseName: enterpriseName,
+        docRef: docRef,
+        bsUserName: bsUserName,
+        bsPassword: bsPassword,
+      );
+
+      verify(() => loadEnterprises.get(
+            url: baseUrl,
+            userName: bsUserName,
+            accessKey: bsLoginResponse.response["AccessKey"],
+          )).called(1);
+    });
+    test("Should add the enterprises got by bsLogin as subenterprises",
+        () async {
+      final baseUrl = faker.internet.httpUrl();
+      final enterpriseName = faker.company.name();
+
+      await sut.addNewEnterprise(
+        showBsErrorMessage: (_) {},
+        doOnSucceeds: () {},
+        baseUrl: baseUrl,
+        enterpriseName: enterpriseName,
+        docRef: docRef,
+        bsUserName: bsUserName,
+        bsPassword: bsPassword,
+      );
+
+      verify(
+        () => firebaseManager.put(
+          documentReference: docRef,
+          data: {
+            "baseUrl": baseUrl.toLowerCase().removeWhiteSpaces(),
+            "enterpriseName": enterpriseName.toLowerCase().removeWhiteSpaces(),
+            "subEnterprises": enterprisesInBs
+                .map((e) => EnterpriseModel.fromEntity(e).toJson())
+                .toList(),
+          },
+        ),
+      ).called(1);
     });
   });
 }

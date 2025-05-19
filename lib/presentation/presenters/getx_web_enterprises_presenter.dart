@@ -13,10 +13,14 @@ class GetxWebEnterprisesPresenter extends GetxController
     implements WebEnterprisesPresenter {
   final NavigateTo navigateTo;
   final FirebaseManager firebaseManager;
+  final RemoteLogin remoteLogin;
+  final LoadEnterprises loadEnterprises;
 
   GetxWebEnterprisesPresenter({
     required this.navigateTo,
     required this.firebaseManager,
+    required this.remoteLogin,
+    required this.loadEnterprises,
   });
 
   @override
@@ -107,15 +111,47 @@ class GetxWebEnterprisesPresenter extends GetxController
     required String baseUrl,
     required String enterpriseName,
     required DocumentReference<Map<String, dynamic>> docRef,
+    required String bsUserName,
+    required String bsPassword,
+    required void Function() doOnSucceeds,
+    required void Function(String error) showBsErrorMessage,
   }) async {
     isLoading = true;
     mainError = null;
     try {
+      if (_enterprises.value?.any((e) =>
+              e.enterpriseName?.toLowerCase().removeWhiteSpaces() ==
+              enterpriseName.toLowerCase().removeWhiteSpaces()) ??
+          false) {
+        throw DomainError.enterpriseAlreadyExists;
+      }
+
+      final loginResult = await remoteLogin.login(
+        user: bsUserName,
+        password: bsPassword,
+        url: baseUrl,
+      );
+
+      if (loginResult.responseType == SoapResponseType.error) {
+        showBsErrorMessage(loginResult.response);
+        return;
+      } else if (loginResult.response["AccessKey"] == null) {
+        throw DomainError.updateCeltaBs;
+      }
+      final enterprises = await loadEnterprises.get(
+        url: baseUrl,
+        accessKey: loginResult.response["AccessKey"],
+        userName: bsUserName,
+      );
+
       await firebaseManager.put(
         documentReference: docRef,
         data: {
           "baseUrl": baseUrl.toLowerCase().removeWhiteSpaces(),
           "enterpriseName": enterpriseName.toLowerCase().removeWhiteSpaces(),
+          "subEnterprises": enterprises
+              .map((e) => EnterpriseModel.fromEntity(e).toJson())
+              .toList(),
         },
       );
 
@@ -125,12 +161,30 @@ class GetxWebEnterprisesPresenter extends GetxController
         FirebaseEnterpriseViewModel(
           baseUrl: baseUrl.toLowerCase().removeWhiteSpaces(),
           enterpriseName: enterpriseName.toLowerCase().removeWhiteSpaces(),
-          firebaseSubEnterprises: null,
+          firebaseSubEnterprises: enterprises
+              .map(
+                //TODO test this
+                (e) => FirebaseSubEnterpriseViewModel(
+                  id: enterpriseName,
+                  name: e.name,
+                  personalizedCode: e.personalizedCode,
+                  cnpj: e.cnpj,
+                ),
+              )
+              .toList(),
           firebaseId: enterpriseName.toLowerCase().removeWhiteSpaces(),
         ),
       ];
+
+      doOnSucceeds();
     } on DomainError catch (e) {
       switch (e) {
+        case DomainError.enterpriseAlreadyExists:
+          mainError = UIError.enterpriseAlreadyExists;
+          break;
+        case DomainError.updateCeltaBs:
+          mainError = UIError.updateCeltaBs;
+          break;
         case DomainError.sameUrl:
           mainError = UIError.sameUrl;
           break;
