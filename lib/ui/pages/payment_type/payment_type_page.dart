@@ -103,42 +103,42 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                 );
               },
             ),
-            body: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SelectDayOrMonthButtons(
-                    selectedMonth: selectedMonth,
-                    updateSelectedMonth: updateSelectedMonth,
+            body: Obx(() {
+              final saleMovementsByFinalizations =
+                  paymentTypePresenter.saleMovementsByFinalizations
+                      ?.filteredSales(
+                        enterprise: homePresenter.selectedEnterprise,
+                      )
+                      .map((e) => e.toViewModel());
+
+              final saleMovementsByModalities =
+                  paymentTypePresenter.saleMovements
+                      ?.filteredSales(
+                        enterprise: homePresenter.selectedEnterprise,
+                      )
+                      .map((e) => e.toViewModel());
+
+              if (saleMovementsByFinalizations == null ||
+                  saleMovementsByFinalizations.isEmpty ||
+                  saleMovementsByModalities == null ||
+                  saleMovementsByModalities.isEmpty) {
+                return EmptySales();
+              }
+
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SelectDayOrMonthButtons(
+                      selectedMonth: selectedMonth,
+                      updateSelectedMonth: updateSelectedMonth,
+                    ),
                   ),
-                ),
-                Obx(() {
-                  final saleMovementsByFinalizations =
-                      paymentTypePresenter.saleMovementsByFinalizations
-                          ?.filteredSales(
-                            enterprise: homePresenter.selectedEnterprise,
-                          )
-                          .map((e) => e.toViewModel());
-
-                  final saleMovementsByModalities =
-                      paymentTypePresenter.saleMovements
-                          ?.filteredSales(
-                            enterprise: homePresenter.selectedEnterprise,
-                          )
-                          .map((e) => e.toViewModel());
-
-                  if (saleMovementsByFinalizations == null ||
-                      saleMovementsByFinalizations.isEmpty ||
-                      saleMovementsByModalities == null ||
-                      saleMovementsByModalities.isEmpty) {
-                    return SizedBox.shrink();
-                  }
-
-                  return StreamBuilder<bool>(
-                    stream: homePresenter.updateScreenStream,
-                    builder: (context, snapshot) {
-                      return Expanded(
-                        child: Opacity(
+                  Expanded(
+                    child: StreamBuilder<bool>(
+                      stream: homePresenter.updateScreenStream,
+                      builder: (context, snapshot) {
+                        return Opacity(
                           opacity: snapshot.data == true ? 0 : 1,
                           child: PageView(
                             controller: pageController,
@@ -167,13 +167,13 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                               ),
                             ],
                           ),
-                        ),
-                      );
-                    },
-                  );
-                }),
-              ],
-            ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              );
+            }),
             bottomNavigationBar: BottomNavBar(
               showLabels: true,
               currentIndex: selectedPageIndex,

@@ -5,6 +5,6 @@ class EmptySales extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset("lib/ui/assets/images/empty_sales.png");
+    return Center(child: Image.asset("lib/ui/assets/images/empty_sales.png"));
   }
 }
