@@ -43,11 +43,11 @@ class _FloatingButtonState extends State<FloatingButton> {
             confirmMessage: R.string.add,
             canPop: false,
             closeDialogOnConfirmPress: false,
-            content: Scaffold(
-              backgroundColor: Colors.transparent,
-              body: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.8,
-                child: Column(
+            content: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: Scaffold(
+                backgroundColor: Colors.transparent,
+                body: Column(
                   children: [
                     Form(
                       key: formKey,
