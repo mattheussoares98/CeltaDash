@@ -81,7 +81,7 @@ class _ResumePageState extends State<ResumePage>
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 if (salesByEnterprise == null || salesByEnterprise.isEmpty)
-                  EmptySales(),
+                  EmptySales(isLoading: false),
                 if (salesByEnterprise != null && salesByEnterprise.isNotEmpty)
                   Column(
                     children: [

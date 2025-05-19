@@ -84,7 +84,7 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
               builder: (context, snapshot) {
                 if ((saleMovements == null || saleMovements.isEmpty) &&
                     snapshot.data == true) {
-                  return EmptySales();
+                  return EmptySales(isLoading: false);
                 }
                 return Opacity(
                   opacity: snapshot.data == true ? 0 : 1,

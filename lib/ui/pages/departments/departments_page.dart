@@ -119,7 +119,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                       .toList();
 
                   if (saleMovements == null || saleMovements.isEmpty) {
-                    return SizedBox.shrink();
+                    return EmptySales(isLoading: isLoadingDepartments.data);
                   }
 
                   return StreamBuilder<bool>(

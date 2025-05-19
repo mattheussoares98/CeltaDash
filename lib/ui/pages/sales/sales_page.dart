@@ -66,12 +66,11 @@ class _SalesPageState extends State<SalesPage>
                   )
                   .map((e) => e.toViewModel())
                   .toList();
-                        
-              if (resumeSaleMovements == null ||
-                  resumeSaleMovements.isEmpty) {
-                return EmptySales();
+
+              if (resumeSaleMovements == null || resumeSaleMovements.isEmpty) {
+                return EmptySales(isLoading: false);
               }
-                        
+
               final uniqueHours = resumeSaleMovements
                   .uniqueHours(
                     enterprise: homePresenter.selectedEnterprise,
@@ -80,29 +79,26 @@ class _SalesPageState extends State<SalesPage>
                     filterYear: homePresenter.selectedDate.year,
                   )
                   .toList();
-                        
-              final saleMovementsByMonth =
-                  salesPresenter.saleMovementsByMonth
-                      ?.filteredSales(
-                        enterprise: homePresenter.selectedEnterprise,
-                        filterYear: homePresenter.selectedDate.year,
-                      )
-                      .map((e) => e.toViewModel())
-                      .toList();
-                        
-              final saleMovementsByYear =
-                  salesPresenter.saleMovementsByYear
-                      ?.filteredSales(
-                        enterprise: homePresenter.selectedEnterprise,
-                      )
-                      .map((e) => e.toViewModel())
-                      .toList();
-                        
+
+              final saleMovementsByMonth = salesPresenter.saleMovementsByMonth
+                  ?.filteredSales(
+                    enterprise: homePresenter.selectedEnterprise,
+                    filterYear: homePresenter.selectedDate.year,
+                  )
+                  .map((e) => e.toViewModel())
+                  .toList();
+
+              final saleMovementsByYear = salesPresenter.saleMovementsByYear
+                  ?.filteredSales(
+                    enterprise: homePresenter.selectedEnterprise,
+                  )
+                  .map((e) => e.toViewModel())
+                  .toList();
+
               return Column(
                 children: [
                   PeriodItems(
-                      updateSelectedItem:
-                          salesPresenter.updateSelectedPeriod),
+                      updateSelectedItem: salesPresenter.updateSelectedPeriod),
                   Expanded(
                     child: Opacity(
                       opacity: snapshot.data == true ? 0 : 1,
@@ -115,19 +111,16 @@ class _SalesPageState extends State<SalesPage>
                               uniqueHours: uniqueHours,
                             ),
                           if (salesPresenter.filterByDay)
-                            DayTable(
-                                resumeSaleMovements: resumeSaleMovements),
+                            DayTable(resumeSaleMovements: resumeSaleMovements),
                           if (salesPresenter.filterByMonth &&
                               saleMovementsByMonth != null &&
                               saleMovementsByMonth.isNotEmpty)
                             MonthSales(
-                                saleMovementsByMonth:
-                                    saleMovementsByMonth),
+                                saleMovementsByMonth: saleMovementsByMonth),
                           if (salesPresenter.filterByYear &&
                               saleMovementsByYear != null &&
                               saleMovementsByYear.isNotEmpty)
-                            YearSales(
-                                saleMovementsByYear: saleMovementsByYear),
+                            YearSales(saleMovementsByYear: saleMovementsByYear),
                         ],
                       ),
                     ),
