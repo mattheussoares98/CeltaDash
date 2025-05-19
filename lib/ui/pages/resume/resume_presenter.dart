@@ -18,5 +18,4 @@ abstract class ResumePresenter implements Listenable {
   void goToGroupSummaryPage();
 
   Future<void> getSales(HomePresenter homePresenter, {bool? forceRefresh});
-  void clear();
 }

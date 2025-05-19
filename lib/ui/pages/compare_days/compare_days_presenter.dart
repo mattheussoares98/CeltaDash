@@ -15,5 +15,4 @@ abstract class CompareDaysPresenter implements Listenable {
     required DateTime? secondDay,
     required HomePresenter homePresenter,
   });
-  void clear();
 }

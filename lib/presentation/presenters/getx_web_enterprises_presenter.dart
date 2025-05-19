@@ -163,7 +163,6 @@ class GetxWebEnterprisesPresenter extends GetxController
           enterpriseName: enterpriseName.toLowerCase().removeWhiteSpaces(),
           firebaseSubEnterprises: enterprises
               .map(
-                //TODO test this
                 (e) => FirebaseSubEnterpriseViewModel(
                   id: enterpriseName,
                   name: e.name,

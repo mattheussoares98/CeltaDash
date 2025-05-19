@@ -71,10 +71,4 @@ class GetxProductsPresenter extends GetxController
   @override
   EnterpriseViewModel? get lastEnterpriseLoadedData =>
       _lastEnterpriseLoadedData;
-
-  @override
-  void clear() {
-    saleMovements = null;
-    _lastDateLoadedData = null;
-  }
 }

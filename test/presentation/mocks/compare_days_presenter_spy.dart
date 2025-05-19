@@ -8,6 +8,5 @@ class CompareDaysPresenterSpy extends Mock implements CompareDaysPresenter {
           secondDay: any(named: "secondDay"),
           homePresenter: any(named: "homePresenter"),
         )).thenAnswer((any) async => any);
-    when(() => this.clear()).thenAnswer((any) => any);
   }
 }

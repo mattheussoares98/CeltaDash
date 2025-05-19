@@ -17,11 +17,6 @@ import '../mocks/mocks.dart';
 
 void main() {
   late GetxConfigurationsPresenter sut;
-  late DepartmentsPresenterSpy departmentsPresenter;
-  late PaymentTypePresenterSpy paymentTypePresenter;
-  late SalesPresenterSpy salesPresenter;
-  late ProductsPresenterSpy productsPresenter;
-  late ResumePresenterSpy resumePresenter;
 
   late NavigateToSpy navigateTo;
   late LocalStorageSpy localStorage;
@@ -41,11 +36,6 @@ void main() {
       navigateTo: navigateTo,
       localStorage: localStorage,
     );
-    departmentsPresenter = DepartmentsPresenterSpy();
-    paymentTypePresenter = PaymentTypePresenterSpy();
-    salesPresenter = SalesPresenterSpy();
-    productsPresenter = ProductsPresenterSpy();
-    resumePresenter = ResumePresenterSpy();
   }
 
   void initEntities() {
@@ -114,15 +104,6 @@ void main() {
             pageRoute: PageRoutes.splash,
             clear: true,
           )).called(1);
-    });
-    test("Should clear data in all presenters", () async {
-      await sut.doLogout();
-
-      verify(() => departmentsPresenter.clear()).called(1);
-      verify(() => paymentTypePresenter.clear()).called(1);
-      verify(() => salesPresenter.clear()).called(1);
-      verify(() => productsPresenter.clear()).called(1);
-      verify(() => resumePresenter.clear()).called(1);
     });
   });
 }

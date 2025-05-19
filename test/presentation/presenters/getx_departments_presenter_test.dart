@@ -213,21 +213,4 @@ void main() {
       });
     });
   });
-
-  group("Clear", () {
-    test("Should clear sale movements", () async {
-      await sut.getSales(homePresenter);
-      expect(sut.saleMovements, isNotNull);
-
-      sut.clear();
-      expect(sut.saleMovements, isNull);
-    });
-    test("Should clear last loaded data", () async {
-      await sut.getSales(homePresenter);
-      expect(sut.lastDateLoadedData, isNotNull);
-
-      sut.clear();
-      expect(sut.lastDateLoadedData, isNull);
-    });
-  });
 }
