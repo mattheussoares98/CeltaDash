@@ -1,5 +1,6 @@
 import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../ui/helpers/helpers.dart';
@@ -11,7 +12,7 @@ ThemeData makeAppTheme(BuildContext context) {
   const secondaryColor = CupertinoColors.systemGreen;
   final disabledColor = CupertinoColors.inactiveGray;
   const dividerColor = CupertinoColors.separator;
-  if (Platform.isIOS) {
+  if (!kIsWeb && Platform.isIOS) {
     const textTheme = TextTheme(
       displayLarge: TextStyle(
         fontSize: 20,

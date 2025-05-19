@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 import '../../ui/helpers/helpers.dart';
@@ -9,7 +10,7 @@ class GetPages {
   GetPages._();
 
   static Transition get transition =>
-      Platform.isIOS ? Transition.cupertino : Transition.fadeIn;
+      !kIsWeb && Platform.isIOS ? Transition.cupertino : Transition.fadeIn;
 
   static final getPages = [
     GetPage(
