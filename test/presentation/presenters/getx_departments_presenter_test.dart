@@ -46,6 +46,10 @@ void main() {
 
   void initMockSuccess() {
     loadSaleMovements.mockGet(saleMovementEntitys);
+    homePresenter.selectedDateMock = faker.date.dateTime();
+    homePresenter.selectedEnterpriseMock =
+        EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
+            .toViewModel();
   }
 
   setUp(() {
@@ -96,20 +100,18 @@ void main() {
       test("Should load sale movements with correct values", () async {
         await sut.getSales(homePresenter);
 
-        final startDate = DateTime(
-          homePresenter.selectedDate.year,
-          homePresenter.selectedDate.month,
-          1,
-        );
-        final endDate = DateTime(
-          homePresenter.selectedDate.year,
-          homePresenter.selectedDate.month + 1,
-          1,
-        ).subtract(Duration(days: 1));
-
         verify(() => loadSaleMovements.get(
-              startDate: startDate,
-              endDate: endDate,
+              startDate: DateTime(
+                homePresenter.selectedDateMock.year,
+                homePresenter.selectedDateMock.month,
+                1,
+              ),
+              endDate: DateTime(
+                homePresenter.selectedDateMock.year,
+                homePresenter.selectedDateMock.month + 1,
+                1,
+              ).subtract(Duration(days: 1)),
+              enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
               groupByEnterprise: true,
               groupByDay: true,
               groupByMonth: true,
@@ -118,24 +120,20 @@ void main() {
             )).called(1);
       });
       test("Should load sale movements with correct new date", () async {
-        homePresenter.selectedDateMock = faker.date.dateTime();
-
         await sut.getSales(homePresenter);
 
-        final startDate = DateTime(
-          homePresenter.selectedDateMock.year,
-          homePresenter.selectedDateMock.month,
-          1,
-        );
-        final endDate = DateTime(
-          homePresenter.selectedDateMock.year,
-          homePresenter.selectedDateMock.month + 1,
-          1,
-        ).subtract(Duration(days: 1));
-
         verify(() => loadSaleMovements.get(
-              startDate: startDate,
-              endDate: endDate,
+              startDate: DateTime(
+                homePresenter.selectedDateMock.year,
+                homePresenter.selectedDateMock.month,
+                1,
+              ),
+              endDate: DateTime(
+                homePresenter.selectedDateMock.year,
+                homePresenter.selectedDateMock.month + 1,
+                1,
+              ).subtract(Duration(days: 1)),
+              enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
               groupByEnterprise: true,
               groupByDay: true,
               groupByMonth: true,
@@ -144,8 +142,6 @@ void main() {
             )).called(1);
       });
       test("Should not load again if dont change the month", () async {
-        homePresenter.selectedDateMock = faker.date.dateTime();
-
         await sut.getSales(homePresenter);
 
         homePresenter.selectedDateMock = DateTime(
@@ -166,6 +162,7 @@ void main() {
                 homePresenter.selectedDateMock.month + 1,
                 1,
               ).subtract(Duration(days: 1)),
+              enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
               groupByEnterprise: true,
               groupByDay: true,
               groupByMonth: true,
@@ -175,8 +172,6 @@ void main() {
       });
       test("Should load again if dont change the month but force refresh",
           () async {
-        homePresenter.selectedDateMock = faker.date.dateTime();
-
         await sut.getSales(homePresenter);
 
         homePresenter.selectedDateMock = DateTime(
@@ -197,6 +192,7 @@ void main() {
                 homePresenter.selectedDateMock.month + 1,
                 1,
               ).subtract(Duration(days: 1)),
+              enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
               groupByEnterprise: true,
               groupByDay: true,
               groupByMonth: true,
@@ -205,8 +201,6 @@ void main() {
             )).called(2);
       });
       test("Should change last loaded data correctly", () async {
-        homePresenter.selectedDateMock = faker.date.dateTime();
-
         await sut.getSales(homePresenter, forceRefresh: true);
 
         expect(sut.lastDateLoadedData, homePresenter.selectedDateMock);

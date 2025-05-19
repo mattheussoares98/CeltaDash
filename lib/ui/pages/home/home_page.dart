@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage>
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
         homePresenter.updateSelectedIndex(0);
-        homePresenter.getBsEnterprises(
+        await homePresenter.getBsEnterprises(
           docRef: FirebaseFirestore.instance.collection("enterprises").doc(
                 EnterpriseBuilder.entity?.firebaseId,
               ),

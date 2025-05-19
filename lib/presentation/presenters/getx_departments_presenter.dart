@@ -42,6 +42,7 @@ class GetxDepartmentsPresenter extends GetxController
       ).subtract(Duration(days: 1));
 
       final salesByModality = await loadSaleMovements.get(
+        enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
         startDate: startDate,
         endDate: endDate,
         groupByEnterprise: true,
