@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../helpers/helpers.dart';
 
 class DefaultDropDown<T> extends StatefulWidget {
-  final void Function(T) onChanged;
+  final void Function(T)? onChanged;
   final List<DropdownMenuItem<T>>? items;
   final Widget? hint;
   final T selectedItem;
@@ -32,6 +32,34 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
       return CupertinoButton(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
         color: CupertinoColors.systemGrey5,
+        disabledColor: CupertinoColors.systemGrey3,
+        onPressed: widget.onChanged == null
+            ? null
+            : () async {
+                final selected = await showCupertinoModalPopup<T>(
+                  context: context,
+                  builder: (_) => CupertinoActionSheet(
+                    title: Text(R.string.selectOneEnterprise),
+                    actions: widget.items!
+                        .map((item) => CupertinoActionSheetAction(
+                              onPressed: () {
+                                Navigator.of(context).pop(item.value);
+                              },
+                              child: item.child,
+                            ))
+                        .toList(),
+                    cancelButton: CupertinoActionSheetAction(
+                      isDefaultAction: true,
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text(R.string.cancel),
+                    ),
+                  ),
+                );
+
+                if (selected != null && widget.onChanged != null) {
+                  widget.onChanged!(selected);
+                }
+              },
         child: Align(
           alignment: Alignment.center,
           child: Text(
@@ -43,31 +71,6 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
             ),
           ),
         ),
-        onPressed: () async {
-          final selected = await showCupertinoModalPopup<T>(
-            context: context,
-            builder: (_) => CupertinoActionSheet(
-              title: Text(R.string.selectOneEnterprise),
-              actions: widget.items!
-                  .map((item) => CupertinoActionSheetAction(
-                        onPressed: () {
-                          Navigator.of(context).pop(item.value);
-                        },
-                        child: item.child,
-                      ))
-                  .toList(),
-              cancelButton: CupertinoActionSheetAction(
-                isDefaultAction: true,
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text(R.string.cancel),
-              ),
-            ),
-          );
-
-          if (selected != null) {
-            widget.onChanged(selected);
-          }
-        },
       );
     }
 
@@ -87,11 +90,13 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
         height: 1,
       ),
       items: widget.items,
-      onChanged: (value) {
-        if (value != null) {
-          widget.onChanged(value);
-        }
-      },
+      onChanged: widget.onChanged == null
+          ? null
+          : (value) {
+              if (value != null && widget.onChanged != null) {
+                widget.onChanged!(value);
+              }
+            },
     );
   }
 }
