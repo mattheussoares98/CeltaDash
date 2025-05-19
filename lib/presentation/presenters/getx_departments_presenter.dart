@@ -28,10 +28,13 @@ class GetxDepartmentsPresenter extends GetxController
           _lastDateLoadedData?.month == homePresenter.selectedDate.month) {
         return;
       }
+
+      final now = DateTime.now();
+
       final startDate = DateTime(
-        homePresenter.selectedDate.year,
-        homePresenter.selectedDate.month,
-        1,
+        forceRefresh == true ? now.year : homePresenter.selectedDate.year,
+        forceRefresh == true ? now.month : homePresenter.selectedDate.month,
+        forceRefresh == true ? now.day : 1,
       );
 
       final endDate = DateTime(
@@ -40,20 +43,29 @@ class GetxDepartmentsPresenter extends GetxController
         1,
       ).subtract(Duration(days: 1));
 
-      final salesByModality = await loadSaleMovements.get(
-        enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
-        startDate: startDate,
-        endDate: endDate,
-        groupByEnterprise: true,
-        groupByDay: true,
-        groupByMonth: true,
-        groupByProductDepartment: true,
-        groupByProductSection: true,
-      );
+      final oldSales = forceRefresh == true
+          ? [...?saleMovements?.where((e) => e.Date?.day != now.day)]
+          : <SaleMovementViewModel>[];
 
-      saleMovements = salesByModality
-          .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
-          .toList();
+      final newSales = <SaleMovementViewModel>[];
+
+      for (var enterprise
+          in homePresenter.enterprises ?? <EnterpriseViewModel>[]) {
+        final remoteSales = await loadSaleMovements.get(
+          enterpriseIds: [enterprise.id!.toInt()],
+          startDate: startDate,
+          endDate: forceRefresh == true ? startDate : endDate,
+          groupByEnterprise: true,
+          groupByDay: true,
+          groupByMonth: true,
+          groupByProductDepartment: true,
+          groupByProductSection: true,
+        );
+
+        newSales.addAll(remoteSales
+            .map((e) => SaleMovementModel.fromEntity(e).toViewModel()));
+        saleMovements = [...oldSales, ...newSales];
+      }
 
       _lastDateLoadedData = homePresenter.selectedDate;
     } catch (e) {

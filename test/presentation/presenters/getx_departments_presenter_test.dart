@@ -50,6 +50,7 @@ void main() {
     homePresenter.selectedEnterpriseMock =
         EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
             .toViewModel();
+    homePresenter.enterprisesMock = [homePresenter.selectedEnterpriseMock!];
   }
 
   setUp(() {
@@ -111,7 +112,9 @@ void main() {
                 homePresenter.selectedDateMock.month + 1,
                 1,
               ).subtract(Duration(days: 1)),
-              enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
               groupByEnterprise: true,
               groupByDay: true,
               groupByMonth: true,
@@ -120,20 +123,25 @@ void main() {
             )).called(1);
       });
       test("Should load sale movements with correct new date", () async {
+        final newDate = faker.date.dateTime();
+        homePresenter.selectedDateMock = newDate;
+
         await sut.getSales(homePresenter);
 
         verify(() => loadSaleMovements.get(
               startDate: DateTime(
-                homePresenter.selectedDateMock.year,
-                homePresenter.selectedDateMock.month,
+                newDate.year,
+                newDate.month,
                 1,
               ),
               endDate: DateTime(
-                homePresenter.selectedDateMock.year,
-                homePresenter.selectedDateMock.month + 1,
+                newDate.year,
+                newDate.month + 1,
                 1,
               ).subtract(Duration(days: 1)),
-              enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
               groupByEnterprise: true,
               groupByDay: true,
               groupByMonth: true,
@@ -162,36 +170,6 @@ void main() {
                 homePresenter.selectedDateMock.month + 1,
                 1,
               ).subtract(Duration(days: 1)),
-              enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
-              groupByEnterprise: true,
-              groupByDay: true,
-              groupByMonth: true,
-              groupByProductDepartment: true,
-              groupByProductSection: true,
-            )).called(1);
-      });
-      test("Should load again if dont change the month but force refresh",
-          () async {
-        await sut.getSales(homePresenter);
-
-        homePresenter.selectedDateMock = DateTime(
-          homePresenter.selectedDateMock.year,
-          homePresenter.selectedDateMock.month,
-          faker.randomGenerator.integer(28),
-        );
-        await sut.getSales(homePresenter, forceRefresh: true);
-
-        verify(() => loadSaleMovements.get(
-              startDate: DateTime(
-                homePresenter.selectedDateMock.year,
-                homePresenter.selectedDateMock.month,
-                1,
-              ),
-              endDate: DateTime(
-                homePresenter.selectedDateMock.year,
-                homePresenter.selectedDateMock.month + 1,
-                1,
-              ).subtract(Duration(days: 1)),
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
               ],
@@ -200,12 +178,78 @@ void main() {
               groupByMonth: true,
               groupByProductDepartment: true,
               groupByProductSection: true,
-            )).called(2);
+            )).called(1);
+      });
+      test("Should load with only current day if force refresh", () async {
+        await sut.getSales(homePresenter, forceRefresh: true);
+
+        final now = DateTime.now();
+        final startDate = DateTime(
+          now.year,
+          now.month,
+          now.day,
+        );
+        final endDate = DateTime(
+          now.year,
+          now.month,
+          now.day,
+        );
+
+        verify(() => loadSaleMovements.get(
+              startDate: startDate,
+              endDate: endDate,
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
+              groupByEnterprise: true,
+              groupByDay: true,
+              groupByMonth: true,
+              groupByProductDepartment: true,
+              groupByProductSection: true,
+            )).called(1);
       });
       test("Should change last loaded data correctly", () async {
         await sut.getSales(homePresenter, forceRefresh: true);
 
         expect(sut.lastDateLoadedData, homePresenter.selectedDateMock);
+      });
+
+      test(
+          "Should update sale movements correctly when load more than one time",
+          () async {
+        final now = DateTime.now();
+        final enterpriseId = faker.randomGenerator.integer(100);
+        final firstTimeLoaded = [
+          EntityFactory.makeSaleMovementEntity(
+            saleDate: now,
+            enterpriseId: enterpriseId,
+          ),
+        ];
+        loadSaleMovements.mockGet(firstTimeLoaded);
+
+        await sut.getSales(homePresenter);
+        expect(
+          sut.saleMovements,
+          firstTimeLoaded
+              .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+              .toList(),
+        );
+
+        final secondTimeLoaded = [
+          EntityFactory.makeSaleMovementEntity(
+            saleDate: now,
+            enterpriseId: enterpriseId,
+          ),
+        ];
+
+        loadSaleMovements.mockGet(secondTimeLoaded);
+        await sut.getSales(homePresenter, forceRefresh: true);
+        expect(
+          sut.saleMovements,
+          secondTimeLoaded
+              .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+              .toList(),
+        );
       });
     });
   });

@@ -48,11 +48,15 @@ class EntityFactory {
     );
   }
 
-  static SaleMovementEntity makeSaleMovementEntity() => SaleMovementEntity(
+  static SaleMovementEntity makeSaleMovementEntity({
+    DateTime? saleDate,
+    int? enterpriseId,
+  }) =>
+      SaleMovementEntity(
         LiquidValue: faker.randomGenerator.decimal(),
         Year: faker.randomGenerator.integer(3000),
         Month: faker.randomGenerator.integer(12, min: 1),
-        Date: faker.date.dateTime(),
+        Date: saleDate ?? faker.date.dateTime(),
         Hour: faker.randomGenerator.integer(23, min: 0),
         Product: faker.food.dish(),
         ProductDepartment: faker.food.cuisine(),
@@ -60,7 +64,7 @@ class EntityFactory {
         PaymentFinalization: faker.lorem.word(),
         PaymentModality: faker.lorem.word(),
         EnterpriseFantasyName: faker.company.name(),
-        EnterpriseId: faker.randomGenerator.integer(100),
+        EnterpriseId: enterpriseId ?? faker.randomGenerator.integer(100),
         EnterprisePersonalizedCode:
             faker.randomGenerator.integer(10).toString(),
         QuantitySales: faker.randomGenerator.integer(100),
