@@ -51,14 +51,6 @@ class _DepartmentsPageState extends State<DepartmentsPage>
     });
   }
 
-  bool filter(SaleMovementViewModel sale, HomePresenter homePresenter) {
-    final selectedDate = homePresenter.selectedDate;
-
-    return (selectedMonth ? true : sale.Date?.day == selectedDate.day) &&
-        sale.Date?.month == selectedDate.month &&
-        sale.Date?.year == selectedDate.year;
-  }
-
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
@@ -88,7 +80,6 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                   paymentTypePresenter,
                   productsPresenter,
                   departmentsPresenter,
-                  forceRefresh: true,
                 );
               },
               onChangeDate: (_) async {
@@ -118,9 +109,13 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                   final saleMovements = departmentsPresenter.saleMovements
                       ?.filteredSales(
                         enterprise: homePresenter.selectedEnterprise,
+                        filterDay: selectedMonth
+                            ? null
+                            : homePresenter.selectedDate.day,
+                        filterMonth: homePresenter.selectedDate.month,
+                        filterYear: homePresenter.selectedDate.year,
                       )
                       .map((e) => e.toViewModel())
-                      .where((e) => filter(e, homePresenter))
                       .toList();
 
                   if (saleMovements == null || saleMovements.isEmpty) {
