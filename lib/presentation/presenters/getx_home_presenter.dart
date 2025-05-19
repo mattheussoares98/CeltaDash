@@ -27,7 +27,7 @@ class GetxHomePresenter extends GetxController
 
   @override
   void updateSelectedIndex(int index) {
-    _currentPageIndex.value = index;
+    _currentPageIndex.subject.add(index);
   }
 
   @override
