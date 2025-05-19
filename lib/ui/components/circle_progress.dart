@@ -77,46 +77,52 @@ class _AnimatedCircleProgressState extends State<AnimatedCircleProgress>
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: widget.width,
-      height: widget.height,
-      key: _widgetKey,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-        return AnimatedBuilder(
-          animation: _progressAnimation,
-          builder: (context, child) {
-            return Stack(
-              alignment: Alignment.center,
-              children: [
-                CustomPaint(
-                  size: Size(constraints.maxWidth, constraints.maxHeight),
-                  painter: _ProgressCirclePainter(
-                    progress: _progressAnimation.value,
-                    backgroundColor: Theme.of(
-                      context,
-                    ).primaryColorLight.withAlpha(15),
-                    progressColor: Theme.of(context).secondaryHeaderColor,
-                  ),
-                ),
-                SizedBox(
-                  width: constraints.maxWidth * 0.7,
-                  height: constraints.maxHeight * 0.7,
-                  child: FittedBox(
-                    child: Text(
-                      widget.value
-                          .toString()
-                          .toBrazilianNumber()
-                          .addBrazilianCoin(),
-                      style: Theme.of(context).textTheme.headlineMedium,
+    return GestureDetector(
+      onTap: () {
+        _controller.reset();
+        _controller.forward();
+        _hasAnimated = true;
+      },
+      child: SizedBox(
+        width: widget.width,
+        height: widget.height,
+        key: _widgetKey,
+        child: LayoutBuilder(builder: (context, constraints) {
+          return AnimatedBuilder(
+            animation: _progressAnimation,
+            builder: (context, child) {
+              return Stack(
+                alignment: Alignment.center,
+                children: [
+                  CustomPaint(
+                    size: Size(constraints.maxWidth, constraints.maxHeight),
+                    painter: _ProgressCirclePainter(
+                      progress: _progressAnimation.value,
+                      backgroundColor: Theme.of(
+                        context,
+                      ).primaryColorLight.withAlpha(15),
+                      progressColor: Theme.of(context).secondaryHeaderColor,
                     ),
                   ),
-                ),
-              ],
-            );
-          },
-        );
-      }),
+                  SizedBox(
+                    width: constraints.maxWidth * 0.7,
+                    height: constraints.maxHeight * 0.7,
+                    child: FittedBox(
+                      child: Text(
+                        widget.value
+                            .toString()
+                            .toBrazilianNumber()
+                            .addBrazilianCoin(),
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        }),
+      ),
     );
   }
 }
