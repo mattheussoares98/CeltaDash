@@ -18,6 +18,8 @@ class DefaultAppBar extends StatefulWidget implements PreferredSizeWidget {
   final bool? showDatePicker;
   final bool? showEnterpriseDropdown;
   final bool? isLoading;
+  final double datePickerHeight;
+  final double paddingPattern;
   const DefaultAppBar({
     super.key,
     required this.onChangeEnterprise,
@@ -26,13 +28,15 @@ class DefaultAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.onTapRefresh,
     this.onChangeDate,
     this.isLoading,
+    this.datePickerHeight = 30,
+    this.paddingPattern = 20,
   });
 
   @override
   Size get preferredSize => Size.fromHeight(
       this.showDatePicker == true && this.showEnterpriseDropdown == true
-          ? 100
-          : 60);
+          ? DropdownHeight.height + datePickerHeight + paddingPattern
+          : DropdownHeight.height + paddingPattern);
 
   @override
   State<DefaultAppBar> createState() => _DefaultAppBarState();
@@ -49,8 +53,12 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
       elevation: isIOS ? 0 : null,
       toolbarHeight:
           widget.showDatePicker == true && widget.showEnterpriseDropdown == true
-              ? 100
-              : 60,
+              ? DropdownHeight.height +
+                  widget.datePickerHeight +
+                  widget.paddingPattern
+              : DropdownHeight.height +
+                  widget.paddingPattern +
+                  widget.paddingPattern,
       title: Obx(() {
         final enterprises = homePresenter.enterprises;
         final selectedEnterprise = homePresenter.selectedEnterprise;
@@ -76,6 +84,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
           );
         }
         return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (widget.showEnterpriseDropdown == true)
               Row(
@@ -121,57 +130,62 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                 ],
               ),
             if (widget.showDatePicker == true)
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      onPressed: widget.isLoading == true
-                          ? null
-                          : () async {
-                              final newDate = await GetNewDate.get(
-                                reduceDaysFromInitialDate: 1825,
-                                canInsertDateBeforeNow: true,
-                                insertHoursAndMinutes: false,
-                                lastDate: DateTime.now(),
-                              );
+              SizedBox(
+                height: 30,
+                width: double.infinity,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: widget.isLoading == true
+                            ? null
+                            : () async {
+                                final newDate = await GetNewDate.get(
+                                  reduceDaysFromInitialDate: 1825,
+                                  canInsertDateBeforeNow: true,
+                                  insertHoursAndMinutes: false,
+                                  lastDate: DateTime.now(),
+                                );
 
-                              if (newDate != null &&
-                                  newDate != homePresenter.selectedDate) {
-                                setState(() {
-                                  homePresenter.updateSelectedDate(newDate);
-                                });
-                                if (widget.onChangeDate != null) {
-                                  homePresenter.updateScreen();
-                                  widget.onChangeDate!(newDate);
+                                if (newDate != null &&
+                                    newDate != homePresenter.selectedDate) {
+                                  setState(() {
+                                    homePresenter.updateSelectedDate(newDate);
+                                  });
+                                  if (widget.onChangeDate != null) {
+                                    homePresenter.updateScreen();
+                                    widget.onChangeDate!(newDate);
+                                  }
                                 }
-                              }
-                            },
-                      label: Text(
-                        "${DateFormat('dd/MM/yyyy').format(homePresenter.selectedDate)}  ${DateFormat('EEEE', 'pt_BR').format(homePresenter.selectedDate)}",
-                        maxLines: 1,
+                              },
+                        label: Text(
+                          "${DateFormat('dd/MM/yyyy').format(homePresenter.selectedDate)}  ${DateFormat('EEEE', 'pt_BR').format(homePresenter.selectedDate)}",
+                          maxLines: 1,
+                        ),
+                        icon: Icon(Icons.date_range, color: Colors.white),
                       ),
-                      icon: Icon(Icons.date_range, color: Colors.white),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: IconButton(
-                      onPressed:
-                          widget.isLoading == true ? null : widget.onTapRefresh,
-                      icon: widget.isLoading == true
-                          ? SizedBox(
-                              height: 25,
-                              width: 25,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: IconButton(
+                        onPressed: widget.isLoading == true
+                            ? null
+                            : widget.onTapRefresh,
+                        icon: widget.isLoading == true
+                            ? SizedBox(
+                                height: 25,
+                                width: 25,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : Icon(
+                                isIOS ? CupertinoIcons.refresh : Icons.refresh,
                               ),
-                            )
-                          : Icon(
-                              isIOS ? CupertinoIcons.refresh : Icons.refresh,
-                            ),
-                    ),
-                  )
-                ],
+                      ),
+                    )
+                  ],
+                ),
               ),
           ],
         );
