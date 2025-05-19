@@ -26,6 +26,18 @@ class _PaymentTypePageState extends State<PaymentTypePage>
   final pageController = PageController();
 
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        PaymentTypePresenter paymentTypePresenter = Get.find();
+        paymentTypePresenter.emitLoadingAgain();
+      }
+    });
+  }
+
+  @override
   void dispose() {
     super.dispose();
     // loadingSubscription?.cancel();

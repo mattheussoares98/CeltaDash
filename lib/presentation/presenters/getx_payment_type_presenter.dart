@@ -73,6 +73,14 @@ class GetxPaymentTypePresenter extends GetxController
     }
   }
 
+  @override
+  void emitLoadingAgain() {
+    if (isLoadingValue == true) {
+      isLoading = false;
+      isLoading = true;
+    }
+  }
+
   final _saleMovementsFinalizations = Rx<List<SaleMovementViewModel>?>(null);
   @override
   List<SaleMovementViewModel>? get saleMovementsByFinalizations =>
