@@ -1,4 +1,5 @@
 import '../../../domain/entities/entities.dart';
+import '../../../domain/helpers/helpers.dart';
 import '../../../domain/usecases/usecases.dart';
 import '../../../main/builders/builders.dart';
 import '../../http/http.dart';
@@ -30,7 +31,7 @@ class BsRemoteLoadEnterprises implements LoadEnterprises {
           .map((e) => EnterpriseModel.fromJson(e).toEntity())
           .toList();
     } catch (e) {
-      rethrow;
+      throw DomainError.unexpected;
     }
   }
 }
