@@ -48,15 +48,12 @@ class EntityFactory {
     );
   }
 
-  static SaleMovementEntity makeSaleMovementEntity({
-    DateTime? saleDate,
-    int? enterpriseId,
-  }) =>
+  static SaleMovementEntity makeSaleMovementEntity({int? enterpriseId}) =>
       SaleMovementEntity(
         LiquidValue: faker.randomGenerator.decimal(),
         Year: faker.randomGenerator.integer(3000),
         Month: faker.randomGenerator.integer(12, min: 1),
-        Date: saleDate ?? faker.date.dateTime(),
+        Date: faker.date.dateTime(),
         Hour: faker.randomGenerator.integer(23, min: 0),
         Product: faker.food.dish(),
         ProductDepartment: faker.food.cuisine(),

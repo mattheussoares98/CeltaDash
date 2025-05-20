@@ -190,13 +190,9 @@ void main() {
       test(
           "Should update sale movements correctly when load more than one time",
           () async {
-        final now = DateTime.now();
-        final enterpriseId = faker.randomGenerator.integer(100);
+        final enterpriseId = homePresenter.selectedEnterpriseMock!.id!.toInt();
         final firstTimeLoaded = [
-          EntityFactory.makeSaleMovementEntity(
-            saleDate: now,
-            enterpriseId: enterpriseId,
-          ),
+          EntityFactory.makeSaleMovementEntity(enterpriseId: enterpriseId),
         ];
         loadSaleMovements.mockGet(firstTimeLoaded);
 
@@ -209,10 +205,7 @@ void main() {
         );
 
         final secondTimeLoaded = [
-          EntityFactory.makeSaleMovementEntity(
-            saleDate: now,
-            enterpriseId: enterpriseId,
-          ),
+          EntityFactory.makeSaleMovementEntity(enterpriseId: enterpriseId),
         ];
 
         loadSaleMovements.mockGet(secondTimeLoaded);

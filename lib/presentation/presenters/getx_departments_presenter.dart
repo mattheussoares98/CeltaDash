@@ -29,8 +29,6 @@ class GetxDepartmentsPresenter extends GetxController
         return;
       }
 
-      final now = DateTime.now();
-
       final startDate = DateTime(
         homePresenter.selectedDate.year,
         homePresenter.selectedDate.month,
@@ -43,10 +41,7 @@ class GetxDepartmentsPresenter extends GetxController
         1,
       ).subtract(Duration(days: 1));
 
-      final oldSales = forceRefresh == true
-          ? [...?saleMovements?.where((e) => e.Date?.day != now.day)]
-          : <SaleMovementViewModel>[];
-
+      final oldSales = [...?saleMovements];
       final newSales = <SaleMovementViewModel>[];
 
       for (var enterprise
@@ -62,8 +57,12 @@ class GetxDepartmentsPresenter extends GetxController
           groupByProductSection: true,
         );
 
-        newSales.addAll(remoteSales
-            .map((e) => SaleMovementModel.fromEntity(e).toViewModel()));
+        newSales.addAll(
+          remoteSales.map((e) => SaleMovementModel.fromEntity(e).toViewModel()),
+        );
+        oldSales.removeWhere(
+          (element) => element.EnterpriseId == enterprise.id,
+        );
         saleMovements = [...oldSales, ...newSales];
       }
 
