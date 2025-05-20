@@ -59,7 +59,7 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
             final saleMovements = resumePresenter.saleMovements;
 
             if (saleMovements == null || saleMovements.isEmpty) {
-              return NoSalesWereFound();
+              return EmptySales(isLoading: false);
             }
 
             final groupSales = saleMovements
