@@ -136,8 +136,8 @@ class _HomePageState extends State<HomePage>
                                   label: R.string.products,
                                 ),
                                 BottomNavItem(
-                                  materialIcon: Icon(Icons.description),
-                                  cupertinoIcon: Icon(CupertinoIcons.doc_text),
+                                  materialIcon: Icon(Icons.grid_view_rounded),
+                                  cupertinoIcon: Icon(CupertinoIcons.square_grid_2x2_fill),
                                   label: R.string.more,
                                 ),
                                 // BottomNavItem(
