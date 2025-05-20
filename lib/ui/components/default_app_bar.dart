@@ -64,23 +64,28 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
         final selectedEnterprise = homePresenter.selectedEnterprise;
 
         if (enterprises == null) {
-          return ElevatedButton(
-            onPressed: () async {
-              await homePresenter.getBsEnterprises(
-                docRef:
-                    FirebaseFirestore.instance.collection("enterprises").doc(
-                          EnterpriseBuilder.entity?.firebaseId,
-                        ),
-                showBsErrorMessage: (error) {
-                  snackBarMessage(
-                    context,
-                    error,
-                    Colors.red,
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () async {
+                  await homePresenter.getBsEnterprises(
+                    docRef:
+                        FirebaseFirestore.instance.collection("enterprises").doc(
+                              EnterpriseBuilder.entity?.firebaseId,
+                            ),
+                    showBsErrorMessage: (error) {
+                      snackBarMessage(
+                        context,
+                        error,
+                        Colors.red,
+                      );
+                    },
                   );
                 },
-              );
-            },
-            child: Text(R.string.loadEnterprises),
+                child: Text(R.string.loadEnterprises),
+              ),
+            ],
           );
         }
         return Column(
