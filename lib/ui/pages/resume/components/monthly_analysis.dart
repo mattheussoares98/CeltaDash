@@ -87,7 +87,10 @@ class MonthlyAnalysis extends StatelessWidget {
               Expanded(
                 child: Column(
                   children: [
-                    Text(R.string.totalSales),
+                    Text(
+                      R.string.totalSales,
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
                     Text(
                       saleMovements
                           .sumLiquidValue(
@@ -96,6 +99,9 @@ class MonthlyAnalysis extends StatelessWidget {
                           .toString()
                           .toBrazilianNumber()
                           .addBrazilianCoin(),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontStyle: FontStyle.italic,
+                          ),
                     ),
                   ],
                 ),
@@ -104,12 +110,18 @@ class MonthlyAnalysis extends StatelessWidget {
               Expanded(
                 child: Column(
                   children: [
-                    Text(R.string.averageDailySale),
+                    Text(
+                      R.string.averageDailySale,
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
                     Text(
                       averageValue
                           .toString()
                           .toBrazilianNumber()
                           .addBrazilianCoin(),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontStyle: FontStyle.italic,
+                          ),
                     ),
                   ],
                 ),

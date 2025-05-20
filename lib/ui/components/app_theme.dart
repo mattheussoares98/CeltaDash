@@ -12,11 +12,53 @@ ThemeData makeAppTheme(BuildContext context) {
   const primaryColorDark = Color.fromARGB(255, 0, 100, 0); // DarkGreen
   const primaryColorLight = Color.fromARGB(255, 144, 238, 144); // LightGreen
   const secondaryColor = Color.fromARGB(255, 255, 193, 7); // Amber for contrast
-  final disabledColor = secondaryColor.withAlpha(100);
+  final disabledColor = CupertinoColors.inactiveGray;
   const dividerColor = CupertinoColors.separator;
   // const textColor = Colors.white;
 
   const textTheme = TextTheme(
+    bodySmall: TextStyle(
+      fontSize: 12,
+      color: Colors.black,
+      fontFamily: '.SF Pro Text',
+    ),
+    bodyMedium: TextStyle(
+      fontSize: 14,
+      color: Colors.black,
+      fontFamily: '.SF Pro Text',
+    ),
+    bodyLarge: TextStyle(
+      fontSize: 16,
+      color: Colors.black,
+      fontFamily: '.SF Pro Text',
+    ),
+    titleSmall: TextStyle(
+      fontSize: 14,
+      color: Colors.black,
+      fontFamily: '.SF Pro Text',
+    ),
+    titleMedium: TextStyle(
+      fontSize: 16,
+      color: Colors.black,
+      fontFamily: '.SF Pro Text',
+    ),
+    titleLarge: TextStyle(
+      fontSize: 18,
+      color: Colors.black,
+      fontFamily: '.SF Pro Text',
+    ),
+    headlineSmall: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: primaryColorDark,
+      fontFamily: '.SF Pro Text',
+    ),
+    headlineMedium: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: primaryColorDark,
+      fontFamily: '.SF Pro Text',
+    ),
     displayLarge: TextStyle(
       fontSize: 20,
       fontWeight: FontWeight.bold,

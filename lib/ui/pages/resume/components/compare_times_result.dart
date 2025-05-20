@@ -65,7 +65,8 @@ class _Item extends StatelessWidget {
         children: [
           Text(
             isBestHour ? betterTimeMessage : worstTimeMessage,
-            style: TextStyle(color: color),
+            style:
+                Theme.of(context).textTheme.titleSmall?.copyWith(color: color),
           ),
           FittedBox(
             child: Row(
@@ -80,7 +81,13 @@ class _Item extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 8),
                   child: FittedBox(
-                    child: Text(hour, style: TextStyle(color: color)),
+                    child: Text(
+                      hour,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleSmall
+                          ?.copyWith(color: color),
+                    ),
                   ),
                 ),
               ],
@@ -88,7 +95,8 @@ class _Item extends StatelessWidget {
           ),
           Text(
             value.toString().toBrazilianNumber().addBrazilianCoin(),
-            style: TextStyle(color: color),
+            style:
+                Theme.of(context).textTheme.titleSmall?.copyWith(color: color),
           ),
         ],
       ),

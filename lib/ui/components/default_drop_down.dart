@@ -33,7 +33,7 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
         height: DropdownHeight.height,
         child: CupertinoButton(
           color: CupertinoColors.systemGrey5,
-          disabledColor: CupertinoColors.systemGrey3,
+          disabledColor: Theme.of(context).disabledColor,
           padding: EdgeInsets.zero, // Remove internal padding
           onPressed: widget.onChanged == null
               ? null

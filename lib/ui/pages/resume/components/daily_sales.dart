@@ -61,20 +61,37 @@ class DailySales extends StatelessWidget {
       rightButton: null,
       rightChildren: [
         Text(
-          "${R.string.salesQuantity}\n${saleMovements.quantitySales(
-            enterprise: homePresenter.selectedEnterprise,
-            filterYear: homePresenter.selectedDate.year,
-            filterMonth: homePresenter.selectedDate.month,
-            filterDay: homePresenter.selectedDate.day,
-          )}",
+          R.string.salesQuantity,
+          style: Theme.of(context).textTheme.titleSmall,
         ),
         Text(
-          "${R.string.ticketAverage}\n${(saleMovements.ticketAverage(
+          saleMovements
+              .quantitySales(
+                enterprise: homePresenter.selectedEnterprise,
+                filterYear: homePresenter.selectedDate.year,
+                filterMonth: homePresenter.selectedDate.month,
+                filterDay: homePresenter.selectedDate.day,
+              )
+              .toString()
+              .toBrazilianNumber(0),
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontStyle: FontStyle.italic,
+              ),
+        ),
+        Text(
+          R.string.ticketAverage,
+          style: Theme.of(context).textTheme.titleSmall,
+        ),
+        Text(
+          (saleMovements.ticketAverage(
             homePresenter.selectedEnterprise,
             filterYear: homePresenter.selectedDate.year,
             filterMonth: homePresenter.selectedDate.month,
             filterDay: homePresenter.selectedDate.day,
-          )).toString().toBrazilianNumber().addBrazilianCoin()}",
+          )).toString().toBrazilianNumber().addBrazilianCoin(),
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontStyle: FontStyle.italic,
+              ),
         ),
         // Text(
         // TODO  "Request Cardoso to add products by sale quantity and average price",

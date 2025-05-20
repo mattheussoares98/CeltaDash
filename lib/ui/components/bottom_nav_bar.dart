@@ -24,7 +24,7 @@ class BottomNavBar extends StatelessWidget {
         currentIndex: currentIndex,
         onTap: onTap,
         activeColor: Theme.of(context).primaryColorDark,
-        inactiveColor: CupertinoColors.inactiveGray,
+        inactiveColor: Theme.of(context).disabledColor,
         backgroundColor: CupertinoColors.systemGrey6,
         height: 40,
         items: items
@@ -52,7 +52,7 @@ class BottomNavBar extends StatelessWidget {
       ),
       unselectedIconTheme: IconThemeData(
         size: 20,
-        color: Theme.of(context).primaryColorLight,
+        color: Theme.of(context).disabledColor,
       ),
       items: items
           .map(

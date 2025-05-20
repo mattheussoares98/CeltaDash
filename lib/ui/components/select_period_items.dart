@@ -91,8 +91,16 @@ class _PeriodItems extends State<SelectPeriodItems> {
         homePresenter.updateScreen();
       },
       style: ButtonStyle(
+        foregroundColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return Colors.white;
+          }
+          return Theme.of(context).primaryColorDark;
+        }),
         backgroundColor: WidgetStateProperty.resolveWith((states) {
-          if (states.contains(WidgetState.selected)) return Colors.grey[400];
+          if (states.contains(WidgetState.selected)) {
+            return Theme.of(context).primaryColorDark;
+          }
           return Colors.white;
         }),
       ),
