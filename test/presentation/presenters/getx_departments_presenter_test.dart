@@ -180,34 +180,7 @@ void main() {
               groupByProductSection: true,
             )).called(1);
       });
-      test("Should load with only current day if force refresh", () async {
-        await sut.getSales(homePresenter, forceRefresh: true);
 
-        final now = DateTime.now();
-        final startDate = DateTime(
-          now.year,
-          now.month,
-          now.day,
-        );
-        final endDate = DateTime(
-          now.year,
-          now.month,
-          now.day,
-        );
-
-        verify(() => loadSaleMovements.get(
-              startDate: startDate,
-              endDate: endDate,
-              enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
-              ],
-              groupByEnterprise: true,
-              groupByDay: true,
-              groupByMonth: true,
-              groupByProductDepartment: true,
-              groupByProductSection: true,
-            )).called(1);
-      });
       test("Should change last loaded data correctly", () async {
         await sut.getSales(homePresenter, forceRefresh: true);
 

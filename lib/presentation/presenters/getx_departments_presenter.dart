@@ -32,9 +32,9 @@ class GetxDepartmentsPresenter extends GetxController
       final now = DateTime.now();
 
       final startDate = DateTime(
-        forceRefresh == true ? now.year : homePresenter.selectedDate.year,
-        forceRefresh == true ? now.month : homePresenter.selectedDate.month,
-        forceRefresh == true ? now.day : 1,
+        homePresenter.selectedDate.year,
+        homePresenter.selectedDate.month,
+        1,
       );
 
       final endDate = DateTime(
@@ -54,7 +54,7 @@ class GetxDepartmentsPresenter extends GetxController
         final remoteSales = await loadSaleMovements.get(
           enterpriseIds: [enterprise.id!.toInt()],
           startDate: startDate,
-          endDate: forceRefresh == true ? startDate : endDate,
+          endDate: endDate,
           groupByEnterprise: true,
           groupByDay: true,
           groupByMonth: true,
