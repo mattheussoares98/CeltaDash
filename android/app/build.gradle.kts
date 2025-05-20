@@ -26,7 +26,7 @@ android {
     defaultConfig {
         applicationId = "br.com.celtaware.dash"
         multiDexEnabled = true
-        minSdk = 22
+        minSdk = 23
         targetSdk = 35
         versionCode = 5
         versionName = flutter.versionName
