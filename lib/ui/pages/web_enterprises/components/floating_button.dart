@@ -32,6 +32,30 @@ class _FloatingButtonState extends State<FloatingButton> {
     bsPasswordController.dispose();
   }
 
+  Future<void> _addEnterprise() async {
+    if (formKey.currentState?.validate() == true) {
+      await widget.presenter.addNewEnterprise(
+        bsUserName: bsUserNameController.text,
+        bsPassword: bsPasswordController.text,
+        baseUrl: baseUrlController.text,
+        enterpriseName: enterpriseNameController.text,
+        showBsErrorMessage: (error) {
+          snackBarMessage(context, error, Colors.red);
+        },
+        doOnSucceeds: () {
+          Navigator.of(context).pop();
+          baseUrlController.clear();
+          enterpriseNameController.clear();
+          bsUserNameController.clear();
+          bsPasswordController.clear();
+        },
+        docRef: FirebaseFirestore.instance.collection("enterprises").doc(
+              enterpriseNameController.text.toLowerCase().removeWhiteSpaces(),
+            ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
@@ -56,6 +80,7 @@ class _FloatingButtonState extends State<FloatingButton> {
                             MainAxisSize.min, // wrap content vertically
                         children: [
                           TextFormField(
+                            autofocus: true,
                             controller: enterpriseNameController,
                             decoration: FormFieldDecoration.decoration(
                               context: context,
@@ -103,6 +128,9 @@ class _FloatingButtonState extends State<FloatingButton> {
                           TextFormField(
                             controller: bsPasswordController,
                             obscureText: true,
+                            onFieldSubmitted: (_) async {
+                              await _addEnterprise();
+                            },
                             decoration: FormFieldDecoration.decoration(
                               context: context,
                               labelText: R.string.bsPassword,
@@ -121,32 +149,7 @@ class _FloatingButtonState extends State<FloatingButton> {
                 ),
               ),
             ),
-            onPress: () async {
-              if (formKey.currentState?.validate() == true) {
-                await widget.presenter.addNewEnterprise(
-                  bsUserName: bsUserNameController.text,
-                  bsPassword: bsPasswordController.text,
-                  baseUrl: baseUrlController.text,
-                  enterpriseName: enterpriseNameController.text,
-                  showBsErrorMessage: (error) {
-                    snackBarMessage(context, error, Colors.red);
-                  },
-                  doOnSucceeds: () {
-                    Navigator.of(context).pop();
-                    baseUrlController.clear();
-                    enterpriseNameController.clear();
-                    bsUserNameController.clear();
-                    bsPasswordController.clear();
-                  },
-                  docRef:
-                      FirebaseFirestore.instance.collection("enterprises").doc(
-                            enterpriseNameController.text
-                                .toLowerCase()
-                                .removeWhiteSpaces(),
-                          ),
-                );
-              }
-            },
+            onPress: _addEnterprise,
             onCancelPress: () async {
               baseUrlController.clear();
               enterpriseNameController.clear();
