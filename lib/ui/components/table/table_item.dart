@@ -130,13 +130,11 @@ class _TableItemState extends State<TableItem> {
   }
 
   Color getColor(int rowIndex) {
-    if (rowIndex == minValueRowIndex) {
-      return Colors.red.withAlpha(120);
-    }
-    if (rowIndex == maxValueRowIndex) {
+    if (rowIndex == maxValueRowIndex && widget.rowValues.length > 1) {
       return Colors.green.withAlpha(120);
-    }
-    if (rowIndex % 2 == 0) {
+    } else if (rowIndex == minValueRowIndex && widget.rowValues.length > 1) {
+      return Colors.red.withAlpha(120);
+    } else if (rowIndex % 2 == 0) {
       return Theme.of(context).primaryColorLight.withAlpha(20);
     }
     return Colors.transparent;
