@@ -21,6 +21,9 @@ class _FloatingButtonState extends State<FloatingButton> {
   final enterpriseNameController = TextEditingController();
   final bsUserNameController = TextEditingController();
   final bsPasswordController = TextEditingController();
+  final urlFocusNode = FocusNode();
+  final bsUserFocusNode = FocusNode();
+  final passwordFocusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -87,6 +90,9 @@ class _FloatingButtonState extends State<FloatingButton> {
                               labelText: R.string.enterpriseName,
                               hintText: R.string.enterpriseName,
                             ),
+                            onFieldSubmitted: (_) {
+                              urlFocusNode.requestFocus();
+                            },
                             validator: (value) {
                               return ValidationComposite([
                                 RequiredFieldValidation(),
@@ -97,11 +103,15 @@ class _FloatingButtonState extends State<FloatingButton> {
                           SizedBox(height: 10),
                           TextFormField(
                             controller: baseUrlController,
+                            focusNode: urlFocusNode,
                             decoration: FormFieldDecoration.decoration(
                               context: context,
                               labelText: R.string.url,
                               hintText: R.string.url,
                             ),
+                            onFieldSubmitted: (_) {
+                              bsUserFocusNode.requestFocus();
+                            },
                             validator: (value) {
                               return ValidationComposite([
                                 RequiredFieldValidation(),
@@ -113,11 +123,15 @@ class _FloatingButtonState extends State<FloatingButton> {
                           SizedBox(height: 10),
                           TextFormField(
                             controller: bsUserNameController,
+                            focusNode: bsUserFocusNode,
                             decoration: FormFieldDecoration.decoration(
                               context: context,
                               labelText: R.string.bsUserName,
                               hintText: R.string.bsUserName,
                             ),
+                            onFieldSubmitted: (_) {
+                              passwordFocusNode.requestFocus();
+                            },
                             validator: (value) {
                               return ValidationComposite([
                                 RequiredFieldValidation(),
@@ -127,6 +141,7 @@ class _FloatingButtonState extends State<FloatingButton> {
                           SizedBox(height: 10),
                           TextFormField(
                             controller: bsPasswordController,
+                            focusNode: passwordFocusNode,
                             obscureText: true,
                             onFieldSubmitted: (_) async {
                               await _addEnterprise();
