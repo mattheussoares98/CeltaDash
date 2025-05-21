@@ -144,6 +144,14 @@ void main() {
       sut.goToEnterpriseDetails(enterprise);
       expect(sut.selectedEnterprise, enterprise);
     });
+
+    test("Should navigate login page correctly", () {
+      sut.goToLoginPage();
+
+      verify(() =>
+              navigateTo.navigate(pageRoute: PageRoutes.login, clear: true))
+          .called(1);
+    });
   });
 
   group("Change enterprise url", () {

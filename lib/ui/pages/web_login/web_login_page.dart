@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../../helpers/helpers.dart';
 import '../../mixins/mixins.dart';
 import '../pages.dart';
 import 'components/components.dart';
@@ -60,6 +61,7 @@ class _WebLoginPageState extends State<WebLoginPage>
         handleMainError(context, widget.presenter.mainErrorStream);
 
     return Scaffold(
+      appBar: AppBar(title: Text(R.string.login)),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(

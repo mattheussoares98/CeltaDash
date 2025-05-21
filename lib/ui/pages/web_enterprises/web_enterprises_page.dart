@@ -49,6 +49,7 @@ class _WebEnterprisesPageState extends State<WebEnterprisesPage>
   Widget build(BuildContext context) {
     loadingSubscription?.cancel();
     mainErrorSubscription?.cancel();
+    // FirebaseAuth.instance.signOut();
 
     loadingSubscription =
         handleLoading(context, widget.presenter.isLoadingStream);
@@ -57,13 +58,21 @@ class _WebEnterprisesPageState extends State<WebEnterprisesPage>
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: widget.presenter.goToLoginPage,
+          icon: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).primaryColorDark,
+          ),
+        ),
         title: Text(R.string.enterprises),
         actions: [
           IconButton(
             onPressed: () async {
               await widget.presenter.getEnterprises();
             },
-            icon: Icon(Icons.refresh),
+            icon:
+                Icon(Icons.refresh, color: Theme.of(context).primaryColorDark),
           ),
         ],
       ),

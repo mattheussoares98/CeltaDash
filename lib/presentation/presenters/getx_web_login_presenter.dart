@@ -25,10 +25,7 @@ class GetxWebLoginPresenter extends GetxController
     mainError = null;
     try {
       await firebaseLoginManagement.login(email: email, password: password);
-      await navigateTo.navigate(
-        pageRoute: PageRoutes.webEnterprises,
-        clear: true,
-      );
+      await navigateTo.navigate(pageRoute: PageRoutes.webEnterprises);
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {
@@ -54,8 +51,10 @@ class GetxWebLoginPresenter extends GetxController
     isLoading = true;
     bool isLogged = await firebaseLoginManagement.isLoggedIn();
     if (isLogged) {
-      navigateTo.navigate(pageRoute: PageRoutes.webEnterprises, clear: true);
+      isLoading = false;
+      navigateTo.navigate(pageRoute: PageRoutes.webEnterprises);
+    } else {
+      isLoading = false;
     }
-    isLoading = false;
   }
 }
