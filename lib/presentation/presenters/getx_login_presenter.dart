@@ -74,7 +74,8 @@ class GetxLoginPresenter extends GetxController
       } else {
         EnterpriseBuilder.entity = FirebaseEnterpriseEntity(
           baseUrl: EnterpriseBuilder.entity?.baseUrl,
-          firebaseSubEnterprises: EnterpriseBuilder.entity?.firebaseSubEnterprises,
+          firebaseSubEnterprises:
+              EnterpriseBuilder.entity?.firebaseSubEnterprises,
           firebaseId: EnterpriseBuilder.entity?.firebaseId,
           bsUser: BsUserEntity(
             name: user.trimRight(),
@@ -122,5 +123,10 @@ class GetxLoginPresenter extends GetxController
         CrossIdentity_Usuario: null,
       ),
     );
+  }
+
+  @override
+  void goToWebLoginPage() {
+    navigateTo.navigate(pageRoute: PageRoutes.webLogin);
   }
 }

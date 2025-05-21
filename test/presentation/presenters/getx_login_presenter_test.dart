@@ -425,4 +425,12 @@ void main() {
       );
     });
   });
+
+  group("Go to web login page", () {
+    test("Should call navigateTo with correct values", () {
+      sut.goToWebLoginPage();
+
+      verify(() => navigateTo.navigate(pageRoute: PageRoutes.webLogin));
+    });
+  });
 }
