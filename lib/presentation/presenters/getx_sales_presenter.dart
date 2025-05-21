@@ -32,9 +32,7 @@ class GetxSalesPresenter extends GetxController
       final remoteSalesByMonth = await loadSaleMovements.get(
         enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
         startDate: DateTime(homePresenter.selectedDate.year, 1, 1),
-        // endDate: DateTime(homePresenter.selectedDate.year, 12, 31),
-        endDate: DateTime
-            .now(), //TODO Cardoso needs to fix the problem when filter a entire year to remove this DateTime.now
+        endDate: DateTime(homePresenter.selectedDate.year, 12, 31),
         groupByEnterprise: true,
         groupByMonth: true,
         groupByYear: true,
