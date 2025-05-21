@@ -318,6 +318,7 @@ void main() {
             },
           )).called(1);
     });
+
     test("Should save url without spaces and convert to lowercase", () async {
       final baseUrl = faker.lorem.sentence();
 
@@ -393,8 +394,10 @@ void main() {
         docRef: docRef,
       );
     });
+
     test("Should call remoteLogin with correct values", () async {
-      final url = faker.internet.httpUrl();
+      final url = "${faker.internet.httpsUrl().toUpperCase()} anything";
+
       await sut.addNewEnterprise(
         showBsErrorMessage: (_) {},
         doOnSucceeds: () {},
@@ -409,7 +412,7 @@ void main() {
         () => remoteLogin.login(
           user: bsUserName,
           password: bsPassword,
-          url: url,
+          url: url.toLowerCase().removeWhiteSpaces(),
         ),
       ).called(1);
     });
@@ -468,7 +471,7 @@ void main() {
       );
     });
     test("Should load enterprises with correct values", () async {
-      final baseUrl = faker.internet.httpUrl();
+      final baseUrl = "${faker.internet.httpUrl().toUpperCase()} anything";
       final enterpriseName = faker.company.name();
 
       await sut.addNewEnterprise(
@@ -482,7 +485,7 @@ void main() {
       );
 
       verify(() => loadEnterprises.get(
-            url: baseUrl,
+            url: baseUrl.toLowerCase().removeWhiteSpaces(),
             userName: bsUserName,
             accessKey: bsLoginResponse.response["AccessKey"],
           )).called(1);

@@ -129,7 +129,7 @@ class GetxWebEnterprisesPresenter extends GetxController
       final loginResult = await remoteLogin.login(
         user: bsUserName,
         password: bsPassword,
-        url: baseUrl,
+        url: baseUrl.toLowerCase().removeWhiteSpaces(),
       );
 
       if (loginResult.responseType == SoapResponseType.error) {
@@ -139,7 +139,7 @@ class GetxWebEnterprisesPresenter extends GetxController
         throw DomainError.updateCeltaBs;
       }
       final enterprises = await loadEnterprises.get(
-        url: baseUrl,
+        url: baseUrl.toLowerCase().removeWhiteSpaces(),
         accessKey: loginResult.response["AccessKey"],
         userName: bsUserName,
       );
