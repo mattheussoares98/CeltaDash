@@ -116,7 +116,6 @@ class _HomePageState extends State<HomePage>
                             bottomNavigationBar: BottomNavBar(
                               currentIndex: currentIndex.data ?? 0,
                               onTap: homePresenter.updateSelectedIndex,
-                              showLabels: false,
                               items: [
                                 BottomNavItem(
                                   materialIcon: Icon(Icons.pie_chart),
@@ -137,7 +136,8 @@ class _HomePageState extends State<HomePage>
                                 ),
                                 BottomNavItem(
                                   materialIcon: Icon(Icons.grid_view_rounded),
-                                  cupertinoIcon: Icon(CupertinoIcons.square_grid_2x2_fill),
+                                  cupertinoIcon:
+                                      Icon(CupertinoIcons.square_grid_2x2_fill),
                                   label: R.string.more,
                                 ),
                                 // BottomNavItem(

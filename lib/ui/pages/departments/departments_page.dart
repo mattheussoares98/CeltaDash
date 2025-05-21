@@ -159,7 +159,6 @@ class _DepartmentsPageState extends State<DepartmentsPage>
             ),
             bottomNavigationBar: BottomNavBar(
               currentIndex: selectedPageIndex,
-              showLabels: true,
               onTap: (value) {
                 setState(() {
                   selectedPageIndex = value;

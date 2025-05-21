@@ -107,7 +107,6 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
       ),
       bottomNavigationBar: BottomNavBar(
         currentIndex: currentIndex,
-        showLabels: true,
         items: [
           BottomNavItem(
             materialIcon: Icon(Icons.bar_chart_rounded),

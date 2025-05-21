@@ -7,14 +7,12 @@ class BottomNavBar extends StatelessWidget {
   final List<BottomNavItem> items;
   final int currentIndex;
   final void Function(int index) onTap;
-  final bool showLabels;
 
   const BottomNavBar({
     super.key,
     required this.currentIndex,
     required this.onTap,
     required this.items,
-    required this.showLabels,
   });
 
   @override
@@ -44,8 +42,6 @@ class BottomNavBar extends StatelessWidget {
       type: BottomNavigationBarType.fixed,
       unselectedFontSize: 10,
       selectedFontSize: 12,
-      showSelectedLabels: showLabels,
-      showUnselectedLabels: showLabels,
       selectedIconTheme: IconThemeData(
         size: 30,
         color: Theme.of(context).primaryColorDark,

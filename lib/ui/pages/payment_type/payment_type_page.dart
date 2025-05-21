@@ -187,7 +187,6 @@ class _PaymentTypePageState extends State<PaymentTypePage>
               );
             }),
             bottomNavigationBar: BottomNavBar(
-              showLabels: true,
               currentIndex: selectedPageIndex,
               onTap: (value) {
                 setState(() {
