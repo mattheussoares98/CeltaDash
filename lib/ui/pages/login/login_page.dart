@@ -100,9 +100,12 @@ class _LoginPageState extends State<LoginPage>
             child: Column(
               // mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(
-                  "lib/ui/assets/images/CeltaLogo-withoutbg.png",
-                  height: MediaQuery.of(context).size.height * 0.3,
+                GestureDetector(
+                  onLongPress: widget.presenter.goToWebLoginPage,
+                  child: Image.asset(
+                    "lib/ui/assets/images/CeltaLogo-withoutbg.png",
+                    height: MediaQuery.of(context).size.height * 0.3,
+                  ),
                 ),
                 EnterpriseField(
                   enterpriseController: enterpriseController,
