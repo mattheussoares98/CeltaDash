@@ -103,7 +103,7 @@ class _LoginPageState extends State<LoginPage>
                 GestureDetector(
                   onLongPress: widget.presenter.goToWebLoginPage,
                   child: Image.asset(
-                    "lib/ui/assets/images/CeltaLogo-withoutbg.png",
+                    "lib/ui/assets/images/logoCeltaTransparente.png",
                     height: MediaQuery.of(context).size.height * 0.3,
                   ),
                 ),

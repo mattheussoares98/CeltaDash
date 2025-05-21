@@ -44,7 +44,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
             return Opacity(
               opacity: _opacityAnimation.value,
               child: Image.asset(
-                'lib/ui/assets/images/CeltaLogo-withoutbg.png',
+                'lib/ui/assets/images/logoCeltaTransparente.png',
                 key: const Key("loading"),
               ),
             );
