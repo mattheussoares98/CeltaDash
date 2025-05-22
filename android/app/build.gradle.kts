@@ -28,7 +28,7 @@ android {
         multiDexEnabled = true
         minSdk = 23
         targetSdk = 35
-        versionCode = 5
+        versionCode = 6
         versionName = flutter.versionName
     }
 
