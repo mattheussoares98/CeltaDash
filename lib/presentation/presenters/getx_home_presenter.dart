@@ -37,8 +37,8 @@ class GetxHomePresenter extends GetxController
   }
 
   @override
-  void goToConfigurationsPage() {
-    navigateTo.navigate(pageRoute: PageRoutes.configurations);
+  void goToMorePage() {
+    navigateTo.navigate(pageRoute: PageRoutes.more);
   }
 
   List<FirebaseSubEnterpriseEntity> _getMissingEnterprises(

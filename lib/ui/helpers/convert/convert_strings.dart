@@ -53,18 +53,4 @@ extension StringModifier on String {
       return -1;
     }
   }
-
-  String removeComplementConfigurations() {
-    RegExp optionalRegex = RegExp(r'\(op\|[^|]*\|op\)');
-    RegExp obligatoryRegex = RegExp(r'\(ob\|[^|]*\|ob\)');
-
-    return toLowerCase()
-        .replaceAll(optionalRegex, '')
-        .replaceAll(obligatoryRegex, '')
-        .replaceAll(RegExp(r'\(p\)'), '')
-        .replaceAll(RegExp(r'\(pp\)'), '')
-        .replaceAll(RegExp(r'\(ppp\)'), '')
-        .replaceAll(RegExp(r'\(kids\)'), '')
-        .replaceAll(RegExp(r'\(novo\)'), '');
-  }
 }

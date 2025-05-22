@@ -12,7 +12,7 @@ abstract class HomePresenter implements Listenable {
 
   void updateSelectedIndex(int index);
   void updateSelectedDate(DateTime date);
-  void goToConfigurationsPage();
+  void goToMorePage();
   void updateScreen();
 
   Future<void> getBsEnterprises({

@@ -16,7 +16,7 @@ import '../../domain/mocks/mocks.dart';
 import '../mocks/mocks.dart';
 
 void main() {
-  late GetxConfigurationsPresenter sut;
+  late GetxMorePresenter sut;
 
   late NavigateToSpy navigateTo;
   late LocalStorageSpy localStorage;
@@ -32,7 +32,7 @@ void main() {
   }
 
   void initPresenters() {
-    sut = GetxConfigurationsPresenter(
+    sut = GetxMorePresenter(
       navigateTo: navigateTo,
       localStorage: localStorage,
     );

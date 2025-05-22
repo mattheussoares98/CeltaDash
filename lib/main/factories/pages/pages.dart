@@ -1,5 +1,5 @@
 export './compare_days/compare_days.dart';
-export './configurations/configurations.dart';
+export 'more/more.dart';
 export './departments/departments.dart';
 export './goal_history/goal_history.dart';
 export './group_summary/group_summary.dart';

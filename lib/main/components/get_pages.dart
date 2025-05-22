@@ -19,8 +19,8 @@ class GetPages {
       transition: transition,
     ),
     GetPage(
-      name: PageRoutes.configurations,
-      page: makeConfigurationsPage,
+      name: PageRoutes.more,
+      page: makeMorePage,
       transition: transition,
     ),
     GetPage(

@@ -137,12 +137,11 @@ void main() {
   });
 
   group("Navigation", () {
-    test("Should go to configurations page", () {
-      sut.goToConfigurationsPage();
+    test("Should go to more page", () {
+      sut.goToMorePage();
 
       verify(
-        () => navigateTo.navigate(
-            pageRoute: PageRoutes.configurations, clear: false),
+        () => navigateTo.navigate(pageRoute: PageRoutes.more, clear: false),
       ).called(1);
     });
   });

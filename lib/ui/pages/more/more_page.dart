@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 
-import '../../../ui/components/components.dart';
+import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 import '../pages.dart';
 
-class ConfigurationsPage extends StatelessWidget {
-  final ConfigurationsPresenter configurationsPresenter;
-  const ConfigurationsPage({
+class MorePage extends StatelessWidget {
+  final MorePresenter presenter;
+  const MorePage({
     super.key,
-    required this.configurationsPresenter,
+    required this.presenter,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(R.string.configurations),
-      ),
+      appBar: AppBar(title: Text(R.string.more)),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -29,7 +27,7 @@ class ConfigurationsPage extends StatelessWidget {
                   titleMessage: R.string.msgReallyWantLogout,
                   content: null,
                   onPress: () async {
-                    await configurationsPresenter.doLogout();
+                    await presenter.doLogout();
                   },
                 );
               },

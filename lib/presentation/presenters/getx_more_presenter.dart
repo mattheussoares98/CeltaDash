@@ -9,13 +9,13 @@ import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
-class GetxConfigurationsPresenter extends GetxController
+class GetxMorePresenter extends GetxController
     with UIErrorManager, LoadingManager
-    implements ConfigurationsPresenter {
+    implements MorePresenter {
   final NavigateTo navigateTo;
   final LocalStorage localStorage;
 
-  GetxConfigurationsPresenter({
+  GetxMorePresenter({
     required this.navigateTo,
     required this.localStorage,
   });

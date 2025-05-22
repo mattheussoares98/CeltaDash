@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage>
     // makeIndicatorsPage(),//Dont make sense use this pages because is similar salesPage
     makeSalesPage(),
     makeProductsPage(),
-    makeConfigurationsPage(),
+    makeMorePage(),
     // makeTeamPage(),
   ];
 
