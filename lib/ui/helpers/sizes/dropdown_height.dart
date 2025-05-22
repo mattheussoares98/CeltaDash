@@ -1,5 +1,5 @@
 class DropdownHeight {
   DropdownHeight._();
 
-  static const double height = 30;
+  static const double height = 40;
 }
