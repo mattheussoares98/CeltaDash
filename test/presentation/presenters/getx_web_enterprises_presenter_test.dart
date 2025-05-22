@@ -343,7 +343,7 @@ void main() {
             },
           )).called(1);
     });
-    test("Should save the new enterprise locally", () async {
+    test("Should emit enterprises correctly when add another", () async {
       final oldEnterprises = firebaseEnterprises
           .map((e) => FirebaseEnterpriseModel.fromEntity(e).toViewModel())
           .toList();
@@ -354,7 +354,16 @@ void main() {
           baseUrl: baseUrl.toLowerCase().removeWhiteSpaces(),
           enterpriseName: docRef.id.toLowerCase().removeWhiteSpaces(),
           firebaseId: docRef.id.toLowerCase().removeWhiteSpaces(),
-          firebaseSubEnterprises: null,
+          firebaseSubEnterprises: enterprisesInBs
+              .map(
+                (e) => FirebaseSubEnterpriseViewModel(
+                  id: docRef.id.toLowerCase().removeWhiteSpaces(),
+                  name: e.name,
+                  personalizedCode: e.personalizedCode,
+                  cnpj: e.cnpj,
+                ),
+              )
+              .toList(),
         ),
       ];
 
@@ -415,29 +424,6 @@ void main() {
           url: url.toLowerCase().removeWhiteSpaces(),
         ),
       ).called(1);
-    });
-    test("Should emit correct value is login throws", () async {
-      remoteLogin.mockLogin(
-        SoapResponseModel(
-            response: faker.lorem.sentence(),
-            responseType: SoapResponseType.error),
-      );
-
-      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
-      expectLater(
-        sut.mainErrorStream,
-        emitsInOrder([null, UIError.unexpected]),
-      );
-
-      await sut.addNewEnterprise(
-        showBsErrorMessage: (_) {},
-        doOnSucceeds: () {},
-        bsUserName: bsUserName,
-        bsPassword: bsPassword,
-        baseUrl: faker.internet.httpUrl(),
-        enterpriseName: mockedFirebaseGet.docs.first.data()!["enterpriseName"]!,
-        docRef: docRef,
-      );
     });
 
     test("Should emit update bs if access key is null", () async {

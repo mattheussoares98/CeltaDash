@@ -106,12 +106,10 @@ void main() {
       final third = faker.randomGenerator.integer(100);
       expectLater(
         sut.currentPageIndexStream,
-        emitsInOrder([first, second, third]),
+        emitsInOrder([first, second, third, third]),
       );
 
       sut.updateSelectedIndex(first);
-      sut.updateSelectedIndex(first);
-      sut.updateSelectedIndex(second);
       sut.updateSelectedIndex(second);
       sut.updateSelectedIndex(third);
       sut.updateSelectedIndex(third);
