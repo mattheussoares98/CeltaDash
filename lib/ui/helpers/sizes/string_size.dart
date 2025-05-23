@@ -8,7 +8,7 @@ class StringSize {
   static double _size = 15;
   static double get size => _size;
   static void updateStringSize(BuildContext context) {
-    if (hasMinWidth(context)) {
+    if (ScreenSize.hasMinWidth) {
       _size = 22;
     } else {
       _size = 15;

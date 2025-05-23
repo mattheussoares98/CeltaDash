@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'has_min_width.dart';
+import 'screen_size.dart';
 
 double getIconSize(BuildContext context) {
-  return hasMinWidth(context) ? 35 : 30;
+  return ScreenSize.hasMinWidth ? 35 : 30;
 }

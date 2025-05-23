@@ -99,8 +99,8 @@ ThemeData makeAppTheme(BuildContext context) {
   );
 
   final buttonPadding = EdgeInsets.symmetric(
-    vertical: hasMinWidth(context) ? 10 : 6,
-    horizontal: hasMinWidth(context) ? 20 : 12,
+    vertical: ScreenSize.hasMinWidth ? 10 : 6,
+    horizontal: ScreenSize.hasMinWidth ? 20 : 12,
   );
 
   return ThemeData(

@@ -13,7 +13,7 @@ void showErrorMessage(BuildContext context, String error,
         error,
         textAlign: TextAlign.center,
         style: TextStyle(
-          fontSize: hasMinWidth(context) ? 17 : 13,
+          fontSize: ScreenSize.hasMinWidth ? 17 : 13,
         ),
       ),
       dismissDirection: DismissDirection.down,

@@ -77,7 +77,7 @@ Future<void> _materialNotificationDialog({
           title: Text(
             titleMessage,
             style: TextStyle(
-              fontSize: hasMinWidth(context) ? 30 : 23,
+              fontSize: ScreenSize.hasMinWidth ? 30 : 23,
               fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.center,
