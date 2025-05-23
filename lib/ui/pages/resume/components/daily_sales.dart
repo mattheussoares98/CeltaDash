@@ -93,9 +93,6 @@ class DailySales extends StatelessWidget {
                 fontStyle: FontStyle.italic,
               ),
         ),
-        // Text(
-        // TODO  "Request Cardoso to add products by sale quantity and average price",
-        // ),
       ],
     );
   }

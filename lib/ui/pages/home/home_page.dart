@@ -145,7 +145,6 @@ class _HomePageState extends State<HomePage>
                                 //   cupertinoIcon: Icon(CupertinoIcons.person_2),
                                 //   label: R.string.team,
                                 // ),
-                                //TODO implement
                               ],
                             ),
                           );

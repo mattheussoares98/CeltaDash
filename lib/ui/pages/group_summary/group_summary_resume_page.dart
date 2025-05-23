@@ -54,7 +54,6 @@ class GroupSummaryResumePage extends StatelessWidget {
                       .toBrazilianNumber(),
                   icon: Icons.person,
                 ),
-                //TODO add averate ticket by sale and devolutions
               ],
             ),
           ],
