@@ -34,7 +34,7 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
         child: CupertinoButton(
           color: CupertinoColors.systemGrey5,
           disabledColor: Theme.of(context).disabledColor,
-          padding: EdgeInsets.zero, // Remove internal padding
+          padding: EdgeInsets.only(left: 15), // Remove internal padding
           onPressed: widget.onChanged == null
               ? null
               : () async {
@@ -42,14 +42,27 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
                     context: context,
                     builder: (_) => CupertinoActionSheet(
                       title: Text(R.string.selectOneEnterprise),
-                      actions: widget.items!
-                          .map((item) => CupertinoActionSheetAction(
-                                onPressed: () {
-                                  Navigator.of(context).pop(item.value);
-                                },
-                                child: item.child,
-                              ))
-                          .toList(),
+                      actions: widget.items!.map((item) {
+                        String text = '';
+                        if (item.child is Text) {
+                          final textWidget = item.child as Text;
+                          text = textWidget.data ?? '';
+                        }
+
+                        return CupertinoActionSheetAction(
+                          onPressed: () {
+                            Navigator.of(context).pop(item.value);
+                          },
+                          child: Text(
+                            text,
+                            style: TextStyle(
+                              color: item.value == widget.selectedItem
+                                  ? Theme.of(context).primaryColorDark
+                                  : Theme.of(context).disabledColor,
+                            ),
+                          ),
+                        );
+                      }).toList(),
                       cancelButton: CupertinoActionSheetAction(
                         isDefaultAction: true,
                         onPressed: () => Navigator.of(context).pop(),
