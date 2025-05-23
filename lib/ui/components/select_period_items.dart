@@ -53,17 +53,19 @@ class _PeriodItems extends State<SelectPeriodItems> {
                 child: Text(
                   item.title,
                   selectionColor: selected == item.title
-                      ? CupertinoColors.white // text for selected segment
+                      ? CupertinoColors.white
                       : Theme.of(context).primaryColorDark,
                   style: TextStyle(
-                    color: CupertinoColors.white,
+                    color: selected == item.title
+                        ? CupertinoColors.white
+                        : Theme.of(context).primaryColor,
                   ),
                 ),
               ),
           },
           groupValue: selected,
           thumbColor: Theme.of(context).primaryColorDark,
-          backgroundColor: Theme.of(context).primaryColorLight.withAlpha(100),
+          backgroundColor: Theme.of(context).primaryColorLight.withAlpha(40),
           onValueChanged: (newValue) {
             if (newValue == null) return;
             selected = newValue;
