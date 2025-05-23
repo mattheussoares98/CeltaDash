@@ -29,10 +29,11 @@ class GetxSalesPresenter extends GetxController
         return;
       }
 
+      final now = DateTime.now();
       final remoteSalesByMonth = await loadSaleMovements.get(
         enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
         startDate: DateTime(homePresenter.selectedDate.year, 1, 1),
-        endDate: DateTime(homePresenter.selectedDate.year, 12, 31),
+        endDate: DateTime(now.year, now.month, now.day),
         groupByEnterprise: true,
         groupByMonth: true,
         groupByYear: true,
@@ -44,7 +45,7 @@ class GetxSalesPresenter extends GetxController
       final remoteSalesByYear = await loadSaleMovements.get(
         enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
         startDate: DateTime(homePresenter.selectedDate.year - 2),
-        endDate: DateTime(homePresenter.selectedDate.year, 12, 31),
+        endDate: DateTime(now.year, now.month, now.day),
         groupByEnterprise: true,
         groupByYear: true,
       );
