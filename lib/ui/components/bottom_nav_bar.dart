@@ -24,7 +24,7 @@ class BottomNavBar extends StatelessWidget {
         activeColor: Theme.of(context).primaryColorDark,
         inactiveColor: Theme.of(context).disabledColor,
         backgroundColor: CupertinoColors.systemGrey6,
-        height: 40,
+        height: 50,
         items: items
             .map(
               (item) => BottomNavigationBarItem(
