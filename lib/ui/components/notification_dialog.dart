@@ -19,11 +19,11 @@ Future<void> notificationDialog({
   bool? showLargeDialog = true,
   bool? showCloseAction = false,
 }) async {
-  if (Platform.isIOS) {
+  if (Platform.isIOS && content == null) {
+    //when has a content, doesnt works well in cupertino
     await _cupertinoNotificationDialog(
       context: context,
       titleMessage: titleMessage,
-      content: content,
       onPress: onPress,
       onCancelPress: onCancelPress,
       closeDialogOnConfirmPress: closeDialogOnConfirmPress,
@@ -155,7 +155,6 @@ Future<void> _materialNotificationDialog({
 Future<void> _cupertinoNotificationDialog({
   required BuildContext context,
   required String titleMessage,
-  required Widget? content,
   required Future Function() onPress,
   required Future Function()? onCancelPress,
   required bool? closeDialogOnConfirmPress,
@@ -174,7 +173,6 @@ Future<void> _cupertinoNotificationDialog({
           titleMessage,
           style: const TextStyle(fontWeight: FontWeight.w600),
         ),
-        content: content,
         actions: [
           if (showCancelAndConfirmMessage == true)
             CupertinoDialogAction(
