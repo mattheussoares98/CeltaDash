@@ -1,4 +1,7 @@
 import '../../../../ui/pages/pages.dart';
+import '../../factories.dart';
 
 OperatorsProductivityPage makeOperatorsProductivityPage() =>
-    OperatorsProductivityPage();
+    OperatorsProductivityPage(
+      presenter: makeGetxOperatorsProductivityPresenter(),
+    );

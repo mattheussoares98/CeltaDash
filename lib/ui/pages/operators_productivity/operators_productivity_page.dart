@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../pages.dart';
+
 class OperatorsProductivityPage extends StatelessWidget {
-  const OperatorsProductivityPage({super.key});
+  final OperatorsProductivityPresenter presenter;
+  const OperatorsProductivityPage({super.key, required this.presenter});
 
   @override
   Widget build(BuildContext context) {
