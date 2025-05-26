@@ -2,6 +2,7 @@ import 'package:celta_plus/ui/helpers/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../components/components.dart';
 import '../../pages.dart';
 import 'components.dart';
 
@@ -33,14 +34,14 @@ class DailySales extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Expanded(
-              child: DefaultNavigateButton(
+              child: DefaultButton(
                 onTap: resumePresenter.goToPaymentsTypePage,
                 title: R.string.paymentsType,
               ),
             ),
             const SizedBox(width: 8),
             Expanded(
-              child: DefaultNavigateButton(
+              child: DefaultButton(
                 onTap: resumePresenter.goToDepartmentsPage,
                 title: R.string.departments,
               ),
@@ -50,7 +51,7 @@ class DailySales extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            DefaultNavigateButton(
+            DefaultButton(
               onTap: resumePresenter.goToCompareDays,
               title: R.string.compareDays,
             ),

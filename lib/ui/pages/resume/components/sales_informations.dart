@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
-import 'components.dart';
 
 class SalesInformations extends StatelessWidget {
   final String title;
@@ -11,8 +10,8 @@ class SalesInformations extends StatelessWidget {
   final List<Widget>? rightChildren;
   final List<Widget>? topChildren;
   final List<Widget>? bottomChildren;
-  final DefaultNavigateButton? leftButton;
-  final DefaultNavigateButton? rightButton;
+  final DefaultButton? leftButton;
+  final DefaultButton? rightButton;
   final ScrollController scrollController;
   const SalesInformations({
     required this.title,

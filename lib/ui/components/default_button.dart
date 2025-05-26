@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class DefaultNavigateButton extends StatelessWidget {
+class DefaultButton extends StatelessWidget {
   final void Function() onTap;
   final String title;
-  const DefaultNavigateButton({
+  const DefaultButton({
     super.key,
     required this.onTap,
     required this.title,

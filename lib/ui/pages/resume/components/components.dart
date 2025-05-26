@@ -1,7 +1,6 @@
 export './compare_times_result.dart';
 export './daily_analysis.dart';
 export './daily_sales.dart';
-export './default_navigate_button.dart';
 export './group_of_stores.dart';
 export './monthly_analysis.dart';
 export './profitability_button.dart';

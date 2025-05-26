@@ -5,6 +5,7 @@ export './chart_pie.dart';
 export './chart_prices.dart';
 export './circle_progress.dart';
 export './default_app_bar.dart';
+export './default_button.dart';
 export './default_drop_down.dart';
 export './empty_sales.dart';
 export './error_message.dart';

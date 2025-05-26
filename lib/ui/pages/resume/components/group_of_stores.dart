@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
-import 'components.dart';
 
 class GroupOfStores extends StatelessWidget {
   final List<SaleMovementViewModel> saleMovements;
@@ -87,7 +86,7 @@ class GroupOfStores extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           ChartPie(pieParameters: getPieParameters(homePresenter)),
-          DefaultNavigateButton(
+          DefaultButton(
             onTap: resumePresenter.goToGroupSummaryPage,
             title: R.string.groupSummary,
           ),
