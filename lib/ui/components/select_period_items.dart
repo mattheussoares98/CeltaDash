@@ -65,7 +65,7 @@ class _PeriodItems extends State<SelectPeriodItems> {
           },
           groupValue: selected,
           thumbColor: Theme.of(context).primaryColorDark,
-          backgroundColor: Theme.of(context).primaryColorLight.withAlpha(40),
+          backgroundColor: Theme.of(context).disabledColor.withAlpha(40),
           onValueChanged: (newValue) {
             if (newValue == null) return;
             selected = newValue;
