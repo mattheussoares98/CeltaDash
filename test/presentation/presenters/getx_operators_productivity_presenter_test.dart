@@ -98,6 +98,7 @@ void main() {
           groupByDay: true,
           groupByHour: true,
           groupByCashierOperator: true,
+          groupByEnterprise: true,
           // enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
           startDate: DateTime(homePresenter.selectedDateMock.year, 1, 1),
           endDate: DateTime(

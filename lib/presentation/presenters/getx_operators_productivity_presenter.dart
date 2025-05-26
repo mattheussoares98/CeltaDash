@@ -31,6 +31,7 @@ class GetxOperatorsProductivityPresenter extends GetxController
         groupByDay: true,
         groupByHour: true,
         groupByCashierOperator: true,
+        groupByEnterprise: true,
       );
 
       saleMovements = remoteSales
