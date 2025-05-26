@@ -28,6 +28,7 @@ void main() {
   late bool groupByProductSection;
   late bool groupByPaymentFinalization;
   late bool groupByPaymentModality;
+  late bool groupByCashierOperator;
   late List<int> enterpriseIds;
   late List<SaleMovementEntity> saleMovementsEntitys;
 
@@ -60,6 +61,7 @@ void main() {
     groupByProductSection = faker.randomGenerator.boolean();
     groupByPaymentFinalization = faker.randomGenerator.boolean();
     groupByPaymentModality = faker.randomGenerator.boolean();
+    groupByCashierOperator = faker.randomGenerator.boolean();
     enterpriseIds = [
       faker.randomGenerator.integer(10),
       faker.randomGenerator.integer(10),
@@ -122,6 +124,7 @@ void main() {
       groupByProductSection: groupByProductSection,
       groupByPaymentFinalization: groupByPaymentFinalization,
       groupByPaymentModality: groupByPaymentModality,
+      groupByCashierOperator: groupByCashierOperator,
     );
 
     verify(
@@ -148,6 +151,7 @@ void main() {
           "groupByProductSection": groupByProductSection,
           "groupByPaymentFinalization": groupByPaymentFinalization,
           "groupByPaymentModality": groupByPaymentModality,
+          "groupByCashierOperator": groupByCashierOperator,
           "enterpriseIds": enterpriseIds,
         },
       ),

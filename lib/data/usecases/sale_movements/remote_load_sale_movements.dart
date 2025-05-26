@@ -27,6 +27,7 @@ class RemoteLoadSaleMovements implements LoadSaleMovements {
     bool? groupByProductSection,
     bool? groupByPaymentFinalization,
     bool? groupByPaymentModality,
+    bool? groupByCashierOperator,
   }) async {
     final url = EnterpriseBuilder.entity?.baseUrl;
 
@@ -54,6 +55,7 @@ class RemoteLoadSaleMovements implements LoadSaleMovements {
           "groupByProductSection": groupByProductSection == true,
           "groupByPaymentFinalization": groupByPaymentFinalization == true,
           "groupByPaymentModality": groupByPaymentModality == true,
+          "groupByCashierOperator": groupByCashierOperator == true,
         },
       );
 
