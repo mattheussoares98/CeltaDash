@@ -106,4 +106,14 @@ void main() {
           )).called(1);
     });
   });
+
+  group("Go to operators productivity", () {
+    test("Should call navigateTo with correct value", () {
+      sut.goToOperatorsProductivityPage();
+
+      verify(() =>
+              navigateTo.navigate(pageRoute: PageRoutes.operatorsProductivity))
+          .called(1);
+    });
+  });
 }

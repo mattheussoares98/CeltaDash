@@ -7,4 +7,5 @@ abstract class MorePresenter implements Listenable {
   Stream<bool> get isLoadingStream;
 
   Future<void> doLogout();
+  void goToOperatorsProductivityPage();
 }

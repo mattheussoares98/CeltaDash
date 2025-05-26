@@ -51,4 +51,9 @@ class GetxMorePresenter extends GetxController
       isLoading = false;
     }
   }
+
+  @override
+  void goToOperatorsProductivityPage() {
+    navigateTo.navigate(pageRoute: PageRoutes.operatorsProductivity);
+  }
 }
