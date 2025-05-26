@@ -44,7 +44,7 @@ class MorePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             DefaultButton(
-              onTap: () {},
+              onTap: presenter.goToOperatorsProductivityPage,
               title: R.string.operators,
             ),
           ],
