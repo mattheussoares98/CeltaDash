@@ -19,6 +19,7 @@ class SaleMovementModel extends Equatable {
   final int? EnterpriseId;
   final String? EnterprisePersonalizedCode;
   final String? EnterpriseFantasyName;
+  final String? CashierOperator;
 
   const SaleMovementModel({
     required this.LiquidValue,
@@ -35,6 +36,7 @@ class SaleMovementModel extends Equatable {
     required this.EnterpriseId,
     required this.EnterprisePersonalizedCode,
     required this.EnterpriseFantasyName,
+    required this.CashierOperator,
   });
 
   @override
@@ -52,6 +54,7 @@ class SaleMovementModel extends Equatable {
         EnterpriseId,
         EnterprisePersonalizedCode,
         EnterpriseFantasyName,
+        CashierOperator,
         QuantitySales,
       ];
 
@@ -69,6 +72,7 @@ class SaleMovementModel extends Equatable {
         EnterpriseId: json['EnterpriseId'],
         EnterprisePersonalizedCode: json['EnterprisePersonalizedCode'],
         EnterpriseFantasyName: json['EnterpriseFantasyName'],
+        CashierOperator: json['CashierOperator'],
         QuantitySales: json['QuantitySales'],
       );
 
@@ -87,6 +91,7 @@ class SaleMovementModel extends Equatable {
         EnterpriseId: entity.EnterpriseId,
         EnterprisePersonalizedCode: entity.EnterprisePersonalizedCode,
         EnterpriseFantasyName: entity.EnterpriseFantasyName,
+        CashierOperator: entity.CashierOperator,
         QuantitySales: entity.QuantitySales,
       );
 
@@ -104,6 +109,7 @@ class SaleMovementModel extends Equatable {
         'EnterpriseId': EnterpriseId,
         'EnterprisePersonalizedCode': EnterprisePersonalizedCode,
         'EnterpriseFantasyName': EnterpriseFantasyName,
+        'CashierOperator': CashierOperator,
         'QuantitySales': QuantitySales,
       };
 
@@ -121,6 +127,7 @@ class SaleMovementModel extends Equatable {
         EnterpriseId: EnterpriseId,
         EnterprisePersonalizedCode: EnterprisePersonalizedCode,
         EnterpriseFantasyName: EnterpriseFantasyName,
+        CashierOperator: CashierOperator,
         QuantitySales: QuantitySales,
       );
 
@@ -147,6 +154,7 @@ class SaleMovementModel extends Equatable {
       EnterpriseId: viewModel.EnterpriseId?.toInt(),
       EnterprisePersonalizedCode: viewModel.EnterprisePersonalizedCode,
       EnterpriseFantasyName: viewModel.EnterpriseFantasyName,
+      CashierOperator: viewModel.CashierOperator,
       QuantitySales: viewModel.QuantitySales?.toInt(),
     );
   }
@@ -166,6 +174,7 @@ class SaleMovementModel extends Equatable {
       EnterpriseId: EnterpriseId?.toString(),
       EnterprisePersonalizedCode: EnterprisePersonalizedCode,
       EnterpriseFantasyName: EnterpriseFantasyName,
+      CashierOperator: CashierOperator,
       QuantitySales: QuantitySales?.toString(),
     );
   }

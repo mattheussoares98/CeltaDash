@@ -65,6 +65,7 @@ class EntityFactory {
         EnterprisePersonalizedCode:
             faker.randomGenerator.integer(10).toString(),
         QuantitySales: faker.randomGenerator.integer(100),
+        CashierOperator: faker.person.name(),
       );
 
   static BsUserEntity makeBsUserEntity() => BsUserEntity(

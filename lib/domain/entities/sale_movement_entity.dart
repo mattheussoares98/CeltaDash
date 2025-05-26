@@ -15,6 +15,7 @@ class SaleMovementEntity extends Equatable {
   final int? EnterpriseId;
   final String? EnterprisePersonalizedCode;
   final String? EnterpriseFantasyName;
+  final String? CashierOperator;
 
   const SaleMovementEntity({
     required this.Date,
@@ -31,6 +32,7 @@ class SaleMovementEntity extends Equatable {
     required this.EnterpriseId,
     required this.EnterprisePersonalizedCode,
     required this.EnterpriseFantasyName,
+    required this.CashierOperator,
   });
 
   @override
@@ -49,5 +51,6 @@ class SaleMovementEntity extends Equatable {
         EnterpriseId,
         EnterprisePersonalizedCode,
         EnterpriseFantasyName,
+        CashierOperator,
       ];
 }
