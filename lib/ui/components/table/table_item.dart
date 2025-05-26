@@ -135,7 +135,7 @@ class _TableItemState extends State<TableItem> {
     } else if (rowIndex == minValueRowIndex && widget.rowValues.length > 1) {
       return Colors.red.withAlpha(120);
     } else if (rowIndex % 2 == 0) {
-      return Theme.of(context).primaryColorLight.withAlpha(20);
+      return Theme.of(context).disabledColor.withAlpha(60);
     }
     return Colors.transparent;
   }
