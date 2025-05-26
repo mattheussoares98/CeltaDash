@@ -36,7 +36,7 @@ class DailySales extends StatelessWidget {
             Expanded(
               child: DefaultButton(
                 onTap: resumePresenter.goToPaymentsTypePage,
-                title: R.string.paymentsType,
+                title: R.string.payments,
               ),
             ),
             const SizedBox(width: 8),

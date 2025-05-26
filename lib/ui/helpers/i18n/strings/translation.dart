@@ -76,6 +76,7 @@ abstract class Translation {
   String get of;
   String get operators;
   String get password;
+  String get payments;
   String get paymentsType;
   String get positionAbbreviated;
   String get product;
