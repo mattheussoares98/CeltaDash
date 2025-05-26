@@ -167,7 +167,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                   pageController.animateToPage(
                     value,
                     duration: Duration(milliseconds: 300),
-                    curve: Curves.bounceOut,
+                    curve: Curves.easeInOut,
                   );
                 }
               },
