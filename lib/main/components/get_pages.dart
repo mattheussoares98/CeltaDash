@@ -44,23 +44,8 @@ class GetPages {
       transition: transition,
     ),
     GetPage(
-      name: PageRoutes.operatorsChargeBacks,
-      page: makeOperatorsChargeBacksPage,
-      transition: transition,
-    ),
-    GetPage(
-      name: PageRoutes.operatorsDiscounts,
-      page: makeOperatorsDiscountsPage,
-      transition: transition,
-    ),
-    GetPage(
       name: PageRoutes.operatorsProductivity,
       page: makeOperatorsProductivityPage,
-      transition: transition,
-    ),
-    GetPage(
-      name: PageRoutes.operatorsSales,
-      page: makeOperatorsSalesPage,
       transition: transition,
     ),
     GetPage(
