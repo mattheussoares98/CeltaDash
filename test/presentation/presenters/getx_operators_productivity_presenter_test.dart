@@ -205,17 +205,4 @@ void main() {
       ).called(1);
     });
   });
-
-  group("Update month is selected", () {
-    test("Should update month is selected correctly", () {
-      bool value = faker.randomGenerator.boolean();
-
-      sut.updateSelectedMonth(value);
-
-      expect(sut.selectedMonth, value);
-    });
-    test("Should start with false value", () {
-      expect(sut.selectedMonth, false);
-    });
-  });
 }

@@ -51,15 +51,6 @@ class GetxOperatorsProductivityPresenter extends GetxController
     }
   }
 
-  bool _selectedMonth = false;
-  @override
-  bool get selectedMonth => _selectedMonth;
-
-  @override
-  void updateSelectedMonth(bool value) {
-    _selectedMonth = value;
-  }
-
   DateTime? _lastDateLoadedData;
   @override
   DateTime? get lastDateLoadedData => _lastDateLoadedData; //TODO create manager

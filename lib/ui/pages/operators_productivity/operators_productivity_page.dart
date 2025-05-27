@@ -14,6 +14,10 @@ class OperatorsProductivityPage extends StatefulWidget {
 }
 
 class _OperatorsProductivityPageState extends State<OperatorsProductivityPage> {
+  bool selectedDay = true;
+  bool selectedMonth = false;
+  bool selectedYear = false;
+
   @override
   void initState() {
     super.initState();
@@ -21,6 +25,18 @@ class _OperatorsProductivityPageState extends State<OperatorsProductivityPage> {
       OperatorsProductivityPresenter operatorsProductivityPresenter =
           Get.find();
       operatorsProductivityPresenter.getSales(Get.find<HomePresenter>());
+    });
+  }
+
+  void updateSelectedPeriod({
+    bool? day,
+    bool? month,
+    bool? year,
+  }) {
+    setState(() {
+      selectedDay = day ?? false;
+      selectedMonth = month ?? false;
+      selectedYear = year ?? false;
     });
   }
 
@@ -41,14 +57,15 @@ class _OperatorsProductivityPageState extends State<OperatorsProductivityPage> {
               final sales = operatorsProductivityPresenter.saleMovements
                   ?.filteredSales(
                     enterprise: homePresenter.selectedEnterprise,
-                    filterMonth:
-                        operatorsProductivityPresenter.selectedMonth == true
-                            ? homePresenter.selectedDate.month
-                            : null,
-                    filterDay:
-                        operatorsProductivityPresenter.selectedMonth == false
-                            ? homePresenter.selectedDate.day
-                            : null,
+                    filterDay: selectedDay == true
+                        ? homePresenter.selectedDate.day
+                        : null,
+                    filterMonth: selectedMonth == true
+                        ? homePresenter.selectedDate.month
+                        : null,
+                    filterYear: selectedYear == true
+                        ? homePresenter.selectedDate.year
+                        : null,
                   )
                   .map((e) => e.toViewModel())
                   .toList();
@@ -63,21 +80,25 @@ class _OperatorsProductivityPageState extends State<OperatorsProductivityPage> {
                     SelectPeriodItems.createItem(
                       title: R.string.day,
                       onTap: () {
-                        operatorsProductivityPresenter
-                            .updateSelectedMonth(false);
+                        updateSelectedPeriod(day: true);
                       },
                     ),
                     SelectPeriodItems.createItem(
                       title: R.string.month,
                       onTap: () {
-                        operatorsProductivityPresenter
-                            .updateSelectedMonth(true);
+                        updateSelectedPeriod(month: true);
+                      },
+                    ),
+                    SelectPeriodItems.createItem(
+                      title: R.string.year,
+                      onTap: () {
+                        updateSelectedPeriod(year: true);
                       },
                     ),
                   ]),
                   TableItem(
                     titleMinHeight: 43,
-                    indexToSort: 0,
+                    indexToSort: 1,
                     columnIndexToCompareAndDetachBetterAndWorstValue: 1,
                     columnsIndexToSum: [1, 2],
                     titles: [
