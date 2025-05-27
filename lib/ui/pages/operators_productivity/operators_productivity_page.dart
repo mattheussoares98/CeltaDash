@@ -40,6 +40,17 @@ class _OperatorsProductivityPageState extends State<OperatorsProductivityPage> {
     });
   }
 
+  int get indexToSelectWhenRebuild {
+    //TODO move to presenter
+    if (selectedDay) {
+      return 0;
+    } else if (selectedMonth) {
+      return 1;
+    } else {
+      return 2;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
@@ -80,7 +91,6 @@ class _OperatorsProductivityPageState extends State<OperatorsProductivityPage> {
                   .toList();
 
               if (sales == null || sales.isEmpty) {
-                selectedDay = true;
                 return EmptySales(isLoading: loadinSnapshot.data == true);
               }
 
@@ -91,26 +101,29 @@ class _OperatorsProductivityPageState extends State<OperatorsProductivityPage> {
                       opacity: updateSnapshot.data == true ? 0 : 1,
                       child: Column(
                         children: [
-                          SelectPeriodItems(items: [
-                            SelectPeriodItems.createItem(
-                              title: R.string.day,
-                              onTap: () {
-                                updateSelectedPeriod(day: true);
-                              },
-                            ),
-                            SelectPeriodItems.createItem(
-                              title: R.string.month,
-                              onTap: () {
-                                updateSelectedPeriod(month: true);
-                              },
-                            ),
-                            SelectPeriodItems.createItem(
-                              title: R.string.year,
-                              onTap: () {
-                                updateSelectedPeriod(year: true);
-                              },
-                            ),
-                          ]),
+                          SelectPeriodItems(
+                            indexToSelectWhenRebuild: indexToSelectWhenRebuild,
+                            items: [
+                              SelectPeriodItems.createItem(
+                                title: R.string.day,
+                                onTap: () {
+                                  updateSelectedPeriod(day: true);
+                                },
+                              ),
+                              SelectPeriodItems.createItem(
+                                title: R.string.month,
+                                onTap: () {
+                                  updateSelectedPeriod(month: true);
+                                },
+                              ),
+                              SelectPeriodItems.createItem(
+                                title: R.string.year,
+                                onTap: () {
+                                  updateSelectedPeriod(year: true);
+                                },
+                              ),
+                            ],
+                          ),
                           TableItem(
                             titleMinHeight: 43,
                             indexToSort: 1,

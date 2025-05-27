@@ -42,6 +42,16 @@ class _SalesPageState extends State<SalesPage>
     });
   }
 
+  int get indexToSelectWhenRebuild {
+    SalesPresenter salesPresenter = Get.find();
+
+    if (salesPresenter.filterByHour) return 0;
+    if (salesPresenter.filterByDay) return 1;
+    if (salesPresenter.filterByMonth) return 2;
+    if (salesPresenter.filterByYear) return 3;
+    return 0;
+  }
+
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
@@ -68,7 +78,6 @@ class _SalesPageState extends State<SalesPage>
                   .toList();
 
               if (resumeSaleMovements == null || resumeSaleMovements.isEmpty) {
-                salesPresenter.updateSelectedPeriod(filterByHour: true);
                 return EmptySales(isLoading: false);
               }
 
@@ -99,7 +108,9 @@ class _SalesPageState extends State<SalesPage>
               return Column(
                 children: [
                   PeriodItems(
-                      updateSelectedItem: salesPresenter.updateSelectedPeriod),
+                    indexToSelectWhenRebuild: indexToSelectWhenRebuild,
+                    updateSelectedItem: salesPresenter.updateSelectedPeriod,
+                  ),
                   Expanded(
                     child: Opacity(
                       opacity: snapshot.data == true ? 0 : 1,

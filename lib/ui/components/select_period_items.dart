@@ -8,8 +8,14 @@ import 'package:get/get.dart';
 import '../pages/pages.dart';
 
 class SelectPeriodItems extends StatefulWidget {
-  final List<_PeriodItem> items;
-  const SelectPeriodItems({super.key, required this.items});
+  final List<_PeriodItem>
+      items; //TODO remove this parameter and use bool? values that appear the day, month, year etc only when the value is not null
+  final int indexToSelectWhenRebuild;
+  const SelectPeriodItems({
+    super.key,
+    required this.items,
+    required this.indexToSelectWhenRebuild,
+  });
 
   static _PeriodItem createItem({
     required String title,
@@ -29,7 +35,7 @@ class _PeriodItems extends State<SelectPeriodItems> {
   void initState() {
     super.initState();
     if (widget.items.isNotEmpty) {
-      selected = widget.items.first.title;
+      selected = widget.items[widget.indexToSelectWhenRebuild].title;
     }
   }
 

@@ -10,8 +10,13 @@ class PeriodItems extends StatelessWidget {
     bool? filterByMonth,
     bool? filterByYear,
   }) updateSelectedItem;
+  final int indexToSelectWhenRebuild;
 
-  const PeriodItems({super.key, required this.updateSelectedItem});
+  const PeriodItems({
+    super.key,
+    required this.updateSelectedItem,
+    required this.indexToSelectWhenRebuild,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +27,7 @@ class PeriodItems extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: SelectPeriodItems(
+              indexToSelectWhenRebuild: indexToSelectWhenRebuild,
               items: [
                 SelectPeriodItems.createItem(
                   title: R.string.hours,

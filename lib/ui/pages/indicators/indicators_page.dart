@@ -27,6 +27,7 @@ class _IndicatorsPageState extends State<IndicatorsPage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: SelectPeriodItems(
+              indexToSelectWhenRebuild: 0,
               items: [
                 SelectPeriodItems.createItem(
                   title: R.string.day,

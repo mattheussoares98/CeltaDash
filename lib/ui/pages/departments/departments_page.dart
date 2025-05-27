@@ -119,7 +119,6 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                       .toList();
 
                   if (saleMovements == null || saleMovements.isEmpty) {
-                    selectedMonth = false;
                     return EmptySales(isLoading: isLoadingDepartments.data);
                   }
 
@@ -132,7 +131,10 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: SelectDayOrMonth(
-                                    updateSelectedMonth: updateSelectedMonth),
+                                  indexToSelectWhenRebuild:
+                                      selectedMonth ? 1 : 0,
+                                  updateSelectedMonth: updateSelectedMonth,
+                                ),
                               ),
                               Expanded(
                                 child: Opacity(

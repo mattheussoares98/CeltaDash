@@ -49,11 +49,14 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
         children: [
           Padding(
             padding: const EdgeInsets.all(4),
-            child: SelectDayOrMonthItems(change: (value) {
-              setState(() {
-                selectedDay = value;
-              });
-            }),
+            child: SelectDayOrMonthItems(
+              indexToSelectWhenRebuild: selectedDay ? 0 : 1,
+              change: (value) {
+                setState(() {
+                  selectedDay = value;
+                });
+              },
+            ),
           ),
           Obx(() {
             final saleMovements = resumePresenter.saleMovements;

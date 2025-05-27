@@ -32,6 +32,7 @@ class _ProfitabilityPageState extends State<ProfitabilityPage> {
             ),
           ),
           SelectPeriodItems(
+            indexToSelectWhenRebuild: selectedDay ? 0 : 1,
             items: [
               SelectPeriodItems.createItem(
                 title: R.string.day,
@@ -69,23 +70,22 @@ class _ProfitabilityPageState extends State<ProfitabilityPage> {
             titleMinHeight: 40,
             indexToSort: 4,
             columnsIndexToSum: [1, 2, 3, 4],
-            rowValues:
-                List.generate(10, (index) {
-                  final totalSales = Random().nextDouble() * 3000;
-                  final cost = totalSales * Random().nextDouble();
-                  final grossProfit = totalSales - cost;
+            rowValues: List.generate(10, (index) {
+              final totalSales = Random().nextDouble() * 3000;
+              final cost = totalSales * Random().nextDouble();
+              final grossProfit = totalSales - cost;
 
-                  return [
-                    PersonalizedTableCell(value: faker.company.name()),
-                    PersonalizedTableCell(value: totalSales, isMoney: true),
-                    PersonalizedTableCell(value: cost, isMoney: true),
-                    PersonalizedTableCell(value: grossProfit, isMoney: true),
-                    PersonalizedTableCell(
-                      value: grossProfit / totalSales * 100,
-                      isPercentage: true,
-                    ),
-                  ];
-                }).toList(),
+              return [
+                PersonalizedTableCell(value: faker.company.name()),
+                PersonalizedTableCell(value: totalSales, isMoney: true),
+                PersonalizedTableCell(value: cost, isMoney: true),
+                PersonalizedTableCell(value: grossProfit, isMoney: true),
+                PersonalizedTableCell(
+                  value: grossProfit / totalSales * 100,
+                  isPercentage: true,
+                ),
+              ];
+            }).toList(),
           ),
         ],
       ),

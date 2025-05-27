@@ -5,7 +5,12 @@ import '../../../helpers/helpers.dart';
 
 class SelectDayOrMonthItems extends StatelessWidget {
   final void Function(bool selectDay) change;
-  const SelectDayOrMonthItems({super.key, required this.change});
+  final int indexToSelectWhenRebuild;
+  const SelectDayOrMonthItems({
+    super.key,
+    required this.change,
+    required this.indexToSelectWhenRebuild,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +18,7 @@ class SelectDayOrMonthItems extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SelectPeriodItems(
+          indexToSelectWhenRebuild: indexToSelectWhenRebuild,
           items: [
             SelectPeriodItems.createItem(
               title: R.string.day,

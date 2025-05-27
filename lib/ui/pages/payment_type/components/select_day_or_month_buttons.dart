@@ -18,6 +18,7 @@ class SelectDayOrMonthButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SelectPeriodItems(
+          indexToSelectWhenRebuild: selectedMonth ? 1 : 0,
           items: [
             SelectPeriodItems.createItem(
               title: R.string.day,
