@@ -14,12 +14,13 @@ class GetxOperatorsProductivityPresenter extends GetxController
   GetxOperatorsProductivityPresenter({required this.loadSaleMovements});
 
   @override
-  Future<void> getSales(HomePresenter homePresenter) async {
+  Future<void> getSales(homePresenter, {bool? forceRefresh}) async {
     isLoading = true;
     mainError = null;
 
     try {
-      if (_lastDateLoadedData?.year == homePresenter.selectedDate.year) {
+      if (forceRefresh != true &&
+          _lastDateLoadedData?.year == homePresenter.selectedDate.year) {
         return;
       }
       final remoteSales = await loadSaleMovements.get(

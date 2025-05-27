@@ -204,6 +204,27 @@ void main() {
         ),
       ).called(1);
     });
+    test("Should load again if force refresh", () async {
+      await sut.getSales(homePresenter);
+      await sut.getSales(homePresenter, forceRefresh: true);
+
+      verify(
+        () => loadSaleMovements.get(
+          groupByMonth: true,
+          groupByDay: true,
+          groupByHour: true,
+          groupByCashierOperator: true,
+          groupByEnterprise: true,
+          // enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+          startDate: DateTime(homePresenter.selectedDateMock.year, 1, 1),
+          endDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month + 1,
+            1,
+          ).subtract(Duration(days: 1)),
+        ),
+      ).called(2);
+    });
 
     test("Should call home presenter update screen", () async {
       await sut.getSales(homePresenter);

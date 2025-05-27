@@ -52,6 +52,12 @@ class _OperatorsProductivityPageState extends State<OperatorsProductivityPage> {
             appBar: DefaultAppBar(
               isLoading: loadinSnapshot.data == true,
               onChangeEnterprise: (_) {},
+              onTapRefresh: () {
+                operatorsProductivityPresenter.getSales(
+                  homePresenter,
+                  forceRefresh: true,
+                );
+              },
               onChangeDate: (newDate) {
                 operatorsProductivityPresenter.getSales(homePresenter);
               },

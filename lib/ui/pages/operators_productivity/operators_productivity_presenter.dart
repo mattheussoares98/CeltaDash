@@ -9,5 +9,5 @@ abstract class OperatorsProductivityPresenter implements Listenable {
   List<SaleMovementViewModel>? get saleMovements;
   DateTime? get lastDateLoadedData;
 
-  Future<void> getSales(HomePresenter homePresenter);
+  Future<void> getSales(HomePresenter homePresenter, {bool? forceRefresh});
 }
