@@ -7,6 +7,8 @@ abstract class OperatorsProductivityPresenter implements Listenable {
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
   List<SaleMovementViewModel>? get saleMovements;
+  bool get selectedMonth;
 
   Future<void> getSales(HomePresenter homePresenter);
+  void updateSelectedMonth(bool value);
 }

@@ -2,6 +2,7 @@ import 'package:celta_plus/data/models/models.dart';
 import 'package:celta_plus/domain/entities/entities.dart';
 import 'package:celta_plus/presentation/presenters/presenters.dart';
 import 'package:celta_plus/ui/helpers/helpers.dart';
+import 'package:faker/faker.dart';
 
 import 'package:get/get.dart';
 
@@ -108,6 +109,19 @@ void main() {
           ).subtract(Duration(days: 1)),
         ),
       ).called(1);
+    });
+  });
+
+  group("Update month is selected", () {
+    test("Should update month is selected correctly", () {
+      bool value = faker.randomGenerator.boolean();
+
+      sut.updateSelectedMonth(value);
+
+      expect(sut.selectedMonth, value);
+    });
+    test("Should start with false value", () {
+      expect(sut.selectedMonth, false);
     });
   });
 }

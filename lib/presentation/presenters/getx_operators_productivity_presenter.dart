@@ -43,4 +43,13 @@ class GetxOperatorsProductivityPresenter extends GetxController
       isLoading = false;
     }
   }
+
+  bool _selectedMonth = false;
+  @override
+  bool get selectedMonth => _selectedMonth;
+
+  @override
+  void updateSelectedMonth(bool value) {
+    _selectedMonth = value;
+  }
 }
