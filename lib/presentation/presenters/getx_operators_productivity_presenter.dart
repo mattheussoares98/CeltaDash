@@ -44,6 +44,7 @@ class GetxOperatorsProductivityPresenter extends GetxController
           .toList();
 
       _lastDateLoadedData = homePresenter.selectedDate;
+      homePresenter.updateScreen();
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {

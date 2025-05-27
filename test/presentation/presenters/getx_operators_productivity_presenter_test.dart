@@ -204,5 +204,11 @@ void main() {
         ),
       ).called(1);
     });
+
+    test("Should call home presenter update screen", () async {
+      await sut.getSales(homePresenter);
+
+      verify(() => homePresenter.updateScreen()).called(1);
+    });
   });
 }
