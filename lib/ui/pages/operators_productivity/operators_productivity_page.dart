@@ -1,7 +1,7 @@
-import 'package:celta_plus/ui/helpers/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../ui/helpers/helpers.dart';
 import '../../components/components.dart';
 import '../pages.dart';
 
@@ -36,9 +36,18 @@ class _OperatorsProductivityPageState extends State<OperatorsProductivityPage> {
               onChangeEnterprise: (_) {},
             ),
             body: Obx(() {
-              final sales = widget.presenter.saleMovements?.filteredSales(
-                enterprise: homePresenter.selectedEnterprise,
-              );
+              final sales = widget.presenter.saleMovements
+                  ?.filteredSales(
+                    enterprise: homePresenter.selectedEnterprise,
+                    filterMonth: widget.presenter.selectedMonth == true
+                        ? homePresenter.selectedDate.month
+                        : null,
+                    filterDay: widget.presenter.selectedMonth == false
+                        ? homePresenter.selectedDate.day
+                        : null,
+                  )
+                  .map((e) => e.toViewModel())
+                  .toList();
 
               if (sales == null || sales.isEmpty) {
                 return EmptySales(isLoading: loadinSnapshot.data == true);
@@ -49,28 +58,52 @@ class _OperatorsProductivityPageState extends State<OperatorsProductivityPage> {
                   SelectPeriodItems(items: [
                     SelectPeriodItems.createItem(
                       title: R.string.day,
-                      onTap: () {},
+                      onTap: () {
+                        widget.presenter.updateSelectedMonth(false);
+                      },
                     ),
                     SelectPeriodItems.createItem(
                       title: R.string.month,
-                      onTap: () {},
+                      onTap: () {
+                        widget.presenter.updateSelectedMonth(true);
+                      },
                     ),
                   ]),
                   TableItem(
                     titleMinHeight: 43,
                     indexToSort: 0,
                     columnIndexToCompareAndDetachBetterAndWorstValue: 1,
-                    columnsIndexToSum: [1],
+                    columnsIndexToSum: [1, 2],
                     titles: [
-                      PersonalizedTableCell(value: R.string.operators),
-                      PersonalizedTableCell(value: R.string.operators),
+                      PersonalizedTableCell(value: R.string.operator),
+                      PersonalizedTableCell(value: R.string.total),
+                      PersonalizedTableCell(
+                        value: R.string.salesQuantityAbbreviated,
+                      ),
                     ],
-                    rowValues: [
-                      [
-                        PersonalizedTableCell(value: R.string.operators),
-                        PersonalizedTableCell(value: R.string.operators),
-                      ]
-                    ],
+                    rowValues: sales
+                        .fold<Map<String, List<SaleMovementViewModel>>>({},
+                            (map, e) {
+                          final operator = e.CashierOperator ?? "Unknown";
+                          map.putIfAbsent(operator, () => []).add(e);
+                          return map;
+                        })
+                        .entries
+                        .map((e) {
+                          final operator = e.key;
+
+                          return [
+                            PersonalizedTableCell(value: operator),
+                            PersonalizedTableCell(
+                              value: e.value.sumLiquidValue(),
+                              isMoney: true,
+                            ),
+                            PersonalizedTableCell(
+                              value: e.value.quantitySales(),
+                            ),
+                          ];
+                        })
+                        .toList(),
                   ),
                 ],
               );

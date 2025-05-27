@@ -80,6 +80,7 @@ class PtBr implements Translation {
   String get no => "Não";
   String get noData => "Não há dados";
   String get of => "De";
+  String get operator => "Operador";
   String get operators => "Operadores";
   String get password => "Senha";
   String get payments => "Pagamentos";
