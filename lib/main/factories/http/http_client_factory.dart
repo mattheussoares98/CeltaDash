@@ -3,4 +3,9 @@ import '../../../infra/http/http.dart';
 
 import 'package:http/http.dart';
 
-HttpClient makeHttpAdapter() => StaticHttpAdapter(Client());
+class _HttpClientProvider {
+  static final Client _client = Client();
+  static Client get client => _client;
+}
+
+HttpClient makeHttpAdapter() => HttpAdapter(_HttpClientProvider.client);
