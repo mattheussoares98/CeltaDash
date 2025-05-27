@@ -6,8 +6,7 @@ import '../../components/components.dart';
 import '../pages.dart';
 
 class OperatorsProductivityPage extends StatefulWidget {
-  final OperatorsProductivityPresenter presenter;
-  const OperatorsProductivityPage({super.key, required this.presenter});
+  const OperatorsProductivityPage({super.key});
 
   @override
   State<OperatorsProductivityPage> createState() =>
@@ -19,16 +18,19 @@ class _OperatorsProductivityPageState extends State<OperatorsProductivityPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      widget.presenter.getSales(Get.find<HomePresenter>());
+      OperatorsProductivityPresenter operatorsProductivityPresenter =
+          Get.find();
+      operatorsProductivityPresenter.getSales(Get.find<HomePresenter>());
     });
   }
 
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
+    OperatorsProductivityPresenter operatorsProductivityPresenter = Get.find();
 
     return StreamBuilder(
-        stream: widget.presenter.isLoadingStream,
+        stream: operatorsProductivityPresenter.isLoadingStream,
         builder: (context, loadinSnapshot) {
           return Scaffold(
             appBar: DefaultAppBar(
@@ -36,15 +38,17 @@ class _OperatorsProductivityPageState extends State<OperatorsProductivityPage> {
               onChangeEnterprise: (_) {},
             ),
             body: Obx(() {
-              final sales = widget.presenter.saleMovements
+              final sales = operatorsProductivityPresenter.saleMovements
                   ?.filteredSales(
                     enterprise: homePresenter.selectedEnterprise,
-                    filterMonth: widget.presenter.selectedMonth == true
-                        ? homePresenter.selectedDate.month
-                        : null,
-                    filterDay: widget.presenter.selectedMonth == false
-                        ? homePresenter.selectedDate.day
-                        : null,
+                    filterMonth:
+                        operatorsProductivityPresenter.selectedMonth == true
+                            ? homePresenter.selectedDate.month
+                            : null,
+                    filterDay:
+                        operatorsProductivityPresenter.selectedMonth == false
+                            ? homePresenter.selectedDate.day
+                            : null,
                   )
                   .map((e) => e.toViewModel())
                   .toList();
@@ -59,13 +63,15 @@ class _OperatorsProductivityPageState extends State<OperatorsProductivityPage> {
                     SelectPeriodItems.createItem(
                       title: R.string.day,
                       onTap: () {
-                        widget.presenter.updateSelectedMonth(false);
+                        operatorsProductivityPresenter
+                            .updateSelectedMonth(false);
                       },
                     ),
                     SelectPeriodItems.createItem(
                       title: R.string.month,
                       onTap: () {
-                        widget.presenter.updateSelectedMonth(true);
+                        operatorsProductivityPresenter
+                            .updateSelectedMonth(true);
                       },
                     ),
                   ]),

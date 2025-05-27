@@ -10,6 +10,9 @@ HomePage makeHomePage() {
   Get.replace<ProductsPresenter>(makeGetxProductsPresenter());
   Get.replace<ResumePresenter>(makeGetxResumePresenter());
   Get.replace<SalesPresenter>(makeGetxSalesPresenter());
+  Get.replace<OperatorsProductivityPresenter>(
+    makeGetxOperatorsProductivityPresenter(),
+  );
 
   return HomePage();
 }
