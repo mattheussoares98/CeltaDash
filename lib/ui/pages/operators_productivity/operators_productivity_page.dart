@@ -80,6 +80,7 @@ class _OperatorsProductivityPageState extends State<OperatorsProductivityPage> {
                   .toList();
 
               if (sales == null || sales.isEmpty) {
+                selectedDay = true;
                 return EmptySales(isLoading: loadinSnapshot.data == true);
               }
 

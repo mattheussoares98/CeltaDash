@@ -119,6 +119,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                       .toList();
 
                   if (saleMovements == null || saleMovements.isEmpty) {
+                    selectedMonth = false;
                     return EmptySales(isLoading: isLoadingDepartments.data);
                   }
 

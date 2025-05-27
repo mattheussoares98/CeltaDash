@@ -68,6 +68,7 @@ class _SalesPageState extends State<SalesPage>
                   .toList();
 
               if (resumeSaleMovements == null || resumeSaleMovements.isEmpty) {
+                salesPresenter.updateSelectedPeriod(filterByHour: true);
                 return EmptySales(isLoading: false);
               }
 

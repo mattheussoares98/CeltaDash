@@ -134,6 +134,7 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                   saleMovementsByFinalizations.isEmpty ||
                   saleMovementsByModalities == null ||
                   saleMovementsByModalities.isEmpty) {
+                selectedMonth = false;
                 return EmptySales(isLoading: isLoadingPayments.data);
               }
 
