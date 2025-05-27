@@ -47,11 +47,15 @@ class GroupSummaryResumePage extends StatelessWidget {
                 Indicator(
                   firstTitle: R.string.salesQuantity,
                   secondTitle: R.string.salesQuantityAverage,
-                  firstValue: groupSales.quantitySales().toString(),
+                  firstValue: groupSales
+                      .quantitySales()
+                      .toString()
+                      .toBrazilianNumber(0),
                   secondValue: (groupSalesQuantity /
                           (homePresenter.enterprises?.length ?? 1))
                       .toString()
-                      .toBrazilianNumber(),
+                      .toBrazilianNumber()
+                      .addBrazilianCoin(),
                   icon: Icons.person,
                 ),
               ],
