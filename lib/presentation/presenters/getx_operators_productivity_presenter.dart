@@ -19,12 +19,17 @@ class GetxOperatorsProductivityPresenter extends GetxController
     mainError = null;
 
     try {
+      if (_lastDateLoadedData?.year == homePresenter.selectedDate.year) {
+        return;
+      }
       final remoteSales = await loadSaleMovements.get(
         // enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
         startDate: DateTime(homePresenter.selectedDate.year, 1, 1),
-        endDate: DateTime(homePresenter.selectedDate.year,
-                homePresenter.selectedDate.month + 1, 1)
-            .subtract(
+        endDate: DateTime(
+          homePresenter.selectedDate.year,
+          homePresenter.selectedDate.month + 1,
+          1,
+        ).subtract(
           Duration(days: 1),
         ),
         groupByMonth: true,
@@ -37,6 +42,8 @@ class GetxOperatorsProductivityPresenter extends GetxController
       saleMovements = remoteSales
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
           .toList();
+
+      _lastDateLoadedData = homePresenter.selectedDate;
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {
@@ -52,4 +59,8 @@ class GetxOperatorsProductivityPresenter extends GetxController
   void updateSelectedMonth(bool value) {
     _selectedMonth = value;
   }
+
+  DateTime? _lastDateLoadedData;
+  @override
+  DateTime? get lastDateLoadedData => _lastDateLoadedData; //TODO create manager
 }

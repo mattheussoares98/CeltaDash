@@ -110,6 +110,100 @@ void main() {
         ),
       ).called(1);
     });
+    test("Should update last date laoded data correctly", () async {
+      await sut.getSales(homePresenter);
+
+      expect(sut.lastDateLoadedData, homePresenter.selectedDateMock);
+    });
+
+    test("Should not load sales again if dont change the year", () async {
+      await sut.getSales(homePresenter);
+
+      verify(
+        () => loadSaleMovements.get(
+          groupByMonth: true,
+          groupByDay: true,
+          groupByHour: true,
+          groupByCashierOperator: true,
+          groupByEnterprise: true,
+          // enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+          startDate: DateTime(homePresenter.selectedDateMock.year, 1, 1),
+          endDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month + 1,
+            1,
+          ).subtract(Duration(days: 1)),
+        ),
+      ).called(1);
+
+      homePresenter.selectedDateMock = DateTime(
+        homePresenter.selectedDateMock.year,
+        faker.randomGenerator.integer(12),
+        faker.randomGenerator.integer(28),
+      );
+
+      await sut.getSales(homePresenter);
+      verifyNever(
+        () => loadSaleMovements.get(
+          groupByMonth: true,
+          groupByDay: true,
+          groupByHour: true,
+          groupByCashierOperator: true,
+          groupByEnterprise: true,
+          // enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+          startDate: DateTime(homePresenter.selectedDateMock.year, 1, 1),
+          endDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month + 1,
+            1,
+          ).subtract(Duration(days: 1)),
+        ),
+      );
+    });
+    test("Should load again if change the year", () async {
+      await sut.getSales(homePresenter);
+
+      verify(
+        () => loadSaleMovements.get(
+          groupByMonth: true,
+          groupByDay: true,
+          groupByHour: true,
+          groupByCashierOperator: true,
+          groupByEnterprise: true,
+          // enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+          startDate: DateTime(homePresenter.selectedDateMock.year, 1, 1),
+          endDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month + 1,
+            1,
+          ).subtract(Duration(days: 1)),
+        ),
+      ).called(1);
+
+      homePresenter.selectedDateMock = DateTime(
+        homePresenter.selectedDateMock.year + faker.randomGenerator.integer(99),
+        faker.randomGenerator.integer(12),
+        faker.randomGenerator.integer(28),
+      );
+
+      await sut.getSales(homePresenter);
+      verify(
+        () => loadSaleMovements.get(
+          groupByMonth: true,
+          groupByDay: true,
+          groupByHour: true,
+          groupByCashierOperator: true,
+          groupByEnterprise: true,
+          // enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+          startDate: DateTime(homePresenter.selectedDateMock.year, 1, 1),
+          endDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month + 1,
+            1,
+          ).subtract(Duration(days: 1)),
+        ),
+      ).called(1);
+    });
   });
 
   group("Update month is selected", () {
