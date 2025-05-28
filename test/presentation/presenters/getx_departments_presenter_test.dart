@@ -112,9 +112,6 @@ void main() {
                 homePresenter.selectedDateMock.month + 1,
                 1,
               ).subtract(Duration(days: 1)),
-              enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
-              ],
               groupByEnterprise: true,
               groupByDay: true,
               groupByProductDepartment: true,
@@ -138,9 +135,6 @@ void main() {
                 newDate.month + 1,
                 1,
               ).subtract(Duration(days: 1)),
-              enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
-              ],
               groupByEnterprise: true,
               groupByDay: true,
               groupByProductDepartment: true,
@@ -168,9 +162,6 @@ void main() {
                 homePresenter.selectedDateMock.month + 1,
                 1,
               ).subtract(Duration(days: 1)),
-              enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
-              ],
               groupByEnterprise: true,
               groupByDay: true,
               groupByProductDepartment: true,

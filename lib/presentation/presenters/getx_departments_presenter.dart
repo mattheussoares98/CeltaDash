@@ -41,30 +41,20 @@ class GetxDepartmentsPresenter extends GetxController
         1,
       ).subtract(Duration(days: 1));
 
-      final oldSales = [...?saleMovements];
-      final newSales = <SaleMovementViewModel>[];
+      final remoteSales = await loadSaleMovements.get(
+        // enterpriseIds: [enterprise.id!.toInt()],
+        startDate: startDate,
+        endDate: endDate,
+        groupByEnterprise: true,
+        groupByDay: true,
+        // groupByMonth: true,
+        groupByProductDepartment: true,
+        groupByProductSection: true,
+      );
 
-      for (var enterprise
-          in homePresenter.enterprises ?? <EnterpriseViewModel>[]) {
-        final remoteSales = await loadSaleMovements.get(
-          enterpriseIds: [enterprise.id!.toInt()],
-          startDate: startDate,
-          endDate: endDate,
-          groupByEnterprise: true,
-          groupByDay: true,
-          // groupByMonth: true,
-          groupByProductDepartment: true,
-          groupByProductSection: true,
-        );
-
-        newSales.addAll(
-          remoteSales.map((e) => SaleMovementModel.fromEntity(e).toViewModel()),
-        );
-        oldSales.removeWhere(
-          (element) => element.EnterpriseId == enterprise.id,
-        );
-        saleMovements = [...oldSales, ...newSales];
-      }
+      saleMovements = remoteSales
+          .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+          .toList();
 
       _lastDateLoadedData = homePresenter.selectedDate;
     } catch (e) {
