@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
+import '../../mixins/mixins.dart';
 import '../pages.dart';
 
 class ProductsPage extends StatefulWidget {
@@ -12,7 +15,9 @@ class ProductsPage extends StatefulWidget {
   State<ProductsPage> createState() => _ProductsPageState();
 }
 
-class _ProductsPageState extends State<ProductsPage> {
+class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
+  StreamSubscription? mainErrorSubscription;
+
   bool selectedDay = true;
   List<List<PersonalizedTableCell>> constructRows(
     List<SaleMovementViewModel> saleMovements,
@@ -68,9 +73,18 @@ class _ProductsPageState extends State<ProductsPage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    mainErrorSubscription?.cancel();
+  }
+
+  @override
   Widget build(BuildContext context) {
     ProductsPresenter productsPresenter = Get.find();
     HomePresenter homePresenter = Get.find();
+
+    mainErrorSubscription =
+        handleMainError(context, productsPresenter.mainErrorStream);
 
     return Scaffold(
       body: StreamBuilder<bool>(
