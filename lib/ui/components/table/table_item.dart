@@ -130,8 +130,7 @@ class _TableItemState extends State<TableItem> {
   }
 
   Color getColor(int rowIndex) {
-    final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
-
+    final isDark = IsDarkTheme.isDark(context);
     if (rowIndex == maxValueRowIndex && widget.rowValues.length > 1) {
       return Colors.green.withAlpha(isDark ? 120 : 120);
     } else if (rowIndex == minValueRowIndex && widget.rowValues.length > 1) {

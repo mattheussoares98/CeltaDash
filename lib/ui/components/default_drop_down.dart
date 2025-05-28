@@ -28,7 +28,7 @@ class DefaultDropDown<T> extends StatefulWidget {
 class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
   @override
   Widget build(BuildContext context) {
-    final color = MediaQuery.of(context).platformBrightness == Brightness.dark
+    final color = IsDarkTheme.isDark(context)
         ? CupertinoColors.black
         : CupertinoColors.systemGrey5;
     if (Platform.isIOS) {
@@ -104,9 +104,7 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
           return null;
         },
         dropdownColor:
-            MediaQuery.of(context).platformBrightness == Brightness.dark
-                ? Theme.of(context).disabledColor
-                : Colors.white,
+            IsDarkTheme.isDark(context) ? Theme.of(context).disabledColor : Colors.white,
         value: widget.selectedItem,
         isExpanded: true,
         alignment: Alignment.center,

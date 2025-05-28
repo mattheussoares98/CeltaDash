@@ -191,9 +191,7 @@ class ChartPrices extends StatelessWidget {
                               child: Text(
                                 DateFormat('dd/MM').format(date),
                                 style: TextStyle(
-                                  color: MediaQuery.of(context)
-                                              .platformBrightness ==
-                                          Brightness.dark
+                                  color: IsDarkTheme.isDark(context)
                                       ? Colors.white
                                       : Theme.of(context).primaryColorDark,
                                   fontWeight: FontWeight.bold,
