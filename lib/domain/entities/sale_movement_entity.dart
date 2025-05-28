@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class SaleMovementEntity extends Equatable {
   final DateTime? Date;
-  final double? LiquidValue;
+  final num? LiquidValue;
   final int? Year;
   final int? Month;
   final int? Hour;

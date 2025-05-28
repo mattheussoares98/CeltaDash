@@ -5,7 +5,7 @@ import '../../domain/entities/entities.dart';
 import '../../ui/pages/pages.dart';
 
 class SaleMovementModel extends Equatable {
-  final double? LiquidValue;
+  final num? LiquidValue;
   final int? Year;
   final int? Month;
   final DateTime? Date;
