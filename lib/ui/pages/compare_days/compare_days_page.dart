@@ -82,7 +82,7 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
           return StreamBuilder<bool>(
               stream: homePresenter.updateScreenStream,
               builder: (context, snapshot) {
-                if ((saleMovements == null || saleMovements.isEmpty) &&
+                if ((saleMovements == null || saleMovements.isEmpty) ||
                     snapshot.data == true) {
                   return EmptySales(isLoading: false);
                 }
