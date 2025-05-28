@@ -115,8 +115,7 @@ void main() {
             groupByEnterprise: true,
             startDate: DateTime(homePresenter.selectedDateMock.year, 1, 1),
             endDate: DateTime(now.year, now.month, now.day),
-            groupByYear: true,
-            groupByMonth: true,
+            groupByDay: true,
           ),
         ).called(1);
       });
@@ -206,8 +205,7 @@ void main() {
             groupByEnterprise: true,
             startDate: DateTime(homePresenter.selectedDateMock.year, 1, 1),
             endDate: DateTime(now.year, now.month, now.day),
-            groupByYear: true,
-            groupByMonth: true,
+            groupByDay: true,
           ),
         ).called(1);
       });
@@ -232,8 +230,7 @@ void main() {
             groupByEnterprise: true,
             startDate: DateTime(homePresenter.selectedDateMock.year, 1, 1),
             endDate: DateTime(now.year, now.month, now.day),
-            groupByYear: true,
-            groupByMonth: true,
+            groupByDay: true,
           ),
         ).called(2);
       });

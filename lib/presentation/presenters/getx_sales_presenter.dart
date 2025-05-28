@@ -36,8 +36,7 @@ class GetxSalesPresenter extends GetxController
         endDate: DateTime(now.year, now.month,
             now.day), //TODO fix this. When the user change the year, it should load the same year data
         groupByEnterprise: true,
-        groupByMonth: true,
-        groupByYear: true,
+        groupByDay: true,
       );
       salesByMonth = remoteSalesByMonth
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
