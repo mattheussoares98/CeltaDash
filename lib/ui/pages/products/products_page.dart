@@ -13,6 +13,7 @@ class ProductsPage extends StatefulWidget {
 }
 
 class _ProductsPageState extends State<ProductsPage> {
+  bool selectedDay = true;
   List<List<PersonalizedTableCell>> constructRows(
     List<SaleMovementViewModel> saleMovements,
   ) {
@@ -76,15 +77,18 @@ class _ProductsPageState extends State<ProductsPage> {
           stream: homePresenter.updateScreenStream,
           builder: (context, updateScreen) {
             return Obx(() {
-              final saleMovements = productsPresenter.saleMovements;
-              final saleMovementsByEnterprise = saleMovements
-                  ?.where((e) =>
-                      e.EnterpriseId == homePresenter.selectedEnterprise?.id)
+              final saleMovements = productsPresenter.saleMovements
+                  ?.filteredSales(
+                    enterprise: homePresenter.selectedEnterprise,
+                    filterDay:
+                        selectedDay ? homePresenter.selectedDate.day : null,
+                    filterMonth:
+                        !selectedDay ? homePresenter.selectedDate.month : null,
+                  )
+                  .map((e) => e.toViewModel())
                   .toList();
 
-              if ((saleMovements == null || saleMovements.isEmpty) &&
-                  (saleMovementsByEnterprise == null ||
-                      saleMovementsByEnterprise.isEmpty)) {
+              if (saleMovements == null || saleMovements.isEmpty) {
                 return EmptySales(isLoading: false);
               }
 
@@ -93,58 +97,59 @@ class _ProductsPageState extends State<ProductsPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Padding(
-                    //   padding: const EdgeInsets.all(8.0),
-                    //   child: SelectPeriodItems(
-                    //     items: [
-                    //       SelectPeriodItems.createItem(
-                    //         title:
-                    //             "200+ ${DateFormat.MMMd("pt_BR").format(DateTime.now())}",
-                    //         onTap: () {},
-                    //       ),
-                    //       SelectPeriodItems.createItem(
-                    //         title:
-                    //             "200+ ${DateFormat.MMMd("pt_BR").format(DateTime.now().subtract(Duration(days: 1)))}",
-                    //         onTap: () {},
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
-                    //TODO add period items after Cardoso fix problems to load data
+                    SelectPeriodItems(
+                      items: [
+                        SelectPeriodItems.createItem(
+                          title: R.string.day,
+                          onTap: () {
+                            setState(() {
+                              selectedDay = true;
+                            });
+                          },
+                        ),
+                        SelectPeriodItems.createItem(
+                          title: R.string.month,
+                          onTap: () {
+                            setState(() {
+                              selectedDay = false;
+                            });
+                          },
+                        ),
+                      ],
+                      indexToSelectWhenRebuild: selectedDay ? 0 : 1,
+                    ),
                     const SizedBox(height: 10),
-                    if (saleMovementsByEnterprise != null &&
-                        saleMovementsByEnterprise.isNotEmpty)
-                      TableItem(
-                        titleMinHeight: 43,
-                        tableColumnWidth: {
-                          0: FixedColumnWidth(
-                              MediaQuery.of(context).size.width * 0.1),
-                          2: FixedColumnWidth(
-                              MediaQuery.of(context).size.width * 0.2),
-                          3: FixedColumnWidth(
-                              MediaQuery.of(context).size.width * 0.13),
-                          4: FixedColumnWidth(
-                              MediaQuery.of(context).size.width * 0.16),
-                        },
-                        columnIndexToCompareAndDetachBetterAndWorstValue: 2,
-                        columnsIndexToSum: [2, 3],
-                        // indexToSort: 0,
-                        titles: [
-                          PersonalizedTableCell(
-                            value: R.string.positionAbbreviated.toUpperCase(),
-                          ),
-                          PersonalizedTableCell(
-                              value: R.string.product.toUpperCase()),
-                          PersonalizedTableCell(
-                              value: R.string.revenue.toUpperCase()),
-                          PersonalizedTableCell(
-                            value: R.string.quantityAbbreviated.toUpperCase(),
-                          ),
-                          PersonalizedTableCell(
-                              value: R.string.averagePrice.toUpperCase()),
-                        ],
-                        rowValues: constructRows(saleMovementsByEnterprise),
-                      ),
+                    TableItem(
+                      titleMinHeight: 43,
+                      tableColumnWidth: {
+                        0: FixedColumnWidth(
+                            MediaQuery.of(context).size.width * 0.1),
+                        2: FixedColumnWidth(
+                            MediaQuery.of(context).size.width * 0.2),
+                        3: FixedColumnWidth(
+                            MediaQuery.of(context).size.width * 0.13),
+                        4: FixedColumnWidth(
+                            MediaQuery.of(context).size.width * 0.16),
+                      },
+                      columnIndexToCompareAndDetachBetterAndWorstValue: 2,
+                      columnsIndexToSum: [2, 3],
+                      // indexToSort: 0,
+                      titles: [
+                        PersonalizedTableCell(
+                          value: R.string.positionAbbreviated.toUpperCase(),
+                        ),
+                        PersonalizedTableCell(
+                            value: R.string.product.toUpperCase()),
+                        PersonalizedTableCell(
+                            value: R.string.revenue.toUpperCase()),
+                        PersonalizedTableCell(
+                          value: R.string.quantityAbbreviated.toUpperCase(),
+                        ),
+                        PersonalizedTableCell(
+                            value: R.string.averagePrice.toUpperCase()),
+                      ],
+                      rowValues: constructRows(saleMovements),
+                    ),
                   ],
                 ),
               );
