@@ -7,7 +7,11 @@ import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
 class GetxPaymentTypePresenter extends GetxController
-    with SaleMovementManager, UIErrorManager, LoadingManager
+    with
+        SaleMovementManager,
+        UIErrorManager,
+        LoadingManager,
+        LastDateLoadedDataManager
     implements PaymentTypePresenter {
   final LoadSaleMovements loadSaleMovements;
 
@@ -23,8 +27,8 @@ class GetxPaymentTypePresenter extends GetxController
     try {
       if (forceRefresh == true) {
         //continue...
-      } else if (_lastDateLoadedData?.year == homePresenter.selectedDate.year &&
-          _lastDateLoadedData?.month == homePresenter.selectedDate.month) {
+      } else if (lastDateLoadedData?.year == homePresenter.selectedDate.year &&
+          lastDateLoadedData?.month == homePresenter.selectedDate.month) {
         return;
       }
       final startDate = DateTime(
@@ -63,7 +67,7 @@ class GetxPaymentTypePresenter extends GetxController
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
           .toList();
 
-      _lastDateLoadedData = homePresenter.selectedDate;
+      lastDateLoaded = homePresenter.selectedDate;
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {
@@ -85,8 +89,4 @@ class GetxPaymentTypePresenter extends GetxController
       _saleMovementsFinalizations.value;
   set salesByFinaliztions(List<SaleMovementViewModel>? value) =>
       _saleMovementsFinalizations.value = value;
-
-  DateTime? _lastDateLoadedData;
-  @override
-  DateTime? get lastDateLoadedData => _lastDateLoadedData;
 }

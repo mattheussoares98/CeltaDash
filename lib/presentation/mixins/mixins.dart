@@ -1,4 +1,5 @@
 export 'form_manager.dart';
+export 'last_date_loaded_data_manager.dart';
 export 'loading_manager.dart';
 export 'navigation_menager.dart';
 export './sale_movement_manager.dart';

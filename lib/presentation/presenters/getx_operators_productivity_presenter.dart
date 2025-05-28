@@ -7,7 +7,11 @@ import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
 class GetxOperatorsProductivityPresenter extends GetxController
-    with LoadingManager, UIErrorManager, SaleMovementManager
+    with
+        LoadingManager,
+        UIErrorManager,
+        SaleMovementManager,
+        LastDateLoadedDataManager
     implements OperatorsProductivityPresenter {
   final LoadSaleMovements loadSaleMovements;
 
@@ -20,7 +24,7 @@ class GetxOperatorsProductivityPresenter extends GetxController
 
     try {
       if (forceRefresh != true &&
-          _lastDateLoadedData?.year == homePresenter.selectedDate.year) {
+          lastDateLoadedData?.year == homePresenter.selectedDate.year) {
         return;
       }
       final remoteSales = await loadSaleMovements.get(
@@ -42,7 +46,7 @@ class GetxOperatorsProductivityPresenter extends GetxController
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
           .toList();
 
-      _lastDateLoadedData = homePresenter.selectedDate;
+      lastDateLoaded = homePresenter.selectedDate;
       homePresenter.updateScreen();
     } catch (e) {
       mainError = UIError.unexpected;
@@ -50,8 +54,4 @@ class GetxOperatorsProductivityPresenter extends GetxController
       isLoading = false;
     }
   }
-
-  DateTime? _lastDateLoadedData;
-  @override
-  DateTime? get lastDateLoadedData => _lastDateLoadedData; //TODO create manager
 }

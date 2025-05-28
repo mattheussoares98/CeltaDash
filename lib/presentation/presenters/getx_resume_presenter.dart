@@ -7,7 +7,11 @@ import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
 class GetxResumePresenter extends GetxController
-    with SaleMovementManager, UIErrorManager, LoadingManager
+    with
+        SaleMovementManager,
+        UIErrorManager,
+        LoadingManager,
+        LastDateLoadedDataManager
     implements ResumePresenter {
   final NavigateTo navigateTo;
   final LoadSaleMovements loadSaleMovements;
@@ -60,8 +64,8 @@ class GetxResumePresenter extends GetxController
     try {
       if (forceRefresh == true) {
         //continue...
-      } else if (_lastDateLoadedData?.year == homePresenter.selectedDate.year &&
-          _lastDateLoadedData?.month == homePresenter.selectedDate.month) {
+      } else if (lastDateLoadedData?.year == homePresenter.selectedDate.year &&
+          lastDateLoadedData?.month == homePresenter.selectedDate.month) {
         return;
       }
       final result = await loadSaleMovements.get(
@@ -83,15 +87,11 @@ class GetxResumePresenter extends GetxController
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
           .toList();
 
-      _lastDateLoadedData = homePresenter.selectedDate;
+      lastDateLoaded = homePresenter.selectedDate;
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {
       isLoading = false;
     }
   }
-
-  DateTime? _lastDateLoadedData;
-  @override
-  DateTime? get lastDateLoadedData => _lastDateLoadedData;
 }

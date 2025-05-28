@@ -7,7 +7,11 @@ import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
 
 class GetxProductsPresenter extends GetxController
-    with LoadingManager, UIErrorManager, SaleMovementManager
+    with
+        LoadingManager,
+        UIErrorManager,
+        SaleMovementManager,
+        LastDateLoadedDataManager
     implements ProductsPresenter {
   final LoadSaleMovements loadSaleMovements;
 
@@ -23,9 +27,9 @@ class GetxProductsPresenter extends GetxController
     try {
       if (forceRefresh != true &&
           (homePresenter.selectedEnterprise == _lastEnterpriseLoadedData) &&
-          (_lastDateLoadedData?.year == homePresenter.selectedDate.year &&
-              _lastDateLoadedData?.month == homePresenter.selectedDate.month &&
-              _lastDateLoadedData?.day == homePresenter.selectedDate.day)) {
+          (lastDateLoadedData?.year == homePresenter.selectedDate.year &&
+              lastDateLoadedData?.month == homePresenter.selectedDate.month &&
+              lastDateLoadedData?.day == homePresenter.selectedDate.day)) {
         return;
       }
       final date = homePresenter.selectedDate;
@@ -55,17 +59,13 @@ class GetxProductsPresenter extends GetxController
           .toList();
 
       _lastEnterpriseLoadedData = homePresenter.selectedEnterprise;
-      _lastDateLoadedData = homePresenter.selectedDate;
+      lastDateLoaded = homePresenter.selectedDate;
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {
       isLoading = false;
     }
   }
-
-  DateTime? _lastDateLoadedData;
-  @override
-  DateTime? get lastDateLoadedData => _lastDateLoadedData;
 
   EnterpriseViewModel? _lastEnterpriseLoadedData;
   @override

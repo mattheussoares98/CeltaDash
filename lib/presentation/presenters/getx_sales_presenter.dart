@@ -7,7 +7,7 @@ import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
 class GetxSalesPresenter extends GetxController
-    with LoadingManager, UIErrorManager
+    with LoadingManager, UIErrorManager, LastDateLoadedDataManager
     implements SalesPresenter {
   final LoadSaleMovements loadSaleMovements;
 
@@ -23,7 +23,7 @@ class GetxSalesPresenter extends GetxController
     isLoading = true;
 
     try {
-      if (homePresenter.selectedDate.year == _lastDateLoadedData?.year &&
+      if (homePresenter.selectedDate.year == lastDateLoadedData?.year &&
           homePresenter.selectedEnterprise == _lastEnterpriseLoadedData &&
           forceRefresh != true) {
         return;
@@ -55,7 +55,7 @@ class GetxSalesPresenter extends GetxController
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
           .toList();
 
-      _lastDateLoadedData = homePresenter.selectedDate;
+      lastDateLoaded = homePresenter.selectedDate;
       _lastEnterpriseLoadedData = homePresenter.selectedEnterprise;
     } catch (e) {
       mainError = UIError.unexpected;
@@ -106,10 +106,6 @@ class GetxSalesPresenter extends GetxController
   bool _filterByYear = false;
   @override
   bool get filterByYear => _filterByYear;
-
-  DateTime? _lastDateLoadedData;
-  @override
-  DateTime? get lastDateLoadedData => _lastDateLoadedData;
 
   EnterpriseViewModel? _lastEnterpriseLoadedData;
   @override
