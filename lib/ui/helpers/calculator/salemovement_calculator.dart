@@ -89,11 +89,13 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
               viewModel.EnterprisePersonalizedCode ==
                   enterprise.personalizedCode;
 
-          final matchesYear =
-              filterYear == null || viewModel.Date?.year == filterYear;
+          final matchesYear = filterYear == null ||
+              (viewModel.Date?.year == filterYear ||
+                  viewModel.Year?.toInt() == filterYear);
 
-          final matchesMonth =
-              filterMonth == null || viewModel.Date?.month == filterMonth;
+          final matchesMonth = filterMonth == null ||
+              (viewModel.Date?.month == filterMonth ||
+                  viewModel.Month?.toInt() == filterMonth);
 
           final matchesDay =
               filterDay == null || viewModel.Date?.day == filterDay;
