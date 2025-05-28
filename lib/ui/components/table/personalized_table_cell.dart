@@ -23,15 +23,13 @@ class PersonalizedTableCell extends StatelessWidget {
   String getName() {
     if (value is String) {
       return value;
-    }
-
-    if (value is double) {
+    } else if (value is num && value % 1 == 0) {
+      return value.toString().toBrazilianNumber(0);
+    } else if (value is double) {
       var newValue = value as double;
 
       return newValue.toString().toBrazilianNumber();
-    }
-
-    if (value is int) {
+    } else if (value is int) {
       return value.toString().toBrazilianNumber(0);
     }
 
