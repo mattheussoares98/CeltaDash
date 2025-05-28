@@ -37,6 +37,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
         child: AnimatedBuilder(
           animation: Listenable.merge([_opacityController]),

@@ -7,6 +7,8 @@ import '../../../ui/helpers/helpers.dart';
 
 ThemeData makeAppTheme(BuildContext context) {
   final isIos = !kIsWeb && Platform.isIOS;
+  final isDarkMode =
+      MediaQuery.of(context).platformBrightness == Brightness.dark;
 
   const primaryColor = Color.fromARGB(255, 34, 139, 34); // ForestGreen
   const primaryColorDark = Color.fromARGB(255, 0, 100, 0); // DarkGreen
@@ -15,54 +17,58 @@ ThemeData makeAppTheme(BuildContext context) {
   final disabledColor = CupertinoColors.inactiveGray;
   const dividerColor = CupertinoColors.separator;
   // const textColor = Colors.white;
+  final scaffoldColor =
+      isDarkMode ? Colors.black : CupertinoColors.systemGroupedBackground;
+  final textColor = isDarkMode ? Colors.white : Colors.black;
+  final cardColor = isDarkMode ? Colors.grey[900] : Colors.white;
 
-  const textTheme = TextTheme(
+  final textTheme = TextTheme(
     bodySmall: TextStyle(
       fontSize: 12,
-      color: Colors.black,
+      color: textColor,
       fontFamily: '.SF Pro Text',
     ),
     bodyMedium: TextStyle(
       fontSize: 14,
-      color: Colors.black,
+      color: textColor,
       fontFamily: '.SF Pro Text',
     ),
     bodyLarge: TextStyle(
       fontSize: 16,
-      color: Colors.black,
+      color: textColor,
       fontFamily: '.SF Pro Text',
     ),
     titleSmall: TextStyle(
       fontSize: 14,
-      color: Colors.black,
+      color: textColor,
       fontFamily: '.SF Pro Text',
     ),
     titleMedium: TextStyle(
       fontSize: 16,
-      color: Colors.black,
+      color: textColor,
       fontFamily: '.SF Pro Text',
     ),
     titleLarge: TextStyle(
       fontSize: 18,
-      color: Colors.black,
+      color: textColor,
       fontFamily: '.SF Pro Text',
     ),
     headlineSmall: TextStyle(
       fontSize: 18,
       fontWeight: FontWeight.bold,
-      color: primaryColorDark,
+      color: textColor,
       fontFamily: '.SF Pro Text',
     ),
     headlineMedium: TextStyle(
       fontSize: 18,
       fontWeight: FontWeight.bold,
-      color: primaryColorDark,
+      color: textColor,
       fontFamily: '.SF Pro Text',
     ),
     displayLarge: TextStyle(
       fontSize: 20,
       fontWeight: FontWeight.bold,
-      color: primaryColorDark,
+      color: textColor,
       fontFamily: '.SF Pro Text',
     ),
   );
@@ -104,6 +110,12 @@ ThemeData makeAppTheme(BuildContext context) {
   );
 
   return ThemeData(
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: scaffoldColor,
+      selectedItemColor: primaryColor,
+      unselectedItemColor: disabledColor,
+    ),
+    brightness: isDarkMode ? Brightness.dark : Brightness.light,
     primaryColor: primaryColor,
     primaryColorDark: primaryColorDark,
     primaryColorLight: primaryColorLight,
@@ -111,8 +123,22 @@ ThemeData makeAppTheme(BuildContext context) {
     secondaryHeaderColor: secondaryColor,
     disabledColor: disabledColor,
     dividerColor: dividerColor,
-    colorScheme: const ColorScheme.light(primary: primaryColor),
-    scaffoldBackgroundColor: CupertinoColors.systemGroupedBackground,
+    cardTheme: CardThemeData(
+      color: cardColor,
+      elevation: 0,
+    ),
+    colorScheme: ColorScheme(
+      brightness: isDarkMode ? Brightness.dark : Brightness.light,
+      primary: primaryColor,
+      onPrimary: Colors.white,
+      secondary: secondaryColor,
+      onSecondary: Colors.black,
+      error: Colors.red,
+      onError: Colors.white,
+      surface: isDarkMode ? Colors.grey[900]! : Colors.white,
+      onSurface: textColor,
+    ),
+    scaffoldBackgroundColor: scaffoldColor,
     textTheme: textTheme,
     inputDecorationTheme: inputDecorationTheme,
     elevatedButtonTheme: ElevatedButtonThemeData(
@@ -134,7 +160,8 @@ ThemeData makeAppTheme(BuildContext context) {
         ? AppBarTheme(
             backgroundColor: CupertinoColors.extraLightBackgroundGray,
             elevation: 0,
-            iconTheme: const IconThemeData(color: primaryColorDark),
+            iconTheme: IconThemeData(
+                color: isDarkMode ? primaryColorLight : primaryColorDark),
             titleTextStyle: const TextStyle(
               color: primaryColorDark,
               fontSize: 18,
@@ -144,6 +171,8 @@ ThemeData makeAppTheme(BuildContext context) {
           )
         : AppBarTheme(
             backgroundColor: primaryColorLight.withAlpha(15),
+            iconTheme: IconThemeData(
+                color: isDarkMode ? primaryColorLight : primaryColorDark),
           ),
     useMaterial3: true,
   );

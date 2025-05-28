@@ -70,10 +70,11 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
               ElevatedButton(
                 onPressed: () async {
                   await homePresenter.getBsEnterprises(
-                    docRef:
-                        FirebaseFirestore.instance.collection("enterprises").doc(
-                              EnterpriseBuilder.entity?.firebaseId,
-                            ),
+                    docRef: FirebaseFirestore.instance
+                        .collection("enterprises")
+                        .doc(
+                          EnterpriseBuilder.entity?.firebaseId,
+                        ),
                     showBsErrorMessage: (error) {
                       snackBarMessage(
                         context,
@@ -164,7 +165,11 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                             )
                           : Icon(
                               isIOS ? CupertinoIcons.refresh : Icons.refresh,
-                              color: Theme.of(context).primaryColorDark,
+                              color:
+                                  MediaQuery.of(context).platformBrightness ==
+                                          Brightness.dark
+                                      ? Theme.of(context).primaryColorLight
+                                      : Theme.of(context).primaryColorDark,
                             ),
                     ),
                   )

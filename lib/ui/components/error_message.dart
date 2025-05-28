@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../ui/helpers/helpers.dart';
-
 void showErrorMessage(BuildContext context, String error,
     {Duration? duration = const Duration(seconds: 4)}) {
   ScaffoldMessenger.of(context).clearSnackBars();
@@ -12,19 +10,17 @@ void showErrorMessage(BuildContext context, String error,
       content: Text(
         error,
         textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: ScreenSize.hasMinWidth ? 17 : 13,
-        ),
+        style: Theme.of(context).textTheme.titleSmall,
       ),
       dismissDirection: DismissDirection.down,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
         side: BorderSide(
-          color: Theme.of(context).primaryColorLight,
+          color: Theme.of(context).disabledColor,
         ),
       ),
       showCloseIcon: true,
-      closeIconColor: Colors.black,
+      closeIconColor: Theme.of(context).textTheme.titleSmall?.color,
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 50),
       behavior: SnackBarBehavior.floating,
     ),

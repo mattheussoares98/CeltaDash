@@ -53,28 +53,22 @@ class PersonalizedTableCell extends StatelessWidget {
                   if (isMoney == true)
                     TextSpan(
                       text: 'R\$ ',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 10,
-                        color: Colors.black,
-                      ),
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontSize: 10,
+                          ),
                     ),
                   TextSpan(
                     text: getName(),
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 12,
-                      fontWeight: isTitle == true ? FontWeight.bold : null,
-                    ),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontWeight: isTitle == true ? FontWeight.bold : null,
+                        ),
                   ),
                   if (isPercentage == true)
                     TextSpan(
                       text: ' %',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 10,
-                        color: Colors.black,
-                      ),
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontSize: 10,
+                          ),
                     ),
                 ],
               ),
@@ -82,10 +76,7 @@ class PersonalizedTableCell extends StatelessWidget {
             if (subtile != null)
               Text(
                 subtile!,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.black,
-                ),
+                style: Theme.of(context).textTheme.bodySmall,
               ),
           ],
         ),

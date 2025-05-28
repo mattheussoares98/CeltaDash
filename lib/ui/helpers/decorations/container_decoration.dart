@@ -6,7 +6,7 @@ class ContainerDecoration {
   ContainerDecoration._();
 
   static BoxDecoration get decoration => BoxDecoration(
-    color: Colors.white,
+    color: Theme.of(NavigatorKey.key.currentState!.context).cardTheme.color,
     borderRadius: BorderRadius.circular(12),
     border: Border.all(
       color: Theme.of(NavigatorKey.key.currentState!.context).primaryColorLight.withAlpha(60),

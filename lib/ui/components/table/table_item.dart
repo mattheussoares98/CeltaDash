@@ -130,12 +130,14 @@ class _TableItemState extends State<TableItem> {
   }
 
   Color getColor(int rowIndex) {
+    final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+
     if (rowIndex == maxValueRowIndex && widget.rowValues.length > 1) {
-      return Colors.green.withAlpha(120);
+      return Colors.green.withAlpha(isDark ? 120 : 120);
     } else if (rowIndex == minValueRowIndex && widget.rowValues.length > 1) {
-      return Colors.red.withAlpha(120);
+      return Colors.red.withAlpha(isDark ? 120 : 120);
     } else if (rowIndex % 2 == 0) {
-      return Theme.of(context).disabledColor.withAlpha(30);
+      return Theme.of(context).disabledColor.withAlpha(isDark ? 40 : 30);
     }
     return Colors.transparent;
   }
@@ -183,6 +185,10 @@ class _TableItemState extends State<TableItem> {
   }
 
   Color getTableBorderColor() {
+    if (MediaQuery.of(context).platformBrightness == Brightness.dark) {
+      return Colors.white;
+    }
+
     return Platform.isIOS ? CupertinoColors.separator : Colors.black;
   }
 
@@ -220,7 +226,8 @@ class _TableItemState extends State<TableItem> {
                               });
                             },
                             child: Container(
-                              color: CupertinoColors.systemGrey6,
+                              color:
+                                  Theme.of(context).disabledColor.withAlpha(70),
                               child: PersonalizedTableCell(
                                 value: tableCell.value,
                                 isTitle: true,

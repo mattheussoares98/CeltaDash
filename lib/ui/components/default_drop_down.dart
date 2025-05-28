@@ -28,11 +28,14 @@ class DefaultDropDown<T> extends StatefulWidget {
 class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
   @override
   Widget build(BuildContext context) {
+    final color = MediaQuery.of(context).platformBrightness == Brightness.dark
+        ? CupertinoColors.black
+        : CupertinoColors.systemGrey5;
     if (Platform.isIOS) {
       return SizedBox(
         height: DropdownHeight.height,
         child: CupertinoButton(
-          color: CupertinoColors.systemGrey5,
+          color: color,
           disabledColor: Theme.of(context).disabledColor,
           padding: EdgeInsets.only(left: 15), // Remove internal padding
           onPressed: widget.onChanged == null
@@ -93,11 +96,17 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
     return SizedBox(
       height: DropdownHeight.height,
       child: DropdownButtonFormField<T>(
-        decoration: const InputDecoration(isDense: true),
+        decoration: const InputDecoration(
+          isDense: true,
+        ),
         isDense: true,
         validator: (value) {
           return null;
         },
+        dropdownColor:
+            MediaQuery.of(context).platformBrightness == Brightness.dark
+                ? Theme.of(context).disabledColor
+                : Colors.white,
         value: widget.selectedItem,
         isExpanded: true,
         alignment: Alignment.center,

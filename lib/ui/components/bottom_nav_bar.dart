@@ -21,9 +21,6 @@ class BottomNavBar extends StatelessWidget {
       return CupertinoTabBar(
         currentIndex: currentIndex,
         onTap: onTap,
-        activeColor: Theme.of(context).primaryColorDark,
-        inactiveColor: Theme.of(context).disabledColor,
-        backgroundColor: CupertinoColors.systemGrey6,
         height: 50,
         items: items
             .map(
@@ -42,14 +39,6 @@ class BottomNavBar extends StatelessWidget {
       type: BottomNavigationBarType.fixed,
       unselectedFontSize: 10,
       selectedFontSize: 12,
-      selectedIconTheme: IconThemeData(
-        size: 30,
-        color: Theme.of(context).primaryColorDark,
-      ),
-      unselectedIconTheme: IconThemeData(
-        size: 20,
-        color: Theme.of(context).disabledColor,
-      ),
       items: items
           .map(
             (item) => BottomNavigationBarItem(

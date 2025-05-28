@@ -108,7 +108,7 @@ class ChartPrices extends StatelessWidget {
                         return touchedBarSpots.map((barSpot) {
                           final price = barSpot.y;
                           final date = datesAndValues[barSpot.x.toInt()].date;
-      
+
                           return LineTooltipItem(
                             '',
                             TextStyle(
@@ -191,7 +191,11 @@ class ChartPrices extends StatelessWidget {
                               child: Text(
                                 DateFormat('dd/MM').format(date),
                                 style: TextStyle(
-                                  color: Theme.of(context).primaryColorDark,
+                                  color: MediaQuery.of(context)
+                                              .platformBrightness ==
+                                          Brightness.dark
+                                      ? Colors.white
+                                      : Theme.of(context).primaryColorDark,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),

@@ -51,7 +51,6 @@ class _ChartPieState extends State<ChartPie> {
     for (var i = 0; i < widget.pieParameters.length; i++) {
       final isTouched = i == selectedIndex;
       final chartSize = chartWidth;
-      final fontSize = isTouched ? 16.0 : 13.0;
       final radius = isTouched ? chartSize * 0.29 : chartSize * 0.25;
 
       if (needBreakLoop(i)) {
@@ -66,10 +65,7 @@ class _ChartPieState extends State<ChartPie> {
           title:
               "${(pieParameter.value / totalOfAllPieParameters * 100).toString().toBrazilianNumber(0)}%",
           radius: radius,
-          titleStyle: TextStyle(
-            fontSize: fontSize,
-            fontWeight: FontWeight.bold,
-          ),
+          titleStyle: Theme.of(context).textTheme.titleSmall,
         ),
       );
     }
@@ -231,19 +227,16 @@ class _Indicator extends StatelessWidget {
                 child: RichText(
                   text: TextSpan(
                     text: title,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                     children: [
                       TextSpan(
                         text:
                             "\n${value.toString().toBrazilianNumber().addBrazilianCoin()}",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w400,
-                          fontStyle: FontStyle.italic,
-                        ),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              fontStyle: FontStyle.italic,
+                            ),
                       ),
                     ],
                   ),
