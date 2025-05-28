@@ -18,7 +18,7 @@ ThemeData makeAppTheme(BuildContext context) {
   const dividerColor = CupertinoColors.separator;
   // const textColor = Colors.white;
   final scaffoldColor =
-      isDarkMode ? Colors.black : CupertinoColors.systemGroupedBackground;
+      isDarkMode ? Colors.grey[850] : CupertinoColors.systemGroupedBackground;
   final textColor = isDarkMode ? Colors.white : Colors.black;
   final cardColor = isDarkMode ? Colors.grey[900] : Colors.white;
 
