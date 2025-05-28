@@ -124,7 +124,6 @@ void main() {
               endDate: endDate,
               groupByEnterprise: true,
               groupByDay: true,
-              groupByMonth: true,
               groupByPaymentModality: true,
             )).called(1);
       });
@@ -151,7 +150,6 @@ void main() {
               endDate: endDate,
               groupByEnterprise: true,
               groupByDay: true,
-              groupByMonth: true,
               groupByPaymentModality: true,
             )).called(1);
       });
@@ -170,7 +168,6 @@ void main() {
         verify(() => loadSaleMovements.get(
               groupByEnterprise: true,
               groupByDay: true,
-              groupByMonth: true,
               groupByPaymentModality: true,
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
@@ -195,7 +192,6 @@ void main() {
         verify(() => loadSaleMovements.get(
               groupByEnterprise: true,
               groupByDay: true,
-              groupByMonth: true,
               groupByPaymentModality: true,
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
@@ -245,7 +241,6 @@ void main() {
               endDate: endDate,
               groupByEnterprise: true,
               groupByDay: true,
-              groupByMonth: true,
               groupByPaymentFinalization: true,
             )).called(1);
       });
@@ -272,7 +267,6 @@ void main() {
               endDate: endDate,
               groupByEnterprise: true,
               groupByDay: true,
-              groupByMonth: true,
               groupByPaymentFinalization: true,
             )).called(1);
       });

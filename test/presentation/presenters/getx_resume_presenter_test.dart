@@ -165,8 +165,6 @@ void main() {
       verify(() => loadSaleMovements.get(
             startDate: startDate,
             endDate: endDate,
-            groupByDay: true,
-            groupByMonth: true,
             groupByHour: true,
             groupByEnterprise: true,
           )).called(1);
@@ -210,8 +208,6 @@ void main() {
               homePresenter.selectedDateMock.month + 1,
               1,
             ).subtract(Duration(days: 1)),
-            groupByDay: true,
-            groupByMonth: true,
             groupByHour: true,
             groupByEnterprise: true,
           )).called(1);
@@ -239,8 +235,6 @@ void main() {
               homePresenter.selectedDateMock.month + 1,
               1,
             ).subtract(Duration(days: 1)),
-            groupByDay: true,
-            groupByMonth: true,
             groupByHour: true,
             groupByEnterprise: true,
           )).called(2);

@@ -117,7 +117,6 @@ void main() {
               ],
               groupByEnterprise: true,
               groupByDay: true,
-              groupByMonth: true,
               groupByProductDepartment: true,
               groupByProductSection: true,
             )).called(1);
@@ -144,7 +143,6 @@ void main() {
               ],
               groupByEnterprise: true,
               groupByDay: true,
-              groupByMonth: true,
               groupByProductDepartment: true,
               groupByProductSection: true,
             )).called(1);
@@ -175,7 +173,6 @@ void main() {
               ],
               groupByEnterprise: true,
               groupByDay: true,
-              groupByMonth: true,
               groupByProductDepartment: true,
               groupByProductSection: true,
             )).called(1);

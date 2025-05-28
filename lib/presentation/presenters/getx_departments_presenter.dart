@@ -52,7 +52,7 @@ class GetxDepartmentsPresenter extends GetxController
           endDate: endDate,
           groupByEnterprise: true,
           groupByDay: true,
-          groupByMonth: true,
+          // groupByMonth: true,
           groupByProductDepartment: true,
           groupByProductSection: true,
         );

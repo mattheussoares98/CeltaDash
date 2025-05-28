@@ -95,8 +95,6 @@ void main() {
 
       verify(
         () => loadSaleMovements.get(
-          groupByMonth: true,
-          groupByDay: true,
           groupByHour: true,
           groupByCashierOperator: true,
           groupByEnterprise: true,
@@ -121,8 +119,6 @@ void main() {
 
       verify(
         () => loadSaleMovements.get(
-          groupByMonth: true,
-          groupByDay: true,
           groupByHour: true,
           groupByCashierOperator: true,
           groupByEnterprise: true,
@@ -136,25 +132,25 @@ void main() {
         ),
       ).called(1);
 
-      homePresenter.selectedDateMock = DateTime(
+      final newDate = DateTime(
         homePresenter.selectedDateMock.year,
         faker.randomGenerator.integer(12),
         faker.randomGenerator.integer(28),
       );
 
+      homePresenter.selectedDateMock = newDate;
+
       await sut.getSales(homePresenter);
       verifyNever(
         () => loadSaleMovements.get(
-          groupByMonth: true,
-          groupByDay: true,
           groupByHour: true,
           groupByCashierOperator: true,
           groupByEnterprise: true,
           // enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
-          startDate: DateTime(homePresenter.selectedDateMock.year, 1, 1),
+          startDate: DateTime(newDate.year, 1, 1),
           endDate: DateTime(
-            homePresenter.selectedDateMock.year,
-            homePresenter.selectedDateMock.month + 1,
+            newDate.year,
+            newDate.month + 1,
             1,
           ).subtract(Duration(days: 1)),
         ),
@@ -165,8 +161,6 @@ void main() {
 
       verify(
         () => loadSaleMovements.get(
-          groupByMonth: true,
-          groupByDay: true,
           groupByHour: true,
           groupByCashierOperator: true,
           groupByEnterprise: true,
@@ -189,8 +183,6 @@ void main() {
       await sut.getSales(homePresenter);
       verify(
         () => loadSaleMovements.get(
-          groupByMonth: true,
-          groupByDay: true,
           groupByHour: true,
           groupByCashierOperator: true,
           groupByEnterprise: true,
@@ -210,8 +202,6 @@ void main() {
 
       verify(
         () => loadSaleMovements.get(
-          groupByMonth: true,
-          groupByDay: true,
           groupByHour: true,
           groupByCashierOperator: true,
           groupByEnterprise: true,

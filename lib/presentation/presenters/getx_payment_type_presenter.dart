@@ -44,7 +44,6 @@ class GetxPaymentTypePresenter extends GetxController
         endDate: endDate,
         groupByEnterprise: true,
         groupByDay: true,
-        groupByMonth: true,
         groupByPaymentModality: true,
       );
 
@@ -57,7 +56,6 @@ class GetxPaymentTypePresenter extends GetxController
         endDate: endDate,
         groupByEnterprise: true,
         groupByDay: true,
-        groupByMonth: true,
         groupByPaymentFinalization: true,
       );
 

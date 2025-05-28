@@ -33,8 +33,6 @@ class GetxOperatorsProductivityPresenter extends GetxController
         ).subtract(
           Duration(days: 1),
         ),
-        groupByMonth: true,
-        groupByDay: true,
         groupByHour: true,
         groupByCashierOperator: true,
         groupByEnterprise: true,
