@@ -3,6 +3,8 @@ import 'package:equatable/equatable.dart';
 class SaleMovementEntity extends Equatable {
   final DateTime? Date;
   final num? LiquidValue;
+  final num? QuantityOfProducts;
+  final num? TotalRepositionCost;
   final int? Year;
   final int? Month;
   final int? Hour;
@@ -20,6 +22,8 @@ class SaleMovementEntity extends Equatable {
   const SaleMovementEntity({
     required this.Date,
     required this.LiquidValue,
+    required this.QuantityOfProducts,
+    required this.TotalRepositionCost,
     required this.Year,
     required this.Month,
     required this.Hour,
@@ -38,6 +42,8 @@ class SaleMovementEntity extends Equatable {
   @override
   List<Object?> get props => [
         LiquidValue,
+        QuantityOfProducts,
+        TotalRepositionCost,
         Year,
         Month,
         Date,

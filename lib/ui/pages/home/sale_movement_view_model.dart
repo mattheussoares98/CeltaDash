@@ -16,6 +16,8 @@ class SaleMovementViewModel extends Equatable {
   final String? EnterpriseFantasyName;
   final String? QuantitySales;
   final String? CashierOperator;
+  final String? TotalRepositionCost;
+  final String? QuantityOfProducts;
 
   const SaleMovementViewModel({
     required this.Date,
@@ -33,6 +35,8 @@ class SaleMovementViewModel extends Equatable {
     required this.EnterpriseFantasyName,
     required this.QuantitySales,
     required this.CashierOperator,
+    required this.TotalRepositionCost,
+    required this.QuantityOfProducts,
   });
 
   @override
@@ -52,5 +56,7 @@ class SaleMovementViewModel extends Equatable {
         EnterpriseFantasyName,
         QuantitySales,
         CashierOperator,
+        TotalRepositionCost,
+        QuantityOfProducts,
       ];
 }

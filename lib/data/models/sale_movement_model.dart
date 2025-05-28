@@ -6,6 +6,8 @@ import '../../ui/pages/pages.dart';
 
 class SaleMovementModel extends Equatable {
   final num? LiquidValue;
+  final num? QuantityOfProducts;
+  final num? TotalRepositionCost;
   final int? Year;
   final int? Month;
   final DateTime? Date;
@@ -23,6 +25,8 @@ class SaleMovementModel extends Equatable {
 
   const SaleMovementModel({
     required this.LiquidValue,
+    required this.QuantityOfProducts,
+    required this.TotalRepositionCost,
     required this.Year,
     required this.Month,
     required this.Date,
@@ -42,6 +46,8 @@ class SaleMovementModel extends Equatable {
   @override
   List<Object?> get props => [
         LiquidValue,
+        QuantityOfProducts,
+        TotalRepositionCost,
         Year,
         Month,
         Date,
@@ -60,6 +66,8 @@ class SaleMovementModel extends Equatable {
 
   factory SaleMovementModel.fromJson(Map json) => SaleMovementModel(
         LiquidValue: json['LiquidValue'],
+        QuantityOfProducts: json['QuantityOfProducts'],
+        TotalRepositionCost: json['TotalRepositionCost'],
         Year: json['Year'],
         Month: json['Month'],
         Date: json['Date'] == null ? null : DateTime.parse(json['Date']),
@@ -79,6 +87,8 @@ class SaleMovementModel extends Equatable {
   factory SaleMovementModel.fromEntity(SaleMovementEntity entity) =>
       SaleMovementModel(
         LiquidValue: entity.LiquidValue,
+        QuantityOfProducts: entity.QuantityOfProducts,
+        TotalRepositionCost: entity.TotalRepositionCost,
         Year: entity.Year,
         Month: entity.Month,
         Date: entity.Date,
@@ -97,6 +107,8 @@ class SaleMovementModel extends Equatable {
 
   Map<String, dynamic> toJson() => {
         'LiquidValue': LiquidValue,
+        'QuantityOfProducts': QuantityOfProducts,
+        'TotalRepositionCost': TotalRepositionCost,
         'Year': Year,
         'Month': Month,
         'Date': Date?.toIso8601String(),
@@ -115,6 +127,8 @@ class SaleMovementModel extends Equatable {
 
   SaleMovementEntity toEntity() => SaleMovementEntity(
         LiquidValue: LiquidValue,
+        QuantityOfProducts: QuantityOfProducts,
+        TotalRepositionCost: TotalRepositionCost,
         Year: Year,
         Month: Month,
         Date: Date,
@@ -133,6 +147,10 @@ class SaleMovementModel extends Equatable {
 
   factory SaleMovementModel.fromViewModel(SaleMovementViewModel viewModel) {
     double? parsedLiquidValue = double.tryParse(viewModel.LiquidValue ?? '');
+    double? parsedQuantityOfProducts =
+        double.tryParse(viewModel.QuantityOfProducts ?? '');
+    double? parsedTotalRepositionCost =
+        double.tryParse(viewModel.TotalRepositionCost ?? '');
     int? parsedYear = int.tryParse(viewModel.Year ?? '');
     int? parsedMonth = int.tryParse(viewModel.Month ?? '');
     int? parsedHour;
@@ -142,6 +160,8 @@ class SaleMovementModel extends Equatable {
 
     return SaleMovementModel(
       LiquidValue: parsedLiquidValue,
+      QuantityOfProducts: parsedQuantityOfProducts,
+      TotalRepositionCost: parsedTotalRepositionCost,
       Year: parsedYear,
       Month: parsedMonth,
       Date: viewModel.Date,
@@ -163,6 +183,8 @@ class SaleMovementModel extends Equatable {
     return SaleMovementViewModel(
       Date: Date,
       LiquidValue: LiquidValue?.toString(),
+      QuantityOfProducts: QuantityOfProducts?.toString(),
+      TotalRepositionCost: TotalRepositionCost?.toString(),
       Year: Year?.toString(),
       Month: Month?.toString(),
       Hour: Hour != null ? '$Hour:00\n$Hour:59' : null,

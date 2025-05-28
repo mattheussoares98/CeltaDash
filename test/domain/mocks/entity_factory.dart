@@ -50,6 +50,8 @@ class EntityFactory {
 
   static SaleMovementEntity makeSaleMovementEntity({int? enterpriseId}) =>
       SaleMovementEntity(
+        QuantityOfProducts: faker.randomGenerator.decimal(),
+        TotalRepositionCost: faker.randomGenerator.decimal(),
         LiquidValue: faker.randomGenerator.decimal(),
         Year: faker.randomGenerator.integer(3000),
         Month: faker.randomGenerator.integer(12, min: 1),
