@@ -135,7 +135,7 @@ class _TableItemState extends State<TableItem> {
     } else if (rowIndex == minValueRowIndex && widget.rowValues.length > 1) {
       return Colors.red.withAlpha(120);
     } else if (rowIndex % 2 == 0) {
-      return Theme.of(context).disabledColor.withAlpha(60);
+      return Theme.of(context).disabledColor.withAlpha(30);
     }
     return Colors.transparent;
   }
@@ -293,7 +293,7 @@ class _TableItemState extends State<TableItem> {
                   children: [
                     TableRow(
                       decoration: BoxDecoration(
-                        color: Colors.grey[300],
+                        color: Theme.of(context).disabledColor.withAlpha(70),
                         // borderRadius: BorderRadius.circular(8),
                       ),
                       children: _buildSumRow()
