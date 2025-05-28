@@ -32,7 +32,7 @@ class _ProductsPageState extends State<ProductsPage> {
           parts?.length != null && parts!.length > 2 ? parts[2] : '';
 
       final ticketAverage = (sale.LiquidValue?.toDouble() ?? 0) /
-          (sale.QuantitySales?.toInt() ?? 1);
+          (sale.QuantityOfProducts?.toDouble() ?? 1);
 
       if (index < 200) {
         top200.add([
@@ -40,12 +40,12 @@ class _ProductsPageState extends State<ProductsPage> {
           PersonalizedTableCell(value: productName),
           PersonalizedTableCell(
               value: sale.LiquidValue?.toDouble(), isMoney: true),
-          PersonalizedTableCell(value: sale.QuantitySales),
+          PersonalizedTableCell(value: sale.QuantityOfProducts?.toDouble()),
           PersonalizedTableCell(value: ticketAverage, isMoney: true),
         ]);
       } else {
         othersTotalValue += sale.LiquidValue?.toDouble() ?? 0;
-        othersTotalQuantity += sale.QuantitySales?.toInt() ?? 0;
+        othersTotalQuantity += sale.QuantityOfProducts?.toInt() ?? 0;
       }
     }
 
