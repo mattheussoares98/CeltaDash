@@ -47,6 +47,7 @@ abstract class Translation {
   String get email;
   String get empty;
   String get emptySubEnterprises;
+  String get enabled;
   String get enter;
   String get enterprise;
   String get enterpriseName;

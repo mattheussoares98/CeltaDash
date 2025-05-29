@@ -34,6 +34,7 @@ class SubEnterprises extends StatelessWidget {
           itemBuilder: (context, index) {
             final subEnterprise = webEnterprisesPresenter
                 .selectedEnterprise?.firebaseSubEnterprises?[index];
+
             return Container(
               decoration: ContainerDecoration.decoration,
               padding: EdgeInsets.all(8),
@@ -45,6 +46,17 @@ class SubEnterprises extends StatelessWidget {
                     "${subEnterprise?.personalizedCode} - ${subEnterprise?.name}",
                   ),
                   Text("${R.string.cnpj}: ${subEnterprise?.cnpj}"),
+                  Row(
+                    children: [
+                      Expanded(child: Text("${R.string.enabled}: ")),
+                      Switch(
+                        value: subEnterprise?.enabled == "true",
+                        onChanged: (value) {
+                          debugPrint(value.toString());
+                        },
+                      ),
+                    ],
+                  ),
                 ],
               ),
             );

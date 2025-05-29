@@ -54,6 +54,7 @@ class PtBr implements Translation {
   String get email => "E-mail";
   String get empty => "Vazio";
   String get emptySubEnterprises => "Não há sub-empresas";
+  String get enabled => "Habilitado";
   String get enter => "Entrar";
   String get enterprise => "Empresa";
   String get enterpriseName => "Nome da empresa";
