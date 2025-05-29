@@ -168,6 +168,8 @@ class GetxWebEnterprisesPresenter extends GetxController
                   name: e.name,
                   personalizedCode: e.personalizedCode,
                   cnpj: e.cnpj,
+                  enabled: false
+                      .toString(), //adding new enterprise, need to add as false value
                 ),
               )
               .toList(),

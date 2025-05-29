@@ -58,6 +58,7 @@ class GetxHomePresenter extends GetxController
             name: e.name,
             personalizedCode: e.personalizedCode,
             cnpj: e.cnpj,
+            enabled: false, //adding new enterprise, need to add as false value
           ),
         )
         .toList();

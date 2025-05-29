@@ -246,6 +246,7 @@ void main() {
                               name: e.name,
                               personalizedCode: e.personalizedCode,
                               cnpj: e.cnpj,
+                              enabled: false,
                             )).toJson())
                         .toList(),
                   ),
@@ -322,6 +323,7 @@ void main() {
                   name: e.name,
                   personalizedCode: e.personalizedCode,
                   cnpj: e.cnpj,
+                  enabled: false,
                 ),
               ),
             ],

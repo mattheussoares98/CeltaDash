@@ -5,12 +5,14 @@ class FirebaseSubEnterpriseViewModel extends Equatable {
   final String? name;
   final String? personalizedCode;
   final String? cnpj;
+  final String? enabled;
 
   const FirebaseSubEnterpriseViewModel({
     required this.id,
     required this.name,
     required this.personalizedCode,
     required this.cnpj,
+    required this.enabled,
   });
 
   @override
@@ -19,5 +21,6 @@ class FirebaseSubEnterpriseViewModel extends Equatable {
         name,
         personalizedCode,
         cnpj,
+        enabled,
       ];
 }

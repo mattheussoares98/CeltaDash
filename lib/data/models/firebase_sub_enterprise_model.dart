@@ -9,12 +9,14 @@ class FirebaseSubEnterpriseModel extends Equatable {
   final String? name;
   final String? personalizedCode;
   final String? cnpj;
+  final bool? enabled;
 
   const FirebaseSubEnterpriseModel({
     required this.id,
     required this.name,
     required this.personalizedCode,
     required this.cnpj,
+    required this.enabled,
   });
 
   @override
@@ -23,6 +25,7 @@ class FirebaseSubEnterpriseModel extends Equatable {
         name,
         personalizedCode,
         cnpj,
+        enabled,
       ];
 
   factory FirebaseSubEnterpriseModel.fromJson(Map json) =>
@@ -31,6 +34,7 @@ class FirebaseSubEnterpriseModel extends Equatable {
         name: json['name'],
         personalizedCode: json['personalizedCode'],
         cnpj: json['cnpj'],
+        enabled: json['enabled'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -38,6 +42,7 @@ class FirebaseSubEnterpriseModel extends Equatable {
         'name': name,
         'personalizedCode': personalizedCode,
         'cnpj': cnpj,
+        'enabled': enabled,
       };
 
   factory FirebaseSubEnterpriseModel.fromEntity(
@@ -47,6 +52,7 @@ class FirebaseSubEnterpriseModel extends Equatable {
         name: entity.name,
         personalizedCode: entity.personalizedCode,
         cnpj: entity.cnpj,
+        enabled: entity.enabled,
       );
 
   FirebaseSubEnterpriseEntity toEntity() => FirebaseSubEnterpriseEntity(
@@ -54,6 +60,7 @@ class FirebaseSubEnterpriseModel extends Equatable {
         name: name,
         personalizedCode: personalizedCode,
         cnpj: cnpj,
+        enabled: enabled,
       );
 
   factory FirebaseSubEnterpriseModel.fromViewModel(
@@ -64,6 +71,7 @@ class FirebaseSubEnterpriseModel extends Equatable {
       name: viewModel.name,
       personalizedCode: viewModel.personalizedCode,
       cnpj: viewModel.cnpj,
+      enabled: viewModel.enabled == "true",
     );
   }
 
@@ -73,5 +81,6 @@ class FirebaseSubEnterpriseModel extends Equatable {
         name: name,
         personalizedCode: personalizedCode,
         cnpj: cnpj,
+        enabled: enabled?.toString(),
       );
 }
