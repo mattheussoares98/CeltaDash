@@ -171,9 +171,6 @@ void main() {
             firstDay.year,
             firstDay.month,
             firstDay.day,
-            23,
-            59,
-            59,
           ),
         ),
       ).called(1);
@@ -197,9 +194,6 @@ void main() {
               secondDay.year,
               secondDay.month,
               secondDay.day,
-              23,
-              59,
-              59,
             )),
       ).called(1);
     });

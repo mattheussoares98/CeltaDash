@@ -38,18 +38,15 @@ class GetxCompareDaysPresenter extends GetxController
       if (firstDay != null) {
         final saleMovements = await loadSaleMovements.get(
           startDate: firstDay,
-          groupByYear: true,
-          groupByMonth: true,
-          groupByDay: true,
+          // groupByYear: true,
+          // groupByMonth: true,
+          // groupByDay: true,
           groupByHour: true,
           enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
           endDate: DateTime(
             firstDay.year,
             firstDay.month,
             firstDay.day,
-            23,
-            59,
-            59,
           ),
         );
 
@@ -61,18 +58,15 @@ class GetxCompareDaysPresenter extends GetxController
       if (secondDay != null) {
         final saleMovements = await loadSaleMovements.get(
           startDate: secondDay,
-          groupByYear: true,
-          groupByMonth: true,
-          groupByDay: true,
+          // groupByYear: true,
+          // groupByMonth: true,
+          // groupByDay: true,
           groupByHour: true,
           enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
           endDate: DateTime(
             secondDay.year,
             secondDay.month,
             secondDay.day,
-            23,
-            59,
-            59,
           ),
         );
 
