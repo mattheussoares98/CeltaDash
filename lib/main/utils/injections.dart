@@ -12,9 +12,19 @@ import 'package:flutter/services.dart';
 import '../../firebase_options.dart';
 import '../../infra/helpers/helpers.dart';
 
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
+
 Future<void> initApp() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  HttpOverrides.global = MyHttpOverrides();
   await _initFirebase();
   await _initHive();
   await _makeOnlyPortraitMode();
