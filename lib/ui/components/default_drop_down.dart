@@ -32,9 +32,11 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
       return SizedBox(
         height: DropdownHeight.height,
         child: CupertinoButton(
-          disabledColor: Theme.of(context).disabledColor.withAlpha(40),
+          disabledColor: Theme.of(context).disabledColor.withAlpha(100),
           padding: EdgeInsets.only(left: 15),
-          color: Theme.of(context).disabledColor,
+          color: IsDarkTheme.isDark
+              ? Theme.of(context).disabledColor
+              : Theme.of(context).disabledColor.withAlpha(40),
           onPressed: widget.onChanged == null
               ? null
               : () async {
