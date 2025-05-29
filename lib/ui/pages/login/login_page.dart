@@ -71,7 +71,7 @@ class _LoginPageState extends State<LoginPage>
       user: userController.text,
       password: passwordController.text,
       showBsErrorMessage: (error) {
-        snackBarMessage(context, error, Colors.red);
+        showErrorMessage(context, error);
       },
     );
   }
@@ -92,6 +92,7 @@ class _LoginPageState extends State<LoginPage>
     );
 
     return Scaffold(
+      backgroundColor: Theme.of(context).disabledColor.withAlpha(120),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Form(

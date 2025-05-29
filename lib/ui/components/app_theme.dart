@@ -111,7 +111,7 @@ ThemeData makeAppTheme(BuildContext context) {
   return ThemeData(
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: scaffoldColor,
-      selectedItemColor: primaryColor,
+      selectedItemColor: IsDarkTheme.isDark ? primaryColorLight : primaryColor,
       unselectedItemColor: disabledColor,
     ),
     brightness: IsDarkTheme.isDark ? Brightness.dark : Brightness.light,
@@ -157,17 +157,14 @@ ThemeData makeAppTheme(BuildContext context) {
     ),
     appBarTheme: isIos
         ? AppBarTheme(
-            backgroundColor: CupertinoColors.extraLightBackgroundGray,
+            backgroundColor: IsDarkTheme.isDark
+                ? scaffoldColor
+                : CupertinoColors.extraLightBackgroundGray,
             elevation: 0,
             iconTheme: IconThemeData(
                 color:
                     IsDarkTheme.isDark ? primaryColorLight : primaryColorDark),
-            titleTextStyle: const TextStyle(
-              color: primaryColorDark,
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              fontFamily: '.SF Pro Text',
-            ),
+            titleTextStyle: textTheme.titleLarge,
           )
         : AppBarTheme(
             backgroundColor: primaryColorLight.withAlpha(15),

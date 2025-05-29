@@ -20,8 +20,13 @@ class FormFieldDecoration {
         errorText: errorText,
         hintText: hintText,
         counterText: showCounterText == false ? "" : null,
-        suffixIconColor: Theme.of(context).colorScheme.primary,
-        prefixIconColor: Theme.of(context).colorScheme.primary,
+        fillColor: Theme.of(context).disabledColor.withAlpha(40),
+        suffixIconColor: IsDarkTheme.isDark
+            ? Theme.of(context).primaryColorLight
+            : Theme.of(context).primaryColorLight,
+        prefixIconColor: IsDarkTheme.isDark
+            ? Theme.of(context).primaryColorLight
+            : Theme.of(context).primaryColorLight,
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(
@@ -31,18 +36,18 @@ class FormFieldDecoration {
           ),
         ),
         hintStyle: TextStyle(
-          color: Colors.grey,
+          color: Theme.of(context).primaryColorLight,
           fontSize: fontSize ?? StringSize.size,
           // fontWeight: FontWeight.bold,
         ),
         labelStyle: TextStyle(
-          color: Colors.black,
+          color: Theme.of(context).primaryColorLight,
           // fontWeight: FontWeight.bold,
           fontStyle: FontStyle.italic,
           fontSize: fontSize ?? StringSize.size,
         ),
         floatingLabelStyle: TextStyle(
-          color: Colors.black,
+          color: Theme.of(context).primaryColorLight,
           // fontWeight: FontWeight.bold,
           fontSize: fontSize ?? StringSize.size,
         ),

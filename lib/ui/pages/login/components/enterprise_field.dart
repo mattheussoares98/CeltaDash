@@ -44,7 +44,7 @@ class EnterpriseField extends StatelessWidget {
         context: context,
         hintText: R.string.enterprise,
         labelText: R.string.enterprise,
-        prefixIcon: Icon(Icons.business, color: Theme.of(context).primaryColorDark),
+        prefixIcon: Icon(Icons.business),
       ),
     );
   }

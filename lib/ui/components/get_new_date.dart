@@ -25,8 +25,8 @@ class GetNewDate {
 
     if (Platform.isIOS) {
       selectedDate = await _showCupertinoDatePicker(
-        initialDate,
-        lastDate ?? now.add(Duration(days: 1825)),
+        initialDate: initialDate,
+        lastDate: lastDate ?? now.add(Duration(days: 1825)),
       );
     } else {
       selectedDate = await showDatePicker(
@@ -81,37 +81,53 @@ class GetNewDate {
     return finalDateTime;
   }
 
-  static Future<DateTime?> _showCupertinoDatePicker(
-    DateTime initialDate,
-    DateTime lastDate,
-  ) async {
+  static Future<DateTime?> _showCupertinoDatePicker({
+    required DateTime initialDate,
+    required DateTime lastDate,
+  }) async {
     DateTime? tempPickedDate = lastDate;
 
     return await showCupertinoModalPopup<DateTime>(
       context: NavigatorKey.key.currentState!.context,
       builder: (BuildContext context) {
-        return Container(
-          height: 300,
-          color: Colors.white,
-          child: Column(
-            children: [
-              SizedBox(
-                height: 200,
-                child: CupertinoDatePicker(
-                  mode: CupertinoDatePickerMode.date,
-                  initialDateTime: lastDate,
-                  minimumDate: initialDate,
-                  maximumDate: lastDate,
-                  onDateTimeChanged: (DateTime newDate) {
-                    tempPickedDate = newDate;
-                  },
-                ),
+        return CupertinoTheme(
+          data: CupertinoThemeData(
+            brightness: Brightness.light,
+            primaryColor: Theme.of(context).primaryColorDark,
+            textTheme: CupertinoTextThemeData(
+              pickerTextStyle: TextStyle(
+                color: Theme.of(context).disabledColor.withAlpha(40),
+                fontSize: 20,
               ),
-              CupertinoButton(
-                child: const Text('OK'),
-                onPressed: () => Navigator.of(context).pop(tempPickedDate),
-              )
-            ],
+              dateTimePickerTextStyle: TextStyle(
+                color: Theme.of(context).primaryColorDark,
+                fontSize: 20,
+              ),
+            ),
+          ),
+          child: Container(
+            height: 300,
+            color: Colors.white,
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 200,
+                  child: CupertinoDatePicker(
+                    mode: CupertinoDatePickerMode.date,
+                    initialDateTime: lastDate,
+                    minimumDate: initialDate,
+                    maximumDate: lastDate,
+                    onDateTimeChanged: (DateTime newDate) {
+                      tempPickedDate = newDate;
+                    },
+                  ),
+                ),
+                CupertinoButton(
+                  child: const Text('OK'),
+                  onPressed: () => Navigator.of(context).pop(tempPickedDate),
+                )
+              ],
+            ),
           ),
         );
       },

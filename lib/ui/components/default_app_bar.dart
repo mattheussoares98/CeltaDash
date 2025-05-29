@@ -49,7 +49,6 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
     final isIOS = Platform.isIOS;
 
     return AppBar(
-      backgroundColor: isIOS ? Colors.grey[100] : null,
       elevation: isIOS ? 0 : null,
       toolbarHeight:
           widget.showDatePicker == true && widget.showEnterpriseDropdown == true
@@ -97,7 +96,8 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                     ? null
                     : (e) {
                         if (e == homePresenter.selectedEnterprise) return;
-                        homePresenter.updateSelectedEnterprise(e);
+                        homePresenter.updateSelectedEnterprise(
+                            e); //TODO return true or false and call below function only in success
                         widget.onChangeEnterprise(true);
                       },
                 hint: null,
@@ -109,6 +109,9 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                         child: Text(
                           "${e.personalizedCode} - ${e.name}",
                           maxLines: 1,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     )

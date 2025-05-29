@@ -28,16 +28,13 @@ class DefaultDropDown<T> extends StatefulWidget {
 class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
   @override
   Widget build(BuildContext context) {
-    final color = IsDarkTheme.isDark
-        ? CupertinoColors.black
-        : CupertinoColors.systemGrey5;
     if (Platform.isIOS) {
       return SizedBox(
         height: DropdownHeight.height,
         child: CupertinoButton(
-          color: color,
-          disabledColor: Theme.of(context).disabledColor,
-          padding: EdgeInsets.only(left: 15), // Remove internal padding
+          disabledColor: Theme.of(context).disabledColor.withAlpha(40),
+          padding: EdgeInsets.only(left: 15),
+          color: Theme.of(context).disabledColor,
           onPressed: widget.onChanged == null
               ? null
               : () async {
@@ -85,7 +82,7 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
               maxLines: 1,
               style: TextStyle(
                 fontSize: StringSize.size,
-                color: CupertinoColors.black,
+                color: Theme.of(context).textTheme.titleMedium?.color,
               ),
             ),
           ),
@@ -96,16 +93,15 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
     return SizedBox(
       height: DropdownHeight.height,
       child: DropdownButtonFormField<T>(
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
           isDense: true,
+          fillColor: Theme.of(context).disabledColor,
+          focusColor: Theme.of(context).disabledColor.withAlpha(40),
         ),
         isDense: true,
         validator: (value) {
           return null;
         },
-        dropdownColor: IsDarkTheme.isDark
-            ? Theme.of(context).disabledColor
-            : Colors.white,
         value: widget.selectedItem,
         isExpanded: true,
         alignment: Alignment.center,
@@ -114,7 +110,7 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
         style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: StringSize.size,
-          color: Colors.black,
+          color: Colors.white,
           height: 1,
         ),
         items: widget.items,

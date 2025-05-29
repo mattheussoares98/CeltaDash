@@ -44,7 +44,9 @@ class Result extends StatelessWidget {
           text: TextSpan(
             text:
                 "${R.string.day} ${DateFormat.yMd("pt_BR").format(firstDay)} ",
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(
+              color: Theme.of(context).textTheme.titleLarge?.color,
+            ),
             children: [
               TextSpan(text: R.string.sold.toLowerCase()),
               TextSpan(
