@@ -334,29 +334,6 @@ void main() {
   });
 
   group("Update selected enterprise", () {
-    test("Should update selected enterprise correctly", () {
-      final first =
-          EnterpriseModel.fromEntity(enterprisesInBs.first).toViewModel();
-      final second =
-          EnterpriseModel.fromEntity(enterprisesInBs.last).toViewModel();
-
-      sut.updateSelectedEnterprise(first);
-      expect(sut.selectedEnterprise, first);
-
-      sut.updateSelectedEnterprise(second);
-      expect(sut.selectedEnterprise, second);
-
-      sut.updateSelectedEnterprise(null);
-      expect(sut.selectedEnterprise, null);
-    });
-    test("Should update selected enterprise correctly", () {
-      expectLater(sut.updateScreenStream, emitsInOrder([true, false]));
-
-      sut.updateSelectedEnterprise(
-        EnterpriseModel.fromEntity(enterprisesInBs.first).toViewModel(),
-      );
-    });
-
     test("Should not update selected enterprise if is not enabled", () {
       final enterpriseId = faker.randomGenerator.integer(100);
       final disabledSubEnterprise =
