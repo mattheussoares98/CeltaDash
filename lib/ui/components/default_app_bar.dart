@@ -110,7 +110,8 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                           "${e.personalizedCode} - ${e.name}",
                           maxLines: 1,
                           style: TextStyle(
-                            color: Colors.white,
+                            color:
+                                Theme.of(context).textTheme.titleSmall?.color,
                           ),
                         ),
                       ),

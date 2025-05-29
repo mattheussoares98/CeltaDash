@@ -95,7 +95,9 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
       child: DropdownButtonFormField<T>(
         decoration: InputDecoration(
           isDense: true,
-          fillColor: Theme.of(context).disabledColor,
+          fillColor: IsDarkTheme.isDark
+              ? Theme.of(context).disabledColor
+              : Theme.of(context).disabledColor.withAlpha(40),
           focusColor: Theme.of(context).disabledColor.withAlpha(40),
         ),
         isDense: true,
