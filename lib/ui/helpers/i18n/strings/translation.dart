@@ -1,5 +1,6 @@
 abstract class Translation {
   String get msgCantCompareSameDays;
+  String get msgDisabledEnterprise;
   String get msgEnterpriseAlreadyExists;
   String get msgEnterpriseNotFound;
   String get msgInvalidEmail;

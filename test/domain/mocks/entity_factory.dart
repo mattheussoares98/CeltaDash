@@ -76,19 +76,22 @@ class EntityFactory {
         CrossIdentity_Usuario: faker.guid.guid(),
       );
 
-  static EnterpriseEntity makeEnterpriseEntity() => EnterpriseEntity(
-        id: faker.randomGenerator.integer(100),
+  static EnterpriseEntity makeEnterpriseEntity({int? id}) => EnterpriseEntity(
+        id: id ?? faker.randomGenerator.integer(100),
         name: faker.company.name(),
         personalizedCode: faker.randomGenerator.integer(10).toString(),
         cnpj: faker.guid.guid(),
       );
 
-  static FirebaseSubEnterpriseEntity makeFirebaseSubEnterpriseEntity() =>
+  static FirebaseSubEnterpriseEntity makeFirebaseSubEnterpriseEntity({
+    bool? enabled,
+    int? id,
+  }) =>
       FirebaseSubEnterpriseEntity(
         cnpj: faker.guid.guid(),
-        id: faker.randomGenerator.integer(100),
+        id: id ?? faker.randomGenerator.integer(100),
         name: faker.company.name(),
         personalizedCode: faker.randomGenerator.integer(10).toString(),
-        enabled: faker.randomGenerator.boolean(),
+        enabled: enabled ?? faker.randomGenerator.boolean(),
       );
 }

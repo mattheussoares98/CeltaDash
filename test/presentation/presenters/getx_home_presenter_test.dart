@@ -356,6 +356,115 @@ void main() {
         EnterpriseModel.fromEntity(enterprisesInBs.first).toViewModel(),
       );
     });
+
+    test("Should not update selected enterprise if is not enabled", () {
+      final enterpriseId = faker.randomGenerator.integer(100);
+      final disabledSubEnterprise =
+          EntityFactory.makeFirebaseSubEnterpriseEntity(
+        enabled: false,
+        id: enterpriseId,
+      );
+
+      EnterpriseBuilder.entity = FirebaseEnterpriseEntity(
+        baseUrl: EnterpriseBuilder.entity?.baseUrl,
+        enterpriseName: EnterpriseBuilder.entity?.enterpriseName,
+        bsUser: EnterpriseBuilder.entity?.bsUser,
+        firebaseId: EnterpriseBuilder.entity?.firebaseId,
+        firebaseSubEnterprises: [disabledSubEnterprise],
+      );
+
+      sut.updateSelectedEnterprise(
+        EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity(
+          id: enterpriseId,
+        )).toViewModel(),
+      );
+
+      expect(sut.selectedEnterprise, null);
+    });
+    test("Should update selected enterprise if is enabled", () {
+      final enterpriseId = faker.randomGenerator.integer(100);
+      final disabledSubEnterprise =
+          EntityFactory.makeFirebaseSubEnterpriseEntity(
+        enabled: true,
+        id: enterpriseId,
+      );
+
+      EnterpriseBuilder.entity = FirebaseEnterpriseEntity(
+        baseUrl: EnterpriseBuilder.entity?.baseUrl,
+        enterpriseName: EnterpriseBuilder.entity?.enterpriseName,
+        bsUser: EnterpriseBuilder.entity?.bsUser,
+        firebaseId: EnterpriseBuilder.entity?.firebaseId,
+        firebaseSubEnterprises: [disabledSubEnterprise],
+      );
+
+      final enterprise = EnterpriseModel.fromEntity(
+        EntityFactory.makeEnterpriseEntity(
+          id: enterpriseId,
+        ),
+      ).toViewModel();
+
+      sut.updateSelectedEnterprise(enterprise);
+
+      expect(sut.selectedEnterprise, enterprise);
+    });
+    test(
+        "Should emit unexpected error if dont exists enterprise with the same id",
+        () {
+      final enterpriseId = faker.randomGenerator.integer(100);
+
+      final disabledSubEnterprise =
+          EntityFactory.makeFirebaseSubEnterpriseEntity(
+        enabled: true,
+        id: enterpriseId * faker.randomGenerator.integer(10), //!= ids
+      );
+
+      EnterpriseBuilder.entity = FirebaseEnterpriseEntity(
+        baseUrl: EnterpriseBuilder.entity?.baseUrl,
+        enterpriseName: EnterpriseBuilder.entity?.enterpriseName,
+        bsUser: EnterpriseBuilder.entity?.bsUser,
+        firebaseId: EnterpriseBuilder.entity?.firebaseId,
+        firebaseSubEnterprises: [disabledSubEnterprise],
+      );
+
+      expectLater(
+        sut.mainErrorStream,
+        emitsInOrder([null, UIError.unexpected]),
+      );
+
+      sut.updateSelectedEnterprise(EnterpriseModel.fromEntity(
+        EntityFactory.makeEnterpriseEntity(
+          id: enterpriseId,
+        ),
+      ).toViewModel());
+    });
+    test("Should emit disabled enterprise if is not enabled", () {
+      final enterpriseId = faker.randomGenerator.integer(100);
+
+      final disabledSubEnterprise =
+          EntityFactory.makeFirebaseSubEnterpriseEntity(
+        enabled: false,
+        id: enterpriseId,
+      );
+
+      EnterpriseBuilder.entity = FirebaseEnterpriseEntity(
+        baseUrl: EnterpriseBuilder.entity?.baseUrl,
+        enterpriseName: EnterpriseBuilder.entity?.enterpriseName,
+        bsUser: EnterpriseBuilder.entity?.bsUser,
+        firebaseId: EnterpriseBuilder.entity?.firebaseId,
+        firebaseSubEnterprises: [disabledSubEnterprise],
+      );
+
+      expectLater(
+        sut.mainErrorStream,
+        emitsInOrder([null, UIError.disabledEnterprise]),
+      );
+
+      sut.updateSelectedEnterprise(EnterpriseModel.fromEntity(
+        EntityFactory.makeEnterpriseEntity(
+          id: enterpriseId,
+        ),
+      ).toViewModel());
+    });
   });
 
   group("Need update screen", () {

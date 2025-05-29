@@ -143,8 +143,22 @@ class GetxHomePresenter extends GetxController
 
   @override
   void updateSelectedEnterprise(EnterpriseViewModel? enterprise) {
-    _selectedEnterprise.value = enterprise;
-    updateScreen();
+    mainError = null;
+    int? index = EnterpriseBuilder.entity?.firebaseSubEnterprises
+        ?.indexWhere((e) => e.id == enterprise?.id?.toInt());
+
+    if (index == null || index == -1) {
+      mainError = UIError.unexpected;
+      return;
+    }
+
+    if (EnterpriseBuilder.entity?.firebaseSubEnterprises?[index].enabled ==
+        true) {
+      _selectedEnterprise.value = enterprise;
+      updateScreen();
+    } else {
+      mainError = UIError.disabledEnterprise;
+    }
   }
 
   final _selectedEnterprise = Rx<EnterpriseViewModel?>(null);
