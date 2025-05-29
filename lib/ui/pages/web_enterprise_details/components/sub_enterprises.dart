@@ -1,12 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
-class SubEnterprises extends StatelessWidget {
+class SubEnterprises extends StatefulWidget {
   const SubEnterprises({super.key});
 
+  @override
+  State<SubEnterprises> createState() => _SubEnterprisesState();
+}
+
+class _SubEnterprisesState extends State<SubEnterprises> {
   @override
   Widget build(BuildContext context) {
     WebEnterprisesPresenter webEnterprisesPresenter = Get.find();
@@ -51,8 +57,18 @@ class SubEnterprises extends StatelessWidget {
                       Expanded(child: Text("${R.string.enabled}: ")),
                       Switch(
                         value: subEnterprise?.enabled == "true",
-                        onChanged: (value) {
-                          debugPrint(value.toString());
+                        onChanged: (value) async {
+                          await webEnterprisesPresenter
+                              .changeEnterpriseIsEnabled(
+                            subEnterpriseIndex: index,
+                            docRef: FirebaseFirestore.instance
+                                .collection("enterprises")
+                                .doc(
+                                  webEnterprisesPresenter
+                                      .selectedEnterprise?.firebaseId,
+                                ),
+                          );
+                          setState(() {});
                         },
                       ),
                     ],

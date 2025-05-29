@@ -201,4 +201,50 @@ class GetxWebEnterprisesPresenter extends GetxController
   void goToLoginPage() {
     navigateTo.navigate(pageRoute: PageRoutes.login, clear: true);
   }
+
+  @override
+  Future<bool> changeEnterpriseIsEnabled({
+    required int subEnterpriseIndex,
+    required DocumentReference<Map<String, dynamic>> docRef,
+  }) async {
+    isLoading = true;
+    mainError = null;
+    try {
+      //TODO create tests
+      final oldSelectedEnterprise = _selectedEnterprise;
+      final oldSubEnterprise =
+          _selectedEnterprise?.firebaseSubEnterprises?[subEnterpriseIndex];
+      final oldSubenterpriseUpdated = FirebaseSubEnterpriseViewModel(
+        id: oldSubEnterprise?.id,
+        name: oldSubEnterprise?.name,
+        personalizedCode: oldSubEnterprise?.personalizedCode,
+        cnpj: oldSubEnterprise?.cnpj,
+        enabled: oldSubEnterprise?.enabled == "true" ? "false" : "true",
+      );
+      oldSelectedEnterprise?.firebaseSubEnterprises?[subEnterpriseIndex] =
+          oldSubenterpriseUpdated;
+
+      final firebaseEnterpriseUpdated = FirebaseEnterpriseViewModel(
+        baseUrl: _selectedEnterprise?.baseUrl,
+        enterpriseName: _selectedEnterprise?.enterpriseName,
+        firebaseId: _selectedEnterprise?.firebaseId,
+        firebaseSubEnterprises: oldSelectedEnterprise?.firebaseSubEnterprises,
+      );
+
+      await firebaseManager.put(
+        documentReference: docRef,
+        data: FirebaseEnterpriseModel.fromViewModel(firebaseEnterpriseUpdated)
+            .toJson(),
+        merge: false,
+      );
+
+      _selectedEnterprise = firebaseEnterpriseUpdated;
+      return true;
+    } catch (e) {
+      mainError = UIError.unexpected;
+      return false;
+    } finally {
+      isLoading = false;
+    }
+  }
 }

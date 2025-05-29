@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../helpers/helpers.dart';
-import 'firebase_enterprise_view_model.dart';
+import '../pages.dart';
 
 abstract class WebEnterprisesPresenter implements Listenable {
   Stream<UIError?> get mainErrorStream;
@@ -26,4 +26,8 @@ abstract class WebEnterprisesPresenter implements Listenable {
     required void Function(String error) showBsErrorMessage,
   });
   void goToLoginPage();
+  Future<bool> changeEnterpriseIsEnabled({
+    required int subEnterpriseIndex,
+    required DocumentReference<Map<String, dynamic>> docRef,
+  });
 }
