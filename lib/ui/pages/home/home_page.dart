@@ -5,8 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../data/models/models.dart';
-import '../../../infra/databases/databases.dart';
 import '../../../main/builders/builders.dart';
 import '../../../main/factories/factories.dart';
 import '../../../ui/mixins/mixins.dart';
@@ -82,88 +80,78 @@ class _HomePageState extends State<HomePage>
     SalesPresenter salesPresenter = Get.find();
     ProductsPresenter productsPresenter = Get.find();
 
-    return FirebaseListenDocChanges(
-      docRef: FirebaseFirestore.instance
-          .collection("enterprises")
-          .doc(EnterpriseBuilder.entity?.firebaseId),
-      function: (data) async {
-        EnterpriseBuilder.entity =
-            FirebaseEnterpriseModel.fromJson(data).toEntity();
+    return StreamBuilder<int>(
+      stream: homePresenter.currentPageIndexStream,
+      builder: (context, currentIndex) {
+        return StreamBuilder<bool>(
+            stream: productsPresenter.isLoadingStream,
+            builder: (context, isLoadingProducts) {
+              return StreamBuilder<bool>(
+                  stream: resumePresenter.isLoadingStream,
+                  builder: (context, isLoadingResume) {
+                    return StreamBuilder<bool>(
+                        stream: salesPresenter.isLoadingStream,
+                        builder: (context, isLoadingSales) {
+                          return Scaffold(
+                            appBar: currentIndex.data == 3
+                                ? null
+                                : DefaultAppBar(
+                                    isLoading: (isLoadingSales.data == true &&
+                                            currentIndex.data == 1) ||
+                                        (isLoadingResume.data == true &&
+                                            currentIndex.data == 0) ||
+                                        (isLoadingProducts.data == true &&
+                                            currentIndex.data == 2),
+                                    onChangeEnterprise: (_) {
+                                      reloadData();
+                                    },
+                                    onChangeDate: (_) {
+                                      reloadData();
+                                    },
+                                    onTapRefresh: () {
+                                      reloadData(forceRefresh: true);
+                                    },
+                                  ),
+                            body: pages[currentIndex.data ?? 0],
+                            bottomNavigationBar: BottomNavBar(
+                              currentIndex: currentIndex.data ?? 0,
+                              onTap: homePresenter.updateSelectedIndex,
+                              items: [
+                                BottomNavItem(
+                                  materialIcon: Icon(Icons.pie_chart),
+                                  cupertinoIcon: Icon(CupertinoIcons.chart_pie),
+                                  label: R.string.resume,
+                                ),
+                                BottomNavItem(
+                                  materialIcon: Icon(Icons.monetization_on),
+                                  cupertinoIcon:
+                                      Icon(CupertinoIcons.money_dollar),
+                                  label: R.string.sales,
+                                ),
+                                BottomNavItem(
+                                  materialIcon:
+                                      Icon(Icons.shopping_cart_rounded),
+                                  cupertinoIcon: Icon(CupertinoIcons.cart),
+                                  label: R.string.products,
+                                ),
+                                BottomNavItem(
+                                  materialIcon: Icon(Icons.grid_view_rounded),
+                                  cupertinoIcon:
+                                      Icon(CupertinoIcons.square_grid_2x2_fill),
+                                  label: R.string.more,
+                                ),
+                                // BottomNavItem(
+                                //   materialIcon: Icon(Icons.person_pin_sharp),
+                                //   cupertinoIcon: Icon(CupertinoIcons.person_2),
+                                //   label: R.string.team,
+                                // ),
+                              ],
+                            ),
+                          );
+                        });
+                  });
+            });
       },
-      child: StreamBuilder<int>(
-        stream: homePresenter.currentPageIndexStream,
-        builder: (context, currentIndex) {
-          return StreamBuilder<bool>(
-              stream: productsPresenter.isLoadingStream,
-              builder: (context, isLoadingProducts) {
-                return StreamBuilder<bool>(
-                    stream: resumePresenter.isLoadingStream,
-                    builder: (context, isLoadingResume) {
-                      return StreamBuilder<bool>(
-                          stream: salesPresenter.isLoadingStream,
-                          builder: (context, isLoadingSales) {
-                            return Scaffold(
-                              appBar: currentIndex.data == 3
-                                  ? null
-                                  : DefaultAppBar(
-                                      isLoading: (isLoadingSales.data == true &&
-                                              currentIndex.data == 1) ||
-                                          (isLoadingResume.data == true &&
-                                              currentIndex.data == 0) ||
-                                          (isLoadingProducts.data == true &&
-                                              currentIndex.data == 2),
-                                      onChangeEnterprise: (_) {
-                                        reloadData();
-                                      },
-                                      onChangeDate: (_) {
-                                        reloadData();
-                                      },
-                                      onTapRefresh: () {
-                                        reloadData(forceRefresh: true);
-                                      },
-                                    ),
-                              body: pages[currentIndex.data ?? 0],
-                              bottomNavigationBar: BottomNavBar(
-                                currentIndex: currentIndex.data ?? 0,
-                                onTap: homePresenter.updateSelectedIndex,
-                                items: [
-                                  BottomNavItem(
-                                    materialIcon: Icon(Icons.pie_chart),
-                                    cupertinoIcon:
-                                        Icon(CupertinoIcons.chart_pie),
-                                    label: R.string.resume,
-                                  ),
-                                  BottomNavItem(
-                                    materialIcon: Icon(Icons.monetization_on),
-                                    cupertinoIcon:
-                                        Icon(CupertinoIcons.money_dollar),
-                                    label: R.string.sales,
-                                  ),
-                                  BottomNavItem(
-                                    materialIcon:
-                                        Icon(Icons.shopping_cart_rounded),
-                                    cupertinoIcon: Icon(CupertinoIcons.cart),
-                                    label: R.string.products,
-                                  ),
-                                  BottomNavItem(
-                                    materialIcon: Icon(Icons.grid_view_rounded),
-                                    cupertinoIcon: Icon(
-                                        CupertinoIcons.square_grid_2x2_fill),
-                                    label: R.string.more,
-                                  ),
-                                  // BottomNavItem(
-                                  //   materialIcon: Icon(Icons.person_pin_sharp),
-                                  //   cupertinoIcon: Icon(CupertinoIcons.person_2),
-                                  //   label: R.string.team,
-                                  // ),
-                                ],
-                              ),
-                            );
-                          });
-                    });
-              });
-        },
-      ),
     );
   }
 }

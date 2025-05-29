@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
@@ -189,5 +191,49 @@ class GetxHomePresenter extends GetxController
     paymentTypePresenter.getSales(this, forceRefresh: forceRefresh);
     productsPresenter.loadProducts(this, forceRefresh: forceRefresh);
     departmentsPresenter.getSales(this, forceRefresh: forceRefresh);
+  }
+
+  StreamSubscription<DocumentSnapshot>? _firebaseSub;
+  @override
+  void initFirebaseStream() {
+    final id = EnterpriseBuilder.entity?.firebaseId;
+    if (id == null) return;
+
+    _firebaseSub?.cancel(); // Ensure previous listener is cancelled
+    _firebaseSub = FirebaseFirestore.instance
+        .collection("enterprises")
+        .doc(id)
+        .snapshots()
+        .listen((snapshot) {
+      if (!snapshot.exists || snapshot.data() == null) return;
+
+      final oldEnterprise = EnterpriseBuilder.entity;
+      final newSubEnterprises = FirebaseEnterpriseModel.fromJson(
+        snapshot.data()!,
+      ).toEntity().firebaseSubEnterprises;
+
+      EnterpriseBuilder.entity = FirebaseEnterpriseEntity(
+        baseUrl: oldEnterprise?.baseUrl,
+        enterpriseName: oldEnterprise?.enterpriseName,
+        bsUser: oldEnterprise?.bsUser,
+        firebaseId: oldEnterprise?.firebaseId,
+        firebaseSubEnterprises: newSubEnterprises,
+      );
+
+      updateScreen(); // Trigger update if needed
+    });
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    initFirebaseStream();
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+    _firebaseSub?.cancel();
+    _firebaseSub = null;
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +12,7 @@ abstract class HomePresenter implements Listenable {
   EnterpriseViewModel? get selectedEnterprise;
   Stream<bool> get updateScreenStream;
 
+  void initFirebaseStream();
   void updateSelectedIndex(int index);
   void updateSelectedDate(DateTime date);
   void goToMorePage();
