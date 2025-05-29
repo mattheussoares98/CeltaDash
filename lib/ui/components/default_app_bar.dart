@@ -96,11 +96,11 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                     ? null
                     : (e) {
                         if (e == homePresenter.selectedEnterprise) return;
-                        homePresenter.updateSelectedEnterprise(
-                            e); //TODO return true or false and call below function only in success
+                        homePresenter.updateSelectedEnterprise(e);
                         widget.onChangeEnterprise(true);
                       },
-                hint: null,
+                hint: Text(
+                    "${selectedEnterprise?.personalizedCode} - ${selectedEnterprise?.name}"),
                 items: enterprises
                     .map(
                       (e) => DropdownMenuItem<EnterpriseViewModel?>(
