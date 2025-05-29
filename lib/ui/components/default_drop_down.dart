@@ -49,6 +49,16 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
                           text = textWidget.data ?? '';
                         }
 
+                        Color getColor() {
+                          if (item.enabled == false) {
+                            return Colors.red;
+                          } else if (item.value == widget.selectedItem) {
+                            return Theme.of(context).primaryColorDark;
+                          } else {
+                            return Theme.of(context).disabledColor;
+                          }
+                        }
+
                         return CupertinoActionSheetAction(
                           onPressed: () {
                             Navigator.of(context).pop(item.value);
@@ -56,9 +66,7 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
                           child: Text(
                             text,
                             style: TextStyle(
-                              color: item.value == widget.selectedItem
-                                  ? Theme.of(context).primaryColorDark
-                                  : Theme.of(context).disabledColor,
+                              color: getColor(),
                             ),
                           ),
                         );
