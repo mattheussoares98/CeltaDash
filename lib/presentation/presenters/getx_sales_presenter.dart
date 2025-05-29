@@ -29,12 +29,14 @@ class GetxSalesPresenter extends GetxController
         return;
       }
 
-      final now = DateTime.now();
       final remoteSalesByMonth = await loadSaleMovements.get(
         enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
         startDate: DateTime(homePresenter.selectedDate.year, 1, 1),
-        endDate: DateTime(now.year, now.month,
-            now.day), //TODO fix this. When the user change the year, it should load the same year data
+        endDate: DateTime(
+          homePresenter.selectedDate.year,
+          12,
+          31,
+        ),
         groupByEnterprise: true,
         groupByDay: true,
       );
@@ -45,7 +47,11 @@ class GetxSalesPresenter extends GetxController
       final remoteSalesByYear = await loadSaleMovements.get(
         enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
         startDate: DateTime(homePresenter.selectedDate.year - 2),
-        endDate: DateTime(now.year, now.month, now.day),
+        endDate: DateTime(
+          homePresenter.selectedDate.year,
+          12,
+          31,
+        ),
         groupByEnterprise: true,
         groupByYear: true,
       );

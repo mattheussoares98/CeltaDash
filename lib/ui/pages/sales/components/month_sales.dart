@@ -14,6 +14,8 @@ class MonthSales extends StatelessWidget {
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
     final totalLiquidByYear = saleMovementsByMonth.sumLiquidValue();
+    final uniqueMonths =
+        saleMovementsByMonth.map((e) => e.Date?.month).toSet().toList()..sort();
 
     return TableItem(
       titleMinHeight: 43,
@@ -32,7 +34,7 @@ class MonthSales extends StatelessWidget {
         PersonalizedTableCell(value: R.string.ticketAverage.toUpperCase()),
         PersonalizedTableCell(value: R.string.share.toUpperCase()),
       ],
-      rowValues: List.generate(DateTime.now().month, (index) {
+      rowValues: List.generate(uniqueMonths.length, (index) {
         final salesOfCurrentMonth = saleMovementsByMonth
             .filteredSales(
               enterprise: homePresenter.selectedEnterprise,

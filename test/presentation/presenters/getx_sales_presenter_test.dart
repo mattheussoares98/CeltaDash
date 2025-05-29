@@ -26,7 +26,6 @@ void main() {
   late bool filterByHour;
   late bool filterByMonth;
   late bool filterByYear;
-  late DateTime now;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
@@ -53,7 +52,6 @@ void main() {
     homePresenter.selectedEnterpriseMock =
         EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
             .toViewModel();
-    now = DateTime.now();
   }
 
   void initMockSuccess() {
@@ -114,7 +112,7 @@ void main() {
             enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
             groupByEnterprise: true,
             startDate: DateTime(homePresenter.selectedDateMock.year, 1, 1),
-            endDate: DateTime(now.year, now.month, now.day),
+            endDate: DateTime(homePresenter.selectedDateMock.year, 12, 31),
             groupByDay: true,
           ),
         ).called(1);
@@ -128,7 +126,7 @@ void main() {
         );
 
         final startDate = DateTime(homePresenter.selectedDateMock.year - 2);
-        final endDate = DateTime(now.year, now.month, now.day);
+        final endDate = DateTime(homePresenter.selectedDateMock.year, 12, 31);
 
         verify(
           () => loadSaleMovements.get(
@@ -204,7 +202,7 @@ void main() {
             enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
             groupByEnterprise: true,
             startDate: DateTime(homePresenter.selectedDateMock.year, 1, 1),
-            endDate: DateTime(now.year, now.month, now.day),
+            endDate: DateTime(homePresenter.selectedDateMock.year, 12, 31),
             groupByDay: true,
           ),
         ).called(1);
@@ -229,7 +227,7 @@ void main() {
             enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
             groupByEnterprise: true,
             startDate: DateTime(homePresenter.selectedDateMock.year, 1, 1),
-            endDate: DateTime(now.year, now.month, now.day),
+            endDate: DateTime(homePresenter.selectedDateMock.year, 12, 31),
             groupByDay: true,
           ),
         ).called(2);
@@ -249,7 +247,7 @@ void main() {
         );
 
         final startDate = DateTime(homePresenter.selectedDateMock.year - 2);
-        final endDate = DateTime(now.year, now.month, now.day);
+        final endDate = DateTime(homePresenter.selectedDateMock.year, 12, 31);
 
         verify(
           () => loadSaleMovements.get(
@@ -275,7 +273,7 @@ void main() {
         );
 
         final startDate = DateTime(homePresenter.selectedDateMock.year - 2);
-        final endDate = DateTime(now.year, now.month, now.day);
+        final endDate = DateTime(homePresenter.selectedDateMock.year, 12, 31);
 
         verify(
           () => loadSaleMovements.get(
@@ -314,7 +312,7 @@ void main() {
             groupByEnterprise: true,
             groupByYear: true,
             startDate: DateTime(homePresenter.selectedDateMock.year - 2),
-            endDate: DateTime(now.year, now.month, now.day),
+            endDate: DateTime(homePresenter.selectedDateMock.year, 12, 31),
           ),
         ).called(1);
       });
@@ -329,7 +327,7 @@ void main() {
             groupByEnterprise: true,
             groupByYear: true,
             startDate: DateTime(homePresenter.selectedDateMock.year - 2),
-            endDate: DateTime(now.year, now.month, now.day),
+            endDate: DateTime(homePresenter.selectedDateMock.year, 12, 31),
           ),
         ).called(1);
 
@@ -347,7 +345,7 @@ void main() {
             groupByEnterprise: true,
             groupByYear: true,
             startDate: DateTime(homePresenter.selectedDateMock.year - 2),
-            endDate: DateTime(now.year, now.month, now.day),
+            endDate: DateTime(homePresenter.selectedDateMock.year, 12, 31),
           ),
         ).called(1);
       });
