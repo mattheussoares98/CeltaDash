@@ -165,7 +165,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                             )
                           : Icon(
                               isIOS ? CupertinoIcons.refresh : Icons.refresh,
-                              color: IsDarkTheme.isDark(context)
+                              color: IsDarkTheme.isDark
                                   ? Theme.of(context).primaryColorLight
                                   : Theme.of(context).primaryColorDark,
                             ),

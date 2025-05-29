@@ -5,6 +5,10 @@ import 'package:flutter/widgets.dart';
 class IsDarkTheme {
   IsDarkTheme._();
 
-  static bool isDark(BuildContext context) =>
-      MediaQuery.of(context).platformBrightness == Brightness.dark;
+  static bool _isDark = false;
+  static bool get isDark => _isDark;
+
+  static void updateIsDark(BuildContext context) {
+    _isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+  }
 }

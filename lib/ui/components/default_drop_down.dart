@@ -28,7 +28,7 @@ class DefaultDropDown<T> extends StatefulWidget {
 class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
   @override
   Widget build(BuildContext context) {
-    final color = IsDarkTheme.isDark(context)
+    final color = IsDarkTheme.isDark
         ? CupertinoColors.black
         : CupertinoColors.systemGrey5;
     if (Platform.isIOS) {
@@ -103,8 +103,9 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
         validator: (value) {
           return null;
         },
-        dropdownColor:
-            IsDarkTheme.isDark(context) ? Theme.of(context).disabledColor : Colors.white,
+        dropdownColor: IsDarkTheme.isDark
+            ? Theme.of(context).disabledColor
+            : Colors.white,
         value: widget.selectedItem,
         isExpanded: true,
         alignment: Alignment.center,

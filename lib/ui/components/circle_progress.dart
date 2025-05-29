@@ -98,7 +98,7 @@ class _AnimatedCircleProgressState extends State<AnimatedCircleProgress>
                     size: Size(constraints.maxWidth, constraints.maxHeight),
                     painter: _ProgressCirclePainter(
                       progress: _progressAnimation.value,
-                      backgroundColor: IsDarkTheme.isDark(context)
+                      backgroundColor: IsDarkTheme.isDark
                           ? Theme.of(context).disabledColor
                           : Theme.of(
                               context,

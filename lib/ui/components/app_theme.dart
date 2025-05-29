@@ -7,7 +7,6 @@ import '../../../ui/helpers/helpers.dart';
 
 ThemeData makeAppTheme(BuildContext context) {
   final isIos = !kIsWeb && Platform.isIOS;
-  final isDark = IsDarkTheme.isDark(context);
 
   const primaryColor = Color.fromARGB(255, 34, 139, 34); // ForestGreen
   const primaryColorDark = Color.fromARGB(255, 0, 100, 0); // DarkGreen
@@ -16,10 +15,11 @@ ThemeData makeAppTheme(BuildContext context) {
   final disabledColor = CupertinoColors.inactiveGray;
   const dividerColor = CupertinoColors.separator;
   // const textColor = Colors.white;
-  final scaffoldColor =
-      isDark ? Colors.grey[850] : CupertinoColors.systemGroupedBackground;
-  final textColor = isDark ? Colors.white : Colors.black;
-  final cardColor = isDark ? Colors.grey[900] : Colors.white;
+  final scaffoldColor = IsDarkTheme.isDark
+      ? Colors.grey[850]
+      : CupertinoColors.systemGroupedBackground;
+  final textColor = IsDarkTheme.isDark ? Colors.white : Colors.black;
+  final cardColor = IsDarkTheme.isDark ? Colors.grey[900] : Colors.white;
 
   final textTheme = TextTheme(
     bodySmall: TextStyle(
@@ -114,8 +114,7 @@ ThemeData makeAppTheme(BuildContext context) {
       selectedItemColor: primaryColor,
       unselectedItemColor: disabledColor,
     ),
-    brightness:
-        IsDarkTheme.isDark(context) ? Brightness.dark : Brightness.light,
+    brightness: IsDarkTheme.isDark ? Brightness.dark : Brightness.light,
     primaryColor: primaryColor,
     primaryColorDark: primaryColorDark,
     primaryColorLight: primaryColorLight,
@@ -128,14 +127,14 @@ ThemeData makeAppTheme(BuildContext context) {
       elevation: 0,
     ),
     colorScheme: ColorScheme(
-      brightness: isDark ? Brightness.dark : Brightness.light,
+      brightness: IsDarkTheme.isDark ? Brightness.dark : Brightness.light,
       primary: primaryColor,
       onPrimary: Colors.white,
       secondary: secondaryColor,
       onSecondary: Colors.black,
       error: Colors.red,
       onError: Colors.white,
-      surface: isDark ? Colors.grey[900]! : Colors.white,
+      surface: IsDarkTheme.isDark ? Colors.grey[900]! : Colors.white,
       onSurface: textColor,
     ),
     scaffoldBackgroundColor: scaffoldColor,
@@ -161,7 +160,8 @@ ThemeData makeAppTheme(BuildContext context) {
             backgroundColor: CupertinoColors.extraLightBackgroundGray,
             elevation: 0,
             iconTheme: IconThemeData(
-                color: isDark ? primaryColorLight : primaryColorDark),
+                color:
+                    IsDarkTheme.isDark ? primaryColorLight : primaryColorDark),
             titleTextStyle: const TextStyle(
               color: primaryColorDark,
               fontSize: 18,
@@ -172,7 +172,8 @@ ThemeData makeAppTheme(BuildContext context) {
         : AppBarTheme(
             backgroundColor: primaryColorLight.withAlpha(15),
             iconTheme: IconThemeData(
-                color: isDark ? primaryColorLight : primaryColorDark),
+                color:
+                    IsDarkTheme.isDark ? primaryColorLight : primaryColorDark),
           ),
     useMaterial3: true,
   );
