@@ -24,7 +24,7 @@ class _OperatorsProductivityPageState extends State<OperatorsProductivityPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       OperatorsProductivityPresenter operatorsProductivityPresenter =
           Get.find();
-      operatorsProductivityPresenter.getSales(Get.find<HomePresenter>());
+      operatorsProductivityPresenter.emitLoadingAgain();
     });
   }
 
@@ -90,11 +90,11 @@ class _OperatorsProductivityPageState extends State<OperatorsProductivityPage> {
                     )
                     .map((e) => e.toViewModel())
                     .toList();
-              
+
                 if (sales == null || sales.isEmpty) {
                   return EmptySales(isLoading: loadinSnapshot.data == true);
                 }
-              
+
                 return StreamBuilder(
                     stream: homePresenter.updateScreenStream,
                     builder: (context, updateSnapshot) {
@@ -103,7 +103,8 @@ class _OperatorsProductivityPageState extends State<OperatorsProductivityPage> {
                         child: Column(
                           children: [
                             SelectPeriodItems(
-                              indexToSelectWhenRebuild: indexToSelectWhenRebuild,
+                              indexToSelectWhenRebuild:
+                                  indexToSelectWhenRebuild,
                               items: [
                                 SelectPeriodItems.createItem(
                                   title: R.string.day,
@@ -128,7 +129,8 @@ class _OperatorsProductivityPageState extends State<OperatorsProductivityPage> {
                             TableItem(
                               titleMinHeight: 43,
                               indexToSort: 1,
-                              columnIndexToCompareAndDetachBetterAndWorstValue: 1,
+                              columnIndexToCompareAndDetachBetterAndWorstValue:
+                                  1,
                               columnsIndexToSum: [1, 2],
                               titles: [
                                 PersonalizedTableCell(value: R.string.operator),
@@ -138,8 +140,10 @@ class _OperatorsProductivityPageState extends State<OperatorsProductivityPage> {
                                 ),
                               ],
                               rowValues: sales
-                                  .fold<Map<String, List<SaleMovementViewModel>>>(
-                                      {}, (map, e) {
+                                  .fold<
+                                          Map<String,
+                                              List<SaleMovementViewModel>>>({},
+                                      (map, e) {
                                     final operator =
                                         e.CashierOperator ?? "Unknown";
                                     map.putIfAbsent(operator, () => []).add(e);
@@ -148,7 +152,7 @@ class _OperatorsProductivityPageState extends State<OperatorsProductivityPage> {
                                   .entries
                                   .map((e) {
                                     final operator = e.key;
-              
+
                                     return [
                                       PersonalizedTableCell(value: operator),
                                       PersonalizedTableCell(

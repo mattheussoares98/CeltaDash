@@ -10,4 +10,5 @@ abstract class OperatorsProductivityPresenter implements Listenable {
   DateTime? get lastDateLoadedData;
 
   Future<void> getSales(HomePresenter homePresenter, {bool? forceRefresh});
+  void emitLoadingAgain();
 }
