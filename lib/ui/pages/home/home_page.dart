@@ -60,6 +60,7 @@ class _HomePageState extends State<HomePage> with UIErrorManager {
     ResumePresenter resumePresenter = Get.find();
     PaymentTypePresenter paymentTypePresenter = Get.find();
     DepartmentsPresenter departmentsPresenter = Get.find();
+    OperatorsProductivityPresenter operatorsProductivityPresenter = Get.find();
 
     homePresenter.reloadAllData(
       salesPresenter,
@@ -67,6 +68,7 @@ class _HomePageState extends State<HomePage> with UIErrorManager {
       paymentTypePresenter,
       productsPresenter,
       departmentsPresenter,
+      operatorsProductivityPresenter,
       forceRefresh: forceRefresh,
     );
   }

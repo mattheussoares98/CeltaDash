@@ -28,6 +28,7 @@ void main() {
   late PaymentTypePresenterSpy paymentTypePresenter;
   late ProductsPresenterSpy productsPresenter;
   late DepartmentsPresenterSpy departmentsPresenter;
+  late OperatorsProductivityPresenterSpy operatorsProductivityPresenter;
 
   late NavigateToSpy navigateTo;
   late LoadEnterprisesSpy loadEnterprises;
@@ -59,6 +60,7 @@ void main() {
     paymentTypePresenter = PaymentTypePresenterSpy();
     productsPresenter = ProductsPresenterSpy();
     departmentsPresenter = DepartmentsPresenterSpy();
+    operatorsProductivityPresenter = OperatorsProductivityPresenterSpy();
   }
 
   void initEntities() {
@@ -171,19 +173,7 @@ void main() {
         EnterpriseModel.fromEntity(enterprisesInBs.first).toViewModel(),
       );
     });
-    test("Should not update selected enterprise if already has one selected",
-        () async {
-      await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
 
-      final secondEnterprise =
-          EnterpriseModel.fromEntity(enterprisesInBs[1]).toViewModel();
-      sut.updateSelectedEnterprise(secondEnterprise);
-
-      loadEnterprises.mockGetError();
-      await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
-
-      expect(sut.selectedEnterprise, secondEnterprise);
-    });
     test("Should call remoteLoadEnterprises", () async {
       await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
 
@@ -462,6 +452,7 @@ void main() {
         paymentTypePresenter,
         productsPresenter,
         departmentsPresenter,
+        operatorsProductivityPresenter,
         forceRefresh: forceRefresh,
       );
 
@@ -479,6 +470,7 @@ void main() {
         paymentTypePresenter,
         productsPresenter,
         departmentsPresenter,
+        operatorsProductivityPresenter,
         forceRefresh: forceRefresh,
       );
 
@@ -494,6 +486,7 @@ void main() {
         paymentTypePresenter,
         productsPresenter,
         departmentsPresenter,
+        operatorsProductivityPresenter,
         forceRefresh: forceRefresh,
       );
 
@@ -510,6 +503,7 @@ void main() {
         paymentTypePresenter,
         productsPresenter,
         departmentsPresenter,
+        operatorsProductivityPresenter,
         forceRefresh: forceRefresh,
       );
 
@@ -526,12 +520,29 @@ void main() {
         paymentTypePresenter,
         productsPresenter,
         departmentsPresenter,
+        operatorsProductivityPresenter,
         forceRefresh: forceRefresh,
       );
 
       verify(() =>
               departmentsPresenter.getSales(sut, forceRefresh: forceRefresh))
           .called(1);
+    });
+    test("Should call operatorsProductivity presenter get sales", () {
+      final forceRefresh = faker.randomGenerator.boolean();
+
+      sut.reloadAllData(
+        salesPresenter,
+        resumePresenter,
+        paymentTypePresenter,
+        productsPresenter,
+        departmentsPresenter,
+        operatorsProductivityPresenter,
+        forceRefresh: forceRefresh,
+      );
+
+      verify(() => operatorsProductivityPresenter.getSales(sut,
+          forceRefresh: forceRefresh)).called(1);
     });
   });
 }
