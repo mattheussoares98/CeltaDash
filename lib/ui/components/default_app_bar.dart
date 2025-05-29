@@ -43,6 +43,17 @@ class DefaultAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _DefaultAppBarState extends State<DefaultAppBar> {
+  bool enterpriseIsEnabled(EnterpriseViewModel enterprise) {
+    final subEnterprises = EnterpriseBuilder.entity?.firebaseSubEnterprises;
+
+    if (subEnterprises != null) {
+      final index =
+          subEnterprises.indexWhere((e) => e.id == enterprise.id?.toInt());
+      return subEnterprises[index].enabled == true;
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
@@ -101,22 +112,30 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                       },
                 hint: Text(
                     "${selectedEnterprise?.personalizedCode} - ${selectedEnterprise?.name}"),
-                items: enterprises
-                    .map(
-                      (e) => DropdownMenuItem<EnterpriseViewModel?>(
-                        value: e,
-                        alignment: Alignment.center,
-                        child: Text(
-                          "${e.personalizedCode} - ${e.name}",
-                          maxLines: 1,
-                          style: TextStyle(
-                            color:
-                                Theme.of(context).textTheme.titleSmall?.color,
-                          ),
+                items: enterprises.map(
+                  (e) {
+                    final enabled = enterpriseIsEnabled(e);
+                    return DropdownMenuItem<EnterpriseViewModel?>(
+                      value: e,
+                      enabled: enabled,
+                      onTap: enabled == false
+                          ? null
+                          : () {
+                              debugPrint("apertou");
+                            },
+                      alignment: Alignment.center,
+                      child: Text(
+                        "${e.personalizedCode} - ${e.name}${enabled == true ? "" : " (${R.string.disabled})"}",
+                        maxLines: 1,
+                        style: TextStyle(
+                          color: enabled
+                              ? Theme.of(context).textTheme.titleSmall?.color
+                              : Colors.red,
                         ),
                       ),
-                    )
-                    .toList(),
+                    );
+                  },
+                ).toList(),
                 selectedItem: selectedEnterprise,
                 label:
                     "${selectedEnterprise?.personalizedCode} - ${selectedEnterprise?.name}",

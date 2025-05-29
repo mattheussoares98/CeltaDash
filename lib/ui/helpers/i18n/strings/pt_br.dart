@@ -50,6 +50,7 @@ class PtBr implements Translation {
   String get departments => "Departamentos";
   String get details => "Detalhes";
   String get difference => "Diferença";
+  String get disabled => "Desabilitada";
   String get discounts => "Descontos";
   String get email => "E-mail";
   String get empty => "Vazio";

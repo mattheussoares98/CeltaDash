@@ -43,6 +43,7 @@ abstract class Translation {
   String get departments;
   String get details;
   String get difference;
+  String get disabled;
   String get discounts;
   String get email;
   String get empty;
