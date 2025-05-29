@@ -92,7 +92,9 @@ class _LoginPageState extends State<LoginPage>
     );
 
     return Scaffold(
-      backgroundColor: Theme.of(context).disabledColor.withAlpha(120),
+      backgroundColor: IsDarkTheme.isDark
+          ? Theme.of(context).disabledColor.withAlpha(120)
+          : Theme.of(context).scaffoldBackgroundColor,
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Form(

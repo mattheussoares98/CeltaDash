@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/widgets.dart';
 
 class IsDarkTheme {
@@ -9,6 +7,7 @@ class IsDarkTheme {
   static bool get isDark => _isDark;
 
   static void updateIsDark(BuildContext context) {
-    _isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    _isDark = false;
+    // _isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
   }
 }

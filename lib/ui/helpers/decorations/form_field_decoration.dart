@@ -23,10 +23,10 @@ class FormFieldDecoration {
         fillColor: Theme.of(context).disabledColor.withAlpha(40),
         suffixIconColor: IsDarkTheme.isDark
             ? Theme.of(context).primaryColorLight
-            : Theme.of(context).primaryColorLight,
+            : Theme.of(context).primaryColorDark,
         prefixIconColor: IsDarkTheme.isDark
             ? Theme.of(context).primaryColorLight
-            : Theme.of(context).primaryColorLight,
+            : Theme.of(context).primaryColorDark,
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(
@@ -36,18 +36,24 @@ class FormFieldDecoration {
           ),
         ),
         hintStyle: TextStyle(
-          color: Theme.of(context).primaryColorLight,
+          color: IsDarkTheme.isDark
+              ? Theme.of(context).primaryColorLight
+              : Theme.of(context).primaryColorDark,
           fontSize: fontSize ?? StringSize.size,
           // fontWeight: FontWeight.bold,
         ),
         labelStyle: TextStyle(
-          color: Theme.of(context).primaryColorLight,
+          color: IsDarkTheme.isDark
+              ? Theme.of(context).primaryColorLight
+              : Theme.of(context).primaryColorDark,
           // fontWeight: FontWeight.bold,
           fontStyle: FontStyle.italic,
           fontSize: fontSize ?? StringSize.size,
         ),
         floatingLabelStyle: TextStyle(
-          color: Theme.of(context).primaryColorLight,
+          color: IsDarkTheme.isDark
+              ? Theme.of(context).primaryColorLight
+              : Theme.of(context).primaryColorDark,
           // fontWeight: FontWeight.bold,
           fontSize: fontSize ?? StringSize.size,
         ),
@@ -80,7 +86,9 @@ class FormFieldDecoration {
           borderSide: BorderSide(
             style: BorderStyle.solid,
             width: 1,
-            color: Theme.of(context).colorScheme.primary,
+            color: IsDarkTheme.isDark
+                ? Theme.of(context).primaryColorLight
+                : Theme.of(context).primaryColorDark,
           ),
         ),
         border: OutlineInputBorder(
@@ -88,7 +96,9 @@ class FormFieldDecoration {
           borderSide: BorderSide(
             style: BorderStyle.solid,
             width: 1,
-            color: Theme.of(context).colorScheme.primary,
+            color: IsDarkTheme.isDark
+                ? Theme.of(context).primaryColorLight
+                : Theme.of(context).primaryColorDark,
           ),
         ),
       );
