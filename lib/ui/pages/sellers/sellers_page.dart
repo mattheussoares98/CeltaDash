@@ -5,14 +5,14 @@ import '../../helpers/helpers.dart';
 import '../../components/components.dart';
 import '../pages.dart';
 
-class SallersPage extends StatefulWidget {
-  const SallersPage({super.key});
+class SellersPage extends StatefulWidget {
+  const SellersPage({super.key});
 
   @override
-  State<SallersPage> createState() => SallersPageState();
+  State<SellersPage> createState() => SellersPageState();
 }
 
-class SallersPageState extends State<SallersPage> {
+class SellersPageState extends State<SellersPage> {
   bool selectedDay = true;
   bool selectedMonth = false;
   bool selectedYear = false;
@@ -21,8 +21,8 @@ class SallersPageState extends State<SallersPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      SallersPresenter sallersPresenter = Get.find();
-      sallersPresenter.emitLoadingAgain();
+      SellersPresenter sellersPresenter = Get.find();
+      sellersPresenter.emitLoadingAgain();
     });
   }
 
@@ -51,28 +51,28 @@ class SallersPageState extends State<SallersPage> {
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
-    SallersPresenter sallersPresenter = Get.find();
+    SellersPresenter sellersPresenter = Get.find();
 
     return StreamBuilder(
-        stream: sallersPresenter.isLoadingStream,
+        stream: sellersPresenter.isLoadingStream,
         builder: (context, loadinSnapshot) {
           return Scaffold(
             appBar: DefaultAppBar(
               isLoading: loadinSnapshot.data == true,
               onChangeEnterprise: (_) {},
               onTapRefresh: () {
-                sallersPresenter.getSales(
+                sellersPresenter.getSales(
                   homePresenter,
                   forceRefresh: true,
                 );
               },
               onChangeDate: (newDate) {
-                sallersPresenter.getSales(homePresenter);
+                sellersPresenter.getSales(homePresenter);
               },
             ),
             body: SafeArea(
               child: Obx(() {
-                final sales = sallersPresenter.saleMovements
+                final sales = sellersPresenter.saleMovements
                     ?.filteredSales(
                       enterprise: homePresenter.selectedEnterprise,
                       filterDay: selectedDay == true
@@ -130,7 +130,7 @@ class SallersPageState extends State<SallersPage> {
                                   1,
                               columnsIndexToSum: [1, 2],
                               titles: [
-                                PersonalizedTableCell(value: R.string.saller),
+                                PersonalizedTableCell(value: R.string.seller),
                                 PersonalizedTableCell(value: R.string.total),
                                 PersonalizedTableCell(
                                   value: R.string.salesQuantityAbbreviated,

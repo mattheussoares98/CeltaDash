@@ -11,7 +11,7 @@ class PageRoutes {
   static const String operatorsProductivity = "/operators_productivity";
   static const String operatorsSales = "/operators_sales";
   static const String profitability = "/profitability";
-  static const String sallersSales = "/sallers_sales";
+  static const String sellersSales = "/sellers_sales";
   static const String setGoal = "/set_goal";
   static const String splash = "/splash";
   static const String paymentsType = "/payments_type";

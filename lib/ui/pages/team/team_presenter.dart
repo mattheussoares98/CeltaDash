@@ -5,5 +5,5 @@ abstract class TeamPresenter implements Listenable {
   void goToOperatorsChargeBacksPage();
   void goToOperatorsProductivityPage();
   void goToOperatorsSalesPage();
-  void goToSallersSalesPage();
+  void goToSellersSalesPage();
 }

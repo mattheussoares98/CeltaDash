@@ -98,8 +98,8 @@ abstract class Translation {
   String get salesQuantityAbbreviated;
   String get salesQuantityAverage;
   String get salesUntilNow;
-  String get saller;
-  String get sallers;
+  String get seller;
+  String get sellers;
   String get save;
   String get searchAgain;
   String get secondDaySales;

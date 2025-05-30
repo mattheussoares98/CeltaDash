@@ -29,6 +29,7 @@ void main() {
   late bool groupByPaymentFinalization;
   late bool groupByPaymentModality;
   late bool groupByCashierOperator;
+  late bool groupBySeller;
   late List<int> enterpriseIds;
   late List<SaleMovementEntity> saleMovementsEntitys;
 
@@ -62,6 +63,7 @@ void main() {
     groupByPaymentFinalization = faker.randomGenerator.boolean();
     groupByPaymentModality = faker.randomGenerator.boolean();
     groupByCashierOperator = faker.randomGenerator.boolean();
+    groupBySeller = faker.randomGenerator.boolean();
     enterpriseIds = [
       faker.randomGenerator.integer(10),
       faker.randomGenerator.integer(10),
@@ -85,6 +87,7 @@ void main() {
       "groupByProductSection": groupByProductSection,
       "groupByPaymentFinalization": groupByPaymentFinalization,
       "groupByPaymentModality": groupByPaymentModality,
+      "groupBySeller": groupBySeller,
       "user": {"id": 274, "name": "CELTABSPDV"},
     };
 
@@ -125,6 +128,7 @@ void main() {
       groupByPaymentFinalization: groupByPaymentFinalization,
       groupByPaymentModality: groupByPaymentModality,
       groupByCashierOperator: groupByCashierOperator,
+      groupBySeller: groupBySeller,
     );
 
     verify(
@@ -152,6 +156,7 @@ void main() {
           "groupByPaymentFinalization": groupByPaymentFinalization,
           "groupByPaymentModality": groupByPaymentModality,
           "groupByCashierOperator": groupByCashierOperator,
+          "groupBySeller": groupBySeller,
           "enterpriseIds": enterpriseIds,
         },
       ),
@@ -175,6 +180,7 @@ void main() {
         groupByProductSection: groupByProductSection,
         groupByPaymentFinalization: groupByPaymentFinalization,
         groupByPaymentModality: groupByPaymentModality,
+        groupBySeller: groupBySeller,
       );
 
       expect(list, saleMovementsEntitys);

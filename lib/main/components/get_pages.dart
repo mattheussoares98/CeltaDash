@@ -59,8 +59,8 @@ class GetPages {
       transition: transition,
     ),
     GetPage(
-      name: PageRoutes.sallersSales,
-      page: makeSallersPage,
+      name: PageRoutes.sellersSales,
+      page: makeSellersPage,
       transition: transition,
     ),
     GetPage(

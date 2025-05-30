@@ -72,11 +72,11 @@ void main() {
       ).called(1);
     });
 
-    test("Should navigate to sallers sales correctly", () {
-      sut.goToSallersSalesPage();
+    test("Should navigate to sellers sales correctly", () {
+      sut.goToSellersSalesPage();
 
       verify(
-        () => navigateTo.navigate(pageRoute: PageRoutes.sallersSales),
+        () => navigateTo.navigate(pageRoute: PageRoutes.sellersSales),
       ).called(1);
     });
   });

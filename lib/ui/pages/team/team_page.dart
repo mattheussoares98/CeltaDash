@@ -37,11 +37,11 @@ class TeamPage extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 30),
-              child: DefaultTitle(title: R.string.sallers),
+              child: DefaultTitle(title: R.string.sellers),
             ),
             DefaultButton(
               title: R.string.sales,
-              onTap: presenter.goToSallersSalesPage,
+              onTap: presenter.goToSellersSalesPage,
             ),
           ],
         ),

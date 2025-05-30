@@ -20,6 +20,7 @@ class LoadSaleMovementsSpy extends Mock implements LoadSaleMovements {
           groupByProductDepartment: any(named: "groupByProductDepartment"),
           groupByProductSection: any(named: "groupByProductSection"),
           groupByCashierOperator: any(named: "groupByCashierOperator"),
+          groupBySeller: any(named: "groupBySeller"),
         ),
       );
 
