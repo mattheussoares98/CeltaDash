@@ -76,7 +76,7 @@ void main() {
       sut.goToSellersSalesPage();
 
       verify(
-        () => navigateTo.navigate(pageRoute: PageRoutes.sellersSales),
+        () => navigateTo.navigate(pageRoute: PageRoutes.sellers),
       ).called(1);
     });
   });

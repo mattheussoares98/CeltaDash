@@ -31,6 +31,6 @@ class GetxTeamPresenter extends GetxController implements TeamPresenter {
 
   @override
   void goToSellersSalesPage() {
-    navigateTo.navigate(pageRoute: PageRoutes.sellersSales);
+    navigateTo.navigate(pageRoute: PageRoutes.sellers);
   }
 }

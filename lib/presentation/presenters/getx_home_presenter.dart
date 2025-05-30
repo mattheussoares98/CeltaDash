@@ -38,11 +38,6 @@ class GetxHomePresenter extends GetxController
     updateScreen();
   }
 
-  @override
-  void goToMorePage() {
-    navigateTo.navigate(pageRoute: PageRoutes.more);
-  }
-
   List<FirebaseSubEnterpriseEntity> _getMissingEnterprises(
     List<EnterpriseEntity> enterprises,
     List<FirebaseSubEnterpriseEntity> enterprisesToCompare,
@@ -252,5 +247,15 @@ class GetxHomePresenter extends GetxController
     super.onClose();
     _firebaseSub?.cancel();
     _firebaseSub = null;
+  }
+
+  @override
+  void goToOperatorsProductivityPage() {
+    navigateTo.navigate(pageRoute: PageRoutes.operatorsProductivity);
+  }
+
+  @override
+  void goToSellersPage() {
+    navigateTo.navigate(pageRoute: PageRoutes.sellers);
   }
 }

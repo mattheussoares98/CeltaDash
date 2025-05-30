@@ -137,11 +137,18 @@ void main() {
   });
 
   group("Navigation", () {
-    test("Should go to more page", () {
-      sut.goToMorePage();
+    test("Should go to operators page", () {
+      sut.goToOperatorsProductivityPage();
 
       verify(
-        () => navigateTo.navigate(pageRoute: PageRoutes.more, clear: false),
+        () => navigateTo.navigate(pageRoute: PageRoutes.operatorsProductivity),
+      ).called(1);
+    });
+    test("Should go to sellers page", () {
+      sut.goToSellersPage();
+
+      verify(
+        () => navigateTo.navigate(pageRoute: PageRoutes.sellers),
       ).called(1);
     });
   });
