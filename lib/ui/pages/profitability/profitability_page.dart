@@ -1,11 +1,11 @@
-import 'dart:math';
-
-import 'package:faker/faker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:get/get.dart';
 
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
+import '../pages.dart';
+import 'components/components.dart';
 
 class ProfitabilityPage extends StatefulWidget {
   const ProfitabilityPage({super.key});
@@ -16,79 +16,160 @@ class ProfitabilityPage extends StatefulWidget {
 
 class _ProfitabilityPageState extends State<ProfitabilityPage> {
   bool selectedDay = true;
+  int selectedPageIndex = 0;
+  final pageController = PageController();
+
+  Future<void> reloadData({
+    bool? forceRefresh,
+  }) async {
+    ProductsPresenter productsPresenter = Get.find();
+    HomePresenter homePresenter = Get.find();
+    SalesPresenter salesPresenter = Get.find();
+    ResumePresenter resumePresenter = Get.find();
+    PaymentTypePresenter paymentTypePresenter = Get.find();
+    DepartmentsPresenter departmentsPresenter = Get.find();
+    OperatorsPresenter operatorsPresenter = Get.find();
+    SellersPresenter sellersPresenter = Get.find();
+
+    homePresenter.reloadAllData(
+      salesPresenter,
+      resumePresenter,
+      paymentTypePresenter,
+      productsPresenter,
+      departmentsPresenter,
+      operatorsPresenter,
+      sellersPresenter,
+      forceRefresh: forceRefresh,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(R.string.profitability)),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              selectedDay
-                  ? DateFormat.yMMMd('pt_BR').format(DateTime.now())
-                  : DateFormat.yMMM('pt_BR').format(DateTime.now()),
-            ),
-          ),
-          SelectPeriodItems(
-            indexToSelectWhenRebuild: selectedDay ? 0 : 1,
-            items: [
-              SelectPeriodItems.createItem(
-                title: R.string.day,
-                onTap: () {
-                  setState(() {
-                    selectedDay = true;
-                  });
-                  debugPrint("Search by day");
-                },
-              ),
-              SelectPeriodItems.createItem(
-                title: R.string.month,
-                onTap: () {
-                  setState(() {
-                    selectedDay = false;
-                  });
-                  debugPrint("Search by month");
-                },
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          TableItem(
-            titles: [
-              PersonalizedTableCell(value: R.string.section),
-              PersonalizedTableCell(value: R.string.totalSales),
-              PersonalizedTableCell(value: R.string.cost),
-              PersonalizedTableCell(value: R.string.grossProfit),
-              PersonalizedTableCell(value: R.string.grossMargin),
-            ],
-            columnIndexToCompareAndDetachBetterAndWorstValue: 4,
-            tableColumnWidth: {
-              4: FixedColumnWidth(MediaQuery.of(context).size.width * 0.15),
-            },
-            titleMinHeight: 40,
-            indexToSort: 4,
-            columnsIndexToSum: [1, 2, 3, 4],
-            rowValues: List.generate(10, (index) {
-              final totalSales = Random().nextDouble() * 3000;
-              final cost = totalSales * Random().nextDouble();
-              final grossProfit = totalSales - cost;
+    DepartmentsPresenter departmentsPresenter = Get.find();
+    ProductsPresenter productsPresenter = Get.find();
+    HomePresenter homePresenter = Get.find();
 
-              return [
-                PersonalizedTableCell(value: faker.company.name()),
-                PersonalizedTableCell(value: totalSales, isMoney: true),
-                PersonalizedTableCell(value: cost, isMoney: true),
-                PersonalizedTableCell(value: grossProfit, isMoney: true),
-                PersonalizedTableCell(
-                  value: grossProfit / totalSales * 100,
-                  isPercentage: true,
-                ),
-              ];
-            }).toList(),
-          ),
-        ],
-      ),
-    );
+    return StreamBuilder(
+        stream: productsPresenter.isLoadingStream,
+        builder: (context, loadingProductsSnap) {
+          return StreamBuilder(
+              stream: departmentsPresenter.isLoadingStream,
+              builder: (context, loadingDepartmentsSnap) {
+                return Scaffold(
+                  appBar: DefaultAppBar(
+                    isLoading: loadingProductsSnap.data == true ||
+                        loadingDepartmentsSnap.data == true,
+                    onChangeEnterprise: (_) {
+                      reloadData();
+                    },
+                    onChangeDate: (_) {
+                      reloadData();
+                    },
+                    onTapRefresh: () {
+                      reloadData(forceRefresh: true);
+                    },
+                  ),
+                  body: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Obx(() {
+                        final salesDepartments =
+                            departmentsPresenter.saleMovements
+                                ?.filteredSales(
+                                  enterprise: homePresenter.selectedEnterprise,
+                                  filterDay: selectedDay
+                                      ? homePresenter.selectedDate.day
+                                      : null,
+                                  filterMonth: homePresenter.selectedDate.month,
+                                  filterYear: homePresenter.selectedDate.year,
+                                )
+                                .map((e) => e.toViewModel())
+                                .toList();
+
+                        if (salesDepartments == null ||
+                            salesDepartments.isEmpty) {
+                          return EmptySales(
+                              isLoading: loadingDepartmentsSnap.data == true ||
+                                  loadingProductsSnap.data == true);
+                        }
+                        return StreamBuilder(
+                            stream: homePresenter.updateScreenStream,
+                            builder: (context, updateScreen) {
+                              return Expanded(
+                                child: Column(
+                                  children: [
+                                    Periods(
+                                      selectedDay: selectedDay,
+                                      selectDay: () {
+                                        setState(() {
+                                          selectedDay = true;
+                                        });
+                                      },
+                                      selectMonth: () {
+                                        setState(() {
+                                          selectedDay = false;
+                                        });
+                                      },
+                                    ),
+                                    Expanded(
+                                      child: Opacity(
+                                        opacity:
+                                            updateScreen.data == true ? 0 : 1,
+                                        child: PageView(
+                                          controller: pageController,
+                                          onPageChanged: (value) {
+                                            setState(() {
+                                              selectedPageIndex = value;
+                                            });
+                                          },
+                                          children: [
+                                            DepartmentsProfitability(
+                                              salesDepartments:
+                                                  salesDepartments,
+                                            ),
+                                            Sections(
+                                              saleMovements: salesDepartments,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
+                            });
+                      }),
+                    ],
+                  ),
+                  bottomNavigationBar: BottomNavBar(
+                    currentIndex: selectedPageIndex,
+                    onTap: (value) {
+                      setState(() {
+                        selectedPageIndex = value;
+                      });
+                      if (pageController.hasClients) {
+                        pageController.animateToPage(
+                          value,
+                          duration: Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                        );
+                      }
+                    },
+                    items: [
+                      BottomNavItem(
+                        materialIcon: Icon(Icons.apartment),
+                        cupertinoIcon: Icon(CupertinoIcons.building_2_fill),
+                        label: R.string.departments,
+                      ),
+                      BottomNavItem(
+                        materialIcon: Icon(Icons.view_module),
+                        cupertinoIcon: Icon(CupertinoIcons.square_grid_2x2),
+                        label: R.string.sections,
+                      ),
+                    ],
+                  ),
+                );
+              });
+        });
   }
 }

@@ -67,6 +67,7 @@ abstract class Translation {
   String get loadEnterprises;
   String get login;
   String get logout;
+  String get margin;
   String get modalities;
   String get month;
   String get months;
@@ -82,11 +83,13 @@ abstract class Translation {
   String get password;
   String get payments;
   String get paymentsType;
+  String get percentage;
   String get positionAbbreviated;
   String get product;
   String get products;
   String get productsBySale;
   String get productivity;
+  String get profit;
   String get profitability;
   String get quantityAbbreviated;
   String get resume;

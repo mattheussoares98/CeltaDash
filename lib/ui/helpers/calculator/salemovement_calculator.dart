@@ -20,6 +20,23 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
     );
   }
 
+  double sumCost({
+    int? filterYear,
+    int? filterMonth,
+    int? filterDay,
+    EnterpriseViewModel? enterprise,
+  }) {
+    return filteredSales(
+      enterprise: enterprise,
+      filterYear: filterYear,
+      filterMonth: filterMonth,
+      filterDay: filterDay,
+    ).fold<double>(
+      0.0,
+      (sum, e) => sum + (e.TotalRepositionCost ?? 0),
+    );
+  }
+
   int quantitySales({
     int? filterYear,
     int? filterMonth,

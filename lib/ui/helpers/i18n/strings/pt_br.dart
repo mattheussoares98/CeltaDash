@@ -74,6 +74,7 @@ class PtBr implements Translation {
   String get loadEnterprises => "Carregar empresas";
   String get login => "Login";
   String get logout => "Sair";
+  String get margin => "Margem";
   String get modalities => "Modalidades";
   String get month => "Mês";
   String get months => "Meses";
@@ -89,11 +90,13 @@ class PtBr implements Translation {
   String get password => "Senha";
   String get payments => "Pagamentos";
   String get paymentsType => "Tipos de pagamento";
+  String get percentage => "Porcentagem";
   String get positionAbbreviated => "Pos";
   String get product => "Produto";
   String get products => "Produtos";
   String get productsBySale => "Produtos por venda";
   String get productivity => "Produtividade";
+  String get profit => "Lucro";
   String get profitability => "Rentabilidade";
   String get quantityAbbreviated => "Qtd";
   String get resume => "Resumo";
