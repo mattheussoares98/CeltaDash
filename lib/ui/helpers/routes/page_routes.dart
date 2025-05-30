@@ -6,11 +6,7 @@ class PageRoutes {
   static const String home = "/home";
   static const String login = "/login";
   static const String more = "/more";
-  static const String operatorsChargeBacks =
-      "/operators_charge_backs"; //TODO remove
-  static const String operatorsDiscounts = "/operators_discounts"; //TODO remove
-  static const String operatorsSales = "/operators_sales"; //TODO remove
-  static const String operatorsProductivity = "/operators_productivity"; //TODO remove productivity
+  static const String operators = "/operators";
   static const String profitability = "/profitability";
   static const String sellers = "/sellers";
   static const String setGoal = "/set_goal";

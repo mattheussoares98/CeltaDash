@@ -44,7 +44,7 @@ class GetPages {
       transition: transition,
     ),
     GetPage(
-      name: PageRoutes.operatorsProductivity,
+      name: PageRoutes.operators,
       page: makeOperatorsProductivityPage,
       transition: transition,
     ),
@@ -76,11 +76,6 @@ class GetPages {
     GetPage(
       name: PageRoutes.splash,
       page: makeSplashPage,
-      transition: transition,
-    ),
-    GetPage(
-      name: PageRoutes.splash,
-      page: makeTeamPage,
       transition: transition,
     ),
     GetPage(

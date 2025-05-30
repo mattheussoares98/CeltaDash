@@ -2,20 +2,20 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 import '../pages.dart';
 
 class MorePage extends StatelessWidget {
-  final MorePresenter presenter;
   const MorePage({
     super.key,
-    required this.presenter,
   });
 
   @override
   Widget build(BuildContext context) {
+    HomePresenter homePresenter = Get.find();
     return Scaffold(
       appBar: AppBar(
         title: Text(R.string.more),
@@ -26,7 +26,7 @@ class MorePage extends StatelessWidget {
                 context: context,
                 titleMessage: R.string.msgReallyWantLogout,
                 content: null,
-                onPress: presenter.doLogout,
+                onPress: () async {}, //TODO move doLogout to homePresenter
               );
             },
             icon: Icon(
@@ -44,7 +44,7 @@ class MorePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             DefaultButton(
-              onTap: presenter.goToOperatorsProductivityPage,
+              onTap: homePresenter.goToOperatorsProductivityPage,
               title: R.string.operators,
             ),
           ],

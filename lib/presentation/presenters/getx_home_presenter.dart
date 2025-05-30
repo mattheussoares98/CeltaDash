@@ -251,7 +251,7 @@ class GetxHomePresenter extends GetxController
 
   @override
   void goToOperatorsProductivityPage() {
-    navigateTo.navigate(pageRoute: PageRoutes.operatorsProductivity);
+    navigateTo.navigate(pageRoute: PageRoutes.operators);
   }
 
   @override

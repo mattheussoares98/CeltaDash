@@ -1,5 +1,4 @@
 export './getx_compare_days_presenter.dart';
-export 'getx_more_presenter.dart';
 export './getx_departments_presenter.dart';
 export './getx_home_presenter.dart';
 export './getx_operators_productivity_presenter.dart';
@@ -10,6 +9,5 @@ export './getx_resume_presenter.dart';
 export './getx_sales_presenter.dart';
 export 'getx_seller_presenter.dart';
 export './getx_splash_presenter.dart';
-export './getx_team_presenter.dart';
 export './getx_web_enterprises_presenter.dart';
 export './getx_web_login_presenter.dart';

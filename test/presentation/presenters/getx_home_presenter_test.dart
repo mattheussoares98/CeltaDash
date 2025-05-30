@@ -141,7 +141,7 @@ void main() {
       sut.goToOperatorsProductivityPage();
 
       verify(
-        () => navigateTo.navigate(pageRoute: PageRoutes.operatorsProductivity),
+        () => navigateTo.navigate(pageRoute: PageRoutes.operators),
       ).called(1);
     });
     test("Should go to sellers page", () {
