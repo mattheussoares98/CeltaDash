@@ -17,5 +17,6 @@ abstract class LoadSaleMovements {
     bool? groupByPaymentModality,
     bool? groupByCashierOperator,
     bool? groupBySeller,
+    int? topCount,
   });
 }

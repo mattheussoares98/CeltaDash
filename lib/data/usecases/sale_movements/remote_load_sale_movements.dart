@@ -29,6 +29,7 @@ class RemoteLoadSaleMovements implements LoadSaleMovements {
     bool? groupByPaymentModality,
     bool? groupByCashierOperator,
     bool? groupBySeller,
+    int? topCount,
   }) async {
     final url = EnterpriseBuilder.entity?.baseUrl;
 
@@ -42,6 +43,7 @@ class RemoteLoadSaleMovements implements LoadSaleMovements {
         },
         body: {
           "enterpriseIds": enterpriseIds,
+          "topCount": topCount,
           "period": {
             "startDate": startDate.toIso8601String(),
             "endDate": endDate.toIso8601String(),

@@ -9,6 +9,7 @@ class LoadSaleMovementsSpy extends Mock implements LoadSaleMovements {
           startDate: any(named: "startDate"),
           endDate: any(named: "endDate"),
           enterpriseIds: any(named: "enterpriseIds"),
+          topCount: any(named: "topCount"),
           groupByDay: any(named: "groupByDay"),
           groupByEnterprise: any(named: "groupByEnterprise"),
           groupByHour: any(named: "groupByHour"),
