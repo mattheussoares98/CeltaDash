@@ -16,6 +16,7 @@ class SaleMovementViewModel extends Equatable {
   final String? EnterpriseFantasyName;
   final String? QuantitySales;
   final String? CashierOperator;
+  final String? Seller;
   final String? TotalRepositionCost;
   final String? QuantityOfProducts;
 
@@ -35,6 +36,7 @@ class SaleMovementViewModel extends Equatable {
     required this.EnterpriseFantasyName,
     required this.QuantitySales,
     required this.CashierOperator,
+    required this.Seller,
     required this.TotalRepositionCost,
     required this.QuantityOfProducts,
   });
@@ -56,6 +58,7 @@ class SaleMovementViewModel extends Equatable {
         EnterpriseFantasyName,
         QuantitySales,
         CashierOperator,
+        Seller,
         TotalRepositionCost,
         QuantityOfProducts,
       ];
