@@ -49,6 +49,7 @@ class GetxProductsPresenter extends GetxController
         groupByDay: true,
         groupByProduct: true,
         groupByEnterprise: true,
+        topCount: 200,
         enterpriseIds: homePresenter.selectedEnterprise == null
             ? []
             : [homePresenter.selectedEnterprise!.id!.toInt()],

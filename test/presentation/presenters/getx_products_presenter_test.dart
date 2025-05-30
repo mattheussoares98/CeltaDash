@@ -1,5 +1,6 @@
 import 'package:celta_plus/data/models/models.dart';
 import 'package:celta_plus/domain/entities/entities.dart';
+import 'package:celta_plus/infra/helpers/helpers.dart';
 import 'package:celta_plus/main/builders/builders.dart';
 import 'package:celta_plus/presentation/presenters/presenters.dart';
 import 'package:celta_plus/ui/helpers/helpers.dart';
@@ -65,6 +66,12 @@ void main() {
     initMockSuccess();
   });
 
+  setUpAll(() {
+    for (var key in DatabaseKeys.values) {
+      registerFallbackValue(key);
+    }
+  });
+
   group("Load sale movements", () {
     test("Should emit correct values on success", () async {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
@@ -98,6 +105,7 @@ void main() {
             homePresenter.selectedDateMock.month + 1,
           ).subtract(Duration(days: 1)),
           groupByDay: true,
+          topCount: 200,
           groupByProduct: true,
           groupByEnterprise: true,
           enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
@@ -138,6 +146,7 @@ void main() {
             homePresenter.selectedDateMock.month + 1,
           ).subtract(Duration(days: 1)),
           groupByDay: true,
+          topCount: 200,
           groupByProduct: true,
           groupByEnterprise: true,
           enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
@@ -162,6 +171,7 @@ void main() {
             homePresenter.selectedDateMock.month + 1,
           ).subtract(Duration(days: 1)),
           groupByDay: true,
+          topCount: 200,
           groupByProduct: true,
           groupByEnterprise: true,
           enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
@@ -184,6 +194,7 @@ void main() {
             homePresenter.selectedDateMock.month + 1,
           ).subtract(Duration(days: 1)),
           groupByDay: true,
+          topCount: 200,
           groupByProduct: true,
           groupByEnterprise: true,
           enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
@@ -213,6 +224,7 @@ void main() {
             homePresenter.selectedDateMock.month + 1,
           ).subtract(Duration(days: 1)),
           groupByDay: true,
+          topCount: 200,
           groupByProduct: true,
           groupByEnterprise: true,
           enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
@@ -236,6 +248,7 @@ void main() {
             homePresenter.selectedDateMock.month + 1,
           ).subtract(Duration(days: 1)),
           groupByDay: true,
+          topCount: 200,
           groupByProduct: true,
           groupByEnterprise: true,
           enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
@@ -259,6 +272,7 @@ void main() {
             homePresenter.selectedDateMock.month + 1,
           ).subtract(Duration(days: 1)),
           groupByDay: true,
+          topCount: 200,
           groupByProduct: true,
           groupByEnterprise: true,
           enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
