@@ -43,11 +43,14 @@ class MorePage extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             DefaultButton(
               onTap: homePresenter.goToOperatorsProductivityPage,
               title: R.string.operators,
+            ),
+            DefaultButton(
+              onTap: homePresenter.goToSellersPage,
+              title: R.string.sellers,
             ),
           ],
         ),

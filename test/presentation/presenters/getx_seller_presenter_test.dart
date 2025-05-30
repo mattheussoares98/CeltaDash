@@ -15,7 +15,7 @@ import '../../domain/mocks/mocks.dart';
 import '../mocks/mocks.dart';
 
 void main() {
-  late GetxSellerPresenter sut;
+  late GetxSellersPresenter sut;
 
   late HomePresenterSpy homePresenter;
 
@@ -31,7 +31,7 @@ void main() {
   }
 
   void initPresenters() {
-    sut = GetxSellerPresenter(
+    sut = GetxSellersPresenter(
       loadSaleMovements: loadSaleMovements,
     );
     homePresenter = HomePresenterSpy();

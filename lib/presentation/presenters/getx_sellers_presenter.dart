@@ -6,16 +6,16 @@ import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
-class GetxSellerPresenter extends GetxController
+class GetxSellersPresenter extends GetxController
     with
         LoadingManager,
         UIErrorManager,
         SaleMovementManager,
         LastDateLoadedDataManager
-    implements OperatorsProductivityPresenter {
+    implements SellersPresenter {
   final LoadSaleMovements loadSaleMovements;
 
-  GetxSellerPresenter({required this.loadSaleMovements});
+  GetxSellersPresenter({required this.loadSaleMovements});
 
   @override
   Future<void> getSales(homePresenter, {bool? forceRefresh}) async {
