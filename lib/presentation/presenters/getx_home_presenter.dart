@@ -292,4 +292,9 @@ class GetxHomePresenter extends GetxController
       isLoading = false;
     }
   }
+
+  @override
+  void goToProfitabilityPage() {
+    navigateTo.navigate(pageRoute: PageRoutes.profitability);
+  }
 }

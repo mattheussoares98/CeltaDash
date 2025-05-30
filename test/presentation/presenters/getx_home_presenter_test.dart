@@ -165,6 +165,13 @@ void main() {
         () => navigateTo.navigate(pageRoute: PageRoutes.sellers),
       ).called(1);
     });
+    test("Should go to profitability page", () {
+      sut.goToProfitabilityPage();
+
+      verify(
+        () => navigateTo.navigate(pageRoute: PageRoutes.profitability),
+      ).called(1);
+    });
   });
 
   group("Get enterprises", () {
@@ -568,8 +575,8 @@ void main() {
         forceRefresh: forceRefresh,
       );
 
-      verify(() => operatorsPresenter.getSales(sut,
-          forceRefresh: forceRefresh)).called(1);
+      verify(() => operatorsPresenter.getSales(sut, forceRefresh: forceRefresh))
+          .called(1);
     });
     test("Should call sellers presenter get sales", () {
       final forceRefresh = faker.randomGenerator.boolean();
