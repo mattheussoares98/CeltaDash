@@ -210,7 +210,6 @@ class GetxWebEnterprisesPresenter extends GetxController
     isLoading = true;
     mainError = null;
     try {
-      //TODO create tests
       final oldSelectedEnterprise = _selectedEnterprise;
       final oldSubEnterprise =
           _selectedEnterprise?.firebaseSubEnterprises?[subEnterpriseIndex];

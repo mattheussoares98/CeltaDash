@@ -506,4 +506,56 @@ void main() {
       ).called(1);
     });
   });
+
+  group("Change enterprise is enabled", () {
+    test("Should call with correct values", () async {
+      final enterprise = FirebaseEnterpriseViewModel(
+        baseUrl: EnterpriseBuilder.entity?.baseUrl,
+        enterpriseName: EnterpriseBuilder.entity?.enterpriseName,
+        firebaseId: EnterpriseBuilder.entity?.firebaseId,
+        firebaseSubEnterprises: [
+          FirebaseSubEnterpriseModel.fromEntity(
+                  EntityFactory.makeFirebaseSubEnterpriseEntity(enabled: true))
+              .toViewModel(),
+          FirebaseSubEnterpriseModel.fromEntity(
+                  EntityFactory.makeFirebaseSubEnterpriseEntity(enabled: false))
+              .toViewModel(),
+        ],
+      );
+      sut.goToEnterpriseDetails(enterprise);
+      await sut.changeEnterpriseIsEnabled(
+        subEnterpriseIndex: 0,
+        docRef: docRef,
+      );
+
+      verify(() => firebaseManager.put(
+            documentReference: docRef,
+            data: FirebaseEnterpriseModel.fromViewModel(
+                FirebaseEnterpriseViewModel(
+              baseUrl: enterprise.baseUrl,
+              enterpriseName: enterprise.enterpriseName,
+              firebaseId: enterprise.firebaseId,
+              firebaseSubEnterprises: [
+                FirebaseSubEnterpriseModel(
+                  id: enterprise.firebaseSubEnterprises![0].id?.toInt(),
+                  name: enterprise.firebaseSubEnterprises?[0].name,
+                  personalizedCode:
+                      enterprise.firebaseSubEnterprises?[0].personalizedCode,
+                  cnpj: enterprise.firebaseSubEnterprises?[0].cnpj,
+                  enabled: false,
+                ).toViewModel(),
+                FirebaseSubEnterpriseModel(
+                  id: enterprise.firebaseSubEnterprises![1].id?.toInt(),
+                  name: enterprise.firebaseSubEnterprises?[1].name,
+                  personalizedCode:
+                      enterprise.firebaseSubEnterprises?[1].personalizedCode,
+                  cnpj: enterprise.firebaseSubEnterprises?[1].cnpj,
+                  enabled: false,
+                ).toViewModel(),
+              ],
+            )).toJson(),
+            merge: false,
+          )).called(1);
+    });
+  });
 }
