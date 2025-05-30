@@ -41,7 +41,6 @@ class _OperatorsProductivityPageState extends State<OperatorsProductivityPage> {
   }
 
   int get indexToSelectWhenRebuild {
-    //TODO move to presenter
     if (selectedDay) {
       return 0;
     } else if (selectedMonth) {
