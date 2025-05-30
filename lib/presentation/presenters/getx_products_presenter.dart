@@ -32,8 +32,7 @@ class GetxProductsPresenter extends GetxController
       if (forceRefresh != true &&
           (homePresenter.selectedEnterprise == _lastEnterpriseLoadedData) &&
           (lastDateLoadedData?.year == homePresenter.selectedDate.year &&
-              lastDateLoadedData?.month == homePresenter.selectedDate.month &&
-              lastDateLoadedData?.day == homePresenter.selectedDate.day)) {
+              lastDateLoadedData?.month == homePresenter.selectedDate.month)) {
         return;
       }
       final response = await loadSaleMovements.get(

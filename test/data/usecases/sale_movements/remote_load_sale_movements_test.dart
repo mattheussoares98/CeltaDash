@@ -30,6 +30,7 @@ void main() {
   late bool groupByPaymentModality;
   late bool groupByCashierOperator;
   late bool groupBySeller;
+  late int topCount;
   late List<int> enterpriseIds;
   late List<SaleMovementEntity> saleMovementsEntitys;
 
@@ -69,6 +70,7 @@ void main() {
       faker.randomGenerator.integer(10),
       faker.randomGenerator.integer(10),
     ];
+    topCount = faker.randomGenerator.integer(100);
   }
 
   void initMockSuccess() {
@@ -129,6 +131,7 @@ void main() {
       groupByPaymentModality: groupByPaymentModality,
       groupByCashierOperator: groupByCashierOperator,
       groupBySeller: groupBySeller,
+      topCount: topCount,
     );
 
     verify(
@@ -158,6 +161,7 @@ void main() {
           "groupByCashierOperator": groupByCashierOperator,
           "groupBySeller": groupBySeller,
           "enterpriseIds": enterpriseIds,
+          "topCount": topCount,
         },
       ),
     ).called(1);
