@@ -26,7 +26,9 @@ class MorePage extends StatelessWidget {
                 context: context,
                 titleMessage: R.string.msgReallyWantLogout,
                 content: null,
-                onPress: () async {}, //TODO move doLogout to homePresenter
+                onPress: () async {
+                  await homePresenter.doLogout();
+                },
               );
             },
             icon: Icon(

@@ -36,4 +36,6 @@ abstract class HomePresenter implements Listenable {
     OperatorsProductivityPresenter operatorsProductivityPresenter, {
     bool? forceRefresh,
   });
+
+  Future<void> doLogout();
 }

@@ -38,6 +38,7 @@ void main() {
   late List<EnterpriseEntity> enterprisesInBs;
   late MockedFirebaseGet mockedFirebaseGet;
   late DocumentReferenceFake docRef;
+  late FirebaseEnterpriseEntity enterpriseOnLogout;
 
   void initUsecases() {
     navigateTo = NavigateToSpy();
@@ -78,6 +79,17 @@ void main() {
       ],
     );
     docRef = DocumentReferenceFake();
+    enterpriseOnLogout = FirebaseEnterpriseEntity(
+      baseUrl: null,
+      firebaseSubEnterprises: null,
+      firebaseId: null,
+      enterpriseName: EnterpriseBuilder.entity?.enterpriseName,
+      bsUser: BsUserEntity(
+        name: EnterpriseBuilder.entity?.bsUser?.name,
+        AccessKey: null,
+        CrossIdentity_Usuario: null,
+      ),
+    );
   }
 
   void initMockSuccess() {
@@ -550,6 +562,42 @@ void main() {
 
       verify(() => operatorsProductivityPresenter.getSales(sut,
           forceRefresh: forceRefresh)).called(1);
+    });
+  });
+
+  group("Do logout", () {
+    test("Should emit correct values on success", () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(sut.mainErrorStream, emits(null));
+
+      await sut.doLogout();
+    });
+    test("Should emit correct values on error", () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(sut.mainErrorStream, emits(null));
+
+      await sut.doLogout();
+    });
+    test("Should update enterprise correctly", () async {
+      await sut.doLogout();
+
+      expect(EnterpriseBuilder.entity, enterpriseOnLogout);
+    });
+    test("Should call localStorage.put correctly", () async {
+      await sut.doLogout();
+
+      verify(() => localStorage.put(
+            DatabaseKeys.enterprise,
+            FirebaseEnterpriseModel.fromEntity(enterpriseOnLogout).toJson(),
+          )).called(1);
+    });
+    test("Should call navigateTo with correct value", () async {
+      await sut.doLogout();
+
+      verify(() => navigateTo.navigate(
+            pageRoute: PageRoutes.splash,
+            clear: true,
+          )).called(1);
     });
   });
 }

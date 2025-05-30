@@ -258,4 +258,36 @@ class GetxHomePresenter extends GetxController
   void goToSellersPage() {
     navigateTo.navigate(pageRoute: PageRoutes.sellers);
   }
+
+  @override
+  Future<void> doLogout() async {
+    isLoading = true;
+    mainError = null;
+    try {
+      final oldEnterprise = EnterpriseBuilder.entity;
+
+      EnterpriseBuilder.entity = FirebaseEnterpriseEntity(
+        baseUrl: null,
+        enterpriseName: oldEnterprise?.enterpriseName,
+        firebaseId: null,
+        bsUser: BsUserEntity(
+          name: oldEnterprise?.bsUser?.name,
+          AccessKey: null,
+          CrossIdentity_Usuario: null,
+        ),
+        firebaseSubEnterprises: null,
+      );
+
+      await localStorage.put(
+          DatabaseKeys.enterprise,
+          FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
+              .toJson());
+
+      navigateTo.navigate(pageRoute: PageRoutes.splash, clear: true);
+    } catch (e) {
+      mainError = UIError.unexpected;
+    } finally {
+      isLoading = false;
+    }
+  }
 }
