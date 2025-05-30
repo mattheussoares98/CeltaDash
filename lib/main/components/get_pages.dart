@@ -60,7 +60,7 @@ class GetPages {
     ),
     GetPage(
       name: PageRoutes.sallersSales,
-      page: makeSallersSalesPage,
+      page: makeSallersPage,
       transition: transition,
     ),
     GetPage(
