@@ -26,9 +26,7 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
         (b.LiquidValue?.toDouble() ?? 0)
             .compareTo(a.LiquidValue?.toDouble() ?? 0));
 
-    List<List<PersonalizedTableCell>> top200 = [];
-    double othersTotalValue = 0;
-    int othersTotalQuantity = 0;
+    List<List<PersonalizedTableCell>> sales = [];
 
     for (var index = 0; index < saleMovements.length; index++) {
       final sale = sorted[index];
@@ -39,37 +37,17 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
       final ticketAverage = (sale.LiquidValue?.toDouble() ?? 0) /
           (sale.QuantityOfProducts?.toDouble() ?? 1);
 
-      if (index < 200) {
-        top200.add([
-          PersonalizedTableCell(value: index + 1),
-          PersonalizedTableCell(value: productName),
-          PersonalizedTableCell(
-              value: sale.LiquidValue?.toDouble(), isMoney: true),
-          PersonalizedTableCell(value: sale.QuantityOfProducts?.toDouble()),
-          PersonalizedTableCell(value: ticketAverage, isMoney: true),
-        ]);
-      } else {
-        othersTotalValue += sale.LiquidValue?.toDouble() ?? 0;
-        othersTotalQuantity += sale.QuantityOfProducts?.toInt() ?? 0;
-      }
+      sales.add([
+        PersonalizedTableCell(value: index + 1),
+        PersonalizedTableCell(value: productName),
+        PersonalizedTableCell(
+            value: sale.LiquidValue?.toDouble(), isMoney: true),
+        PersonalizedTableCell(value: sale.QuantityOfProducts?.toDouble()),
+        PersonalizedTableCell(value: ticketAverage, isMoney: true),
+      ]);
     }
 
-    if (othersTotalQuantity > 0 || othersTotalValue > 0) {
-      final combinedTicketAverage = othersTotalValue /
-          (othersTotalQuantity == 0 ? 1 : othersTotalQuantity);
-
-      top200.insert(
-          0,
-          ([
-            PersonalizedTableCell(value: 0),
-            PersonalizedTableCell(value: R.string.anothersProducts),
-            PersonalizedTableCell(value: othersTotalValue, isMoney: true),
-            PersonalizedTableCell(value: othersTotalQuantity),
-            PersonalizedTableCell(value: combinedTicketAverage, isMoney: true),
-          ]));
-    }
-
-    return top200;
+    return sales;
   }
 
   @override
@@ -98,6 +76,7 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                         selectedDay ? homePresenter.selectedDate.day : null,
                     filterMonth:
                         !selectedDay ? homePresenter.selectedDate.month : null,
+                    filterYear: homePresenter.selectedDate.year,
                   )
                   .map((e) => e.toViewModel())
                   .toList();
