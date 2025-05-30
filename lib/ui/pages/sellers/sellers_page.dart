@@ -141,8 +141,7 @@ class SellersPageState extends State<SellersPage> {
                                           Map<String,
                                               List<SaleMovementViewModel>>>({},
                                       (map, e) {
-                                    final operator =
-                                        e.CashierOperator ?? "Unknown";
+                                    final operator = e.Seller ?? "Unknown";
                                     map.putIfAbsent(operator, () => []).add(e);
                                     return map;
                                   })
