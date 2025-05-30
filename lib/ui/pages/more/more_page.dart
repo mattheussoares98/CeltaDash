@@ -49,6 +49,10 @@ class MorePage extends StatelessWidget {
               title: R.string.operators,
             ),
             DefaultButton(
+              onTap: homePresenter.goToProfitabilityPage,
+              title: R.string.profitability,
+            ),
+            DefaultButton(
               onTap: homePresenter.goToSellersPage,
               title: R.string.sellers,
             ),
