@@ -33,7 +33,8 @@ abstract class HomePresenter implements Listenable {
     PaymentTypePresenter paymentTypePresenter,
     ProductsPresenter productsPresenter,
     DepartmentsPresenter departmentsPresenter,
-    OperatorsProductivityPresenter operatorsProductivityPresenter, {
+    OperatorsProductivityPresenter operatorsProductivityPresenter,
+    SellersPresenter sellersPresenter, {
     bool? forceRefresh,
   });
 

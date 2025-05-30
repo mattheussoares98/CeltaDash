@@ -190,7 +190,8 @@ class GetxHomePresenter extends GetxController
     PaymentTypePresenter paymentTypePresenter,
     ProductsPresenter productsPresenter,
     DepartmentsPresenter departmentsPresenter,
-    OperatorsProductivityPresenter operatorsProductivityPresenter, {
+    OperatorsProductivityPresenter operatorsProductivityPresenter,
+    SellersPresenter sellersPresenter, {
     bool? forceRefresh,
   }) {
     salesPresenter.getSales(
@@ -203,6 +204,7 @@ class GetxHomePresenter extends GetxController
     productsPresenter.loadProducts(this, forceRefresh: forceRefresh);
     departmentsPresenter.getSales(this, forceRefresh: forceRefresh);
     operatorsProductivityPresenter.getSales(this, forceRefresh: forceRefresh);
+    sellersPresenter.getSales(this, forceRefresh: forceRefresh);
   }
 
   StreamSubscription<DocumentSnapshot>? _firebaseSub;

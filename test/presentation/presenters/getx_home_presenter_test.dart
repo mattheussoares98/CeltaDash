@@ -29,6 +29,7 @@ void main() {
   late ProductsPresenterSpy productsPresenter;
   late DepartmentsPresenterSpy departmentsPresenter;
   late OperatorsProductivityPresenterSpy operatorsProductivityPresenter;
+  late SellersPresenterSpy sellersPresenter;
 
   late NavigateToSpy navigateTo;
   late LoadEnterprisesSpy loadEnterprises;
@@ -62,6 +63,7 @@ void main() {
     productsPresenter = ProductsPresenterSpy();
     departmentsPresenter = DepartmentsPresenterSpy();
     operatorsProductivityPresenter = OperatorsProductivityPresenterSpy();
+    sellersPresenter = SellersPresenterSpy();
   }
 
   void initEntities() {
@@ -472,6 +474,7 @@ void main() {
         productsPresenter,
         departmentsPresenter,
         operatorsProductivityPresenter,
+        sellersPresenter,
         forceRefresh: forceRefresh,
       );
 
@@ -490,6 +493,7 @@ void main() {
         productsPresenter,
         departmentsPresenter,
         operatorsProductivityPresenter,
+        sellersPresenter,
         forceRefresh: forceRefresh,
       );
 
@@ -506,6 +510,7 @@ void main() {
         productsPresenter,
         departmentsPresenter,
         operatorsProductivityPresenter,
+        sellersPresenter,
         forceRefresh: forceRefresh,
       );
 
@@ -523,6 +528,7 @@ void main() {
         productsPresenter,
         departmentsPresenter,
         operatorsProductivityPresenter,
+        sellersPresenter,
         forceRefresh: forceRefresh,
       );
 
@@ -540,6 +546,7 @@ void main() {
         productsPresenter,
         departmentsPresenter,
         operatorsProductivityPresenter,
+        sellersPresenter,
         forceRefresh: forceRefresh,
       );
 
@@ -557,11 +564,29 @@ void main() {
         productsPresenter,
         departmentsPresenter,
         operatorsProductivityPresenter,
+        sellersPresenter,
         forceRefresh: forceRefresh,
       );
 
       verify(() => operatorsProductivityPresenter.getSales(sut,
           forceRefresh: forceRefresh)).called(1);
+    });
+    test("Should call sellers presenter get sales", () {
+      final forceRefresh = faker.randomGenerator.boolean();
+
+      sut.reloadAllData(
+        salesPresenter,
+        resumePresenter,
+        paymentTypePresenter,
+        productsPresenter,
+        departmentsPresenter,
+        operatorsProductivityPresenter,
+        sellersPresenter,
+        forceRefresh: forceRefresh,
+      );
+
+      verify(() => sellersPresenter.getSales(sut, forceRefresh: forceRefresh))
+          .called(1);
     });
   });
 

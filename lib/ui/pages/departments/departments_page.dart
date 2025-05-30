@@ -60,6 +60,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
     PaymentTypePresenter paymentTypePresenter = Get.find();
     ProductsPresenter productsPresenter = Get.find();
     OperatorsProductivityPresenter operatorsProductivityPresenter = Get.find();
+    SellersPresenter sellersPresenter = Get.find();
 
     // loadingSubscription?.cancel();
     mainErrorSubscription?.cancel();
@@ -82,6 +83,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                   productsPresenter,
                   departmentsPresenter,
                   operatorsProductivityPresenter,
+                  sellersPresenter,
                 );
               },
               onChangeDate: (_) async {
@@ -92,6 +94,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                   productsPresenter,
                   departmentsPresenter,
                   operatorsProductivityPresenter,
+                  sellersPresenter,
                 );
               },
               onTapRefresh: () async {
@@ -102,6 +105,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                   productsPresenter,
                   departmentsPresenter,
                   operatorsProductivityPresenter,
+                  sellersPresenter,
                   forceRefresh: true,
                 );
               },
