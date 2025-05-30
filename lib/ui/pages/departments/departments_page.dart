@@ -59,7 +59,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
     ResumePresenter resumePresenter = Get.find();
     PaymentTypePresenter paymentTypePresenter = Get.find();
     ProductsPresenter productsPresenter = Get.find();
-    OperatorsProductivityPresenter operatorsProductivityPresenter = Get.find();
+    OperatorsPresenter operatorsPresenter = Get.find();
     SellersPresenter sellersPresenter = Get.find();
 
     // loadingSubscription?.cancel();
@@ -82,7 +82,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                   paymentTypePresenter,
                   productsPresenter,
                   departmentsPresenter,
-                  operatorsProductivityPresenter,
+                  operatorsPresenter,
                   sellersPresenter,
                 );
               },
@@ -93,7 +93,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                   paymentTypePresenter,
                   productsPresenter,
                   departmentsPresenter,
-                  operatorsProductivityPresenter,
+                  operatorsPresenter,
                   sellersPresenter,
                 );
               },
@@ -104,7 +104,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                   paymentTypePresenter,
                   productsPresenter,
                   departmentsPresenter,
-                  operatorsProductivityPresenter,
+                  operatorsPresenter,
                   sellersPresenter,
                   forceRefresh: true,
                 );

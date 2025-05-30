@@ -45,7 +45,7 @@ class MorePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             DefaultButton(
-              onTap: homePresenter.goToOperatorsProductivityPage,
+              onTap: homePresenter.goToOperatorsPage,
               title: R.string.operators,
             ),
             DefaultButton(

@@ -6,7 +6,7 @@ export './group_summary/group_summary.dart';
 export './home/home.dart';
 export './indicators/indicators.dart';
 export './login/login.dart';
-export './operators_productivity/operators_productivity.dart';
+export 'operators/operators.dart';
 export './payment_type/payment_type.dart';
 export './products/products.dart';
 export './profitability/profitability.dart';

@@ -28,7 +28,7 @@ void main() {
   late PaymentTypePresenterSpy paymentTypePresenter;
   late ProductsPresenterSpy productsPresenter;
   late DepartmentsPresenterSpy departmentsPresenter;
-  late OperatorsProductivityPresenterSpy operatorsProductivityPresenter;
+  late OperatorsPresenterSpy operatorsPresenter;
   late SellersPresenterSpy sellersPresenter;
 
   late NavigateToSpy navigateTo;
@@ -62,7 +62,7 @@ void main() {
     paymentTypePresenter = PaymentTypePresenterSpy();
     productsPresenter = ProductsPresenterSpy();
     departmentsPresenter = DepartmentsPresenterSpy();
-    operatorsProductivityPresenter = OperatorsProductivityPresenterSpy();
+    operatorsPresenter = OperatorsPresenterSpy();
     sellersPresenter = SellersPresenterSpy();
   }
 
@@ -152,7 +152,7 @@ void main() {
 
   group("Navigation", () {
     test("Should go to operators page", () {
-      sut.goToOperatorsProductivityPage();
+      sut.goToOperatorsPage();
 
       verify(
         () => navigateTo.navigate(pageRoute: PageRoutes.operators),
@@ -473,7 +473,7 @@ void main() {
         paymentTypePresenter,
         productsPresenter,
         departmentsPresenter,
-        operatorsProductivityPresenter,
+        operatorsPresenter,
         sellersPresenter,
         forceRefresh: forceRefresh,
       );
@@ -492,7 +492,7 @@ void main() {
         paymentTypePresenter,
         productsPresenter,
         departmentsPresenter,
-        operatorsProductivityPresenter,
+        operatorsPresenter,
         sellersPresenter,
         forceRefresh: forceRefresh,
       );
@@ -509,7 +509,7 @@ void main() {
         paymentTypePresenter,
         productsPresenter,
         departmentsPresenter,
-        operatorsProductivityPresenter,
+        operatorsPresenter,
         sellersPresenter,
         forceRefresh: forceRefresh,
       );
@@ -527,7 +527,7 @@ void main() {
         paymentTypePresenter,
         productsPresenter,
         departmentsPresenter,
-        operatorsProductivityPresenter,
+        operatorsPresenter,
         sellersPresenter,
         forceRefresh: forceRefresh,
       );
@@ -545,7 +545,7 @@ void main() {
         paymentTypePresenter,
         productsPresenter,
         departmentsPresenter,
-        operatorsProductivityPresenter,
+        operatorsPresenter,
         sellersPresenter,
         forceRefresh: forceRefresh,
       );
@@ -554,7 +554,7 @@ void main() {
               departmentsPresenter.getSales(sut, forceRefresh: forceRefresh))
           .called(1);
     });
-    test("Should call operatorsProductivity presenter get sales", () {
+    test("Should call operators presenter get sales", () {
       final forceRefresh = faker.randomGenerator.boolean();
 
       sut.reloadAllData(
@@ -563,12 +563,12 @@ void main() {
         paymentTypePresenter,
         productsPresenter,
         departmentsPresenter,
-        operatorsProductivityPresenter,
+        operatorsPresenter,
         sellersPresenter,
         forceRefresh: forceRefresh,
       );
 
-      verify(() => operatorsProductivityPresenter.getSales(sut,
+      verify(() => operatorsPresenter.getSales(sut,
           forceRefresh: forceRefresh)).called(1);
     });
     test("Should call sellers presenter get sales", () {
@@ -580,7 +580,7 @@ void main() {
         paymentTypePresenter,
         productsPresenter,
         departmentsPresenter,
-        operatorsProductivityPresenter,
+        operatorsPresenter,
         sellersPresenter,
         forceRefresh: forceRefresh,
       );

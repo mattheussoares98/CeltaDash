@@ -190,7 +190,7 @@ class GetxHomePresenter extends GetxController
     PaymentTypePresenter paymentTypePresenter,
     ProductsPresenter productsPresenter,
     DepartmentsPresenter departmentsPresenter,
-    OperatorsProductivityPresenter operatorsProductivityPresenter,
+    OperatorsPresenter operatorsPresenter,
     SellersPresenter sellersPresenter, {
     bool? forceRefresh,
   }) {
@@ -203,7 +203,7 @@ class GetxHomePresenter extends GetxController
     paymentTypePresenter.getSales(this, forceRefresh: forceRefresh);
     productsPresenter.loadProducts(this, forceRefresh: forceRefresh);
     departmentsPresenter.getSales(this, forceRefresh: forceRefresh);
-    operatorsProductivityPresenter.getSales(this, forceRefresh: forceRefresh);
+    operatorsPresenter.getSales(this, forceRefresh: forceRefresh);
     sellersPresenter.getSales(this, forceRefresh: forceRefresh);
   }
 
@@ -252,7 +252,7 @@ class GetxHomePresenter extends GetxController
   }
 
   @override
-  void goToOperatorsProductivityPage() {
+  void goToOperatorsPage() {
     navigateTo.navigate(pageRoute: PageRoutes.operators);
   }
 

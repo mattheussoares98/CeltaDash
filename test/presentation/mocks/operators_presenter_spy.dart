@@ -2,11 +2,11 @@ import 'package:celta_plus/domain/helpers/helpers.dart';
 import 'package:celta_plus/ui/pages/pages.dart';
 import 'package:mocktail/mocktail.dart';
 
-class OperatorsProductivityPresenterSpy extends Mock
-    implements OperatorsProductivityPresenter {
+class OperatorsPresenterSpy extends Mock
+    implements OperatorsPresenter {
   DateTime lastDateLoadedDataMock = DateTime.now();
 
-  OperatorsProductivityPresenterSpy() {
+  OperatorsPresenterSpy() {
     when(() => this.lastDateLoadedData)
         .thenAnswer((_) => lastDateLoadedDataMock);
 

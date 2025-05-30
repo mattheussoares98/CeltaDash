@@ -1,7 +1,7 @@
 export './getx_compare_days_presenter.dart';
 export './getx_departments_presenter.dart';
 export './getx_home_presenter.dart';
-export './getx_operators_productivity_presenter.dart';
+export 'getx_operators_presenter.dart';
 export './getx_login_presenter.dart';
 export './getx_payment_type_presenter.dart';
 export './getx_products_presenter.dart';

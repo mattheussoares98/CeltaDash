@@ -17,7 +17,7 @@ abstract class HomePresenter implements Listenable {
   void initFirebaseStream();
   void updateSelectedIndex(int index);
   void updateSelectedDate(DateTime date);
-  void goToOperatorsProductivityPage(); //remove productivity from name
+  void goToOperatorsPage();
   void goToSellersPage();
   void updateScreen();
 
@@ -33,7 +33,7 @@ abstract class HomePresenter implements Listenable {
     PaymentTypePresenter paymentTypePresenter,
     ProductsPresenter productsPresenter,
     DepartmentsPresenter departmentsPresenter,
-    OperatorsProductivityPresenter operatorsProductivityPresenter,
+    OperatorsPresenter operatorsPresenter,
     SellersPresenter sellersPresenter, {
     bool? forceRefresh,
   });

@@ -45,7 +45,7 @@ class GetPages {
     ),
     GetPage(
       name: PageRoutes.operators,
-      page: makeOperatorsProductivityPage,
+      page: makeOperatorsPage,
       transition: transition,
     ),
     GetPage(

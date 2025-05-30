@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../ui/helpers/helpers.dart';
+import '../../helpers/helpers.dart';
 import '../../components/components.dart';
 import '../pages.dart';
 
@@ -22,9 +22,8 @@ class _OperatorsProductivityPageState extends State<OperatorsProductivityPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      OperatorsProductivityPresenter operatorsProductivityPresenter =
-          Get.find();
-      operatorsProductivityPresenter.emitLoadingAgain();
+      OperatorsPresenter operatorsPresenter = Get.find();
+      operatorsPresenter.emitLoadingAgain();
     });
   }
 
@@ -53,28 +52,28 @@ class _OperatorsProductivityPageState extends State<OperatorsProductivityPage> {
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
-    OperatorsProductivityPresenter operatorsProductivityPresenter = Get.find();
+    OperatorsPresenter operatorsPresenter = Get.find();
 
     return StreamBuilder(
-        stream: operatorsProductivityPresenter.isLoadingStream,
+        stream: operatorsPresenter.isLoadingStream,
         builder: (context, loadinSnapshot) {
           return Scaffold(
             appBar: DefaultAppBar(
               isLoading: loadinSnapshot.data == true,
               onChangeEnterprise: (_) {},
               onTapRefresh: () {
-                operatorsProductivityPresenter.getSales(
+                operatorsPresenter.getSales(
                   homePresenter,
                   forceRefresh: true,
                 );
               },
               onChangeDate: (newDate) {
-                operatorsProductivityPresenter.getSales(homePresenter);
+                operatorsPresenter.getSales(homePresenter);
               },
             ),
             body: SafeArea(
               child: Obx(() {
-                final sales = operatorsProductivityPresenter.saleMovements
+                final sales = operatorsPresenter.saleMovements
                     ?.filteredSales(
                       enterprise: homePresenter.selectedEnterprise,
                       filterDay: selectedDay == true

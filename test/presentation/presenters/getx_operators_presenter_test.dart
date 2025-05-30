@@ -15,7 +15,7 @@ import '../../domain/mocks/mocks.dart';
 import '../mocks/mocks.dart';
 
 void main() {
-  late GetxOperatorsProductivityPresenter sut;
+  late GetxOperatorsPresenter sut;
 
   late HomePresenterSpy homePresenter;
 
@@ -31,7 +31,7 @@ void main() {
   }
 
   void initPresenters() {
-    sut = GetxOperatorsProductivityPresenter(
+    sut = GetxOperatorsPresenter(
       loadSaleMovements: loadSaleMovements,
     );
     homePresenter = HomePresenterSpy();
