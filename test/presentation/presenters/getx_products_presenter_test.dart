@@ -21,6 +21,7 @@ void main() {
   late HomePresenterSpy homePresenter;
 
   late LoadSaleMovementsSpy loadSaleMovements;
+  late LocalStorageSpy localStorage;
 
   late List<SaleMovementEntity> saleMovementsEntities;
 
@@ -29,11 +30,13 @@ void main() {
 
   void initUsecases() {
     loadSaleMovements = LoadSaleMovementsSpy();
+    localStorage = LocalStorageSpy();
   }
 
   void initPresenters() {
     sut = GetxProductsPresenter(
       loadSaleMovements: loadSaleMovements,
+      localStorage: localStorage,
     );
     homePresenter = HomePresenterSpy();
   }

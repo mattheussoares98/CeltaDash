@@ -14,8 +14,12 @@ class GetxProductsPresenter extends GetxController
         LastDateLoadedDataManager
     implements ProductsPresenter {
   final LoadSaleMovements loadSaleMovements;
+  final LocalStorage localStorage;
 
-  GetxProductsPresenter({required this.loadSaleMovements});
+  GetxProductsPresenter({
+    required this.loadSaleMovements,
+    required this.localStorage,
+  });
 
   @override
   Future<void> loadProducts(

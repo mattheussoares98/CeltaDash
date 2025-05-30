@@ -4,4 +4,5 @@ import '../../factories.dart';
 
 ProductsPresenter makeGetxProductsPresenter() => GetxProductsPresenter(
       loadSaleMovements: makeRemoteLoadSaleMovements(),
+      localStorage: makeHiveLocalStorage(),
     );
