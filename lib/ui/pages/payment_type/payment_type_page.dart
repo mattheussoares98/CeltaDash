@@ -31,6 +31,8 @@ class _PaymentTypePageState extends State<PaymentTypePage>
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
         PaymentTypePresenter paymentTypePresenter = Get.find();
+        HomePresenter homePresenter = Get.find();
+        paymentTypePresenter.getSales(homePresenter);
         paymentTypePresenter.emitLoadingAgain();
       }
     });

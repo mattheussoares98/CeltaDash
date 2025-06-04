@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
@@ -20,17 +21,23 @@ class GetxPaymentTypePresenter extends GetxController
   });
 
   @override
-  Future<void> getSales(HomePresenter homePresenter,
-      {bool? forceRefresh}) async {
-    isLoading = true;
-    mainError = null;
+  Future<void> getSales(
+    HomePresenter homePresenter, {
+    bool? forceRefresh,
+  }) async {
+    if (isLoadingValue == true) {
+      return;
+    }
     try {
-      if (forceRefresh == true) {
-        //continue...
-      } else if (lastDateLoadedData?.year == homePresenter.selectedDate.year &&
+      isLoading = true;
+      mainError = null;
+
+      if (forceRefresh != true &&
+          lastDateLoadedData?.year == homePresenter.selectedDate.year &&
           lastDateLoadedData?.month == homePresenter.selectedDate.month) {
         return;
       }
+
       final startDate = DateTime(
         homePresenter.selectedDate.year,
         homePresenter.selectedDate.month,
@@ -68,6 +75,7 @@ class GetxPaymentTypePresenter extends GetxController
           .toList();
 
       lastDateLoaded = homePresenter.selectedDate;
+      debugPrint("finished search"); //TODO remove
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {
