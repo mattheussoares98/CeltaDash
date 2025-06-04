@@ -1,5 +1,7 @@
 import 'package:flutter/widgets.dart';
 
+import '../../../domain/helpers/helpers.dart';
+import '../../../domain/usecases/usecases.dart';
 import '../../helpers/helpers.dart';
 import '../pages.dart';
 
@@ -7,7 +9,8 @@ abstract class ResumePresenter implements Listenable {
   List<SaleMovementViewModel>? get saleMovements;
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
-  DateTime? get lastDateLoadedData;
+  PeriodType? get selectedPeriodType;
+  GetSalesParams? get lastGetSalesParams;
 
   void goToProfitabillityPage();
   void goToCompareDays();
@@ -17,5 +20,9 @@ abstract class ResumePresenter implements Listenable {
   void goToGoalHistoryPage();
   void goToGroupSummaryPage();
 
-  Future<void> getSales(HomePresenter homePresenter, {bool? forceRefresh});
+  Future<void> getSales(
+    HomePresenter homePresenter, {
+    PeriodType? periodType,
+    bool? forceRefresh,
+  });
 }

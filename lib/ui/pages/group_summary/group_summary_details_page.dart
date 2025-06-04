@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../domain/helpers/helpers.dart';
 import '../../../ui/helpers/helpers.dart';
 import '../../components/components.dart';
 import '../pages.dart';
 
 class GroupSummaryDetailsPage extends StatelessWidget {
   final double groupSalesTotalLiquid;
-  final bool selectedDay;
   final List<SaleMovementViewModel> saleMovements;
   const GroupSummaryDetailsPage({
     super.key,
     required this.groupSalesTotalLiquid,
-    required this.selectedDay,
     required this.saleMovements,
   });
   List<MapEntry<String, double>> getSalesByEnterprise(
     HomePresenter homePresenter,
+    ResumePresenter resumePresenter,
   ) {
     return saleMovements
         .fold(<String, List<SaleMovementViewModel>>{}, (p, e) {
@@ -28,8 +28,9 @@ class GroupSummaryDetailsPage extends StatelessWidget {
         .map((key, value) => MapEntry(
             key,
             value.sumLiquidValue(
-              filterDay:
-                  selectedDay == true ? homePresenter.selectedDate.day : null,
+              filterDay: resumePresenter.selectedPeriodType == PeriodType.daily
+                  ? homePresenter.selectedDate.day
+                  : null,
               filterMonth: homePresenter.selectedDate.month,
               filterYear: homePresenter.selectedDate.year,
             )))
@@ -41,8 +42,10 @@ class GroupSummaryDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find<HomePresenter>();
+    ResumePresenter resumePresenter = Get.find<ResumePresenter>();
 
-    final salesByEnterprise = getSalesByEnterprise(homePresenter);
+    final salesByEnterprise =
+        getSalesByEnterprise(homePresenter, resumePresenter);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,

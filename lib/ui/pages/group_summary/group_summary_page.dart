@@ -1,12 +1,12 @@
-import 'package:celta_dash/ui/pages/group_summary/group_summary_details_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../domain/helpers/helpers.dart';
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 import '../pages.dart';
-import 'components/components.dart';
+import 'group_summary_details_page.dart';
 import 'group_summary_resume_page.dart';
 
 class GroupSummaryPage extends StatefulWidget {
@@ -17,7 +17,6 @@ class GroupSummaryPage extends StatefulWidget {
 }
 
 class _GroupSummaryPageState extends State<GroupSummaryPage> {
-  bool selectedDay = true;
   final pageController = PageController(initialPage: 0);
   int currentIndex = 0;
 
@@ -49,12 +48,19 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
         children: [
           Padding(
             padding: const EdgeInsets.all(4),
-            child: SelectDayOrMonthItems(
-              indexToSelectWhenRebuild: selectedDay ? 0 : 1,
-              change: (value) {
-                setState(() {
-                  selectedDay = value;
-                });
+            child: SelectPeriodItems(
+              selectedPeriodType: resumePresenter.selectedPeriodType,
+              onTapDaily: () {
+                resumePresenter.getSales(
+                  homePresenter,
+                  periodType: PeriodType.daily,
+                );
+              },
+              onTapMonthly: () {
+                resumePresenter.getSales(
+                  homePresenter,
+                  periodType: PeriodType.monthly,
+                );
               },
             ),
           ),
@@ -68,7 +74,9 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
             final groupSales = saleMovements
                 .filteredSales(
                   filterDay:
-                      selectedDay ? homePresenter.selectedDate.day : null,
+                      resumePresenter.selectedPeriodType == PeriodType.daily
+                          ? homePresenter.selectedDate.day
+                          : null,
                 )
                 .map((e) => e.toViewModel())
                 .toList();
@@ -92,7 +100,6 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
                         children: [
                           GroupSummaryDetailsPage(
                             groupSalesTotalLiquid: groupSalesTotalLiquid,
-                            selectedDay: selectedDay,
                             saleMovements: saleMovements,
                           ),
                           GroupSummaryResumePage(

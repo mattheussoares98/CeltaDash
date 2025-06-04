@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
+import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
 import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
@@ -11,7 +12,7 @@ class GetxResumePresenter extends GetxController
         SaleMovementManager,
         UIErrorManager,
         LoadingManager,
-        LastDateLoadedDataManager
+        LastGetSalesParamsManager
     implements ResumePresenter {
   final NavigateTo navigateTo;
   final LoadSaleMovements loadSaleMovements;
@@ -57,43 +58,66 @@ class GetxResumePresenter extends GetxController
   }
 
   @override
-  Future<void> getSales(HomePresenter homePresenter,
-      {bool? forceRefresh}) async {
-    isLoading = true;
-    mainError = null;
+  Future<void> getSales(
+    HomePresenter homePresenter, {
+    PeriodType? periodType,
+    bool? forceRefresh,
+  }) async {
+    if (isLoadingValue == true) {
+      return;
+    }
     try {
-      if (forceRefresh == true) {
-        //continue...
-      } else if (lastDateLoadedData?.year == homePresenter.selectedDate.year &&
-          lastDateLoadedData?.month == homePresenter.selectedDate.month) {
+      isLoading = true;
+      mainError = null;
+
+      if (periodType != null) {
+        _selectedPeriodType = periodType;
+      }
+
+      final canSearchAgain = CanSearchAgain.get(
+        forceRefresh: forceRefresh,
+        lastGetSalesParams: lastGetSalesParams,
+        selectedDate: homePresenter.selectedDate,
+        periodType: _selectedPeriodType,
+      );
+
+      if (!canSearchAgain) {
         return;
       }
-      final result = await loadSaleMovements.get(
-        GetSalesParams(
-          startDate: DateTime(
-            homePresenter.selectedDate.year,
-            homePresenter.selectedDate.month,
-            1,
-          ),
-          endDate: DateTime(
-            homePresenter.selectedDate.year,
-            homePresenter.selectedDate.month + 1,
-            1,
-          ).subtract(Duration(days: 1)),
-          groupByEnterprise: true,
-          groupByHour: true,
-        ),
+
+      final startDate = DateTime(
+        homePresenter.selectedDate.year,
+        homePresenter.selectedDate.month,
+        1,
       );
+      //TODO create function in helper to get start and end dates
+      final endDate = DateTime(
+        homePresenter.selectedDate.year,
+        homePresenter.selectedDate.month + 1,
+        1,
+      ).subtract(Duration(days: 1));
+
+      final salesParams = GetSalesParams(
+        startDate: startDate,
+        endDate: endDate,
+        groupByEnterprise: true,
+        groupByHour: true,
+      );
+      final result = await loadSaleMovements.get(salesParams);
 
       saleMovements = result
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
           .toList();
 
-      lastDateLoaded = homePresenter.selectedDate;
+      lastParams = salesParams;
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {
       isLoading = false;
     }
   }
+
+  PeriodType _selectedPeriodType = PeriodType.daily;
+  @override
+  PeriodType? get selectedPeriodType => _selectedPeriodType;
 }

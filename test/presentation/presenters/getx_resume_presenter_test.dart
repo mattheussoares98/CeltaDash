@@ -1,5 +1,6 @@
 import 'package:celta_dash/data/models/models.dart';
 import 'package:celta_dash/domain/entities/entities.dart';
+import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
@@ -157,10 +158,10 @@ void main() {
         homePresenter.selectedDateMock.month,
         1,
       );
+
       DateTime endDate = DateTime(
         homePresenter.selectedDateMock.year,
         homePresenter.selectedDateMock.month + 1,
-        1,
       ).subtract(Duration(days: 1));
 
       verify(() => loadSaleMovements.get(
@@ -173,32 +174,62 @@ void main() {
           )).called(1);
     });
 
-    test("Should update last date loaded data", () async {
-      homePresenter.selectedDateMock = faker.date.dateTime();
-
-      await sut.getSales(homePresenter);
-
-      expect(sut.lastDateLoadedData, homePresenter.selectedDateMock);
-    });
-    test("Should not update last loaded data if loadSaleMovements throws",
+    test("Should update last get sales params correctly when is daily",
         () async {
-      loadSaleMovements.mockGetError();
-
-      await sut.getSales(homePresenter);
-
-      expect(sut.lastDateLoadedData, null);
-    });
-    test("Should not load sales again if dont change the month", () async {
-      homePresenter.selectedDateMock = faker.date.dateTime();
-      await sut.getSales(homePresenter);
-
-      homePresenter.selectedDateMock = DateTime(
-        homePresenter.selectedDateMock.year,
-        homePresenter.selectedDateMock.month,
-        faker.date.dateTime().day,
+      await sut.getSales(
+        homePresenter,
+        forceRefresh: true,
+        periodType: PeriodType.daily,
       );
 
-      await sut.getSales(homePresenter);
+      DateTime startDate = DateTime(
+        homePresenter.selectedDateMock.year,
+        homePresenter.selectedDateMock.month,
+        1,
+      );
+
+      DateTime endDate = DateTime(
+        homePresenter.selectedDateMock.year,
+        homePresenter.selectedDateMock.month + 1,
+      ).subtract(Duration(days: 1));
+
+      expect(
+          sut.lastGetSalesParams,
+          GetSalesParams(
+            startDate: startDate,
+            endDate: endDate,
+            groupByHour: true,
+            groupByEnterprise: true,
+          ));
+    });
+    test("Should update last get sales params correctly when is monthly",
+        () async {
+      await sut.getSales(
+        homePresenter,
+        forceRefresh: true,
+        periodType: PeriodType.monthly,
+      );
+
+      expect(
+          sut.lastGetSalesParams,
+          GetSalesParams(
+            startDate: DateTime(
+              homePresenter.selectedDateMock.year,
+              homePresenter.selectedDateMock.month,
+              1,
+            ),
+            endDate: DateTime(
+              homePresenter.selectedDateMock.year,
+              homePresenter.selectedDateMock.month + 1,
+            ).subtract(Duration(days: 1)),
+            groupByHour: true,
+            groupByEnterprise: true,
+          ));
+    });
+
+    test("Should not load sales again if dont change the month", () async {
+      await sut.getSales(homePresenter, periodType: PeriodType.monthly);
+      await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
       verify(() => loadSaleMovements.get(
             GetSalesParams(
@@ -220,27 +251,23 @@ void main() {
     test("Should load sales again if force refresh", () async {
       homePresenter.selectedDateMock = faker.date.dateTime();
       await sut.getSales(homePresenter);
+      await sut.getSales(homePresenter, forceRefresh: true);
 
-      homePresenter.selectedDateMock = DateTime(
+      DateTime startDate = DateTime(
         homePresenter.selectedDateMock.year,
         homePresenter.selectedDateMock.month,
-        faker.date.dateTime().day,
+        1,
       );
 
-      await sut.getSales(homePresenter, forceRefresh: true);
+      DateTime endDate = DateTime(
+        homePresenter.selectedDateMock.year,
+        homePresenter.selectedDateMock.month + 1,
+      ).subtract(Duration(days: 1));
 
       verify(() => loadSaleMovements.get(
             GetSalesParams(
-              startDate: DateTime(
-                homePresenter.selectedDateMock.year,
-                homePresenter.selectedDateMock.month,
-                1,
-              ),
-              endDate: DateTime(
-                homePresenter.selectedDateMock.year,
-                homePresenter.selectedDateMock.month + 1,
-                1,
-              ).subtract(Duration(days: 1)),
+              startDate: startDate,
+              endDate: endDate,
               groupByHour: true,
               groupByEnterprise: true,
             ),

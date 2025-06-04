@@ -1,13 +1,14 @@
 import 'package:celta_dash/domain/helpers/helpers.dart';
+import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/ui/pages/pages.dart';
 import 'package:mocktail/mocktail.dart';
 
 class ResumePresenterSpy extends Mock implements ResumePresenter {
-  DateTime lastDateLoadedDataMock = DateTime.now();
+  GetSalesParams? lastGetSalesParamsMock;
 
   ResumePresenterSpy() {
-    when(() => this.lastDateLoadedData)
-        .thenAnswer((_) => lastDateLoadedDataMock);
+    when(() => this.lastGetSalesParams)
+        .thenAnswer((_) => lastGetSalesParamsMock);
 
     when(() => this.goToProfitabillityPage()).thenAnswer((any) => any);
     when(() => this.goToCompareDays()).thenAnswer((any) => any);
