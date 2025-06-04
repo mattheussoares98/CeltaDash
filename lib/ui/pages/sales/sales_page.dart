@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../domain/helpers/helpers.dart';
 import '../../../ui/mixins/mixins.dart';
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
@@ -107,9 +108,15 @@ class _SalesPageState extends State<SalesPage>
 
               return Column(
                 children: [
-                  PeriodItems(
-                    indexToSelectWhenRebuild: indexToSelectWhenRebuild,
-                    updateSelectedItem: salesPresenter.updateSelectedPeriod,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SelectPeriodItems(
+                      selectedPeriodType: PeriodType.daily,
+                      onTapDaily: () {},
+                      // onTapWeekly: () {},
+                      onTapMonthly: () {},
+                      onTapYearly: () {},
+                    ),
                   ),
                   Expanded(
                     child: Opacity(
