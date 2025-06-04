@@ -9,8 +9,7 @@ import '../pages.dart';
 import 'components/components.dart';
 
 class CompareDaysPage extends StatefulWidget {
-  final CompareDaysPresenter presenter;
-  const CompareDaysPage({super.key, required this.presenter});
+  const CompareDaysPage({super.key});
 
   @override
   State<CompareDaysPage> createState() => _ProfitabilityPageState();
@@ -31,15 +30,13 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
         HomePresenter homePresenter = Get.find();
+        CompareDaysPresenter compareDaysPresenter = Get.find();
 
-        await widget.presenter.getSales(
+        await compareDaysPresenter.getSales(
           firstDay: firstDay,
           secondDay: secondDay,
           homePresenter: homePresenter,
         );
-        Future.delayed(Duration.zero, () {
-          setState(() {});
-        });
       }
     });
   }
@@ -54,20 +51,22 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
+    CompareDaysPresenter compareDaysPresenter = Get.find();
+
     loadingSubscription?.cancel();
     mainErrorSubscription?.cancel();
 
     loadingSubscription =
-        handleLoading(context, widget.presenter.isLoadingStream);
+        handleLoading(context, compareDaysPresenter.isLoadingStream);
     mainErrorSubscription =
-        handleMainError(context, widget.presenter.mainErrorStream);
+        handleMainError(context, compareDaysPresenter.mainErrorStream);
 
     return Scaffold(
       appBar: DefaultAppBar(
         onChangeEnterprise: (_) async {
-          await widget.presenter.getSales(
-            firstDay: widget.presenter.selectedFirstDay ?? firstDay,
-            secondDay: widget.presenter.selectedSecondDay ?? secondDay,
+          await compareDaysPresenter.getSales(
+            firstDay: compareDaysPresenter.selectedFirstDay ?? firstDay,
+            secondDay: compareDaysPresenter.selectedSecondDay ?? secondDay,
             homePresenter: homePresenter,
           );
         },
@@ -75,9 +74,9 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
       ),
       body: SafeArea(
         child: Obx(() {
-          Get.put<CompareDaysPresenter>(widget.presenter);
+          Get.put<CompareDaysPresenter>(compareDaysPresenter);
 
-          final saleMovements = widget.presenter.saleMovements;
+          final saleMovements = compareDaysPresenter.saleMovements;
 
           return StreamBuilder<bool>(
               stream: homePresenter.updateScreenStream,
@@ -91,26 +90,31 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
                   child: Column(
                     children: [
                       ChangeDatesButtons(
-                        firstDay: widget.presenter.selectedFirstDay ?? firstDay,
+                        firstDay:
+                            compareDaysPresenter.selectedFirstDay ?? firstDay,
                         secondDay:
-                            widget.presenter.selectedSecondDay ?? secondDay,
+                            compareDaysPresenter.selectedSecondDay ?? secondDay,
                       ),
-                      if (widget.presenter.selectedFirstDay != null &&
-                          widget.presenter.selectedSecondDay != null)
+                      if (compareDaysPresenter.selectedFirstDay != null &&
+                          compareDaysPresenter.selectedSecondDay != null)
                         Expanded(
                           child: Column(
                             children: [
                               CompareTable(
-                                firstDay: widget.presenter.selectedFirstDay ??
-                                    firstDay,
-                                secondDay: widget.presenter.selectedSecondDay ??
-                                    secondDay,
+                                firstDay:
+                                    compareDaysPresenter.selectedFirstDay ??
+                                        firstDay,
+                                secondDay:
+                                    compareDaysPresenter.selectedSecondDay ??
+                                        secondDay,
                               ),
                               Result(
-                                firstDay: widget.presenter.selectedFirstDay ??
-                                    firstDay,
-                                secondDay: widget.presenter.selectedSecondDay ??
-                                    secondDay,
+                                firstDay:
+                                    compareDaysPresenter.selectedFirstDay ??
+                                        firstDay,
+                                secondDay:
+                                    compareDaysPresenter.selectedSecondDay ??
+                                        secondDay,
                               ),
                             ],
                           ),

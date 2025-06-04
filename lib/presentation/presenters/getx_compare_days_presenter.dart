@@ -28,6 +28,9 @@ class GetxCompareDaysPresenter extends GetxController
     try {
       if (firstDay != null && firstDay == secondDay) {
         throw DomainError.sameDays;
+      } else if (firstDay == _selectedFirstDay &&
+          secondDay == _selectedSecondDay) {
+        return;
       }
 
       _selectedFirstDay = firstDay;

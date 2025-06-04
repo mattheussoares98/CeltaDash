@@ -203,5 +203,65 @@ void main() {
         ),
       ).called(1);
     });
+    test("Should not load again if dont change the second day", () async {
+      await sut.getSales(
+        homePresenter: homePresenter,
+        firstDay: null,
+        secondDay: secondDay,
+      );
+      await sut.getSales(
+        homePresenter: homePresenter,
+        firstDay: null,
+        secondDay: secondDay,
+      );
+
+      verify(
+        () => loadSaleMovements.get(
+          GetSalesParams(
+            groupByYear: true,
+            groupByMonth: true,
+            groupByDay: true,
+            groupByHour: true,
+            enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+            startDate: secondDay,
+            endDate: DateTime(
+              secondDay.year,
+              secondDay.month,
+              secondDay.day,
+            ),
+          ),
+        ),
+      ).called(1);
+    });
+    test("Should not load again if dont change the first day", () async {
+      await sut.getSales(
+        homePresenter: homePresenter,
+        firstDay: firstDay,
+        secondDay: null,
+      );
+      await sut.getSales(
+        homePresenter: homePresenter,
+        firstDay: firstDay,
+        secondDay: null,
+      );
+
+      verify(
+        () => loadSaleMovements.get(
+          GetSalesParams(
+            groupByYear: true,
+            groupByMonth: true,
+            groupByDay: true,
+            groupByHour: true,
+            enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+            startDate: firstDay,
+            endDate: DateTime(
+              firstDay.year,
+              firstDay.month,
+              firstDay.day,
+            ),
+          ),
+        ),
+      ).called(1);
+    });
   });
 }
