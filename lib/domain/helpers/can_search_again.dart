@@ -45,6 +45,6 @@ class CanSearchAgain {
   }) =>
       lastGetSalesParams?.startDate.year != selectedDate?.year ||
       lastGetSalesParams?.startDate.month != selectedDate?.month ||
-      (lastGetSalesParams?.startDate != null &&
+      (lastGetSalesParams?.startDate.day != selectedDate?.day &&
           lastGetSalesParams?.startDate == lastGetSalesParams?.endDate);
 }

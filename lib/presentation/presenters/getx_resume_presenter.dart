@@ -78,7 +78,7 @@ class GetxResumePresenter extends GetxController
         forceRefresh: forceRefresh,
         lastGetSalesParams: lastGetSalesParams,
         selectedDate: homePresenter.selectedDate,
-        periodType: _selectedPeriodType,
+        periodType: PeriodType.monthly,
       );
 
       if (!canSearchAgain) {
