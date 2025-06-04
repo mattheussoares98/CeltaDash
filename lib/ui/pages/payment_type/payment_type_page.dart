@@ -117,8 +117,6 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: SelectDayOrMonthButtons(
-                      selectedMonth: paymentTypePresenter.selectedPeriodType ==
-                          PeriodType.monthly,
                       onTapMonthly: () {
                         paymentTypePresenter.getSales(
                           homePresenter,
