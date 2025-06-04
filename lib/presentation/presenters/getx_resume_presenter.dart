@@ -74,7 +74,7 @@ class GetxResumePresenter extends GetxController
         _selectedPeriodType = periodType;
       }
 
-      final canSearchAgain = CanSearchAgain.get(
+      final canSearchAgain = SalesHelper.canSearch(
         forceRefresh: forceRefresh,
         lastGetSalesParams: lastGetSalesParams,
         selectedDate: homePresenter.selectedDate,

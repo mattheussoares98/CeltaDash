@@ -1,10 +1,10 @@
 import '../usecases/usecases.dart';
 import 'helpers.dart';
 
-class CanSearchAgain {
-  CanSearchAgain._();
+class SalesHelper {
+  SalesHelper._();
 
-  static bool get({
+  static bool canSearch({
     required bool? forceRefresh,
     required GetSalesParams? lastGetSalesParams,
     required DateTime selectedDate,
