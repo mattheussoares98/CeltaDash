@@ -1,5 +1,6 @@
 import 'package:celta_dash/data/models/models.dart';
 import 'package:celta_dash/domain/entities/entities.dart';
+import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
 import 'package:faker/faker.dart';
@@ -61,7 +62,7 @@ void main() {
   });
 
   setUpAll(() {
-    registerFallbackValue("");
+    registerFallbackValue(EntityFactory.makeGetSalesParams());
   });
 
   group("Get sales", () {
@@ -101,7 +102,9 @@ void main() {
       test("Should load sale movements with correct values", () async {
         await sut.getSales(homePresenter);
 
-        verify(() => loadSaleMovements.get(
+        verify(
+          () => loadSaleMovements.get(
+            GetSalesParams(
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
                 homePresenter.selectedDateMock.month,
@@ -116,7 +119,9 @@ void main() {
               groupByDay: true,
               groupByProductDepartment: true,
               groupByProductSection: true,
-            )).called(1);
+            ),
+          ),
+        ).called(1);
       });
       test("Should load sale movements with correct new date", () async {
         final newDate = faker.date.dateTime();
@@ -124,22 +129,22 @@ void main() {
 
         await sut.getSales(homePresenter);
 
-        verify(() => loadSaleMovements.get(
+        verify(() => loadSaleMovements.get(GetSalesParams(
               startDate: DateTime(
-                newDate.year,
-                newDate.month,
+                homePresenter.selectedDateMock.year,
+                homePresenter.selectedDateMock.month,
                 1,
               ),
               endDate: DateTime(
-                newDate.year,
-                newDate.month + 1,
+                homePresenter.selectedDateMock.year,
+                homePresenter.selectedDateMock.month + 1,
                 1,
               ).subtract(Duration(days: 1)),
               groupByEnterprise: true,
               groupByDay: true,
               groupByProductDepartment: true,
               groupByProductSection: true,
-            )).called(1);
+            ))).called(1);
       });
       test("Should not load again if dont change the month", () async {
         await sut.getSales(homePresenter);
@@ -151,7 +156,7 @@ void main() {
         );
         await sut.getSales(homePresenter);
 
-        verify(() => loadSaleMovements.get(
+        verify(() => loadSaleMovements.get(GetSalesParams(
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
                 homePresenter.selectedDateMock.month,
@@ -166,7 +171,7 @@ void main() {
               groupByDay: true,
               groupByProductDepartment: true,
               groupByProductSection: true,
-            )).called(1);
+            ))).called(1);
       });
 
       test("Should change last loaded data correctly", () async {

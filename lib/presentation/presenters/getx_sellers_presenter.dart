@@ -28,18 +28,19 @@ class GetxSellersPresenter extends GetxController
         return;
       }
       final remoteSales = await loadSaleMovements.get(
-        // enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
-        startDate: DateTime(homePresenter.selectedDate.year, 1, 1),
-        endDate: DateTime(
-          homePresenter.selectedDate.year,
-          homePresenter.selectedDate.month + 1,
-          1,
-        ).subtract(
-          Duration(days: 1),
+        GetSalesParams(
+          startDate: DateTime(homePresenter.selectedDate.year, 1, 1),
+          endDate: DateTime(
+            homePresenter.selectedDate.year,
+            homePresenter.selectedDate.month + 1,
+            1,
+          ).subtract(
+            Duration(days: 1),
+          ),
+          groupByHour: true,
+          groupBySeller: true,
+          groupByEnterprise: true,
         ),
-        groupByHour: true,
-        groupBySeller: true,
-        groupByEnterprise: true,
       );
 
       saleMovements = remoteSales

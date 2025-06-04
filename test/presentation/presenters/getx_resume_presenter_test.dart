@@ -1,5 +1,6 @@
 import 'package:celta_dash/data/models/models.dart';
 import 'package:celta_dash/domain/entities/entities.dart';
+import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
 import 'package:faker/faker.dart';
@@ -62,7 +63,7 @@ void main() {
   });
 
   setUpAll(() {
-    registerFallbackValue("");
+    registerFallbackValue(EntityFactory.makeGetSalesParams());
   });
 
   group("Navigate to", () {
@@ -163,10 +164,12 @@ void main() {
       ).subtract(Duration(days: 1));
 
       verify(() => loadSaleMovements.get(
-            startDate: startDate,
-            endDate: endDate,
-            groupByHour: true,
-            groupByEnterprise: true,
+            GetSalesParams(
+              startDate: startDate,
+              endDate: endDate,
+              groupByHour: true,
+              groupByEnterprise: true,
+            ),
           )).called(1);
     });
 
@@ -198,18 +201,20 @@ void main() {
       await sut.getSales(homePresenter);
 
       verify(() => loadSaleMovements.get(
-            startDate: DateTime(
-              homePresenter.selectedDateMock.year,
-              homePresenter.selectedDateMock.month,
-              1,
+            GetSalesParams(
+              startDate: DateTime(
+                homePresenter.selectedDateMock.year,
+                homePresenter.selectedDateMock.month,
+                1,
+              ),
+              endDate: DateTime(
+                homePresenter.selectedDateMock.year,
+                homePresenter.selectedDateMock.month + 1,
+                1,
+              ).subtract(Duration(days: 1)),
+              groupByHour: true,
+              groupByEnterprise: true,
             ),
-            endDate: DateTime(
-              homePresenter.selectedDateMock.year,
-              homePresenter.selectedDateMock.month + 1,
-              1,
-            ).subtract(Duration(days: 1)),
-            groupByHour: true,
-            groupByEnterprise: true,
           )).called(1);
     });
     test("Should load sales again if force refresh", () async {
@@ -225,18 +230,20 @@ void main() {
       await sut.getSales(homePresenter, forceRefresh: true);
 
       verify(() => loadSaleMovements.get(
-            startDate: DateTime(
-              homePresenter.selectedDateMock.year,
-              homePresenter.selectedDateMock.month,
-              1,
+            GetSalesParams(
+              startDate: DateTime(
+                homePresenter.selectedDateMock.year,
+                homePresenter.selectedDateMock.month,
+                1,
+              ),
+              endDate: DateTime(
+                homePresenter.selectedDateMock.year,
+                homePresenter.selectedDateMock.month + 1,
+                1,
+              ).subtract(Duration(days: 1)),
+              groupByHour: true,
+              groupByEnterprise: true,
             ),
-            endDate: DateTime(
-              homePresenter.selectedDateMock.year,
-              homePresenter.selectedDateMock.month + 1,
-              1,
-            ).subtract(Duration(days: 1)),
-            groupByHour: true,
-            groupByEnterprise: true,
           )).called(2);
     });
   });

@@ -13,24 +13,7 @@ class RemoteLoadSaleMovements implements LoadSaleMovements {
   const RemoteLoadSaleMovements(this.httpAdapter);
 
   @override
-  Future<List<SaleMovementEntity>> get({
-    required DateTime startDate,
-    required DateTime endDate,
-    List<int>? enterpriseIds,
-    bool? groupByEnterprise,
-    bool? groupByYear,
-    bool? groupByMonth,
-    bool? groupByDay,
-    bool? groupByHour,
-    bool? groupByProduct,
-    bool? groupByProductDepartment,
-    bool? groupByProductSection,
-    bool? groupByPaymentFinalization,
-    bool? groupByPaymentModality,
-    bool? groupByCashierOperator,
-    bool? groupBySeller,
-    int? topCount,
-  }) async {
+  Future<List<SaleMovementEntity>> get(GetSalesParams params) async {
     final url = EnterpriseBuilder.entity?.baseUrl;
 
     try {
@@ -42,24 +25,25 @@ class RemoteLoadSaleMovements implements LoadSaleMovements {
           "accessKey": EnterpriseBuilder.entity?.bsUser?.AccessKey,
         },
         body: {
-          "enterpriseIds": enterpriseIds,
-          "topCount": topCount,
+          "enterpriseIds": params.enterpriseIds,
+          "topCount": params.topCount,
           "period": {
-            "startDate": startDate.toIso8601String(),
-            "endDate": endDate.toIso8601String(),
+            "startDate": params.startDate.toIso8601String(),
+            "endDate": params.endDate.toIso8601String(),
           },
-          "groupByEnterprise": groupByEnterprise == true,
-          "groupByYear": groupByYear == true,
-          "groupByMonth": groupByMonth == true,
-          "groupByDay": groupByDay == true,
-          "groupByHour": groupByHour == true,
-          "groupByProduct": groupByProduct == true,
-          "groupByProductDepartment": groupByProductDepartment == true,
-          "groupByProductSection": groupByProductSection == true,
-          "groupByPaymentFinalization": groupByPaymentFinalization == true,
-          "groupByPaymentModality": groupByPaymentModality == true,
-          "groupByCashierOperator": groupByCashierOperator == true,
-          "groupBySeller": groupBySeller == true,
+          "groupByEnterprise": params.groupByEnterprise == true,
+          "groupByYear": params.groupByYear == true,
+          "groupByMonth": params.groupByMonth == true,
+          "groupByDay": params.groupByDay == true,
+          "groupByHour": params.groupByHour == true,
+          "groupByProduct": params.groupByProduct == true,
+          "groupByProductDepartment": params.groupByProductDepartment == true,
+          "groupByProductSection": params.groupByProductSection == true,
+          "groupByPaymentFinalization":
+              params.groupByPaymentFinalization == true,
+          "groupByPaymentModality": params.groupByPaymentModality == true,
+          "groupByCashierOperator": params.groupByCashierOperator == true,
+          "groupBySeller": params.groupBySeller == true,
         },
       );
 

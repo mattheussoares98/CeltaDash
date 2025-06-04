@@ -30,30 +30,34 @@ class GetxSalesPresenter extends GetxController
       }
 
       final remoteSalesByMonth = await loadSaleMovements.get(
-        enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
-        startDate: DateTime(homePresenter.selectedDate.year, 1, 1),
-        endDate: DateTime(
-          homePresenter.selectedDate.year,
-          12,
-          31,
+        GetSalesParams(
+          enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+          startDate: DateTime(homePresenter.selectedDate.year, 1, 1),
+          endDate: DateTime(
+            homePresenter.selectedDate.year,
+            12,
+            31,
+          ),
+          groupByEnterprise: true,
+          groupByDay: true,
         ),
-        groupByEnterprise: true,
-        groupByDay: true,
       );
       salesByMonth = remoteSalesByMonth
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
           .toList();
 
       final remoteSalesByYear = await loadSaleMovements.get(
-        enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
-        startDate: DateTime(homePresenter.selectedDate.year - 2),
-        endDate: DateTime(
-          homePresenter.selectedDate.year,
-          12,
-          31,
+        GetSalesParams(
+          enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+          startDate: DateTime(homePresenter.selectedDate.year - 2),
+          endDate: DateTime(
+            homePresenter.selectedDate.year,
+            12,
+            31,
+          ),
+          groupByEnterprise: true,
+          groupByYear: true,
         ),
-        groupByEnterprise: true,
-        groupByYear: true,
       );
 
       salesByYear = remoteSalesByYear

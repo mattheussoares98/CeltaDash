@@ -1,4 +1,5 @@
 import 'package:celta_dash/domain/entities/entities.dart';
+import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/main/builders/builders.dart';
 import 'package:faker/faker.dart';
 
@@ -94,5 +95,27 @@ class EntityFactory {
         name: faker.company.name(),
         personalizedCode: faker.randomGenerator.integer(10).toString(),
         enabled: enabled ?? faker.randomGenerator.boolean(),
+      );
+
+  static GetSalesParams makeGetSalesParams() => GetSalesParams(
+        startDate: faker.date.dateTime(),
+        endDate: faker.date.dateTime(),
+        enterpriseIds: [
+          faker.randomGenerator.integer(100),
+          faker.randomGenerator.integer(100),
+        ],
+        groupByCashierOperator: faker.randomGenerator.boolean(),
+        groupByDay: faker.randomGenerator.boolean(),
+        groupByEnterprise: faker.randomGenerator.boolean(),
+        groupByHour: faker.randomGenerator.boolean(),
+        groupByMonth: faker.randomGenerator.boolean(),
+        groupByPaymentFinalization: faker.randomGenerator.boolean(),
+        groupByPaymentModality: faker.randomGenerator.boolean(),
+        groupByProduct: faker.randomGenerator.boolean(),
+        groupByProductDepartment: faker.randomGenerator.boolean(),
+        groupByProductSection: faker.randomGenerator.boolean(),
+        groupBySeller: faker.randomGenerator.boolean(),
+        groupByYear: faker.randomGenerator.boolean(),
+        topCount: faker.randomGenerator.integer(100),
       );
 }

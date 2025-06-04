@@ -1,6 +1,7 @@
 import 'package:celta_dash/data/models/models.dart';
 import 'package:celta_dash/data/usecases/usecases.dart';
 import 'package:celta_dash/domain/entities/sale_movement_entity.dart';
+import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/main/builders/builders.dart';
 import 'package:faker/faker.dart';
 
@@ -116,22 +117,24 @@ void main() {
 
   test("Should call httpClient with correct parameters", () async {
     await sut.get(
-      startDate: startDate,
-      endDate: endDate,
-      enterpriseIds: enterpriseIds,
-      groupByEnterprise: groupByEnterprise,
-      groupByYear: groupByYear,
-      groupByMonth: groupByMonth,
-      groupByDay: groupByDay,
-      groupByHour: groupByHour,
-      groupByProduct: groupByProduct,
-      groupByProductDepartment: groupByProductDepartment,
-      groupByProductSection: groupByProductSection,
-      groupByPaymentFinalization: groupByPaymentFinalization,
-      groupByPaymentModality: groupByPaymentModality,
-      groupByCashierOperator: groupByCashierOperator,
-      groupBySeller: groupBySeller,
-      topCount: topCount,
+      GetSalesParams(
+        startDate: startDate,
+        endDate: endDate,
+        enterpriseIds: enterpriseIds,
+        groupByEnterprise: groupByEnterprise,
+        groupByYear: groupByYear,
+        groupByMonth: groupByMonth,
+        groupByDay: groupByDay,
+        groupByHour: groupByHour,
+        groupByProduct: groupByProduct,
+        groupByProductDepartment: groupByProductDepartment,
+        groupByProductSection: groupByProductSection,
+        groupByPaymentFinalization: groupByPaymentFinalization,
+        groupByPaymentModality: groupByPaymentModality,
+        groupByCashierOperator: groupByCashierOperator,
+        groupBySeller: groupBySeller,
+        topCount: topCount,
+      ),
     );
 
     verify(
@@ -171,20 +174,22 @@ void main() {
     "Should return list of SaleMovementEntity when API wraps in searchParameters/results",
     () async {
       final list = await sut.get(
-        startDate: startDate,
-        endDate: endDate,
-        enterpriseIds: enterpriseIds,
-        groupByEnterprise: groupByEnterprise,
-        groupByYear: groupByYear,
-        groupByMonth: groupByMonth,
-        groupByDay: groupByDay,
-        groupByHour: groupByHour,
-        groupByProduct: groupByProduct,
-        groupByProductDepartment: groupByProductDepartment,
-        groupByProductSection: groupByProductSection,
-        groupByPaymentFinalization: groupByPaymentFinalization,
-        groupByPaymentModality: groupByPaymentModality,
-        groupBySeller: groupBySeller,
+        GetSalesParams(
+          startDate: startDate,
+          endDate: endDate,
+          enterpriseIds: enterpriseIds,
+          groupByEnterprise: groupByEnterprise,
+          groupByYear: groupByYear,
+          groupByMonth: groupByMonth,
+          groupByDay: groupByDay,
+          groupByHour: groupByHour,
+          groupByProduct: groupByProduct,
+          groupByProductDepartment: groupByProductDepartment,
+          groupByProductSection: groupByProductSection,
+          groupByPaymentFinalization: groupByPaymentFinalization,
+          groupByPaymentModality: groupByPaymentModality,
+          groupBySeller: groupBySeller,
+        ),
       );
 
       expect(list, saleMovementsEntitys);

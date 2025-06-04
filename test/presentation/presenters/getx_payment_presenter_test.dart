@@ -1,6 +1,7 @@
 import 'package:celta_dash/data/models/models.dart';
 import 'package:celta_dash/domain/entities/entities.dart';
 import 'package:celta_dash/domain/helpers/helpers.dart';
+import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
 import 'package:faker/faker.dart';
@@ -59,7 +60,7 @@ void main() {
   });
 
   setUpAll(() {
-    registerFallbackValue("");
+    registerFallbackValue(EntityFactory.makeGetSalesParams());
   });
 
   group("Get sales", () {
@@ -133,11 +134,13 @@ void main() {
         );
 
         verify(() => loadSaleMovements.get(
-              startDate: startDate,
-              endDate: startDate,
-              groupByEnterprise: true,
-              groupByDay: true,
-              groupByPaymentModality: true,
+              GetSalesParams(
+                startDate: startDate,
+                endDate: startDate,
+                groupByEnterprise: true,
+                groupByDay: true,
+                groupByPaymentModality: true,
+              ),
             )).called(1);
       });
       test(
@@ -160,11 +163,13 @@ void main() {
         ).subtract(Duration(days: 1));
 
         verify(() => loadSaleMovements.get(
-              startDate: startDate,
-              endDate: endDate,
-              groupByEnterprise: true,
-              groupByDay: true,
-              groupByPaymentModality: true,
+              GetSalesParams(
+                startDate: startDate,
+                endDate: endDate,
+                groupByEnterprise: true,
+                groupByDay: true,
+                groupByPaymentModality: true,
+              ),
             )).called(1);
       });
 
@@ -183,19 +188,21 @@ void main() {
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
         verify(() => loadSaleMovements.get(
-              groupByEnterprise: true,
-              groupByDay: true,
-              groupByPaymentModality: true,
-              startDate: DateTime(
-                homePresenter.selectedDateMock.year,
-                homePresenter.selectedDateMock.month,
-                1,
+              GetSalesParams(
+                groupByEnterprise: true,
+                groupByDay: true,
+                groupByPaymentModality: true,
+                startDate: DateTime(
+                  homePresenter.selectedDateMock.year,
+                  homePresenter.selectedDateMock.month,
+                  1,
+                ),
+                endDate: DateTime(
+                  homePresenter.selectedDateMock.year,
+                  homePresenter.selectedDateMock.month + 1,
+                  1,
+                ).subtract(Duration(days: 1)),
               ),
-              endDate: DateTime(
-                homePresenter.selectedDateMock.year,
-                homePresenter.selectedDateMock.month + 1,
-                1,
-              ).subtract(Duration(days: 1)),
             )).called(1);
       });
       test(
@@ -207,18 +214,20 @@ void main() {
         await sut.getSales(homePresenter, forceRefresh: true);
 
         verify(() => loadSaleMovements.get(
-              groupByEnterprise: true,
-              groupByDay: true,
-              groupByPaymentModality: true,
-              startDate: DateTime(
-                homePresenter.selectedDateMock.year,
-                homePresenter.selectedDateMock.month,
-                homePresenter.selectedDateMock.day,
-              ),
-              endDate: DateTime(
-                homePresenter.selectedDateMock.year,
-                homePresenter.selectedDateMock.month,
-                homePresenter.selectedDateMock.day,
+              GetSalesParams(
+                groupByEnterprise: true,
+                groupByDay: true,
+                groupByPaymentModality: true,
+                startDate: DateTime(
+                  homePresenter.selectedDateMock.year,
+                  homePresenter.selectedDateMock.month,
+                  homePresenter.selectedDateMock.day,
+                ),
+                endDate: DateTime(
+                  homePresenter.selectedDateMock.year,
+                  homePresenter.selectedDateMock.month,
+                  homePresenter.selectedDateMock.day,
+                ),
               ),
             )).called(2);
       });
@@ -236,11 +245,13 @@ void main() {
         );
 
         verifyNever(() => loadSaleMovements.get(
-              startDate: startDate,
-              endDate: startDate,
-              groupByEnterprise: true,
-              groupByDay: true,
-              groupByPaymentModality: true,
+              GetSalesParams(
+                startDate: startDate,
+                endDate: startDate,
+                groupByEnterprise: true,
+                groupByDay: true,
+                groupByPaymentModality: true,
+              ),
             ));
       });
       test("Should update selected period correctly", () async {
@@ -278,11 +289,13 @@ void main() {
         );
 
         verify(() => loadSaleMovements.get(
-              startDate: startDate,
-              endDate: startDate,
-              groupByEnterprise: true,
-              groupByDay: true,
-              groupByPaymentFinalization: true,
+              GetSalesParams(
+                startDate: startDate,
+                endDate: startDate,
+                groupByEnterprise: true,
+                groupByDay: true,
+                groupByPaymentFinalization: true,
+              ),
             )).called(1);
       });
       test("Should load sale movements with correct date if period is monthly",
@@ -301,11 +314,13 @@ void main() {
         ).subtract(Duration(days: 1));
 
         verify(() => loadSaleMovements.get(
-              startDate: startDate,
-              endDate: endDate,
-              groupByEnterprise: true,
-              groupByDay: true,
-              groupByPaymentFinalization: true,
+              GetSalesParams(
+                startDate: startDate,
+                endDate: endDate,
+                groupByEnterprise: true,
+                groupByDay: true,
+                groupByPaymentFinalization: true,
+              ),
             )).called(1);
       });
       test("Should not load again if dont force refresh", () async {
@@ -324,11 +339,13 @@ void main() {
         ).subtract(Duration(days: 1));
 
         verify(() => loadSaleMovements.get(
-              startDate: startDate,
-              endDate: endDate,
-              groupByEnterprise: true,
-              groupByDay: true,
-              groupByPaymentFinalization: true,
+              GetSalesParams(
+                startDate: startDate,
+                endDate: endDate,
+                groupByEnterprise: true,
+                groupByDay: true,
+                groupByPaymentFinalization: true,
+              ),
             )).called(1);
       });
     });

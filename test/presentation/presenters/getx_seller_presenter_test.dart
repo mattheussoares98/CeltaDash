@@ -1,5 +1,6 @@
 import 'package:celta_dash/data/models/models.dart';
 import 'package:celta_dash/domain/entities/entities.dart';
+import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
 import 'package:faker/faker.dart';
@@ -60,7 +61,7 @@ void main() {
   });
 
   setUpAll(() {
-    registerFallbackValue("");
+    registerFallbackValue(EntityFactory.makeGetSalesParams());
   });
 
   group("Load sales movements", () {
@@ -95,16 +96,18 @@ void main() {
 
       verify(
         () => loadSaleMovements.get(
-          groupByHour: true,
-          groupBySeller: true,
-          groupByEnterprise: true,
-          // enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
-          startDate: DateTime(homePresenter.selectedDateMock.year, 1, 1),
-          endDate: DateTime(
-            homePresenter.selectedDateMock.year,
-            homePresenter.selectedDateMock.month + 1,
-            1,
-          ).subtract(Duration(days: 1)),
+          GetSalesParams(
+            groupByHour: true,
+            groupBySeller: true,
+            groupByEnterprise: true,
+            // enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+            startDate: DateTime(homePresenter.selectedDateMock.year, 1, 1),
+            endDate: DateTime(
+              homePresenter.selectedDateMock.year,
+              homePresenter.selectedDateMock.month + 1,
+              1,
+            ).subtract(Duration(days: 1)),
+          ),
         ),
       ).called(1);
     });
@@ -119,16 +122,17 @@ void main() {
 
       verify(
         () => loadSaleMovements.get(
-          groupByHour: true,
-          groupBySeller: true,
-          groupByEnterprise: true,
-          // enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
-          startDate: DateTime(homePresenter.selectedDateMock.year, 1, 1),
-          endDate: DateTime(
-            homePresenter.selectedDateMock.year,
-            homePresenter.selectedDateMock.month + 1,
-            1,
-          ).subtract(Duration(days: 1)),
+          GetSalesParams(
+            groupByHour: true,
+            groupBySeller: true,
+            groupByEnterprise: true,
+            startDate: DateTime(homePresenter.selectedDateMock.year, 1, 1),
+            endDate: DateTime(
+              homePresenter.selectedDateMock.year,
+              homePresenter.selectedDateMock.month + 1,
+              1,
+            ).subtract(Duration(days: 1)),
+          ),
         ),
       ).called(1);
 
@@ -143,16 +147,18 @@ void main() {
       await sut.getSales(homePresenter);
       verifyNever(
         () => loadSaleMovements.get(
-          groupByHour: true,
-          groupBySeller: true,
-          groupByEnterprise: true,
-          // enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
-          startDate: DateTime(newDate.year, 1, 1),
-          endDate: DateTime(
-            newDate.year,
-            newDate.month + 1,
-            1,
-          ).subtract(Duration(days: 1)),
+          GetSalesParams(
+            groupByHour: true,
+            groupBySeller: true,
+            groupByEnterprise: true,
+            // enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+            startDate: DateTime(newDate.year, 1, 1),
+            endDate: DateTime(
+              newDate.year,
+              newDate.month + 1,
+              1,
+            ).subtract(Duration(days: 1)),
+          ),
         ),
       );
     });
@@ -161,16 +167,18 @@ void main() {
 
       verify(
         () => loadSaleMovements.get(
-          groupByHour: true,
-          groupBySeller: true,
-          groupByEnterprise: true,
-          // enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
-          startDate: DateTime(homePresenter.selectedDateMock.year, 1, 1),
-          endDate: DateTime(
-            homePresenter.selectedDateMock.year,
-            homePresenter.selectedDateMock.month + 1,
-            1,
-          ).subtract(Duration(days: 1)),
+          GetSalesParams(
+            groupByHour: true,
+            groupBySeller: true,
+            groupByEnterprise: true,
+            // enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+            startDate: DateTime(homePresenter.selectedDateMock.year, 1, 1),
+            endDate: DateTime(
+              homePresenter.selectedDateMock.year,
+              homePresenter.selectedDateMock.month + 1,
+              1,
+            ).subtract(Duration(days: 1)),
+          ),
         ),
       ).called(1);
 
@@ -183,16 +191,18 @@ void main() {
       await sut.getSales(homePresenter);
       verify(
         () => loadSaleMovements.get(
-          groupByHour: true,
-          groupBySeller: true,
-          groupByEnterprise: true,
-          // enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
-          startDate: DateTime(homePresenter.selectedDateMock.year, 1, 1),
-          endDate: DateTime(
-            homePresenter.selectedDateMock.year,
-            homePresenter.selectedDateMock.month + 1,
-            1,
-          ).subtract(Duration(days: 1)),
+          GetSalesParams(
+            groupByHour: true,
+            groupBySeller: true,
+            groupByEnterprise: true,
+            // enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+            startDate: DateTime(homePresenter.selectedDateMock.year, 1, 1),
+            endDate: DateTime(
+              homePresenter.selectedDateMock.year,
+              homePresenter.selectedDateMock.month + 1,
+              1,
+            ).subtract(Duration(days: 1)),
+          ),
         ),
       ).called(1);
     });
@@ -202,16 +212,18 @@ void main() {
 
       verify(
         () => loadSaleMovements.get(
-          groupByHour: true,
-          groupBySeller: true,
-          groupByEnterprise: true,
-          // enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
-          startDate: DateTime(homePresenter.selectedDateMock.year, 1, 1),
-          endDate: DateTime(
-            homePresenter.selectedDateMock.year,
-            homePresenter.selectedDateMock.month + 1,
-            1,
-          ).subtract(Duration(days: 1)),
+          GetSalesParams(
+            groupByHour: true,
+            groupBySeller: true,
+            groupByEnterprise: true,
+            // enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+            startDate: DateTime(homePresenter.selectedDateMock.year, 1, 1),
+            endDate: DateTime(
+              homePresenter.selectedDateMock.year,
+              homePresenter.selectedDateMock.month + 1,
+              1,
+            ).subtract(Duration(days: 1)),
+          ),
         ),
       ).called(2);
     });

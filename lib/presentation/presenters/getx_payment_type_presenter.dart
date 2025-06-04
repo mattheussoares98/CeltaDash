@@ -59,11 +59,14 @@ class GetxPaymentTypePresenter extends GetxController
       ).subtract(Duration(days: 1));
 
       final salesByModality = await loadSaleMovements.get(
-        startDate: startDate,
-        endDate: _selectedPeriodType == PeriodType.daily ? startDate : endDate,
-        groupByEnterprise: true,
-        groupByDay: true,
-        groupByPaymentModality: true,
+        GetSalesParams(
+          startDate: startDate,
+          endDate:
+              _selectedPeriodType == PeriodType.daily ? startDate : endDate,
+          groupByEnterprise: true,
+          groupByDay: true,
+          groupByPaymentModality: true,
+        ),
       );
 
       saleMovements = salesByModality
@@ -71,11 +74,14 @@ class GetxPaymentTypePresenter extends GetxController
           .toList();
 
       final salesByFinalization = await loadSaleMovements.get(
-        startDate: startDate,
-        endDate: _selectedPeriodType == PeriodType.daily ? startDate : endDate,
-        groupByEnterprise: true,
-        groupByDay: true,
-        groupByPaymentFinalization: true,
+        GetSalesParams(
+          startDate: startDate,
+          endDate:
+              _selectedPeriodType == PeriodType.daily ? startDate : endDate,
+          groupByEnterprise: true,
+          groupByDay: true,
+          groupByPaymentFinalization: true,
+        ),
       );
 
       salesByFinaliztions = salesByFinalization

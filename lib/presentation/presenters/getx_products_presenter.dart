@@ -36,22 +36,24 @@ class GetxProductsPresenter extends GetxController
         return;
       }
       final response = await loadSaleMovements.get(
-        startDate: DateTime(
-          homePresenter.selectedDate.year,
-          homePresenter.selectedDate.month,
-          1,
+        GetSalesParams(
+          startDate: DateTime(
+            homePresenter.selectedDate.year,
+            homePresenter.selectedDate.month,
+            1,
+          ),
+          endDate: DateTime(
+            homePresenter.selectedDate.year,
+            homePresenter.selectedDate.month + 1,
+          ).subtract(Duration(days: 1)),
+          groupByDay: true,
+          groupByProduct: true,
+          groupByEnterprise: true,
+          topCount: 200,
+          enterpriseIds: homePresenter.selectedEnterprise == null
+              ? []
+              : [homePresenter.selectedEnterprise!.id!.toInt()],
         ),
-        endDate: DateTime(
-          homePresenter.selectedDate.year,
-          homePresenter.selectedDate.month + 1,
-        ).subtract(Duration(days: 1)),
-        groupByDay: true,
-        groupByProduct: true,
-        groupByEnterprise: true,
-        topCount: 200,
-        enterpriseIds: homePresenter.selectedEnterprise == null
-            ? []
-            : [homePresenter.selectedEnterprise!.id!.toInt()],
       );
 
       saleMovements = (response as List)

@@ -5,24 +5,7 @@ import 'package:mocktail/mocktail.dart';
 
 class LoadSaleMovementsSpy extends Mock implements LoadSaleMovements {
   When _mockGetCall() => when(
-        () => this.get(
-          startDate: any(named: "startDate"),
-          endDate: any(named: "endDate"),
-          enterpriseIds: any(named: "enterpriseIds"),
-          topCount: any(named: "topCount"),
-          groupByDay: any(named: "groupByDay"),
-          groupByEnterprise: any(named: "groupByEnterprise"),
-          groupByHour: any(named: "groupByHour"),
-          groupByMonth: any(named: "groupByMonth"),
-          groupByYear: any(named: "groupByYear"),
-          groupByPaymentFinalization: any(named: "groupByPaymentFinalization"),
-          groupByPaymentModality: any(named: "groupByPaymentModality"),
-          groupByProduct: any(named: "groupByProduct"),
-          groupByProductDepartment: any(named: "groupByProductDepartment"),
-          groupByProductSection: any(named: "groupByProductSection"),
-          groupByCashierOperator: any(named: "groupByCashierOperator"),
-          groupBySeller: any(named: "groupBySeller"),
-        ),
+        () => this.get(any()),
       );
 
   void mockGet(List<SaleMovementEntity> saleMovements) {

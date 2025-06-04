@@ -1,5 +1,6 @@
 import 'package:celta_dash/data/models/models.dart';
 import 'package:celta_dash/domain/entities/entities.dart';
+import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
 import 'package:faker/faker.dart';
@@ -64,7 +65,7 @@ void main() {
   });
 
   setUpAll(() {
-    registerFallbackValue("");
+    registerFallbackValue(EntityFactory.makeGetSalesParams());
   });
 
   group("Load sales movements", () {
@@ -161,16 +162,18 @@ void main() {
 
       verify(
         () => loadSaleMovements.get(
-          groupByYear: true,
-          groupByMonth: true,
-          groupByDay: true,
-          groupByHour: true,
-          enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
-          startDate: firstDay,
-          endDate: DateTime(
-            firstDay.year,
-            firstDay.month,
-            firstDay.day,
+          GetSalesParams(
+            groupByYear: true,
+            groupByMonth: true,
+            groupByDay: true,
+            groupByHour: true,
+            enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+            startDate: firstDay,
+            endDate: DateTime(
+              firstDay.year,
+              firstDay.month,
+              firstDay.day,
+            ),
           ),
         ),
       ).called(1);
@@ -184,6 +187,7 @@ void main() {
 
       verify(
         () => loadSaleMovements.get(
+          GetSalesParams(
             groupByYear: true,
             groupByMonth: true,
             groupByDay: true,
@@ -194,7 +198,9 @@ void main() {
               secondDay.year,
               secondDay.month,
               secondDay.day,
-            )),
+            ),
+          ),
+        ),
       ).called(1);
     });
   });

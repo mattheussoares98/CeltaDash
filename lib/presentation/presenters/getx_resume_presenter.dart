@@ -69,18 +69,20 @@ class GetxResumePresenter extends GetxController
         return;
       }
       final result = await loadSaleMovements.get(
-        startDate: DateTime(
-          homePresenter.selectedDate.year,
-          homePresenter.selectedDate.month,
-          1,
+        GetSalesParams(
+          startDate: DateTime(
+            homePresenter.selectedDate.year,
+            homePresenter.selectedDate.month,
+            1,
+          ),
+          endDate: DateTime(
+            homePresenter.selectedDate.year,
+            homePresenter.selectedDate.month + 1,
+            1,
+          ).subtract(Duration(days: 1)),
+          groupByEnterprise: true,
+          groupByHour: true,
         ),
-        endDate: DateTime(
-          homePresenter.selectedDate.year,
-          homePresenter.selectedDate.month + 1,
-          1,
-        ).subtract(Duration(days: 1)),
-        groupByEnterprise: true,
-        groupByHour: true,
       );
 
       saleMovements = result

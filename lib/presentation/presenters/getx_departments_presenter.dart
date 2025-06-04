@@ -42,14 +42,14 @@ class GetxDepartmentsPresenter extends GetxController
       ).subtract(Duration(days: 1));
 
       final remoteSales = await loadSaleMovements.get(
-        // enterpriseIds: [enterprise.id!.toInt()],
-        startDate: startDate,
-        endDate: endDate,
-        groupByEnterprise: true,
-        groupByDay: true,
-        // groupByMonth: true,
-        groupByProductDepartment: true,
-        groupByProductSection: true,
+        GetSalesParams(
+          startDate: startDate,
+          endDate: endDate,
+          groupByEnterprise: true,
+          groupByDay: true,
+          groupByProductDepartment: true,
+          groupByProductSection: true,
+        ),
       );
 
       saleMovements = remoteSales
