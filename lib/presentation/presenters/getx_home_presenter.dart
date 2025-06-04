@@ -183,30 +183,6 @@ class GetxHomePresenter extends GetxController
     });
   }
 
-  @override
-  void reloadAllData(
-    SalesPresenter salesPresenter,
-    ResumePresenter resumePresenter,
-    PaymentTypePresenter paymentTypePresenter,
-    ProductsPresenter productsPresenter,
-    DepartmentsPresenter departmentsPresenter,
-    OperatorsPresenter operatorsPresenter,
-    SellersPresenter sellersPresenter, {
-    bool? forceRefresh,
-  }) {
-    salesPresenter.getSales(
-      homePresenter: this,
-      resumePresenter: resumePresenter,
-      forceRefresh: forceRefresh,
-    );
-    resumePresenter.getSales(this, forceRefresh: forceRefresh);
-    paymentTypePresenter.getSales(this, forceRefresh: forceRefresh);
-    productsPresenter.loadProducts(this, forceRefresh: forceRefresh);
-    departmentsPresenter.getSales(this, forceRefresh: forceRefresh);
-    operatorsPresenter.getSales(this, forceRefresh: forceRefresh);
-    sellersPresenter.getSales(this, forceRefresh: forceRefresh);
-  }
-
   StreamSubscription<DocumentSnapshot>? _firebaseSub;
   @override
   void initFirebaseStream() {

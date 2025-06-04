@@ -26,10 +26,10 @@ class _HomePageState extends State<HomePage> with UIErrorManager {
   void initState() {
     super.initState();
 
-    HomePresenter homePresenter = Get.find();
-
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
+        HomePresenter homePresenter = Get.find();
+        ResumePresenter resumePresenter = Get.find();
         homePresenter.updateSelectedIndex(0);
         await homePresenter.getBsEnterprises(
           docRef: FirebaseFirestore.instance.collection("enterprises").doc(
@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> with UIErrorManager {
           },
         );
 
-        reloadData();
+        await resumePresenter.getSales(homePresenter);
       }
     });
   }
@@ -49,30 +49,6 @@ class _HomePageState extends State<HomePage> with UIErrorManager {
   void dispose() {
     super.dispose();
     mainErrorSubscription?.cancel();
-  }
-
-  Future<void> reloadData({
-    bool? forceRefresh,
-  }) async {
-    ProductsPresenter productsPresenter = Get.find();
-    HomePresenter homePresenter = Get.find();
-    SalesPresenter salesPresenter = Get.find();
-    ResumePresenter resumePresenter = Get.find();
-    PaymentTypePresenter paymentTypePresenter = Get.find();
-    DepartmentsPresenter departmentsPresenter = Get.find();
-    OperatorsPresenter operatorsPresenter = Get.find();
-    SellersPresenter sellersPresenter = Get.find();
-
-    homePresenter.reloadAllData(
-      salesPresenter,
-      resumePresenter,
-      paymentTypePresenter,
-      productsPresenter,
-      departmentsPresenter,
-      operatorsPresenter,
-      sellersPresenter,
-      forceRefresh: forceRefresh,
-    );
   }
 
   final pages = <Widget>[
@@ -118,13 +94,16 @@ class _HomePageState extends State<HomePage> with UIErrorManager {
                                         (isLoadingProducts.data == true &&
                                             currentIndex.data == 2),
                                     onChangeEnterprise: (_) {
-                                      reloadData();
+                                      resumePresenter.getSales(homePresenter);
                                     },
                                     onChangeDate: (_) {
-                                      reloadData();
+                                      resumePresenter.getSales(homePresenter);
                                     },
                                     onTapRefresh: () {
-                                      reloadData(forceRefresh: true);
+                                      resumePresenter.getSales(
+                                        homePresenter,
+                                        forceRefresh: true,
+                                      );
                                     },
                                   ),
                             body: pages[currentIndex.data ?? 0],

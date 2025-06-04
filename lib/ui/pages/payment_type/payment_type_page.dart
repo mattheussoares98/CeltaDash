@@ -21,7 +21,6 @@ class _PaymentTypePageState extends State<PaymentTypePage>
     with LoadingManager, UIErrorManager {
   bool selectedMonth = false;
   int selectedPageIndex = 0;
-  // StreamSubscription? loadingSubscription;
   StreamSubscription? mainErrorSubscription;
   final pageController = PageController();
 
@@ -40,7 +39,6 @@ class _PaymentTypePageState extends State<PaymentTypePage>
   @override
   void dispose() {
     super.dispose();
-    // loadingSubscription?.cancel();
     mainErrorSubscription?.cancel();
     pageController.dispose();
   }
@@ -68,17 +66,8 @@ class _PaymentTypePageState extends State<PaymentTypePage>
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
     PaymentTypePresenter paymentTypePresenter = Get.find();
-    DepartmentsPresenter departmentsPresenter = Get.find();
-    SalesPresenter salesPresenter = Get.find();
-    ResumePresenter resumePresenter = Get.find();
-    ProductsPresenter productsPresenter = Get.find();
-    OperatorsPresenter operatorsPresenter = Get.find();
-    SellersPresenter sellersPresenter = Get.find();
 
-    // loadingSubscription?.cancel();
     mainErrorSubscription?.cancel();
-    // loadingSubscription =
-    //     handleLoading(context, paymentTypePresenter.isLoadingStream);
     mainErrorSubscription =
         handleMainError(context, paymentTypePresenter.mainErrorStream);
 
@@ -89,36 +78,14 @@ class _PaymentTypePageState extends State<PaymentTypePage>
             appBar: DefaultAppBar(
               isLoading: isLoadingPayments.data == true,
               onChangeEnterprise: (_) {
-                homePresenter.reloadAllData(
-                  salesPresenter,
-                  resumePresenter,
-                  paymentTypePresenter,
-                  productsPresenter,
-                  departmentsPresenter,
-                  operatorsPresenter,
-                  sellersPresenter,
-                );
+                paymentTypePresenter.getSales(homePresenter);
               },
               onChangeDate: (_) {
-                homePresenter.reloadAllData(
-                  salesPresenter,
-                  resumePresenter,
-                  paymentTypePresenter,
-                  productsPresenter,
-                  departmentsPresenter,
-                  operatorsPresenter,
-                  sellersPresenter,
-                );
+                paymentTypePresenter.getSales(homePresenter);
               },
               onTapRefresh: () {
-                homePresenter.reloadAllData(
-                  salesPresenter,
-                  resumePresenter,
-                  paymentTypePresenter,
-                  productsPresenter,
-                  departmentsPresenter,
-                  operatorsPresenter,
-                  sellersPresenter,
+                paymentTypePresenter.getSales(
+                  homePresenter,
                   forceRefresh: true,
                 );
               },

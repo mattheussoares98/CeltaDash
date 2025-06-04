@@ -24,23 +24,10 @@ class _ProfitabilityPageState extends State<ProfitabilityPage> {
   }) async {
     ProductsPresenter productsPresenter = Get.find();
     HomePresenter homePresenter = Get.find();
-    SalesPresenter salesPresenter = Get.find();
-    ResumePresenter resumePresenter = Get.find();
-    PaymentTypePresenter paymentTypePresenter = Get.find();
     DepartmentsPresenter departmentsPresenter = Get.find();
-    OperatorsPresenter operatorsPresenter = Get.find();
-    SellersPresenter sellersPresenter = Get.find();
 
-    homePresenter.reloadAllData(
-      salesPresenter,
-      resumePresenter,
-      paymentTypePresenter,
-      productsPresenter,
-      departmentsPresenter,
-      operatorsPresenter,
-      sellersPresenter,
-      forceRefresh: forceRefresh,
-    );
+    departmentsPresenter.getSales(homePresenter, forceRefresh: forceRefresh);
+    productsPresenter.loadProducts(homePresenter, forceRefresh: forceRefresh);
   }
 
   @override
@@ -130,6 +117,7 @@ class _ProfitabilityPageState extends State<ProfitabilityPage> {
                                             Sections(
                                               saleMovements: salesDepartments,
                                             ),
+                                            //TODO add products
                                           ],
                                         ),
                                       ),

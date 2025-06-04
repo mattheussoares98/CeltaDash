@@ -21,7 +21,6 @@ class _DepartmentsPageState extends State<DepartmentsPage>
     with LoadingManager, UIErrorManager {
   bool selectedMonth = false;
   int selectedPageIndex = 0;
-  // StreamSubscription? loadingSubscription;
   StreamSubscription? mainErrorSubscription;
   final pageController = PageController();
 
@@ -40,7 +39,6 @@ class _DepartmentsPageState extends State<DepartmentsPage>
   @override
   void dispose() {
     super.dispose();
-    // loadingSubscription?.cancel();
     mainErrorSubscription?.cancel();
     pageController.dispose();
   }
@@ -55,17 +53,8 @@ class _DepartmentsPageState extends State<DepartmentsPage>
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
     DepartmentsPresenter departmentsPresenter = Get.find();
-    SalesPresenter salesPresenter = Get.find();
-    ResumePresenter resumePresenter = Get.find();
-    PaymentTypePresenter paymentTypePresenter = Get.find();
-    ProductsPresenter productsPresenter = Get.find();
-    OperatorsPresenter operatorsPresenter = Get.find();
-    SellersPresenter sellersPresenter = Get.find();
 
-    // loadingSubscription?.cancel();
     mainErrorSubscription?.cancel();
-    // loadingSubscription =
-    //     handleLoading(context, departmentsPresenter.isLoadingStream);
     mainErrorSubscription =
         handleMainError(context, departmentsPresenter.mainErrorStream);
 
@@ -75,39 +64,14 @@ class _DepartmentsPageState extends State<DepartmentsPage>
           return Scaffold(
             appBar: DefaultAppBar(
               isLoading: isLoadingDepartments.data == true,
-              onChangeEnterprise: (_) async {
-                homePresenter.reloadAllData(
-                  salesPresenter,
-                  resumePresenter,
-                  paymentTypePresenter,
-                  productsPresenter,
-                  departmentsPresenter,
-                  operatorsPresenter,
-                  sellersPresenter,
-                );
+              onChangeEnterprise: (_) {
+                departmentsPresenter.getSales(homePresenter);
               },
-              onChangeDate: (_) async {
-                homePresenter.reloadAllData(
-                  salesPresenter,
-                  resumePresenter,
-                  paymentTypePresenter,
-                  productsPresenter,
-                  departmentsPresenter,
-                  operatorsPresenter,
-                  sellersPresenter,
-                );
+              onChangeDate: (_) {
+                departmentsPresenter.getSales(homePresenter);
               },
-              onTapRefresh: () async {
-                homePresenter.reloadAllData(
-                  salesPresenter,
-                  resumePresenter,
-                  paymentTypePresenter,
-                  productsPresenter,
-                  departmentsPresenter,
-                  operatorsPresenter,
-                  sellersPresenter,
-                  forceRefresh: true,
-                );
+              onTapRefresh: () {
+                departmentsPresenter.getSales(homePresenter);
               },
             ),
             body: Column(

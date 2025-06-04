@@ -23,14 +23,6 @@ void main() {
 
   late GetxHomePresenter sut;
 
-  late SalesPresenterSpy salesPresenter;
-  late ResumePresenterSpy resumePresenter;
-  late PaymentTypePresenterSpy paymentTypePresenter;
-  late ProductsPresenterSpy productsPresenter;
-  late DepartmentsPresenterSpy departmentsPresenter;
-  late OperatorsPresenterSpy operatorsPresenter;
-  late SellersPresenterSpy sellersPresenter;
-
   late NavigateToSpy navigateTo;
   late LoadEnterprisesSpy loadEnterprises;
   late FirebaseManagerSpy firebaseManager;
@@ -57,13 +49,6 @@ void main() {
       firebaseManager: firebaseManager,
       localStorage: localStorage,
     );
-    salesPresenter = SalesPresenterSpy();
-    resumePresenter = ResumePresenterSpy();
-    paymentTypePresenter = PaymentTypePresenterSpy();
-    productsPresenter = ProductsPresenterSpy();
-    departmentsPresenter = DepartmentsPresenterSpy();
-    operatorsPresenter = OperatorsPresenterSpy();
-    sellersPresenter = SellersPresenterSpy();
   }
 
   void initEntities() {
@@ -467,133 +452,6 @@ void main() {
       expectLater(sut.updateScreenStream, emitsInOrder([true, false]));
 
       sut.updateScreen();
-    });
-  });
-
-  group("Reload all data", () {
-    test("Should call sales presenter get sales", () {
-      final forceRefresh = faker.randomGenerator.boolean();
-
-      sut.reloadAllData(
-        salesPresenter,
-        resumePresenter,
-        paymentTypePresenter,
-        productsPresenter,
-        departmentsPresenter,
-        operatorsPresenter,
-        sellersPresenter,
-        forceRefresh: forceRefresh,
-      );
-
-      verify(() => salesPresenter.getSales(
-          homePresenter: sut,
-          resumePresenter: resumePresenter,
-          forceRefresh: forceRefresh)).called(1);
-    });
-    test("Should call resume presenter get sales", () {
-      final forceRefresh = faker.randomGenerator.boolean();
-
-      sut.reloadAllData(
-        salesPresenter,
-        resumePresenter,
-        paymentTypePresenter,
-        productsPresenter,
-        departmentsPresenter,
-        operatorsPresenter,
-        sellersPresenter,
-        forceRefresh: forceRefresh,
-      );
-
-      verify(() => resumePresenter.getSales(sut, forceRefresh: forceRefresh))
-          .called(1);
-    });
-    test("Should call paymet type presenter get sales", () {
-      final forceRefresh = faker.randomGenerator.boolean();
-
-      sut.reloadAllData(
-        salesPresenter,
-        resumePresenter,
-        paymentTypePresenter,
-        productsPresenter,
-        departmentsPresenter,
-        operatorsPresenter,
-        sellersPresenter,
-        forceRefresh: forceRefresh,
-      );
-
-      verify(() =>
-              paymentTypePresenter.getSales(sut, forceRefresh: forceRefresh))
-          .called(1);
-    });
-    test("Should call products presenter get sales", () {
-      final forceRefresh = faker.randomGenerator.boolean();
-
-      sut.reloadAllData(
-        salesPresenter,
-        resumePresenter,
-        paymentTypePresenter,
-        productsPresenter,
-        departmentsPresenter,
-        operatorsPresenter,
-        sellersPresenter,
-        forceRefresh: forceRefresh,
-      );
-
-      verify(() =>
-              productsPresenter.loadProducts(sut, forceRefresh: forceRefresh))
-          .called(1);
-    });
-    test("Should call departments presenter get sales", () {
-      final forceRefresh = faker.randomGenerator.boolean();
-
-      sut.reloadAllData(
-        salesPresenter,
-        resumePresenter,
-        paymentTypePresenter,
-        productsPresenter,
-        departmentsPresenter,
-        operatorsPresenter,
-        sellersPresenter,
-        forceRefresh: forceRefresh,
-      );
-
-      verify(() =>
-              departmentsPresenter.getSales(sut, forceRefresh: forceRefresh))
-          .called(1);
-    });
-    test("Should call operators presenter get sales", () {
-      final forceRefresh = faker.randomGenerator.boolean();
-
-      sut.reloadAllData(
-        salesPresenter,
-        resumePresenter,
-        paymentTypePresenter,
-        productsPresenter,
-        departmentsPresenter,
-        operatorsPresenter,
-        sellersPresenter,
-        forceRefresh: forceRefresh,
-      );
-
-      verify(() => operatorsPresenter.getSales(sut, forceRefresh: forceRefresh))
-          .called(1);
-    });
-    test("Should call sellers presenter get sales", () {
-      final forceRefresh = faker.randomGenerator.boolean();
-
-      sut.reloadAllData(
-        salesPresenter,
-        resumePresenter,
-        paymentTypePresenter,
-        productsPresenter,
-        departmentsPresenter,
-        operatorsPresenter,
-        sellersPresenter,
-        forceRefresh: forceRefresh,
-      );
-
-      verify(() => sellersPresenter.getSales(sut, forceRefresh: forceRefresh))
-          .called(1);
     });
   });
 
