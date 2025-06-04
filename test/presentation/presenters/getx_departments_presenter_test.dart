@@ -1,5 +1,6 @@
 import 'package:celta_dash/data/models/models.dart';
 import 'package:celta_dash/domain/entities/entities.dart';
+import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
@@ -99,85 +100,58 @@ void main() {
         );
       });
 
-      test("Should load sale movements with correct values", () async {
-        await sut.getSales(homePresenter);
+      test("Should update GetSalesParams correctly on PeriodType.daily",
+          () async {
+        await sut.getSales(
+          homePresenter,
+          forceRefresh: true,
+          periodType: PeriodType.daily,
+        );
 
-        verify(
-          () => loadSaleMovements.get(
-            GetSalesParams(
-              startDate: DateTime(
-                homePresenter.selectedDateMock.year,
-                homePresenter.selectedDateMock.month,
-                1,
-              ),
-              endDate: DateTime(
-                homePresenter.selectedDateMock.year,
-                homePresenter.selectedDateMock.month + 1,
-                1,
-              ).subtract(Duration(days: 1)),
-              groupByEnterprise: true,
-              groupByDay: true,
-              groupByProductDepartment: true,
-              groupByProductSection: true,
-            ),
-          ),
-        ).called(1);
-      });
-      test("Should load sale movements with correct new date", () async {
-        final newDate = faker.date.dateTime();
-        homePresenter.selectedDateMock = newDate;
-
-        await sut.getSales(homePresenter);
-
-        verify(() => loadSaleMovements.get(GetSalesParams(
-              startDate: DateTime(
-                homePresenter.selectedDateMock.year,
-                homePresenter.selectedDateMock.month,
-                1,
-              ),
-              endDate: DateTime(
-                homePresenter.selectedDateMock.year,
-                homePresenter.selectedDateMock.month + 1,
-                1,
-              ).subtract(Duration(days: 1)),
-              groupByEnterprise: true,
-              groupByDay: true,
-              groupByProductDepartment: true,
-              groupByProductSection: true,
-            ))).called(1);
-      });
-      test("Should not load again if dont change the month", () async {
-        await sut.getSales(homePresenter);
-
-        homePresenter.selectedDateMock = DateTime(
+        final startDate = DateTime(
           homePresenter.selectedDateMock.year,
           homePresenter.selectedDateMock.month,
-          faker.randomGenerator.integer(28),
+          homePresenter.selectedDateMock.day,
         );
-        await sut.getSales(homePresenter);
-
-        verify(() => loadSaleMovements.get(GetSalesParams(
-              startDate: DateTime(
-                homePresenter.selectedDateMock.year,
-                homePresenter.selectedDateMock.month,
-                1,
-              ),
-              endDate: DateTime(
-                homePresenter.selectedDateMock.year,
-                homePresenter.selectedDateMock.month + 1,
-                1,
-              ).subtract(Duration(days: 1)),
-              groupByEnterprise: true,
-              groupByDay: true,
-              groupByProductDepartment: true,
-              groupByProductSection: true,
-            ))).called(1);
+        expect(
+          sut.lastGetSalesParams,
+          GetSalesParams(
+            startDate: startDate,
+            endDate: startDate,
+            groupByEnterprise: true,
+            groupByDay: true,
+            groupByProductDepartment: true,
+            groupByProductSection: true,
+          ),
+        );
       });
+      test("Should update GetSalesParams correctly on PeriodType.monthly",
+          () async {
+        await sut.getSales(
+          homePresenter,
+          forceRefresh: true,
+          periodType: PeriodType.monthly,
+        );
 
-      test("Should change last loaded data correctly", () async {
-        await sut.getSales(homePresenter, forceRefresh: true);
-
-        expect(sut.lastDateLoadedData, homePresenter.selectedDateMock);
+        expect(
+          sut.lastGetSalesParams,
+          GetSalesParams(
+            startDate: DateTime(
+              homePresenter.selectedDateMock.year,
+              homePresenter.selectedDateMock.month,
+              1,
+            ),
+            endDate: DateTime(
+              homePresenter.selectedDateMock.year,
+              homePresenter.selectedDateMock.month + 1,
+              1,
+            ).subtract(Duration(days: 1)),
+            groupByEnterprise: true,
+            groupByDay: true,
+            groupByProductDepartment: true,
+            groupByProductSection: true,
+          ),
+        );
       });
 
       test(
@@ -209,6 +183,17 @@ void main() {
               .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
               .toList(),
         );
+      });
+      test("Should update selected period type correctly", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.daily);
+        expect(sut.selectedPeriodType, PeriodType.daily);
+
+        await sut.getSales(
+          homePresenter,
+          periodType: PeriodType.monthly,
+          forceRefresh: true,
+        );
+        expect(sut.selectedPeriodType, PeriodType.monthly);
       });
     });
   });

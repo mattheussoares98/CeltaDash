@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../domain/helpers/helpers.dart';
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 import '../../mixins/mixins.dart';
@@ -19,7 +20,6 @@ class DepartmentsPage extends StatefulWidget {
 
 class _DepartmentsPageState extends State<DepartmentsPage>
     with LoadingManager, UIErrorManager {
-  bool selectedMonth = false;
   int selectedPageIndex = 0;
   StreamSubscription? mainErrorSubscription;
   final pageController = PageController();
@@ -32,6 +32,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
       if (mounted) {
         DepartmentsPresenter departmentsPresenter = Get.find();
         departmentsPresenter.emitLoadingAgain();
+        departmentsPresenter.getSales(Get.find<HomePresenter>());
       }
     });
   }
@@ -41,12 +42,6 @@ class _DepartmentsPageState extends State<DepartmentsPage>
     super.dispose();
     mainErrorSubscription?.cancel();
     pageController.dispose();
-  }
-
-  void updateSelectedMonth(bool value) {
-    setState(() {
-      selectedMonth = value;
-    });
   }
 
   @override
@@ -71,7 +66,10 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                 departmentsPresenter.getSales(homePresenter);
               },
               onTapRefresh: () {
-                departmentsPresenter.getSales(homePresenter);
+                departmentsPresenter.getSales(
+                  homePresenter,
+                  forceRefresh: true,
+                );
               },
             ),
             body: Column(
@@ -81,9 +79,10 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                   final saleMovements = departmentsPresenter.saleMovements
                       ?.filteredSales(
                         enterprise: homePresenter.selectedEnterprise,
-                        filterDay: selectedMonth
-                            ? null
-                            : homePresenter.selectedDate.day,
+                        filterDay: departmentsPresenter.selectedPeriodType ==
+                                PeriodType.daily
+                            ? homePresenter.selectedDate.day
+                            : null,
                         filterMonth: homePresenter.selectedDate.month,
                         filterYear: homePresenter.selectedDate.year,
                       )
@@ -103,9 +102,18 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: SelectDayOrMonth(
-                                  indexToSelectWhenRebuild:
-                                      selectedMonth ? 1 : 0,
-                                  updateSelectedMonth: updateSelectedMonth,
+                                  onTapSelectDay: () {
+                                    departmentsPresenter.getSales(
+                                      homePresenter,
+                                      periodType: PeriodType.daily,
+                                    );
+                                  },
+                                  onTapSelectMonth: () {
+                                    departmentsPresenter.getSales(
+                                      homePresenter,
+                                      periodType: PeriodType.monthly,
+                                    );
+                                  },
                                 ),
                               ),
                               Expanded(

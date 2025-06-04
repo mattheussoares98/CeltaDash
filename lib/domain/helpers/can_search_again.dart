@@ -7,10 +7,13 @@ class CanSearchAgain {
   static bool get({
     required bool? forceRefresh,
     required GetSalesParams? lastGetSalesParams,
-    required DateTime? selectedDate,
+    required DateTime selectedDate,
     required PeriodType periodType,
   }) {
+    //TODO create tests
     if (forceRefresh == true) {
+      return true;
+    } else if (lastGetSalesParams == null) {
       return true;
     } else if (periodType == PeriodType.daily) {
       return _canSearchDaily(

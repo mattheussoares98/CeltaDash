@@ -1,13 +1,14 @@
 import 'package:celta_dash/domain/helpers/helpers.dart';
+import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/ui/pages/pages.dart';
 import 'package:mocktail/mocktail.dart';
 
 class DepartmentsPresenterSpy extends Mock implements DepartmentsPresenter {
-  DateTime lastDateLoadedDataMock = DateTime.now();
+  GetSalesParams? lastGetSalesParamsMock;
 
   DepartmentsPresenterSpy() {
-    when(() => this.lastDateLoadedData)
-        .thenAnswer((_) => lastDateLoadedDataMock);
+    when(() => this.lastGetSalesParams)
+        .thenAnswer((_) => lastGetSalesParamsMock);
 
     _mockGetSalesCall().thenAnswer((any) async => any);
   }
