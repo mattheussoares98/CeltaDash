@@ -13,7 +13,7 @@ class GetxPaymentTypePresenter extends GetxController
         SaleMovementManager,
         UIErrorManager,
         LoadingManager,
-        LastDateLoadedDataManager
+        LastGetSalesParamsManager
     implements PaymentTypePresenter {
   final LoadSaleMovements loadSaleMovements;
 
@@ -39,8 +39,10 @@ class GetxPaymentTypePresenter extends GetxController
       }
 
       if (forceRefresh != true &&
-          lastDateLoadedData?.year == homePresenter.selectedDate.year &&
-          lastDateLoadedData?.month == homePresenter.selectedDate.month) {
+          lastGetSalesParams?.startDate.year ==
+              homePresenter.selectedDate.year &&
+          lastGetSalesParams?.startDate.month ==
+              homePresenter.selectedDate.month) {
         return;
       }
 
@@ -73,22 +75,21 @@ class GetxPaymentTypePresenter extends GetxController
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
           .toList();
 
-      final salesByFinalization = await loadSaleMovements.get(
-        GetSalesParams(
-          startDate: startDate,
-          endDate:
-              _selectedPeriodType == PeriodType.daily ? startDate : endDate,
-          groupByEnterprise: true,
-          groupByDay: true,
-          groupByPaymentFinalization: true,
-        ),
+      final getSalesParams = GetSalesParams(
+        startDate: startDate,
+        endDate: _selectedPeriodType == PeriodType.daily ? startDate : endDate,
+        groupByEnterprise: true,
+        groupByDay: true,
+        groupByPaymentFinalization: true,
       );
+
+      final salesByFinalization = await loadSaleMovements.get(getSalesParams);
 
       salesByFinaliztions = salesByFinalization
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
           .toList();
 
-      lastDateLoaded = homePresenter.selectedDate;
+      lastParams = getSalesParams;
       debugPrint("finished search"); //TODO remove
     } catch (e) {
       mainError = UIError.unexpected;

@@ -111,12 +111,27 @@ void main() {
               .toList(),
         );
       });
-      test("Should update last date loaded data correctly", () async {
+      test("Should update last get sales params correctly", () async {
         homePresenter.selectedDateMock = faker.date.dateTime();
 
         await sut.getSales(homePresenter);
 
-        expect(sut.lastDateLoadedData, homePresenter.selectedDateMock);
+        final startDate = DateTime(
+          homePresenter.selectedDate.year,
+          homePresenter.selectedDate.month,
+          homePresenter.selectedDate.day,
+        );
+
+        expect(
+          sut.lastGetSalesParams,
+          GetSalesParams(
+            startDate: startDate,
+            endDate: startDate,
+            groupByEnterprise: true,
+            groupByDay: true,
+            groupByPaymentFinalization: true,
+          ),
+        );
       });
 
       test(

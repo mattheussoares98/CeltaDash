@@ -1,13 +1,14 @@
 import 'package:celta_dash/domain/helpers/helpers.dart';
+import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/ui/pages/pages.dart';
 import 'package:mocktail/mocktail.dart';
 
 class PaymentTypePresenterSpy extends Mock implements PaymentTypePresenter {
-  DateTime lastDateLoadedDataMock = DateTime.now();
+  GetSalesParams? lastGetSalesParamsMock;
 
   PaymentTypePresenterSpy() {
-    when(() => this.lastDateLoadedData)
-        .thenAnswer((_) => lastDateLoadedDataMock);
+    when(() => this.lastGetSalesParams)
+        .thenAnswer((_) => lastGetSalesParamsMock);
 
     _mockGetSalesCall().thenAnswer((any) async => any);
   }
