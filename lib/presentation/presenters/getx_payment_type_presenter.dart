@@ -34,14 +34,14 @@ class GetxPaymentTypePresenter extends GetxController
       isLoading = true;
       mainError = null;
 
+      if (periodType != null) {
+        _selectedPeriodType = periodType;
+      }
+
       if (forceRefresh != true &&
           lastDateLoadedData?.year == homePresenter.selectedDate.year &&
           lastDateLoadedData?.month == homePresenter.selectedDate.month) {
         return;
-      }
-
-      if (periodType != null) {
-        _selectedPeriodType = periodType;
       }
 
       final startDate = DateTime(

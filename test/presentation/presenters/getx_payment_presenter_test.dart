@@ -222,6 +222,34 @@ void main() {
               ),
             )).called(2);
       });
+
+      test(
+          "Should not load daily if already load monthly and is not forcing refresh",
+          () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
+        await sut.getSales(homePresenter, periodType: PeriodType.daily);
+
+        final startDate = DateTime(
+          homePresenter.selectedDate.year,
+          homePresenter.selectedDate.month,
+          homePresenter.selectedDate.day,
+        );
+
+        verifyNever(() => loadSaleMovements.get(
+              startDate: startDate,
+              endDate: startDate,
+              groupByEnterprise: true,
+              groupByDay: true,
+              groupByPaymentModality: true,
+            ));
+      });
+      test("Should update selected period correctly", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
+        expect(sut.selectedPeriodType, PeriodType.monthly);
+
+        await sut.getSales(homePresenter, periodType: PeriodType.daily);
+        expect(sut.selectedPeriodType, PeriodType.daily);
+      });
     });
 
     group("Sales movements by finalizations", () {
