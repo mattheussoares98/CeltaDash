@@ -1,6 +1,6 @@
 
 
-import 'package:celta_plus/domain/usecases/usecases.dart';
+import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:mocktail/mocktail.dart';
 
 class NavigateToSpy extends Mock implements NavigateTo {

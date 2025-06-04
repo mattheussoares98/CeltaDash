@@ -1,4 +1,4 @@
-import 'package:celta_plus/domain/entities/sale_movement_entity.dart';
+import 'package:celta_dash/domain/entities/sale_movement_entity.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/helpers/helpers.dart';

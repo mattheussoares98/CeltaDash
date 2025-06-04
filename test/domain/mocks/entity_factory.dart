@@ -1,5 +1,5 @@
-import 'package:celta_plus/domain/entities/entities.dart';
-import 'package:celta_plus/main/builders/builders.dart';
+import 'package:celta_dash/domain/entities/entities.dart';
+import 'package:celta_dash/main/builders/builders.dart';
 import 'package:faker/faker.dart';
 
 class EntityFactory {

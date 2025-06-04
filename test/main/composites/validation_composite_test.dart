@@ -1,5 +1,5 @@
-import 'package:celta_plus/main/composites/composites.dart';
-import 'package:celta_plus/presentation/protocols/protocols.dart';
+import 'package:celta_dash/main/composites/composites.dart';
+import 'package:celta_dash/presentation/protocols/protocols.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 

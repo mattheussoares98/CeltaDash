@@ -1,5 +1,5 @@
-import 'package:celta_plus/data/http/http.dart';
-import 'package:celta_plus/infra/http/http.dart';
+import 'package:celta_dash/data/http/http.dart';
+import 'package:celta_dash/infra/http/http.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../mocks/mocks.dart';

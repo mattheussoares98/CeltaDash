@@ -1,4 +1,4 @@
-import 'package:celta_plus/ui/components/chart_prices.dart';
+import 'package:celta_dash/ui/components/chart_prices.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:celta_plus/domain/helpers/platform_type.dart';
+import 'package:celta_dash/domain/helpers/platform_type.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../../domain/usecases/usecases.dart';

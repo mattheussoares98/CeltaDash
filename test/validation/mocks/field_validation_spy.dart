@@ -1,5 +1,5 @@
-import 'package:celta_plus/presentation/protocols/protocols.dart';
-import 'package:celta_plus/validation/protocols/protocols.dart';
+import 'package:celta_dash/presentation/protocols/protocols.dart';
+import 'package:celta_dash/validation/protocols/protocols.dart';
 
 import 'package:mocktail/mocktail.dart';
 

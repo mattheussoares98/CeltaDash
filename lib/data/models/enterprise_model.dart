@@ -1,4 +1,4 @@
-import 'package:celta_plus/ui/helpers/helpers.dart';
+import 'package:celta_dash/ui/helpers/helpers.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../domain/entities/entities.dart';

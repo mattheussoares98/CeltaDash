@@ -1,4 +1,4 @@
-import 'package:celta_plus/ui/pages/group_summary/group_summary_details_page.dart';
+import 'package:celta_dash/ui/pages/group_summary/group_summary_details_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

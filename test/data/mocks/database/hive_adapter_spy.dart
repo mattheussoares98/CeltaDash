@@ -1,4 +1,4 @@
-import 'package:celta_plus/data/database/database.dart';
+import 'package:celta_dash/data/database/database.dart';
 import 'package:mocktail/mocktail.dart';
 
 class HiveStorageSpy extends Mock implements HiveStorage {

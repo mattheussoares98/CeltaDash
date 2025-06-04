@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:celta_plus/ui/pages/pages.dart';
+import 'package:celta_dash/ui/pages/pages.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:flutter/material.dart';
-import 'package:celta_plus/ui/helpers/helpers.dart';
+import 'package:celta_dash/ui/helpers/helpers.dart';
 
 class LoginPresenterSpy extends Mock implements LoginPresenter {
   final mainErrorController = StreamController<UIError?>();

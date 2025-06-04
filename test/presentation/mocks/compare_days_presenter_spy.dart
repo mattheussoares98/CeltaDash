@@ -1,4 +1,4 @@
-import 'package:celta_plus/ui/pages/pages.dart';
+import 'package:celta_dash/ui/pages/pages.dart';
 import 'package:mocktail/mocktail.dart';
 
 class CompareDaysPresenterSpy extends Mock implements CompareDaysPresenter {

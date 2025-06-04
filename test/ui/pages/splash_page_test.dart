@@ -1,5 +1,5 @@
-import 'package:celta_plus/ui/helpers/helpers.dart';
-import 'package:celta_plus/ui/pages/pages.dart';
+import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:celta_dash/ui/pages/pages.dart';
 
 import '../helpers/helpers.dart';
 import '../mocks/mocks.dart';

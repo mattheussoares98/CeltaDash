@@ -1,5 +1,5 @@
-import 'package:celta_plus/domain/helpers/helpers.dart';
-import 'package:celta_plus/ui/pages/pages.dart';
+import 'package:celta_dash/domain/helpers/helpers.dart';
+import 'package:celta_dash/ui/pages/pages.dart';
 import 'package:mocktail/mocktail.dart';
 
 class DepartmentsPresenterSpy extends Mock implements DepartmentsPresenter {

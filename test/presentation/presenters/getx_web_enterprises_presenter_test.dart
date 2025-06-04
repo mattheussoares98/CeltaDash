@@ -1,9 +1,9 @@
-import 'package:celta_plus/data/models/models.dart';
-import 'package:celta_plus/domain/entities/entities.dart';
-import 'package:celta_plus/main/builders/builders.dart';
-import 'package:celta_plus/presentation/presenters/presenters.dart';
-import 'package:celta_plus/ui/helpers/helpers.dart';
-import 'package:celta_plus/ui/pages/web_enterprises/web_enterprises.dart';
+import 'package:celta_dash/data/models/models.dart';
+import 'package:celta_dash/domain/entities/entities.dart';
+import 'package:celta_dash/main/builders/builders.dart';
+import 'package:celta_dash/presentation/presenters/presenters.dart';
+import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:celta_dash/ui/pages/web_enterprises/web_enterprises.dart';
 import 'package:faker/faker.dart';
 
 import 'package:get/get.dart';

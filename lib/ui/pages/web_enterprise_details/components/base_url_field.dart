@@ -1,4 +1,4 @@
-import 'package:celta_plus/presentation/protocols/protocols.dart';
+import 'package:celta_dash/presentation/protocols/protocols.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

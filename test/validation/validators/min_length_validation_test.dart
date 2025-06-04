@@ -1,5 +1,5 @@
-import 'package:celta_plus/presentation/protocols/protocols.dart';
-import 'package:celta_plus/validation/validators/validators.dart';
+import 'package:celta_dash/presentation/protocols/protocols.dart';
+import 'package:celta_dash/validation/validators/validators.dart';
 
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';

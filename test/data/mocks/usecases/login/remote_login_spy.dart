@@ -1,6 +1,6 @@
-import 'package:celta_plus/data/models/models.dart';
-import 'package:celta_plus/domain/helpers/helpers.dart';
-import 'package:celta_plus/domain/usecases/usecases.dart';
+import 'package:celta_dash/data/models/models.dart';
+import 'package:celta_dash/domain/helpers/helpers.dart';
+import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:mocktail/mocktail.dart';
 
 class RemoteLoginSpy extends Mock implements RemoteLogin {

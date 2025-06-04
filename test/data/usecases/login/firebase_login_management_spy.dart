@@ -1,7 +1,7 @@
 // ignore_for_file: unnecessary_this
 
-import 'package:celta_plus/domain/helpers/helpers.dart';
-import 'package:celta_plus/domain/usecases/usecases.dart';
+import 'package:celta_dash/domain/helpers/helpers.dart';
+import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:mocktail/mocktail.dart';
 
 class FirebaseLoginManagementSpy extends Mock

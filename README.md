@@ -1,4 +1,4 @@
-# celta_plus
+# celta_dash
 
 A new Flutter project.
 
