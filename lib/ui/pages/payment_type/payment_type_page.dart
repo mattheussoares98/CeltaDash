@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../domain/helpers/helpers.dart';
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 import '../../mixins/mixins.dart';
@@ -19,7 +20,6 @@ class PaymentTypePage extends StatefulWidget {
 
 class _PaymentTypePageState extends State<PaymentTypePage>
     with LoadingManager, UIErrorManager {
-  bool selectedMonth = false; //TODO remove this
   int selectedPageIndex = 0;
   StreamSubscription? mainErrorSubscription;
   final pageController = PageController();
@@ -45,16 +45,14 @@ class _PaymentTypePageState extends State<PaymentTypePage>
     pageController.dispose();
   }
 
-  void updateSelectedMonth(bool value) {
-    setState(() {
-      selectedMonth = value;
-    });
-  }
-
-  bool filter(SaleMovementViewModel sale, HomePresenter homePresenter) {
+  bool filter(
+    SaleMovementViewModel sale,
+    HomePresenter homePresenter,
+    PaymentTypePresenter paymentTypePresenter,
+  ) {
     final selectedDate = homePresenter.selectedDate;
 
-    if (selectedMonth) {
+    if (paymentTypePresenter.selectedPeriodType == PeriodType.monthly) {
       return sale.Date?.month == selectedDate.month &&
           sale.Date?.year == selectedDate.year;
     } else {
@@ -111,7 +109,6 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                   saleMovementsByFinalizations.isEmpty ||
                   saleMovementsByModalities == null ||
                   saleMovementsByModalities.isEmpty) {
-                selectedMonth = false;
                 return EmptySales(isLoading: isLoadingPayments.data);
               }
 
@@ -120,8 +117,20 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: SelectDayOrMonthButtons(
-                      selectedMonth: selectedMonth,
-                      updateSelectedMonth: updateSelectedMonth,
+                      selectedMonth: paymentTypePresenter.selectedPeriodType ==
+                          PeriodType.monthly,
+                      onTapMonthly: () {
+                        paymentTypePresenter.getSales(
+                          homePresenter,
+                          periodType: PeriodType.monthly,
+                        );
+                      },
+                      onTapDaily: () {
+                        paymentTypePresenter.getSales(
+                          homePresenter,
+                          periodType: PeriodType.daily,
+                        );
+                      },
                     ),
                   ),
                   Expanded(
@@ -142,7 +151,11 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                                 filterByFinalizations: false,
                                 saleMovements: saleMovementsByModalities.where(
                                   (element) {
-                                    return filter(element, homePresenter);
+                                    return filter(
+                                      element,
+                                      homePresenter,
+                                      paymentTypePresenter,
+                                    );
                                   },
                                 ).toList(),
                               ),
@@ -151,7 +164,11 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                                 saleMovements:
                                     saleMovementsByFinalizations.where(
                                   (element) {
-                                    return filter(element, homePresenter);
+                                    return filter(
+                                      element,
+                                      homePresenter,
+                                      paymentTypePresenter,
+                                    );
                                   },
                                 ).toList(),
                               ),

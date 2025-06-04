@@ -5,11 +5,13 @@ import '../../../helpers/helpers.dart';
 
 class SelectDayOrMonthButtons extends StatelessWidget {
   final bool selectedMonth;
-  final void Function(bool) updateSelectedMonth;
+  final void Function() onTapMonthly;
+  final void Function() onTapDaily;
   const SelectDayOrMonthButtons({
     super.key,
     required this.selectedMonth,
-    required this.updateSelectedMonth,
+    required this.onTapMonthly,
+    required this.onTapDaily,
   });
 
   @override
@@ -22,15 +24,11 @@ class SelectDayOrMonthButtons extends StatelessWidget {
           items: [
             SelectPeriodItems.createItem(
               title: R.string.day,
-              onTap: () {
-                updateSelectedMonth(false);
-              },
+              onTap: onTapDaily,
             ),
             SelectPeriodItems.createItem(
               title: R.string.month,
-              onTap: () {
-                updateSelectedMonth(true);
-              },
+              onTap: onTapMonthly,
             ),
           ],
         ),
