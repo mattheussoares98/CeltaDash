@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
+import '../../../../domain/helpers/helpers.dart';
 import '../../../components/components.dart';
-import '../../../helpers/helpers.dart';
 
 class Periods extends StatelessWidget {
   final bool selectedDay;
-  final void Function() selectDay;
-  final void Function() selectMonth;
+  final void Function() onTapDaily;
+  final void Function() onTapMonthly;
   const Periods({
     super.key,
     required this.selectedDay,
-    required this.selectDay,
-    required this.selectMonth,
+    required this.onTapDaily,
+    required this.onTapMonthly,
   });
 
   @override
@@ -19,17 +19,9 @@ class Periods extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SelectPeriodItems(
-        indexToSelectWhenRebuild: selectedDay ? 0 : 1,
-        items: [
-          SelectPeriodItems.createItem(
-            title: R.string.day,
-            onTap: selectDay,
-          ),
-          SelectPeriodItems.createItem(
-            title: R.string.month,
-            onTap: selectMonth,
-          ),
-        ],
+        onTapDaily: onTapDaily,
+        onTapMonthly: onTapMonthly,
+        selectedPeriodType: PeriodType.daily,
       ),
     );
   }

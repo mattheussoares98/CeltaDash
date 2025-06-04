@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../domain/helpers/helpers.dart';
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 import '../../mixins/mixins.dart';
@@ -91,25 +92,7 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SelectPeriodItems(
-                      items: [
-                        SelectPeriodItems.createItem(
-                          title: R.string.day,
-                          onTap: () {
-                            setState(() {
-                              selectedDay = true;
-                            });
-                          },
-                        ),
-                        SelectPeriodItems.createItem(
-                          title: R.string.month,
-                          onTap: () {
-                            setState(() {
-                              selectedDay = false;
-                            });
-                          },
-                        ),
-                      ],
-                      indexToSelectWhenRebuild: selectedDay ? 0 : 1,
+                      selectedPeriodType: PeriodType.daily,
                     ),
                     const SizedBox(height: 10),
                     TableItem(

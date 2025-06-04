@@ -101,14 +101,16 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                             children: [
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: SelectDayOrMonth(
-                                  onTapSelectDay: () {
+                                child: SelectPeriodItems(
+                                  selectedPeriodType:
+                                      departmentsPresenter.selectedPeriodType,
+                                  onTapDaily: () {
                                     departmentsPresenter.getSales(
                                       homePresenter,
                                       periodType: PeriodType.daily,
                                     );
                                   },
-                                  onTapSelectMonth: () {
+                                  onTapMonthly: () {
                                     departmentsPresenter.getSales(
                                       homePresenter,
                                       periodType: PeriodType.monthly,

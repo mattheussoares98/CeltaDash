@@ -87,12 +87,12 @@ class _ProfitabilityPageState extends State<ProfitabilityPage> {
                                   children: [
                                     Periods(
                                       selectedDay: selectedDay,
-                                      selectDay: () {
+                                      onTapDaily: () {
                                         setState(() {
                                           selectedDay = true;
                                         });
                                       },
-                                      selectMonth: () {
+                                      onTapMonthly: () {
                                         setState(() {
                                           selectedDay = false;
                                         });

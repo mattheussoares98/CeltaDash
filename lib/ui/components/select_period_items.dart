@@ -5,15 +5,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../domain/helpers/helpers.dart';
+import '../helpers/helpers.dart';
 import '../pages/pages.dart';
 
 class SelectPeriodItems extends StatefulWidget {
-  final List<_PeriodItem> items;
-  final int indexToSelectWhenRebuild;
+  final PeriodType? selectedPeriodType;
+  final void Function()? onTapDaily;
+  final void Function()? onTapWeekly;
+  final void Function()? onTapMonthly;
+  final void Function()? onTapYearly;
   const SelectPeriodItems({
     super.key,
-    required this.items,
-    required this.indexToSelectWhenRebuild,
+    required this.selectedPeriodType,
+    this.onTapDaily,
+    this.onTapWeekly,
+    this.onTapMonthly,
+    this.onTapYearly,
   });
 
   static _PeriodItem createItem({
@@ -30,18 +38,52 @@ class SelectPeriodItems extends StatefulWidget {
 class _PeriodItems extends State<SelectPeriodItems> {
   String? selected;
 
+  List<_PeriodItem> get items => <_PeriodItem>[
+        if (widget.onTapDaily != null)
+          _PeriodItem(title: R.string.day, onTap: widget.onTapDaily!),
+        if (widget.onTapWeekly != null)
+          _PeriodItem(title: R.string.week, onTap: widget.onTapWeekly!),
+        if (widget.onTapMonthly != null)
+          _PeriodItem(title: R.string.month, onTap: widget.onTapMonthly!),
+        if (widget.onTapYearly != null)
+          _PeriodItem(title: R.string.year, onTap: widget.onTapYearly!),
+      ];
+
+  int get selectedItemIndex {
+    if (widget.selectedPeriodType == PeriodType.daily &&
+        widget.onTapDaily != null) {
+      return items.indexWhere((e) => e.title == R.string.day);
+    } else if (widget.selectedPeriodType == PeriodType.weekly &&
+        widget.onTapWeekly != null) {
+      return items.indexWhere((e) => e.title == R.string.week);
+    } else if (widget.selectedPeriodType == PeriodType.monthly &&
+        widget.onTapMonthly != null) {
+      return items.indexWhere((e) => e.title == R.string.month);
+    } else if (widget.selectedPeriodType == PeriodType.yearly &&
+        widget.onTapYearly != null) {
+      return items.indexWhere((e) => e.title == R.string.year);
+    } else {
+      return 0;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    if (widget.items.isNotEmpty) {
-      selected = widget.items[widget.indexToSelectWhenRebuild].title;
+
+    if (items.isNotEmpty) {
+      selected = items[selectedItemIndex].title;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.items.isEmpty) {
-      return const Text("Empty items. You must create items");
+    if (widget.onTapDaily == null &&
+        widget.onTapWeekly == null &&
+        widget.onTapMonthly == null &&
+        widget.onTapYearly == null) {
+      return const Text(
+          "Empty items. You must pass the functions for each item that wants enable");
     }
 
     HomePresenter homePresenter = Get.find();
@@ -51,7 +93,7 @@ class _PeriodItems extends State<SelectPeriodItems> {
         padding: const EdgeInsets.all(8),
         child: CupertinoSlidingSegmentedControl<String>(
           children: {
-            for (var item in widget.items)
+            for (var item in items)
               item.title: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -74,7 +116,7 @@ class _PeriodItems extends State<SelectPeriodItems> {
           onValueChanged: (newValue) {
             if (newValue == null) return;
             selected = newValue;
-            widget.items.firstWhere((e) => e.title == newValue).onTap();
+            items.firstWhere((e) => e.title == newValue).onTap();
             homePresenter.updateScreen();
           },
         ),
@@ -82,10 +124,10 @@ class _PeriodItems extends State<SelectPeriodItems> {
     }
 
     return SegmentedButton<String>(
-      segments: List.generate(widget.items.length, (i) {
+      segments: List.generate(items.length, (i) {
         return ButtonSegment(
-          value: widget.items[i].title,
-          label: FittedBox(child: Text(widget.items[i].title)),
+          value: items[i].title,
+          label: FittedBox(child: Text(items[i].title)),
         );
       }),
       selected: {selected!},
@@ -94,7 +136,7 @@ class _PeriodItems extends State<SelectPeriodItems> {
         setState(() {
           selected = newSelection.first;
         });
-        widget.items.firstWhere((e) => e.title == selected).onTap();
+        items.firstWhere((e) => e.title == selected).onTap();
         homePresenter.updateScreen();
       },
       style: ButtonStyle(

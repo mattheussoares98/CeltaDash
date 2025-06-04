@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../domain/helpers/helpers.dart';
 import '../../helpers/helpers.dart';
 import '../../components/components.dart';
 import '../pages.dart';
@@ -100,28 +101,7 @@ class SellersPageState extends State<SellersPage> {
                         child: Column(
                           children: [
                             SelectPeriodItems(
-                              indexToSelectWhenRebuild:
-                                  indexToSelectWhenRebuild,
-                              items: [
-                                SelectPeriodItems.createItem(
-                                  title: R.string.day,
-                                  onTap: () {
-                                    updateSelectedPeriod(day: true);
-                                  },
-                                ),
-                                SelectPeriodItems.createItem(
-                                  title: R.string.month,
-                                  onTap: () {
-                                    updateSelectedPeriod(month: true);
-                                  },
-                                ),
-                                SelectPeriodItems.createItem(
-                                  title: R.string.year,
-                                  onTap: () {
-                                    updateSelectedPeriod(year: true);
-                                  },
-                                ),
-                              ],
+                              selectedPeriodType: PeriodType.daily,
                             ),
                             TableItem(
                               titleMinHeight: 43,

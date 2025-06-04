@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../domain/helpers/helpers.dart';
 import '../../helpers/helpers.dart';
 import '../../components/components.dart';
 import '../pages.dart';
@@ -9,8 +10,7 @@ class OperatorsPage extends StatefulWidget {
   const OperatorsPage({super.key});
 
   @override
-  State<OperatorsPage> createState() =>
-      _OperatorsPageState();
+  State<OperatorsPage> createState() => _OperatorsPageState();
 }
 
 class _OperatorsPageState extends State<OperatorsPage> {
@@ -22,8 +22,7 @@ class _OperatorsPageState extends State<OperatorsPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      OperatorsPresenter operatorsPresenter =
-          Get.find();
+      OperatorsPresenter operatorsPresenter = Get.find();
       operatorsPresenter.emitLoadingAgain();
     });
   }
@@ -102,28 +101,7 @@ class _OperatorsPageState extends State<OperatorsPage> {
                         child: Column(
                           children: [
                             SelectPeriodItems(
-                              indexToSelectWhenRebuild:
-                                  indexToSelectWhenRebuild,
-                              items: [
-                                SelectPeriodItems.createItem(
-                                  title: R.string.day,
-                                  onTap: () {
-                                    updateSelectedPeriod(day: true);
-                                  },
-                                ),
-                                SelectPeriodItems.createItem(
-                                  title: R.string.month,
-                                  onTap: () {
-                                    updateSelectedPeriod(month: true);
-                                  },
-                                ),
-                                SelectPeriodItems.createItem(
-                                  title: R.string.year,
-                                  onTap: () {
-                                    updateSelectedPeriod(year: true);
-                                  },
-                                ),
-                              ],
+                              selectedPeriodType: PeriodType.daily,
                             ),
                             TableItem(
                               titleMinHeight: 43,

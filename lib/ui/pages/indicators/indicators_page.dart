@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../domain/helpers/helpers.dart';
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 
@@ -27,21 +28,7 @@ class _IndicatorsPageState extends State<IndicatorsPage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: SelectPeriodItems(
-              indexToSelectWhenRebuild: 0,
-              items: [
-                SelectPeriodItems.createItem(
-                  title: R.string.day,
-                  onTap: () {},
-                ),
-                SelectPeriodItems.createItem(
-                  title: R.string.month,
-                  onTap: () {},
-                ),
-                SelectPeriodItems.createItem(
-                  title: R.string.year,
-                  onTap: () {},
-                ),
-              ],
+              selectedPeriodType: PeriodType.daily,
             ),
           ),
           TableItem(

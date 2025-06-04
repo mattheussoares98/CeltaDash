@@ -122,6 +122,7 @@ abstract class Translation {
   String get url;
   String get user;
   String get wait;
+  String get week;
   String get worstDayOfTheMonth;
   String get worstHourOfTheDay;
   String get year;

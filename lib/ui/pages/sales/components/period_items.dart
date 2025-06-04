@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
+import '../../../../domain/helpers/helpers.dart';
 import '../../../components/components.dart';
-import '../../../helpers/helpers.dart';
 
 class PeriodItems extends StatelessWidget {
   final void Function({
@@ -27,33 +27,7 @@ class PeriodItems extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: SelectPeriodItems(
-              indexToSelectWhenRebuild: indexToSelectWhenRebuild,
-              items: [
-                SelectPeriodItems.createItem(
-                  title: R.string.hours,
-                  onTap: () {
-                    updateSelectedItem(filterByHour: true);
-                  },
-                ),
-                SelectPeriodItems.createItem(
-                  title: R.string.days,
-                  onTap: () {
-                    updateSelectedItem(filterByDay: true);
-                  },
-                ),
-                SelectPeriodItems.createItem(
-                  title: R.string.months,
-                  onTap: () {
-                    updateSelectedItem(filterByMonth: true);
-                  },
-                ),
-                SelectPeriodItems.createItem(
-                  title: R.string.years,
-                  onTap: () {
-                    updateSelectedItem(filterByYear: true);
-                  },
-                ),
-              ],
+              selectedPeriodType: PeriodType.daily,
             ),
           ),
         ),
