@@ -118,7 +118,9 @@ void main() {
         expect(sut.lastDateLoadedData, homePresenter.selectedDateMock);
       });
 
-      test("Should load sale movements with correct values", () async {
+      test(
+          "Should load sale movements with correct values when period type is daily",
+          () async {
         homePresenter.selectedEnterpriseMock =
             EnterpriseModel.fromEntity(selectedEnterprise).toViewModel();
 
@@ -127,32 +129,28 @@ void main() {
         final startDate = DateTime(
           homePresenter.selectedDate.year,
           homePresenter.selectedDate.month,
-          1,
+          homePresenter.selectedDate.day,
         );
-        final endDate = DateTime(
-          homePresenter.selectedDate.year,
-          homePresenter.selectedDate.month + 1,
-          1,
-        ).subtract(Duration(days: 1));
 
         verify(() => loadSaleMovements.get(
               startDate: startDate,
-              endDate: endDate,
+              endDate: startDate,
               groupByEnterprise: true,
               groupByDay: true,
               groupByPaymentModality: true,
             )).called(1);
       });
-      test("Should load sale movements with correct new date", () async {
-        homePresenter.selectedDateMock = faker.date.dateTime();
+      test(
+          "Should load sale movements with correct values when period type is monthly",
+          () async {
         homePresenter.selectedEnterpriseMock =
             EnterpriseModel.fromEntity(selectedEnterprise).toViewModel();
 
-        await sut.getSales(homePresenter);
+        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
         final startDate = DateTime(
-          homePresenter.selectedDateMock.year,
-          homePresenter.selectedDateMock.month,
+          homePresenter.selectedDate.year,
+          homePresenter.selectedDate.month,
           1,
         );
         final endDate = DateTime(
@@ -169,17 +167,20 @@ void main() {
               groupByPaymentModality: true,
             )).called(1);
       });
-      test("Should not load sale movements if dont change the month", () async {
+
+      test(
+          "Should not load sale movements if dont change the month and is monthly period",
+          () async {
         homePresenter.selectedDateMock = faker.date.dateTime();
 
-        await sut.getSales(homePresenter);
+        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
         homePresenter.selectedDateMock = DateTime(
           homePresenter.selectedDateMock.year,
           homePresenter.selectedDateMock.month,
           faker.randomGenerator.integer(28),
         );
-        await sut.getSales(homePresenter);
+        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
         verify(() => loadSaleMovements.get(
               groupByEnterprise: true,
@@ -212,13 +213,13 @@ void main() {
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
                 homePresenter.selectedDateMock.month,
-                1,
+                homePresenter.selectedDateMock.day,
               ),
               endDate: DateTime(
                 homePresenter.selectedDateMock.year,
-                homePresenter.selectedDateMock.month + 1,
-                1,
-              ).subtract(Duration(days: 1)),
+                homePresenter.selectedDateMock.month,
+                homePresenter.selectedDateMock.day,
+              ),
             )).called(2);
       });
     });
@@ -235,7 +236,8 @@ void main() {
         );
       });
 
-      test("Should load sale movements with correct values", () async {
+      test("Should load sale movements with correct values if period is daily",
+          () async {
         homePresenter.selectedEnterpriseMock =
             EnterpriseModel.fromEntity(selectedEnterprise).toViewModel();
 
@@ -244,11 +246,29 @@ void main() {
         final startDate = DateTime(
           homePresenter.selectedDate.year,
           homePresenter.selectedDate.month,
+          homePresenter.selectedDate.day,
+        );
+
+        verify(() => loadSaleMovements.get(
+              startDate: startDate,
+              endDate: startDate,
+              groupByEnterprise: true,
+              groupByDay: true,
+              groupByPaymentFinalization: true,
+            )).called(1);
+      });
+      test("Should load sale movements with correct date if period is monthly",
+          () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
+
+        final startDate = DateTime(
+          homePresenter.selectedDateMock.year,
+          homePresenter.selectedDateMock.month,
           1,
         );
         final endDate = DateTime(
-          homePresenter.selectedDate.year,
-          homePresenter.selectedDate.month + 1,
+          homePresenter.selectedDateMock.year,
+          homePresenter.selectedDateMock.month + 1,
           1,
         ).subtract(Duration(days: 1));
 
@@ -260,12 +280,9 @@ void main() {
               groupByPaymentFinalization: true,
             )).called(1);
       });
-      test("Should load sale movements with correct new date", () async {
-        homePresenter.selectedDateMock = faker.date.dateTime();
-        homePresenter.selectedEnterpriseMock =
-            EnterpriseModel.fromEntity(selectedEnterprise).toViewModel();
-
-        await sut.getSales(homePresenter);
+      test("Should not load again if dont force refresh", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
+        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
         final startDate = DateTime(
           homePresenter.selectedDateMock.year,

@@ -47,7 +47,9 @@ class GetxPaymentTypePresenter extends GetxController
       final startDate = DateTime(
         homePresenter.selectedDate.year,
         homePresenter.selectedDate.month,
-        1,
+        _selectedPeriodType == PeriodType.daily
+            ? homePresenter.selectedDate.day
+            : 1,
       );
 
       final endDate = DateTime(
@@ -58,7 +60,7 @@ class GetxPaymentTypePresenter extends GetxController
 
       final salesByModality = await loadSaleMovements.get(
         startDate: startDate,
-        endDate: endDate,
+        endDate: _selectedPeriodType == PeriodType.daily ? startDate : endDate,
         groupByEnterprise: true,
         groupByDay: true,
         groupByPaymentModality: true,
@@ -70,7 +72,7 @@ class GetxPaymentTypePresenter extends GetxController
 
       final salesByFinalization = await loadSaleMovements.get(
         startDate: startDate,
-        endDate: endDate,
+        endDate: _selectedPeriodType == PeriodType.daily ? startDate : endDate,
         groupByEnterprise: true,
         groupByDay: true,
         groupByPaymentFinalization: true,
