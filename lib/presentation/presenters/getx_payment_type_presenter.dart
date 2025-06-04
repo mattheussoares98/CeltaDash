@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
@@ -93,7 +92,6 @@ class GetxPaymentTypePresenter extends GetxController
           .toList();
 
       lastParams = getSalesParams;
-      debugPrint("finished search"); //TODO remove
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {

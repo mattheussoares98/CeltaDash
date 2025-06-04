@@ -117,7 +117,6 @@ class _ProfitabilityPageState extends State<ProfitabilityPage> {
                                             Sections(
                                               saleMovements: salesDepartments,
                                             ),
-                                            //TODO add products
                                           ],
                                         ),
                                       ),
