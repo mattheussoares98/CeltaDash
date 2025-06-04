@@ -19,7 +19,7 @@ class PaymentTypePage extends StatefulWidget {
 
 class _PaymentTypePageState extends State<PaymentTypePage>
     with LoadingManager, UIErrorManager {
-  bool selectedMonth = false;
+  bool selectedMonth = false; //TODO remove this
   int selectedPageIndex = 0;
   StreamSubscription? mainErrorSubscription;
   final pageController = PageController();

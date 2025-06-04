@@ -1,5 +1,6 @@
 import 'package:celta_dash/data/models/models.dart';
 import 'package:celta_dash/domain/entities/entities.dart';
+import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
 import 'package:faker/faker.dart';
@@ -80,6 +81,21 @@ void main() {
         loadSaleMovements.mockGetError();
 
         await sut.getSales(homePresenter);
+      });
+
+      test("Should update period type correctly", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
+        expect(sut.selectedPeriodType, PeriodType.monthly);
+
+        homePresenter.selectedDateMock =
+            faker.date.dateTime(minYear: 10, maxYear: 20);
+        await sut.getSales(homePresenter, periodType: PeriodType.daily);
+        expect(sut.selectedPeriodType, PeriodType.daily);
+
+        homePresenter.selectedDateMock =
+            faker.date.dateTime(minYear: 1, maxYear: 2);
+        await sut.getSales(homePresenter, periodType: PeriodType.weekly);
+        expect(sut.selectedPeriodType, PeriodType.weekly);
       });
     });
 

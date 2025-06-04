@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
+import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
 import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
@@ -23,6 +24,7 @@ class GetxPaymentTypePresenter extends GetxController
   @override
   Future<void> getSales(
     HomePresenter homePresenter, {
+    PeriodType? periodType,
     bool? forceRefresh,
   }) async {
     if (isLoadingValue == true) {
@@ -36,6 +38,10 @@ class GetxPaymentTypePresenter extends GetxController
           lastDateLoadedData?.year == homePresenter.selectedDate.year &&
           lastDateLoadedData?.month == homePresenter.selectedDate.month) {
         return;
+      }
+
+      if (periodType != null) {
+        _selectedPeriodType = periodType;
       }
 
       final startDate = DateTime(
@@ -97,4 +103,8 @@ class GetxPaymentTypePresenter extends GetxController
       _saleMovementsFinalizations.value;
   set salesByFinaliztions(List<SaleMovementViewModel>? value) =>
       _saleMovementsFinalizations.value = value;
+
+  PeriodType _selectedPeriodType = PeriodType.daily;
+  @override
+  PeriodType get selectedPeriodType => _selectedPeriodType;
 }
