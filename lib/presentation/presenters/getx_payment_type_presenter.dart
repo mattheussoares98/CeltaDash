@@ -38,11 +38,14 @@ class GetxPaymentTypePresenter extends GetxController
         _selectedPeriodType = periodType;
       }
 
-      if (forceRefresh != true &&
-          lastGetSalesParams?.startDate.year ==
-              homePresenter.selectedDate.year &&
-          lastGetSalesParams?.startDate.month ==
-              homePresenter.selectedDate.month) {
+      bool canSearchMonthly = lastGetSalesParams?.startDate.year !=
+              homePresenter.selectedDate.year ||
+          lastGetSalesParams?.startDate.month !=
+              homePresenter.selectedDate.month ||
+          (lastGetSalesParams?.startDate != null &&
+              lastGetSalesParams?.startDate == lastGetSalesParams?.endDate);
+
+      if (forceRefresh != true && !canSearchMonthly) {
         return;
       }
 
