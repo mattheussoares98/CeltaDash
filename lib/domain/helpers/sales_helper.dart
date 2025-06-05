@@ -47,6 +47,7 @@ class SalesHelper {
         lastGetSalesParams?.endDate == DateTime(selectedDate.year, 12, 31)) {
       return false;
     }
+    
 
     return true;
   }
