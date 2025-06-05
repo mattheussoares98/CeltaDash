@@ -1,36 +1,67 @@
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
+import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
 import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
 class GetxSalesPresenter extends GetxController
-    with LoadingManager, UIErrorManager, LastDateLoadedDataManager
+    with LoadingManager, UIErrorManager, LastGetSalesParamsManager
     implements SalesPresenter {
   final LoadSaleMovements loadSaleMovements;
 
   GetxSalesPresenter({required this.loadSaleMovements});
 
   @override
-  Future<void> getSales({
-    required HomePresenter homePresenter,
-    required ResumePresenter resumePresenter,
+  Future<void> getSales(
+    HomePresenter homePresenter, {
+    PeriodType? periodType,
     bool? forceRefresh,
   }) async {
-    mainError = null;
     isLoading = true;
+    mainError = null;
 
     try {
-      if (homePresenter.selectedDate.year == lastDateLoadedData?.year &&
-          homePresenter.selectedEnterprise == _lastEnterpriseLoadedData &&
-          forceRefresh != true) {
+      if (periodType != null) {
+        _selectedPeriodType = periodType;
+      }
+
+      final canSearchAgain = SalesHelper.canSearch(
+        forceRefresh: forceRefresh,
+        lastGetSalesParams: lastGetSalesParams,
+        selectedDate: homePresenter.selectedDate,
+        periodType: _selectedPeriodType,
+        //TODO implement year
+      );
+
+      if (!canSearchAgain) {
         return;
       }
 
-      final remoteSalesByMonth = await loadSaleMovements.get(
-        GetSalesParams(
+      late GetSalesParams getSalesParams;
+
+      if (_selectedPeriodType == PeriodType.daily) {
+        final startDate = DateTime(
+          homePresenter.selectedDate.year,
+          homePresenter.selectedDate.month,
+          1,
+        );
+        final endDate = DateTime(
+          homePresenter.selectedDate.year,
+          homePresenter.selectedDate.month + 1,
+        ).subtract(Duration(days: 1));
+
+        getSalesParams = GetSalesParams(
+          enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+          startDate: startDate,
+          endDate: endDate,
+          groupByEnterprise: true,
+          groupByHour: true,
+        );
+      } else if (_selectedPeriodType == PeriodType.monthly) {
+        getSalesParams = GetSalesParams(
           enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
           startDate: DateTime(homePresenter.selectedDate.year, 1, 1),
           endDate: DateTime(
@@ -39,15 +70,10 @@ class GetxSalesPresenter extends GetxController
             31,
           ),
           groupByEnterprise: true,
-          groupByDay: true,
-        ),
-      );
-      salesByMonth = remoteSalesByMonth
-          .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
-          .toList();
-
-      final remoteSalesByYear = await loadSaleMovements.get(
-        GetSalesParams(
+          groupByMonth: true,
+        );
+      } else if (_selectedPeriodType == PeriodType.yearly) {
+        getSalesParams = GetSalesParams(
           enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
           startDate: DateTime(homePresenter.selectedDate.year - 2),
           endDate: DateTime(
@@ -57,33 +83,30 @@ class GetxSalesPresenter extends GetxController
           ),
           groupByEnterprise: true,
           groupByYear: true,
-        ),
-      );
+        );
+      }
+      final remoteSales = await loadSaleMovements.get(getSalesParams);
+      lastParams = getSalesParams;
 
-      salesByYear = remoteSalesByYear
+      final newSales = remoteSales
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
           .toList();
 
-      lastDateLoaded = homePresenter.selectedDate;
+      if (_selectedPeriodType == PeriodType.daily) {
+        salesByDay = newSales;
+      } else if (_selectedPeriodType == PeriodType.monthly) {
+        salesByMonth = newSales;
+      } else if (_selectedPeriodType == PeriodType.yearly) {
+        salesByYear = newSales;
+      }
+
       _lastEnterpriseLoadedData = homePresenter.selectedEnterprise;
+      //TODO test changing enterprise
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {
       isLoading = false;
     }
-  }
-
-  @override
-  void updateSelectedPeriod({
-    bool? filterByHour,
-    bool? filterByDay,
-    bool? filterByMonth,
-    bool? filterByYear,
-  }) {
-    _filterByHour = filterByHour ?? false;
-    _filterByDay = filterByDay ?? false;
-    _filterByMonth = filterByMonth ?? false;
-    _filterByYear = filterByYear ?? false;
   }
 
   final _saleMovementsByYear = Rx<List<SaleMovementViewModel>?>(null);
@@ -100,24 +123,20 @@ class GetxSalesPresenter extends GetxController
   set salesByMonth(List<SaleMovementViewModel>? value) =>
       _saleMovementsByMonth.value = value;
 
-  bool _filterByHour = true;
+  final _saleMovementsByDay = Rx<List<SaleMovementViewModel>?>(null);
   @override
-  bool get filterByHour => _filterByHour;
-
-  bool _filterByDay = false;
-  @override
-  bool get filterByDay => _filterByDay;
-
-  bool _filterByMonth = false;
-  @override
-  bool get filterByMonth => _filterByMonth;
-
-  bool _filterByYear = false;
-  @override
-  bool get filterByYear => _filterByYear;
+  List<SaleMovementViewModel>? get saleMovementsByDay =>
+      _saleMovementsByDay.value;
+  set salesByDay(List<SaleMovementViewModel>? value) =>
+      _saleMovementsByDay.value = value;
 
   EnterpriseViewModel? _lastEnterpriseLoadedData;
   @override
   EnterpriseViewModel? get lastEnterpriseLoadedData =>
       _lastEnterpriseLoadedData;
+
+  PeriodType _selectedPeriodType = PeriodType.daily;
+  //TODO create mixin
+  @override
+  PeriodType get selectedPeriodType => _selectedPeriodType;
 }

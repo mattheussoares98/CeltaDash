@@ -1,31 +1,23 @@
 import 'package:flutter/widgets.dart';
 
+import '../../../domain/helpers/helpers.dart';
+import '../../../domain/usecases/usecases.dart';
 import '../../helpers/helpers.dart';
 import '../pages.dart';
 
 abstract class SalesPresenter implements Listenable {
+  List<SaleMovementViewModel>? get saleMovementsByDay;
   List<SaleMovementViewModel>? get saleMovementsByMonth;
   List<SaleMovementViewModel>? get saleMovementsByYear;
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
-  DateTime? get lastDateLoadedData;
+  GetSalesParams? get lastGetSalesParams;
   EnterpriseViewModel? get lastEnterpriseLoadedData;
+  PeriodType get selectedPeriodType;
 
-  bool get filterByHour;
-  bool get filterByDay;
-  bool get filterByMonth;
-  bool get filterByYear;
-
-  Future<void> getSales({
-    required HomePresenter homePresenter,
-    required ResumePresenter resumePresenter,
+  Future<void> getSales(
+    HomePresenter homePresenter, {
+    PeriodType? periodType,
     bool? forceRefresh,
-  });
-
-  void updateSelectedPeriod({
-    bool? filterByHour,
-    bool? filterByDay,
-    bool? filterByMonth,
-    bool? filterByYear,
   });
 }

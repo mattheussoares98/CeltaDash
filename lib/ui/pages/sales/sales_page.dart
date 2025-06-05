@@ -34,23 +34,8 @@ class _SalesPageState extends State<SalesPage>
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (mounted) {
-        SalesPresenter salesPresenter = Get.find();
-        setState(() {
-          salesPresenter.updateSelectedPeriod(filterByHour: true);
-        });
-      }
+      if (mounted) {}
     });
-  }
-
-  int get indexToSelectWhenRebuild {
-    SalesPresenter salesPresenter = Get.find();
-
-    if (salesPresenter.filterByHour) return 0;
-    if (salesPresenter.filterByDay) return 1;
-    if (salesPresenter.filterByMonth) return 2;
-    if (salesPresenter.filterByYear) return 3;
-    return 0;
   }
 
   @override
@@ -123,21 +108,19 @@ class _SalesPageState extends State<SalesPage>
                       opacity: snapshot.data == true ? 0 : 1,
                       child: Column(
                         children: [
-                          if (salesPresenter.filterByHour &&
-                              uniqueHours.isNotEmpty)
+                          if (uniqueHours.isNotEmpty)
                             HourTable(
                               resumeSaleMovements: resumeSaleMovements,
                               uniqueHours: uniqueHours,
                             ),
-                          if (salesPresenter.filterByDay)
-                            DayTable(resumeSaleMovements: resumeSaleMovements),
-                          if (salesPresenter.filterByMonth &&
-                              saleMovementsByMonth != null &&
+                          DayTable(
+                              resumeSaleMovements:
+                                  resumeSaleMovements), //TODO remove
+                          if (saleMovementsByMonth != null &&
                               saleMovementsByMonth.isNotEmpty)
                             MonthSales(
                                 saleMovementsByMonth: saleMovementsByMonth),
-                          if (salesPresenter.filterByYear &&
-                              saleMovementsByYear != null &&
+                          if (saleMovementsByYear != null &&
                               saleMovementsByYear.isNotEmpty)
                             YearSales(saleMovementsByYear: saleMovementsByYear),
                         ],

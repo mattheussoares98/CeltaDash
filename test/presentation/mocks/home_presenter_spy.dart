@@ -1,13 +1,23 @@
+import 'package:celta_dash/data/models/models.dart';
 import 'package:celta_dash/ui/pages/pages.dart';
+import 'package:faker/faker.dart';
 import 'package:mocktail/mocktail.dart';
 
+import '../../domain/mocks/mocks.dart';
+
 class HomePresenterSpy extends Mock implements HomePresenter {
-  DateTime selectedDateMock = DateTime.now();
-  EnterpriseViewModel? selectedEnterpriseMock;
-  List<EnterpriseViewModel>? enterprisesMock;
+  DateTime selectedDateMock = faker.date.dateTime();
+  EnterpriseViewModel? selectedEnterpriseMock =
+      EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
+          .toViewModel();
+  List<EnterpriseViewModel>? enterprisesMock = [
+    EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
+        .toViewModel(),
+    EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
+        .toViewModel(),
+  ];
 
   HomePresenterSpy() {
-    this.mockSelectedDate(DateTime.now());
     this.mockCurrentPageIndexStream(Stream.value(0));
 
     when(() => this.selectedDate).thenAnswer((_) => selectedDateMock);

@@ -1,34 +1,21 @@
 import 'package:celta_dash/domain/helpers/helpers.dart';
+import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/ui/pages/pages.dart';
 import 'package:mocktail/mocktail.dart';
 
 class SalesPresenterSpy extends Mock implements SalesPresenter {
-  DateTime lastDateLoadedDataMock = DateTime.now();
-  bool filterByHourMock = false;
-  bool filterByDayMock = false;
-  bool filterByMonthMock = true;
-  bool filterByYearMock = false;
+  GetSalesParams? get lastGetSalesParamsMock;
 
   SalesPresenterSpy() {
-    when(() => this.lastDateLoadedData)
-        .thenAnswer((_) => lastDateLoadedDataMock);
-    when(() => this.filterByHour).thenAnswer((_) => filterByHourMock);
-    when(() => this.filterByDay).thenAnswer((_) => filterByDayMock);
-    when(() => this.filterByMonth).thenAnswer((_) => filterByMonthMock);
-    when(() => this.filterByYear).thenAnswer((_) => filterByYearMock);
+    when(() => this.lastGetSalesParams)
+        .thenAnswer((_) => lastGetSalesParamsMock);
 
     _mockGetSalesCall().thenAnswer((any) async => any);
-    when(() => this.updateSelectedPeriod(
-          filterByHour: any(named: 'filterByHour'),
-          filterByDay: any(named: 'filterByDay'),
-          filterByMonth: any(named: 'filterByMonth'),
-          filterByYear: any(named: 'filterByYear'),
-        )).thenAnswer((any) => any);
   }
 
   When _mockGetSalesCall() => when(() => this.getSales(
-        homePresenter: any(named: 'homePresenter'),
-        resumePresenter: any(named: 'resumePresenter'),
+        any(),
+        periodType: any(named: 'periodType'),
         forceRefresh: any(named: 'forceRefresh'),
       ));
 
