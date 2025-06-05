@@ -17,34 +17,16 @@ class ResumePage extends StatefulWidget {
 }
 
 class _ResumePageState extends State<ResumePage>
-    with UIErrorManager, LoadingManager, RouteAware {
+    with UIErrorManager, LoadingManager {
   final scrollController = ScrollController();
   StreamSubscription? mainErrorSubscription;
 
   @override
   void dispose() {
     super.dispose();
-    final routeObserver = Get.find<RouteObserver<PageRoute>>();
-    routeObserver.unsubscribe(this);
 
     scrollController.dispose();
     mainErrorSubscription?.cancel();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final routeObserver = Get.find<RouteObserver<PageRoute>>();
-    routeObserver.subscribe(this, ModalRoute.of(context)! as PageRoute);
-  }
-
-  @override
-  void didPopNext() {
-    debugPrint('Closed another page and returned to resumePage');
-    ResumePresenter resumePresenter = Get.find();
-    HomePresenter homePresenter = Get.find();
-    WidgetsBinding.instance.addPostFrameCallback(
-        (_) async => await resumePresenter.getSales(homePresenter));
   }
 
   @override

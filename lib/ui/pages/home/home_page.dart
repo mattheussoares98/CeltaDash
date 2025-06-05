@@ -19,7 +19,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with UIErrorManager {
+class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
   StreamSubscription? mainErrorSubscription;
 
   @override
@@ -49,6 +49,26 @@ class _HomePageState extends State<HomePage> with UIErrorManager {
   void dispose() {
     super.dispose();
     mainErrorSubscription?.cancel();
+    final routeObserver = Get.find<RouteObserver<PageRoute>>();
+    routeObserver.unsubscribe(this);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final routeObserver = Get.find<RouteObserver<PageRoute>>();
+    routeObserver.subscribe(this, ModalRoute.of(context)! as PageRoute);
+  }
+
+  @override
+  void didPopNext() {
+    debugPrint('Closed another page and returned to homePage');
+    ResumePresenter resumePresenter = Get.find();
+    HomePresenter homePresenter = Get.find();
+    SalesPresenter salesPresenter = Get.find();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => homePresenter.reloadSales(resumePresenter, salesPresenter),
+    );
   }
 
   final pages = <Widget>[
