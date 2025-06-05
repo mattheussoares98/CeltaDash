@@ -25,9 +25,26 @@ class SalesHelper {
         lastGetSalesParams: lastGetSalesParams,
         selectedDate: selectedDate,
       );
-    } else if (periodType == PeriodType.yearly) {}
+    } else if (periodType == PeriodType.yearly) {
+      return _canSearchYearly(
+        lastGetSalesParams: lastGetSalesParams,
+        selectedDate: selectedDate,
+      );
+    }
 
     return false;
+  }
+
+  static bool _canSearchYearly({
+    required GetSalesParams? lastGetSalesParams,
+    required DateTime selectedDate,
+  }) {
+    if (lastGetSalesParams?.startDate == DateTime(selectedDate.year, 1, 1) &&
+        lastGetSalesParams?.endDate == DateTime(selectedDate.year, 12, 31)) {
+      return false;
+    }
+
+    return true;
   }
 
   static bool _canSearchMonthly({

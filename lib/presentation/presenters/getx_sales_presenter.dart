@@ -33,7 +33,6 @@ class GetxSalesPresenter extends GetxController
         lastGetSalesParams: lastGetSalesParams,
         selectedDate: homePresenter.selectedDate,
         periodType: _selectedPeriodType,
-        //TODO implement year
       );
 
       if (!canSearchAgain) {

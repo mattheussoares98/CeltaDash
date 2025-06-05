@@ -166,5 +166,29 @@ void main() {
         expect(value, false);
       });
     });
+
+    group("Yearly", () {
+      test("Should return false if didnt change the selected year", () {
+        final value = SalesHelper.canSearch(
+          forceRefresh: false,
+          lastGetSalesParams: lastGetSalesParams,
+          selectedDate: DateTime(lastGetSalesParams.startDate.year),
+          periodType: PeriodType.yearly,
+        );
+
+        expect(value, false);
+      });
+      test("Should return true if change the selected year", () {
+        final value = SalesHelper.canSearch(
+          forceRefresh: false,
+          lastGetSalesParams: lastGetSalesParams,
+          selectedDate: DateTime(lastGetSalesParams.startDate.year +
+              faker.randomGenerator.integer(999)),
+          periodType: PeriodType.yearly,
+        );
+
+        expect(value, true);
+      });
+    });
   });
 }
