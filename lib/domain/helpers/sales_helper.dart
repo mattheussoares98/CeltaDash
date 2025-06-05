@@ -10,7 +10,6 @@ class SalesHelper {
     required DateTime selectedDate,
     required PeriodType periodType,
   }) {
-    //TODO create tests
     if (forceRefresh == true) {
       return true;
     } else if (lastGetSalesParams == null) {
