@@ -148,7 +148,7 @@ class _SalesPageState extends State<SalesPage>
                             MonthSales(
                                 saleMovementsByMonth: saleMovementsByMonth),
                           if (salesPresenter.selectedPeriodType ==
-                                  PeriodType.monthly &&
+                                  PeriodType.yearly &&
                               saleMovementsByYear != null &&
                               saleMovementsByYear.isNotEmpty)
                             YearSales(saleMovementsByYear: saleMovementsByYear),

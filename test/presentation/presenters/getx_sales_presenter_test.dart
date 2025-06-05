@@ -209,7 +209,7 @@ void main() {
         ).subtract(Duration(days: 1));
 
         expect(
-            sut.lastGetSalesParams,
+            sut.lastGetDailyParams,
             GetSalesParams(
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
@@ -305,7 +305,7 @@ void main() {
         final endDate = DateTime(homePresenter.selectedDateMock.year, 12, 31);
 
         expect(
-            sut.lastGetSalesParams,
+            sut.lastGetMonthlyParams,
             GetSalesParams(
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
@@ -401,7 +401,7 @@ void main() {
         final endDate = DateTime(homePresenter.selectedDateMock.year, 12, 31);
 
         expect(
-            sut.lastGetSalesParams,
+            sut.lastGetYearlyParams,
             GetSalesParams(
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()

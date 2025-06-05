@@ -8,7 +8,7 @@ import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
 class GetxSalesPresenter extends GetxController
-    with LoadingManager, UIErrorManager, LastGetSalesParamsManager
+    with LoadingManager, UIErrorManager
     implements SalesPresenter {
   final LoadSaleMovements loadSaleMovements;
 
@@ -28,9 +28,20 @@ class GetxSalesPresenter extends GetxController
         _selectedPeriodType = periodType;
       }
 
+      GetSalesParams? lastGetSalesParams() {
+        if (_selectedPeriodType == PeriodType.daily) {
+          return _lastGetDailyParams;
+        } else if (_selectedPeriodType == PeriodType.monthly) {
+          return _lastGetMonthlyParams;
+        } else if (_selectedPeriodType == PeriodType.yearly) {
+          return _lastGetYearlyParams;
+        }
+        return null;
+      }
+
       final canSearchAgain = SalesHelper.canSearch(
         forceRefresh: forceRefresh,
-        lastGetSalesParams: lastGetSalesParams,
+        lastGetSalesParams: lastGetSalesParams(),
         selectedDate: homePresenter.selectedDate,
         periodType: _selectedPeriodType,
       );
@@ -85,7 +96,6 @@ class GetxSalesPresenter extends GetxController
         );
       }
       final remoteSales = await loadSaleMovements.get(getSalesParams);
-      lastParams = getSalesParams;
 
       final newSales = remoteSales
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
@@ -93,10 +103,13 @@ class GetxSalesPresenter extends GetxController
 
       if (_selectedPeriodType == PeriodType.daily) {
         salesByDay = newSales;
+        _lastGetDailyParams = getSalesParams;
       } else if (_selectedPeriodType == PeriodType.monthly) {
         salesByMonth = newSales;
+        _lastGetMonthlyParams = getSalesParams;
       } else if (_selectedPeriodType == PeriodType.yearly) {
         salesByYear = newSales;
+        _lastGetYearlyParams = getSalesParams;
       }
 
       _lastEnterpriseLoadedData = homePresenter.selectedEnterprise;
@@ -138,4 +151,14 @@ class GetxSalesPresenter extends GetxController
   //TODO create mixin
   @override
   PeriodType get selectedPeriodType => _selectedPeriodType;
+
+  GetSalesParams? _lastGetDailyParams;
+  GetSalesParams? _lastGetMonthlyParams;
+  GetSalesParams? _lastGetYearlyParams;
+  @override
+  GetSalesParams? get lastGetDailyParams => _lastGetDailyParams;
+  @override
+  GetSalesParams? get lastGetMonthlyParams => _lastGetMonthlyParams;
+  @override
+  GetSalesParams? get lastGetYearlyParams => _lastGetYearlyParams;
 }

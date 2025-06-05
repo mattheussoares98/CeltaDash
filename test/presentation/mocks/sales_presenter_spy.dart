@@ -7,7 +7,7 @@ class SalesPresenterSpy extends Mock implements SalesPresenter {
   GetSalesParams? get lastGetSalesParamsMock;
 
   SalesPresenterSpy() {
-    when(() => this.lastGetSalesParams)
+    when(() => this.lastGetDailyParams)
         .thenAnswer((_) => lastGetSalesParamsMock);
 
     _mockGetSalesCall().thenAnswer((any) async => any);

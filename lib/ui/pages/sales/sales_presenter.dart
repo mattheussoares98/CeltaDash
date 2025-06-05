@@ -11,7 +11,9 @@ abstract class SalesPresenter implements Listenable {
   List<SaleMovementViewModel>? get saleMovementsByYear;
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
-  GetSalesParams? get lastGetSalesParams;
+  GetSalesParams? get lastGetDailyParams;
+  GetSalesParams? get lastGetMonthlyParams;
+  GetSalesParams? get lastGetYearlyParams;
   EnterpriseViewModel? get lastEnterpriseLoadedData;
   PeriodType get selectedPeriodType;
 
