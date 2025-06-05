@@ -277,9 +277,10 @@ class GetxHomePresenter extends GetxController
   @override
   void reloadSales(
     ResumePresenter resumePresenter,
-    SalesPresenter salesPresenter,
-  ) {
-    resumePresenter.getSales(this);
-    salesPresenter.getSales(this);
+    SalesPresenter salesPresenter, {
+    bool? forceRefresh,
+  }) {
+    resumePresenter.getSales(this, forceRefresh: forceRefresh);
+    salesPresenter.getSales(this, forceRefresh: forceRefresh);
   }
 }

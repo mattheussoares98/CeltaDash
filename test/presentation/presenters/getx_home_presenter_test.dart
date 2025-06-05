@@ -507,5 +507,15 @@ void main() {
 
       verify(() => salesPresenter.getSales(sut)).called(1);
     });
+    test("Should call resumePresenter get sales forcing refresh", () async {
+      sut.reloadSales(resumePresenter, salesPresenter, forceRefresh: true);
+
+      verify(() => resumePresenter.getSales(sut, forceRefresh: true)).called(1);
+    });
+    test("Should call salesPresenter get sales forcing refresh", () async {
+      sut.reloadSales(resumePresenter, salesPresenter, forceRefresh: true);
+
+      verify(() => salesPresenter.getSales(sut, forceRefresh: true)).called(1);
+    });
   });
 }
