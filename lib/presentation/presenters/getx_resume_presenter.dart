@@ -101,7 +101,7 @@ class GetxResumePresenter extends GetxController
         startDate: startDate,
         endDate: endDate,
         groupByEnterprise: true,
-        groupByHour: true,
+        groupByDay: true,
       );
       final result = await loadSaleMovements.get(salesParams);
 

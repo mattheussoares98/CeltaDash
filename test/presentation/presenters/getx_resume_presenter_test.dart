@@ -168,7 +168,7 @@ void main() {
             GetSalesParams(
               startDate: startDate,
               endDate: endDate,
-              groupByHour: true,
+              groupByDay: true,
               groupByEnterprise: true,
             ),
           )).called(1);
@@ -198,7 +198,7 @@ void main() {
           GetSalesParams(
             startDate: startDate,
             endDate: endDate,
-            groupByHour: true,
+            groupByDay: true,
             groupByEnterprise: true,
           ));
     });
@@ -222,7 +222,7 @@ void main() {
               homePresenter.selectedDateMock.year,
               homePresenter.selectedDateMock.month + 1,
             ).subtract(Duration(days: 1)),
-            groupByHour: true,
+            groupByDay: true,
             groupByEnterprise: true,
           ));
     });
@@ -243,7 +243,7 @@ void main() {
                 homePresenter.selectedDateMock.month + 1,
                 1,
               ).subtract(Duration(days: 1)),
-              groupByHour: true,
+              groupByDay: true,
               groupByEnterprise: true,
             ),
           )).called(1);
@@ -268,7 +268,7 @@ void main() {
             GetSalesParams(
               startDate: startDate,
               endDate: endDate,
-              groupByHour: true,
+              groupByDay: true,
               groupByEnterprise: true,
             ),
           )).called(2);
