@@ -15,7 +15,7 @@ class MonthSales extends StatelessWidget {
     HomePresenter homePresenter = Get.find();
     final totalLiquidByYear = saleMovementsByMonth.sumLiquidValue();
     final uniqueMonths =
-        saleMovementsByMonth.map((e) => e.Date?.month).toSet().toList()..sort();
+        saleMovementsByMonth.map((e) => e.Month).toSet().toList()..sort();
 
     return TableItem(
       titleMinHeight: 43,

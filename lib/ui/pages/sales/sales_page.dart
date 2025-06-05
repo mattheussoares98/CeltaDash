@@ -52,6 +52,17 @@ class _SalesPageState extends State<SalesPage>
         handleMainError(context, salesPresenter.mainErrorStream);
 
     return Scaffold(
+      appBar: DefaultAppBar(
+        onChangeEnterprise: (_) {
+          salesPresenter.getSales(homePresenter);
+        },
+        onChangeDate: (_) {
+          salesPresenter.getSales(homePresenter);
+        },
+        onTapRefresh: () {
+          salesPresenter.getSales(homePresenter, forceRefresh: true);
+        },
+      ),
       body: StreamBuilder<bool>(
           stream: homePresenter.updateScreenStream,
           builder: (context, snapshot) {
@@ -67,19 +78,18 @@ class _SalesPageState extends State<SalesPage>
                 return EmptySales(isLoading: false);
               }
 
-              final uniqueHours = resumeSaleMovements
-                  .uniqueHours(
-                    enterprise: homePresenter.selectedEnterprise,
-                    filterDay: homePresenter.selectedDate.day,
-                    filterMonth: homePresenter.selectedDate.month,
-                    filterYear: homePresenter.selectedDate.year,
-                  )
-                  .toList();
+              // final uniqueHours = resumeSaleMovements
+              //     .uniqueHours(
+              //       enterprise: homePresenter.selectedEnterprise,
+              //       filterDay: homePresenter.selectedDate.day,
+              //       filterMonth: homePresenter.selectedDate.month,
+              //       filterYear: homePresenter.selectedDate.year,
+              //     )
+              //     .toList();
 
               final saleMovementsByMonth = salesPresenter.saleMovementsByMonth
                   ?.filteredSales(
                     enterprise: homePresenter.selectedEnterprise,
-                    filterYear: homePresenter.selectedDate.year,
                   )
                   .map((e) => e.toViewModel())
                   .toList();
@@ -96,11 +106,25 @@ class _SalesPageState extends State<SalesPage>
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: SelectPeriodItems(
-                      selectedPeriodType: PeriodType.daily,
-                      onTapDaily: () {},
-                      // onTapWeekly: () {},
-                      onTapMonthly: () {},
-                      onTapYearly: () {},
+                      selectedPeriodType: salesPresenter.selectedPeriodType,
+                      onTapDaily: () {
+                        salesPresenter.getSales(
+                          homePresenter,
+                          periodType: PeriodType.daily,
+                        );
+                      },
+                      onTapMonthly: () {
+                        salesPresenter.getSales(
+                          homePresenter,
+                          periodType: PeriodType.monthly,
+                        );
+                      },
+                      onTapYearly: () {
+                        salesPresenter.getSales(
+                          homePresenter,
+                          periodType: PeriodType.yearly,
+                        );
+                      },
                     ),
                   ),
                   Expanded(
@@ -108,19 +132,24 @@ class _SalesPageState extends State<SalesPage>
                       opacity: snapshot.data == true ? 0 : 1,
                       child: Column(
                         children: [
-                          if (uniqueHours.isNotEmpty)
-                            HourTable(
-                              resumeSaleMovements: resumeSaleMovements,
-                              uniqueHours: uniqueHours,
-                            ),
-                          DayTable(
-                              resumeSaleMovements:
-                                  resumeSaleMovements), //TODO remove
-                          if (saleMovementsByMonth != null &&
+                          // if (uniqueHours.isNotEmpty)
+                          //   HourTable(
+                          //     resumeSaleMovements: resumeSaleMovements,
+                          //     uniqueHours: uniqueHours,
+                          //   ),
+                          //TODO implement in presenter
+                          if (salesPresenter.selectedPeriodType ==
+                              PeriodType.daily)
+                            DayTable(resumeSaleMovements: resumeSaleMovements),
+                          if (salesPresenter.selectedPeriodType ==
+                                  PeriodType.monthly &&
+                              saleMovementsByMonth != null &&
                               saleMovementsByMonth.isNotEmpty)
                             MonthSales(
                                 saleMovementsByMonth: saleMovementsByMonth),
-                          if (saleMovementsByYear != null &&
+                          if (salesPresenter.selectedPeriodType ==
+                                  PeriodType.monthly &&
+                              saleMovementsByYear != null &&
                               saleMovementsByYear.isNotEmpty)
                             YearSales(saleMovementsByYear: saleMovementsByYear),
                         ],
