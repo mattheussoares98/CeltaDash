@@ -64,8 +64,11 @@ class GetxResumePresenter extends GetxController
     bool? forceRefresh,
   }) async {
     if (isLoadingValue == true) {
+      isLoading = false;
+      isLoading = true;
       return;
     }
+
     try {
       isLoading = true;
       mainError = null;
