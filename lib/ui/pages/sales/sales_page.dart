@@ -50,123 +50,105 @@ class _SalesPageState extends State<SalesPage>
     mainErrorSubscription =
         handleMainError(context, salesPresenter.mainErrorStream);
 
-    return StreamBuilder(
-        stream: salesPresenter.isLoadingStream,
-        builder: (context, isLoadingSnap) {
-          return Scaffold(
-            appBar: DefaultAppBar(
-              isLoading: isLoadingSnap.data == true,
-              onChangeEnterprise: (_) {
-                salesPresenter.getSales(homePresenter);
-              },
-              onChangeDate: (_) {
-                salesPresenter.getSales(homePresenter);
-              },
-              onTapRefresh: () {
-                salesPresenter.getSales(homePresenter, forceRefresh: true);
-              },
-            ),
-            body: StreamBuilder<bool>(
-                stream: homePresenter.updateScreenStream,
-                builder: (context, snapshot) {
-                  return Obx(() {
-                    // final uniqueHours = resumeSaleMovements
-                    //     .uniqueHours(
-                    //       enterprise: homePresenter.selectedEnterprise,
-                    //       filterDay: homePresenter.selectedDate.day,
-                    //       filterMonth: homePresenter.selectedDate.month,
-                    //       filterYear: homePresenter.selectedDate.year,
-                    //     )
-                    //     .toList();
+    return Scaffold(
+      body: StreamBuilder<bool>(
+          stream: homePresenter.updateScreenStream,
+          builder: (context, snapshot) {
+            return Obx(() {
+              // final uniqueHours = resumeSaleMovements
+              //     .uniqueHours(
+              //       enterprise: homePresenter.selectedEnterprise,
+              //       filterDay: homePresenter.selectedDate.day,
+              //       filterMonth: homePresenter.selectedDate.month,
+              //       filterYear: homePresenter.selectedDate.year,
+              //     )
+              //     .toList();
 
-                    final dailySales = salesPresenter.saleMovementsByDay
-                        ?.filteredSales(
-                          enterprise: homePresenter.selectedEnterprise,
-                        )
-                        .map((e) => e.toViewModel())
-                        .toList();
+              final dailySales = salesPresenter.saleMovementsByDay
+                  ?.filteredSales(
+                    enterprise: homePresenter.selectedEnterprise,
+                  )
+                  .map((e) => e.toViewModel())
+                  .toList();
 
-                    final monthlySales = salesPresenter.saleMovementsByMonth
-                        ?.filteredSales(
-                          enterprise: homePresenter.selectedEnterprise,
-                        )
-                        .map((e) => e.toViewModel())
-                        .toList();
+              final monthlySales = salesPresenter.saleMovementsByMonth
+                  ?.filteredSales(
+                    enterprise: homePresenter.selectedEnterprise,
+                  )
+                  .map((e) => e.toViewModel())
+                  .toList();
 
-                    final yearlySales = salesPresenter.saleMovementsByYear
-                        ?.filteredSales(
-                          enterprise: homePresenter.selectedEnterprise,
-                        )
-                        .map((e) => e.toViewModel())
-                        .toList();
+              final yearlySales = salesPresenter.saleMovementsByYear
+                  ?.filteredSales(
+                    enterprise: homePresenter.selectedEnterprise,
+                  )
+                  .map((e) => e.toViewModel())
+                  .toList();
 
-                    return Column(
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SelectPeriodItems(
-                                selectedPeriodType:
-                                    salesPresenter.selectedPeriodType,
-                                onTapDaily: () {
-                                  salesPresenter.getSales(
-                                    homePresenter,
-                                    periodType: PeriodType.daily,
-                                  );
-                                },
-                                onTapMonthly: () {
-                                  salesPresenter.getSales(
-                                    homePresenter,
-                                    periodType: PeriodType.monthly,
-                                  );
-                                },
-                                onTapYearly: () {
-                                  salesPresenter.getSales(
-                                    homePresenter,
-                                    periodType: PeriodType.yearly,
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Opacity(
-                            opacity: snapshot.data == true ? 0 : 1,
-                            child: Column(
-                              children: [
-                                // if (uniqueHours.isNotEmpty)
-                                //   HourTable(
-                                //     resumeSaleMovements: resumeSaleMovements,
-                                //     uniqueHours: uniqueHours,
-                                //   ),
-                                //TODO implement in presenter
-                                if (salesPresenter.selectedPeriodType ==
-                                        PeriodType.daily &&
-                                    dailySales?.isNotEmpty == true)
-                                  DayTable(resumeSaleMovements: dailySales!),
-                                if (salesPresenter.selectedPeriodType ==
-                                        PeriodType.monthly &&
-                                    monthlySales != null &&
-                                    monthlySales.isNotEmpty)
-                                  MonthSales(
-                                      saleMovementsByMonth: monthlySales),
-                                if (salesPresenter.selectedPeriodType ==
-                                        PeriodType.yearly &&
-                                    yearlySales != null &&
-                                    yearlySales.isNotEmpty)
-                                  YearSales(saleMovementsByYear: yearlySales),
-                              ],
-                            ),
-                          ),
+                        SelectPeriodItems(
+                          selectedPeriodType: salesPresenter.selectedPeriodType,
+                          onTapDaily: () {
+                            salesPresenter.getSales(
+                              homePresenter,
+                              periodType: PeriodType.daily,
+                            );
+                          },
+                          onTapMonthly: () {
+                            salesPresenter.getSales(
+                              homePresenter,
+                              periodType: PeriodType.monthly,
+                            );
+                          },
+                          onTapYearly: () {
+                            salesPresenter.getSales(
+                              homePresenter,
+                              periodType: PeriodType.yearly,
+                            );
+                          },
                         ),
                       ],
-                    );
-                  });
-                }),
-          );
-        });
+                    ),
+                  ),
+                  Expanded(
+                    child: Opacity(
+                      opacity: snapshot.data == true ? 0 : 1,
+                      child: Column(
+                        children: [
+                          // if (uniqueHours.isNotEmpty)
+                          //   HourTable(
+                          //     resumeSaleMovements: resumeSaleMovements,
+                          //     uniqueHours: uniqueHours,
+                          //   ),
+                          //TODO implement in presenter
+                          if (salesPresenter.selectedPeriodType ==
+                                  PeriodType.daily &&
+                              dailySales?.isNotEmpty == true)
+                            DayTable(resumeSaleMovements: dailySales!),
+                          if (salesPresenter.selectedPeriodType ==
+                                  PeriodType.monthly &&
+                              monthlySales != null &&
+                              monthlySales.isNotEmpty)
+                            MonthSales(saleMovementsByMonth: monthlySales),
+                          if (salesPresenter.selectedPeriodType ==
+                                  PeriodType.yearly &&
+                              yearlySales != null &&
+                              yearlySales.isNotEmpty)
+                            YearSales(saleMovementsByYear: yearlySales),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            });
+          }),
+    );
   }
 }

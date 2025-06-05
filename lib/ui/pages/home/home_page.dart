@@ -63,49 +63,85 @@ class _HomePageState extends State<HomePage> with UIErrorManager {
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
+    ResumePresenter resumePresenter = Get.find();
+    SalesPresenter salesPresenter = Get.find();
 
     mainErrorSubscription?.cancel();
     mainErrorSubscription =
         handleMainError(context, homePresenter.mainErrorStream);
 
-    return StreamBuilder<int>(
-      stream: homePresenter.currentPageIndexStream,
-      builder: (context, currentIndex) {
-        return Scaffold(
-          body: pages[currentIndex.data ?? 0],
-          bottomNavigationBar: BottomNavBar(
-            currentIndex: currentIndex.data ?? 0,
-            onTap: homePresenter.updateSelectedIndex,
-            items: [
-              BottomNavItem(
-                materialIcon: Icon(Icons.pie_chart),
-                cupertinoIcon: Icon(CupertinoIcons.chart_pie),
-                label: R.string.resume,
-              ),
-              BottomNavItem(
-                materialIcon: Icon(Icons.monetization_on),
-                cupertinoIcon: Icon(CupertinoIcons.money_dollar),
-                label: R.string.sales,
-              ),
-              BottomNavItem(
-                materialIcon: Icon(Icons.shopping_cart_rounded),
-                cupertinoIcon: Icon(CupertinoIcons.cart),
-                label: R.string.products,
-              ),
-              BottomNavItem(
-                materialIcon: Icon(Icons.grid_view_rounded),
-                cupertinoIcon: Icon(CupertinoIcons.square_grid_2x2_fill),
-                label: R.string.more,
-              ),
-              // BottomNavItem(
-              //   materialIcon: Icon(Icons.person_pin_sharp),
-              //   cupertinoIcon: Icon(CupertinoIcons.person_2),
-              //   label: R.string.team,
-              // ),
-            ],
-          ),
-        );
-      },
-    );
+    return StreamBuilder(
+        stream: salesPresenter.isLoadingStream,
+        builder: (context, loadingSales) {
+          return StreamBuilder(
+              stream: resumePresenter.isLoadingStream,
+              builder: (context, loadingResume) {
+                return StreamBuilder<int>(
+                  stream: homePresenter.currentPageIndexStream,
+                  builder: (context, currentIndex) {
+                    return Scaffold(
+                      appBar: DefaultAppBar(
+                        isLoading: (loadingResume.data == true &&
+                                currentIndex.data == 0) ||
+                            (loadingSales.data == true &&
+                                currentIndex.data == 1),
+                        onChangeEnterprise: (_) {
+                          homePresenter.reloadSales(
+                            resumePresenter,
+                            salesPresenter,
+                          );
+                        },
+                        onChangeDate: (_) {
+                          homePresenter.reloadSales(
+                            resumePresenter,
+                            salesPresenter,
+                          );
+                        },
+                        onTapRefresh: () {
+                          homePresenter.reloadSales(
+                            resumePresenter,
+                            salesPresenter,
+                            forceRefresh: true,
+                          );
+                        },
+                      ),
+                      body: pages[currentIndex.data ?? 0],
+                      bottomNavigationBar: BottomNavBar(
+                        currentIndex: currentIndex.data ?? 0,
+                        onTap: homePresenter.updateSelectedIndex,
+                        items: [
+                          BottomNavItem(
+                            materialIcon: Icon(Icons.pie_chart),
+                            cupertinoIcon: Icon(CupertinoIcons.chart_pie),
+                            label: R.string.resume,
+                          ),
+                          BottomNavItem(
+                            materialIcon: Icon(Icons.monetization_on),
+                            cupertinoIcon: Icon(CupertinoIcons.money_dollar),
+                            label: R.string.sales,
+                          ),
+                          BottomNavItem(
+                            materialIcon: Icon(Icons.shopping_cart_rounded),
+                            cupertinoIcon: Icon(CupertinoIcons.cart),
+                            label: R.string.products,
+                          ),
+                          BottomNavItem(
+                            materialIcon: Icon(Icons.grid_view_rounded),
+                            cupertinoIcon:
+                                Icon(CupertinoIcons.square_grid_2x2_fill),
+                            label: R.string.more,
+                          ),
+                          // BottomNavItem(
+                          //   materialIcon: Icon(Icons.person_pin_sharp),
+                          //   cupertinoIcon: Icon(CupertinoIcons.person_2),
+                          //   label: R.string.team,
+                          // ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              });
+        });
   }
 }

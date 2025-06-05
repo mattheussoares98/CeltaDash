@@ -60,88 +60,67 @@ class _ResumePageState extends State<ResumePage>
     mainErrorSubscription =
         handleMainError(context, resumePresenter.mainErrorStream);
 
-    return StreamBuilder(
-        stream: resumePresenter.isLoadingStream,
-        builder: (context, isLoadingSnap) {
-          return Scaffold(
-            appBar: DefaultAppBar(
-              isLoading: isLoadingSnap.data == true,
-              onChangeEnterprise: (_) {
-                resumePresenter.getSales(homePresenter);
-              },
-              onChangeDate: (_) {
-                resumePresenter.getSales(homePresenter);
-              },
-              onTapRefresh: () {
-                resumePresenter.getSales(
-                  homePresenter,
-                  forceRefresh: true,
-                );
-              },
-            ),
-            body: SingleChildScrollView(
-              controller: scrollController,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
-                child: Obx(() {
-                  final saleMovements = resumePresenter.saleMovements;
-                  final salesByEnterprise = saleMovements
-                      ?.filteredSales(
-                        enterprise: homePresenter.selectedEnterprise,
-                      )
-                      .map((e) => e.toViewModel())
-                      .toList();
+    return Scaffold(
+      body: SingleChildScrollView(
+        controller: scrollController,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
+          child: Obx(() {
+            final saleMovements = resumePresenter.saleMovements;
+            final salesByEnterprise = saleMovements
+                ?.filteredSales(
+                  enterprise: homePresenter.selectedEnterprise,
+                )
+                .map((e) => e.toViewModel())
+                .toList();
 
-                  if (saleMovements == null) {
-                    return SizedBox.shrink();
-                  }
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+            if (saleMovements == null) {
+              return SizedBox.shrink();
+            }
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (salesByEnterprise == null || salesByEnterprise.isEmpty)
+                  EmptySales(isLoading: false),
+                if (salesByEnterprise != null && salesByEnterprise.isNotEmpty)
+                  Column(
                     children: [
-                      if (salesByEnterprise == null ||
-                          salesByEnterprise.isEmpty)
-                        EmptySales(isLoading: false),
-                      if (salesByEnterprise != null &&
-                          salesByEnterprise.isNotEmpty)
-                        Column(
-                          children: [
-                            DailySales(
-                              scrollController: scrollController,
-                              saleMovements: saleMovements,
-                            ),
-                            SizedBox(height: 8),
-                            MonthlyAnalysis(saleMovements: saleMovements),
-                            // const SizedBox(height: 8),
-                            // SalesInformations(
-                            //   scrollController: scrollController,
-                            //   totalSales: saleMovements.sumLiquidValue(
-                            //     enterprise: homePresenter.selectedEnterprise,
-                            //     filterYear: homePresenter.selectedDate.year,
-                            //     filterMonth: homePresenter.selectedDate.month,
-                            //   ),
-                            //   title: R.string.salesOfTheMonth,
-                            // ),
-                            // const SizedBox(height: 8),
-                            // DefaultNavigateButton(
-                            //   onTap: resumePresenter.goToProfitabillityPage,
-                            //   title: R.string.profitability,
-                            //
-                            // const SizedBox(height: 8),
-                            // DailyAnalysis(
-                            //   saleMovements: saleMovements,
-                            //   scrollController: scrollController,
-                            // ),
-                            SizedBox(height: 8),
-                          ],
-                        ),
-                      GroupOfStores(saleMovements: saleMovements),
-                      SizedBox(height: 15),
+                      DailySales(
+                        scrollController: scrollController,
+                        saleMovements: saleMovements,
+                      ),
+                      SizedBox(height: 8),
+                      MonthlyAnalysis(saleMovements: saleMovements),
+                      // const SizedBox(height: 8),
+                      // SalesInformations(
+                      //   scrollController: scrollController,
+                      //   totalSales: saleMovements.sumLiquidValue(
+                      //     enterprise: homePresenter.selectedEnterprise,
+                      //     filterYear: homePresenter.selectedDate.year,
+                      //     filterMonth: homePresenter.selectedDate.month,
+                      //   ),
+                      //   title: R.string.salesOfTheMonth,
+                      // ),
+                      // const SizedBox(height: 8),
+                      // DefaultNavigateButton(
+                      //   onTap: resumePresenter.goToProfitabillityPage,
+                      //   title: R.string.profitability,
+                      //
+                      // const SizedBox(height: 8),
+                      // DailyAnalysis(
+                      //   saleMovements: saleMovements,
+                      //   scrollController: scrollController,
+                      // ),
+                      SizedBox(height: 8),
                     ],
-                  );
-                }),
-              ),
-            ),
-          );
-        });
+                  ),
+                GroupOfStores(saleMovements: saleMovements),
+                SizedBox(height: 15),
+              ],
+            );
+          }),
+        ),
+      ),
+    );
   }
 }
