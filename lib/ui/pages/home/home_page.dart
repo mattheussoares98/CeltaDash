@@ -80,31 +80,33 @@ class _HomePageState extends State<HomePage> with UIErrorManager {
                   stream: homePresenter.currentPageIndexStream,
                   builder: (context, currentIndex) {
                     return Scaffold(
-                      appBar: DefaultAppBar(
-                        isLoading: (loadingResume.data == true &&
-                                currentIndex.data == 0) ||
-                            (loadingSales.data == true &&
-                                currentIndex.data == 1),
-                        onChangeEnterprise: (_) {
-                          homePresenter.reloadSales(
-                            resumePresenter,
-                            salesPresenter,
-                          );
-                        },
-                        onChangeDate: (_) {
-                          homePresenter.reloadSales(
-                            resumePresenter,
-                            salesPresenter,
-                          );
-                        },
-                        onTapRefresh: () {
-                          homePresenter.reloadSales(
-                            resumePresenter,
-                            salesPresenter,
-                            forceRefresh: true,
-                          );
-                        },
-                      ),
+                      appBar: currentIndex.data == 3
+                          ? null
+                          : DefaultAppBar(
+                              isLoading: (loadingResume.data == true &&
+                                      currentIndex.data == 0) ||
+                                  (loadingSales.data == true &&
+                                      currentIndex.data == 1),
+                              onChangeEnterprise: (_) {
+                                homePresenter.reloadSales(
+                                  resumePresenter,
+                                  salesPresenter,
+                                );
+                              },
+                              onChangeDate: (_) {
+                                homePresenter.reloadSales(
+                                  resumePresenter,
+                                  salesPresenter,
+                                );
+                              },
+                              onTapRefresh: () {
+                                homePresenter.reloadSales(
+                                  resumePresenter,
+                                  salesPresenter,
+                                  forceRefresh: true,
+                                );
+                              },
+                            ),
                       body: pages[currentIndex.data ?? 0],
                       bottomNavigationBar: BottomNavBar(
                         currentIndex: currentIndex.data ?? 0,
