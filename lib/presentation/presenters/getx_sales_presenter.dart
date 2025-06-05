@@ -25,7 +25,7 @@ class GetxSalesPresenter extends GetxController
       isLoading = true;
       return;
     }
-    
+
     isLoading = true;
     mainError = null;
 
@@ -52,7 +52,24 @@ class GetxSalesPresenter extends GetxController
         periodType: _selectedPeriodType,
       );
 
-      if (!canSearchAgain) {
+      bool changedTheEnterprise() {
+        if (_selectedPeriodType == PeriodType.daily) {
+          return _lastGetDailyParams?.enterpriseIds?.isNotEmpty == true &&
+              _lastDailyEnterprise?.id?.toInt() !=
+                  homePresenter.selectedEnterprise?.id?.toInt();
+        } else if (_selectedPeriodType == PeriodType.monthly) {
+          return _lastGetMonthlyParams?.enterpriseIds?.isNotEmpty == true &&
+              _lastMonthlyEnterprise?.id?.toInt() !=
+                  homePresenter.selectedEnterprise?.id?.toInt();
+        } else if (_selectedPeriodType == PeriodType.yearly) {
+          return _lastGetYearlyParams?.enterpriseIds?.isNotEmpty == true &&
+              _lastYearlyEnterprise?.id?.toInt() !=
+                  homePresenter.selectedEnterprise?.id?.toInt();
+        }
+        return false;
+      }
+
+      if (!canSearchAgain && !changedTheEnterprise()) {
         return;
       }
 
@@ -110,16 +127,16 @@ class GetxSalesPresenter extends GetxController
       if (_selectedPeriodType == PeriodType.daily) {
         salesByDay = newSales;
         _lastGetDailyParams = getSalesParams;
+        _lastDailyEnterprise = homePresenter.selectedEnterprise;
       } else if (_selectedPeriodType == PeriodType.monthly) {
         salesByMonth = newSales;
         _lastGetMonthlyParams = getSalesParams;
+        _lastMonthlyEnterprise = homePresenter.selectedEnterprise;
       } else if (_selectedPeriodType == PeriodType.yearly) {
         salesByYear = newSales;
         _lastGetYearlyParams = getSalesParams;
+        _lastYearlyEnterprise = homePresenter.selectedEnterprise;
       }
-
-      _lastEnterpriseLoadedData = homePresenter.selectedEnterprise;
-      //TODO test changing enterprise
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {
@@ -148,10 +165,15 @@ class GetxSalesPresenter extends GetxController
   set salesByDay(List<SaleMovementViewModel>? value) =>
       _saleMovementsByDay.value = value;
 
-  EnterpriseViewModel? _lastEnterpriseLoadedData;
+  EnterpriseViewModel? _lastDailyEnterprise;
   @override
-  EnterpriseViewModel? get lastEnterpriseLoadedData =>
-      _lastEnterpriseLoadedData;
+  EnterpriseViewModel? get lastDailyEnterprise => _lastDailyEnterprise;
+  EnterpriseViewModel? _lastMonthlyEnterprise;
+  @override
+  EnterpriseViewModel? get lastMonthlyEnterprise => _lastMonthlyEnterprise;
+  EnterpriseViewModel? _lastYearlyEnterprise;
+  @override
+  EnterpriseViewModel? get lastYearlyEnterprise => _lastYearlyEnterprise;
 
   PeriodType _selectedPeriodType = PeriodType.daily;
   //TODO create mixin

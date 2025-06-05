@@ -93,7 +93,6 @@ class GetxResumePresenter extends GetxController
         homePresenter.selectedDate.month,
         1,
       );
-      //TODO create function in helper to get start and end dates
       final endDate = DateTime(
         homePresenter.selectedDate.year,
         homePresenter.selectedDate.month + 1,

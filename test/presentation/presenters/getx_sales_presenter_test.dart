@@ -161,6 +161,51 @@ void main() {
           ),
         ).called(1);
       });
+      test("Should load again if change the enterprise", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.daily);
+        final startDate = DateTime(
+          homePresenter.selectedDateMock.year,
+          homePresenter.selectedDateMock.month,
+          1,
+        );
+        final endDate = DateTime(
+          homePresenter.selectedDateMock.year,
+          homePresenter.selectedDateMock.month + 1,
+        ).subtract(Duration(days: 1));
+
+        verify(
+          () => loadSaleMovements.get(
+            GetSalesParams(
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
+              startDate: startDate,
+              endDate: endDate,
+              groupByEnterprise: true,
+              groupByHour: true,
+            ),
+          ),
+        ).called(1);
+
+        ////////////////////CHANGING ENTERPRISE/////////////////////////////////
+        final newEnterprise =
+            EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
+                .toViewModel();
+        homePresenter.selectedEnterpriseMock = newEnterprise;
+        await sut.getSales(homePresenter, periodType: PeriodType.daily);
+
+        verify(
+          () => loadSaleMovements.get(
+            GetSalesParams(
+              enterpriseIds: [newEnterprise.id!.toInt()],
+              startDate: startDate,
+              endDate: endDate,
+              groupByEnterprise: true,
+              groupByHour: true,
+            ),
+          ),
+        ).called(1);
+      });
       test("Should load again if force refresh", () async {
         await sut.getSales(homePresenter, periodType: PeriodType.daily);
         await sut.getSales(
