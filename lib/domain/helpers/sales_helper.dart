@@ -32,12 +32,19 @@ class SalesHelper {
 
   static bool _canSearchMonthly({
     required GetSalesParams? lastGetSalesParams,
-    required DateTime? selectedDate,
-  }) =>
-      lastGetSalesParams?.startDate.year != selectedDate?.year ||
-      lastGetSalesParams?.startDate.month != selectedDate?.month ||
-      (lastGetSalesParams?.startDate != null &&
-          lastGetSalesParams?.startDate == lastGetSalesParams?.endDate);
+    required DateTime selectedDate,
+  }) {
+    if (lastGetSalesParams?.startDate == DateTime(selectedDate.year, 1, 1) &&
+        lastGetSalesParams?.endDate == DateTime(selectedDate.year, 12, 31)) {
+      return false;
+    }
+
+    return lastGetSalesParams?.startDate.year != selectedDate.year ||
+        lastGetSalesParams?.startDate.month != selectedDate.month ||
+        (lastGetSalesParams?.startDate != null &&
+            lastGetSalesParams?.startDate == lastGetSalesParams?.endDate);
+  }
+
   static bool _canSearchDaily({
     required GetSalesParams? lastGetSalesParams,
     required DateTime? selectedDate,

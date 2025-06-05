@@ -150,6 +150,21 @@ void main() {
 
         expect(value, true);
       });
+
+      test("Should return false is getting sales from all year", () {
+        final selectedDate = faker.date.dateTime();
+        final value = SalesHelper.canSearch(
+          forceRefresh: false,
+          lastGetSalesParams: GetSalesParams(
+            startDate: DateTime(selectedDate.year, 1, 1),
+            endDate: DateTime(selectedDate.year, 12, 31),
+          ),
+          selectedDate: selectedDate,
+          periodType: PeriodType.monthly,
+        );
+
+        expect(value, false);
+      });
     });
   });
 }
