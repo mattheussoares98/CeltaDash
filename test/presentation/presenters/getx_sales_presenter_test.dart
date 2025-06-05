@@ -317,5 +317,101 @@ void main() {
             ));
       });
     });
+    group("PeriodType.yearly", () {
+      test("Should update sale movements correctly", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.yearly);
+
+        expect(
+          sut.saleMovementsByYear,
+          saleMovementEntities
+              .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+              .toList(),
+        );
+      });
+      test("Should call load sale movements with correct values", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.yearly);
+
+        final startDate = DateTime(homePresenter.selectedDateMock.year - 2);
+        final endDate = DateTime(homePresenter.selectedDateMock.year, 12, 31);
+
+        verify(
+          () => loadSaleMovements.get(
+            GetSalesParams(
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
+              startDate: startDate,
+              endDate: endDate,
+              groupByEnterprise: true,
+              groupByYear: true,
+            ),
+          ),
+        ).called(1);
+      });
+      test("Should not load again if dont force refresh", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.yearly);
+        await sut.getSales(homePresenter, periodType: PeriodType.yearly);
+
+        final startDate = DateTime(homePresenter.selectedDateMock.year - 2);
+        final endDate = DateTime(homePresenter.selectedDateMock.year, 12, 31);
+
+        verify(
+          () => loadSaleMovements.get(
+            GetSalesParams(
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
+              startDate: startDate,
+              endDate: endDate,
+              groupByEnterprise: true,
+              groupByYear: true,
+            ),
+          ),
+        ).called(1);
+      });
+      test("Should load again if force refresh", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.yearly);
+        await sut.getSales(
+          homePresenter,
+          periodType: PeriodType.yearly,
+          forceRefresh: true,
+        );
+
+        final startDate = DateTime(homePresenter.selectedDateMock.year - 2);
+        final endDate = DateTime(homePresenter.selectedDateMock.year, 12, 31);
+
+        verify(
+          () => loadSaleMovements.get(
+            GetSalesParams(
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
+              startDate: startDate,
+              endDate: endDate,
+              groupByEnterprise: true,
+              groupByYear: true,
+            ),
+          ),
+        ).called(2);
+      });
+      test("Should update lastGetSalesParams correctly", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.yearly);
+
+        final startDate = DateTime(homePresenter.selectedDateMock.year - 2);
+        final endDate = DateTime(homePresenter.selectedDateMock.year, 12, 31);
+
+        expect(
+            sut.lastGetSalesParams,
+            GetSalesParams(
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
+              startDate: startDate,
+              endDate: endDate,
+              groupByEnterprise: true,
+              groupByYear: true,
+            ));
+      });
+    });
   });
 }
