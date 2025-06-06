@@ -40,6 +40,7 @@ class SalesHelper {
   static bool changedTheEnterprise({
     required PeriodType selectedPeriodType,
     required EnterpriseViewModel? selectedEnterprise,
+    GetSalesParams? lastGetSalesParams,
     GetSalesParams? lastGetDailyParams,
     GetSalesParams? lastGetMonthlyParams,
     GetSalesParams? lastGetYearlyParams,
@@ -50,7 +51,9 @@ class SalesHelper {
           false;
     }
 
-    if (selectedPeriodType == PeriodType.daily) {
+    if (lastGetSalesParams != null) {
+      return changed(lastGetSalesParams);
+    } else if (selectedPeriodType == PeriodType.daily) {
       return changed(lastGetDailyParams);
     } else if (selectedPeriodType == PeriodType.monthly) {
       return changed(lastGetMonthlyParams);

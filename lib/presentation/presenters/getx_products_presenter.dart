@@ -43,8 +43,13 @@ class GetxProductsPresenter extends GetxController
         periodType: selectedPeriodValue,
       );
 
-      if (!canSearchAgain) {
-        //TODO search again if change the enterprise
+      bool changedEnterprise = SalesHelper.changedTheEnterprise(
+        selectedPeriodType: selectedPeriodValue,
+        selectedEnterprise: homePresenter.selectedEnterprise,
+        lastGetSalesParams: lastGetSalesParams,
+      );
+
+      if (!canSearchAgain && !changedEnterprise) {
         return;
       }
 

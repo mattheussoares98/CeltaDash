@@ -422,7 +422,7 @@ void main() {
       });
 
       test("Should load again if change the selected enterprise", () async {
-        await sut.getSales(homePresenter);
+        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
         verify(
           () => loadSaleMovements.get(
@@ -451,7 +451,7 @@ void main() {
         homePresenter.selectedEnterpriseMock =
             EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
                 .toViewModel();
-        await sut.getSales(homePresenter);
+        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
         verify(
           () => loadSaleMovements.get(
