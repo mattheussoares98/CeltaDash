@@ -265,11 +265,6 @@ void main() {
               groupByHour: true,
             ));
       });
-      test("Should change last daily enterprise correctly", () async {
-        await sut.getSales(homePresenter, periodType: PeriodType.daily);
-
-        expect(sut.lastDailyEnterprise, homePresenter.selectedEnterpriseMock);
-      });
     });
     group("PeriodType.monthly", () {
       test("Should update sale movements correctly", () async {
@@ -404,12 +399,6 @@ void main() {
               groupByEnterprise: true,
               groupByMonth: true,
             ));
-      });
-
-      test("Should change last monthly enterprise correctly", () async {
-        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
-
-        expect(sut.lastMonthlyEnterprise, homePresenter.selectedEnterpriseMock);
       });
     });
     group("PeriodType.yearly", () {
@@ -546,12 +535,6 @@ void main() {
             ),
           ),
         ).called(1);
-      });
-
-      test("Should change last yearly enterprise correctly", () async {
-        await sut.getSales(homePresenter, periodType: PeriodType.yearly);
-
-        expect(sut.lastYearlyEnterprise, homePresenter.selectedEnterpriseMock);
       });
     });
   });

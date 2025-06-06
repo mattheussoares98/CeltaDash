@@ -122,15 +122,12 @@ class GetxSalesPresenter extends GetxController
       if (selectedPeriodValue == PeriodType.daily) {
         salesByDay = newSales;
         lastDaily = getSalesParams;
-        _lastDailyEnterprise = homePresenter.selectedEnterprise;
       } else if (selectedPeriodValue == PeriodType.monthly) {
         salesByMonth = newSales;
         lastMonthly = getSalesParams;
-        _lastMonthlyEnterprise = homePresenter.selectedEnterprise;
       } else if (selectedPeriodValue == PeriodType.yearly) {
         salesByYear = newSales;
         lastYearly = getSalesParams;
-        _lastYearlyEnterprise = homePresenter.selectedEnterprise;
       }
     } catch (e) {
       mainError = UIError.unexpected;
@@ -159,14 +156,4 @@ class GetxSalesPresenter extends GetxController
       _saleMovementsByDay.value;
   set salesByDay(List<SaleMovementViewModel>? value) =>
       _saleMovementsByDay.value = value;
-
-  EnterpriseViewModel? _lastDailyEnterprise;
-  @override
-  EnterpriseViewModel? get lastDailyEnterprise => _lastDailyEnterprise;
-  EnterpriseViewModel? _lastMonthlyEnterprise;
-  @override
-  EnterpriseViewModel? get lastMonthlyEnterprise => _lastMonthlyEnterprise;
-  EnterpriseViewModel? _lastYearlyEnterprise;
-  @override
-  EnterpriseViewModel? get lastYearlyEnterprise => _lastYearlyEnterprise;
 }

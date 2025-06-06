@@ -14,9 +14,6 @@ abstract class SalesPresenter implements Listenable {
   GetSalesParams? get lastGetDailyParams;
   GetSalesParams? get lastGetMonthlyParams;
   GetSalesParams? get lastGetYearlyParams;
-  EnterpriseViewModel? get lastDailyEnterprise;
-  EnterpriseViewModel? get lastMonthlyEnterprise;
-  EnterpriseViewModel? get lastYearlyEnterprise;
   PeriodType get selectedPeriodValue;
 
   Future<void> getSales(
