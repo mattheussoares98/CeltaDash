@@ -26,8 +26,8 @@ class DepartmentsProfitability extends StatelessWidget {
             4: FixedColumnWidth(MediaQuery.of(context).size.width * 0.15),
           },
           titles: [
-            PersonalizedTableCell(value: R.string.department),
-            PersonalizedTableCell(value: R.string.total),
+            PersonalizedTableCell(value: R.string.departmentAbbreviated),
+            PersonalizedTableCell(value: R.string.sales),
             PersonalizedTableCell(value: R.string.cost),
             PersonalizedTableCell(value: R.string.profit),
             PersonalizedTableCell(value: R.string.margin),

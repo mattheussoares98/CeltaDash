@@ -40,6 +40,7 @@ abstract class Translation {
   String get day;
   String get days;
   String get department;
+  String get departmentAbbreviated;
   String get departments;
   String get details;
   String get difference;
