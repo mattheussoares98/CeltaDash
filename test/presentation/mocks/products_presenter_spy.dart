@@ -4,11 +4,14 @@ import 'package:celta_dash/ui/pages/pages.dart';
 import 'package:mocktail/mocktail.dart';
 
 class ProductsPresenterSpy extends Mock implements ProductsPresenter {
-  GetSalesParams? lastGetSalesParamsMock;
+  GetSalesParams? lastGetDailyParamsMock;
+  GetSalesParams? lastGetMonthlyParamsMock;
 
   ProductsPresenterSpy() {
-    when(() => this.lastGetSalesParams)
-        .thenAnswer((_) => lastGetSalesParamsMock);
+    when(() => this.lastGetDailyParams)
+        .thenAnswer((_) => lastGetDailyParamsMock);
+    when(() => this.lastGetMonthlyParams)
+        .thenAnswer((_) => lastGetMonthlyParamsMock);
 
     _mockLoadProductsCall().thenAnswer((any) async => any);
   }

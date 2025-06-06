@@ -117,7 +117,16 @@ void main() {
         await sut.getSales(homePresenter);
 
         expect(
-          sut.saleMovements,
+          sut.dailySaleMovements,
+          saleMovementsEntities
+              .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+              .toList(),
+        );
+
+        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
+
+        expect(
+          sut.monthlySaleMovements,
           saleMovementsEntities
               .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
               .toList(),
@@ -227,7 +236,7 @@ void main() {
         );
 
         expect(
-            sut.lastGetSalesParams,
+            sut.lastGetDailyParams,
             GetSalesParams(
               startDate: startDate,
               endDate: startDate,
@@ -245,7 +254,7 @@ void main() {
         await sut.getSales(homePresenter, periodType: PeriodType.daily);
 
         expect(
-          sut.saleMovements,
+          sut.dailySaleMovements,
           saleMovementsEntities
               .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
               .toList(),
@@ -388,7 +397,7 @@ void main() {
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
         expect(
-            sut.lastGetSalesParams,
+            sut.lastGetMonthlyParams,
             GetSalesParams(
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
@@ -414,7 +423,7 @@ void main() {
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
         expect(
-          sut.saleMovements,
+          sut.monthlySaleMovements,
           saleMovementsEntities
               .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
               .toList(),

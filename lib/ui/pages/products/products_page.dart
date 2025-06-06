@@ -99,9 +99,10 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                 stream: homePresenter.updateScreenStream,
                 builder: (context, updateScreen) {
                   return Obx(() {
-                    final saleMovements = productsPresenter.saleMovements
+                    final dailySales = productsPresenter.dailySaleMovements
                         ?.filteredSales(
                           enterprise: homePresenter.selectedEnterprise,
+                          filterMonth: homePresenter.selectedDate.month,
                           filterDay: productsPresenter.selectedPeriodValue ==
                                   PeriodType.daily
                               ? homePresenter.selectedDate.day
@@ -111,7 +112,21 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                         .map((e) => e.toViewModel())
                         .toList();
 
-                    if (saleMovements == null || saleMovements.isEmpty) {
+                    final monthlySales = productsPresenter.monthlySaleMovements
+                        ?.filteredSales(
+                          enterprise: homePresenter.selectedEnterprise,
+                          filterMonth: homePresenter.selectedDate.month,
+                          filterYear: homePresenter.selectedDate.year,
+                        )
+                        .map((e) => e.toViewModel())
+                        .toList();
+
+                    if ((dailySales?.isEmpty == true &&
+                            productsPresenter.selectedPeriodValue ==
+                                PeriodType.daily) ||
+                        (monthlySales?.isEmpty == true &&
+                            productsPresenter.selectedPeriodValue ==
+                                PeriodType.monthly)) {
                       return EmptySales(isLoading: loadingSnap.data == true);
                     }
 
@@ -120,30 +135,32 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SelectPeriodItems(
-                            selectedPeriodType:
-                                productsPresenter.selectedPeriodValue,
-                            onTapDaily: () {
-                              productsPresenter.getSales(
-                                homePresenter,
-                                periodType: PeriodType.daily,
-                              );
-                            },
-                            onTapMonthly: () {
-                              productsPresenter.getSales(
-                                homePresenter,
-                                periodType: PeriodType.monthly,
-                              );
-                            },
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SelectPeriodItems(
+                              selectedPeriodType:
+                                  productsPresenter.selectedPeriodValue,
+                              onTapDaily: () {
+                                productsPresenter.getSales(
+                                  homePresenter,
+                                  periodType: PeriodType.daily,
+                                );
+                              },
+                              onTapMonthly: () {
+                                productsPresenter.getSales(
+                                  homePresenter,
+                                  periodType: PeriodType.monthly,
+                                );
+                              },
+                            ),
                           ),
-                          const SizedBox(height: 10),
                           TableItem(
                             titleMinHeight: 43,
                             tableColumnWidth: {
                               0: FixedColumnWidth(
                                   MediaQuery.of(context).size.width * 0.1),
                               2: FixedColumnWidth(
-                                  MediaQuery.of(context).size.width * 0.2),
+                                  MediaQuery.of(context).size.width * 0.22),
                               3: FixedColumnWidth(
                                   MediaQuery.of(context).size.width * 0.13),
                               4: FixedColumnWidth(
@@ -160,7 +177,7 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                               PersonalizedTableCell(
                                   value: R.string.product.toUpperCase()),
                               PersonalizedTableCell(
-                                  value: R.string.revenue.toUpperCase()),
+                                  value: R.string.sales.toUpperCase()),
                               PersonalizedTableCell(
                                 value:
                                     R.string.quantityAbbreviated.toUpperCase(),
@@ -168,7 +185,11 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                               PersonalizedTableCell(
                                   value: R.string.averagePrice.toUpperCase()),
                             ],
-                            rowValues: constructRows(saleMovements),
+                            rowValues: constructRows(
+                                productsPresenter.selectedPeriodValue ==
+                                        PeriodType.daily
+                                    ? dailySales!
+                                    : monthlySales!),
                           ),
                         ],
                       ),

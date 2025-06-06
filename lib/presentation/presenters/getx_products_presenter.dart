@@ -11,7 +11,6 @@ class GetxProductsPresenter extends GetxController
     with
         LoadingManager,
         UIErrorManager,
-        SaleMovementManager,
         LastGetSalesParamsManager,
         PeriodTypeManager
     implements ProductsPresenter {
@@ -38,7 +37,9 @@ class GetxProductsPresenter extends GetxController
 
       final canSearchAgain = SalesHelper.canSearch(
         forceRefresh: forceRefresh,
-        lastGetSalesParams: lastGetSalesParams,
+        lastGetSalesParams: selectedPeriodValue == PeriodType.daily
+            ? lastGetDailyParams
+            : lastGetMonthlyParams,
         selectedDate: homePresenter.selectedDate,
         periodType: selectedPeriodValue,
       );
@@ -46,7 +47,8 @@ class GetxProductsPresenter extends GetxController
       bool changedEnterprise = SalesHelper.changedTheEnterprise(
         selectedPeriodType: selectedPeriodValue,
         selectedEnterprise: homePresenter.selectedEnterprise,
-        lastGetSalesParams: lastGetSalesParams,
+        lastGetDailyParams: lastGetDailyParams,
+        lastGetMonthlyParams: lastGetMonthlyParams,
       );
 
       if (!canSearchAgain && !changedEnterprise) {
@@ -82,9 +84,16 @@ class GetxProductsPresenter extends GetxController
       final response = await loadSaleMovements.get(params);
       lastParams = params;
 
-      saleMovements = (response as List)
+      final newSales = (response as List)
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
           .toList();
+      if (selectedPeriodValue == PeriodType.daily) {
+        lastDaily = params;
+        dailySaleMovements = newSales;
+      } else {
+        lastMonthly = params;
+        monthlySaleMovements = newSales;
+      }
 
       _lastEnterpriseLoadedData = homePresenter.selectedEnterprise;
     } catch (e) {
@@ -97,5 +106,19 @@ class GetxProductsPresenter extends GetxController
   EnterpriseViewModel? _lastEnterpriseLoadedData;
   @override
   EnterpriseViewModel? get lastEnterpriseLoadedData =>
-      _lastEnterpriseLoadedData;
+      _lastEnterpriseLoadedData; //TODO remove this
+
+  final _dailySaleMovements = Rx<List<SaleMovementViewModel>?>(null);
+  @override
+  List<SaleMovementViewModel>? get dailySaleMovements =>
+      _dailySaleMovements.value;
+  set dailySaleMovements(List<SaleMovementViewModel>? value) =>
+      _dailySaleMovements.value = value;
+
+  final _monthlySaleMovements = Rx<List<SaleMovementViewModel>?>(null);
+  @override
+  List<SaleMovementViewModel>? get monthlySaleMovements =>
+      _monthlySaleMovements.value;
+  set monthlySaleMovements(List<SaleMovementViewModel>? value) =>
+      _monthlySaleMovements.value = value;
 }
