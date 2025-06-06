@@ -18,5 +18,4 @@ abstract class PaymentTypePresenter implements Listenable {
     PeriodType? periodType,
     bool? forceRefresh,
   });
-  void emitLoadingAgain();
 }

@@ -17,5 +17,4 @@ abstract class DepartmentsPresenter implements Listenable {
     PeriodType? periodType,
     bool? forceRefresh,
   });
-  void emitLoadingAgain();
 }

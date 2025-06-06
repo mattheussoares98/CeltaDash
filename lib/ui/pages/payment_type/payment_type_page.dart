@@ -33,7 +33,6 @@ class _PaymentTypePageState extends State<PaymentTypePage>
         PaymentTypePresenter paymentTypePresenter = Get.find();
         HomePresenter homePresenter = Get.find();
         paymentTypePresenter.getSales(homePresenter);
-        paymentTypePresenter.emitLoadingAgain();
       }
     });
   }

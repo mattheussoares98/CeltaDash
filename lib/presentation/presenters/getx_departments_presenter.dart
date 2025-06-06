@@ -28,6 +28,8 @@ class GetxDepartmentsPresenter extends GetxController
     bool? forceRefresh,
   }) async {
     if (isLoadingValue == true) {
+      isLoading = false;
+      isLoading = true;
       return;
     }
     try {
@@ -81,14 +83,6 @@ class GetxDepartmentsPresenter extends GetxController
       mainError = UIError.unexpected;
     } finally {
       isLoading = false;
-    }
-  }
-
-  @override
-  void emitLoadingAgain() {
-    if (isLoadingValue == true) {
-      isLoading = false;
-      isLoading = true;
     }
   }
 }

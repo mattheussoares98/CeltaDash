@@ -28,8 +28,11 @@ class GetxPaymentTypePresenter extends GetxController
     bool? forceRefresh,
   }) async {
     if (isLoadingValue == true) {
+      isLoading = false;
+      isLoading = true;
       return;
     }
+
     try {
       isLoading = true;
       mainError = null;
@@ -97,14 +100,6 @@ class GetxPaymentTypePresenter extends GetxController
       mainError = UIError.unexpected;
     } finally {
       isLoading = false;
-    }
-  }
-
-  @override
-  void emitLoadingAgain() {
-    if (isLoadingValue == true) {
-      isLoading = false;
-      isLoading = true;
     }
   }
 

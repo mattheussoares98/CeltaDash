@@ -135,12 +135,4 @@ class GetxOperatorsPresenter extends GetxController
       isLoading = false;
     }
   }
-
-  @override
-  void emitLoadingAgain() {
-    if (isLoadingValue == true) {
-      isLoading = false;
-      isLoading = true;
-    }
-  }
 }

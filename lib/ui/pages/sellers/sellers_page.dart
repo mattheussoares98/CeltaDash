@@ -22,8 +22,9 @@ class SellersPageState extends State<SellersPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      SellersPresenter sellersPresenter = Get.find();
-      sellersPresenter.emitLoadingAgain();
+      if (mounted) {
+        //get sales
+      }
     });
   }
 
@@ -102,8 +103,7 @@ class SellersPageState extends State<SellersPage> {
                     TableItem(
                       titleMinHeight: 43,
                       indexToSort: 1,
-                      columnIndexToCompareAndDetachBetterAndWorstValue:
-                          1,
+                      columnIndexToCompareAndDetachBetterAndWorstValue: 1,
                       columnsIndexToSum: [1, 2],
                       titles: [
                         PersonalizedTableCell(value: R.string.seller),
@@ -113,9 +113,7 @@ class SellersPageState extends State<SellersPage> {
                         ),
                       ],
                       rowValues: sales
-                          .fold<
-                                  Map<String,
-                                      List<SaleMovementViewModel>>>({},
+                          .fold<Map<String, List<SaleMovementViewModel>>>({},
                               (map, e) {
                             final operator = e.Seller ?? "Unknown";
                             map.putIfAbsent(operator, () => []).add(e);
@@ -124,7 +122,7 @@ class SellersPageState extends State<SellersPage> {
                           .entries
                           .map((e) {
                             final operator = e.key;
-                
+
                             return [
                               PersonalizedTableCell(value: operator),
                               PersonalizedTableCell(

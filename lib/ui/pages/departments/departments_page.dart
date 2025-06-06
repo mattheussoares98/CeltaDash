@@ -31,7 +31,6 @@ class _DepartmentsPageState extends State<DepartmentsPage>
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
         DepartmentsPresenter departmentsPresenter = Get.find();
-        departmentsPresenter.emitLoadingAgain();
         departmentsPresenter.getSales(Get.find<HomePresenter>());
       }
     });

@@ -21,5 +21,4 @@ abstract class OperatorsPresenter implements Listenable {
     PeriodType? periodType,
     bool? forceRefresh,
   });
-  void emitLoadingAgain();
 }
