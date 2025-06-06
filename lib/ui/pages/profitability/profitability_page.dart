@@ -34,7 +34,11 @@ class _ProfitabilityPageState extends State<ProfitabilityPage> {
   initState() {
     super.initState();
 
-    reloadData();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        reloadData();
+      }
+    });
   }
 
   @override

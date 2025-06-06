@@ -67,14 +67,12 @@ class Sections extends StatelessWidget {
                 final profit = liquidValue - cost;
                 final percentage =
                     liquidValue == 0 ? 0.0 : (profit / liquidValue) * 100;
-                debugPrint(entry.key);
 
                 return [
                   PersonalizedTableCell(
                     value: sales.first.ProductDepartment,
                     subtile: section,
-                    decoration:
-                        BoxDecoration(color: departmentColorMap[dept]),
+                    decoration: BoxDecoration(color: departmentColorMap[dept]),
                   ),
                   PersonalizedTableCell(value: liquidValue, isMoney: true),
                   PersonalizedTableCell(value: cost, isMoney: true),
