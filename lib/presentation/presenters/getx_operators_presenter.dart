@@ -129,7 +129,6 @@ class GetxOperatorsPresenter extends GetxController
         yearlySales = newSales;
         lastGetYearlyParams = getSalesParams;
       }
-      // homePresenter.updateScreen();//TODO test if need use or not
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {
