@@ -6,4 +6,5 @@ mixin LastGetSalesParamsManager on GetxController {
   GetSalesParams? _lastGetSalesParams;
   GetSalesParams? get lastGetSalesParams => _lastGetSalesParams;
   set lastParams(GetSalesParams? value) => _lastGetSalesParams = value;
+  //TODO create daily, monthly, yearly
 }

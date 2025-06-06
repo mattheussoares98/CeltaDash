@@ -1,3 +1,5 @@
+import '../../ui/helpers/helpers.dart';
+import '../../ui/pages/pages.dart';
 import '../usecases/usecases.dart';
 import 'helpers.dart';
 
@@ -32,6 +34,29 @@ class SalesHelper {
       );
     }
 
+    return false;
+  }
+
+  static bool changedTheEnterprise({
+    required PeriodType selectedPeriodType,
+    required EnterpriseViewModel? selectedEnterprise,
+    GetSalesParams? lastGetDailyParams,
+    GetSalesParams? lastGetMonthlyParams,
+    GetSalesParams? lastGetYearlyParams,
+  }) {
+    bool changed(GetSalesParams? params) {
+      return params?.enterpriseIds
+              ?.any((e) => e == selectedEnterprise?.id?.toInt()) ==
+          false;
+    }
+
+    if (selectedPeriodType == PeriodType.daily) {
+      return changed(lastGetDailyParams);
+    } else if (selectedPeriodType == PeriodType.monthly) {
+      return changed(lastGetMonthlyParams);
+    } else if (selectedPeriodType == PeriodType.yearly) {
+      return changed(lastGetYearlyParams);
+    }
     return false;
   }
 

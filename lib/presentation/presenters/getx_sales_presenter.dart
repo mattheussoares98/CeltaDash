@@ -52,25 +52,15 @@ class GetxSalesPresenter extends GetxController
         periodType: _selectedPeriodType,
       );
 
-      bool changedTheEnterprise() {
-        //TODO move this to helper
-        if (_selectedPeriodType == PeriodType.daily) {
-          return _lastGetDailyParams?.enterpriseIds?.isNotEmpty == true &&
-              _lastDailyEnterprise?.id?.toInt() !=
-                  homePresenter.selectedEnterprise?.id?.toInt();
-        } else if (_selectedPeriodType == PeriodType.monthly) {
-          return _lastGetMonthlyParams?.enterpriseIds?.isNotEmpty == true &&
-              _lastMonthlyEnterprise?.id?.toInt() !=
-                  homePresenter.selectedEnterprise?.id?.toInt();
-        } else if (_selectedPeriodType == PeriodType.yearly) {
-          return _lastGetYearlyParams?.enterpriseIds?.isNotEmpty == true &&
-              _lastYearlyEnterprise?.id?.toInt() !=
-                  homePresenter.selectedEnterprise?.id?.toInt();
-        }
-        return false;
-      }
+      final changedTheEnterprise = SalesHelper.changedTheEnterprise(
+        selectedPeriodType: _selectedPeriodType,
+        selectedEnterprise: homePresenter.selectedEnterprise,
+        lastGetDailyParams: _lastGetDailyParams,
+        lastGetMonthlyParams: _lastGetMonthlyParams,
+        lastGetYearlyParams: _lastGetYearlyParams,
+      );
 
-      if (!canSearchAgain && !changedTheEnterprise()) {
+      if (!canSearchAgain && !changedTheEnterprise) {
         return;
       }
 
