@@ -28,6 +28,7 @@ class _IndicatorsPageState extends State<IndicatorsPage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: SelectPeriodItems(
+              isLoading: false,
               selectedPeriodType: PeriodType.daily,
             ),
           ),

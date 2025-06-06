@@ -84,13 +84,13 @@ void main() {
       });
       test("Should update period type correctly", () async {
         await sut.getSales(homePresenter, periodType: PeriodType.daily);
-        expect(sut.selectedPeriodType, PeriodType.daily);
+        expect(sut.selectedPeriodValue, PeriodType.daily);
 
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
-        expect(sut.selectedPeriodType, PeriodType.monthly);
+        expect(sut.selectedPeriodValue, PeriodType.monthly);
 
         await sut.getSales(homePresenter, periodType: PeriodType.yearly);
-        expect(sut.selectedPeriodType, PeriodType.yearly);
+        expect(sut.selectedPeriodValue, PeriodType.yearly);
       });
     });
     group("PeriodType.daily", () {
@@ -98,7 +98,7 @@ void main() {
         await sut.getSales(homePresenter);
 
         expect(
-          sut.saleMovementsByDay,
+          sut.dailySales,
           saleMovementEntities
               .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
               .toList(),
@@ -265,18 +265,13 @@ void main() {
               groupByHour: true,
             ));
       });
-      test("Should change last daily enterprise correctly", () async {
-        await sut.getSales(homePresenter, periodType: PeriodType.daily);
-
-        expect(sut.lastDailyEnterprise, homePresenter.selectedEnterpriseMock);
-      });
     });
     group("PeriodType.monthly", () {
       test("Should update sale movements correctly", () async {
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
         expect(
-          sut.saleMovementsByMonth,
+          sut.monthlySales,
           saleMovementEntities
               .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
               .toList(),
@@ -405,19 +400,13 @@ void main() {
               groupByMonth: true,
             ));
       });
-
-      test("Should change last monthly enterprise correctly", () async {
-        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
-
-        expect(sut.lastMonthlyEnterprise, homePresenter.selectedEnterpriseMock);
-      });
     });
     group("PeriodType.yearly", () {
       test("Should update sale movements correctly", () async {
         await sut.getSales(homePresenter, periodType: PeriodType.yearly);
 
         expect(
-          sut.saleMovementsByYear,
+          sut.yearlySales,
           saleMovementEntities
               .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
               .toList(),
@@ -546,12 +535,6 @@ void main() {
             ),
           ),
         ).called(1);
-      });
-
-      test("Should change last yearly enterprise correctly", () async {
-        await sut.getSales(homePresenter, periodType: PeriodType.yearly);
-
-        expect(sut.lastYearlyEnterprise, homePresenter.selectedEnterpriseMock);
       });
     });
   });

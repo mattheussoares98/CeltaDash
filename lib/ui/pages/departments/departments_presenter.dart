@@ -9,7 +9,7 @@ abstract class DepartmentsPresenter implements Listenable {
   List<SaleMovementViewModel>? get saleMovements;
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
-  PeriodType? get selectedPeriodType;
+  PeriodType get selectedPeriodValue;
   GetSalesParams? get lastGetSalesParams;
 
   Future<void> getSales(
@@ -17,5 +17,4 @@ abstract class DepartmentsPresenter implements Listenable {
     PeriodType? periodType,
     bool? forceRefresh,
   });
-  void emitLoadingAgain();
 }

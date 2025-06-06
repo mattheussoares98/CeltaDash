@@ -31,117 +31,117 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
     ResumePresenter resumePresenter = Get.find();
     HomePresenter homePresenter = Get.find();
 
-    return Scaffold(
-      appBar: DefaultAppBar(
-        showEnterpriseDropdown: false,
-        onChangeDate: (newDate) async {
-          await resumePresenter.getSales(homePresenter);
-        },
-        onChangeEnterprise: (_) async {
-          await resumePresenter.getSales(homePresenter);
-        },
-        onTapRefresh: () async {
-          await resumePresenter.getSales(homePresenter, forceRefresh: true);
-        },
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(4),
-            child: SelectPeriodItems(
-              selectedPeriodType: resumePresenter.selectedPeriodType,
-              onTapDaily: () {
-                resumePresenter.getSales(
-                  homePresenter,
-                  periodType: PeriodType.daily,
-                );
-              },
-              onTapMonthly: () {
-                resumePresenter.getSales(
-                  homePresenter,
-                  periodType: PeriodType.monthly,
-                );
-              },
-            ),
+    return StreamBuilder(
+      stream: resumePresenter.isLoadingStream,
+      builder: (context, loadingSnap) {
+        return Scaffold(
+          appBar: DefaultAppBar(
+            isLoading: loadingSnap.data == true,
+            showEnterpriseDropdown: false,
+            onChangeDate: (newDate) async {
+              await resumePresenter.getSales(homePresenter);
+            },
+            onChangeEnterprise: (_) async {
+              await resumePresenter.getSales(homePresenter);
+            },
+            onTapRefresh: () async {
+              await resumePresenter.getSales(homePresenter, forceRefresh: true);
+            },
           ),
-          Obx(() {
-            final saleMovements = resumePresenter.saleMovements;
-
-            if (saleMovements == null || saleMovements.isEmpty) {
-              return EmptySales(isLoading: false);
-            }
-
-            final groupSales = saleMovements
-                .filteredSales(
-                  filterDay:
-                      resumePresenter.selectedPeriodType == PeriodType.daily
-                          ? homePresenter.selectedDate.day
-                          : null,
-                )
-                .map((e) => e.toViewModel())
-                .toList();
-
-            final groupSalesTotalLiquid = groupSales.sumLiquidValue();
-            int groupSalesQuantity = groupSales.quantitySales();
-
-            return StreamBuilder<bool>(
-                stream: homePresenter.updateScreenStream,
-                builder: (context, snapshot) {
-                  return Expanded(
-                    child: Opacity(
-                      opacity: snapshot.data == true ? 0 : 1,
-                      child: PageView(
-                        controller: pageController,
-                        onPageChanged: (index) {
-                          setState(() {
-                            currentIndex = index;
-                          });
-                        },
-                        children: [
-                          GroupSummaryDetailsPage(
-                            groupSalesTotalLiquid: groupSalesTotalLiquid,
-                            saleMovements: saleMovements,
-                          ),
-                          GroupSummaryResumePage(
-                            groupSalesTotalLiquid: groupSalesTotalLiquid,
-                            groupSales: groupSales,
-                            groupSalesQuantity: groupSalesQuantity,
-                          ),
-                        ],
+          body: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(4),
+                child: SelectPeriodItems(
+                  isLoading: loadingSnap.data,
+                  selectedPeriodType: resumePresenter.selectedPeriodValue,
+                  onTapDaily: () {
+                    resumePresenter.getSales(
+                      homePresenter,
+                      periodType: PeriodType.daily,
+                    );
+                  },
+                  onTapMonthly: () {
+                    resumePresenter.getSales(
+                      homePresenter,
+                      periodType: PeriodType.monthly,
+                    );
+                  },
+                ),
+              ),
+              Obx(() {
+                final saleMovements = resumePresenter.saleMovements;
+        
+                if (saleMovements == null || saleMovements.isEmpty) {
+                  return EmptySales(isLoading: false);
+                }
+        
+                final groupSales = saleMovements
+                    .filteredSales(
+                      filterDay:
+                          resumePresenter.selectedPeriodValue == PeriodType.daily
+                              ? homePresenter.selectedDate.day
+                              : null,
+                    )
+                    .map((e) => e.toViewModel())
+                    .toList();
+        
+                final groupSalesTotalLiquid = groupSales.sumLiquidValue();
+                int groupSalesQuantity = groupSales.quantitySales();
+        
+                return Expanded(
+                  child: PageView(
+                    controller: pageController,
+                    onPageChanged: (index) {
+                      setState(() {
+                        currentIndex = index;
+                      });
+                    },
+                    children: [
+                      GroupSummaryDetailsPage(
+                        groupSalesTotalLiquid: groupSalesTotalLiquid,
+                        saleMovements: saleMovements,
                       ),
-                    ),
-                  );
-                });
-          }),
-        ],
-      ),
-      bottomNavigationBar: BottomNavBar(
-        currentIndex: currentIndex,
-        items: [
-          BottomNavItem(
-            materialIcon: Icon(Icons.bar_chart_rounded),
-            cupertinoIcon: Icon(CupertinoIcons.list_dash),
-            label: R.string.details,
+                      GroupSummaryResumePage(
+                        groupSalesTotalLiquid: groupSalesTotalLiquid,
+                        groupSales: groupSales,
+                        groupSalesQuantity: groupSalesQuantity,
+                      ),
+                    ],
+                  ),
+                );
+              }),
+            ],
           ),
-          BottomNavItem(
-            materialIcon: Icon(Icons.pie_chart),
-            cupertinoIcon: Icon(CupertinoIcons.chart_pie),
-            label: R.string.resume,
+          bottomNavigationBar: BottomNavBar(
+            currentIndex: currentIndex,
+            items: [
+              BottomNavItem(
+                materialIcon: Icon(Icons.bar_chart_rounded),
+                cupertinoIcon: Icon(CupertinoIcons.list_dash),
+                label: R.string.details,
+              ),
+              BottomNavItem(
+                materialIcon: Icon(Icons.pie_chart),
+                cupertinoIcon: Icon(CupertinoIcons.chart_pie),
+                label: R.string.resume,
+              ),
+            ],
+            onTap: (index) {
+              setState(() {
+                currentIndex = index;
+              });
+              if (pageController.hasClients) {
+                pageController.animateToPage(
+                  index,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                );
+              }
+            },
           ),
-        ],
-        onTap: (index) {
-          setState(() {
-            currentIndex = index;
-          });
-          if (pageController.hasClients) {
-            pageController.animateToPage(
-              index,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-            );
-          }
-        },
-      ),
+        );
+      }
     );
   }
 }

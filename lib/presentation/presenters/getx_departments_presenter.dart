@@ -12,7 +12,8 @@ class GetxDepartmentsPresenter extends GetxController
         SaleMovementManager,
         UIErrorManager,
         LoadingManager,
-        LastGetSalesParamsManager
+        LastGetSalesParamsManager,
+        PeriodTypeManager
     implements DepartmentsPresenter {
   final LoadSaleMovements loadSaleMovements;
 
@@ -27,6 +28,8 @@ class GetxDepartmentsPresenter extends GetxController
     bool? forceRefresh,
   }) async {
     if (isLoadingValue == true) {
+      isLoading = false;
+      isLoading = true;
       return;
     }
     try {
@@ -34,14 +37,14 @@ class GetxDepartmentsPresenter extends GetxController
       mainError = null;
 
       if (periodType != null) {
-        _selectedPeriodType = periodType;
+        selectedPeriod = periodType;
       }
 
       final canSearchAgain = SalesHelper.canSearch(
         forceRefresh: forceRefresh,
         lastGetSalesParams: lastGetSalesParams,
         selectedDate: homePresenter.selectedDate,
-        periodType: _selectedPeriodType,
+        periodType: selectedPeriodValue,
       );
 
       if (!canSearchAgain) {
@@ -51,7 +54,7 @@ class GetxDepartmentsPresenter extends GetxController
       final startDate = DateTime(
         homePresenter.selectedDate.year,
         homePresenter.selectedDate.month,
-        _selectedPeriodType == PeriodType.daily
+        selectedPeriodValue == PeriodType.daily
             ? homePresenter.selectedDate.day
             : 1,
       );
@@ -64,7 +67,7 @@ class GetxDepartmentsPresenter extends GetxController
 
       final getSalesParams = GetSalesParams(
         startDate: startDate,
-        endDate: _selectedPeriodType == PeriodType.daily ? startDate : endDate,
+        endDate: selectedPeriodValue == PeriodType.daily ? startDate : endDate,
         groupByEnterprise: true,
         groupByDay: true,
         groupByProductDepartment: true,
@@ -80,18 +83,6 @@ class GetxDepartmentsPresenter extends GetxController
       mainError = UIError.unexpected;
     } finally {
       isLoading = false;
-    }
-  }
-
-  PeriodType _selectedPeriodType = PeriodType.daily;
-  @override
-  PeriodType get selectedPeriodType => _selectedPeriodType;
-
-  @override
-  void emitLoadingAgain() {
-    if (isLoadingValue == true) {
-      isLoading = false;
-      isLoading = true;
     }
   }
 }

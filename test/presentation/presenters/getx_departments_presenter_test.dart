@@ -186,14 +186,14 @@ void main() {
       });
       test("Should update selected period type correctly", () async {
         await sut.getSales(homePresenter, periodType: PeriodType.daily);
-        expect(sut.selectedPeriodType, PeriodType.daily);
+        expect(sut.selectedPeriodValue, PeriodType.daily);
 
         await sut.getSales(
           homePresenter,
           periodType: PeriodType.monthly,
           forceRefresh: true,
         );
-        expect(sut.selectedPeriodType, PeriodType.monthly);
+        expect(sut.selectedPeriodValue, PeriodType.monthly);
       });
     });
   });

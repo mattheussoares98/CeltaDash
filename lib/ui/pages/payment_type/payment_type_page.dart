@@ -33,7 +33,6 @@ class _PaymentTypePageState extends State<PaymentTypePage>
         PaymentTypePresenter paymentTypePresenter = Get.find();
         HomePresenter homePresenter = Get.find();
         paymentTypePresenter.getSales(homePresenter);
-        paymentTypePresenter.emitLoadingAgain();
       }
     });
   }
@@ -52,7 +51,7 @@ class _PaymentTypePageState extends State<PaymentTypePage>
   ) {
     final selectedDate = homePresenter.selectedDate;
 
-    if (paymentTypePresenter.selectedPeriodType == PeriodType.monthly) {
+    if (paymentTypePresenter.selectedPeriodValue == PeriodType.monthly) {
       return sale.Date?.month == selectedDate.month &&
           sale.Date?.year == selectedDate.year;
     } else {
@@ -73,10 +72,10 @@ class _PaymentTypePageState extends State<PaymentTypePage>
 
     return StreamBuilder<bool>(
         stream: paymentTypePresenter.isLoadingStream,
-        builder: (context, isLoadingPayments) {
+        builder: (context, loadingSnap) {
           return Scaffold(
             appBar: DefaultAppBar(
-              isLoading: isLoadingPayments.data == true,
+              isLoading: loadingSnap.data == true,
               onChangeEnterprise: (_) {
                 paymentTypePresenter.getSales(homePresenter);
               },
@@ -90,55 +89,54 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                 );
               },
             ),
-            body: Obx(() {
-              final saleMovementsByFinalizations =
-                  paymentTypePresenter.saleMovementsByFinalizations
-                      ?.filteredSales(
-                        enterprise: homePresenter.selectedEnterprise,
-                      )
-                      .map((e) => e.toViewModel());
-
-              final saleMovementsByModalities =
-                  paymentTypePresenter.saleMovements
-                      ?.filteredSales(
-                        enterprise: homePresenter.selectedEnterprise,
-                      )
-                      .map((e) => e.toViewModel());
-
-              if (saleMovementsByFinalizations == null ||
-                  saleMovementsByFinalizations.isEmpty ||
-                  saleMovementsByModalities == null ||
-                  saleMovementsByModalities.isEmpty) {
-                return EmptySales(isLoading: isLoadingPayments.data);
-              }
-
-              return Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SelectPeriodItems(
-                      selectedPeriodType:
-                          paymentTypePresenter.selectedPeriodType,
-                      onTapMonthly: () {
-                        paymentTypePresenter.getSales(
-                          homePresenter,
-                          periodType: PeriodType.monthly,
-                        );
-                      },
-                      onTapDaily: () {
-                        paymentTypePresenter.getSales(
-                          homePresenter,
-                          periodType: PeriodType.daily,
-                        );
-                      },
-                    ),
+            body: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SelectPeriodItems(
+                    isLoading: loadingSnap.data,
+                    selectedPeriodType:
+                        paymentTypePresenter.selectedPeriodValue,
+                    onTapMonthly: () {
+                      paymentTypePresenter.getSales(
+                        homePresenter,
+                        periodType: PeriodType.monthly,
+                      );
+                    },
+                    onTapDaily: () {
+                      paymentTypePresenter.getSales(
+                        homePresenter,
+                        periodType: PeriodType.daily,
+                      );
+                    },
                   ),
-                  Expanded(
-                    child: StreamBuilder<bool>(
-                      stream: homePresenter.updateScreenStream,
-                      builder: (context, snapshot) {
-                        return Opacity(
-                          opacity: snapshot.data == true ? 0 : 1,
+                ),
+                Expanded(
+                  child: Obx(() {
+                    final saleMovementsByFinalizations =
+                        paymentTypePresenter.saleMovementsByFinalizations
+                            ?.filteredSales(
+                              enterprise: homePresenter.selectedEnterprise,
+                            )
+                            .map((e) => e.toViewModel());
+                  
+                    final saleMovementsByModalities =
+                        paymentTypePresenter.saleMovements
+                            ?.filteredSales(
+                              enterprise: homePresenter.selectedEnterprise,
+                            )
+                            .map((e) => e.toViewModel());
+                  
+                    if (saleMovementsByFinalizations == null ||
+                        saleMovementsByFinalizations.isEmpty ||
+                        saleMovementsByModalities == null ||
+                        saleMovementsByModalities.isEmpty) {
+                      return EmptySales(isLoading: loadingSnap.data);
+                    }
+                  
+                    return Column(
+                      children: [
+                        Expanded(
                           child: PageView(
                             controller: pageController,
                             onPageChanged: (value) {
@@ -149,7 +147,8 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                             children: [
                               PaymentsModalities(
                                 filterByFinalizations: false,
-                                saleMovements: saleMovementsByModalities.where(
+                                saleMovements:
+                                    saleMovementsByModalities.where(
                                   (element) {
                                     return filter(
                                       element,
@@ -174,13 +173,13 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                               ),
                             ],
                           ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              );
-            }),
+                        ),
+                      ],
+                    );
+                  }),
+                ),
+              ],
+            ),
             bottomNavigationBar: BottomNavBar(
               currentIndex: selectedPageIndex,
               onTap: (value) {

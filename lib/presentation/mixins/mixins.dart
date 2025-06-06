@@ -3,6 +3,7 @@ export 'last_date_loaded_data_manager.dart';
 export './last_get_sales_params_manager.dart';
 export 'loading_manager.dart';
 export 'navigation_menager.dart';
+export './period_type_manager.dart';
 export './sale_movement_manager.dart';
 export 'ui_error_manager.dart';
 export './update_screen_manager.dart';

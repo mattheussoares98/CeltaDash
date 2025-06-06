@@ -30,6 +30,7 @@ class GetxCompareDaysPresenter extends GetxController
         throw DomainError.sameDays;
       } else if (firstDay == _selectedFirstDay &&
           secondDay == _selectedSecondDay) {
+        //TODO add force refresh
         return;
       }
 

@@ -19,7 +19,6 @@ class ProductsPage extends StatefulWidget {
 class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
   StreamSubscription? mainErrorSubscription;
 
-  bool selectedDay = true;
   List<List<PersonalizedTableCell>> constructRows(
     List<SaleMovementViewModel> saleMovements,
   ) {
@@ -61,76 +60,140 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
   Widget build(BuildContext context) {
     ProductsPresenter productsPresenter = Get.find();
     HomePresenter homePresenter = Get.find();
+    ResumePresenter resumePresenter = Get.find();
+    SalesPresenter salesPresenter = Get.find();
 
     mainErrorSubscription =
         handleMainError(context, productsPresenter.mainErrorStream);
 
-    return Scaffold(
-      body: StreamBuilder<bool>(
-          stream: homePresenter.updateScreenStream,
-          builder: (context, updateScreen) {
-            return Obx(() {
-              final saleMovements = productsPresenter.saleMovements
-                  ?.filteredSales(
-                    enterprise: homePresenter.selectedEnterprise,
-                    filterDay:
-                        selectedDay ? homePresenter.selectedDate.day : null,
-                    filterMonth:
-                        !selectedDay ? homePresenter.selectedDate.month : null,
-                    filterYear: homePresenter.selectedDate.year,
-                  )
-                  .map((e) => e.toViewModel())
-                  .toList();
-
-              if (saleMovements == null || saleMovements.isEmpty) {
-                return EmptySales(isLoading: false);
-              }
-
-              return Opacity(
-                opacity: updateScreen.data == true ? 0 : 1,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SelectPeriodItems(
-                      selectedPeriodType: PeriodType.daily,
-                    ),
-                    const SizedBox(height: 10),
-                    TableItem(
-                      titleMinHeight: 43,
-                      tableColumnWidth: {
-                        0: FixedColumnWidth(
-                            MediaQuery.of(context).size.width * 0.1),
-                        2: FixedColumnWidth(
-                            MediaQuery.of(context).size.width * 0.2),
-                        3: FixedColumnWidth(
-                            MediaQuery.of(context).size.width * 0.13),
-                        4: FixedColumnWidth(
-                            MediaQuery.of(context).size.width * 0.16),
-                      },
-                      columnIndexToCompareAndDetachBetterAndWorstValue: 2,
-                      columnsIndexToSum: [2, 3],
-                      // indexToSort: 0,
-                      titles: [
-                        PersonalizedTableCell(
-                          value: R.string.positionAbbreviated.toUpperCase(),
-                        ),
-                        PersonalizedTableCell(
-                            value: R.string.product.toUpperCase()),
-                        PersonalizedTableCell(
-                            value: R.string.revenue.toUpperCase()),
-                        PersonalizedTableCell(
-                          value: R.string.quantityAbbreviated.toUpperCase(),
-                        ),
-                        PersonalizedTableCell(
-                            value: R.string.averagePrice.toUpperCase()),
-                      ],
-                      rowValues: constructRows(saleMovements),
-                    ),
-                  ],
+    return StreamBuilder(
+        stream: productsPresenter.isLoadingStream,
+        builder: (context, loadingSnap) {
+          return Scaffold(
+            appBar: DefaultAppBar(
+              isLoading: loadingSnap.data == true,
+              onChangeEnterprise: (_) {
+                homePresenter.reloadSales(
+                  resumePresenter,
+                  salesPresenter,
+                  productsPresenter,
+                );
+              },
+              onChangeDate: (_) {
+                homePresenter.reloadSales(
+                  resumePresenter,
+                  salesPresenter,
+                  productsPresenter,
+                );
+              },
+              onTapRefresh: () {
+                homePresenter.reloadSales(
+                  resumePresenter,
+                  salesPresenter,
+                  productsPresenter,
+                  forceRefresh: true,
+                );
+              },
+            ),
+            body: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SelectPeriodItems(
+                    isLoading: loadingSnap.data,
+                    selectedPeriodType: productsPresenter.selectedPeriodValue,
+                    onTapDaily: () {
+                      productsPresenter.getSales(
+                        homePresenter,
+                        periodType: PeriodType.daily,
+                      );
+                    },
+                    onTapMonthly: () {
+                      productsPresenter.getSales(
+                        homePresenter,
+                        periodType: PeriodType.monthly,
+                      );
+                    },
+                  ),
                 ),
-              );
-            });
-          }),
-    );
+                Expanded(
+                  child: Obx(() {
+                    final dailySales = productsPresenter.dailySaleMovements
+                        ?.filteredSales(
+                          enterprise: homePresenter.selectedEnterprise,
+                          filterMonth: homePresenter.selectedDate.month,
+                          filterDay: productsPresenter.selectedPeriodValue ==
+                                  PeriodType.daily
+                              ? homePresenter.selectedDate.day
+                              : null,
+                          filterYear: homePresenter.selectedDate.year,
+                        )
+                        .map((e) => e.toViewModel())
+                        .toList();
+
+                    final monthlySales = productsPresenter.monthlySaleMovements
+                        ?.filteredSales(
+                          enterprise: homePresenter.selectedEnterprise,
+                          filterMonth: homePresenter.selectedDate.month,
+                          filterYear: homePresenter.selectedDate.year,
+                        )
+                        .map((e) => e.toViewModel())
+                        .toList();
+
+                    final sales = productsPresenter.selectedPeriodValue ==
+                            PeriodType.daily
+                        ? dailySales
+                        : monthlySales;
+
+                    if (sales == null || sales.isEmpty) {
+                      return EmptySales(isLoading: loadingSnap.data == true);
+                    }
+
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TableItem(
+                          titleMinHeight: 43,
+                          tableColumnWidth: {
+                            0: FixedColumnWidth(
+                                MediaQuery.of(context).size.width * 0.1),
+                            2: FixedColumnWidth(
+                                MediaQuery.of(context).size.width * 0.22),
+                            3: FixedColumnWidth(
+                                MediaQuery.of(context).size.width * 0.13),
+                            4: FixedColumnWidth(
+                                MediaQuery.of(context).size.width * 0.16),
+                          },
+                          columnIndexToCompareAndDetachBetterAndWorstValue: 2,
+                          columnsIndexToSum: [2, 3],
+                          // indexToSort: 0,
+                          titles: [
+                            PersonalizedTableCell(
+                              value: R.string.positionAbbreviated.toUpperCase(),
+                            ),
+                            PersonalizedTableCell(
+                                value: R.string.product.toUpperCase()),
+                            PersonalizedTableCell(
+                                value: R.string.sales.toUpperCase()),
+                            PersonalizedTableCell(
+                              value: R.string.quantityAbbreviated.toUpperCase(),
+                            ),
+                            PersonalizedTableCell(
+                                value: R.string.averagePrice.toUpperCase()),
+                          ],
+                          rowValues: constructRows(
+                              productsPresenter.selectedPeriodValue ==
+                                      PeriodType.daily
+                                  ? dailySales!
+                                  : monthlySales!),
+                        ),
+                      ],
+                    );
+                  }),
+                ),
+              ],
+            ),
+          );
+        });
   }
 }

@@ -9,7 +9,7 @@ abstract class ResumePresenter implements Listenable {
   List<SaleMovementViewModel>? get saleMovements;
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
-  PeriodType? get selectedPeriodType;
+  PeriodType get selectedPeriodValue;
   GetSalesParams? get lastGetSalesParams;
 
   void goToProfitabillityPage();

@@ -25,6 +25,7 @@ void main() {
 
   late SalesPresenterSpy salesPresenter;
   late ResumePresenterSpy resumePresenter;
+  late ProductsPresenterSpy productsPresenter;
 
   late NavigateToSpy navigateTo;
   late LoadEnterprisesSpy loadEnterprises;
@@ -54,6 +55,7 @@ void main() {
     );
     salesPresenter = SalesPresenterSpy();
     resumePresenter = ResumePresenterSpy();
+    productsPresenter = ProductsPresenterSpy();
   }
 
   void initEntities() {
@@ -123,11 +125,6 @@ void main() {
   });
 
   group("Update selected date", () {
-    test("Should emit update screen", () {
-      expectLater(sut.updateScreenStream, emitsInOrder([true, false]));
-
-      sut.updateSelectedDate(faker.date.dateTime());
-    });
     test("Should update date correctly", () {
       final firstDate = faker.date.dateTime();
       final secondDate = faker.date.dateTime();
@@ -452,14 +449,6 @@ void main() {
     });
   });
 
-  group("Need update screen", () {
-    test("Should emit correct values", () {
-      expectLater(sut.updateScreenStream, emitsInOrder([true, false]));
-
-      sut.updateScreen();
-    });
-  });
-
   group("Do logout", () {
     test("Should emit correct values on success", () async {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
@@ -497,25 +486,63 @@ void main() {
   });
 
   group("Reload sales", () {
-    test("Should call resumePresenter get sales", () async {
-      sut.reloadSales(resumePresenter, salesPresenter);
+    group("Resume presenter", () {
+      test("Should call resumePresenter get sales", () async {
+        sut.reloadSales(resumePresenter, salesPresenter, productsPresenter);
 
-      verify(() => resumePresenter.getSales(sut)).called(1);
+        verify(() => resumePresenter.getSales(sut)).called(1);
+      });
+
+      test("Should call resumePresenter get sales forcing refresh", () async {
+        sut.reloadSales(
+          resumePresenter,
+          salesPresenter,
+          productsPresenter,
+          forceRefresh: true,
+        );
+
+        verify(() => resumePresenter.getSales(sut, forceRefresh: true))
+            .called(1);
+      });
     });
-    test("Should call salesPresenter get sales", () async {
-      sut.reloadSales(resumePresenter, salesPresenter);
 
-      verify(() => salesPresenter.getSales(sut)).called(1);
+    group("SalesPresenter", () {
+      test("Should call salesPresenter get sales", () async {
+        sut.reloadSales(resumePresenter, salesPresenter, productsPresenter);
+
+        verify(() => salesPresenter.getSales(sut)).called(1);
+      });
+
+      test("Should call salesPresenter get sales forcing refresh", () async {
+        sut.reloadSales(
+          resumePresenter,
+          salesPresenter,
+          productsPresenter,
+          forceRefresh: true,
+        );
+
+        verify(() => salesPresenter.getSales(sut, forceRefresh: true))
+            .called(1);
+      });
     });
-    test("Should call resumePresenter get sales forcing refresh", () async {
-      sut.reloadSales(resumePresenter, salesPresenter, forceRefresh: true);
+    group("ProductsPresenter", () {
+      test("Should call ProductsPresenter get sales", () async {
+        sut.reloadSales(resumePresenter, salesPresenter, productsPresenter);
 
-      verify(() => resumePresenter.getSales(sut, forceRefresh: true)).called(1);
-    });
-    test("Should call salesPresenter get sales forcing refresh", () async {
-      sut.reloadSales(resumePresenter, salesPresenter, forceRefresh: true);
+        verify(() => productsPresenter.getSales(sut)).called(1);
+      });
 
-      verify(() => salesPresenter.getSales(sut, forceRefresh: true)).called(1);
+      test("Should call ProductsPresenter get sales forcing refresh", () async {
+        sut.reloadSales(
+          resumePresenter,
+          salesPresenter,
+          productsPresenter,
+          forceRefresh: true,
+        );
+
+        verify(() => productsPresenter.getSales(sut, forceRefresh: true))
+            .called(1);
+      });
     });
   });
 }

@@ -1,32 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../domain/helpers/helpers.dart';
 import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
 class Products extends StatelessWidget {
-  final bool selectedDay;
-
   const Products({
     super.key,
-    required this.selectedDay,
   });
 
   @override
   Widget build(BuildContext context) {
     ProductsPresenter productsPresenter = Get.find();
-    HomePresenter homePresenter = Get.find();
 
-    final saleMovements = productsPresenter.saleMovements
-        ?.filteredSales(
-          enterprise: homePresenter.selectedEnterprise,
-          filterDay: selectedDay ? homePresenter.selectedDate.day : null,
-          filterMonth: homePresenter.selectedDate.month,
-          filterYear: homePresenter.selectedDate.year,
-        )
-        .map((e) => e.toViewModel())
-        .toList();
+    final saleMovements =
+        productsPresenter.selectedPeriodValue == PeriodType.daily
+            ? productsPresenter.dailySaleMovements
+            : productsPresenter.monthlySaleMovements;
 
     if (saleMovements == null || saleMovements.isEmpty) {
       return EmptySales(isLoading: false);

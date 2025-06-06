@@ -10,43 +10,34 @@ class SellersPage extends StatefulWidget {
   const SellersPage({super.key});
 
   @override
-  State<SellersPage> createState() => SellersPageState();
+  State<SellersPage> createState() => _SellersPageState();
 }
 
-class SellersPageState extends State<SellersPage> {
-  bool selectedDay = true;
-  bool selectedMonth = false;
-  bool selectedYear = false;
-
+class _SellersPageState extends State<SellersPage> {
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       SellersPresenter sellersPresenter = Get.find();
-      sellersPresenter.emitLoadingAgain();
+      HomePresenter homePresenter = Get.find();
+      sellersPresenter.getSales(homePresenter);
     });
   }
 
-  void updateSelectedPeriod({
-    bool? day,
-    bool? month,
-    bool? year,
+  List<SaleMovementViewModel>? getSales({
+    required List<SaleMovementViewModel>? dailySales,
+    required List<SaleMovementViewModel>? monthlySales,
+    required List<SaleMovementViewModel>? yearlySales,
+    required SellersPresenter sellersPresenter,
   }) {
-    setState(() {
-      selectedDay = day ?? false;
-      selectedMonth = month ?? false;
-      selectedYear = year ?? false;
-    });
-  }
-
-  int get indexToSelectWhenRebuild {
-    if (selectedDay) {
-      return 0;
-    } else if (selectedMonth) {
-      return 1;
-    } else {
-      return 2;
+    if (sellersPresenter.selectedPeriodValue == PeriodType.daily) {
+      return dailySales;
+    } else if (sellersPresenter.selectedPeriodValue == PeriodType.monthly) {
+      return monthlySales;
+    } else if (sellersPresenter.selectedPeriodValue == PeriodType.yearly) {
+      return yearlySales;
     }
+    return null;
   }
 
   @override
@@ -56,97 +47,138 @@ class SellersPageState extends State<SellersPage> {
 
     return StreamBuilder(
         stream: sellersPresenter.isLoadingStream,
-        builder: (context, loadinSnapshot) {
+        builder: (context, loadingSnap) {
           return Scaffold(
             appBar: DefaultAppBar(
-              isLoading: loadinSnapshot.data == true,
-              onChangeEnterprise: (_) {},
+              isLoading: loadingSnap.data == true,
+              onChangeEnterprise: (_) {
+                sellersPresenter.getSales(homePresenter);
+              },
+              onChangeDate: (_) {
+                sellersPresenter.getSales(homePresenter);
+              },
               onTapRefresh: () {
                 sellersPresenter.getSales(
                   homePresenter,
                   forceRefresh: true,
                 );
               },
-              onChangeDate: (newDate) {
-                sellersPresenter.getSales(homePresenter);
-              },
             ),
             body: SafeArea(
-              child: Obx(() {
-                final sales = sellersPresenter.saleMovements
-                    ?.filteredSales(
-                      enterprise: homePresenter.selectedEnterprise,
-                      filterDay: selectedDay == true
-                          ? homePresenter.selectedDate.day
-                          : null,
-                      filterMonth: selectedMonth == true
-                          ? homePresenter.selectedDate.month
-                          : null,
-                      filterYear: selectedYear == true
-                          ? homePresenter.selectedDate.year
-                          : null,
-                    )
-                    .map((e) => e.toViewModel())
-                    .toList();
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SelectPeriodItems(
+                      isLoading: loadingSnap.data,
+                      selectedPeriodType: sellersPresenter.selectedPeriodValue,
+                      onTapDaily: () {
+                        sellersPresenter.getSales(
+                          homePresenter,
+                          periodType: PeriodType.daily,
+                        );
+                      },
+                      onTapMonthly: () {
+                        sellersPresenter.getSales(
+                          homePresenter,
+                          periodType: PeriodType.monthly,
+                        );
+                      },
+                      onTapYearly: () {
+                        sellersPresenter.getSales(
+                          homePresenter,
+                          periodType: PeriodType.yearly,
+                        );
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: Obx(() {
+                      final dailySales = sellersPresenter.dailySales
+                          ?.filteredSales(
+                            enterprise: homePresenter.selectedEnterprise,
+                            filterMonth: homePresenter.selectedDate.month,
+                            filterYear: homePresenter.selectedDate.year,
+                          )
+                          .map((e) => e.toViewModel())
+                          .toList();
 
-                if (sales == null || sales.isEmpty) {
-                  return EmptySales(isLoading: loadinSnapshot.data == true);
-                }
+                      final monthlySales = sellersPresenter.monthlySales
+                          ?.filteredSales(
+                            enterprise: homePresenter.selectedEnterprise,
+                            filterMonth: homePresenter.selectedDate.month,
+                          )
+                          .map((e) => e.toViewModel())
+                          .toList();
 
-                return StreamBuilder(
-                    stream: homePresenter.updateScreenStream,
-                    builder: (context, updateSnapshot) {
-                      return Opacity(
-                        opacity: updateSnapshot.data == true ? 0 : 1,
-                        child: Column(
-                          children: [
-                            SelectPeriodItems(
-                              selectedPeriodType: PeriodType.daily,
-                            ),
-                            TableItem(
-                              titleMinHeight: 43,
-                              indexToSort: 1,
-                              columnIndexToCompareAndDetachBetterAndWorstValue:
-                                  1,
-                              columnsIndexToSum: [1, 2],
-                              titles: [
-                                PersonalizedTableCell(value: R.string.seller),
-                                PersonalizedTableCell(value: R.string.total),
-                                PersonalizedTableCell(
-                                  value: R.string.salesQuantityAbbreviated,
-                                ),
-                              ],
-                              rowValues: sales
-                                  .fold<
-                                          Map<String,
-                                              List<SaleMovementViewModel>>>({},
-                                      (map, e) {
-                                    final operator = e.Seller ?? "Unknown";
-                                    map.putIfAbsent(operator, () => []).add(e);
-                                    return map;
-                                  })
-                                  .entries
-                                  .map((e) {
-                                    final operator = e.key;
+                      final yearlySales = sellersPresenter.yearlySales
+                          ?.filteredSales(
+                            enterprise: homePresenter.selectedEnterprise,
+                            filterYear: homePresenter.selectedDate.year,
+                          )
+                          .map((e) => e.toViewModel())
+                          .toList();
 
-                                    return [
-                                      PersonalizedTableCell(value: operator),
-                                      PersonalizedTableCell(
-                                        value: e.value.sumLiquidValue(),
-                                        isMoney: true,
-                                      ),
-                                      PersonalizedTableCell(
-                                        value: e.value.quantitySales(),
-                                      ),
-                                    ];
-                                  })
-                                  .toList(),
-                            ),
-                          ],
-                        ),
+                      final sales = getSales(
+                          dailySales: dailySales,
+                          monthlySales: monthlySales,
+                          yearlySales: yearlySales,
+                          sellersPresenter: sellersPresenter);
+
+                      if (sales == null || sales.isEmpty == true) {
+                        return EmptySales(isLoading: loadingSnap.data == true);
+                      }
+
+                      return Column(
+                        children: [
+                          TableItem(
+                            titleMinHeight: 43,
+                            indexToSort: 1,
+                            columnIndexToCompareAndDetachBetterAndWorstValue: 1,
+                            columnsIndexToSum: [1, 2],
+                            tableColumnWidth: {
+                              0: FixedColumnWidth(
+                                  MediaQuery.of(context).size.width * 0.5),
+                              2: FixedColumnWidth(
+                                  MediaQuery.of(context).size.width * 0.18),
+                            },
+                            titles: [
+                              PersonalizedTableCell(value: R.string.seller),
+                              PersonalizedTableCell(value: R.string.total),
+                              PersonalizedTableCell(
+                                value: R.string.salesQuantityAbbreviated,
+                              ),
+                            ],
+                            rowValues: sales
+                                .fold<Map<String, List<SaleMovementViewModel>>>(
+                                    {}, (map, e) {
+                                  final seller = e.Seller ?? "Unknown";
+                                  map.putIfAbsent(seller, () => []).add(e);
+                                  return map;
+                                })
+                                .entries
+                                .map((e) {
+                                  final seller = e.key;
+
+                                  return [
+                                    PersonalizedTableCell(value: seller),
+                                    PersonalizedTableCell(
+                                      value: e.value.sumLiquidValue(),
+                                      isMoney: true,
+                                    ),
+                                    PersonalizedTableCell(
+                                      value: e.value.quantitySales(),
+                                    ),
+                                  ];
+                                })
+                                .toList(),
+                          ),
+                        ],
                       );
-                    });
-              }),
+                    }),
+                  ),
+                ],
+              ),
             ),
           );
         });

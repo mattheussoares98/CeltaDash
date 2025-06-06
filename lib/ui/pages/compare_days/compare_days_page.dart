@@ -16,8 +16,7 @@ class CompareDaysPage extends StatefulWidget {
 }
 
 class _ProfitabilityPageState extends State<CompareDaysPage>
-    with UIErrorManager, LoadingManager {
-  StreamSubscription? loadingSubscription;
+    with UIErrorManager {
   StreamSubscription? mainErrorSubscription;
   static final _now = DateTime.now();
   final firstDay = DateTime(_now.year, _now.month, _now.day - 1);
@@ -44,7 +43,6 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
   @override
   void dispose() {
     super.dispose();
-    loadingSubscription?.cancel();
     mainErrorSubscription?.cancel();
   }
 
@@ -53,78 +51,74 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
     HomePresenter homePresenter = Get.find();
     CompareDaysPresenter compareDaysPresenter = Get.find();
 
-    loadingSubscription?.cancel();
     mainErrorSubscription?.cancel();
-
-    loadingSubscription =
-        handleLoading(context, compareDaysPresenter.isLoadingStream);
     mainErrorSubscription =
         handleMainError(context, compareDaysPresenter.mainErrorStream);
 
-    return Scaffold(
-      appBar: DefaultAppBar(
-        onChangeEnterprise: (_) async {
-          await compareDaysPresenter.getSales(
-            firstDay: compareDaysPresenter.selectedFirstDay ?? firstDay,
-            secondDay: compareDaysPresenter.selectedSecondDay ?? secondDay,
-            homePresenter: homePresenter,
-          );
-        },
-        showDatePicker: false,
-      ),
-      body: SafeArea(
-        child: Obx(() {
-          Get.put<CompareDaysPresenter>(compareDaysPresenter);
-
-          final saleMovements = compareDaysPresenter.saleMovements;
-
-          return StreamBuilder<bool>(
-              stream: homePresenter.updateScreenStream,
-              builder: (context, snapshot) {
-                if ((saleMovements == null || saleMovements.isEmpty) ||
-                    snapshot.data == true) {
-                  return EmptySales(isLoading: false);
-                }
-                return Opacity(
-                  opacity: snapshot.data == true ? 0 : 1,
-                  child: Column(
-                    children: [
-                      ChangeDatesButtons(
-                        firstDay:
-                            compareDaysPresenter.selectedFirstDay ?? firstDay,
-                        secondDay:
-                            compareDaysPresenter.selectedSecondDay ?? secondDay,
-                      ),
-                      if (compareDaysPresenter.selectedFirstDay != null &&
-                          compareDaysPresenter.selectedSecondDay != null)
-                        Expanded(
-                          child: Column(
-                            children: [
-                              CompareTable(
-                                firstDay:
-                                    compareDaysPresenter.selectedFirstDay ??
-                                        firstDay,
-                                secondDay:
-                                    compareDaysPresenter.selectedSecondDay ??
-                                        secondDay,
-                              ),
-                              Result(
-                                firstDay:
-                                    compareDaysPresenter.selectedFirstDay ??
-                                        firstDay,
-                                secondDay:
-                                    compareDaysPresenter.selectedSecondDay ??
-                                        secondDay,
-                              ),
-                            ],
-                          ),
-                        ),
-                    ],
-                  ),
+    return StreamBuilder(
+        stream: compareDaysPresenter.isLoadingStream,
+        builder: (context, loadingSnap) {
+          return Scaffold(
+            appBar: DefaultAppBar(
+              isLoading: loadingSnap.data == true,
+              onChangeEnterprise: (_) async {
+                await compareDaysPresenter.getSales(
+                  firstDay: compareDaysPresenter.selectedFirstDay ?? firstDay,
+                  secondDay:
+                      compareDaysPresenter.selectedSecondDay ?? secondDay,
+                  homePresenter: homePresenter,
                 );
-              });
-        }),
-      ),
-    );
+              },
+              showDatePicker: false,
+            ),
+            body: SafeArea(
+              child: Obx(() {
+                Get.put<CompareDaysPresenter>(compareDaysPresenter);
+
+                final saleMovements = compareDaysPresenter.saleMovements;
+
+                if (saleMovements == null || saleMovements.isEmpty) {
+                  return EmptySales(isLoading: loadingSnap.data == true);
+                }
+
+                return Column(
+                  children: [
+                    ChangeDatesButtons(
+                      firstDay: compareDaysPresenter.selectedFirstDay ??
+                          firstDay,
+                      secondDay:
+                          compareDaysPresenter.selectedSecondDay ??
+                              secondDay,
+                    ),
+                    if (compareDaysPresenter.selectedFirstDay != null &&
+                        compareDaysPresenter.selectedSecondDay != null)
+                      Expanded(
+                        child: Column(
+                          children: [
+                            CompareTable(
+                              firstDay: compareDaysPresenter
+                                      .selectedFirstDay ??
+                                  firstDay,
+                              secondDay: compareDaysPresenter
+                                      .selectedSecondDay ??
+                                  secondDay,
+                            ),
+                            Result(
+                              firstDay: compareDaysPresenter
+                                      .selectedFirstDay ??
+                                  firstDay,
+                              secondDay: compareDaysPresenter
+                                      .selectedSecondDay ??
+                                  secondDay,
+                            ),
+                          ],
+                        ),
+                      ),
+                  ],
+                );
+              }),
+            ),
+          );
+        });
   }
 }

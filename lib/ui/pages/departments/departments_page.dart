@@ -31,7 +31,6 @@ class _DepartmentsPageState extends State<DepartmentsPage>
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
         DepartmentsPresenter departmentsPresenter = Get.find();
-        departmentsPresenter.emitLoadingAgain();
         departmentsPresenter.getSales(Get.find<HomePresenter>());
       }
     });
@@ -55,10 +54,10 @@ class _DepartmentsPageState extends State<DepartmentsPage>
 
     return StreamBuilder<bool>(
         stream: departmentsPresenter.isLoadingStream,
-        builder: (context, isLoadingDepartments) {
+        builder: (context, loadingSnap) {
           return Scaffold(
             appBar: DefaultAppBar(
-              isLoading: isLoadingDepartments.data == true,
+              isLoading: loadingSnap.data == true,
               onChangeEnterprise: (_) {
                 departmentsPresenter.getSales(homePresenter);
               },
@@ -73,13 +72,32 @@ class _DepartmentsPageState extends State<DepartmentsPage>
               },
             ),
             body: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SelectPeriodItems(
+                    isLoading: loadingSnap.data,
+                    selectedPeriodType:
+                        departmentsPresenter.selectedPeriodValue,
+                    onTapDaily: () {
+                      departmentsPresenter.getSales(
+                        homePresenter,
+                        periodType: PeriodType.daily,
+                      );
+                    },
+                    onTapMonthly: () {
+                      departmentsPresenter.getSales(
+                        homePresenter,
+                        periodType: PeriodType.monthly,
+                      );
+                    },
+                  ),
+                ),
                 Obx(() {
                   final saleMovements = departmentsPresenter.saleMovements
                       ?.filteredSales(
                         enterprise: homePresenter.selectedEnterprise,
-                        filterDay: departmentsPresenter.selectedPeriodType ==
+                        filterDay: departmentsPresenter.selectedPeriodValue ==
                                 PeriodType.daily
                             ? homePresenter.selectedDate.day
                             : null,
@@ -90,55 +108,29 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                       .toList();
 
                   if (saleMovements == null || saleMovements.isEmpty) {
-                    return EmptySales(isLoading: isLoadingDepartments.data);
+                    return EmptySales(isLoading: loadingSnap.data);
                   }
 
-                  return StreamBuilder<bool>(
-                      stream: homePresenter.updateScreenStream,
-                      builder: (context, snapshot) {
-                        return Expanded(
-                          child: Column(
+                  return Expanded(
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: PageView(
+                            controller: pageController,
+                            onPageChanged: (value) {
+                              setState(() {
+                                selectedPageIndex = value;
+                              });
+                            },
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: SelectPeriodItems(
-                                  selectedPeriodType:
-                                      departmentsPresenter.selectedPeriodType,
-                                  onTapDaily: () {
-                                    departmentsPresenter.getSales(
-                                      homePresenter,
-                                      periodType: PeriodType.daily,
-                                    );
-                                  },
-                                  onTapMonthly: () {
-                                    departmentsPresenter.getSales(
-                                      homePresenter,
-                                      periodType: PeriodType.monthly,
-                                    );
-                                  },
-                                ),
-                              ),
-                              Expanded(
-                                child: Opacity(
-                                  opacity: snapshot.data == true ? 0 : 1,
-                                  child: PageView(
-                                    controller: pageController,
-                                    onPageChanged: (value) {
-                                      setState(() {
-                                        selectedPageIndex = value;
-                                      });
-                                    },
-                                    children: [
-                                      Departments(saleMovements: saleMovements),
-                                      Sections(saleMovements: saleMovements),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                              Departments(saleMovements: saleMovements),
+                              Sections(saleMovements: saleMovements),
                             ],
                           ),
-                        );
-                      });
+                        ),
+                      ],
+                    ),
+                  );
                 }),
               ],
             ),

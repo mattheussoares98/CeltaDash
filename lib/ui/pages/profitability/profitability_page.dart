@@ -27,7 +27,7 @@ class _ProfitabilityPageState extends State<ProfitabilityPage> {
     DepartmentsPresenter departmentsPresenter = Get.find();
 
     departmentsPresenter.getSales(homePresenter, forceRefresh: forceRefresh);
-    productsPresenter.loadProducts(homePresenter, forceRefresh: forceRefresh);
+    productsPresenter.getSales(homePresenter, forceRefresh: forceRefresh);
   }
 
   @override
@@ -68,18 +68,38 @@ class _ProfitabilityPageState extends State<ProfitabilityPage> {
                     },
                   ),
                   body: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SelectPeriodItems(
+                          isLoading: loadingProductsSnap.data == true ||
+                              loadingDepartmentsSnap.data == true,
+                          selectedPeriodType:
+                              departmentsPresenter.selectedPeriodValue,
+                          onTapDaily: () {
+                            departmentsPresenter.getSales(
+                              homePresenter,
+                              periodType: PeriodType.daily,
+                            );
+                          },
+                          onTapMonthly: () {
+                            departmentsPresenter.getSales(
+                              homePresenter,
+                              periodType: PeriodType.monthly,
+                            );
+                          },
+                        ),
+                      ),
                       Obx(() {
                         final salesDepartments =
                             departmentsPresenter.saleMovements
                                 ?.filteredSales(
                                   enterprise: homePresenter.selectedEnterprise,
-                                  filterDay:
-                                      departmentsPresenter.selectedPeriodType ==
-                                              PeriodType.daily
-                                          ? homePresenter.selectedDate.day
-                                          : null,
+                                  filterDay: departmentsPresenter
+                                              .selectedPeriodValue ==
+                                          PeriodType.daily
+                                      ? homePresenter.selectedDate.day
+                                      : null,
                                   filterMonth: homePresenter.selectedDate.month,
                                   filterYear: homePresenter.selectedDate.year,
                                 )
@@ -92,58 +112,30 @@ class _ProfitabilityPageState extends State<ProfitabilityPage> {
                               isLoading: loadingDepartmentsSnap.data == true ||
                                   loadingProductsSnap.data == true);
                         }
-                        return StreamBuilder(
-                            stream: homePresenter.updateScreenStream,
-                            builder: (context, updateScreen) {
-                              return Expanded(
-                                child: Column(
+                        return Expanded(
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: PageView(
+                                  controller: pageController,
+                                  onPageChanged: (value) {
+                                    setState(() {
+                                      selectedPageIndex = value;
+                                    });
+                                  },
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: SelectPeriodItems(
-                                        selectedPeriodType: departmentsPresenter
-                                            .selectedPeriodType,
-                                        onTapDaily: () {
-                                          departmentsPresenter.getSales(
-                                            homePresenter,
-                                            periodType: PeriodType.daily,
-                                          );
-                                        },
-                                        onTapMonthly: () {
-                                          departmentsPresenter.getSales(
-                                            homePresenter,
-                                            periodType: PeriodType.monthly,
-                                          );
-                                        },
-                                      ),
+                                    DepartmentsProfitability(
+                                      salesDepartments: salesDepartments,
                                     ),
-                                    Expanded(
-                                      child: Opacity(
-                                        opacity:
-                                            updateScreen.data == true ? 0 : 1,
-                                        child: PageView(
-                                          controller: pageController,
-                                          onPageChanged: (value) {
-                                            setState(() {
-                                              selectedPageIndex = value;
-                                            });
-                                          },
-                                          children: [
-                                            DepartmentsProfitability(
-                                              salesDepartments:
-                                                  salesDepartments,
-                                            ),
-                                            Sections(
-                                              saleMovements: salesDepartments,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    )
+                                    Sections(
+                                      saleMovements: salesDepartments,
+                                    ),
                                   ],
                                 ),
-                              );
-                            });
+                              ),
+                            ],
+                          ),
+                        );
                       }),
                     ],
                   ),

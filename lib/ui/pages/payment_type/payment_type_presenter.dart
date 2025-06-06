@@ -10,13 +10,12 @@ abstract class PaymentTypePresenter implements Listenable {
   List<SaleMovementViewModel>? get saleMovementsByFinalizations;
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
-  GetSalesParams? get lastGetSalesParams;
-  PeriodType get selectedPeriodType;
+  GetSalesParams? get lastGetDailyParams;
+  PeriodType get selectedPeriodValue;
 
   Future<void> getSales(
     HomePresenter homePresenter, {
     PeriodType? periodType,
     bool? forceRefresh,
   });
-  void emitLoadingAgain();
 }
