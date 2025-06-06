@@ -98,7 +98,7 @@ void main() {
         await sut.getSales(homePresenter);
 
         expect(
-          sut.saleMovementsByDay,
+          sut.dailySales,
           saleMovementEntities
               .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
               .toList(),
@@ -271,7 +271,7 @@ void main() {
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
         expect(
-          sut.saleMovementsByMonth,
+          sut.monthlySales,
           saleMovementEntities
               .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
               .toList(),
@@ -406,7 +406,7 @@ void main() {
         await sut.getSales(homePresenter, periodType: PeriodType.yearly);
 
         expect(
-          sut.saleMovementsByYear,
+          sut.yearlySales,
           saleMovementEntities
               .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
               .toList(),

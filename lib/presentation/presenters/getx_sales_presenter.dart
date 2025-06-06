@@ -12,7 +12,8 @@ class GetxSalesPresenter extends GetxController
         LoadingManager,
         UIErrorManager,
         LastGetSalesParamsManager,
-        PeriodTypeManager
+        PeriodTypeManager,
+        SaleMovementManager
     implements SalesPresenter {
   final LoadSaleMovements loadSaleMovements;
 
@@ -120,13 +121,13 @@ class GetxSalesPresenter extends GetxController
           .toList();
 
       if (selectedPeriodValue == PeriodType.daily) {
-        salesByDay = newSales;
+        dailySales = newSales;
         lastGetDailyParams = getSalesParams;
       } else if (selectedPeriodValue == PeriodType.monthly) {
-        salesByMonth = newSales;
+        monthlySales = newSales;
         lastGetMonthlyParams = getSalesParams;
       } else if (selectedPeriodValue == PeriodType.yearly) {
-        salesByYear = newSales;
+        yearlySales = newSales;
         lastGetYearlyParams = getSalesParams;
       }
     } catch (e) {
@@ -135,26 +136,4 @@ class GetxSalesPresenter extends GetxController
       isLoading = false;
     }
   }
-
-  final _saleMovementsByYear = Rx<List<SaleMovementViewModel>?>(null);
-  @override
-  List<SaleMovementViewModel>? get saleMovementsByYear =>
-      _saleMovementsByYear.value;
-  set salesByYear(List<SaleMovementViewModel>? value) =>
-      _saleMovementsByYear.value = value;
-
-  final _saleMovementsByMonth = Rx<List<SaleMovementViewModel>?>(null);
-  @override
-  List<SaleMovementViewModel>? get saleMovementsByMonth =>
-      _saleMovementsByMonth.value;
-  set salesByMonth(List<SaleMovementViewModel>? value) =>
-      _saleMovementsByMonth.value = value;
-
-  final _saleMovementsByDay = Rx<List<SaleMovementViewModel>?>(null);
-  @override
-  List<SaleMovementViewModel>? get saleMovementsByDay =>
-      _saleMovementsByDay.value;
-  set salesByDay(List<SaleMovementViewModel>? value) =>
-      _saleMovementsByDay.value = value;
-  //TODO remove this and use the manager
 }

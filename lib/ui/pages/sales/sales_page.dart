@@ -130,21 +130,21 @@ class _SalesPageState extends State<SalesPage>
                   //     )
                   //     .toList();
 
-                  final dailySales = salesPresenter.saleMovementsByDay
+                  final dailySales = salesPresenter.dailySales
                       ?.filteredSales(
                         enterprise: homePresenter.selectedEnterprise,
                       )
                       .map((e) => e.toViewModel())
                       .toList();
 
-                  final monthlySales = salesPresenter.saleMovementsByMonth
+                  final monthlySales = salesPresenter.monthlySales
                       ?.filteredSales(
                         enterprise: homePresenter.selectedEnterprise,
                       )
                       .map((e) => e.toViewModel())
                       .toList();
 
-                  final yearlySales = salesPresenter.saleMovementsByYear
+                  final yearlySales = salesPresenter.yearlySales
                       ?.filteredSales(
                         enterprise: homePresenter.selectedEnterprise,
                       )
