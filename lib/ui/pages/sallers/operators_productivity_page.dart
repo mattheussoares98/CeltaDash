@@ -74,7 +74,8 @@ class _OperatorsProductivityPageState extends State<OperatorsProductivityPage> {
             ),
             body: SafeArea(
               child: Obx(() {
-                final sales = operatorsPresenter.saleMovements
+                //TODO fix
+                final sales = operatorsPresenter.dailySales
                     ?.filteredSales(
                       enterprise: homePresenter.selectedEnterprise,
                       filterDay: selectedDay == true

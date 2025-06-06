@@ -156,4 +156,5 @@ class GetxSalesPresenter extends GetxController
       _saleMovementsByDay.value;
   set salesByDay(List<SaleMovementViewModel>? value) =>
       _saleMovementsByDay.value = value;
+  //TODO remove this and use the manager
 }
