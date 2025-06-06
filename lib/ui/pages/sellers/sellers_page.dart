@@ -74,7 +74,8 @@ class SellersPageState extends State<SellersPage> {
             ),
             body: SafeArea(
               child: Obx(() {
-                final sales = sellersPresenter.saleMovements
+                //TODO fix
+                final sales = sellersPresenter.dailySales
                     ?.filteredSales(
                       enterprise: homePresenter.selectedEnterprise,
                       filterDay: selectedDay == true
