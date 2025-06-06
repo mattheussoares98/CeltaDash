@@ -68,29 +68,52 @@ class _ProfitabilityPageState extends State<ProfitabilityPage> {
                     },
                   ),
                   body: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SelectPeriodItems(
+                          isLoading: loadingProductsSnap.data == true ||
+                              loadingDepartmentsSnap.data == true,
+                          selectedPeriodType:
+                              departmentsPresenter.selectedPeriodValue,
+                          onTapDaily: () {
+                            departmentsPresenter.getSales(
+                              homePresenter,
+                              periodType: PeriodType.daily,
+                            );
+                          },
+                          onTapMonthly: () {
+                            departmentsPresenter.getSales(
+                              homePresenter,
+                              periodType: PeriodType.monthly,
+                            );
+                          },
+                        ),
+                      ),
                       Obx(() {
-                        final salesDepartments =
-                            departmentsPresenter.saleMovements
-                                ?.filteredSales(
-                                  enterprise: homePresenter.selectedEnterprise,
-                                  filterDay:
-                                      departmentsPresenter.selectedPeriodValue ==
-                                              PeriodType.daily
-                                          ? homePresenter.selectedDate.day
-                                          : null,
-                                  filterMonth: homePresenter.selectedDate.month,
-                                  filterYear: homePresenter.selectedDate.year,
-                                )
-                                .map((e) => e.toViewModel())
-                                .toList();
-
+                        final salesDepartments = departmentsPresenter
+                            .saleMovements
+                            ?.filteredSales(
+                              enterprise:
+                                  homePresenter.selectedEnterprise,
+                              filterDay: departmentsPresenter
+                                          .selectedPeriodValue ==
+                                      PeriodType.daily
+                                  ? homePresenter.selectedDate.day
+                                  : null,
+                              filterMonth:
+                                  homePresenter.selectedDate.month,
+                              filterYear: homePresenter.selectedDate.year,
+                            )
+                            .map((e) => e.toViewModel())
+                            .toList();
+                                            
                         if (salesDepartments == null ||
                             salesDepartments.isEmpty) {
                           return EmptySales(
-                              isLoading: loadingDepartmentsSnap.data == true ||
-                                  loadingProductsSnap.data == true);
+                              isLoading:
+                                  loadingDepartmentsSnap.data == true ||
+                                      loadingProductsSnap.data == true);
                         }
                         return StreamBuilder(
                             stream: homePresenter.updateScreenStream,
@@ -98,29 +121,11 @@ class _ProfitabilityPageState extends State<ProfitabilityPage> {
                               return Expanded(
                                 child: Column(
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: SelectPeriodItems(
-                                        selectedPeriodType: departmentsPresenter
-                                            .selectedPeriodValue,
-                                        onTapDaily: () {
-                                          departmentsPresenter.getSales(
-                                            homePresenter,
-                                            periodType: PeriodType.daily,
-                                          );
-                                        },
-                                        onTapMonthly: () {
-                                          departmentsPresenter.getSales(
-                                            homePresenter,
-                                            periodType: PeriodType.monthly,
-                                          );
-                                        },
-                                      ),
-                                    ),
                                     Expanded(
                                       child: Opacity(
-                                        opacity:
-                                            updateScreen.data == true ? 0 : 1,
+                                        opacity: updateScreen.data == true
+                                            ? 0
+                                            : 1,
                                         child: PageView(
                                           controller: pageController,
                                           onPageChanged: (value) {
@@ -134,12 +139,13 @@ class _ProfitabilityPageState extends State<ProfitabilityPage> {
                                                   salesDepartments,
                                             ),
                                             Sections(
-                                              saleMovements: salesDepartments,
+                                              saleMovements:
+                                                  salesDepartments,
                                             ),
                                           ],
                                         ),
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                               );

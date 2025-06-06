@@ -101,6 +101,7 @@ class SellersPageState extends State<SellersPage> {
                         child: Column(
                           children: [
                             SelectPeriodItems(
+                              isLoading: loadinSnapshot.data,
                               selectedPeriodType: PeriodType.daily,
                             ),
                             TableItem(

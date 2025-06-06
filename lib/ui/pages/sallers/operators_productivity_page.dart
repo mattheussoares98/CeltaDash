@@ -95,6 +95,8 @@ class _OperatorsProductivityPageState extends State<OperatorsProductivityPage> {
                   return EmptySales(isLoading: loadinSnapshot.data == true);
                 }
 
+                //TODO remove this page
+
                 return StreamBuilder(
                     stream: homePresenter.updateScreenStream,
                     builder: (context, updateSnapshot) {
@@ -103,6 +105,7 @@ class _OperatorsProductivityPageState extends State<OperatorsProductivityPage> {
                         child: Column(
                           children: [
                             SelectPeriodItems(
+                              isLoading: loadinSnapshot.data,
                               selectedPeriodType: PeriodType.daily,
                             ),
                             TableItem(

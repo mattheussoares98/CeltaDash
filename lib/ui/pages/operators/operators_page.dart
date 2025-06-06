@@ -47,10 +47,10 @@ class _OperatorsPageState extends State<OperatorsPage> {
 
     return StreamBuilder(
         stream: operatorsPresenter.isLoadingStream,
-        builder: (context, loadinSnapshot) {
+        builder: (context, loadingSnap) {
           return Scaffold(
             appBar: DefaultAppBar(
-              isLoading: loadinSnapshot.data == true,
+              isLoading: loadingSnap.data == true,
               onChangeEnterprise: (_) {
                 operatorsPresenter.getSales(homePresenter);
               },
@@ -70,7 +70,7 @@ class _OperatorsPageState extends State<OperatorsPage> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: SelectPeriodItems(
-                      //TODO pass if is loading to disable change
+                      isLoading: loadingSnap.data,
                       selectedPeriodType:
                           operatorsPresenter.selectedPeriodValue,
                       onTapDaily: () {
@@ -127,8 +127,7 @@ class _OperatorsPageState extends State<OperatorsPage> {
                           operatorsPresenter: operatorsPresenter);
 
                       if (sales == null || sales.isEmpty == true) {
-                        return EmptySales(
-                            isLoading: loadinSnapshot.data == true);
+                        return EmptySales(isLoading: loadingSnap.data == true);
                       }
 
                       return StreamBuilder(

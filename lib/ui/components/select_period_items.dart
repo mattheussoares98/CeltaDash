@@ -11,6 +11,7 @@ import '../pages/pages.dart';
 
 class SelectPeriodItems extends StatefulWidget {
   final PeriodType? selectedPeriodType;
+  final bool? isLoading;
   final void Function()? onTapDaily;
   final void Function()? onTapWeekly;
   final void Function()? onTapMonthly;
@@ -18,6 +19,7 @@ class SelectPeriodItems extends StatefulWidget {
   const SelectPeriodItems({
     super.key,
     required this.selectedPeriodType,
+    required this.isLoading,
     this.onTapDaily,
     this.onTapWeekly,
     this.onTapMonthly,
@@ -99,22 +101,28 @@ class _PeriodItems extends State<SelectPeriodItems> {
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 child: Text(
                   item.title,
-                  selectionColor: selected == item.title
-                      ? CupertinoColors.white
-                      : Theme.of(context).primaryColorDark,
+                  selectionColor: widget.isLoading == true
+                      ? CupertinoColors.inactiveGray
+                      : (selected == item.title
+                          ? CupertinoColors.white
+                          : Theme.of(context).primaryColorDark),
                   style: TextStyle(
-                    color: selected == item.title
-                        ? CupertinoColors.white
-                        : Theme.of(context).primaryColor,
+                    color: widget.isLoading == true && selected != item.title
+                        ? CupertinoColors.inactiveGray
+                        : (selected == item.title
+                            ? CupertinoColors.white
+                            : Theme.of(context).primaryColor),
                   ),
                 ),
               ),
           },
           groupValue: selected,
-          thumbColor: Theme.of(context).primaryColorDark,
+          thumbColor: widget.isLoading == true
+              ? CupertinoColors.systemGrey
+              : Theme.of(context).primaryColorDark,
           backgroundColor: Theme.of(context).disabledColor.withAlpha(40),
           onValueChanged: (newValue) {
-            if (newValue == null) return;
+            if (newValue == null || widget.isLoading == true) return;
             selected = newValue;
             items.firstWhere((e) => e.title == newValue).onTap();
             homePresenter.updateScreen();
@@ -133,6 +141,7 @@ class _PeriodItems extends State<SelectPeriodItems> {
       selected: {selected!},
       showSelectedIcon: false,
       onSelectionChanged: (newSelection) {
+        if (widget.isLoading == true) return;
         setState(() {
           selected = newSelection.first;
         });
@@ -141,6 +150,7 @@ class _PeriodItems extends State<SelectPeriodItems> {
       },
       style: ButtonStyle(
         foregroundColor: WidgetStateProperty.resolveWith((states) {
+          if (widget.isLoading == true) return Colors.grey;
           if (states.contains(WidgetState.selected)) {
             return Colors.white;
           }

@@ -55,10 +55,10 @@ class _DepartmentsPageState extends State<DepartmentsPage>
 
     return StreamBuilder<bool>(
         stream: departmentsPresenter.isLoadingStream,
-        builder: (context, isLoadingDepartments) {
+        builder: (context, loadingSnap) {
           return Scaffold(
             appBar: DefaultAppBar(
-              isLoading: isLoadingDepartments.data == true,
+              isLoading: loadingSnap.data == true,
               onChangeEnterprise: (_) {
                 departmentsPresenter.getSales(homePresenter);
               },
@@ -73,8 +73,27 @@ class _DepartmentsPageState extends State<DepartmentsPage>
               },
             ),
             body: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SelectPeriodItems(
+                    isLoading: loadingSnap.data,
+                    selectedPeriodType:
+                        departmentsPresenter.selectedPeriodValue,
+                    onTapDaily: () {
+                      departmentsPresenter.getSales(
+                        homePresenter,
+                        periodType: PeriodType.daily,
+                      );
+                    },
+                    onTapMonthly: () {
+                      departmentsPresenter.getSales(
+                        homePresenter,
+                        periodType: PeriodType.monthly,
+                      );
+                    },
+                  ),
+                ),
                 Obx(() {
                   final saleMovements = departmentsPresenter.saleMovements
                       ?.filteredSales(
@@ -90,7 +109,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                       .toList();
 
                   if (saleMovements == null || saleMovements.isEmpty) {
-                    return EmptySales(isLoading: isLoadingDepartments.data);
+                    return EmptySales(isLoading: loadingSnap.data);
                   }
 
                   return StreamBuilder<bool>(
@@ -99,25 +118,6 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                         return Expanded(
                           child: Column(
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: SelectPeriodItems(
-                                  selectedPeriodType:
-                                      departmentsPresenter.selectedPeriodValue,
-                                  onTapDaily: () {
-                                    departmentsPresenter.getSales(
-                                      homePresenter,
-                                      periodType: PeriodType.daily,
-                                    );
-                                  },
-                                  onTapMonthly: () {
-                                    departmentsPresenter.getSales(
-                                      homePresenter,
-                                      periodType: PeriodType.monthly,
-                                    );
-                                  },
-                                ),
-                              ),
                               Expanded(
                                 child: Opacity(
                                   opacity: snapshot.data == true ? 0 : 1,
