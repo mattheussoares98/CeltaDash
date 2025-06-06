@@ -32,7 +32,8 @@ abstract class HomePresenter implements Listenable {
   Future<void> doLogout();
   void reloadSales(
     ResumePresenter resumePresenter,
-    SalesPresenter salesPresenter, {
+    SalesPresenter salesPresenter,
+    ProductsPresenter productsPresenter, {
     bool? forceRefresh,
   });
 }

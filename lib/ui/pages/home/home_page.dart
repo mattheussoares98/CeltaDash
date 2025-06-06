@@ -31,6 +31,7 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
         HomePresenter homePresenter = Get.find();
         ResumePresenter resumePresenter = Get.find();
         SalesPresenter salesPresenter = Get.find();
+        ProductsPresenter productsPresenter = Get.find();
         homePresenter.updateSelectedIndex(0);
         await homePresenter.getBsEnterprises(
           docRef: FirebaseFirestore.instance.collection("enterprises").doc(
@@ -41,7 +42,11 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
           },
         );
 
-        homePresenter.reloadSales(resumePresenter, salesPresenter);
+        homePresenter.reloadSales(
+          resumePresenter,
+          salesPresenter,
+          productsPresenter,
+        );
       }
     });
   }
@@ -67,8 +72,13 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
     ResumePresenter resumePresenter = Get.find();
     HomePresenter homePresenter = Get.find();
     SalesPresenter salesPresenter = Get.find();
+    ProductsPresenter productsPresenter = Get.find();
     WidgetsBinding.instance.addPostFrameCallback(
-      (_) => homePresenter.reloadSales(resumePresenter, salesPresenter),
+      (_) => homePresenter.reloadSales(
+        resumePresenter,
+        salesPresenter,
+        productsPresenter,
+      ),
     );
   }
 
@@ -86,84 +96,96 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
     HomePresenter homePresenter = Get.find();
     ResumePresenter resumePresenter = Get.find();
     SalesPresenter salesPresenter = Get.find();
+    ProductsPresenter productsPresenter = Get.find();
 
     mainErrorSubscription?.cancel();
     mainErrorSubscription =
         handleMainError(context, homePresenter.mainErrorStream);
 
     return StreamBuilder(
-        stream: salesPresenter.isLoadingStream,
-        builder: (context, loadingSales) {
+        stream: productsPresenter.isLoadingStream,
+        builder: (context, loadingProducts) {
           return StreamBuilder(
-              stream: resumePresenter.isLoadingStream,
-              builder: (context, loadingResume) {
-                return StreamBuilder<int>(
-                  stream: homePresenter.currentPageIndexStream,
-                  builder: (context, currentIndex) {
-                    return Scaffold(
-                      appBar: currentIndex.data == 3
-                          ? null
-                          : DefaultAppBar(
-                              isLoading: (loadingResume.data == true &&
-                                      currentIndex.data == 0) ||
-                                  (loadingSales.data == true &&
-                                      currentIndex.data == 1),
-                              onChangeEnterprise: (_) {
-                                homePresenter.reloadSales(
-                                  resumePresenter,
-                                  salesPresenter,
-                                );
-                              },
-                              onChangeDate: (_) {
-                                homePresenter.reloadSales(
-                                  resumePresenter,
-                                  salesPresenter,
-                                );
-                              },
-                              onTapRefresh: () {
-                                homePresenter.reloadSales(
-                                  resumePresenter,
-                                  salesPresenter,
-                                  forceRefresh: true,
-                                );
-                              },
+              stream: salesPresenter.isLoadingStream,
+              builder: (context, loadingSales) {
+                return StreamBuilder(
+                    stream: resumePresenter.isLoadingStream,
+                    builder: (context, loadingResume) {
+                      return StreamBuilder<int>(
+                        stream: homePresenter.currentPageIndexStream,
+                        builder: (context, currentIndex) {
+                          return Scaffold(
+                            appBar: currentIndex.data == 3
+                                ? null
+                                : DefaultAppBar(
+                                    isLoading: (loadingResume.data == true &&
+                                            currentIndex.data == 0) ||
+                                        (loadingSales.data == true &&
+                                            currentIndex.data == 1) ||
+                                        (loadingProducts.data == true &&
+                                            currentIndex.data == 2),
+                                    onChangeEnterprise: (_) {
+                                      homePresenter.reloadSales(
+                                        resumePresenter,
+                                        salesPresenter,
+                                        productsPresenter,
+                                      );
+                                    },
+                                    onChangeDate: (_) {
+                                      homePresenter.reloadSales(
+                                        resumePresenter,
+                                        salesPresenter,
+                                        productsPresenter,
+                                      );
+                                    },
+                                    onTapRefresh: () {
+                                      homePresenter.reloadSales(
+                                        resumePresenter,
+                                        salesPresenter,
+                                        productsPresenter,
+                                        forceRefresh: true,
+                                      );
+                                    },
+                                  ),
+                            body: pages[currentIndex.data ?? 0],
+                            bottomNavigationBar: BottomNavBar(
+                              currentIndex: currentIndex.data ?? 0,
+                              onTap: homePresenter.updateSelectedIndex,
+                              items: [
+                                BottomNavItem(
+                                  materialIcon: Icon(Icons.pie_chart),
+                                  cupertinoIcon: Icon(CupertinoIcons.chart_pie),
+                                  label: R.string.resume,
+                                ),
+                                BottomNavItem(
+                                  materialIcon: Icon(Icons.monetization_on),
+                                  cupertinoIcon:
+                                      Icon(CupertinoIcons.money_dollar),
+                                  label: R.string.sales,
+                                ),
+                                BottomNavItem(
+                                  materialIcon:
+                                      Icon(Icons.shopping_cart_rounded),
+                                  cupertinoIcon: Icon(CupertinoIcons.cart),
+                                  label: R.string.products,
+                                ),
+                                BottomNavItem(
+                                  materialIcon: Icon(Icons.grid_view_rounded),
+                                  cupertinoIcon:
+                                      Icon(CupertinoIcons.square_grid_2x2_fill),
+                                  label: R.string.more,
+                                ),
+                                // BottomNavItem(
+                                //   materialIcon: Icon(Icons.person_pin_sharp),
+                                //   cupertinoIcon: Icon(CupertinoIcons.person_2),
+                                //   label: R.string.team,
+                                // ),
+                              ],
                             ),
-                      body: pages[currentIndex.data ?? 0],
-                      bottomNavigationBar: BottomNavBar(
-                        currentIndex: currentIndex.data ?? 0,
-                        onTap: homePresenter.updateSelectedIndex,
-                        items: [
-                          BottomNavItem(
-                            materialIcon: Icon(Icons.pie_chart),
-                            cupertinoIcon: Icon(CupertinoIcons.chart_pie),
-                            label: R.string.resume,
-                          ),
-                          BottomNavItem(
-                            materialIcon: Icon(Icons.monetization_on),
-                            cupertinoIcon: Icon(CupertinoIcons.money_dollar),
-                            label: R.string.sales,
-                          ),
-                          BottomNavItem(
-                            materialIcon: Icon(Icons.shopping_cart_rounded),
-                            cupertinoIcon: Icon(CupertinoIcons.cart),
-                            label: R.string.products,
-                          ),
-                          BottomNavItem(
-                            materialIcon: Icon(Icons.grid_view_rounded),
-                            cupertinoIcon:
-                                Icon(CupertinoIcons.square_grid_2x2_fill),
-                            label: R.string.more,
-                          ),
-                          // BottomNavItem(
-                          //   materialIcon: Icon(Icons.person_pin_sharp),
-                          //   cupertinoIcon: Icon(CupertinoIcons.person_2),
-                          //   label: R.string.team,
-                          // ),
-                        ],
-                      ),
-                    );
-                  },
-                );
+                          );
+                        },
+                      );
+                    });
               });
         });
   }
