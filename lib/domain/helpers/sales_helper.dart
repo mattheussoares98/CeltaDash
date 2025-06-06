@@ -46,8 +46,9 @@ class SalesHelper {
             DateTime(selectedDate.year - 2) &&
         lastGetSalesParams?.endDate == DateTime(selectedDate.year, 12, 31)) {
       return false;
+    } else if (lastGetSalesParams?.startDate.year == selectedDate.year) {
+      return false;
     }
-    
 
     return true;
   }

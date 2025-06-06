@@ -73,7 +73,6 @@ class GetxDepartmentsPresenter extends GetxController
       final remoteSales = await loadSaleMovements.get(getSalesParams);
       lastParams = getSalesParams;
 
-      //TODO when is forcing refresh and selected daily, is removing monthly sales
       saleMovements = remoteSales
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
           .toList();

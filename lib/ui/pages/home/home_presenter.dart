@@ -30,4 +30,9 @@ abstract class HomePresenter implements Listenable {
   void updateSelectedEnterprise(EnterpriseViewModel? enterprise);
 
   Future<void> doLogout();
+  void reloadSales(
+    ResumePresenter resumePresenter,
+    SalesPresenter salesPresenter, {
+    bool? forceRefresh,
+  });
 }

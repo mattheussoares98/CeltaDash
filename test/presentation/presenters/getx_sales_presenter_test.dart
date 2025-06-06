@@ -161,6 +161,51 @@ void main() {
           ),
         ).called(1);
       });
+      test("Should load again if change the enterprise", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.daily);
+        final startDate = DateTime(
+          homePresenter.selectedDateMock.year,
+          homePresenter.selectedDateMock.month,
+          1,
+        );
+        final endDate = DateTime(
+          homePresenter.selectedDateMock.year,
+          homePresenter.selectedDateMock.month + 1,
+        ).subtract(Duration(days: 1));
+
+        verify(
+          () => loadSaleMovements.get(
+            GetSalesParams(
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
+              startDate: startDate,
+              endDate: endDate,
+              groupByEnterprise: true,
+              groupByHour: true,
+            ),
+          ),
+        ).called(1);
+
+        ////////////////////CHANGING ENTERPRISE/////////////////////////////////
+        final newEnterprise =
+            EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
+                .toViewModel();
+        homePresenter.selectedEnterpriseMock = newEnterprise;
+        await sut.getSales(homePresenter, periodType: PeriodType.daily);
+
+        verify(
+          () => loadSaleMovements.get(
+            GetSalesParams(
+              enterpriseIds: [newEnterprise.id!.toInt()],
+              startDate: startDate,
+              endDate: endDate,
+              groupByEnterprise: true,
+              groupByHour: true,
+            ),
+          ),
+        ).called(1);
+      });
       test("Should load again if force refresh", () async {
         await sut.getSales(homePresenter, periodType: PeriodType.daily);
         await sut.getSales(
@@ -209,7 +254,7 @@ void main() {
         ).subtract(Duration(days: 1));
 
         expect(
-            sut.lastGetSalesParams,
+            sut.lastGetDailyParams,
             GetSalesParams(
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
@@ -219,6 +264,11 @@ void main() {
               groupByEnterprise: true,
               groupByHour: true,
             ));
+      });
+      test("Should change last daily enterprise correctly", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.daily);
+
+        expect(sut.lastDailyEnterprise, homePresenter.selectedEnterpriseMock);
       });
     });
     group("PeriodType.monthly", () {
@@ -273,6 +323,45 @@ void main() {
           ),
         ).called(1);
       });
+
+      test("Should load again if change the enterprise", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
+        final startDate = DateTime(homePresenter.selectedDateMock.year, 1, 1);
+        final endDate = DateTime(homePresenter.selectedDateMock.year, 12, 31);
+
+        verify(
+          () => loadSaleMovements.get(
+            GetSalesParams(
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
+              startDate: startDate,
+              endDate: endDate,
+              groupByEnterprise: true,
+              groupByMonth: true,
+            ),
+          ),
+        ).called(1);
+
+        ////////////////////CHANGING ENTERPRISE/////////////////////////////////
+        final newEnterprise =
+            EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
+                .toViewModel();
+        homePresenter.selectedEnterpriseMock = newEnterprise;
+        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
+
+        verify(
+          () => loadSaleMovements.get(
+            GetSalesParams(
+              enterpriseIds: [newEnterprise.id!.toInt()],
+              startDate: startDate,
+              endDate: endDate,
+              groupByEnterprise: true,
+              groupByMonth: true,
+            ),
+          ),
+        ).called(1);
+      });
       test("Should load again if force refresh", () async {
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
         await sut.getSales(
@@ -305,7 +394,7 @@ void main() {
         final endDate = DateTime(homePresenter.selectedDateMock.year, 12, 31);
 
         expect(
-            sut.lastGetSalesParams,
+            sut.lastGetMonthlyParams,
             GetSalesParams(
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
@@ -315,6 +404,12 @@ void main() {
               groupByEnterprise: true,
               groupByMonth: true,
             ));
+      });
+
+      test("Should change last monthly enterprise correctly", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
+
+        expect(sut.lastMonthlyEnterprise, homePresenter.selectedEnterpriseMock);
       });
     });
     group("PeriodType.yearly", () {
@@ -401,7 +496,7 @@ void main() {
         final endDate = DateTime(homePresenter.selectedDateMock.year, 12, 31);
 
         expect(
-            sut.lastGetSalesParams,
+            sut.lastGetYearlyParams,
             GetSalesParams(
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
@@ -411,6 +506,52 @@ void main() {
               groupByEnterprise: true,
               groupByYear: true,
             ));
+      });
+
+      test("Should load again if change the enterprise", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.yearly);
+
+        final startDate = DateTime(homePresenter.selectedDateMock.year - 2);
+        final endDate = DateTime(homePresenter.selectedDateMock.year, 12, 31);
+
+        verify(
+          () => loadSaleMovements.get(
+            GetSalesParams(
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
+              startDate: startDate,
+              endDate: endDate,
+              groupByEnterprise: true,
+              groupByYear: true,
+            ),
+          ),
+        ).called(1);
+
+        ////////////////////CHANGING ENTERPRISE/////////////////////////////////
+        final newEnterprise =
+            EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
+                .toViewModel();
+        homePresenter.selectedEnterpriseMock = newEnterprise;
+        await sut.getSales(homePresenter, periodType: PeriodType.yearly);
+
+        verify(
+          () => loadSaleMovements.get(
+            GetSalesParams(
+              enterpriseIds: [newEnterprise.id!.toInt()],
+              startDate: startDate,
+              endDate: endDate,
+              groupByEnterprise: true,
+              groupByYear: true,
+            ),
+          ),
+        ).called(1);
+      });
+
+      test("Should change last yearly enterprise correctly", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.yearly);
+
+        expect(sut.lastYearlyEnterprise, homePresenter.selectedEnterpriseMock);
       });
     });
   });

@@ -8,7 +8,7 @@ import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
 class GetxSalesPresenter extends GetxController
-    with LoadingManager, UIErrorManager, LastGetSalesParamsManager
+    with LoadingManager, UIErrorManager
     implements SalesPresenter {
   final LoadSaleMovements loadSaleMovements;
 
@@ -20,6 +20,12 @@ class GetxSalesPresenter extends GetxController
     PeriodType? periodType,
     bool? forceRefresh,
   }) async {
+    if (isLoadingValue == true) {
+      isLoading = false;
+      isLoading = true;
+      return;
+    }
+
     isLoading = true;
     mainError = null;
 
@@ -28,14 +34,42 @@ class GetxSalesPresenter extends GetxController
         _selectedPeriodType = periodType;
       }
 
+      GetSalesParams? lastGetSalesParams() {
+        if (_selectedPeriodType == PeriodType.daily) {
+          return _lastGetDailyParams;
+        } else if (_selectedPeriodType == PeriodType.monthly) {
+          return _lastGetMonthlyParams;
+        } else if (_selectedPeriodType == PeriodType.yearly) {
+          return _lastGetYearlyParams;
+        }
+        return null;
+      }
+
       final canSearchAgain = SalesHelper.canSearch(
         forceRefresh: forceRefresh,
-        lastGetSalesParams: lastGetSalesParams,
+        lastGetSalesParams: lastGetSalesParams(),
         selectedDate: homePresenter.selectedDate,
         periodType: _selectedPeriodType,
       );
 
-      if (!canSearchAgain) {
+      bool changedTheEnterprise() {
+        if (_selectedPeriodType == PeriodType.daily) {
+          return _lastGetDailyParams?.enterpriseIds?.isNotEmpty == true &&
+              _lastDailyEnterprise?.id?.toInt() !=
+                  homePresenter.selectedEnterprise?.id?.toInt();
+        } else if (_selectedPeriodType == PeriodType.monthly) {
+          return _lastGetMonthlyParams?.enterpriseIds?.isNotEmpty == true &&
+              _lastMonthlyEnterprise?.id?.toInt() !=
+                  homePresenter.selectedEnterprise?.id?.toInt();
+        } else if (_selectedPeriodType == PeriodType.yearly) {
+          return _lastGetYearlyParams?.enterpriseIds?.isNotEmpty == true &&
+              _lastYearlyEnterprise?.id?.toInt() !=
+                  homePresenter.selectedEnterprise?.id?.toInt();
+        }
+        return false;
+      }
+
+      if (!canSearchAgain && !changedTheEnterprise()) {
         return;
       }
 
@@ -85,7 +119,6 @@ class GetxSalesPresenter extends GetxController
         );
       }
       final remoteSales = await loadSaleMovements.get(getSalesParams);
-      lastParams = getSalesParams;
 
       final newSales = remoteSales
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
@@ -93,14 +126,17 @@ class GetxSalesPresenter extends GetxController
 
       if (_selectedPeriodType == PeriodType.daily) {
         salesByDay = newSales;
+        _lastGetDailyParams = getSalesParams;
+        _lastDailyEnterprise = homePresenter.selectedEnterprise;
       } else if (_selectedPeriodType == PeriodType.monthly) {
         salesByMonth = newSales;
+        _lastGetMonthlyParams = getSalesParams;
+        _lastMonthlyEnterprise = homePresenter.selectedEnterprise;
       } else if (_selectedPeriodType == PeriodType.yearly) {
         salesByYear = newSales;
+        _lastGetYearlyParams = getSalesParams;
+        _lastYearlyEnterprise = homePresenter.selectedEnterprise;
       }
-
-      _lastEnterpriseLoadedData = homePresenter.selectedEnterprise;
-      //TODO test changing enterprise
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {
@@ -129,13 +165,28 @@ class GetxSalesPresenter extends GetxController
   set salesByDay(List<SaleMovementViewModel>? value) =>
       _saleMovementsByDay.value = value;
 
-  EnterpriseViewModel? _lastEnterpriseLoadedData;
+  EnterpriseViewModel? _lastDailyEnterprise;
   @override
-  EnterpriseViewModel? get lastEnterpriseLoadedData =>
-      _lastEnterpriseLoadedData;
+  EnterpriseViewModel? get lastDailyEnterprise => _lastDailyEnterprise;
+  EnterpriseViewModel? _lastMonthlyEnterprise;
+  @override
+  EnterpriseViewModel? get lastMonthlyEnterprise => _lastMonthlyEnterprise;
+  EnterpriseViewModel? _lastYearlyEnterprise;
+  @override
+  EnterpriseViewModel? get lastYearlyEnterprise => _lastYearlyEnterprise;
 
   PeriodType _selectedPeriodType = PeriodType.daily;
   //TODO create mixin
   @override
   PeriodType get selectedPeriodType => _selectedPeriodType;
+
+  GetSalesParams? _lastGetDailyParams;
+  GetSalesParams? _lastGetMonthlyParams;
+  GetSalesParams? _lastGetYearlyParams;
+  @override
+  GetSalesParams? get lastGetDailyParams => _lastGetDailyParams;
+  @override
+  GetSalesParams? get lastGetMonthlyParams => _lastGetMonthlyParams;
+  @override
+  GetSalesParams? get lastGetYearlyParams => _lastGetYearlyParams;
 }

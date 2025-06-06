@@ -273,4 +273,14 @@ class GetxHomePresenter extends GetxController
   void goToProfitabilityPage() {
     navigateTo.navigate(pageRoute: PageRoutes.profitability);
   }
+
+  @override
+  void reloadSales(
+    ResumePresenter resumePresenter,
+    SalesPresenter salesPresenter, {
+    bool? forceRefresh,
+  }) {
+    resumePresenter.getSales(this, forceRefresh: forceRefresh);
+    salesPresenter.getSales(this, forceRefresh: forceRefresh);
+  }
 }

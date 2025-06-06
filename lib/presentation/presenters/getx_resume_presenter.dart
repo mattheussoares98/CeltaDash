@@ -64,8 +64,11 @@ class GetxResumePresenter extends GetxController
     bool? forceRefresh,
   }) async {
     if (isLoadingValue == true) {
+      isLoading = false;
+      isLoading = true;
       return;
     }
+
     try {
       isLoading = true;
       mainError = null;
@@ -90,7 +93,6 @@ class GetxResumePresenter extends GetxController
         homePresenter.selectedDate.month,
         1,
       );
-      //TODO create function in helper to get start and end dates
       final endDate = DateTime(
         homePresenter.selectedDate.year,
         homePresenter.selectedDate.month + 1,

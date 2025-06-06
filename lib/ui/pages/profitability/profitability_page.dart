@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../domain/helpers/helpers.dart';
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 import '../pages.dart';
@@ -15,7 +16,6 @@ class ProfitabilityPage extends StatefulWidget {
 }
 
 class _ProfitabilityPageState extends State<ProfitabilityPage> {
-  bool selectedDay = true;
   int selectedPageIndex = 0;
   final pageController = PageController();
 
@@ -28,6 +28,17 @@ class _ProfitabilityPageState extends State<ProfitabilityPage> {
 
     departmentsPresenter.getSales(homePresenter, forceRefresh: forceRefresh);
     productsPresenter.loadProducts(homePresenter, forceRefresh: forceRefresh);
+  }
+
+  @override
+  initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        reloadData();
+      }
+    });
   }
 
   @override
@@ -64,9 +75,11 @@ class _ProfitabilityPageState extends State<ProfitabilityPage> {
                             departmentsPresenter.saleMovements
                                 ?.filteredSales(
                                   enterprise: homePresenter.selectedEnterprise,
-                                  filterDay: selectedDay
-                                      ? homePresenter.selectedDate.day
-                                      : null,
+                                  filterDay:
+                                      departmentsPresenter.selectedPeriodType ==
+                                              PeriodType.daily
+                                          ? homePresenter.selectedDate.day
+                                          : null,
                                   filterMonth: homePresenter.selectedDate.month,
                                   filterYear: homePresenter.selectedDate.year,
                                 )
@@ -85,18 +98,24 @@ class _ProfitabilityPageState extends State<ProfitabilityPage> {
                               return Expanded(
                                 child: Column(
                                   children: [
-                                    Periods(
-                                      selectedDay: selectedDay,
-                                      onTapDaily: () {
-                                        setState(() {
-                                          selectedDay = true;
-                                        });
-                                      },
-                                      onTapMonthly: () {
-                                        setState(() {
-                                          selectedDay = false;
-                                        });
-                                      },
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: SelectPeriodItems(
+                                        selectedPeriodType: departmentsPresenter
+                                            .selectedPeriodType,
+                                        onTapDaily: () {
+                                          departmentsPresenter.getSales(
+                                            homePresenter,
+                                            periodType: PeriodType.daily,
+                                          );
+                                        },
+                                        onTapMonthly: () {
+                                          departmentsPresenter.getSales(
+                                            homePresenter,
+                                            periodType: PeriodType.monthly,
+                                          );
+                                        },
+                                      ),
                                     ),
                                     Expanded(
                                       child: Opacity(

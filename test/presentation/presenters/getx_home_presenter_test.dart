@@ -23,6 +23,9 @@ void main() {
 
   late GetxHomePresenter sut;
 
+  late SalesPresenterSpy salesPresenter;
+  late ResumePresenterSpy resumePresenter;
+
   late NavigateToSpy navigateTo;
   late LoadEnterprisesSpy loadEnterprises;
   late FirebaseManagerSpy firebaseManager;
@@ -49,6 +52,8 @@ void main() {
       firebaseManager: firebaseManager,
       localStorage: localStorage,
     );
+    salesPresenter = SalesPresenterSpy();
+    resumePresenter = ResumePresenterSpy();
   }
 
   void initEntities() {
@@ -488,6 +493,29 @@ void main() {
             pageRoute: PageRoutes.splash,
             clear: true,
           )).called(1);
+    });
+  });
+
+  group("Reload sales", () {
+    test("Should call resumePresenter get sales", () async {
+      sut.reloadSales(resumePresenter, salesPresenter);
+
+      verify(() => resumePresenter.getSales(sut)).called(1);
+    });
+    test("Should call salesPresenter get sales", () async {
+      sut.reloadSales(resumePresenter, salesPresenter);
+
+      verify(() => salesPresenter.getSales(sut)).called(1);
+    });
+    test("Should call resumePresenter get sales forcing refresh", () async {
+      sut.reloadSales(resumePresenter, salesPresenter, forceRefresh: true);
+
+      verify(() => resumePresenter.getSales(sut, forceRefresh: true)).called(1);
+    });
+    test("Should call salesPresenter get sales forcing refresh", () async {
+      sut.reloadSales(resumePresenter, salesPresenter, forceRefresh: true);
+
+      verify(() => salesPresenter.getSales(sut, forceRefresh: true)).called(1);
     });
   });
 }

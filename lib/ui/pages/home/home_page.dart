@@ -19,7 +19,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with UIErrorManager {
+class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
   StreamSubscription? mainErrorSubscription;
 
   @override
@@ -30,6 +30,7 @@ class _HomePageState extends State<HomePage> with UIErrorManager {
       if (mounted) {
         HomePresenter homePresenter = Get.find();
         ResumePresenter resumePresenter = Get.find();
+        SalesPresenter salesPresenter = Get.find();
         homePresenter.updateSelectedIndex(0);
         await homePresenter.getBsEnterprises(
           docRef: FirebaseFirestore.instance.collection("enterprises").doc(
@@ -40,7 +41,7 @@ class _HomePageState extends State<HomePage> with UIErrorManager {
           },
         );
 
-        await resumePresenter.getSales(homePresenter);
+        homePresenter.reloadSales(resumePresenter, salesPresenter);
       }
     });
   }
@@ -49,6 +50,26 @@ class _HomePageState extends State<HomePage> with UIErrorManager {
   void dispose() {
     super.dispose();
     mainErrorSubscription?.cancel();
+    final routeObserver = Get.find<RouteObserver<PageRoute>>();
+    routeObserver.unsubscribe(this);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final routeObserver = Get.find<RouteObserver<PageRoute>>();
+    routeObserver.subscribe(this, ModalRoute.of(context)! as PageRoute);
+  }
+
+  @override
+  void didPopNext() {
+    debugPrint('Closed another page and returned to homePage');
+    ResumePresenter resumePresenter = Get.find();
+    HomePresenter homePresenter = Get.find();
+    SalesPresenter salesPresenter = Get.find();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => homePresenter.reloadSales(resumePresenter, salesPresenter),
+    );
   }
 
   final pages = <Widget>[
@@ -65,87 +86,85 @@ class _HomePageState extends State<HomePage> with UIErrorManager {
     HomePresenter homePresenter = Get.find();
     ResumePresenter resumePresenter = Get.find();
     SalesPresenter salesPresenter = Get.find();
-    ProductsPresenter productsPresenter = Get.find();
 
     mainErrorSubscription?.cancel();
     mainErrorSubscription =
         handleMainError(context, homePresenter.mainErrorStream);
 
-    return StreamBuilder<int>(
-      stream: homePresenter.currentPageIndexStream,
-      builder: (context, currentIndex) {
-        return StreamBuilder<bool>(
-            stream: productsPresenter.isLoadingStream,
-            builder: (context, isLoadingProducts) {
-              return StreamBuilder<bool>(
-                  stream: resumePresenter.isLoadingStream,
-                  builder: (context, isLoadingResume) {
-                    return StreamBuilder<bool>(
-                        stream: salesPresenter.isLoadingStream,
-                        builder: (context, isLoadingSales) {
-                          return Scaffold(
-                            appBar: currentIndex.data == 3
-                                ? null
-                                : DefaultAppBar(
-                                    isLoading: (isLoadingSales.data == true &&
-                                            currentIndex.data == 1) ||
-                                        (isLoadingResume.data == true &&
-                                            currentIndex.data == 0) ||
-                                        (isLoadingProducts.data == true &&
-                                            currentIndex.data == 2),
-                                    onChangeEnterprise: (_) {
-                                      resumePresenter.getSales(homePresenter);
-                                    },
-                                    onChangeDate: (_) {
-                                      resumePresenter.getSales(homePresenter);
-                                    },
-                                    onTapRefresh: () {
-                                      resumePresenter.getSales(
-                                        homePresenter,
-                                        forceRefresh: true,
-                                      );
-                                    },
-                                  ),
-                            body: pages[currentIndex.data ?? 0],
-                            bottomNavigationBar: BottomNavBar(
-                              currentIndex: currentIndex.data ?? 0,
-                              onTap: homePresenter.updateSelectedIndex,
-                              items: [
-                                BottomNavItem(
-                                  materialIcon: Icon(Icons.pie_chart),
-                                  cupertinoIcon: Icon(CupertinoIcons.chart_pie),
-                                  label: R.string.resume,
-                                ),
-                                BottomNavItem(
-                                  materialIcon: Icon(Icons.monetization_on),
-                                  cupertinoIcon:
-                                      Icon(CupertinoIcons.money_dollar),
-                                  label: R.string.sales,
-                                ),
-                                BottomNavItem(
-                                  materialIcon:
-                                      Icon(Icons.shopping_cart_rounded),
-                                  cupertinoIcon: Icon(CupertinoIcons.cart),
-                                  label: R.string.products,
-                                ),
-                                BottomNavItem(
-                                  materialIcon: Icon(Icons.grid_view_rounded),
-                                  cupertinoIcon:
-                                      Icon(CupertinoIcons.square_grid_2x2_fill),
-                                  label: R.string.more,
-                                ),
-                                // BottomNavItem(
-                                //   materialIcon: Icon(Icons.person_pin_sharp),
-                                //   cupertinoIcon: Icon(CupertinoIcons.person_2),
-                                //   label: R.string.team,
-                                // ),
-                              ],
+    return StreamBuilder(
+        stream: salesPresenter.isLoadingStream,
+        builder: (context, loadingSales) {
+          return StreamBuilder(
+              stream: resumePresenter.isLoadingStream,
+              builder: (context, loadingResume) {
+                return StreamBuilder<int>(
+                  stream: homePresenter.currentPageIndexStream,
+                  builder: (context, currentIndex) {
+                    return Scaffold(
+                      appBar: currentIndex.data == 3
+                          ? null
+                          : DefaultAppBar(
+                              isLoading: (loadingResume.data == true &&
+                                      currentIndex.data == 0) ||
+                                  (loadingSales.data == true &&
+                                      currentIndex.data == 1),
+                              onChangeEnterprise: (_) {
+                                homePresenter.reloadSales(
+                                  resumePresenter,
+                                  salesPresenter,
+                                );
+                              },
+                              onChangeDate: (_) {
+                                homePresenter.reloadSales(
+                                  resumePresenter,
+                                  salesPresenter,
+                                );
+                              },
+                              onTapRefresh: () {
+                                homePresenter.reloadSales(
+                                  resumePresenter,
+                                  salesPresenter,
+                                  forceRefresh: true,
+                                );
+                              },
                             ),
-                          );
-                        });
-                  });
-            });
-      },
-    );
+                      body: pages[currentIndex.data ?? 0],
+                      bottomNavigationBar: BottomNavBar(
+                        currentIndex: currentIndex.data ?? 0,
+                        onTap: homePresenter.updateSelectedIndex,
+                        items: [
+                          BottomNavItem(
+                            materialIcon: Icon(Icons.pie_chart),
+                            cupertinoIcon: Icon(CupertinoIcons.chart_pie),
+                            label: R.string.resume,
+                          ),
+                          BottomNavItem(
+                            materialIcon: Icon(Icons.monetization_on),
+                            cupertinoIcon: Icon(CupertinoIcons.money_dollar),
+                            label: R.string.sales,
+                          ),
+                          BottomNavItem(
+                            materialIcon: Icon(Icons.shopping_cart_rounded),
+                            cupertinoIcon: Icon(CupertinoIcons.cart),
+                            label: R.string.products,
+                          ),
+                          BottomNavItem(
+                            materialIcon: Icon(Icons.grid_view_rounded),
+                            cupertinoIcon:
+                                Icon(CupertinoIcons.square_grid_2x2_fill),
+                            label: R.string.more,
+                          ),
+                          // BottomNavItem(
+                          //   materialIcon: Icon(Icons.person_pin_sharp),
+                          //   cupertinoIcon: Icon(CupertinoIcons.person_2),
+                          //   label: R.string.team,
+                          // ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              });
+        });
   }
 }

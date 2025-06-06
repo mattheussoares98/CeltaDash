@@ -30,18 +30,8 @@ class _SalesPageState extends State<SalesPage>
   }
 
   @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (mounted) {}
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
-    ResumePresenter resumePresenter = Get.find();
     SalesPresenter salesPresenter = Get.find();
 
     // loadingSubscription?.cancel();
@@ -56,35 +46,30 @@ class _SalesPageState extends State<SalesPage>
           stream: homePresenter.updateScreenStream,
           builder: (context, snapshot) {
             return Obx(() {
-              final resumeSaleMovements = resumePresenter.saleMovements
+              // final uniqueHours = resumeSaleMovements
+              //     .uniqueHours(
+              //       enterprise: homePresenter.selectedEnterprise,
+              //       filterDay: homePresenter.selectedDate.day,
+              //       filterMonth: homePresenter.selectedDate.month,
+              //       filterYear: homePresenter.selectedDate.year,
+              //     )
+              //     .toList();
+
+              final dailySales = salesPresenter.saleMovementsByDay
                   ?.filteredSales(
                     enterprise: homePresenter.selectedEnterprise,
                   )
                   .map((e) => e.toViewModel())
                   .toList();
 
-              if (resumeSaleMovements == null || resumeSaleMovements.isEmpty) {
-                return EmptySales(isLoading: false);
-              }
-
-              final uniqueHours = resumeSaleMovements
-                  .uniqueHours(
-                    enterprise: homePresenter.selectedEnterprise,
-                    filterDay: homePresenter.selectedDate.day,
-                    filterMonth: homePresenter.selectedDate.month,
-                    filterYear: homePresenter.selectedDate.year,
-                  )
-                  .toList();
-
-              final saleMovementsByMonth = salesPresenter.saleMovementsByMonth
+              final monthlySales = salesPresenter.saleMovementsByMonth
                   ?.filteredSales(
                     enterprise: homePresenter.selectedEnterprise,
-                    filterYear: homePresenter.selectedDate.year,
                   )
                   .map((e) => e.toViewModel())
                   .toList();
 
-              final saleMovementsByYear = salesPresenter.saleMovementsByYear
+              final yearlySales = salesPresenter.saleMovementsByYear
                   ?.filteredSales(
                     enterprise: homePresenter.selectedEnterprise,
                   )
@@ -95,12 +80,31 @@ class _SalesPageState extends State<SalesPage>
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: SelectPeriodItems(
-                      selectedPeriodType: PeriodType.daily,
-                      onTapDaily: () {},
-                      // onTapWeekly: () {},
-                      onTapMonthly: () {},
-                      onTapYearly: () {},
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SelectPeriodItems(
+                          selectedPeriodType: salesPresenter.selectedPeriodType,
+                          onTapDaily: () {
+                            salesPresenter.getSales(
+                              homePresenter,
+                              periodType: PeriodType.daily,
+                            );
+                          },
+                          onTapMonthly: () {
+                            salesPresenter.getSales(
+                              homePresenter,
+                              periodType: PeriodType.monthly,
+                            );
+                          },
+                          onTapYearly: () {
+                            salesPresenter.getSales(
+                              homePresenter,
+                              periodType: PeriodType.yearly,
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ),
                   Expanded(
@@ -108,21 +112,26 @@ class _SalesPageState extends State<SalesPage>
                       opacity: snapshot.data == true ? 0 : 1,
                       child: Column(
                         children: [
-                          if (uniqueHours.isNotEmpty)
-                            HourTable(
-                              resumeSaleMovements: resumeSaleMovements,
-                              uniqueHours: uniqueHours,
-                            ),
-                          DayTable(
-                              resumeSaleMovements:
-                                  resumeSaleMovements), //TODO remove
-                          if (saleMovementsByMonth != null &&
-                              saleMovementsByMonth.isNotEmpty)
-                            MonthSales(
-                                saleMovementsByMonth: saleMovementsByMonth),
-                          if (saleMovementsByYear != null &&
-                              saleMovementsByYear.isNotEmpty)
-                            YearSales(saleMovementsByYear: saleMovementsByYear),
+                          // if (uniqueHours.isNotEmpty)
+                          //   HourTable(
+                          //     resumeSaleMovements: resumeSaleMovements,
+                          //     uniqueHours: uniqueHours,
+                          //   ),
+                          //TODO implement in presenter
+                          if (salesPresenter.selectedPeriodType ==
+                                  PeriodType.daily &&
+                              dailySales?.isNotEmpty == true)
+                            DayTable(resumeSaleMovements: dailySales!),
+                          if (salesPresenter.selectedPeriodType ==
+                                  PeriodType.monthly &&
+                              monthlySales != null &&
+                              monthlySales.isNotEmpty)
+                            MonthSales(saleMovementsByMonth: monthlySales),
+                          if (salesPresenter.selectedPeriodType ==
+                                  PeriodType.yearly &&
+                              yearlySales != null &&
+                              yearlySales.isNotEmpty)
+                            YearSales(saleMovementsByYear: yearlySales),
                         ],
                       ),
                     ),

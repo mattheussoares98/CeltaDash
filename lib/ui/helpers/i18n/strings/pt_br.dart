@@ -47,6 +47,7 @@ class PtBr implements Translation {
   String get day => "Dia";
   String get days => "Dias";
   String get department => "Departamento";
+  String get departmentAbbreviated => "Dept";
   String get departments => "Departamentos";
   String get details => "Detalhes";
   String get difference => "Diferença";
