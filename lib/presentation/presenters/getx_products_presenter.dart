@@ -94,19 +94,12 @@ class GetxProductsPresenter extends GetxController
         lastGetMonthlyParams = params;
         monthlySaleMovements = newSales;
       }
-
-      _lastEnterpriseLoadedData = homePresenter.selectedEnterprise;
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {
       isLoading = false;
     }
   }
-
-  EnterpriseViewModel? _lastEnterpriseLoadedData;
-  @override
-  EnterpriseViewModel? get lastEnterpriseLoadedData =>
-      _lastEnterpriseLoadedData; //TODO remove this
 
   final _dailySaleMovements = Rx<List<SaleMovementViewModel>?>(null);
   @override

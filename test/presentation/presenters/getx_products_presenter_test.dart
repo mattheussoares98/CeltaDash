@@ -132,15 +132,6 @@ void main() {
               .toList(),
         );
       });
-
-      test("Should update last loaded enterprise", () async {
-        await sut.getSales(homePresenter);
-
-        expect(
-          sut.lastEnterpriseLoadedData,
-          homePresenter.selectedEnterpriseMock,
-        );
-      });
     });
 
     group("Daily", () {
