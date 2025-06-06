@@ -91,65 +91,51 @@ class _ProfitabilityPageState extends State<ProfitabilityPage> {
                         ),
                       ),
                       Obx(() {
-                        final salesDepartments = departmentsPresenter
-                            .saleMovements
-                            ?.filteredSales(
-                              enterprise:
-                                  homePresenter.selectedEnterprise,
-                              filterDay: departmentsPresenter
-                                          .selectedPeriodValue ==
-                                      PeriodType.daily
-                                  ? homePresenter.selectedDate.day
-                                  : null,
-                              filterMonth:
-                                  homePresenter.selectedDate.month,
-                              filterYear: homePresenter.selectedDate.year,
-                            )
-                            .map((e) => e.toViewModel())
-                            .toList();
-                                            
+                        final salesDepartments =
+                            departmentsPresenter.saleMovements
+                                ?.filteredSales(
+                                  enterprise: homePresenter.selectedEnterprise,
+                                  filterDay: departmentsPresenter
+                                              .selectedPeriodValue ==
+                                          PeriodType.daily
+                                      ? homePresenter.selectedDate.day
+                                      : null,
+                                  filterMonth: homePresenter.selectedDate.month,
+                                  filterYear: homePresenter.selectedDate.year,
+                                )
+                                .map((e) => e.toViewModel())
+                                .toList();
+
                         if (salesDepartments == null ||
                             salesDepartments.isEmpty) {
                           return EmptySales(
-                              isLoading:
-                                  loadingDepartmentsSnap.data == true ||
-                                      loadingProductsSnap.data == true);
+                              isLoading: loadingDepartmentsSnap.data == true ||
+                                  loadingProductsSnap.data == true);
                         }
-                        return StreamBuilder(
-                            stream: homePresenter.updateScreenStream,
-                            builder: (context, updateScreen) {
-                              return Expanded(
-                                child: Column(
+                        return Expanded(
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: PageView(
+                                  controller: pageController,
+                                  onPageChanged: (value) {
+                                    setState(() {
+                                      selectedPageIndex = value;
+                                    });
+                                  },
                                   children: [
-                                    Expanded(
-                                      child: Opacity(
-                                        opacity: updateScreen.data == true
-                                            ? 0
-                                            : 1,
-                                        child: PageView(
-                                          controller: pageController,
-                                          onPageChanged: (value) {
-                                            setState(() {
-                                              selectedPageIndex = value;
-                                            });
-                                          },
-                                          children: [
-                                            DepartmentsProfitability(
-                                              salesDepartments:
-                                                  salesDepartments,
-                                            ),
-                                            Sections(
-                                              saleMovements:
-                                                  salesDepartments,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                    DepartmentsProfitability(
+                                      salesDepartments: salesDepartments,
+                                    ),
+                                    Sections(
+                                      saleMovements: salesDepartments,
                                     ),
                                   ],
                                 ),
-                              );
-                            });
+                              ),
+                            ],
+                          ),
+                        );
                       }),
                     ],
                   ),

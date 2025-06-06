@@ -3,11 +3,9 @@
 import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import '../../domain/helpers/helpers.dart';
 import '../helpers/helpers.dart';
-import '../pages/pages.dart';
 
 class SelectPeriodItems extends StatefulWidget {
   final PeriodType? selectedPeriodType;
@@ -88,8 +86,6 @@ class _PeriodItems extends State<SelectPeriodItems> {
           "Empty items. You must pass the functions for each item that wants enable");
     }
 
-    HomePresenter homePresenter = Get.find();
-
     if (Platform.isIOS) {
       return Padding(
         padding: const EdgeInsets.all(8),
@@ -125,7 +121,6 @@ class _PeriodItems extends State<SelectPeriodItems> {
             if (newValue == null || widget.isLoading == true) return;
             selected = newValue;
             items.firstWhere((e) => e.title == newValue).onTap();
-            homePresenter.updateScreen();
           },
         ),
       );
@@ -146,7 +141,6 @@ class _PeriodItems extends State<SelectPeriodItems> {
           selected = newSelection.first;
         });
         items.firstWhere((e) => e.title == selected).onTap();
-        homePresenter.updateScreen();
       },
       style: ButtonStyle(
         foregroundColor: WidgetStateProperty.resolveWith((states) {

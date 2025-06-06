@@ -48,7 +48,6 @@ class GetxSellersPresenter extends GetxController
           .toList();
 
       lastDateLoaded = homePresenter.selectedDate;
-      homePresenter.updateScreen();
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {

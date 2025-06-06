@@ -138,49 +138,41 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                     return Column(
                       children: [
                         Expanded(
-                          child: StreamBuilder<bool>(
-                            stream: homePresenter.updateScreenStream,
-                            builder: (context, snapshot) {
-                              return Opacity(
-                                opacity: snapshot.data == true ? 0 : 1,
-                                child: PageView(
-                                  controller: pageController,
-                                  onPageChanged: (value) {
-                                    setState(() {
-                                      selectedPageIndex = value;
-                                    });
-                                  },
-                                  children: [
-                                    PaymentsModalities(
-                                      filterByFinalizations: false,
-                                      saleMovements:
-                                          saleMovementsByModalities.where(
-                                        (element) {
-                                          return filter(
-                                            element,
-                                            homePresenter,
-                                            paymentTypePresenter,
-                                          );
-                                        },
-                                      ).toList(),
-                                    ),
-                                    PaymentsModalities(
-                                      filterByFinalizations: true,
-                                      saleMovements:
-                                          saleMovementsByFinalizations.where(
-                                        (element) {
-                                          return filter(
-                                            element,
-                                            homePresenter,
-                                            paymentTypePresenter,
-                                          );
-                                        },
-                                      ).toList(),
-                                    ),
-                                  ],
-                                ),
-                              );
+                          child: PageView(
+                            controller: pageController,
+                            onPageChanged: (value) {
+                              setState(() {
+                                selectedPageIndex = value;
+                              });
                             },
+                            children: [
+                              PaymentsModalities(
+                                filterByFinalizations: false,
+                                saleMovements:
+                                    saleMovementsByModalities.where(
+                                  (element) {
+                                    return filter(
+                                      element,
+                                      homePresenter,
+                                      paymentTypePresenter,
+                                    );
+                                  },
+                                ).toList(),
+                              ),
+                              PaymentsModalities(
+                                filterByFinalizations: true,
+                                saleMovements:
+                                    saleMovementsByFinalizations.where(
+                                  (element) {
+                                    return filter(
+                                      element,
+                                      homePresenter,
+                                      paymentTypePresenter,
+                                    );
+                                  },
+                                ).toList(),
+                              ),
+                            ],
                           ),
                         ),
                       ],

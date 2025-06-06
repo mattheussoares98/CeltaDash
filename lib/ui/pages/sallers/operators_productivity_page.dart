@@ -97,61 +97,54 @@ class _OperatorsProductivityPageState extends State<OperatorsProductivityPage> {
 
                 //TODO remove this page
 
-                return StreamBuilder(
-                    stream: homePresenter.updateScreenStream,
-                    builder: (context, updateSnapshot) {
-                      return Opacity(
-                        opacity: updateSnapshot.data == true ? 0 : 1,
-                        child: Column(
-                          children: [
-                            SelectPeriodItems(
-                              isLoading: loadinSnapshot.data,
-                              selectedPeriodType: PeriodType.daily,
-                            ),
-                            TableItem(
-                              titleMinHeight: 43,
-                              indexToSort: 1,
-                              columnIndexToCompareAndDetachBetterAndWorstValue:
-                                  1,
-                              columnsIndexToSum: [1, 2],
-                              titles: [
-                                PersonalizedTableCell(value: R.string.operator),
-                                PersonalizedTableCell(value: R.string.total),
-                                PersonalizedTableCell(
-                                  value: R.string.salesQuantityAbbreviated,
-                                ),
-                              ],
-                              rowValues: sales
-                                  .fold<
-                                          Map<String,
-                                              List<SaleMovementViewModel>>>({},
-                                      (map, e) {
-                                    final operator =
-                                        e.CashierOperator ?? "Unknown";
-                                    map.putIfAbsent(operator, () => []).add(e);
-                                    return map;
-                                  })
-                                  .entries
-                                  .map((e) {
-                                    final operator = e.key;
-
-                                    return [
-                                      PersonalizedTableCell(value: operator),
-                                      PersonalizedTableCell(
-                                        value: e.value.sumLiquidValue(),
-                                        isMoney: true,
-                                      ),
-                                      PersonalizedTableCell(
-                                        value: e.value.quantitySales(),
-                                      ),
-                                    ];
-                                  })
-                                  .toList(),
-                            ),
-                          ],
+                return Column(
+                  children: [
+                    SelectPeriodItems(
+                      isLoading: loadinSnapshot.data,
+                      selectedPeriodType: PeriodType.daily,
+                    ),
+                    TableItem(
+                      titleMinHeight: 43,
+                      indexToSort: 1,
+                      columnIndexToCompareAndDetachBetterAndWorstValue:
+                          1,
+                      columnsIndexToSum: [1, 2],
+                      titles: [
+                        PersonalizedTableCell(value: R.string.operator),
+                        PersonalizedTableCell(value: R.string.total),
+                        PersonalizedTableCell(
+                          value: R.string.salesQuantityAbbreviated,
                         ),
-                      );
-                    });
+                      ],
+                      rowValues: sales
+                          .fold<
+                                  Map<String,
+                                      List<SaleMovementViewModel>>>({},
+                              (map, e) {
+                            final operator =
+                                e.CashierOperator ?? "Unknown";
+                            map.putIfAbsent(operator, () => []).add(e);
+                            return map;
+                          })
+                          .entries
+                          .map((e) {
+                            final operator = e.key;
+                
+                            return [
+                              PersonalizedTableCell(value: operator),
+                              PersonalizedTableCell(
+                                value: e.value.sumLiquidValue(),
+                                isMoney: true,
+                              ),
+                              PersonalizedTableCell(
+                                value: e.value.quantitySales(),
+                              ),
+                            ];
+                          })
+                          .toList(),
+                    ),
+                  ],
+                );
               }),
             ),
           );

@@ -77,52 +77,45 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
 
                 final saleMovements = compareDaysPresenter.saleMovements;
 
-                return StreamBuilder<bool>(
-                    stream: homePresenter.updateScreenStream,
-                    builder: (context, snapshot) {
-                      if ((saleMovements == null || saleMovements.isEmpty) ||
-                          snapshot.data == true) {
-                        return EmptySales(isLoading: loadingSnap.data == true);
-                      }
-                      return Opacity(
-                        opacity: snapshot.data == true ? 0 : 1,
+                if (saleMovements == null || saleMovements.isEmpty) {
+                  return EmptySales(isLoading: loadingSnap.data == true);
+                }
+
+                return Column(
+                  children: [
+                    ChangeDatesButtons(
+                      firstDay: compareDaysPresenter.selectedFirstDay ??
+                          firstDay,
+                      secondDay:
+                          compareDaysPresenter.selectedSecondDay ??
+                              secondDay,
+                    ),
+                    if (compareDaysPresenter.selectedFirstDay != null &&
+                        compareDaysPresenter.selectedSecondDay != null)
+                      Expanded(
                         child: Column(
                           children: [
-                            ChangeDatesButtons(
-                              firstDay: compareDaysPresenter.selectedFirstDay ??
+                            CompareTable(
+                              firstDay: compareDaysPresenter
+                                      .selectedFirstDay ??
                                   firstDay,
-                              secondDay:
-                                  compareDaysPresenter.selectedSecondDay ??
-                                      secondDay,
+                              secondDay: compareDaysPresenter
+                                      .selectedSecondDay ??
+                                  secondDay,
                             ),
-                            if (compareDaysPresenter.selectedFirstDay != null &&
-                                compareDaysPresenter.selectedSecondDay != null)
-                              Expanded(
-                                child: Column(
-                                  children: [
-                                    CompareTable(
-                                      firstDay: compareDaysPresenter
-                                              .selectedFirstDay ??
-                                          firstDay,
-                                      secondDay: compareDaysPresenter
-                                              .selectedSecondDay ??
-                                          secondDay,
-                                    ),
-                                    Result(
-                                      firstDay: compareDaysPresenter
-                                              .selectedFirstDay ??
-                                          firstDay,
-                                      secondDay: compareDaysPresenter
-                                              .selectedSecondDay ??
-                                          secondDay,
-                                    ),
-                                  ],
-                                ),
-                              ),
+                            Result(
+                              firstDay: compareDaysPresenter
+                                      .selectedFirstDay ??
+                                  firstDay,
+                              secondDay: compareDaysPresenter
+                                      .selectedSecondDay ??
+                                  secondDay,
+                            ),
                           ],
                         ),
-                      );
-                    });
+                      ),
+                  ],
+                );
               }),
             ),
           );

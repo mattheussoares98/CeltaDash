@@ -125,11 +125,6 @@ void main() {
   });
 
   group("Update selected date", () {
-    test("Should emit update screen", () {
-      expectLater(sut.updateScreenStream, emitsInOrder([true, false]));
-
-      sut.updateSelectedDate(faker.date.dateTime());
-    });
     test("Should update date correctly", () {
       final firstDate = faker.date.dateTime();
       final secondDate = faker.date.dateTime();
@@ -451,14 +446,6 @@ void main() {
           id: enterpriseId,
         ),
       ).toViewModel());
-    });
-  });
-
-  group("Need update screen", () {
-    test("Should emit correct values", () {
-      expectLater(sut.updateScreenStream, emitsInOrder([true, false]));
-
-      sut.updateScreen();
     });
   });
 

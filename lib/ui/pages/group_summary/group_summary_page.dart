@@ -89,34 +89,27 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
                 final groupSalesTotalLiquid = groupSales.sumLiquidValue();
                 int groupSalesQuantity = groupSales.quantitySales();
         
-                return StreamBuilder<bool>(
-                    stream: homePresenter.updateScreenStream,
-                    builder: (context, snapshot) {
-                      return Expanded(
-                        child: Opacity(
-                          opacity: snapshot.data == true ? 0 : 1,
-                          child: PageView(
-                            controller: pageController,
-                            onPageChanged: (index) {
-                              setState(() {
-                                currentIndex = index;
-                              });
-                            },
-                            children: [
-                              GroupSummaryDetailsPage(
-                                groupSalesTotalLiquid: groupSalesTotalLiquid,
-                                saleMovements: saleMovements,
-                              ),
-                              GroupSummaryResumePage(
-                                groupSalesTotalLiquid: groupSalesTotalLiquid,
-                                groupSales: groupSales,
-                                groupSalesQuantity: groupSalesQuantity,
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    });
+                return Expanded(
+                  child: PageView(
+                    controller: pageController,
+                    onPageChanged: (index) {
+                      setState(() {
+                        currentIndex = index;
+                      });
+                    },
+                    children: [
+                      GroupSummaryDetailsPage(
+                        groupSalesTotalLiquid: groupSalesTotalLiquid,
+                        saleMovements: saleMovements,
+                      ),
+                      GroupSummaryResumePage(
+                        groupSalesTotalLiquid: groupSalesTotalLiquid,
+                        groupSales: groupSales,
+                        groupSalesQuantity: groupSalesQuantity,
+                      ),
+                    ],
+                  ),
+                );
               }),
             ],
           ),

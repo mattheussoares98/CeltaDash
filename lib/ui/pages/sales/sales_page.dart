@@ -159,48 +159,41 @@ class _SalesPageState extends State<SalesPage>
                     return EmptySales(isLoading: loadingSnap.data == true);
                   }
 
-                  return StreamBuilder(
-                      stream: homePresenter.updateScreenStream,
-                      builder: (context, snapshot) {
-                        return Expanded(
+                  return Expanded(
+                    child: Column(
+                      children: [
+                        Expanded(
                           child: Column(
                             children: [
-                              Expanded(
-                                child: Opacity(
-                                  opacity: snapshot.data == true ? 0 : 1,
-                                  child: Column(
-                                    children: [
-                                      // if (uniqueHours.isNotEmpty)
-                                      //   HourTable(
-                                      //     resumeSaleMovements: resumeSaleMovements,
-                                      //     uniqueHours: uniqueHours,
-                                      //   ),
-                                      //TODO implement in presenter
-                                      if (salesPresenter.selectedPeriodValue ==
-                                              PeriodType.daily &&
-                                          dailySales?.isNotEmpty == true)
-                                        DayTable(
-                                            resumeSaleMovements: dailySales!),
-                                      if (salesPresenter.selectedPeriodValue ==
-                                              PeriodType.monthly &&
-                                          monthlySales != null &&
-                                          monthlySales.isNotEmpty)
-                                        MonthSales(
-                                            saleMovementsByMonth: monthlySales),
-                                      if (salesPresenter.selectedPeriodValue ==
-                                              PeriodType.yearly &&
-                                          yearlySales != null &&
-                                          yearlySales.isNotEmpty)
-                                        YearSales(
-                                            saleMovementsByYear: yearlySales),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                              // if (uniqueHours.isNotEmpty)
+                              //   HourTable(
+                              //     resumeSaleMovements: resumeSaleMovements,
+                              //     uniqueHours: uniqueHours,
+                              //   ),
+                              //TODO implement in presenter
+                              if (salesPresenter.selectedPeriodValue ==
+                                      PeriodType.daily &&
+                                  dailySales?.isNotEmpty == true)
+                                DayTable(
+                                    resumeSaleMovements: dailySales!),
+                              if (salesPresenter.selectedPeriodValue ==
+                                      PeriodType.monthly &&
+                                  monthlySales != null &&
+                                  monthlySales.isNotEmpty)
+                                MonthSales(
+                                    saleMovementsByMonth: monthlySales),
+                              if (salesPresenter.selectedPeriodValue ==
+                                      PeriodType.yearly &&
+                                  yearlySales != null &&
+                                  yearlySales.isNotEmpty)
+                                YearSales(
+                                    saleMovementsByYear: yearlySales),
                             ],
                           ),
-                        );
-                      });
+                        ),
+                      ],
+                    ),
+                  );
                 }),
               ],
             ),

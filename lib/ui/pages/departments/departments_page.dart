@@ -112,33 +112,26 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                     return EmptySales(isLoading: loadingSnap.data);
                   }
 
-                  return StreamBuilder<bool>(
-                      stream: homePresenter.updateScreenStream,
-                      builder: (context, snapshot) {
-                        return Expanded(
-                          child: Column(
+                  return Expanded(
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: PageView(
+                            controller: pageController,
+                            onPageChanged: (value) {
+                              setState(() {
+                                selectedPageIndex = value;
+                              });
+                            },
                             children: [
-                              Expanded(
-                                child: Opacity(
-                                  opacity: snapshot.data == true ? 0 : 1,
-                                  child: PageView(
-                                    controller: pageController,
-                                    onPageChanged: (value) {
-                                      setState(() {
-                                        selectedPageIndex = value;
-                                      });
-                                    },
-                                    children: [
-                                      Departments(saleMovements: saleMovements),
-                                      Sections(saleMovements: saleMovements),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                              Departments(saleMovements: saleMovements),
+                              Sections(saleMovements: saleMovements),
                             ],
                           ),
-                        );
-                      });
+                        ),
+                      ],
+                    ),
+                  );
                 }),
               ],
             ),

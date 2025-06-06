@@ -13,7 +13,7 @@ import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
 
 class GetxHomePresenter extends GetxController
-    with UIErrorManager, LoadingManager, UpdateScreenManager
+    with UIErrorManager, LoadingManager
     implements HomePresenter {
   final NavigateTo navigateTo;
   final LoadEnterprises loadEnterprises;
@@ -35,7 +35,6 @@ class GetxHomePresenter extends GetxController
   @override
   void updateSelectedDate(DateTime date) {
     _selectedDate = date;
-    updateScreen();
   }
 
   List<FirebaseSubEnterpriseEntity> _getMissingEnterprises(
@@ -150,7 +149,6 @@ class GetxHomePresenter extends GetxController
     if (EnterpriseBuilder.entity?.firebaseSubEnterprises?[index].enabled ==
         true) {
       _selectedEnterprise.value = enterprise;
-      updateScreen();
     } else {
       mainError = UIError.disabledEnterprise;
     }
@@ -174,14 +172,6 @@ class GetxHomePresenter extends GetxController
   DateTime _selectedDate = DateTime.now();
   @override
   DateTime get selectedDate => _selectedDate;
-
-  @override
-  void updateScreen() {
-    needUpdateScreen = true;
-    Future.delayed(Duration(milliseconds: 1), () {
-      needUpdateScreen = false;
-    });
-  }
 
   StreamSubscription<DocumentSnapshot>? _firebaseSub;
   @override
@@ -209,8 +199,6 @@ class GetxHomePresenter extends GetxController
         firebaseId: oldEnterprise?.firebaseId,
         firebaseSubEnterprises: newSubEnterprises,
       );
-
-      updateScreen(); // Trigger update if needed
     });
   }
 

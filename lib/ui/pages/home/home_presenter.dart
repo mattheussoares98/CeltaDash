@@ -12,7 +12,6 @@ abstract class HomePresenter implements Listenable {
   DateTime get selectedDate;
   List<EnterpriseViewModel>? get enterprises;
   EnterpriseViewModel? get selectedEnterprise;
-  Stream<bool> get updateScreenStream;
 
   void initFirebaseStream();
   void updateSelectedIndex(int index);
@@ -20,7 +19,6 @@ abstract class HomePresenter implements Listenable {
   void goToOperatorsPage();
   void goToSellersPage();
   void goToProfitabilityPage();
-  void updateScreen();
 
   Future<void> getBsEnterprises({
     required void Function(String) showBsErrorMessage,
