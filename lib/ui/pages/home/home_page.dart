@@ -30,6 +30,7 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
       if (mounted) {
         HomePresenter homePresenter = Get.find();
         ResumePresenter resumePresenter = Get.find();
+        SalesPresenter salesPresenter = Get.find();
         homePresenter.updateSelectedIndex(0);
         await homePresenter.getBsEnterprises(
           docRef: FirebaseFirestore.instance.collection("enterprises").doc(
@@ -40,7 +41,7 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
           },
         );
 
-        await resumePresenter.getSales(homePresenter);
+        homePresenter.reloadSales(resumePresenter, salesPresenter);
       }
     });
   }

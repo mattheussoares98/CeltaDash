@@ -30,15 +30,6 @@ class _SalesPageState extends State<SalesPage>
   }
 
   @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (mounted) {}
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
     SalesPresenter salesPresenter = Get.find();
