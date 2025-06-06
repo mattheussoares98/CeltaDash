@@ -16,6 +16,10 @@ abstract class OperatorsPresenter implements Listenable {
   GetSalesParams? get lastGetYearlyParams;
   PeriodType? get selectedPeriodValue;
 
-  Future<void> getSales(HomePresenter homePresenter, {bool? forceRefresh});
+  Future<void> getSales(
+    HomePresenter homePresenter, {
+    PeriodType? periodType,
+    bool? forceRefresh,
+  });
   void emitLoadingAgain();
 }

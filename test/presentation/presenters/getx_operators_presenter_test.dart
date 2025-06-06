@@ -124,6 +124,7 @@ void main() {
               endDate: startDate,
               groupByEnterprise: true,
               groupByCashierOperator: true,
+              groupByDay: true,
             ),
           ),
         ).called(1);
@@ -148,6 +149,7 @@ void main() {
               endDate: startDate,
               groupByEnterprise: true,
               groupByCashierOperator: true,
+              groupByDay: true,
             ),
           ),
         ).called(1);
@@ -171,6 +173,7 @@ void main() {
               endDate: startDate,
               groupByEnterprise: true,
               groupByCashierOperator: true,
+              groupByDay: true,
             ),
           ),
         ).called(1);
@@ -190,6 +193,7 @@ void main() {
               endDate: startDate,
               groupByEnterprise: true,
               groupByCashierOperator: true,
+              groupByDay: true,
             ),
           ),
         ).called(1);
@@ -218,6 +222,7 @@ void main() {
               endDate: startDate,
               groupByEnterprise: true,
               groupByCashierOperator: true,
+              groupByDay: true,
             ),
           ),
         ).called(2);
@@ -241,6 +246,7 @@ void main() {
               endDate: startDate,
               groupByEnterprise: true,
               groupByCashierOperator: true,
+              groupByDay: true,
             ));
       });
     });
@@ -279,6 +285,7 @@ void main() {
               endDate: endDate,
               groupByEnterprise: true,
               groupByCashierOperator: true,
+              groupByMonth: true,
             ),
           ),
         ).called(1);
@@ -308,6 +315,7 @@ void main() {
               endDate: endDate,
               groupByEnterprise: true,
               groupByCashierOperator: true,
+              groupByMonth: true,
             ),
           ),
         ).called(1);
@@ -336,6 +344,7 @@ void main() {
               endDate: endDate,
               groupByEnterprise: true,
               groupByCashierOperator: true,
+              groupByMonth: true,
             ),
           ),
         ).called(1);
@@ -355,6 +364,7 @@ void main() {
               endDate: endDate,
               groupByEnterprise: true,
               groupByCashierOperator: true,
+              groupByMonth: true,
             ),
           ),
         ).called(1);
@@ -388,6 +398,7 @@ void main() {
               endDate: endDate,
               groupByEnterprise: true,
               groupByCashierOperator: true,
+              groupByMonth: true,
             ),
           ),
         ).called(2);
@@ -416,6 +427,7 @@ void main() {
               endDate: endDate,
               groupByEnterprise: true,
               groupByCashierOperator: true,
+              groupByMonth: true,
             ));
       });
     });
@@ -446,6 +458,7 @@ void main() {
               endDate: endDate,
               groupByEnterprise: true,
               groupByCashierOperator: true,
+              groupByYear: true,
             ),
           ),
         ).called(1);
@@ -467,6 +480,7 @@ void main() {
               endDate: endDate,
               groupByEnterprise: true,
               groupByCashierOperator: true,
+              groupByYear: true,
             ),
           ),
         ).called(1);
@@ -492,6 +506,7 @@ void main() {
               endDate: endDate,
               groupByEnterprise: true,
               groupByCashierOperator: true,
+              groupByYear: true,
             ),
           ),
         ).called(2);
@@ -512,6 +527,7 @@ void main() {
               endDate: endDate,
               groupByEnterprise: true,
               groupByCashierOperator: true,
+              groupByYear: true,
             ));
       });
 
@@ -531,6 +547,7 @@ void main() {
               endDate: endDate,
               groupByEnterprise: true,
               groupByCashierOperator: true,
+              groupByYear: true,
             ),
           ),
         ).called(1);
@@ -550,6 +567,7 @@ void main() {
               endDate: endDate,
               groupByEnterprise: true,
               groupByCashierOperator: true,
+              groupByYear: true,
             ),
           ),
         ).called(1);

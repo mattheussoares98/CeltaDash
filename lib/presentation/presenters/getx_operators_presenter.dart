@@ -84,6 +84,7 @@ class GetxOperatorsPresenter extends GetxController
           endDate: startDate,
           groupByEnterprise: true,
           groupByCashierOperator: true,
+          groupByDay: true,
         );
       } else if (selectedPeriodValue == PeriodType.monthly) {
         getSalesParams = GetSalesParams(
@@ -100,6 +101,7 @@ class GetxOperatorsPresenter extends GetxController
           ),
           groupByEnterprise: true,
           groupByCashierOperator: true,
+          groupByMonth: true,
         );
       } else if (selectedPeriodValue == PeriodType.yearly) {
         getSalesParams = GetSalesParams(
@@ -108,6 +110,7 @@ class GetxOperatorsPresenter extends GetxController
           endDate: DateTime(homePresenter.selectedDate.year, 12, 31),
           groupByEnterprise: true,
           groupByCashierOperator: true,
+          groupByYear: true,
         );
       }
       final remoteSales = await loadSaleMovements.get(getSalesParams);
