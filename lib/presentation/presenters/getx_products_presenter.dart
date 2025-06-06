@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
+import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
 import '../../presentation/mixins/mixins.dart';
 import '../../ui/helpers/helpers.dart';
@@ -11,7 +12,7 @@ class GetxProductsPresenter extends GetxController
         LoadingManager,
         UIErrorManager,
         SaleMovementManager,
-        LastDateLoadedDataManager
+        LastGetSalesParamsManager
     implements ProductsPresenter {
   final LoadSaleMovements loadSaleMovements;
   final LocalStorage localStorage;
@@ -22,46 +23,63 @@ class GetxProductsPresenter extends GetxController
   });
 
   @override
-  Future<void> loadProducts(
+  Future<void> getSales(
     HomePresenter homePresenter, {
+    PeriodType? periodType,
     bool? forceRefresh,
   }) async {
     isLoading = true;
     mainError = null;
     try {
-      if (forceRefresh != true &&
-          (homePresenter.selectedEnterprise == _lastEnterpriseLoadedData) &&
-          (lastDateLoadedData?.year == homePresenter.selectedDate.year &&
-              lastDateLoadedData?.month == homePresenter.selectedDate.month)) {
+      if (periodType != null) {
+        _selectedPeriodType = periodType;
+      }
+
+      final canSearchAgain = SalesHelper.canSearch(
+        forceRefresh: forceRefresh,
+        lastGetSalesParams: lastGetSalesParams,
+        selectedDate: homePresenter.selectedDate,
+        periodType: _selectedPeriodType,
+      );
+
+      if (!canSearchAgain) {
         return;
       }
-      final response = await loadSaleMovements.get(
-        GetSalesParams(
-          startDate: DateTime(
-            homePresenter.selectedDate.year,
-            homePresenter.selectedDate.month,
-            1,
-          ),
-          endDate: DateTime(
-            homePresenter.selectedDate.year,
-            homePresenter.selectedDate.month + 1,
-          ).subtract(Duration(days: 1)),
-          groupByDay: true,
-          groupByProduct: true,
-          groupByEnterprise: true,
-          topCount: 200,
-          enterpriseIds: homePresenter.selectedEnterprise == null
-              ? []
-              : [homePresenter.selectedEnterprise!.id!.toInt()],
-        ),
+
+      final startDate = DateTime(
+        homePresenter.selectedDate.year,
+        homePresenter.selectedDate.month,
+        _selectedPeriodType == PeriodType.daily
+            ? homePresenter.selectedDate.day
+            : 1,
       );
+
+      final endDate = DateTime(
+        homePresenter.selectedDate.year,
+        homePresenter.selectedDate.month + 1,
+        0,
+      );
+
+      final params = GetSalesParams(
+        startDate: startDate,
+        endDate: _selectedPeriodType == PeriodType.daily ? startDate : endDate,
+        groupByDay: true,
+        groupByProduct: true,
+        groupByEnterprise: true,
+        topCount: 200,
+        enterpriseIds: homePresenter.selectedEnterprise == null
+            ? []
+            : [homePresenter.selectedEnterprise!.id!.toInt()],
+      );
+
+      final response = await loadSaleMovements.get(params);
+      lastParams = params;
 
       saleMovements = (response as List)
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
           .toList();
 
       _lastEnterpriseLoadedData = homePresenter.selectedEnterprise;
-      lastDateLoaded = homePresenter.selectedDate;
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {
@@ -73,4 +91,8 @@ class GetxProductsPresenter extends GetxController
   @override
   EnterpriseViewModel? get lastEnterpriseLoadedData =>
       _lastEnterpriseLoadedData;
+
+  PeriodType _selectedPeriodType = PeriodType.daily;
+  @override
+  PeriodType get selectedPeriodType => _selectedPeriodType;
 }

@@ -53,6 +53,7 @@ class GetxSalesPresenter extends GetxController
       );
 
       bool changedTheEnterprise() {
+        //TODO move this to helper
         if (_selectedPeriodType == PeriodType.daily) {
           return _lastGetDailyParams?.enterpriseIds?.isNotEmpty == true &&
               _lastDailyEnterprise?.id?.toInt() !=

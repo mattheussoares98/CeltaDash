@@ -27,7 +27,7 @@ class _ProfitabilityPageState extends State<ProfitabilityPage> {
     DepartmentsPresenter departmentsPresenter = Get.find();
 
     departmentsPresenter.getSales(homePresenter, forceRefresh: forceRefresh);
-    productsPresenter.loadProducts(homePresenter, forceRefresh: forceRefresh);
+    productsPresenter.getSales(homePresenter, forceRefresh: forceRefresh);
   }
 
   @override

@@ -1,5 +1,6 @@
 import 'package:celta_dash/data/models/models.dart';
 import 'package:celta_dash/domain/entities/entities.dart';
+import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/infra/helpers/helpers.dart';
 import 'package:celta_dash/main/builders/builders.dart';
@@ -75,225 +76,407 @@ void main() {
   });
 
   group("Load sale movements", () {
-    test("Should emit correct values on success", () async {
-      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
-      expectLater(sut.mainErrorStream, emits(null));
+    group("Pattern", () {
+      test("Should emit correct values on success", () async {
+        expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+        expectLater(sut.mainErrorStream, emits(null));
 
-      await sut.loadProducts(homePresenter);
+        await sut.getSales(homePresenter);
+      });
+      test("Should emit correct values on error", () async {
+        expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+        expectLater(
+          sut.mainErrorStream,
+          emitsInOrder([null, UIError.unexpected]),
+        );
+
+        loadSaleMovements.mockGetError();
+
+        await sut.getSales(homePresenter);
+      });
+      test("Should update selected period correctly", () async {
+        await sut.getSales(
+          homePresenter,
+          periodType: PeriodType.daily,
+        );
+        expect(sut.selectedPeriodType, PeriodType.daily);
+
+        await sut.getSales(
+          homePresenter,
+          periodType: PeriodType.monthly,
+        );
+        expect(sut.selectedPeriodType, PeriodType.monthly);
+
+        await sut.getSales(
+          homePresenter,
+          periodType: PeriodType.daily,
+        );
+        expect(sut.selectedPeriodType, PeriodType.daily);
+      });
+      test("Should update sale movements correctly", () async {
+        await sut.getSales(homePresenter);
+
+        expect(
+          sut.saleMovements,
+          saleMovementsEntities
+              .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+              .toList(),
+        );
+      });
+
+      test("Should update last loaded enterprise", () async {
+        await sut.getSales(homePresenter);
+
+        expect(
+          sut.lastEnterpriseLoadedData,
+          homePresenter.selectedEnterpriseMock,
+        );
+      });
     });
-    test("Should emit correct values on error", () async {
-      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
-      expectLater(
-        sut.mainErrorStream,
-        emitsInOrder([null, UIError.unexpected]),
-      );
 
-      loadSaleMovements.mockGetError();
+    group("Daily", () {
+      test("Should load sales with correct params", () async {
+        await sut.getSales(
+          homePresenter,
+          periodType: PeriodType.daily,
+        );
 
-      await sut.loadProducts(homePresenter);
-    });
-    test("Should call load sale movements with correct values", () async {
-      await sut.loadProducts(homePresenter);
-
-      verify(
-        () => loadSaleMovements.get(
-          GetSalesParams(
-            startDate: DateTime(
-              homePresenter.selectedDateMock.year,
-              homePresenter.selectedDateMock.month,
-              1,
+        verify(
+          () => loadSaleMovements.get(
+            GetSalesParams(
+              startDate: DateTime(
+                homePresenter.selectedDateMock.year,
+                homePresenter.selectedDateMock.month,
+                homePresenter.selectedDateMock.day,
+              ),
+              endDate: DateTime(
+                homePresenter.selectedDateMock.year,
+                homePresenter.selectedDateMock.month,
+                homePresenter.selectedDateMock.day,
+              ),
+              groupByDay: true,
+              topCount: 200,
+              groupByProduct: true,
+              groupByEnterprise: true,
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
             ),
-            endDate: DateTime(
-              homePresenter.selectedDateMock.year,
-              homePresenter.selectedDateMock.month + 1,
-            ).subtract(Duration(days: 1)),
-            groupByDay: true,
-            topCount: 200,
-            groupByProduct: true,
-            groupByEnterprise: true,
-            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
           ),
-        ),
-      ).called(1);
-    });
+        ).called(1);
+      });
 
-    test("Should update sale movements correctly", () async {
-      await sut.loadProducts(homePresenter);
+      test("Should call load sale movements with correct values", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.daily);
 
-      expect(
-        sut.saleMovements,
-        saleMovementsEntities
-            .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
-            .toList(),
-      );
-    });
-    test("Should update lastDateLoadedData correctly", () async {
-      await sut.loadProducts(homePresenter);
+        final startDate = DateTime(
+          homePresenter.selectedDateMock.year,
+          homePresenter.selectedDateMock.month,
+          homePresenter.selectedDateMock.day,
+        );
 
-      expect(sut.lastDateLoadedData, homePresenter.selectedDateMock);
-    });
-    test(
-        "Should not load again if lastDateLoadedData is equal homePresenter.selectedDate",
-        () async {
-      await sut.loadProducts(homePresenter);
-      await sut.loadProducts(homePresenter);
-
-      verify(
-        () => loadSaleMovements.get(
-          GetSalesParams(
-            startDate: DateTime(
-              homePresenter.selectedDateMock.year,
-              homePresenter.selectedDateMock.month,
-              1,
+        verify(
+          () => loadSaleMovements.get(
+            GetSalesParams(
+              startDate: startDate,
+              endDate: startDate,
+              groupByDay: true,
+              topCount: 200,
+              groupByProduct: true,
+              groupByEnterprise: true,
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
             ),
-            endDate: DateTime(
-              homePresenter.selectedDateMock.year,
-              homePresenter.selectedDateMock.month + 1,
-            ).subtract(Duration(days: 1)),
-            groupByDay: true,
-            topCount: 200,
-            groupByProduct: true,
-            groupByEnterprise: true,
-            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
           ),
-        ),
-      ).called(1);
-    });
-    test("Should load again if change the date", () async {
-      await sut.loadProducts(homePresenter);
-      homePresenter.selectedDateMock = faker.date.dateTime();
+        ).called(1);
+      });
+      test("Should not load again if dont force refresh", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.daily);
+        await sut.getSales(homePresenter, periodType: PeriodType.daily);
 
-      await sut.loadProducts(homePresenter);
+        final startDate = DateTime(
+          homePresenter.selectedDateMock.year,
+          homePresenter.selectedDateMock.month,
+          homePresenter.selectedDateMock.day,
+        );
 
-      verify(
-        () => loadSaleMovements.get(
-          GetSalesParams(
-            startDate: DateTime(
-              homePresenter.selectedDateMock.year,
-              homePresenter.selectedDateMock.month,
-              1,
+        verify(
+          () => loadSaleMovements.get(
+            GetSalesParams(
+              startDate: startDate,
+              endDate: startDate,
+              groupByDay: true,
+              topCount: 200,
+              groupByProduct: true,
+              groupByEnterprise: true,
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
             ),
-            endDate: DateTime(
-              homePresenter.selectedDateMock.year,
-              homePresenter.selectedDateMock.month + 1,
-            ).subtract(Duration(days: 1)),
-            groupByDay: true,
-            topCount: 200,
-            groupByProduct: true,
-            groupByEnterprise: true,
-            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
           ),
-        ),
-      ).called(1);
-    });
-    test("Should load again if force refresh", () async {
-      await sut.loadProducts(homePresenter);
-      await sut.loadProducts(homePresenter, forceRefresh: true);
+        ).called(1);
+      });
+      test("Should update last get sales params correctly", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.daily);
 
-      verify(
-        () => loadSaleMovements.get(
-          GetSalesParams(
-            startDate: DateTime(
-              homePresenter.selectedDateMock.year,
-              homePresenter.selectedDateMock.month,
-              1,
+        final startDate = DateTime(
+          homePresenter.selectedDateMock.year,
+          homePresenter.selectedDateMock.month,
+          homePresenter.selectedDateMock.day,
+        );
+
+        expect(
+            sut.lastGetSalesParams,
+            GetSalesParams(
+              startDate: startDate,
+              endDate: startDate,
+              groupByDay: true,
+              topCount: 200,
+              groupByProduct: true,
+              groupByEnterprise: true,
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
+            ));
+      });
+
+      test("Should update sale movements correctly", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.daily);
+
+        expect(
+          sut.saleMovements,
+          saleMovementsEntities
+              .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+              .toList(),
+        );
+      });
+
+      test("Should load again if change the selected enterprise", () async {
+        await sut.getSales(homePresenter);
+
+        final startDate = DateTime(
+          homePresenter.selectedDateMock.year,
+          homePresenter.selectedDateMock.month,
+          homePresenter.selectedDateMock.day,
+        );
+
+        verify(
+          () => loadSaleMovements.get(
+            GetSalesParams(
+              startDate: startDate,
+              endDate: startDate,
+              groupByDay: true,
+              topCount: 200,
+              groupByProduct: true,
+              groupByEnterprise: true,
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
             ),
-            endDate: DateTime(
-              homePresenter.selectedDateMock.year,
-              homePresenter.selectedDateMock.month + 1,
-            ).subtract(Duration(days: 1)),
-            groupByDay: true,
-            topCount: 200,
-            groupByProduct: true,
-            groupByEnterprise: true,
-            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
           ),
-        ),
-      ).called(2);
-    });
-    test("Should update last loaded enterprise", () async {
-      await sut.loadProducts(homePresenter);
+        ).called(1);
 
-      expect(
-        sut.lastEnterpriseLoadedData,
-        homePresenter.selectedEnterpriseMock,
-      );
-    });
-    test("Should load again if change the selected enterprise", () async {
-      await sut.loadProducts(homePresenter);
+        homePresenter.selectedEnterpriseMock =
+            EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
+                .toViewModel();
+        await sut.getSales(homePresenter);
 
-      verify(
-        () => loadSaleMovements.get(
-          GetSalesParams(
-            startDate: DateTime(
-              homePresenter.selectedDateMock.year,
-              homePresenter.selectedDateMock.month,
-              1,
+        verify(
+          () => loadSaleMovements.get(
+            GetSalesParams(
+              startDate: startDate,
+              endDate: startDate,
+              groupByDay: true,
+              topCount: 200,
+              groupByProduct: true,
+              groupByEnterprise: true,
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
             ),
-            endDate: DateTime(
-              homePresenter.selectedDateMock.year,
-              homePresenter.selectedDateMock.month + 1,
-            ).subtract(Duration(days: 1)),
-            groupByDay: true,
-            topCount: 200,
-            groupByProduct: true,
-            groupByEnterprise: true,
-            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
           ),
-        ),
-      ).called(1);
-
-      homePresenter.selectedEnterpriseMock =
-          EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
-              .toViewModel();
-      await sut.loadProducts(homePresenter);
-
-      verify(
-        () => loadSaleMovements.get(
-          GetSalesParams(
-            startDate: DateTime(
-              homePresenter.selectedDateMock.year,
-              homePresenter.selectedDateMock.month,
-              1,
-            ),
-            endDate: DateTime(
-              homePresenter.selectedDateMock.year,
-              homePresenter.selectedDateMock.month + 1,
-            ).subtract(Duration(days: 1)),
-            groupByDay: true,
-            topCount: 200,
-            groupByProduct: true,
-            groupByEnterprise: true,
-            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
-          ),
-        ),
-      ).called(1);
+        ).called(1);
+      });
     });
-    test("Should not load again if dont change the selected enterprise",
-        () async {
-      await sut.loadProducts(homePresenter);
-      await sut.loadProducts(homePresenter);
 
-      verify(
-        () => loadSaleMovements.get(
-          GetSalesParams(
-            startDate: DateTime(
-              homePresenter.selectedDateMock.year,
-              homePresenter.selectedDateMock.month,
-              1,
+    group("Monthly", () {
+      test("Should load sales with correct params", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
+
+        verify(
+          () => loadSaleMovements.get(
+            GetSalesParams(
+              startDate: DateTime(
+                homePresenter.selectedDateMock.year,
+                homePresenter.selectedDateMock.month,
+                1,
+              ),
+              endDate: DateTime(
+                homePresenter.selectedDateMock.year,
+                homePresenter.selectedDateMock.month + 1,
+                0,
+              ),
+              groupByDay: true,
+              topCount: 200,
+              groupByProduct: true,
+              groupByEnterprise: true,
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
             ),
-            endDate: DateTime(
-              homePresenter.selectedDateMock.year,
-              homePresenter.selectedDateMock.month + 1,
-            ).subtract(Duration(days: 1)),
-            groupByDay: true,
-            topCount: 200,
-            groupByProduct: true,
-            groupByEnterprise: true,
-            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
           ),
-        ),
-      ).called(1);
+        ).called(1);
+      });
+
+      test("Should call load sale movements with correct values", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
+
+        verify(
+          () => loadSaleMovements.get(
+            GetSalesParams(
+              startDate: DateTime(
+                homePresenter.selectedDateMock.year,
+                homePresenter.selectedDateMock.month,
+                1,
+              ),
+              endDate: DateTime(
+                homePresenter.selectedDateMock.year,
+                homePresenter.selectedDateMock.month + 1,
+                0,
+              ),
+              groupByDay: true,
+              topCount: 200,
+              groupByProduct: true,
+              groupByEnterprise: true,
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
+            ),
+          ),
+        ).called(1);
+      });
+      test("Should not load again if dont force refresh", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
+        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
+
+        verify(
+          () => loadSaleMovements.get(
+            GetSalesParams(
+              startDate: DateTime(
+                homePresenter.selectedDateMock.year,
+                homePresenter.selectedDateMock.month,
+                1,
+              ),
+              endDate: DateTime(
+                homePresenter.selectedDateMock.year,
+                homePresenter.selectedDateMock.month + 1,
+                0,
+              ),
+              groupByDay: true,
+              topCount: 200,
+              groupByProduct: true,
+              groupByEnterprise: true,
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
+            ),
+          ),
+        ).called(1);
+      });
+      test("Should update last get sales params correctly", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
+
+        expect(
+            sut.lastGetSalesParams,
+            GetSalesParams(
+              startDate: DateTime(
+                homePresenter.selectedDateMock.year,
+                homePresenter.selectedDateMock.month,
+                1,
+              ),
+              endDate: DateTime(
+                homePresenter.selectedDateMock.year,
+                homePresenter.selectedDateMock.month + 1,
+                0,
+              ),
+              groupByDay: true,
+              topCount: 200,
+              groupByProduct: true,
+              groupByEnterprise: true,
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
+            ));
+      });
+
+      test("Should update sale movements correctly", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
+
+        expect(
+          sut.saleMovements,
+          saleMovementsEntities
+              .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+              .toList(),
+        );
+      });
+
+      test("Should load again if change the selected enterprise", () async {
+        await sut.getSales(homePresenter);
+
+        verify(
+          () => loadSaleMovements.get(
+            GetSalesParams(
+              startDate: DateTime(
+                homePresenter.selectedDateMock.year,
+                homePresenter.selectedDateMock.month,
+                1,
+              ),
+              endDate: DateTime(
+                homePresenter.selectedDateMock.year,
+                homePresenter.selectedDateMock.month + 1,
+                0,
+              ),
+              groupByDay: true,
+              topCount: 200,
+              groupByProduct: true,
+              groupByEnterprise: true,
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
+            ),
+          ),
+        ).called(1);
+
+        homePresenter.selectedEnterpriseMock =
+            EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
+                .toViewModel();
+        await sut.getSales(homePresenter);
+
+        verify(
+          () => loadSaleMovements.get(
+            GetSalesParams(
+              startDate: DateTime(
+                homePresenter.selectedDateMock.year,
+                homePresenter.selectedDateMock.month,
+                1,
+              ),
+              endDate: DateTime(
+                homePresenter.selectedDateMock.year,
+                homePresenter.selectedDateMock.month + 1,
+                0,
+              ),
+              groupByDay: true,
+              topCount: 200,
+              groupByProduct: true,
+              groupByEnterprise: true,
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
+            ),
+          ),
+        ).called(1);
+      });
     });
   });
 }

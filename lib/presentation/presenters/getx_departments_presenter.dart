@@ -41,7 +41,7 @@ class GetxDepartmentsPresenter extends GetxController
         forceRefresh: forceRefresh,
         lastGetSalesParams: lastGetSalesParams,
         selectedDate: homePresenter.selectedDate,
-        periodType: _selectedPeriodType,
+        periodType: _selectedPeriodType,//TODO if change enterprise, search again
       );
 
       if (!canSearchAgain) {
@@ -86,6 +86,7 @@ class GetxDepartmentsPresenter extends GetxController
   PeriodType _selectedPeriodType = PeriodType.daily;
   @override
   PeriodType get selectedPeriodType => _selectedPeriodType;
+  //TODO create mixin
 
   @override
   void emitLoadingAgain() {
