@@ -52,7 +52,7 @@ class _PaymentTypePageState extends State<PaymentTypePage>
   ) {
     final selectedDate = homePresenter.selectedDate;
 
-    if (paymentTypePresenter.selectedPeriodType == PeriodType.monthly) {
+    if (paymentTypePresenter.selectedPeriodValue == PeriodType.monthly) {
       return sale.Date?.month == selectedDate.month &&
           sale.Date?.year == selectedDate.year;
     } else {
@@ -118,7 +118,7 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                     padding: const EdgeInsets.all(8.0),
                     child: SelectPeriodItems(
                       selectedPeriodType:
-                          paymentTypePresenter.selectedPeriodType,
+                          paymentTypePresenter.selectedPeriodValue,
                       onTapMonthly: () {
                         paymentTypePresenter.getSales(
                           homePresenter,

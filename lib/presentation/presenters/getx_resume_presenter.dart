@@ -12,7 +12,8 @@ class GetxResumePresenter extends GetxController
         SaleMovementManager,
         UIErrorManager,
         LoadingManager,
-        LastGetSalesParamsManager
+        LastGetSalesParamsManager,
+        PeriodTypeManager
     implements ResumePresenter {
   final NavigateTo navigateTo;
   final LoadSaleMovements loadSaleMovements;
@@ -74,7 +75,7 @@ class GetxResumePresenter extends GetxController
       mainError = null;
 
       if (periodType != null) {
-        _selectedPeriodType = periodType;
+        selectedPeriod = periodType;
       }
 
       final canSearchAgain = SalesHelper.canSearch(
@@ -118,8 +119,4 @@ class GetxResumePresenter extends GetxController
       isLoading = false;
     }
   }
-
-  PeriodType _selectedPeriodType = PeriodType.daily;
-  @override
-  PeriodType? get selectedPeriodType => _selectedPeriodType;
 }

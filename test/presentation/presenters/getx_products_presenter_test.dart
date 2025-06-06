@@ -99,19 +99,19 @@ void main() {
           homePresenter,
           periodType: PeriodType.daily,
         );
-        expect(sut.selectedPeriodType, PeriodType.daily);
+        expect(sut.selectedPeriodValue, PeriodType.daily);
 
         await sut.getSales(
           homePresenter,
           periodType: PeriodType.monthly,
         );
-        expect(sut.selectedPeriodType, PeriodType.monthly);
+        expect(sut.selectedPeriodValue, PeriodType.monthly);
 
         await sut.getSales(
           homePresenter,
           periodType: PeriodType.daily,
         );
-        expect(sut.selectedPeriodType, PeriodType.daily);
+        expect(sut.selectedPeriodValue, PeriodType.daily);
       });
       test("Should update sale movements correctly", () async {
         await sut.getSales(homePresenter);

@@ -12,7 +12,8 @@ class GetxProductsPresenter extends GetxController
         LoadingManager,
         UIErrorManager,
         SaleMovementManager,
-        LastGetSalesParamsManager
+        LastGetSalesParamsManager,
+        PeriodTypeManager
     implements ProductsPresenter {
   final LoadSaleMovements loadSaleMovements;
   final LocalStorage localStorage;
@@ -32,14 +33,14 @@ class GetxProductsPresenter extends GetxController
     mainError = null;
     try {
       if (periodType != null) {
-        _selectedPeriodType = periodType;
+        selectedPeriod = periodType;
       }
 
       final canSearchAgain = SalesHelper.canSearch(
         forceRefresh: forceRefresh,
         lastGetSalesParams: lastGetSalesParams,
         selectedDate: homePresenter.selectedDate,
-        periodType: _selectedPeriodType,
+        periodType: selectedPeriodValue,
       );
 
       if (!canSearchAgain) {
@@ -50,7 +51,7 @@ class GetxProductsPresenter extends GetxController
       final startDate = DateTime(
         homePresenter.selectedDate.year,
         homePresenter.selectedDate.month,
-        _selectedPeriodType == PeriodType.daily
+        selectedPeriodValue == PeriodType.daily
             ? homePresenter.selectedDate.day
             : 1,
       );
@@ -63,7 +64,7 @@ class GetxProductsPresenter extends GetxController
 
       final params = GetSalesParams(
         startDate: startDate,
-        endDate: _selectedPeriodType == PeriodType.daily ? startDate : endDate,
+        endDate: selectedPeriodValue == PeriodType.daily ? startDate : endDate,
         groupByDay: true,
         groupByProduct: true,
         groupByEnterprise: true,
@@ -92,8 +93,4 @@ class GetxProductsPresenter extends GetxController
   @override
   EnterpriseViewModel? get lastEnterpriseLoadedData =>
       _lastEnterpriseLoadedData;
-
-  PeriodType _selectedPeriodType = PeriodType.daily;
-  @override
-  PeriodType get selectedPeriodType => _selectedPeriodType;
 }

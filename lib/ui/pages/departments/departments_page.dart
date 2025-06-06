@@ -79,7 +79,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                   final saleMovements = departmentsPresenter.saleMovements
                       ?.filteredSales(
                         enterprise: homePresenter.selectedEnterprise,
-                        filterDay: departmentsPresenter.selectedPeriodType ==
+                        filterDay: departmentsPresenter.selectedPeriodValue ==
                                 PeriodType.daily
                             ? homePresenter.selectedDate.day
                             : null,
@@ -103,7 +103,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                                 padding: const EdgeInsets.all(8.0),
                                 child: SelectPeriodItems(
                                   selectedPeriodType:
-                                      departmentsPresenter.selectedPeriodType,
+                                      departmentsPresenter.selectedPeriodValue,
                                   onTapDaily: () {
                                     departmentsPresenter.getSales(
                                       homePresenter,

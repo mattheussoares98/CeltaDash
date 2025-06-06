@@ -11,7 +11,7 @@ abstract class ProductsPresenter implements Listenable {
   List<SaleMovementViewModel>? get saleMovements;
   GetSalesParams? get lastGetSalesParams;
   EnterpriseViewModel? get lastEnterpriseLoadedData;
-  PeriodType get selectedPeriodType;
+  PeriodType get selectedPeriodValue;
 
   Future<void> getSales(
     HomePresenter homePresenter, {

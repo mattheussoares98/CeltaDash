@@ -49,7 +49,7 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
           Padding(
             padding: const EdgeInsets.all(4),
             child: SelectPeriodItems(
-              selectedPeriodType: resumePresenter.selectedPeriodType,
+              selectedPeriodType: resumePresenter.selectedPeriodValue,
               onTapDaily: () {
                 resumePresenter.getSales(
                   homePresenter,
@@ -74,7 +74,7 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
             final groupSales = saleMovements
                 .filteredSales(
                   filterDay:
-                      resumePresenter.selectedPeriodType == PeriodType.daily
+                      resumePresenter.selectedPeriodValue == PeriodType.daily
                           ? homePresenter.selectedDate.day
                           : null,
                 )

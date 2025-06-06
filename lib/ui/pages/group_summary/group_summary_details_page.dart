@@ -28,7 +28,7 @@ class GroupSummaryDetailsPage extends StatelessWidget {
         .map((key, value) => MapEntry(
             key,
             value.sumLiquidValue(
-              filterDay: resumePresenter.selectedPeriodType == PeriodType.daily
+              filterDay: resumePresenter.selectedPeriodValue == PeriodType.daily
                   ? homePresenter.selectedDate.day
                   : null,
               filterMonth: homePresenter.selectedDate.month,

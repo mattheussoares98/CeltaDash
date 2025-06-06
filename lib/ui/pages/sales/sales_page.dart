@@ -84,7 +84,7 @@ class _SalesPageState extends State<SalesPage>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SelectPeriodItems(
-                          selectedPeriodType: salesPresenter.selectedPeriodType,
+                          selectedPeriodType: salesPresenter.selectedPeriodValue,
                           onTapDaily: () {
                             salesPresenter.getSales(
                               homePresenter,
@@ -118,16 +118,16 @@ class _SalesPageState extends State<SalesPage>
                           //     uniqueHours: uniqueHours,
                           //   ),
                           //TODO implement in presenter
-                          if (salesPresenter.selectedPeriodType ==
+                          if (salesPresenter.selectedPeriodValue ==
                                   PeriodType.daily &&
                               dailySales?.isNotEmpty == true)
                             DayTable(resumeSaleMovements: dailySales!),
-                          if (salesPresenter.selectedPeriodType ==
+                          if (salesPresenter.selectedPeriodValue ==
                                   PeriodType.monthly &&
                               monthlySales != null &&
                               monthlySales.isNotEmpty)
                             MonthSales(saleMovementsByMonth: monthlySales),
-                          if (salesPresenter.selectedPeriodType ==
+                          if (salesPresenter.selectedPeriodValue ==
                                   PeriodType.yearly &&
                               yearlySales != null &&
                               yearlySales.isNotEmpty)

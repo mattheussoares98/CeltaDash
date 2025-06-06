@@ -76,7 +76,7 @@ class _ProfitabilityPageState extends State<ProfitabilityPage> {
                                 ?.filteredSales(
                                   enterprise: homePresenter.selectedEnterprise,
                                   filterDay:
-                                      departmentsPresenter.selectedPeriodType ==
+                                      departmentsPresenter.selectedPeriodValue ==
                                               PeriodType.daily
                                           ? homePresenter.selectedDate.day
                                           : null,
@@ -102,7 +102,7 @@ class _ProfitabilityPageState extends State<ProfitabilityPage> {
                                       padding: const EdgeInsets.all(8.0),
                                       child: SelectPeriodItems(
                                         selectedPeriodType: departmentsPresenter
-                                            .selectedPeriodType,
+                                            .selectedPeriodValue,
                                         onTapDaily: () {
                                           departmentsPresenter.getSales(
                                             homePresenter,
