@@ -7,7 +7,7 @@ class PaymentTypePresenterSpy extends Mock implements PaymentTypePresenter {
   GetSalesParams? lastGetSalesParamsMock;
 
   PaymentTypePresenterSpy() {
-    when(() => this.lastGetSalesParams)
+    when(() => this.lastGetDailyParams)
         .thenAnswer((_) => lastGetSalesParamsMock);
 
     _mockGetSalesCall().thenAnswer((any) async => any);

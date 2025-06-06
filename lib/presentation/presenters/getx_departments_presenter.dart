@@ -41,7 +41,7 @@ class GetxDepartmentsPresenter extends GetxController
         forceRefresh: forceRefresh,
         lastGetSalesParams: lastGetSalesParams,
         selectedDate: homePresenter.selectedDate,
-        periodType: _selectedPeriodType,//TODO if change enterprise, search again
+        periodType: _selectedPeriodType,
       );
 
       if (!canSearchAgain) {

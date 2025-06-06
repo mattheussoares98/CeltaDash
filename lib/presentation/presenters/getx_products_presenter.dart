@@ -43,6 +43,7 @@ class GetxProductsPresenter extends GetxController
       );
 
       if (!canSearchAgain) {
+        //TODO search again if change the enterprise
         return;
       }
 

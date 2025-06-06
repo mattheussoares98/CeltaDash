@@ -10,7 +10,7 @@ abstract class PaymentTypePresenter implements Listenable {
   List<SaleMovementViewModel>? get saleMovementsByFinalizations;
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
-  GetSalesParams? get lastGetSalesParams;
+  GetSalesParams? get lastGetDailyParams;
   PeriodType get selectedPeriodType;
 
   Future<void> getSales(
