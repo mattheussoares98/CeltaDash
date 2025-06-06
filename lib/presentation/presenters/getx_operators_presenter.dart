@@ -121,13 +121,13 @@ class GetxOperatorsPresenter extends GetxController
 
       if (selectedPeriodValue == PeriodType.daily) {
         dailySales = newSales;
-        lastDaily = getSalesParams;
+        lastGetDailyParams = getSalesParams;
       } else if (selectedPeriodValue == PeriodType.monthly) {
         monthlySales = newSales;
-        lastMonthly = getSalesParams;
+        lastGetMonthlyParams = getSalesParams;
       } else if (selectedPeriodValue == PeriodType.yearly) {
         yearlySales = newSales;
-        lastYearly = getSalesParams;
+        lastGetYearlyParams = getSalesParams;
       }
       // homePresenter.updateScreen();//TODO test if need use or not
     } catch (e) {

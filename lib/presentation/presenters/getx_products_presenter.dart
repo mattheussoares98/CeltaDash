@@ -88,10 +88,10 @@ class GetxProductsPresenter extends GetxController
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
           .toList();
       if (selectedPeriodValue == PeriodType.daily) {
-        lastDaily = params;
+        lastGetDailyParams = params;
         dailySaleMovements = newSales;
       } else {
-        lastMonthly = params;
+        lastGetMonthlyParams = params;
         monthlySaleMovements = newSales;
       }
 
