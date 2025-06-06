@@ -19,7 +19,6 @@ class ProductsPage extends StatefulWidget {
 class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
   StreamSubscription? mainErrorSubscription;
 
-  bool selectedDay = true;
   List<List<PersonalizedTableCell>> constructRows(
     List<SaleMovementViewModel> saleMovements,
   ) {
@@ -73,10 +72,10 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
               final saleMovements = productsPresenter.saleMovements
                   ?.filteredSales(
                     enterprise: homePresenter.selectedEnterprise,
-                    filterDay:
-                        selectedDay ? homePresenter.selectedDate.day : null,
-                    filterMonth:
-                        !selectedDay ? homePresenter.selectedDate.month : null,
+                    filterDay: productsPresenter.selectedPeriodValue ==
+                            PeriodType.daily
+                        ? homePresenter.selectedDate.day
+                        : null,
                     filterYear: homePresenter.selectedDate.year,
                   )
                   .map((e) => e.toViewModel())
@@ -92,7 +91,19 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SelectPeriodItems(
-                      selectedPeriodType: PeriodType.daily,
+                      selectedPeriodType: productsPresenter.selectedPeriodValue,
+                      onTapDaily: () {
+                        productsPresenter.getSales(
+                          homePresenter,
+                          periodType: PeriodType.daily,
+                        );
+                      },
+                      onTapMonthly: () {
+                        productsPresenter.getSales(
+                          homePresenter,
+                          periodType: PeriodType.monthly,
+                        );
+                      },
                     ),
                     const SizedBox(height: 10),
                     TableItem(
