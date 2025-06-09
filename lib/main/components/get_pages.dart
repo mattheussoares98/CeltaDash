@@ -14,6 +14,11 @@ class GetPages {
 
   static final getPages = [
     GetPage(
+      name: PageRoutes.canceledSales,
+      page: makeCanceledSalesPage,
+      transition: transition,
+    ),
+    GetPage(
       name: PageRoutes.compareDays,
       page: makeCompareDaysPage,
       transition: transition,

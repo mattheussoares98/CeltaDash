@@ -4,6 +4,7 @@ import '../../../../ui/pages/pages.dart';
 import '../../factories.dart';
 
 HomePage makeHomePage() {
+  Get.replace<CanceledSalesPresenter>(makeGetxCanceledSalesPresenter());
   Get.replace<CompareDaysPresenter>(makeGetxCompareDaysPresenter());
   Get.replace<DepartmentsPresenter>(makeGetxDepartmentsPresenter());
   Get.replace<HomePresenter>(makeGetxHomePresenter());
