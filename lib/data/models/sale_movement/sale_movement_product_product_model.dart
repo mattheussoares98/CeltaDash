@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../domain/entities/entities.dart';
+import '../../../ui/helpers/helpers.dart';
+import '../../../ui/pages/pages.dart';
 
 class SaleMovementProductProductModel extends Equatable {
   final int? Id;
@@ -60,5 +62,24 @@ class SaleMovementProductProductModel extends Equatable {
         Name: Name,
         PackingAbbreviation: PackingAbbreviation,
         PackingQuantity: PackingQuantity,
+      );
+
+  SaleMovementProductProductViewModel toViewModel() =>
+      SaleMovementProductProductViewModel(
+        Id: Id?.toString(),
+        Plu: Plu,
+        Name: Name,
+        PackingAbbreviation: PackingAbbreviation,
+        PackingQuantity: PackingQuantity?.toString(),
+      );
+
+  factory SaleMovementProductProductModel.fromViewModel(
+          SaleMovementProductProductViewModel viewModel) =>
+      SaleMovementProductProductModel(
+        Id: viewModel.Id?.toInt(),
+        Plu: viewModel.Plu,
+        Name: viewModel.Name,
+        PackingAbbreviation: viewModel.PackingAbbreviation,
+        PackingQuantity: viewModel.PackingQuantity?.toDouble(),
       );
 }

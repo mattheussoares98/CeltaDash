@@ -1,7 +1,9 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../domain/entities/entities.dart';
-import 'sale_movement_product_product_model.dart';
+import '../../../ui/helpers/helpers.dart';
+import '../../../ui/pages/pages.dart';
+import 'sale_movement.dart';
 
 class SaleMovementProductModel extends Equatable {
   final int? Id;
@@ -62,8 +64,7 @@ class SaleMovementProductModel extends Equatable {
         TotalDiscounts: (json['TotalDiscounts'] as num?)?.toDouble(),
         ProductPackingId: json['ProductPackingId'],
         Product: json['Product'] != null
-            ? SaleMovementProductProductModel.fromJson(
-                json['Product'] as Map)
+            ? SaleMovementProductProductModel.fromJson(json['Product'] as Map)
             : null,
       );
 
@@ -114,5 +115,39 @@ class SaleMovementProductModel extends Equatable {
         TotalDiscounts: TotalDiscounts,
         ProductPackingId: ProductPackingId,
         Product: Product?.toEntity(),
+      );
+
+  SaleMovementProductViewModel toViewModel() => SaleMovementProductViewModel(
+        Id: Id?.toString(),
+        Quantity: Quantity?.toString(),
+        UnitValue: UnitValue?.toString(),
+        IsCancelled: IsCancelled?.toString(),
+        UnitValueLiquid: UnitValueLiquid?.toString(),
+        RepositionCost: RepositionCost?.toString(),
+        LiquidCost: LiquidCost?.toString(),
+        TotalBrute: TotalBrute?.toString(),
+        TotalLiquid: TotalLiquid?.toString(),
+        TotalDiscounts: TotalDiscounts?.toString(),
+        ProductPackingId: ProductPackingId?.toString(),
+        Product: Product?.toViewModel(),
+      );
+
+  factory SaleMovementProductModel.fromViewModel(
+          SaleMovementProductViewModel viewModel) =>
+      SaleMovementProductModel(
+        Id: viewModel.Id?.toInt(),
+        Quantity: viewModel.Quantity?.toDouble(),
+        UnitValue: viewModel.UnitValue?.toDouble(),
+        IsCancelled: bool.tryParse(viewModel.IsCancelled ?? ""),
+        UnitValueLiquid: viewModel.UnitValueLiquid?.toDouble(),
+        RepositionCost: viewModel.RepositionCost?.toDouble(),
+        LiquidCost: viewModel.LiquidCost?.toDouble(),
+        TotalBrute: viewModel.TotalBrute?.toDouble(),
+        TotalLiquid: viewModel.TotalLiquid?.toDouble(),
+        TotalDiscounts: viewModel.TotalDiscounts?.toDouble(),
+        ProductPackingId: viewModel.ProductPackingId?.toInt(),
+        Product: viewModel.Product != null
+            ? SaleMovementProductProductModel.fromViewModel(viewModel.Product!)
+            : null,
       );
 }

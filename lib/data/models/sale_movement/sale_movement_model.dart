@@ -1,6 +1,9 @@
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 
 import '../../../domain/entities/entities.dart';
+import '../../../ui/helpers/helpers.dart';
+import '../../../ui/pages/pages.dart';
 import 'sale_movement_fiscal_note_model.dart';
 import 'sale_movement_customer_model.dart';
 import 'sale_movement_seller_model.dart';
@@ -71,7 +74,8 @@ class SaleMovementModel extends Equatable {
         TotalLiquid: (json['TotalLiquid'] as num?)?.toDouble(),
         IsCancelled: json['IsCancelled'] as bool?,
         FiscalNoteType: json['FiscalNoteType'] != null
-            ? SaleMovementFiscalNoteModel.fromJson(json['FiscalNoteType'] as Map)
+            ? SaleMovementFiscalNoteModel.fromJson(
+                json['FiscalNoteType'] as Map)
             : null,
         Customer: json['Customer'] != null
             ? SaleMovementCustomerModel.fromJson(json['Customer'] as Map)
@@ -154,4 +158,56 @@ class SaleMovementModel extends Equatable {
         PaymentFinalizations:
             PaymentFinalizations?.map((e) => e.toEntity()).toList(),
       );
+
+  EcSaleMovementViewModel toViewModel() {
+    final df = DateFormat('yyyy-MM-dd HH:mm:ss');
+    return EcSaleMovementViewModel(
+      Id: Id?.toString(),
+      EnterpriseId: EnterpriseId?.toString(),
+      FiscalNoteTypeId: FiscalNoteTypeId?.toString(),
+      SellerId: SellerId?.toString(),
+      DocumentNumber: DocumentNumber,
+      CashierNumber: CashierNumber,
+      DateHourOfBilling:
+          DateHourOfBilling != null ? df.format(DateHourOfBilling!) : null,
+      TotalLiquid: TotalLiquid?.toString(),
+      IsCancelled: IsCancelled?.toString(),
+      FiscalNoteType: FiscalNoteType?.toViewModel(),
+      Customer: Customer?.toViewModel(),
+      Seller: Seller?.toViewModel(),
+      Products: Products?.map((e) => e.toViewModel()).toList(),
+      PaymentFinalizations:
+          PaymentFinalizations?.map((e) => e.toViewModel()).toList(),
+    );
+  }
+
+  factory SaleMovementModel.fromViewModel(EcSaleMovementViewModel viewModel) {
+    final df = DateFormat('yyyy-MM-dd HH:mm:ss');
+    return SaleMovementModel(
+      Id: viewModel.Id?.toInt(),
+      EnterpriseId: viewModel.EnterpriseId?.toInt(),
+      FiscalNoteTypeId: viewModel.FiscalNoteTypeId?.toInt(),
+      SellerId: viewModel.SellerId?.toInt(),
+      DocumentNumber: viewModel.DocumentNumber,
+      CashierNumber: viewModel.CashierNumber,
+      DateHourOfBilling: viewModel.DateHourOfBilling != null
+          ? df.parse(viewModel.DateHourOfBilling!)
+          : null,
+      TotalLiquid: viewModel.TotalLiquid?.toDouble(),
+      IsCancelled: bool.tryParse(viewModel.IsCancelled ?? ""),
+      FiscalNoteType: viewModel.FiscalNoteType != null
+          ? SaleMovementFiscalNoteModel.fromViewModel(viewModel.FiscalNoteType!)
+          : null,
+      Customer: viewModel.Customer != null
+          ? SaleMovementCustomerModel.fromViewModel(viewModel.Customer!)
+          : null,
+      Seller: viewModel.Seller != null
+          ? SaleMovementSellerModel.fromViewModel(viewModel.Seller!)
+          : null,
+      Products: viewModel.Products?.map(
+          (e) => SaleMovementProductModel.fromViewModel(e)).toList(),
+      PaymentFinalizations: viewModel.PaymentFinalizations?.map(
+          (e) => SaleMovementFinalizationModel.fromViewModel(e)).toList(),
+    );
+  }
 }

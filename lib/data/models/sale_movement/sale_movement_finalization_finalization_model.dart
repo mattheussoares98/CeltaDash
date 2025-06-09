@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../domain/entities/entities.dart';
+import '../../../ui/helpers/helpers.dart';
+import '../../../ui/pages/pages.dart';
 
 class SaleMovementFinalizationFinalizationModel extends Equatable {
   final int? Id;
@@ -36,5 +38,18 @@ class SaleMovementFinalizationFinalizationModel extends Equatable {
       SaleMovementFinalizationFinalizationEntity(
         Id: Id,
         Name: Name,
+      );
+
+  SaleMovementFinalizationFinalizationViewModel toViewModel() =>
+      SaleMovementFinalizationFinalizationViewModel(
+        Id: Id?.toString(),
+        Name: Name,
+      );
+
+  factory SaleMovementFinalizationFinalizationModel.fromViewModel(
+          SaleMovementFinalizationFinalizationViewModel viewModel) =>
+      SaleMovementFinalizationFinalizationModel(
+        Id: viewModel.Id?.toInt(),
+        Name: viewModel.Name,
       );
 }

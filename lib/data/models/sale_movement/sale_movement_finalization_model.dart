@@ -1,6 +1,9 @@
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 
 import '../../../domain/entities/entities.dart';
+import '../../../ui/helpers/helpers.dart';
+import '../../../ui/pages/pages.dart';
 import 'sale_movement.dart';
 
 class SaleMovementFinalizationModel extends Equatable {
@@ -69,4 +72,33 @@ class SaleMovementFinalizationModel extends Equatable {
         DateOfExpiration: DateOfExpiration,
         Finalization: Finalization?.toEntity(),
       );
+
+  SaleMovementFinalizationViewModel toViewModel() {
+    final df = DateFormat('yyyy-MM-dd HH:mm:ss');
+    return SaleMovementFinalizationViewModel(
+      Id: Id?.toString(),
+      Value: Value?.toString(),
+      QuantityOfPortions: QuantityOfPortions?.toString(),
+      DateOfExpiration:
+          DateOfExpiration != null ? df.format(DateOfExpiration!) : null,
+      Finalization: Finalization?.toViewModel(),
+    );
+  }
+
+  factory SaleMovementFinalizationModel.fromViewModel(
+      SaleMovementFinalizationViewModel viewModel) {
+    final df = DateFormat('yyyy-MM-dd HH:mm:ss');
+    return SaleMovementFinalizationModel(
+      Id: viewModel.Id?.toInt(),
+      Value: viewModel.Value?.toDouble(),
+      QuantityOfPortions: viewModel.QuantityOfPortions?.toInt(),
+      DateOfExpiration: viewModel.DateOfExpiration != null
+          ? df.parse(viewModel.DateOfExpiration!)
+          : null,
+      Finalization: viewModel.Finalization != null
+          ? SaleMovementFinalizationFinalizationModel.fromViewModel(
+              viewModel.Finalization!)
+          : null,
+    );
+  }
 }

@@ -1,6 +1,9 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../domain/entities/entities.dart';
+import '../../../ui/helpers/helpers.dart';
+import '../../../ui/pages/pages.dart';
+//TODO change all to EC
 
 class SaleMovementCustomerModel extends Equatable {
   final int? SaleMovementId;
@@ -52,5 +55,21 @@ class SaleMovementCustomerModel extends Equatable {
         Id: Id,
         Name: Name,
         CpfCnpj: CpfCnpj,
+      );
+
+  SaleMovementCustomerViewModel toViewModel() => SaleMovementCustomerViewModel(
+        SaleMovementId: SaleMovementId?.toString(),
+        Id: Id?.toString(),
+        Name: Name,
+        CpfCnpj: CpfCnpj,
+      );
+
+  factory SaleMovementCustomerModel.fromViewModel(
+          SaleMovementCustomerViewModel viewModel) =>
+      SaleMovementCustomerModel(
+        SaleMovementId: viewModel.SaleMovementId?.toInt(),
+        Id: viewModel.Id?.toInt(),
+        Name: viewModel.Name,
+        CpfCnpj: viewModel.CpfCnpj,
       );
 }

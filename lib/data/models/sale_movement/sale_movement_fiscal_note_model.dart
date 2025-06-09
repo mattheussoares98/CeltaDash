@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../domain/entities/entities.dart';
+import '../../../ui/helpers/helpers.dart';
+import '../../../ui/pages/pages.dart';
 
 class SaleMovementFiscalNoteModel extends Equatable {
   final int? Id;
@@ -35,5 +37,18 @@ class SaleMovementFiscalNoteModel extends Equatable {
   SaleMovementFiscalNoteEntity toEntity() => SaleMovementFiscalNoteEntity(
         Id: Id,
         Name: Name,
+      );
+
+  SaleMovementFiscalNoteViewModel toViewModel() =>
+      SaleMovementFiscalNoteViewModel(
+        Id: Id?.toString(),
+        Name: Name,
+      );
+
+  factory SaleMovementFiscalNoteModel.fromViewModel(
+          SaleMovementFiscalNoteViewModel viewModel) =>
+      SaleMovementFiscalNoteModel(
+        Id: viewModel.Id?.toInt(),
+        Name: viewModel.Name,
       );
 }
