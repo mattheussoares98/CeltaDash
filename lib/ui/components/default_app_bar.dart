@@ -43,7 +43,7 @@ class DefaultAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _DefaultAppBarState extends State<DefaultAppBar> {
-  bool enterpriseIsEnabled(EnterpriseViewModel enterprise) {
+  bool enterpriseIsEnabled(EcEnterpriseViewModel enterprise) {
     final subEnterprises = EnterpriseBuilder.entity?.firebaseSubEnterprises;
 
     if (subEnterprises != null) {
@@ -102,7 +102,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
         return Column(
           children: [
             if (widget.showEnterpriseDropdown == true)
-              DefaultDropDown<EnterpriseViewModel?>(
+              DefaultDropDown<EcEnterpriseViewModel?>(
                 onChanged: widget.isLoading == true
                     ? null
                     : (e) {
@@ -115,7 +115,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                 items: enterprises.map(
                   (e) {
                     final enabled = enterpriseIsEnabled(e);
-                    return DropdownMenuItem<EnterpriseViewModel?>(
+                    return DropdownMenuItem<EcEnterpriseViewModel?>(
                       value: e,
                       enabled: enabled,
                       onTap: enabled == false

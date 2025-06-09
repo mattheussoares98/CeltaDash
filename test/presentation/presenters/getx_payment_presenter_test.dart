@@ -23,7 +23,7 @@ void main() {
   late EcLoadSaleStatisticsSpy ecLoadSaleStatistics;
 
   late List<SaleStatisticsEntity> saleStatisticEntities;
-  late EnterpriseEntity selectedEnterprise;
+  late EcEnterpriseEntity selectedEnterprise;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
@@ -45,7 +45,7 @@ void main() {
       EntityFactory.makeSaleStatisticEntity(),
       EntityFactory.makeSaleStatisticEntity(),
     ];
-    selectedEnterprise = EntityFactory.makeEnterpriseEntity();
+    selectedEnterprise = EntityFactory.makeEcEnterpriseEntity();
   }
 
   void initMockSuccess() {
@@ -138,7 +138,7 @@ void main() {
           "Should load sale movements with correct values when period type is daily",
           () async {
         homePresenter.selectedEnterpriseMock =
-            EnterpriseModel.fromEntity(selectedEnterprise).toViewModel();
+            EcEnterpriseModel.fromEntity(selectedEnterprise).toViewModel();
 
         await sut.getSales(homePresenter);
 
@@ -162,7 +162,7 @@ void main() {
           "Should load sale movements with correct values when period type is monthly",
           () async {
         homePresenter.selectedEnterpriseMock =
-            EnterpriseModel.fromEntity(selectedEnterprise).toViewModel();
+            EcEnterpriseModel.fromEntity(selectedEnterprise).toViewModel();
 
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
@@ -293,7 +293,7 @@ void main() {
       test("Should load sale movements with correct values if period is daily",
           () async {
         homePresenter.selectedEnterpriseMock =
-            EnterpriseModel.fromEntity(selectedEnterprise).toViewModel();
+            EcEnterpriseModel.fromEntity(selectedEnterprise).toViewModel();
 
         await sut.getSales(homePresenter);
 

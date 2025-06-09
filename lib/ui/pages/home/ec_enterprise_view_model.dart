@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
 
-class EnterpriseViewModel extends Equatable {
+class EcEnterpriseViewModel extends Equatable {
   final String? id;
   final String? name;
   final String? personalizedCode;
   final String? cnpj;
 
-  const EnterpriseViewModel({
+  const EcEnterpriseViewModel({
     this.id,
     this.name,
     this.personalizedCode,

@@ -53,7 +53,7 @@ void main() {
   void initMockSuccess() {
     ecLoadSaleStatistics.mockGet(saleStatisticsEntities);
     homePresenter.selectedEnterpriseMock =
-        EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
+        EcEnterpriseModel.fromEntity(EntityFactory.makeEcEnterpriseEntity())
             .toViewModel();
   }
 

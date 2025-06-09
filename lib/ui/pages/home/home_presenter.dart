@@ -10,8 +10,8 @@ abstract class HomePresenter implements Listenable {
   Stream<int> get currentPageIndexStream;
   Stream<UIError?> get mainErrorStream;
   DateTime get selectedDate;
-  List<EnterpriseViewModel>? get enterprises;
-  EnterpriseViewModel? get selectedEnterprise;
+  List<EcEnterpriseViewModel>? get enterprises;
+  EcEnterpriseViewModel? get selectedEnterprise;
 
   void initFirebaseStream();
   void updateSelectedIndex(int index);
@@ -25,7 +25,7 @@ abstract class HomePresenter implements Listenable {
     required DocumentReference<Map<String, dynamic>> docRef,
   });
 
-  void updateSelectedEnterprise(EnterpriseViewModel? enterprise);
+  void updateSelectedEnterprise(EcEnterpriseViewModel? enterprise);
 
   Future<void> doLogout();
   void reloadSales(

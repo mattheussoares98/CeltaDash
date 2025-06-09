@@ -16,13 +16,13 @@ class GetxHomePresenter extends GetxController
     with UIErrorManager, LoadingManager
     implements HomePresenter {
   final NavigateTo navigateTo;
-  final LoadEnterprises loadEnterprises;
+  final EcLoadEnterprises ecLoadEnterprises;
   final FirebaseManager firebaseManager;
   final LocalStorage localStorage;
 
   GetxHomePresenter({
     required this.navigateTo,
-    required this.loadEnterprises,
+    required this.ecLoadEnterprises,
     required this.firebaseManager,
     required this.localStorage,
   });
@@ -38,7 +38,7 @@ class GetxHomePresenter extends GetxController
   }
 
   List<FirebaseSubEnterpriseEntity> _getMissingEnterprises(
-    List<EnterpriseEntity> enterprises,
+    List<EcEnterpriseEntity> enterprises,
     List<FirebaseSubEnterpriseEntity> enterprisesToCompare,
   ) {
     return enterprises
@@ -66,7 +66,7 @@ class GetxHomePresenter extends GetxController
     isLoading = true;
     mainError = null;
     try {
-      final enterprisesInBs = await loadEnterprises.get();
+      final enterprisesInBs = await ecLoadEnterprises.get();
 
       final missingLocal = _getMissingEnterprises(
         enterprisesInBs,
@@ -125,7 +125,7 @@ class GetxHomePresenter extends GetxController
       }
 
       _bsEnterprises.value = enterprisesInBs
-          .map((e) => EnterpriseModel.fromEntity(e).toViewModel())
+          .map((e) => EcEnterpriseModel.fromEntity(e).toViewModel())
           .toList();
       _selectedEnterprise.value = _bsEnterprises.value?.first;
     } catch (e) {
@@ -136,7 +136,7 @@ class GetxHomePresenter extends GetxController
   }
 
   @override
-  void updateSelectedEnterprise(EnterpriseViewModel? enterprise) {
+  void updateSelectedEnterprise(EcEnterpriseViewModel? enterprise) {
     mainError = null;
     int? index = EnterpriseBuilder.entity?.firebaseSubEnterprises
         ?.indexWhere((e) => e.id == enterprise?.id?.toInt());
@@ -154,15 +154,15 @@ class GetxHomePresenter extends GetxController
     }
   }
 
-  final _selectedEnterprise = Rx<EnterpriseViewModel?>(null);
+  final _selectedEnterprise = Rx<EcEnterpriseViewModel?>(null);
   @override
-  EnterpriseViewModel? get selectedEnterprise => _selectedEnterprise.value;
+  EcEnterpriseViewModel? get selectedEnterprise => _selectedEnterprise.value;
 
-  final Rx<List<EnterpriseViewModel>?> _bsEnterprises =
-      Rx<List<EnterpriseViewModel>?>(null);
+  final Rx<List<EcEnterpriseViewModel>?> _bsEnterprises =
+      Rx<List<EcEnterpriseViewModel>?>(null);
 
   @override
-  List<EnterpriseViewModel>? get enterprises => _bsEnterprises.value;
+  List<EcEnterpriseViewModel>? get enterprises => _bsEnterprises.value;
 
   @override
   Stream<int> get currentPageIndexStream => _currentPageIndex.stream;

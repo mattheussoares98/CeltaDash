@@ -50,7 +50,7 @@ void main() {
     ecLoadSaleStatistics.mockGet(saleStatisticEntities);
     homePresenter.selectedDateMock = faker.date.dateTime();
     homePresenter.selectedEnterpriseMock =
-        EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
+        EcEnterpriseModel.fromEntity(EntityFactory.makeEcEnterpriseEntity())
             .toViewModel();
     homePresenter.enterprisesMock = [homePresenter.selectedEnterpriseMock!];
   }

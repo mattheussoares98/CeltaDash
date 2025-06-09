@@ -14,13 +14,13 @@ class GetxWebEnterprisesPresenter extends GetxController
   final NavigateTo navigateTo;
   final FirebaseManager firebaseManager;
   final BsLogin bsLogin;
-  final LoadEnterprises loadEnterprises;
+  final EcLoadEnterprises ecLoadEnterprises;
 
   GetxWebEnterprisesPresenter({
     required this.navigateTo,
     required this.firebaseManager,
     required this.bsLogin,
-    required this.loadEnterprises,
+    required this.ecLoadEnterprises,
   });
 
   @override
@@ -138,7 +138,7 @@ class GetxWebEnterprisesPresenter extends GetxController
       } else if (loginResult.response["AccessKey"] == null) {
         throw DomainError.updateCeltaBs;
       }
-      final enterprises = await loadEnterprises.get(
+      final enterprises = await ecLoadEnterprises.get(
         url: baseUrl.toLowerCase().removeWhiteSpaces(),
         accessKey: loginResult.response["AccessKey"],
         userName: bsUserName,
@@ -150,7 +150,7 @@ class GetxWebEnterprisesPresenter extends GetxController
           "baseUrl": baseUrl.toLowerCase().removeWhiteSpaces(),
           "enterpriseName": enterpriseName.toLowerCase().removeWhiteSpaces(),
           "subEnterprises": enterprises
-              .map((e) => EnterpriseModel.fromEntity(e).toJson())
+              .map((e) => EcEnterpriseModel.fromEntity(e).toJson())
               .toList(),
         },
       );

@@ -49,7 +49,7 @@ void main() {
   void initMockSuccess() {
     ecLoadSaleStatistics.mockGet(saleStatisticsEntities);
     homePresenter.selectedEnterpriseMock =
-        EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
+        EcEnterpriseModel.fromEntity(EntityFactory.makeEcEnterpriseEntity())
             .toViewModel();
   }
 
@@ -180,7 +180,7 @@ void main() {
 
         ////////////////////CHANGING ENTERPRISE/////////////////////////////////
         final newEnterprise =
-            EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
+            EcEnterpriseModel.fromEntity(EntityFactory.makeEcEnterpriseEntity())
                 .toViewModel();
         homePresenter.selectedEnterpriseMock = newEnterprise;
         await sut.getSales(homePresenter, periodType: PeriodType.daily);
@@ -351,7 +351,7 @@ void main() {
 
         ////////////////////CHANGING ENTERPRISE/////////////////////////////////
         final newEnterprise =
-            EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
+            EcEnterpriseModel.fromEntity(EntityFactory.makeEcEnterpriseEntity())
                 .toViewModel();
         homePresenter.selectedEnterpriseMock = newEnterprise;
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
@@ -554,7 +554,7 @@ void main() {
 
         ////////////////////CHANGING ENTERPRISE/////////////////////////////////
         final newEnterprise =
-            EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
+            EcEnterpriseModel.fromEntity(EntityFactory.makeEcEnterpriseEntity())
                 .toViewModel();
         homePresenter.selectedEnterpriseMock = newEnterprise;
         await sut.getSales(homePresenter, periodType: PeriodType.yearly);

@@ -4,13 +4,13 @@ import 'package:equatable/equatable.dart';
 import '../../domain/entities/entities.dart';
 import '../../ui/pages/pages.dart';
 
-class EnterpriseModel extends Equatable {
+class EcEnterpriseModel extends Equatable {
   final int? id;
   final String? name;
   final String? personalizedCode;
   final String? cnpj;
 
-  const EnterpriseModel({
+  const EcEnterpriseModel({
     required this.id,
     required this.name,
     required this.personalizedCode,
@@ -25,7 +25,7 @@ class EnterpriseModel extends Equatable {
         cnpj,
       ];
 
-  factory EnterpriseModel.fromJson(Map json) => EnterpriseModel(
+  factory EcEnterpriseModel.fromJson(Map json) => EcEnterpriseModel(
         id: json['id'],
         name: json['name'],
         personalizedCode: json['personalizedCode'],
@@ -39,23 +39,23 @@ class EnterpriseModel extends Equatable {
         'cnpj': cnpj,
       };
 
-  factory EnterpriseModel.fromEntity(EnterpriseEntity entity) =>
-      EnterpriseModel(
+  factory EcEnterpriseModel.fromEntity(EcEnterpriseEntity entity) =>
+      EcEnterpriseModel(
         id: entity.id,
         name: entity.name,
         personalizedCode: entity.personalizedCode,
         cnpj: entity.cnpj,
       );
 
-  EnterpriseEntity toEntity() => EnterpriseEntity(
+  EcEnterpriseEntity toEntity() => EcEnterpriseEntity(
         id: id,
         name: name,
         personalizedCode: personalizedCode,
         cnpj: cnpj,
       );
 
-  factory EnterpriseModel.fromViewModel(EnterpriseViewModel viewModel) {
-    return EnterpriseModel(
+  factory EcEnterpriseModel.fromViewModel(EcEnterpriseViewModel viewModel) {
+    return EcEnterpriseModel(
       id: viewModel.id?.toInt(),
       name: viewModel.name,
       personalizedCode: viewModel.personalizedCode,
@@ -63,7 +63,7 @@ class EnterpriseModel extends Equatable {
     );
   }
 
-  EnterpriseViewModel toViewModel() => EnterpriseViewModel(
+  EcEnterpriseViewModel toViewModel() => EcEnterpriseViewModel(
         id: id.toString(),
         name: name,
         personalizedCode: personalizedCode,

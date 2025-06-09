@@ -1,1 +1,1 @@
-export './bs_remote_load_enterprises_factory.dart';
+export 'remote_ec_load_enterprises_factory.dart';

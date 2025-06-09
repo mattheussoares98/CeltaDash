@@ -39,7 +39,7 @@ class StatisticsHelper {
 
   static bool changedTheEnterprise({
     required PeriodType selectedPeriodType,
-    required EnterpriseViewModel? selectedEnterprise,
+    required EcEnterpriseViewModel? selectedEnterprise,
     GetEcSaleStatisticsParams? lastGetStatisticsParams,
     GetEcSaleStatisticsParams? lastDailyParams,
     GetEcSaleStatisticsParams? lastMonthlyParams,

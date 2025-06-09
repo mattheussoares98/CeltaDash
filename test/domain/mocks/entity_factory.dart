@@ -78,7 +78,7 @@ class EntityFactory {
         CrossIdentity_Usuario: faker.guid.guid(),
       );
 
-  static EnterpriseEntity makeEnterpriseEntity({int? id}) => EnterpriseEntity(
+  static EcEnterpriseEntity makeEcEnterpriseEntity({int? id}) => EcEnterpriseEntity(
         id: id ?? faker.randomGenerator.integer(100),
         name: faker.company.name(),
         personalizedCode: faker.randomGenerator.integer(10).toString(),

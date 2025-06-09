@@ -56,7 +56,7 @@ void main() {
   void initMockSuccess() {
     ecLoadSaleStatistics.mockGet(saleStatisticsEntities);
     homePresenter.selectedEnterpriseMock =
-        EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
+        EcEnterpriseModel.fromEntity(EntityFactory.makeEcEnterpriseEntity())
             .toViewModel();
     homePresenter.selectedDateMock = faker.date.dateTime();
   }
@@ -278,7 +278,7 @@ void main() {
         ).called(1);
 
         homePresenter.selectedEnterpriseMock =
-            EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
+            EcEnterpriseModel.fromEntity(EntityFactory.makeEcEnterpriseEntity())
                 .toViewModel();
         await sut.getSales(homePresenter);
 
@@ -449,7 +449,7 @@ void main() {
         ).called(1);
 
         homePresenter.selectedEnterpriseMock =
-            EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
+            EcEnterpriseModel.fromEntity(EntityFactory.makeEcEnterpriseEntity())
                 .toViewModel();
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 

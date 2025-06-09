@@ -7,7 +7,7 @@ extension SaleStatisticsExtensions on List<SaleStatisticViewModel> {
     int? filterYear,
     int? filterMonth,
     int? filterDay,
-    EnterpriseViewModel? enterprise,
+    EcEnterpriseViewModel? enterprise,
   }) {
     return filteredSales(
       enterprise: enterprise,
@@ -24,7 +24,7 @@ extension SaleStatisticsExtensions on List<SaleStatisticViewModel> {
     int? filterYear,
     int? filterMonth,
     int? filterDay,
-    EnterpriseViewModel? enterprise,
+    EcEnterpriseViewModel? enterprise,
   }) {
     return filteredSales(
       enterprise: enterprise,
@@ -41,7 +41,7 @@ extension SaleStatisticsExtensions on List<SaleStatisticViewModel> {
     int? filterYear,
     int? filterMonth,
     int? filterDay,
-    EnterpriseViewModel? enterprise,
+    EcEnterpriseViewModel? enterprise,
   }) {
     return filteredSales(
       enterprise: enterprise,
@@ -55,7 +55,7 @@ extension SaleStatisticsExtensions on List<SaleStatisticViewModel> {
   }
 
   double ticketAverage(
-    EnterpriseViewModel? enterprise, {
+    EcEnterpriseViewModel? enterprise, {
     int? filterYear,
     int? filterMonth,
     int? filterDay,
@@ -75,7 +75,7 @@ extension SaleStatisticsExtensions on List<SaleStatisticViewModel> {
     return totalValue / totalQuantity;
   }
 
-  double weekDayAverage(EnterpriseViewModel? enterprise) {
+  double weekDayAverage(EcEnterpriseViewModel? enterprise) {
     final now = DateTime.now();
     final totalSales = filteredSales(
       enterprise: enterprise,
@@ -94,7 +94,7 @@ extension SaleStatisticsExtensions on List<SaleStatisticViewModel> {
   }
 
   List<SaleStatisticsModel> filteredSales({
-    EnterpriseViewModel? enterprise,
+    EcEnterpriseViewModel? enterprise,
     int? filterYear,
     int? filterMonth,
     int? filterDay,
@@ -136,7 +136,7 @@ extension SaleStatisticsExtensions on List<SaleStatisticViewModel> {
     int? filterYear,
     int? filterMonth,
     int? filterDay,
-    EnterpriseViewModel? enterprise,
+    EcEnterpriseViewModel? enterprise,
   }) {
     final filtered = filteredSales(
       enterprise: enterprise,
@@ -188,7 +188,7 @@ extension SaleStatisticsExtensions on List<SaleStatisticViewModel> {
 
   /// All distinct, non-null hour strings in your list.
   List<String> uniqueHours({
-    EnterpriseViewModel? enterprise,
+    EcEnterpriseViewModel? enterprise,
     int? filterYear,
     int? filterMonth,
     int? filterDay,
