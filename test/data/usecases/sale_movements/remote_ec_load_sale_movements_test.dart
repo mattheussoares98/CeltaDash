@@ -33,9 +33,9 @@ void main() {
   void initEntities() {
     EnterpriseBuilder.entity = EntityFactory.makeFirebaseEnterpriseEntity();
     saleMovementEntities = [
-      EntityFactory.makeSaleMovementEntity(),
-      EntityFactory.makeSaleMovementEntity(),
-      EntityFactory.makeSaleMovementEntity(),
+      EntityFactory.makeEcSaleMovementEntity(),
+      EntityFactory.makeEcSaleMovementEntity(),
+      EntityFactory.makeEcSaleMovementEntity(),
     ];
     params = EntityFactory.makeGetEcSaleMovementParams();
   }
