@@ -1,3 +1,4 @@
+export './sale_movement/sale_movement.dart';
 export './bs_user_entity.dart';
 export './enterprise_entity.dart';
 export 'firebase_enterprise_entity.dart';

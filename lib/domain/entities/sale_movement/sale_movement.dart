@@ -1,0 +1,8 @@
+export './sale_movement_customer_entity.dart';
+export './sale_movement_entity.dart';
+export './sale_movement_finalization_entity.dart';
+export './sale_movement_finalization_finalization_entity.dart';
+export './sale_movement_fiscal_note_entity.dart';
+export './sale_movement_product_entity.dart';
+export './sale_movement_product_product_entity.dart';
+export './sale_movement_seller_entity.dart';
