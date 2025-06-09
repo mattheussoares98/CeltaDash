@@ -184,20 +184,26 @@ class GetxHomePresenter extends GetxController
         .collection("enterprises")
         .doc(id)
         .snapshots()
-        .listen((snapshot) {
+        .listen((snapshot) async {
       if (!snapshot.exists || snapshot.data() == null) return;
 
       final oldEnterprise = EnterpriseBuilder.entity;
-      final newSubEnterprises = FirebaseEnterpriseModel.fromJson(
-        snapshot.data()!,
-      ).toEntity().firebaseSubEnterprises;
+      final newEnteprise =
+          FirebaseEnterpriseModel.fromJson(snapshot.data()!).toEntity();
+      final newSubEnterprises = newEnteprise.firebaseSubEnterprises;
 
       EnterpriseBuilder.entity = FirebaseEnterpriseEntity(
-        baseUrl: oldEnterprise?.baseUrl,
-        enterpriseName: oldEnterprise?.enterpriseName,
-        bsUser: oldEnterprise?.bsUser,
-        firebaseId: oldEnterprise?.firebaseId,
+        baseUrl: newEnteprise.baseUrl ?? oldEnterprise?.baseUrl,
+        enterpriseName:
+            newEnteprise.enterpriseName ?? oldEnterprise?.enterpriseName,
+        bsUser: newEnteprise.bsUser ?? oldEnterprise?.bsUser,
+        firebaseId: newEnteprise.firebaseId ?? oldEnterprise?.firebaseId,
         firebaseSubEnterprises: newSubEnterprises,
+      );
+
+      await localStorage.put(
+        DatabaseKeys.enterprise,
+        FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson(),
       );
     });
   }
