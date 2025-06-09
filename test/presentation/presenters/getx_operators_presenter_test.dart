@@ -4,6 +4,7 @@ import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:faker/faker.dart';
 
 import 'package:get/get.dart';
 
@@ -553,9 +554,11 @@ void main() {
         ).called(1);
 
         ////////////////////CHANGING ENTERPRISE/////////////////////////////////
-        final newEnterprise =
-            EcEnterpriseModel.fromEntity(EntityFactory.makeEcEnterpriseEntity())
-                .toViewModel();
+        final newEnterprise = EcEnterpriseModel.fromEntity(
+          EntityFactory.makeEcEnterpriseEntity(
+              id: homePresenter.selectedEnterpriseMock!.id!.toInt() +
+                  faker.randomGenerator.integer(100, min: 1)),
+        ).toViewModel();
         homePresenter.selectedEnterpriseMock = newEnterprise;
         await sut.getSales(homePresenter, periodType: PeriodType.yearly);
 
