@@ -96,6 +96,7 @@ void main() {
               EnterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
               ],
+              OnlyCancelled: true,
             ),
           )).called(1);
     });

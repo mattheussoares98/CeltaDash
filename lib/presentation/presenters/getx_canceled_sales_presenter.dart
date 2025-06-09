@@ -28,6 +28,7 @@ class GetxCanceledSalesPresenter extends GetxController
               : [homePresenter.selectedEnterprise!.id!.toInt()],
           StartDate: homePresenter.selectedDate,
           EndDate: homePresenter.selectedDate,
+          OnlyCancelled: true,
         ),
       );
 
