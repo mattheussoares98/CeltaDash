@@ -7,7 +7,7 @@ import '../../../main/builders/builders.dart';
 import '../../http/http.dart';
 import '../../models/models.dart';
 
-class RemoteEcLoadSaleMovements implements EcLoadSaleMovement {
+class RemoteEcLoadSaleMovements implements EcLoadSaleMovements {
   final HttpClient httpAdapter;
 
   const RemoteEcLoadSaleMovements(this.httpAdapter);

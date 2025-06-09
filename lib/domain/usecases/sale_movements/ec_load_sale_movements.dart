@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../entities/entities.dart';
 
-abstract class EcLoadSaleMovement {
+abstract class EcLoadSaleMovements {
   Future<List<SaleMovementEntity>> get(GetEcSaleMovementParams params);
 }
 
