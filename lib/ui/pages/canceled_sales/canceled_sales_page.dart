@@ -67,9 +67,9 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                   ],
                   rowValues: [
                     ...canceledSalesPresenter.ecSaleMovements!.map((e) => [
-                          PersonalizedTableCell(value: e.DateHourOfBilling),
+                          PersonalizedTableCell(value: e.dateHourOfBilling),
                           PersonalizedTableCell(
-                            value: e.TotalLiquid,
+                            value: e.totalLiquid,
                             isMoney: true,
                           ),
                         ]),

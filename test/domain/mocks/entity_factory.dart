@@ -122,31 +122,31 @@ class EntityFactory {
       );
 
   static SaleMovementEntity makeEcSaleMovementEntity() => SaleMovementEntity(
-        Id: faker.randomGenerator.integer(100),
-        EnterpriseId: faker.randomGenerator.integer(100),
-        FiscalNoteTypeId: faker.randomGenerator.integer(100),
-        SellerId: faker.randomGenerator.integer(100),
-        DocumentNumber: faker.randomGenerator.string(50),
-        CashierNumber: faker.randomGenerator.string(50),
-        DateHourOfBilling: faker.date.dateTime(),
-        TotalLiquid: faker.randomGenerator.decimal(),
-        IsCancelled: faker.randomGenerator.boolean(),
-        FiscalNoteType: SaleMovementFiscalNoteEntity(
+        id: faker.randomGenerator.integer(100),
+        enterpriseId: faker.randomGenerator.integer(100),
+        fiscalNoteTypeId: faker.randomGenerator.integer(100),
+        sellerId: faker.randomGenerator.integer(100),
+        documentNumber: faker.randomGenerator.string(50),
+        cashierNumber: faker.randomGenerator.string(50),
+        dateHourOfBilling: faker.date.dateTime(),
+        totalLiquid: faker.randomGenerator.decimal(),
+        isCancelled: faker.randomGenerator.boolean(),
+        fiscalNoteType: SaleMovementFiscalNoteEntity(
           Id: faker.randomGenerator.integer(50),
           Name: faker.randomGenerator.string(10),
         ),
-        Customer: SaleMovementCustomerEntity(
+        customer: SaleMovementCustomerEntity(
           SaleMovementId: faker.randomGenerator.integer(100),
           Id: faker.randomGenerator.integer(100),
           Name: faker.person.name(),
           CpfCnpj: faker.guid.guid(),
         ),
-        Seller: SaleMovementSellerEntity(
+        seller: SaleMovementSellerEntity(
           Id: faker.randomGenerator.integer(99),
           PersonalizedCode: faker.randomGenerator.integer(99).toString(),
           Name: faker.person.name(),
         ),
-        Products: [
+        products: [
           SaleMovementProductEntity(
             Quantity: faker.randomGenerator.decimal(),
             UnitValue: faker.randomGenerator.decimal(),
@@ -169,7 +169,7 @@ class EntityFactory {
             ),
           ),
         ],
-        PaymentFinalizations: [
+        paymentFinalizations: [
           SaleMovementFinalizationEntity(
             Value: faker.randomGenerator.decimal(),
             QuantityOfPortions: faker.randomGenerator.integer(12),

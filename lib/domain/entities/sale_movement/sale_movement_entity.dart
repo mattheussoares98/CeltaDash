@@ -3,53 +3,53 @@ import 'package:equatable/equatable.dart';
 import 'sale_movement.dart';
 
 class SaleMovementEntity extends Equatable {
-  final int? Id;
-  final int? EnterpriseId;
-  final int? FiscalNoteTypeId;
-  final int? SellerId;
-  final String? DocumentNumber;
-  final String? CashierNumber;
-  final DateTime? DateHourOfBilling;
-  final double? TotalLiquid;
-  final bool? IsCancelled;
-  final SaleMovementFiscalNoteEntity? FiscalNoteType;
-  final SaleMovementCustomerEntity? Customer;
-  final SaleMovementSellerEntity? Seller;
-  final List<SaleMovementProductEntity>? Products;
-  final List<SaleMovementFinalizationEntity>? PaymentFinalizations;
+  final int? id;
+  final int? enterpriseId;
+  final int? fiscalNoteTypeId;
+  final int? sellerId;
+  final String? documentNumber;
+  final String? cashierNumber;
+  final DateTime? dateHourOfBilling;
+  final double? totalLiquid;
+  final bool? isCancelled;
+  final SaleMovementFiscalNoteEntity? fiscalNoteType;
+  final SaleMovementCustomerEntity? customer;
+  final SaleMovementSellerEntity? seller;
+  final List<SaleMovementProductEntity>? products;
+  final List<SaleMovementFinalizationEntity>? paymentFinalizations;
 
   const SaleMovementEntity({
-    required this.Id,
-    required this.EnterpriseId,
-    required this.FiscalNoteTypeId,
-    required this.SellerId,
-    required this.DocumentNumber,
-    required this.CashierNumber,
-    required this.DateHourOfBilling,
-    required this.TotalLiquid,
-    required this.IsCancelled,
-    required this.FiscalNoteType,
-    required this.Customer,
-    required this.Seller,
-    required this.Products,
-    required this.PaymentFinalizations,
+    required this.id,
+    required this.enterpriseId,
+    required this.fiscalNoteTypeId,
+    required this.sellerId,
+    required this.documentNumber,
+    required this.cashierNumber,
+    required this.dateHourOfBilling,
+    required this.totalLiquid,
+    required this.isCancelled,
+    required this.fiscalNoteType,
+    required this.customer,
+    required this.seller,
+    required this.products,
+    required this.paymentFinalizations,
   });
 
   @override
   List<Object?> get props => [
-        Id,
-        EnterpriseId,
-        FiscalNoteTypeId,
-        FiscalNoteType,
-        Customer,
-        SellerId,
-        Seller,
-        DocumentNumber,
-        DateHourOfBilling,
-        CashierNumber,
-        TotalLiquid,
-        IsCancelled,
-        Products,
-        PaymentFinalizations,
+        id,
+        enterpriseId,
+        fiscalNoteTypeId,
+        fiscalNoteType,
+        customer,
+        sellerId,
+        seller,
+        documentNumber,
+        dateHourOfBilling,
+        cashierNumber,
+        totalLiquid,
+        isCancelled,
+        products,
+        paymentFinalizations,
       ];
 }
