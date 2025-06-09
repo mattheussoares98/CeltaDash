@@ -9,7 +9,6 @@ import 'package:flutter/widgets.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../data/mocks/mocks.dart';
-import '../../data/usecases/usecases.dart';
 import '../../domain/mocks/mocks.dart';
 
 void main() {

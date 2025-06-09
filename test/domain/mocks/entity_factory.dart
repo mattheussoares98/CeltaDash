@@ -97,7 +97,8 @@ class EntityFactory {
         enabled: enabled ?? faker.randomGenerator.boolean(),
       );
 
-  static GetEcSaleStatisticsParams makeGetSalesParams() => GetEcSaleStatisticsParams(
+  static GetEcSaleStatisticsParams makeGetSalesParams() =>
+      GetEcSaleStatisticsParams(
         startDate: faker.date.dateTime(),
         endDate: faker.date.dateTime(),
         enterpriseIds: [
@@ -117,5 +118,90 @@ class EntityFactory {
         groupBySeller: faker.randomGenerator.boolean(),
         groupByYear: faker.randomGenerator.boolean(),
         topCount: faker.randomGenerator.integer(100),
+      );
+
+  static SaleMovementEntity makeSaleMovementEntity() => SaleMovementEntity(
+        Id: faker.randomGenerator.integer(100),
+        EnterpriseId: faker.randomGenerator.integer(100),
+        FiscalNoteTypeId: faker.randomGenerator.integer(100),
+        SellerId: faker.randomGenerator.integer(100),
+        DocumentNumber: faker.randomGenerator.string(50),
+        CashierNumber: faker.randomGenerator.string(50),
+        DateHourOfBilling: faker.date.dateTime(),
+        TotalLiquid: faker.randomGenerator.decimal(),
+        IsCancelled: faker.randomGenerator.boolean(),
+        FiscalNoteType: SaleMovementFiscalNoteEntity(
+          Id: faker.randomGenerator.integer(50),
+          Name: faker.randomGenerator.string(10),
+        ),
+        Customer: SaleMovementCustomerEntity(
+          SaleMovementId: faker.randomGenerator.integer(100),
+          Id: faker.randomGenerator.integer(100),
+          Name: faker.person.name(),
+          CpfCnpj: faker.guid.guid(),
+        ),
+        Seller: SaleMovementSellerEntity(
+          Id: faker.randomGenerator.integer(99),
+          PersonalizedCode: faker.randomGenerator.integer(99).toString(),
+          Name: faker.person.name(),
+        ),
+        Products: [
+          SaleMovementProductEntity(
+            Quantity: faker.randomGenerator.decimal(),
+            UnitValue: faker.randomGenerator.decimal(),
+            UnitValueLiquid: faker.randomGenerator.decimal(),
+            RepositionCost: faker.randomGenerator.decimal(),
+            LiquidCost: faker.randomGenerator.decimal(),
+            TotalBrute: faker.randomGenerator.decimal(),
+            TotalLiquid: faker.randomGenerator.decimal(),
+            TotalDiscounts: faker.randomGenerator.decimal(),
+            ProductPackingId: faker.randomGenerator.integer(99),
+            Id: faker.randomGenerator.integer(99),
+            IsCancelled: faker.randomGenerator.boolean(),
+            Product: SaleMovementProductProductEntity(
+              Id: faker.randomGenerator.integer(99),
+              Plu: faker.guid.guid(),
+              Name: faker.food.dish(),
+              PackingAbbreviation:
+                  faker.randomGenerator.string(2).toUpperCase(),
+              PackingQuantity: faker.randomGenerator.decimal(),
+            ),
+          ),
+        ],
+        PaymentFinalizations: [
+          SaleMovementFinalizationEntity(
+            Value: faker.randomGenerator.decimal(),
+            QuantityOfPortions: faker.randomGenerator.integer(12),
+            DateOfExpiration: faker.date.dateTime(),
+            Id: faker.randomGenerator.integer(99),
+            Finalization: SaleMovementFinalizationFinalizationEntity(
+              Id: faker.randomGenerator.integer(99),
+              Name: faker.randomGenerator.string(99),
+            ),
+          ),
+        ],
+      );
+
+  static GetEcSaleMovementParams makeGetEcSaleMovementParams() =>
+      GetEcSaleMovementParams(
+        EnterpriseIds: [
+          faker.randomGenerator.integer(99),
+          faker.randomGenerator.integer(99),
+        ],
+        StartDate: faker.date.dateTime(),
+        EndDate: faker.date.dateTime(),
+        ActualPage: faker.randomGenerator.integer(10),
+        RecordsByPage: faker.randomGenerator.integer(999),
+        DocumentNumbers: [
+          faker.randomGenerator.integer(1000).toString(),
+          faker.randomGenerator.integer(1000).toString(),
+          faker.randomGenerator.integer(1000).toString(),
+        ],
+        MountCustomer: faker.randomGenerator.boolean(),
+        MountFiscalNoteType: faker.randomGenerator.boolean(),
+        MountPaymentFinalizations: faker.randomGenerator.boolean(),
+        MountProducts: faker.randomGenerator.boolean(),
+        MountSeller: faker.randomGenerator.boolean(),
+        OnlyCancelled: faker.randomGenerator.boolean(),
       );
 }

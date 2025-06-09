@@ -17,8 +17,8 @@ class GetEcSaleMovementParams extends Equatable {
   final bool? MountSeller;
   final bool? MountProducts;
   final bool? MountPaymentFinalizations;
-  final int? actualPage;
-  final int? recordsByPag;
+  final int? ActualPage;
+  final int? RecordsByPage;
 
   const GetEcSaleMovementParams({
     required this.EnterpriseIds,
@@ -31,8 +31,8 @@ class GetEcSaleMovementParams extends Equatable {
     this.MountSeller,
     this.MountProducts,
     this.MountPaymentFinalizations,
-    this.actualPage,
-    this.recordsByPag,
+    this.ActualPage,
+    this.RecordsByPage,
   });
 
   @override
@@ -47,7 +47,7 @@ class GetEcSaleMovementParams extends Equatable {
         MountSeller,
         MountProducts,
         MountPaymentFinalizations,
-        actualPage,
-        recordsByPag,
+        ActualPage,
+        RecordsByPage,
       ];
 }
