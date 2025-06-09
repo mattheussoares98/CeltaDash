@@ -1,1 +1,1 @@
-export 'load_sale_movements_spy.dart';
+export 'ec_load_sale_movements_spy.dart';
