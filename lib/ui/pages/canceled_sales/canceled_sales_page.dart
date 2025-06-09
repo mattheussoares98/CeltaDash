@@ -59,14 +59,22 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                 TableItem(
                   titleMinHeight: 43,
                   columnIndexToCompareAndDetachBetterAndWorstValue: 1,
-                  columnsIndexToSum: [1],
-                  indexToSort: 1,
+                  columnsIndexToSum: [2],
+                  indexToSort: 2,
+                  tableColumnWidth: {
+                    0: FixedColumnWidth(
+                        MediaQuery.of(context).size.width * 0.2),
+                  },
                   titles: [
+                    PersonalizedTableCell(
+                      value: R.string.couponNumberAbbreviated.toUpperCase(),
+                    ),
                     PersonalizedTableCell(value: R.string.date),
                     PersonalizedTableCell(value: R.string.total),
                   ],
                   rowValues: [
                     ...canceledSalesPresenter.ecSaleMovements!.map((e) => [
+                          PersonalizedTableCell(value: e.documentNumber),
                           PersonalizedTableCell(value: e.dateHourOfBilling),
                           PersonalizedTableCell(
                             value: e.totalLiquid,
