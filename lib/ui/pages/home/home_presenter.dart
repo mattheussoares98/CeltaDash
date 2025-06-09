@@ -18,6 +18,7 @@ abstract class HomePresenter implements Listenable {
   void updateSelectedDate(DateTime date);
   void goToOperatorsPage();
   void goToSellersPage();
+  void goToCanceledSalesPage();
   void goToProfitabilityPage();
 
   Future<void> getBsEnterprises({

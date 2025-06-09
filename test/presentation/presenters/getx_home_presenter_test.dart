@@ -159,6 +159,13 @@ void main() {
         () => navigateTo.navigate(pageRoute: PageRoutes.profitability),
       ).called(1);
     });
+    test("Should go to canceled sales page", () {
+      sut.goToCanceledSalesPage();
+
+      verify(
+        () => navigateTo.navigate(pageRoute: PageRoutes.canceledSales),
+      ).called(1);
+    });
   });
 
   group("Get enterprises", () {

@@ -27,6 +27,7 @@ abstract class Translation {
   String get bsPassword;
   String get bsUserName;
   String get cancel;
+  String get canceledSales;
   String get chargeBacks;
   String get close;
   String get cnpj;

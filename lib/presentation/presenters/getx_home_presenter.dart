@@ -279,4 +279,9 @@ class GetxHomePresenter extends GetxController
     salesPresenter.getSales(this, forceRefresh: forceRefresh);
     productsPresenter.getSales(this, forceRefresh: forceRefresh);
   }
+
+  @override
+  void goToCanceledSalesPage() {
+    navigateTo.navigate(pageRoute: PageRoutes.canceledSales);
+  }
 }
