@@ -37,6 +37,7 @@ abstract class Translation {
   String get cost;
   String get dailyAnalysis;
   String get dailyAnalysisAverage;
+  String get date;
   String get dateNotUpdated;
   String get day;
   String get days;
