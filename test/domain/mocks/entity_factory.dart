@@ -78,7 +78,8 @@ class EntityFactory {
         CrossIdentity_Usuario: faker.guid.guid(),
       );
 
-  static EcEnterpriseEntity makeEcEnterpriseEntity({int? id}) => EcEnterpriseEntity(
+  static EcEnterpriseEntity makeEcEnterpriseEntity({int? id}) =>
+      EcEnterpriseEntity(
         id: id ?? faker.randomGenerator.integer(100),
         name: faker.company.name(),
         personalizedCode: faker.randomGenerator.integer(10).toString(),
@@ -120,7 +121,7 @@ class EntityFactory {
         topCount: faker.randomGenerator.integer(100),
       );
 
-  static SaleMovementEntity makeSaleMovementEntity() => SaleMovementEntity(
+  static SaleMovementEntity makeEcSaleMovementEntity() => SaleMovementEntity(
         Id: faker.randomGenerator.integer(100),
         EnterpriseId: faker.randomGenerator.integer(100),
         FiscalNoteTypeId: faker.randomGenerator.integer(100),
@@ -182,14 +183,19 @@ class EntityFactory {
         ],
       );
 
-  static GetEcSaleMovementParams makeGetEcSaleMovementParams() =>
+  static GetEcSaleMovementParams makeGetEcSaleMovementParams({
+    DateTime? startDate,
+    DateTime? endDate,
+    List<int>? enterpriseIds,
+  }) =>
       GetEcSaleMovementParams(
-        EnterpriseIds: [
-          faker.randomGenerator.integer(99),
-          faker.randomGenerator.integer(99),
-        ],
-        StartDate: faker.date.dateTime(),
-        EndDate: faker.date.dateTime(),
+        EnterpriseIds: enterpriseIds ??
+            [
+              faker.randomGenerator.integer(99),
+              faker.randomGenerator.integer(99),
+            ],
+        StartDate: startDate ?? faker.date.dateTime(),
+        EndDate: endDate ?? faker.date.dateTime(),
         ActualPage: faker.randomGenerator.integer(10),
         RecordsByPage: faker.randomGenerator.integer(999),
         DocumentNumbers: [

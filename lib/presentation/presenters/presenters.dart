@@ -1,3 +1,4 @@
+export './getx_canceled_sales_presenter.dart';
 export './getx_compare_days_presenter.dart';
 export './getx_departments_presenter.dart';
 export './getx_home_presenter.dart';
