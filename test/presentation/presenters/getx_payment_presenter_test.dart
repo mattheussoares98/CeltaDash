@@ -20,7 +20,7 @@ void main() {
   late GetxPaymentTypePresenter sut;
   late HomePresenterSpy homePresenter;
 
-  late LoadSaleStatisticsSpy loadSaleStatistics;
+  late EcLoadSaleStatisticsSpy ecLoadSaleStatistics;
 
   late List<SaleStatisticsEntity> saleStatisticEntities;
   late EnterpriseEntity selectedEnterprise;
@@ -29,12 +29,12 @@ void main() {
   Get.testMode = true;
 
   void initUsecases() {
-    loadSaleStatistics = LoadSaleStatisticsSpy();
+    ecLoadSaleStatistics = EcLoadSaleStatisticsSpy();
   }
 
   void initPresenters() {
     sut = GetxPaymentTypePresenter(
-      loadSaleStatistics: loadSaleStatistics,
+      ecLoadSaleStatistics: ecLoadSaleStatistics,
     );
     homePresenter = HomePresenterSpy();
   }
@@ -49,7 +49,7 @@ void main() {
   }
 
   void initMockSuccess() {
-    loadSaleStatistics.mockGet(saleStatisticEntities);
+    ecLoadSaleStatistics.mockGet(saleStatisticEntities);
   }
 
   setUp(() {
@@ -79,7 +79,7 @@ void main() {
         );
         expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
 
-        loadSaleStatistics.mockGetError();
+        ecLoadSaleStatistics.mockGetError();
 
         await sut.getSales(homePresenter);
       });
@@ -124,7 +124,7 @@ void main() {
 
         expect(
           sut.lastGetStatisticsParams,
-          GetSaleStatisticsParams(
+          GetEcSaleStatisticsParams(
             startDate: startDate,
             endDate: startDate,
             groupByEnterprise: true,
@@ -148,8 +148,8 @@ void main() {
           homePresenter.selectedDate.day,
         );
 
-        verify(() => loadSaleStatistics.get(
-              GetSaleStatisticsParams(
+        verify(() => ecLoadSaleStatistics.get(
+              GetEcSaleStatisticsParams(
                 startDate: startDate,
                 endDate: startDate,
                 groupByEnterprise: true,
@@ -177,8 +177,8 @@ void main() {
           1,
         ).subtract(Duration(days: 1));
 
-        verify(() => loadSaleStatistics.get(
-              GetSaleStatisticsParams(
+        verify(() => ecLoadSaleStatistics.get(
+              GetEcSaleStatisticsParams(
                 startDate: startDate,
                 endDate: endDate,
                 groupByEnterprise: true,
@@ -202,8 +202,8 @@ void main() {
         );
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
-        verify(() => loadSaleStatistics.get(
-              GetSaleStatisticsParams(
+        verify(() => ecLoadSaleStatistics.get(
+              GetEcSaleStatisticsParams(
                 groupByEnterprise: true,
                 groupByDay: true,
                 groupByPaymentModality: true,
@@ -228,8 +228,8 @@ void main() {
         await sut.getSales(homePresenter);
         await sut.getSales(homePresenter, forceRefresh: true);
 
-        verify(() => loadSaleStatistics.get(
-              GetSaleStatisticsParams(
+        verify(() => ecLoadSaleStatistics.get(
+              GetEcSaleStatisticsParams(
                 groupByEnterprise: true,
                 groupByDay: true,
                 groupByPaymentModality: true,
@@ -259,8 +259,8 @@ void main() {
           homePresenter.selectedDate.day,
         );
 
-        verifyNever(() => loadSaleStatistics.get(
-              GetSaleStatisticsParams(
+        verifyNever(() => ecLoadSaleStatistics.get(
+              GetEcSaleStatisticsParams(
                 startDate: startDate,
                 endDate: startDate,
                 groupByEnterprise: true,
@@ -303,8 +303,8 @@ void main() {
           homePresenter.selectedDate.day,
         );
 
-        verify(() => loadSaleStatistics.get(
-              GetSaleStatisticsParams(
+        verify(() => ecLoadSaleStatistics.get(
+              GetEcSaleStatisticsParams(
                 startDate: startDate,
                 endDate: startDate,
                 groupByEnterprise: true,
@@ -328,8 +328,8 @@ void main() {
           1,
         ).subtract(Duration(days: 1));
 
-        verify(() => loadSaleStatistics.get(
-              GetSaleStatisticsParams(
+        verify(() => ecLoadSaleStatistics.get(
+              GetEcSaleStatisticsParams(
                 startDate: startDate,
                 endDate: endDate,
                 groupByEnterprise: true,
@@ -353,8 +353,8 @@ void main() {
           1,
         ).subtract(Duration(days: 1));
 
-        verify(() => loadSaleStatistics.get(
-              GetSaleStatisticsParams(
+        verify(() => ecLoadSaleStatistics.get(
+              GetEcSaleStatisticsParams(
                 startDate: startDate,
                 endDate: endDate,
                 groupByEnterprise: true,

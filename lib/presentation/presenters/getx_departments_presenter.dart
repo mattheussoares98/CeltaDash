@@ -15,10 +15,10 @@ class GetxDepartmentsPresenter extends GetxController
         LastGetSalesStatisticsParamsManager,
         PeriodTypeManager
     implements DepartmentsPresenter {
-  final LoadSaleStatistics loadSaleStatistics;
+  final EcLoadSaleStatistics ecLoadSaleStatistics;
 
   GetxDepartmentsPresenter({
-    required this.loadSaleStatistics,
+    required this.ecLoadSaleStatistics,
   });
 
   @override
@@ -65,7 +65,7 @@ class GetxDepartmentsPresenter extends GetxController
         1,
       ).subtract(Duration(days: 1));
 
-      final getSalesParams = GetSaleStatisticsParams(
+      final getSalesParams = GetEcSaleStatisticsParams(
         startDate: startDate,
         endDate: selectedPeriodValue == PeriodType.daily ? startDate : endDate,
         groupByEnterprise: true,
@@ -73,7 +73,7 @@ class GetxDepartmentsPresenter extends GetxController
         groupByProductDepartment: true,
         groupByProductSection: true,
       );
-      final remoteSales = await loadSaleStatistics.get(getSalesParams);
+      final remoteSales = await ecLoadSaleStatistics.get(getSalesParams);
       lastParams = getSalesParams;
 
       saleStatistics = remoteSales

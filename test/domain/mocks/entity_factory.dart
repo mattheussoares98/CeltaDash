@@ -97,7 +97,7 @@ class EntityFactory {
         enabled: enabled ?? faker.randomGenerator.boolean(),
       );
 
-  static GetSaleStatisticsParams makeGetSalesParams() => GetSaleStatisticsParams(
+  static GetEcSaleStatisticsParams makeGetSalesParams() => GetEcSaleStatisticsParams(
         startDate: faker.date.dateTime(),
         endDate: faker.date.dateTime(),
         enterpriseIds: [

@@ -20,7 +20,7 @@ void main() {
   late GetxDepartmentsPresenter sut;
   late HomePresenterSpy homePresenter;
 
-  late LoadSaleStatisticsSpy loadSaleStatistics;
+  late EcLoadSaleStatisticsSpy ecLoadSaleStatistics;
 
   late List<SaleStatisticsEntity> saleStatisticEntities;
 
@@ -28,12 +28,12 @@ void main() {
   Get.testMode = true;
 
   void initUsecases() {
-    loadSaleStatistics = LoadSaleStatisticsSpy();
+    ecLoadSaleStatistics = EcLoadSaleStatisticsSpy();
   }
 
   void initPresenters() {
     sut = GetxDepartmentsPresenter(
-      loadSaleStatistics: loadSaleStatistics,
+      ecLoadSaleStatistics: ecLoadSaleStatistics,
     );
     homePresenter = HomePresenterSpy();
   }
@@ -47,7 +47,7 @@ void main() {
   }
 
   void initMockSuccess() {
-    loadSaleStatistics.mockGet(saleStatisticEntities);
+    ecLoadSaleStatistics.mockGet(saleStatisticEntities);
     homePresenter.selectedDateMock = faker.date.dateTime();
     homePresenter.selectedEnterpriseMock =
         EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
@@ -82,7 +82,7 @@ void main() {
         );
         expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
 
-        loadSaleStatistics.mockGetError();
+        ecLoadSaleStatistics.mockGetError();
 
         await sut.getSales(homePresenter);
       });
@@ -115,7 +115,7 @@ void main() {
         );
         expect(
           sut.lastGetStatisticsParams,
-          GetSaleStatisticsParams(
+          GetEcSaleStatisticsParams(
             startDate: startDate,
             endDate: startDate,
             groupByEnterprise: true,
@@ -135,7 +135,7 @@ void main() {
 
         expect(
           sut.lastGetStatisticsParams,
-          GetSaleStatisticsParams(
+          GetEcSaleStatisticsParams(
             startDate: DateTime(
               homePresenter.selectedDateMock.year,
               homePresenter.selectedDateMock.month,
@@ -161,7 +161,7 @@ void main() {
         final firstTimeLoaded = [
           EntityFactory.makeSaleStatisticEntity(enterpriseId: enterpriseId),
         ];
-        loadSaleStatistics.mockGet(firstTimeLoaded);
+        ecLoadSaleStatistics.mockGet(firstTimeLoaded);
 
         await sut.getSales(homePresenter);
         expect(
@@ -175,7 +175,7 @@ void main() {
           EntityFactory.makeSaleStatisticEntity(enterpriseId: enterpriseId),
         ];
 
-        loadSaleStatistics.mockGet(secondTimeLoaded);
+        ecLoadSaleStatistics.mockGet(secondTimeLoaded);
         await sut.getSales(homePresenter, forceRefresh: true);
         expect(
           sut.saleStatistics,

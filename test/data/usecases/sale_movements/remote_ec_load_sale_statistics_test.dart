@@ -13,7 +13,7 @@ import '../../../domain/mocks/mocks.dart';
 import '../../../infra/mocks/mocks.dart';
 
 void main() {
-  late RemoteLoadSaleStatistics sut;
+  late RemoteEcLoadSaleStatistics sut;
 
   late HttpClientSpy httpClient;
 
@@ -42,7 +42,7 @@ void main() {
   }
 
   void initPresenters() {
-    sut = RemoteLoadSaleStatistics(httpClient);
+    sut = RemoteEcLoadSaleStatistics(httpClient);
   }
 
   void initEntities() {
@@ -117,7 +117,7 @@ void main() {
 
   test("Should call httpClient with correct parameters", () async {
     await sut.get(
-      GetSaleStatisticsParams(
+      GetEcSaleStatisticsParams(
         startDate: startDate,
         endDate: endDate,
         enterpriseIds: enterpriseIds,
@@ -174,7 +174,7 @@ void main() {
     "Should return list of SaleStatisticEntity when API wraps in searchParameters/results",
     () async {
       final list = await sut.get(
-        GetSaleStatisticsParams(
+        GetEcSaleStatisticsParams(
           startDate: startDate,
           endDate: endDate,
           enterpriseIds: enterpriseIds,

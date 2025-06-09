@@ -3,21 +3,21 @@ import 'package:get/get.dart';
 import '../../domain/usecases/usecases.dart';
 
 mixin LastGetSalesStatisticsParamsManager on GetxController {
-  GetSaleStatisticsParams? _lastGetStatisticsParams;
-  GetSaleStatisticsParams? get lastGetStatisticsParams => _lastGetStatisticsParams;
-  set lastParams(GetSaleStatisticsParams? value) => _lastGetStatisticsParams = value;
+  GetEcSaleStatisticsParams? _lastGetStatisticsParams;
+  GetEcSaleStatisticsParams? get lastGetStatisticsParams => _lastGetStatisticsParams;
+  set lastParams(GetEcSaleStatisticsParams? value) => _lastGetStatisticsParams = value;
 
-  GetSaleStatisticsParams? _lastGetDailyParams;
-  GetSaleStatisticsParams? get lastGetDailyParams => _lastGetDailyParams;
-  set lastGetDailyParams(GetSaleStatisticsParams? value) => _lastGetDailyParams = value;
+  GetEcSaleStatisticsParams? _lastGetDailyParams;
+  GetEcSaleStatisticsParams? get lastGetDailyParams => _lastGetDailyParams;
+  set lastGetDailyParams(GetEcSaleStatisticsParams? value) => _lastGetDailyParams = value;
 
-  GetSaleStatisticsParams? _lastGetMonthlyParams;
-  GetSaleStatisticsParams? get lastGetMonthlyParams => _lastGetMonthlyParams;
-  set lastGetMonthlyParams(GetSaleStatisticsParams? value) =>
+  GetEcSaleStatisticsParams? _lastGetMonthlyParams;
+  GetEcSaleStatisticsParams? get lastGetMonthlyParams => _lastGetMonthlyParams;
+  set lastGetMonthlyParams(GetEcSaleStatisticsParams? value) =>
       _lastGetMonthlyParams = value;
 
-  GetSaleStatisticsParams? _lastGetYearlyParams;
-  GetSaleStatisticsParams? get lastGetYearlyParams => _lastGetYearlyParams;
-  set lastGetYearlyParams(GetSaleStatisticsParams? value) =>
+  GetEcSaleStatisticsParams? _lastGetYearlyParams;
+  GetEcSaleStatisticsParams? get lastGetYearlyParams => _lastGetYearlyParams;
+  set lastGetYearlyParams(GetEcSaleStatisticsParams? value) =>
       _lastGetYearlyParams = value;
 }

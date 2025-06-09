@@ -8,7 +8,7 @@ class StatisticsHelper {
 
   static bool canSearch({
     required bool? forceRefresh,
-    required GetSaleStatisticsParams? lastParams,
+    required GetEcSaleStatisticsParams? lastParams,
     required DateTime selectedDate,
     required PeriodType periodType,
   }) {
@@ -40,12 +40,12 @@ class StatisticsHelper {
   static bool changedTheEnterprise({
     required PeriodType selectedPeriodType,
     required EnterpriseViewModel? selectedEnterprise,
-    GetSaleStatisticsParams? lastGetStatisticsParams,
-    GetSaleStatisticsParams? lastDailyParams,
-    GetSaleStatisticsParams? lastMonthlyParams,
-    GetSaleStatisticsParams? lastYearlyParams,
+    GetEcSaleStatisticsParams? lastGetStatisticsParams,
+    GetEcSaleStatisticsParams? lastDailyParams,
+    GetEcSaleStatisticsParams? lastMonthlyParams,
+    GetEcSaleStatisticsParams? lastYearlyParams,
   }) {
-    bool changed(GetSaleStatisticsParams? params) {
+    bool changed(GetEcSaleStatisticsParams? params) {
       return params?.enterpriseIds
               ?.any((e) => e == selectedEnterprise?.id?.toInt()) ==
           false;
@@ -64,7 +64,7 @@ class StatisticsHelper {
   }
 
   static bool _canSearchYearly({
-    required GetSaleStatisticsParams? lastParams,
+    required GetEcSaleStatisticsParams? lastParams,
     required DateTime selectedDate,
   }) {
     if (lastParams?.startDate == DateTime(selectedDate.year, 1, 1) &&
@@ -82,7 +82,7 @@ class StatisticsHelper {
   }
 
   static bool _canSearchMonthly({
-    required GetSaleStatisticsParams? lastParams,
+    required GetEcSaleStatisticsParams? lastParams,
     required DateTime selectedDate,
   }) {
     if (lastParams?.startDate == DateTime(selectedDate.year, 1, 1) &&
@@ -97,7 +97,7 @@ class StatisticsHelper {
   }
 
   static bool _canSearchDaily({
-    required GetSaleStatisticsParams? lastParams,
+    required GetEcSaleStatisticsParams? lastParams,
     required DateTime? selectedDate,
   }) =>
       lastParams?.startDate.year != selectedDate?.year ||

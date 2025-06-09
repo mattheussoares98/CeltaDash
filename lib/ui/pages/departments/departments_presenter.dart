@@ -10,7 +10,7 @@ abstract class DepartmentsPresenter implements Listenable {
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
   PeriodType get selectedPeriodValue;
-  GetSaleStatisticsParams? get lastGetStatisticsParams;
+  GetEcSaleStatisticsParams? get lastGetStatisticsParams;
 
   Future<void> getSales(
     HomePresenter homePresenter, {

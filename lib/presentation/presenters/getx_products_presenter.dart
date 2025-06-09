@@ -14,11 +14,11 @@ class GetxProductsPresenter extends GetxController
         LastGetSalesStatisticsParamsManager,
         PeriodTypeManager
     implements ProductsPresenter {
-  final LoadSaleStatistics loadSaleStatistics;
+  final EcLoadSaleStatistics ecLoadSaleStatistics;
   final LocalStorage localStorage;
 
   GetxProductsPresenter({
-    required this.loadSaleStatistics,
+    required this.ecLoadSaleStatistics,
     required this.localStorage,
   });
 
@@ -69,7 +69,7 @@ class GetxProductsPresenter extends GetxController
         0,
       );
 
-      final params = GetSaleStatisticsParams(
+      final params = GetEcSaleStatisticsParams(
         startDate: startDate,
         endDate: selectedPeriodValue == PeriodType.daily ? startDate : endDate,
         groupByDay: true,
@@ -81,7 +81,7 @@ class GetxProductsPresenter extends GetxController
             : [homePresenter.selectedEnterprise!.id!.toInt()],
       );
 
-      final response = await loadSaleStatistics.get(params);
+      final response = await ecLoadSaleStatistics.get(params);
       lastParams = params;
 
       final newSales = (response as List)

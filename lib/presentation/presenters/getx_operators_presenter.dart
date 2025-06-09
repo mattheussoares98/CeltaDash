@@ -15,9 +15,9 @@ class GetxOperatorsPresenter extends GetxController
         LastGetSalesStatisticsParamsManager,
         PeriodTypeManager
     implements OperatorsPresenter {
-  final LoadSaleStatistics loadSaleStatistics;
+  final EcLoadSaleStatistics ecLoadSaleStatistics;
 
-  GetxOperatorsPresenter({required this.loadSaleStatistics});
+  GetxOperatorsPresenter({required this.ecLoadSaleStatistics});
 
   @override
   Future<void> getSales(
@@ -39,7 +39,7 @@ class GetxOperatorsPresenter extends GetxController
         selectedPeriod = periodType;
       }
 
-      GetSaleStatisticsParams? lastGetSalesParams() {
+      GetEcSaleStatisticsParams? lastGetSalesParams() {
         if (selectedPeriodValue == PeriodType.daily) {
           return lastGetDailyParams;
         } else if (selectedPeriodValue == PeriodType.monthly) {
@@ -69,7 +69,7 @@ class GetxOperatorsPresenter extends GetxController
         return;
       }
 
-      late GetSaleStatisticsParams getSalesParams;
+      late GetEcSaleStatisticsParams getSalesParams;
 
       if (selectedPeriodValue == PeriodType.daily) {
         final startDate = DateTime(
@@ -78,7 +78,7 @@ class GetxOperatorsPresenter extends GetxController
           homePresenter.selectedDate.day,
         );
 
-        getSalesParams = GetSaleStatisticsParams(
+        getSalesParams = GetEcSaleStatisticsParams(
           enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
           startDate: startDate,
           endDate: startDate,
@@ -87,7 +87,7 @@ class GetxOperatorsPresenter extends GetxController
           groupByDay: true,
         );
       } else if (selectedPeriodValue == PeriodType.monthly) {
-        getSalesParams = GetSaleStatisticsParams(
+        getSalesParams = GetEcSaleStatisticsParams(
           enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
           startDate: DateTime(
             homePresenter.selectedDate.year,
@@ -104,7 +104,7 @@ class GetxOperatorsPresenter extends GetxController
           groupByMonth: true,
         );
       } else if (selectedPeriodValue == PeriodType.yearly) {
-        getSalesParams = GetSaleStatisticsParams(
+        getSalesParams = GetEcSaleStatisticsParams(
           enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
           startDate: DateTime(homePresenter.selectedDate.year),
           endDate: DateTime(homePresenter.selectedDate.year, 12, 31),
@@ -113,7 +113,7 @@ class GetxOperatorsPresenter extends GetxController
           groupByYear: true,
         );
       }
-      final remoteSales = await loadSaleStatistics.get(getSalesParams);
+      final remoteSales = await ecLoadSaleStatistics.get(getSalesParams);
 
       final newSales = remoteSales
           .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())

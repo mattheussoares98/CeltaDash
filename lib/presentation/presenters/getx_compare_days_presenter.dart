@@ -10,10 +10,10 @@ import '../mixins/mixins.dart';
 class GetxCompareDaysPresenter extends GetxController
     with SaleStatisticsManager, UIErrorManager, LoadingManager
     implements CompareDaysPresenter {
-  final LoadSaleStatistics loadSaleStatistics;
+  final EcLoadSaleStatistics ecLoadSaleStatistics;
 
   GetxCompareDaysPresenter({
-    required this.loadSaleStatistics,
+    required this.ecLoadSaleStatistics,
   });
 
   @override
@@ -40,8 +40,8 @@ class GetxCompareDaysPresenter extends GetxController
       List<SaleStatisticViewModel> secondDayMovements = [];
 
       if (firstDay != null) {
-        final saleStatistics = await loadSaleStatistics.get(
-          GetSaleStatisticsParams(
+        final saleStatistics = await ecLoadSaleStatistics.get(
+          GetEcSaleStatisticsParams(
             startDate: firstDay,
             // groupByYear: true,
             // groupByMonth: true,
@@ -62,8 +62,8 @@ class GetxCompareDaysPresenter extends GetxController
       }
 
       if (secondDay != null) {
-        final saleStatistics = await loadSaleStatistics.get(
-          GetSaleStatisticsParams(
+        final saleStatistics = await ecLoadSaleStatistics.get(
+          GetEcSaleStatisticsParams(
             startDate: secondDay,
             // groupByYear: true,
             // groupByMonth: true,

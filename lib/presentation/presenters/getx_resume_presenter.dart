@@ -16,11 +16,11 @@ class GetxResumePresenter extends GetxController
         PeriodTypeManager
     implements ResumePresenter {
   final NavigateTo navigateTo;
-  final LoadSaleStatistics loadSaleStatistics;
+  final EcLoadSaleStatistics ecLoadSaleStatistics;
 
   GetxResumePresenter({
     required this.navigateTo,
-    required this.loadSaleStatistics,
+    required this.ecLoadSaleStatistics,
   });
 
   @override
@@ -100,13 +100,13 @@ class GetxResumePresenter extends GetxController
         1,
       ).subtract(Duration(days: 1));
 
-      final salesParams = GetSaleStatisticsParams(
+      final salesParams = GetEcSaleStatisticsParams(
         startDate: startDate,
         endDate: endDate,
         groupByEnterprise: true,
         groupByDay: true,
       );
-      final result = await loadSaleStatistics.get(salesParams);
+      final result = await ecLoadSaleStatistics.get(salesParams);
 
       saleStatistics = result
           .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())

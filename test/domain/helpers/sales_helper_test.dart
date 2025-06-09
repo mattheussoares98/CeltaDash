@@ -16,7 +16,7 @@ void main() {
 
   late HomePresenterSpy homePresenter;
   late PeriodType periodType;
-  late GetSaleStatisticsParams lastGetSalesParams;
+  late GetEcSaleStatisticsParams lastGetSalesParams;
 
   void initUsecases() {}
 
@@ -93,7 +93,7 @@ void main() {
       test(
           "Should return true if lastGetSalesParams days are different but endDate is equal firstDate",
           () {
-        final lastParams = GetSaleStatisticsParams(
+        final lastParams = GetEcSaleStatisticsParams(
           startDate: homePresenter.selectedDateMock,
           endDate: homePresenter.selectedDateMock,
         );
@@ -137,7 +137,7 @@ void main() {
         expect(value, true);
       });
       test("Should return true if start date is equal last date", () {
-        final lastParams = GetSaleStatisticsParams(
+        final lastParams = GetEcSaleStatisticsParams(
           startDate: homePresenter.selectedDateMock,
           endDate: homePresenter.selectedDateMock,
         );
@@ -155,7 +155,7 @@ void main() {
         final selectedDate = faker.date.dateTime();
         final value = StatisticsHelper.canSearch(
           forceRefresh: false,
-          lastParams: GetSaleStatisticsParams(
+          lastParams: GetEcSaleStatisticsParams(
             startDate: DateTime(selectedDate.year, 1, 1),
             endDate: DateTime(selectedDate.year, 12, 31),
           ),

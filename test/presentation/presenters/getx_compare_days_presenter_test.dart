@@ -20,7 +20,7 @@ void main() {
 
   late HomePresenterSpy homePresenter;
 
-  late LoadSaleStatisticsSpy loadSaleStatistics;
+  late EcLoadSaleStatisticsSpy ecLoadSaleStatistics;
 
   late List<SaleStatisticsEntity> saleStatisticsEntities;
   late DateTime firstDay;
@@ -30,12 +30,12 @@ void main() {
   Get.testMode = true;
 
   void initUsecases() {
-    loadSaleStatistics = LoadSaleStatisticsSpy();
+    ecLoadSaleStatistics = EcLoadSaleStatisticsSpy();
   }
 
   void initPresenters() {
     sut = GetxCompareDaysPresenter(
-      loadSaleStatistics: loadSaleStatistics,
+      ecLoadSaleStatistics: ecLoadSaleStatistics,
     );
     homePresenter = HomePresenterSpy();
   }
@@ -51,7 +51,7 @@ void main() {
   }
 
   void initMockSuccess() {
-    loadSaleStatistics.mockGet(saleStatisticsEntities);
+    ecLoadSaleStatistics.mockGet(saleStatisticsEntities);
     homePresenter.selectedEnterpriseMock =
         EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
             .toViewModel();
@@ -83,7 +83,7 @@ void main() {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(sut.mainErrorStream, emitsInOrder([null, UIError.sameDays]));
 
-      loadSaleStatistics.mockGetError();
+      ecLoadSaleStatistics.mockGetError();
 
       await sut.getSales(
         homePresenter: homePresenter,
@@ -96,7 +96,7 @@ void main() {
       expectLater(
           sut.mainErrorStream, emitsInOrder([null, UIError.unexpected]));
 
-      loadSaleStatistics.mockGetError();
+      ecLoadSaleStatistics.mockGetError();
 
       await sut.getSales(
         homePresenter: homePresenter,
@@ -161,8 +161,8 @@ void main() {
       );
 
       verify(
-        () => loadSaleStatistics.get(
-          GetSaleStatisticsParams(
+        () => ecLoadSaleStatistics.get(
+          GetEcSaleStatisticsParams(
             groupByYear: true,
             groupByMonth: true,
             groupByDay: true,
@@ -186,8 +186,8 @@ void main() {
       );
 
       verify(
-        () => loadSaleStatistics.get(
-          GetSaleStatisticsParams(
+        () => ecLoadSaleStatistics.get(
+          GetEcSaleStatisticsParams(
             groupByYear: true,
             groupByMonth: true,
             groupByDay: true,
@@ -216,8 +216,8 @@ void main() {
       );
 
       verify(
-        () => loadSaleStatistics.get(
-          GetSaleStatisticsParams(
+        () => ecLoadSaleStatistics.get(
+          GetEcSaleStatisticsParams(
             groupByYear: true,
             groupByMonth: true,
             groupByDay: true,
@@ -246,8 +246,8 @@ void main() {
       );
 
       verify(
-        () => loadSaleStatistics.get(
-          GetSaleStatisticsParams(
+        () => ecLoadSaleStatistics.get(
+          GetEcSaleStatisticsParams(
             groupByYear: true,
             groupByMonth: true,
             groupByDay: true,

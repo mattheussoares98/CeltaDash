@@ -5,5 +5,5 @@ import '../../../../ui/pages/pages.dart';
 
 OperatorsPresenter makeGetxOperatorsPresenter() =>
     GetxOperatorsPresenter(
-      loadSaleStatistics: makeRemoteLoadSaleStatistics(),
+      ecLoadSaleStatistics: makeRemoteEcLoadSaleStatistics(),
     );
