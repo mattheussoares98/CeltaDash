@@ -3,7 +3,7 @@ import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:mocktail/mocktail.dart';
 
-class RemoteLoginSpy extends Mock implements RemoteLogin {
+class BsLoginSpy extends Mock implements BsLogin {
   When _mockLoginCall() => when(
         () => this.login(
           user: any(named: "user"),

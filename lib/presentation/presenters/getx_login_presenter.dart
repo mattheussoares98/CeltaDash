@@ -14,13 +14,13 @@ class GetxLoginPresenter extends GetxController
     with LoadingManager, UIErrorManager
     implements LoginPresenter {
   final NavigateTo navigateTo;
-  final RemoteLogin remoteLogin;
+  final BsLogin bsLogin;
   final FirebaseManager firebaseManager;
   final LocalStorage localStorage;
 
   GetxLoginPresenter({
     required this.navigateTo,
-    required this.remoteLogin,
+    required this.bsLogin,
     required this.firebaseManager,
     required this.localStorage,
   });
@@ -62,7 +62,7 @@ class GetxLoginPresenter extends GetxController
         );
       }
 
-      final response = await remoteLogin.login(
+      final response = await bsLogin.login(
         user: user.trimRight(),
         password: password,
       );

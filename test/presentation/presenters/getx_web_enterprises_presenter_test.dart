@@ -20,7 +20,7 @@ void main() {
 
   late NavigateToSpy navigateTo;
   late FirebaseManagerSpy firebaseManager;
-  late RemoteLoginSpy remoteLogin;
+  late BsLoginSpy bsLogin;
   late LoadEnterprisesSpy loadEnterprises;
 
   late List<FirebaseEnterpriseEntity> firebaseEnterprises;
@@ -37,7 +37,7 @@ void main() {
   void initUsecases() {
     navigateTo = NavigateToSpy();
     firebaseManager = FirebaseManagerSpy(mockedFirebaseGet: mockedFirebaseGet);
-    remoteLogin = RemoteLoginSpy();
+    bsLogin = BsLoginSpy();
     loadEnterprises = LoadEnterprisesSpy();
   }
 
@@ -45,7 +45,7 @@ void main() {
     sut = GetxWebEnterprisesPresenter(
       navigateTo: navigateTo,
       firebaseManager: firebaseManager,
-      remoteLogin: remoteLogin,
+      bsLogin: bsLogin,
       loadEnterprises: loadEnterprises,
     );
   }
@@ -82,7 +82,7 @@ void main() {
   }
 
   void initMockSuccess() {
-    remoteLogin.mockLogin(bsLoginResponse);
+    bsLogin.mockLogin(bsLoginResponse);
     loadEnterprises.mockGet(enterprisesInBs);
   }
 
@@ -405,7 +405,7 @@ void main() {
       );
     });
 
-    test("Should call remoteLogin with correct values", () async {
+    test("Should call bsLogin with correct values", () async {
       final url = "${faker.internet.httpsUrl().toUpperCase()} anything";
 
       await sut.addNewEnterprise(
@@ -419,7 +419,7 @@ void main() {
       );
 
       verify(
-        () => remoteLogin.login(
+        () => bsLogin.login(
           user: bsUserName,
           password: bsPassword,
           url: url.toLowerCase().removeWhiteSpaces(),
@@ -437,7 +437,7 @@ void main() {
       EnterpriseBuilder.entity =
           EntityFactory.anullEnterpriseProperties(annullbaseUrl: true);
 
-      remoteLogin.mockLogin(
+      bsLogin.mockLogin(
         SoapResponseModel(
           response:
               FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)

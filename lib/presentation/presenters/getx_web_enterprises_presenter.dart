@@ -13,13 +13,13 @@ class GetxWebEnterprisesPresenter extends GetxController
     implements WebEnterprisesPresenter {
   final NavigateTo navigateTo;
   final FirebaseManager firebaseManager;
-  final RemoteLogin remoteLogin;
+  final BsLogin bsLogin;
   final LoadEnterprises loadEnterprises;
 
   GetxWebEnterprisesPresenter({
     required this.navigateTo,
     required this.firebaseManager,
-    required this.remoteLogin,
+    required this.bsLogin,
     required this.loadEnterprises,
   });
 
@@ -126,7 +126,7 @@ class GetxWebEnterprisesPresenter extends GetxController
         throw DomainError.enterpriseAlreadyExists;
       }
 
-      final loginResult = await remoteLogin.login(
+      final loginResult = await bsLogin.login(
         user: bsUserName,
         password: bsPassword,
         url: baseUrl.toLowerCase().removeWhiteSpaces(),

@@ -19,7 +19,7 @@ void main() {
   late GetxLoginPresenter sut;
 
   late NavigateToSpy navigateTo;
-  late RemoteLoginSpy remoteLogin;
+  late BsLoginSpy bsLogin;
   late FirebaseManagerSpy firebaseManager;
   late LocalStorageSpy localStorage;
 
@@ -35,14 +35,14 @@ void main() {
   void initUsecases() {
     localStorage = LocalStorageSpy();
     navigateTo = NavigateToSpy();
-    remoteLogin = RemoteLoginSpy();
+    bsLogin = BsLoginSpy();
     firebaseManager = FirebaseManagerSpy(mockedFirebaseGet: mockedFirebaseGet);
   }
 
   void initPresenters() {
     sut = GetxLoginPresenter(
       navigateTo: navigateTo,
-      remoteLogin: remoteLogin,
+      bsLogin: bsLogin,
       firebaseManager: firebaseManager,
       localStorage: localStorage,
     );
@@ -72,7 +72,7 @@ void main() {
   }
 
   void initMockSuccess() {
-    remoteLogin.mockLogin(response);
+    bsLogin.mockLogin(response);
     firebaseManager.mockGet(mockedFirebaseGet);
     localStorage.mockGet(
       FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson(),
@@ -109,7 +109,7 @@ void main() {
       );
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
 
-      remoteLogin.mockLoginError();
+      bsLogin.mockLoginError();
 
       await sut.login(
         enterpriseName: enterpriseName,
@@ -174,7 +174,7 @@ void main() {
             doc: enterpriseName.toLowerCase().removeWhiteSpaces()),
       );
     });
-    test("Should not call remoteLogin if firebaseData is null", () async {
+    test("Should not call bsLogin if firebaseData is null", () async {
       EnterpriseBuilder.entity = EntityFactory.anullEnterpriseProperties(
         annullbaseUrl: true,
       );
@@ -189,10 +189,10 @@ void main() {
         showBsErrorMessage: (_) {},
       );
 
-      verifyNever(() => remoteLogin.login(user: user, password: password));
+      verifyNever(() => bsLogin.login(user: user, password: password));
     });
 
-    test("Should call RemoteLogin with correct values", () async {
+    test("Should call bsLogin with correct values", () async {
       await sut.login(
         enterpriseName: enterpriseName.toLowerCase().removeWhiteSpaces(),
         user: user,
@@ -200,7 +200,7 @@ void main() {
         showBsErrorMessage: (_) {},
       );
 
-      verify(() => remoteLogin.login(user: user, password: password)).called(1);
+      verify(() => bsLogin.login(user: user, password: password)).called(1);
     });
 
     test("Should not call remote login if firebaseManager throws", () async {
@@ -217,7 +217,7 @@ void main() {
         showBsErrorMessage: (_) {},
       );
 
-      verifyNever(() => remoteLogin.login(user: user, password: password));
+      verifyNever(() => bsLogin.login(user: user, password: password));
     });
     test("Should navigate to home page", () async {
       await sut.login(
@@ -234,7 +234,7 @@ void main() {
 
     test("Should not navigate to home page if soap response is error",
         () async {
-      remoteLogin.mockLogin(
+      bsLogin.mockLogin(
         SoapResponseModel(
           response: faker.randomGenerator.string(10),
           responseType: SoapResponseType.error,
@@ -286,7 +286,7 @@ void main() {
       EnterpriseBuilder.entity =
           EntityFactory.anullEnterpriseProperties(annullbaseUrl: true);
 
-      remoteLogin.mockLogin(
+      bsLogin.mockLogin(
         SoapResponseModel(
           response: faker.lorem.sentence(),
           responseType: SoapResponseType.error,
@@ -332,7 +332,7 @@ void main() {
       EnterpriseBuilder.entity =
           EntityFactory.anullEnterpriseProperties(annullbaseUrl: true);
 
-      remoteLogin.mockLogin(
+      bsLogin.mockLogin(
         SoapResponseModel(
           response:
               FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
@@ -355,7 +355,7 @@ void main() {
       EnterpriseBuilder.entity =
           EntityFactory.anullEnterpriseProperties(annullbaseUrl: true);
 
-      remoteLogin.mockLogin(
+      bsLogin.mockLogin(
         SoapResponseModel(
           response:
               FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
@@ -389,7 +389,7 @@ void main() {
       );
 
       verify(
-        () => remoteLogin.login(user: user, password: password),
+        () => bsLogin.login(user: user, password: password),
       ).called(1);
     });
     test("Should update customer name correctly in Entity", () async {

@@ -7,10 +7,10 @@ import '../../../domain/usecases/usecases.dart';
 import '../../http/http.dart';
 import '../../models/models.dart';
 
-class BsRemoteLogin implements RemoteLogin {
+class RemoteBsLogin implements BsLogin {
   final SoapRequest soapAdapter;
 
-  BsRemoteLogin(this.soapAdapter);
+  RemoteBsLogin(this.soapAdapter);
 
   @override
   Future<SoapResponseModel> login({

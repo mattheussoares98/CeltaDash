@@ -397,7 +397,7 @@ void main() {
       final disabledSubEnterprise =
           EntityFactory.makeFirebaseSubEnterpriseEntity(
         enabled: true,
-        id: enterpriseId + faker.randomGenerator.integer(10), //!= ids
+        id: enterpriseId + faker.randomGenerator.integer(10, min: 1), //!= ids
       );
 
       EnterpriseBuilder.entity = FirebaseEnterpriseEntity(

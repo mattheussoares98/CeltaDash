@@ -4,7 +4,7 @@ import '../../factories.dart';
 
 LoginPresenter makeGetxLoginPresenter() => GetxLoginPresenter(
       navigateTo: makeGetxNavigateTo(),
-      remoteLogin: makeBsRemoteLogin(),
+      bsLogin: makeRemoteBsLogin(),
       firebaseManager: makeRemoteFirebaseManager(),
       localStorage: makeHiveLocalStorage(),
     );
