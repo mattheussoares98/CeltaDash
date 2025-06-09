@@ -4,7 +4,7 @@ import '../../helpers/helpers.dart';
 import '../pages.dart';
 
 abstract class CanceledSalesPresenter implements Listenable {
-  List<SaleStatisticViewModel>? get saleStatistics;
+  List<EcSaleMovementViewModel>? get ecSaleMovements;
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
 
