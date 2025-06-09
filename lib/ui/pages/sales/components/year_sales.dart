@@ -5,12 +5,12 @@ import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
 class YearSales extends StatelessWidget {
-  final List<SaleMovementViewModel> saleMovementsByYear;
-  const YearSales({super.key, required this.saleMovementsByYear});
+  final List<SaleStatisticViewModel> saleStatisticsByYear;
+  const YearSales({super.key, required this.saleStatisticsByYear});
 
   @override
   Widget build(BuildContext context) {
-    final totalLiquidByYear = saleMovementsByYear.sumLiquidValue();
+    final totalLiquidByYear = saleStatisticsByYear.sumLiquidValue();
 
     return TableItem(
       titleMinHeight: 43,
@@ -30,8 +30,8 @@ class YearSales extends StatelessWidget {
         PersonalizedTableCell(value: R.string.share.toUpperCase()),
       ],
       rowValues:
-          saleMovementsByYear.map((e) => e.Year).toSet().toList().map((year) {
-        final salesByCurrentYear = saleMovementsByYear
+          saleStatisticsByYear.map((e) => e.Year).toSet().toList().map((year) {
+        final salesByCurrentYear = saleStatisticsByYear
             .filteredSales(filterYear: year?.toInt())
             .map((e) => e.toViewModel())
             .toList();

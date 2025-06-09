@@ -43,7 +43,7 @@ class ChangeDatesButtons extends StatelessWidget {
 
   bool showRefreshButton(CompareDaysPresenter compareDaysPresenter) {
     final now = DateTime.now();
-    if (compareDaysPresenter.saleMovements == null) {
+    if (compareDaysPresenter.saleStatistics == null) {
       return true;
     } else if (firstDay.day == now.day &&
         firstDay.month == now.month &&

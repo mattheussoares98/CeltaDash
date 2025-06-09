@@ -21,36 +21,36 @@ void main() {
   late HomePresenterSpy homePresenter;
 
   late NavigateToSpy navigateTo;
-  late LoadSaleMovementsSpy loadSaleMovements;
+  late LoadSaleStatisticsSpy loadSaleStatistics;
 
-  late List<SaleMovementEntity> saleMovementEntitys;
+  late List<SaleStatisticsEntity> saleStatisticsEntities;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
 
   void initUsecases() {
     navigateTo = NavigateToSpy();
-    loadSaleMovements = LoadSaleMovementsSpy();
+    loadSaleStatistics = LoadSaleStatisticsSpy();
   }
 
   void initPresenters() {
     sut = GetxResumePresenter(
       navigateTo: navigateTo,
-      loadSaleMovements: loadSaleMovements,
+      loadSaleStatistics: loadSaleStatistics,
     );
     homePresenter = HomePresenterSpy();
   }
 
   void initEntities() {
-    saleMovementEntitys = [
-      EntityFactory.makeSaleMovementEntity(),
-      EntityFactory.makeSaleMovementEntity(),
-      EntityFactory.makeSaleMovementEntity(),
+    saleStatisticsEntities = [
+      EntityFactory.makeSaleStatisticEntity(),
+      EntityFactory.makeSaleStatisticEntity(),
+      EntityFactory.makeSaleStatisticEntity(),
     ];
   }
 
   void initMockSuccess() {
-    loadSaleMovements.mockGet(saleMovementEntitys);
+    loadSaleStatistics.mockGet(saleStatisticsEntities);
     homePresenter.selectedEnterpriseMock =
         EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
             .toViewModel();
@@ -134,7 +134,7 @@ void main() {
       );
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
 
-      loadSaleMovements.mockGetError();
+      loadSaleStatistics.mockGetError();
 
       await sut.getSales(homePresenter);
     });
@@ -143,9 +143,9 @@ void main() {
       await sut.getSales(homePresenter);
 
       expect(
-        sut.saleMovements,
-        saleMovementEntitys
-            .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+        sut.saleStatistics,
+        saleStatisticsEntities
+            .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
             .toList(),
       );
     });
@@ -164,8 +164,8 @@ void main() {
         homePresenter.selectedDateMock.month + 1,
       ).subtract(Duration(days: 1));
 
-      verify(() => loadSaleMovements.get(
-            GetSalesParams(
+      verify(() => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
               startDate: startDate,
               endDate: endDate,
               groupByDay: true,
@@ -194,8 +194,8 @@ void main() {
       ).subtract(Duration(days: 1));
 
       expect(
-          sut.lastGetSalesParams,
-          GetSalesParams(
+          sut.lastGetStatisticsParams,
+          GetSaleStatisticsParams(
             startDate: startDate,
             endDate: endDate,
             groupByDay: true,
@@ -211,8 +211,8 @@ void main() {
       );
 
       expect(
-          sut.lastGetSalesParams,
-          GetSalesParams(
+          sut.lastGetStatisticsParams,
+          GetSaleStatisticsParams(
             startDate: DateTime(
               homePresenter.selectedDateMock.year,
               homePresenter.selectedDateMock.month,
@@ -231,8 +231,8 @@ void main() {
       await sut.getSales(homePresenter, periodType: PeriodType.monthly);
       await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
-      verify(() => loadSaleMovements.get(
-            GetSalesParams(
+      verify(() => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
                 homePresenter.selectedDateMock.month,
@@ -264,8 +264,8 @@ void main() {
         homePresenter.selectedDateMock.month + 1,
       ).subtract(Duration(days: 1));
 
-      verify(() => loadSaleMovements.get(
-            GetSalesParams(
+      verify(() => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
               startDate: startDate,
               endDate: endDate,
               groupByDay: true,

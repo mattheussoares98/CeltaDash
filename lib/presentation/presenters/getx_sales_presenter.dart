@@ -11,13 +11,13 @@ class GetxSalesPresenter extends GetxController
     with
         LoadingManager,
         UIErrorManager,
-        LastGetSalesParamsManager,
+        LastGetSalesStatisticsParamsManager,
         PeriodTypeManager,
-        SaleMovementManager
+        SaleStatisticsManager
     implements SalesPresenter {
-  final LoadSaleMovements loadSaleMovements;
+  final LoadSaleStatistics loadSaleStatistics;
 
-  GetxSalesPresenter({required this.loadSaleMovements});
+  GetxSalesPresenter({required this.loadSaleStatistics});
 
   @override
   Future<void> getSales(
@@ -39,7 +39,7 @@ class GetxSalesPresenter extends GetxController
         selectedPeriod = periodType;
       }
 
-      GetSalesParams? lastGetSalesParams() {
+      GetSaleStatisticsParams? lastGetSalesParams() {
         if (selectedPeriodValue == PeriodType.daily) {
           return lastGetDailyParams;
         } else if (selectedPeriodValue == PeriodType.monthly) {
@@ -50,26 +50,26 @@ class GetxSalesPresenter extends GetxController
         return null;
       }
 
-      final canSearchAgain = SalesHelper.canSearch(
+      final canSearchAgain = StatisticsHelper.canSearch(
         forceRefresh: forceRefresh,
-        lastGetSalesParams: lastGetSalesParams(),
+        lastParams: lastGetSalesParams(),
         selectedDate: homePresenter.selectedDate,
         periodType: selectedPeriodValue,
       );
 
-      final changedTheEnterprise = SalesHelper.changedTheEnterprise(
+      final changedTheEnterprise = StatisticsHelper.changedTheEnterprise(
         selectedPeriodType: selectedPeriodValue,
         selectedEnterprise: homePresenter.selectedEnterprise,
-        lastGetDailyParams: lastGetDailyParams,
-        lastGetMonthlyParams: lastGetMonthlyParams,
-        lastGetYearlyParams: lastGetYearlyParams,
+        lastDailyParams: lastGetDailyParams,
+        lastMonthlyParams: lastGetMonthlyParams,
+        lastYearlyParams: lastGetYearlyParams,
       );
 
       if (!canSearchAgain && !changedTheEnterprise) {
         return;
       }
 
-      late GetSalesParams getSalesParams;
+      late GetSaleStatisticsParams getSalesParams;
 
       if (selectedPeriodValue == PeriodType.daily) {
         final startDate = DateTime(
@@ -82,7 +82,7 @@ class GetxSalesPresenter extends GetxController
           homePresenter.selectedDate.month + 1,
         ).subtract(Duration(days: 1));
 
-        getSalesParams = GetSalesParams(
+        getSalesParams = GetSaleStatisticsParams(
           enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
           startDate: startDate,
           endDate: endDate,
@@ -90,7 +90,7 @@ class GetxSalesPresenter extends GetxController
           groupByHour: true,
         );
       } else if (selectedPeriodValue == PeriodType.monthly) {
-        getSalesParams = GetSalesParams(
+        getSalesParams = GetSaleStatisticsParams(
           enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
           startDate: DateTime(homePresenter.selectedDate.year, 1, 1),
           endDate: DateTime(
@@ -102,7 +102,7 @@ class GetxSalesPresenter extends GetxController
           groupByMonth: true,
         );
       } else if (selectedPeriodValue == PeriodType.yearly) {
-        getSalesParams = GetSalesParams(
+        getSalesParams = GetSaleStatisticsParams(
           enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
           startDate: DateTime(homePresenter.selectedDate.year - 2),
           endDate: DateTime(
@@ -114,20 +114,20 @@ class GetxSalesPresenter extends GetxController
           groupByYear: true,
         );
       }
-      final remoteSales = await loadSaleMovements.get(getSalesParams);
+      final remoteSales = await loadSaleStatistics.get(getSalesParams);
 
       final newSales = remoteSales
-          .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+          .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
           .toList();
 
       if (selectedPeriodValue == PeriodType.daily) {
-        dailySales = newSales;
+        dailyStatistics = newSales;
         lastGetDailyParams = getSalesParams;
       } else if (selectedPeriodValue == PeriodType.monthly) {
-        monthlySales = newSales;
+        monthlyStatistics = newSales;
         lastGetMonthlyParams = getSalesParams;
       } else if (selectedPeriodValue == PeriodType.yearly) {
-        yearlySales = newSales;
+        yearlyStatistics = newSales;
         lastGetYearlyParams = getSalesParams;
       }
     } catch (e) {

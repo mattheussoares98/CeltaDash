@@ -1,6 +1,6 @@
 import 'package:celta_dash/data/models/models.dart';
 import 'package:celta_dash/data/usecases/usecases.dart';
-import 'package:celta_dash/domain/entities/sale_movement_entity.dart';
+import 'package:celta_dash/domain/entities/sale_statistics_entity.dart';
 import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/main/builders/builders.dart';
 import 'package:faker/faker.dart';
@@ -13,7 +13,7 @@ import '../../../domain/mocks/mocks.dart';
 import '../../../infra/mocks/mocks.dart';
 
 void main() {
-  late RemoteLoadSaleMovements sut;
+  late RemoteLoadSaleStatistics sut;
 
   late HttpClientSpy httpClient;
 
@@ -33,7 +33,7 @@ void main() {
   late bool groupBySeller;
   late int topCount;
   late List<int> enterpriseIds;
-  late List<SaleMovementEntity> saleMovementsEntitys;
+  late List<SaleStatisticsEntity> saleStatisticsEntities;
 
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -42,15 +42,15 @@ void main() {
   }
 
   void initPresenters() {
-    sut = RemoteLoadSaleMovements(httpClient);
+    sut = RemoteLoadSaleStatistics(httpClient);
   }
 
   void initEntities() {
     EnterpriseBuilder.entity = EntityFactory.makeFirebaseEnterpriseEntity();
-    saleMovementsEntitys = [
-      EntityFactory.makeSaleMovementEntity(),
-      EntityFactory.makeSaleMovementEntity(),
-      EntityFactory.makeSaleMovementEntity(),
+    saleStatisticsEntities = [
+      EntityFactory.makeSaleStatisticEntity(),
+      EntityFactory.makeSaleStatisticEntity(),
+      EntityFactory.makeSaleStatisticEntity(),
     ];
     startDate = faker.date.dateTime();
     endDate = faker.date.dateTime();
@@ -94,8 +94,8 @@ void main() {
       "user": {"id": 274, "name": "CELTABSPDV"},
     };
 
-    final results = saleMovementsEntitys
-        .map((e) => SaleMovementModel.fromEntity(e).toJson())
+    final results = saleStatisticsEntities
+        .map((e) => SaleStatisticsModel.fromEntity(e).toJson())
         .toList();
 
     httpClient.mockRequest({
@@ -117,7 +117,7 @@ void main() {
 
   test("Should call httpClient with correct parameters", () async {
     await sut.get(
-      GetSalesParams(
+      GetSaleStatisticsParams(
         startDate: startDate,
         endDate: endDate,
         enterpriseIds: enterpriseIds,
@@ -171,10 +171,10 @@ void main() {
   });
 
   test(
-    "Should return list of SaleMovementEntity when API wraps in searchParameters/results",
+    "Should return list of SaleStatisticEntity when API wraps in searchParameters/results",
     () async {
       final list = await sut.get(
-        GetSalesParams(
+        GetSaleStatisticsParams(
           startDate: startDate,
           endDate: endDate,
           enterpriseIds: enterpriseIds,
@@ -192,7 +192,7 @@ void main() {
         ),
       );
 
-      expect(list, saleMovementsEntitys);
+      expect(list, saleStatisticsEntities);
     },
   );
 }

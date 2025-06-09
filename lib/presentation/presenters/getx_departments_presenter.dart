@@ -9,16 +9,16 @@ import '../mixins/mixins.dart';
 
 class GetxDepartmentsPresenter extends GetxController
     with
-        SaleMovementManager,
+        SaleStatisticsManager,
         UIErrorManager,
         LoadingManager,
-        LastGetSalesParamsManager,
+        LastGetSalesStatisticsParamsManager,
         PeriodTypeManager
     implements DepartmentsPresenter {
-  final LoadSaleMovements loadSaleMovements;
+  final LoadSaleStatistics loadSaleStatistics;
 
   GetxDepartmentsPresenter({
-    required this.loadSaleMovements,
+    required this.loadSaleStatistics,
   });
 
   @override
@@ -40,9 +40,9 @@ class GetxDepartmentsPresenter extends GetxController
         selectedPeriod = periodType;
       }
 
-      final canSearchAgain = SalesHelper.canSearch(
+      final canSearchAgain = StatisticsHelper.canSearch(
         forceRefresh: forceRefresh,
-        lastGetSalesParams: lastGetSalesParams,
+        lastParams: lastGetStatisticsParams,
         selectedDate: homePresenter.selectedDate,
         periodType: selectedPeriodValue,
       );
@@ -65,7 +65,7 @@ class GetxDepartmentsPresenter extends GetxController
         1,
       ).subtract(Duration(days: 1));
 
-      final getSalesParams = GetSalesParams(
+      final getSalesParams = GetSaleStatisticsParams(
         startDate: startDate,
         endDate: selectedPeriodValue == PeriodType.daily ? startDate : endDate,
         groupByEnterprise: true,
@@ -73,11 +73,11 @@ class GetxDepartmentsPresenter extends GetxController
         groupByProductDepartment: true,
         groupByProductSection: true,
       );
-      final remoteSales = await loadSaleMovements.get(getSalesParams);
+      final remoteSales = await loadSaleStatistics.get(getSalesParams);
       lastParams = getSalesParams;
 
-      saleMovements = remoteSales
-          .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+      saleStatistics = remoteSales
+          .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
           .toList();
     } catch (e) {
       mainError = UIError.unexpected;

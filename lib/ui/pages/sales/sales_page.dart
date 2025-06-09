@@ -30,17 +30,17 @@ class _SalesPageState extends State<SalesPage>
   }
 
   bool salesAreEmpty({
-    required List<SaleMovementViewModel>? dailySales,
-    required List<SaleMovementViewModel>? monthlySales,
-    required List<SaleMovementViewModel>? yearlySales,
+    required List<SaleStatisticViewModel>? dailyStatistics,
+    required List<SaleStatisticViewModel>? monthlyStatistics,
+    required List<SaleStatisticViewModel>? yearlyStatistics,
     required SalesPresenter salesPresenter,
   }) {
     if (salesPresenter.selectedPeriodValue == PeriodType.daily) {
-      return dailySales?.isEmpty == true;
+      return dailyStatistics?.isEmpty == true;
     } else if (salesPresenter.selectedPeriodValue == PeriodType.monthly) {
-      return monthlySales?.isEmpty == true;
+      return monthlyStatistics?.isEmpty == true;
     } else if (salesPresenter.selectedPeriodValue == PeriodType.yearly) {
-      return yearlySales?.isEmpty == true;
+      return yearlyStatistics?.isEmpty == true;
     }
     return true;
   }
@@ -130,21 +130,21 @@ class _SalesPageState extends State<SalesPage>
                   //     )
                   //     .toList();
 
-                  final dailySales = salesPresenter.dailySales
+                  final dailyStatistics = salesPresenter.dailyStatistics
                       ?.filteredSales(
                         enterprise: homePresenter.selectedEnterprise,
                       )
                       .map((e) => e.toViewModel())
                       .toList();
 
-                  final monthlySales = salesPresenter.monthlySales
+                  final monthlyStatistics = salesPresenter.monthlyStatistics
                       ?.filteredSales(
                         enterprise: homePresenter.selectedEnterprise,
                       )
                       .map((e) => e.toViewModel())
                       .toList();
 
-                  final yearlySales = salesPresenter.yearlySales
+                  final yearlyStatistics = salesPresenter.yearlyStatistics
                       ?.filteredSales(
                         enterprise: homePresenter.selectedEnterprise,
                       )
@@ -152,9 +152,9 @@ class _SalesPageState extends State<SalesPage>
                       .toList();
 
                   if (salesAreEmpty(
-                      dailySales: dailySales,
-                      monthlySales: monthlySales,
-                      yearlySales: yearlySales,
+                      dailyStatistics: dailyStatistics,
+                      monthlyStatistics: monthlyStatistics,
+                      yearlyStatistics: yearlyStatistics,
                       salesPresenter: salesPresenter)) {
                     return EmptySales(isLoading: loadingSnap.data == true);
                   }
@@ -173,21 +173,20 @@ class _SalesPageState extends State<SalesPage>
                               //TODO implement in presenter
                               if (salesPresenter.selectedPeriodValue ==
                                       PeriodType.daily &&
-                                  dailySales?.isNotEmpty == true)
-                                DayTable(
-                                    resumeSaleMovements: dailySales!),
+                                  dailyStatistics?.isNotEmpty == true)
+                                DayTable(dailyStatistics: dailyStatistics!),
                               if (salesPresenter.selectedPeriodValue ==
                                       PeriodType.monthly &&
-                                  monthlySales != null &&
-                                  monthlySales.isNotEmpty)
+                                  monthlyStatistics != null &&
+                                  monthlyStatistics.isNotEmpty)
                                 MonthSales(
-                                    saleMovementsByMonth: monthlySales),
+                                    saleStatisticsByMonth: monthlyStatistics),
                               if (salesPresenter.selectedPeriodValue ==
                                       PeriodType.yearly &&
-                                  yearlySales != null &&
-                                  yearlySales.isNotEmpty)
+                                  yearlyStatistics != null &&
+                                  yearlyStatistics.isNotEmpty)
                                 YearSales(
-                                    saleMovementsByYear: yearlySales),
+                                    saleStatisticsByYear: yearlyStatistics),
                             ],
                           ),
                         ),

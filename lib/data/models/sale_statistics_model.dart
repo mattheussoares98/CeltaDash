@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import '../../domain/entities/entities.dart';
 import '../../ui/pages/pages.dart';
 
-class SaleMovementModel extends Equatable {
+class SaleStatisticsModel extends Equatable {
   final num? LiquidValue;
   final num? QuantityOfProducts;
   final num? TotalRepositionCost;
@@ -24,7 +24,7 @@ class SaleMovementModel extends Equatable {
   final String? CashierOperator;
   final String? Seller;
 
-  const SaleMovementModel({
+  const SaleStatisticsModel({
     required this.LiquidValue,
     required this.QuantityOfProducts,
     required this.TotalRepositionCost,
@@ -67,7 +67,7 @@ class SaleMovementModel extends Equatable {
         QuantitySales,
       ];
 
-  factory SaleMovementModel.fromJson(Map json) => SaleMovementModel(
+  factory SaleStatisticsModel.fromJson(Map json) => SaleStatisticsModel(
         LiquidValue: json['LiquidValue'],
         QuantityOfProducts: json['QuantityOfProducts'],
         TotalRepositionCost: json['TotalRepositionCost'],
@@ -88,8 +88,8 @@ class SaleMovementModel extends Equatable {
         QuantitySales: json['QuantitySales'],
       );
 
-  factory SaleMovementModel.fromEntity(SaleMovementEntity entity) =>
-      SaleMovementModel(
+  factory SaleStatisticsModel.fromEntity(SaleStatisticsEntity entity) =>
+      SaleStatisticsModel(
         LiquidValue: entity.LiquidValue,
         QuantityOfProducts: entity.QuantityOfProducts,
         TotalRepositionCost: entity.TotalRepositionCost,
@@ -131,7 +131,7 @@ class SaleMovementModel extends Equatable {
         'QuantitySales': QuantitySales,
       };
 
-  SaleMovementEntity toEntity() => SaleMovementEntity(
+  SaleStatisticsEntity toEntity() => SaleStatisticsEntity(
         LiquidValue: LiquidValue,
         QuantityOfProducts: QuantityOfProducts,
         TotalRepositionCost: TotalRepositionCost,
@@ -152,7 +152,7 @@ class SaleMovementModel extends Equatable {
         QuantitySales: QuantitySales,
       );
 
-  factory SaleMovementModel.fromViewModel(SaleMovementViewModel viewModel) {
+  factory SaleStatisticsModel.fromViewModel(SaleStatisticViewModel viewModel) {
     double? parsedLiquidValue = double.tryParse(viewModel.LiquidValue ?? '');
     double? parsedQuantityOfProducts =
         double.tryParse(viewModel.QuantityOfProducts ?? '');
@@ -165,7 +165,7 @@ class SaleMovementModel extends Equatable {
       parsedHour = int.tryParse(viewModel.Hour!.split(":").first);
     }
 
-    return SaleMovementModel(
+    return SaleStatisticsModel(
       LiquidValue: parsedLiquidValue,
       QuantityOfProducts: parsedQuantityOfProducts,
       TotalRepositionCost: parsedTotalRepositionCost,
@@ -187,8 +187,8 @@ class SaleMovementModel extends Equatable {
     );
   }
 
-  SaleMovementViewModel toViewModel() {
-    return SaleMovementViewModel(
+  SaleStatisticViewModel toViewModel() {
+    return SaleStatisticViewModel(
       Date: Date,
       LiquidValue: LiquidValue?.toString(),
       QuantityOfProducts: QuantityOfProducts?.toString(),

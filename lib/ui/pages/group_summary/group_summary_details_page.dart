@@ -8,18 +8,18 @@ import '../pages.dart';
 
 class GroupSummaryDetailsPage extends StatelessWidget {
   final double groupSalesTotalLiquid;
-  final List<SaleMovementViewModel> saleMovements;
+  final List<SaleStatisticViewModel> saleStatistics;
   const GroupSummaryDetailsPage({
     super.key,
     required this.groupSalesTotalLiquid,
-    required this.saleMovements,
+    required this.saleStatistics,
   });
   List<MapEntry<String, double>> getSalesByEnterprise(
     HomePresenter homePresenter,
     ResumePresenter resumePresenter,
   ) {
-    return saleMovements
-        .fold(<String, List<SaleMovementViewModel>>{}, (p, e) {
+    return saleStatistics
+        .fold(<String, List<SaleStatisticViewModel>>{}, (p, e) {
           final key =
               "${e.EnterprisePersonalizedCode}-${e.EnterpriseFantasyName}";
           p.putIfAbsent(key, () => []).add(e);

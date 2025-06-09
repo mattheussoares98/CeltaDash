@@ -9,10 +9,10 @@ import 'components.dart';
 
 class DailyAnalysis extends StatelessWidget {
   final ScrollController scrollController;
-  final List<SaleMovementViewModel> saleMovements;
+  final List<SaleStatisticViewModel> saleStatistics;
   const DailyAnalysis({
     super.key,
-    required this.saleMovements,
+    required this.saleStatistics,
     required this.scrollController,
   });
 
@@ -23,19 +23,19 @@ class DailyAnalysis extends StatelessWidget {
 
     final now = DateTime.now();
 
-    final filteredSales = saleMovements.filteredSales(
+    final filteredSales = saleStatistics.filteredSales(
       enterprise: homePresenter.selectedEnterprise,
       filterYear: now.year,
     );
 
     if (filteredSales.isEmpty) return Container();
 
-    final betterAverage = saleMovements.hourAverage(
+    final betterAverage = saleStatistics.hourAverage(
       getBest: true,
       enterprise: homePresenter.selectedEnterprise,
       filterYear: now.year,
     );
-    final worstAverage = saleMovements.hourAverage(
+    final worstAverage = saleStatistics.hourAverage(
       getBest: false,
       enterprise: homePresenter.selectedEnterprise,
       filterYear: now.year,
@@ -45,7 +45,7 @@ class DailyAnalysis extends StatelessWidget {
       children: [
         SalesInformations(
           title: R.string.dailyAnalysisAverage,
-          totalSales: saleMovements.weekDayAverage(
+          totalSales: saleStatistics.weekDayAverage(
             homePresenter.selectedEnterprise,
           ),
           goal: 0,

@@ -8,10 +8,10 @@ import '../pages.dart';
 abstract class ProductsPresenter implements Listenable {
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
-  List<SaleMovementViewModel>? get dailySaleMovements;
-  List<SaleMovementViewModel>? get monthlySaleMovements;
-  GetSalesParams? get lastGetDailyParams;
-  GetSalesParams? get lastGetMonthlyParams;
+  List<SaleStatisticViewModel>? get dailyStatistics;
+  List<SaleStatisticViewModel>? get monthlyStatistics;
+  GetSaleStatisticsParams? get lastGetDailyParams;
+  GetSaleStatisticsParams? get lastGetMonthlyParams;
   PeriodType get selectedPeriodValue;
 
   Future<void> getSales(

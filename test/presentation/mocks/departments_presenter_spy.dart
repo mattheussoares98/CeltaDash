@@ -4,10 +4,10 @@ import 'package:celta_dash/ui/pages/pages.dart';
 import 'package:mocktail/mocktail.dart';
 
 class DepartmentsPresenterSpy extends Mock implements DepartmentsPresenter {
-  GetSalesParams? lastGetSalesParamsMock;
+  GetSaleStatisticsParams? lastGetSalesParamsMock;
 
   DepartmentsPresenterSpy() {
-    when(() => this.lastGetSalesParams)
+    when(() => this.lastGetStatisticsParams)
         .thenAnswer((_) => lastGetSalesParamsMock);
 
     _mockGetSalesCall().thenAnswer((any) async => any);

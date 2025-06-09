@@ -5,7 +5,7 @@ import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
 class DepartmentsProfitability extends StatelessWidget {
-  final List<SaleMovementViewModel> salesDepartments;
+  final List<SaleStatisticViewModel> salesDepartments;
   const DepartmentsProfitability({
     super.key,
     required this.salesDepartments,
@@ -33,7 +33,7 @@ class DepartmentsProfitability extends StatelessWidget {
             PersonalizedTableCell(value: R.string.margin),
           ],
           rowValues: salesDepartments
-              .fold<Map<String, List<SaleMovementViewModel>>>({}, (acc, sale) {
+              .fold<Map<String, List<SaleStatisticViewModel>>>({}, (acc, sale) {
                 final key = sale.ProductDepartment ?? 'Undefined';
                 acc.putIfAbsent(key, () => []).add(sale);
                 return acc;

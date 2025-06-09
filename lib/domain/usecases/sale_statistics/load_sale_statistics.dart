@@ -2,11 +2,11 @@ import 'package:equatable/equatable.dart';
 
 import '../../entities/entities.dart';
 
-abstract class LoadSaleMovements {
-  Future<List<SaleMovementEntity>> get(GetSalesParams parameters);
+abstract class LoadSaleStatistics {
+  Future<List<SaleStatisticsEntity>> get(GetSaleStatisticsParams params);
 }
 
-class GetSalesParams extends Equatable {
+class GetSaleStatisticsParams extends Equatable {
   final DateTime startDate;
   final DateTime endDate;
   final List<int>? enterpriseIds;
@@ -24,7 +24,7 @@ class GetSalesParams extends Equatable {
   final bool? groupBySeller;
   final int? topCount;
 
-  const GetSalesParams({
+  const GetSaleStatisticsParams({
     required this.startDate,
     required this.endDate,
     this.enterpriseIds,

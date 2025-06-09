@@ -4,10 +4,10 @@ import 'package:celta_dash/ui/pages/pages.dart';
 import 'package:mocktail/mocktail.dart';
 
 class ResumePresenterSpy extends Mock implements ResumePresenter {
-  GetSalesParams? lastGetSalesParamsMock;
+  GetSaleStatisticsParams? lastGetSalesParamsMock;
 
   ResumePresenterSpy() {
-    when(() => this.lastGetSalesParams)
+    when(() => this.lastGetStatisticsParams)
         .thenAnswer((_) => lastGetSalesParamsMock);
 
     when(() => this.goToProfitabillityPage()).thenAnswer((any) => any);

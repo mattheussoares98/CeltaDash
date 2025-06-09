@@ -5,11 +5,11 @@ import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
 class Sections extends StatelessWidget {
-  final List<SaleMovementViewModel> saleMovements;
+  final List<SaleStatisticViewModel> saleStatistics;
 
   const Sections({
     super.key,
-    required this.saleMovements,
+    required this.saleStatistics,
   });
 
   Color generateColorFromString(String input) {
@@ -43,9 +43,9 @@ class Sections extends StatelessWidget {
             PersonalizedTableCell(value: R.string.profit),
             PersonalizedTableCell(value: R.string.margin),
           ],
-          rowValues: saleMovements
-              .fold<Map<String, List<SaleMovementViewModel>>>(
-                <String, List<SaleMovementViewModel>>{},
+          rowValues: saleStatistics
+              .fold<Map<String, List<SaleStatisticViewModel>>>(
+                <String, List<SaleStatisticViewModel>>{},
                 (map, sale) {
                   final sect = sale.ProductSection.toString();
 

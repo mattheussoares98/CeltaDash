@@ -94,7 +94,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                   ),
                 ),
                 Obx(() {
-                  final saleMovements = departmentsPresenter.saleMovements
+                  final saleStatistics = departmentsPresenter.saleStatistics
                       ?.filteredSales(
                         enterprise: homePresenter.selectedEnterprise,
                         filterDay: departmentsPresenter.selectedPeriodValue ==
@@ -107,7 +107,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                       .map((e) => e.toViewModel())
                       .toList();
 
-                  if (saleMovements == null || saleMovements.isEmpty) {
+                  if (saleStatistics == null || saleStatistics.isEmpty) {
                     return EmptySales(isLoading: loadingSnap.data);
                   }
 
@@ -123,8 +123,8 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                               });
                             },
                             children: [
-                              Departments(saleMovements: saleMovements),
-                              Sections(saleMovements: saleMovements),
+                              Departments(saleStatistics: saleStatistics),
+                              Sections(saleStatistics: saleStatistics),
                             ],
                           ),
                         ),

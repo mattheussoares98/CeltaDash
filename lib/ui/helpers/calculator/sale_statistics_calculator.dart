@@ -2,7 +2,7 @@ import '../../../ui/helpers/helpers.dart';
 import '../../../data/models/models.dart';
 import '../../pages/pages.dart';
 
-extension SaleMovementsExtensions on List<SaleMovementViewModel> {
+extension SaleStatisticsExtensions on List<SaleStatisticViewModel> {
   double sumLiquidValue({
     int? filterYear,
     int? filterMonth,
@@ -93,7 +93,7 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
     return totalSales / mondaysQuantity;
   }
 
-  List<SaleMovementModel> filteredSales({
+  List<SaleStatisticsModel> filteredSales({
     EnterpriseViewModel? enterprise,
     int? filterYear,
     int? filterMonth,
@@ -127,7 +127,7 @@ extension SaleMovementsExtensions on List<SaleMovementViewModel> {
               matchesDay &&
               matchesWeekday;
         })
-        .map(SaleMovementModel.fromViewModel)
+        .map(SaleStatisticsModel.fromViewModel)
         .toList();
   }
 

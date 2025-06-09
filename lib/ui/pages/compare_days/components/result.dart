@@ -20,13 +20,13 @@ class Result extends StatelessWidget {
 
     return Builder(builder: (context) {
       final firstDayTotalLiquid =
-          compareDaysPresenter.saleMovements!.sumLiquidValue(
+          compareDaysPresenter.saleStatistics!.sumLiquidValue(
         filterDay: firstDay.day,
         filterMonth: firstDay.month,
         filterYear: firstDay.year,
       );
       final secondDayTotalLiquid =
-          compareDaysPresenter.saleMovements!.sumLiquidValue(
+          compareDaysPresenter.saleStatistics!.sumLiquidValue(
         filterDay: secondDay.day,
         filterMonth: secondDay.month,
         filterYear: secondDay.year,
@@ -51,7 +51,7 @@ class Result extends StatelessWidget {
               TextSpan(text: R.string.sold.toLowerCase()),
               TextSpan(
                 text:
-                    " ${compareDaysPresenter.saleMovements!.differenceForHour(firstDayTotalLiquid, secondDayTotalLiquid).toString().toBrazilianNumber()}% ",
+                    " ${compareDaysPresenter.saleStatistics!.differenceForHour(firstDayTotalLiquid, secondDayTotalLiquid).toString().toBrazilianNumber()}% ",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: firstDayTotalLiquid > secondDayTotalLiquid

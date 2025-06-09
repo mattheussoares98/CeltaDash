@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class SaleMovementEntity extends Equatable {
+class SaleStatisticsEntity extends Equatable {
   final DateTime? Date;
   final num? LiquidValue;
   final num? QuantityOfProducts;
@@ -20,7 +20,7 @@ class SaleMovementEntity extends Equatable {
   final String? CashierOperator;
   final String? Seller;
 
-  const SaleMovementEntity({
+  const SaleStatisticsEntity({
     required this.Date,
     required this.LiquidValue,
     required this.QuantityOfProducts,

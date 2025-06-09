@@ -20,34 +20,34 @@ void main() {
   late GetxDepartmentsPresenter sut;
   late HomePresenterSpy homePresenter;
 
-  late LoadSaleMovementsSpy loadSaleMovements;
+  late LoadSaleStatisticsSpy loadSaleStatistics;
 
-  late List<SaleMovementEntity> saleMovementEntitys;
+  late List<SaleStatisticsEntity> saleStatisticEntities;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
 
   void initUsecases() {
-    loadSaleMovements = LoadSaleMovementsSpy();
+    loadSaleStatistics = LoadSaleStatisticsSpy();
   }
 
   void initPresenters() {
     sut = GetxDepartmentsPresenter(
-      loadSaleMovements: loadSaleMovements,
+      loadSaleStatistics: loadSaleStatistics,
     );
     homePresenter = HomePresenterSpy();
   }
 
   void initEntities() {
-    saleMovementEntitys = [
-      EntityFactory.makeSaleMovementEntity(),
-      EntityFactory.makeSaleMovementEntity(),
-      EntityFactory.makeSaleMovementEntity(),
+    saleStatisticEntities = [
+      EntityFactory.makeSaleStatisticEntity(),
+      EntityFactory.makeSaleStatisticEntity(),
+      EntityFactory.makeSaleStatisticEntity(),
     ];
   }
 
   void initMockSuccess() {
-    loadSaleMovements.mockGet(saleMovementEntitys);
+    loadSaleStatistics.mockGet(saleStatisticEntities);
     homePresenter.selectedDateMock = faker.date.dateTime();
     homePresenter.selectedEnterpriseMock =
         EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
@@ -82,7 +82,7 @@ void main() {
         );
         expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
 
-        loadSaleMovements.mockGetError();
+        loadSaleStatistics.mockGetError();
 
         await sut.getSales(homePresenter);
       });
@@ -93,9 +93,9 @@ void main() {
         await sut.getSales(homePresenter);
 
         expect(
-          sut.saleMovements,
-          saleMovementEntitys
-              .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+          sut.saleStatistics,
+          saleStatisticEntities
+              .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
               .toList(),
         );
       });
@@ -114,8 +114,8 @@ void main() {
           homePresenter.selectedDateMock.day,
         );
         expect(
-          sut.lastGetSalesParams,
-          GetSalesParams(
+          sut.lastGetStatisticsParams,
+          GetSaleStatisticsParams(
             startDate: startDate,
             endDate: startDate,
             groupByEnterprise: true,
@@ -134,8 +134,8 @@ void main() {
         );
 
         expect(
-          sut.lastGetSalesParams,
-          GetSalesParams(
+          sut.lastGetStatisticsParams,
+          GetSaleStatisticsParams(
             startDate: DateTime(
               homePresenter.selectedDateMock.year,
               homePresenter.selectedDateMock.month,
@@ -159,28 +159,28 @@ void main() {
           () async {
         final enterpriseId = homePresenter.selectedEnterpriseMock!.id!.toInt();
         final firstTimeLoaded = [
-          EntityFactory.makeSaleMovementEntity(enterpriseId: enterpriseId),
+          EntityFactory.makeSaleStatisticEntity(enterpriseId: enterpriseId),
         ];
-        loadSaleMovements.mockGet(firstTimeLoaded);
+        loadSaleStatistics.mockGet(firstTimeLoaded);
 
         await sut.getSales(homePresenter);
         expect(
-          sut.saleMovements,
+          sut.saleStatistics,
           firstTimeLoaded
-              .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+              .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
               .toList(),
         );
 
         final secondTimeLoaded = [
-          EntityFactory.makeSaleMovementEntity(enterpriseId: enterpriseId),
+          EntityFactory.makeSaleStatisticEntity(enterpriseId: enterpriseId),
         ];
 
-        loadSaleMovements.mockGet(secondTimeLoaded);
+        loadSaleStatistics.mockGet(secondTimeLoaded);
         await sut.getSales(homePresenter, forceRefresh: true);
         expect(
-          sut.saleMovements,
+          sut.saleStatistics,
           secondTimeLoaded
-              .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+              .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
               .toList(),
         );
       });

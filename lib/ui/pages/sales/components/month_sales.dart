@@ -7,15 +7,15 @@ import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
 class MonthSales extends StatelessWidget {
-  final List<SaleMovementViewModel> saleMovementsByMonth;
-  const MonthSales({super.key, required this.saleMovementsByMonth});
+  final List<SaleStatisticViewModel> saleStatisticsByMonth;
+  const MonthSales({super.key, required this.saleStatisticsByMonth});
 
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
-    final totalLiquidByYear = saleMovementsByMonth.sumLiquidValue();
+    final totalLiquidByYear = saleStatisticsByMonth.sumLiquidValue();
     final uniqueMonths =
-        saleMovementsByMonth.map((e) => e.Month).toSet().toList()..sort();
+        saleStatisticsByMonth.map((e) => e.Month).toSet().toList()..sort();
 
     return TableItem(
       titleMinHeight: 43,
@@ -35,7 +35,7 @@ class MonthSales extends StatelessWidget {
         PersonalizedTableCell(value: R.string.share.toUpperCase()),
       ],
       rowValues: List.generate(uniqueMonths.length, (index) {
-        final salesOfCurrentMonth = saleMovementsByMonth
+        final salesOfCurrentMonth = saleStatisticsByMonth
             .filteredSales(
               enterprise: homePresenter.selectedEnterprise,
               filterMonth: index + 1,

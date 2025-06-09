@@ -20,36 +20,36 @@ void main() {
   late GetxPaymentTypePresenter sut;
   late HomePresenterSpy homePresenter;
 
-  late LoadSaleMovementsSpy loadSaleMovements;
+  late LoadSaleStatisticsSpy loadSaleStatistics;
 
-  late List<SaleMovementEntity> saleMovementEntitys;
+  late List<SaleStatisticsEntity> saleStatisticEntities;
   late EnterpriseEntity selectedEnterprise;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
 
   void initUsecases() {
-    loadSaleMovements = LoadSaleMovementsSpy();
+    loadSaleStatistics = LoadSaleStatisticsSpy();
   }
 
   void initPresenters() {
     sut = GetxPaymentTypePresenter(
-      loadSaleMovements: loadSaleMovements,
+      loadSaleStatistics: loadSaleStatistics,
     );
     homePresenter = HomePresenterSpy();
   }
 
   void initEntities() {
-    saleMovementEntitys = [
-      EntityFactory.makeSaleMovementEntity(),
-      EntityFactory.makeSaleMovementEntity(),
-      EntityFactory.makeSaleMovementEntity(),
+    saleStatisticEntities = [
+      EntityFactory.makeSaleStatisticEntity(),
+      EntityFactory.makeSaleStatisticEntity(),
+      EntityFactory.makeSaleStatisticEntity(),
     ];
     selectedEnterprise = EntityFactory.makeEnterpriseEntity();
   }
 
   void initMockSuccess() {
-    loadSaleMovements.mockGet(saleMovementEntitys);
+    loadSaleStatistics.mockGet(saleStatisticEntities);
   }
 
   setUp(() {
@@ -79,7 +79,7 @@ void main() {
         );
         expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
 
-        loadSaleMovements.mockGetError();
+        loadSaleStatistics.mockGetError();
 
         await sut.getSales(homePresenter);
       });
@@ -105,9 +105,9 @@ void main() {
         await sut.getSales(homePresenter);
 
         expect(
-          sut.saleMovements,
-          saleMovementEntitys
-              .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+          sut.saleStatistics,
+          saleStatisticEntities
+              .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
               .toList(),
         );
       });
@@ -123,8 +123,8 @@ void main() {
         );
 
         expect(
-          sut.lastGetSalesParams,
-          GetSalesParams(
+          sut.lastGetStatisticsParams,
+          GetSaleStatisticsParams(
             startDate: startDate,
             endDate: startDate,
             groupByEnterprise: true,
@@ -148,8 +148,8 @@ void main() {
           homePresenter.selectedDate.day,
         );
 
-        verify(() => loadSaleMovements.get(
-              GetSalesParams(
+        verify(() => loadSaleStatistics.get(
+              GetSaleStatisticsParams(
                 startDate: startDate,
                 endDate: startDate,
                 groupByEnterprise: true,
@@ -177,8 +177,8 @@ void main() {
           1,
         ).subtract(Duration(days: 1));
 
-        verify(() => loadSaleMovements.get(
-              GetSalesParams(
+        verify(() => loadSaleStatistics.get(
+              GetSaleStatisticsParams(
                 startDate: startDate,
                 endDate: endDate,
                 groupByEnterprise: true,
@@ -202,8 +202,8 @@ void main() {
         );
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
-        verify(() => loadSaleMovements.get(
-              GetSalesParams(
+        verify(() => loadSaleStatistics.get(
+              GetSaleStatisticsParams(
                 groupByEnterprise: true,
                 groupByDay: true,
                 groupByPaymentModality: true,
@@ -228,8 +228,8 @@ void main() {
         await sut.getSales(homePresenter);
         await sut.getSales(homePresenter, forceRefresh: true);
 
-        verify(() => loadSaleMovements.get(
-              GetSalesParams(
+        verify(() => loadSaleStatistics.get(
+              GetSaleStatisticsParams(
                 groupByEnterprise: true,
                 groupByDay: true,
                 groupByPaymentModality: true,
@@ -259,8 +259,8 @@ void main() {
           homePresenter.selectedDate.day,
         );
 
-        verifyNever(() => loadSaleMovements.get(
-              GetSalesParams(
+        verifyNever(() => loadSaleStatistics.get(
+              GetSaleStatisticsParams(
                 startDate: startDate,
                 endDate: startDate,
                 groupByEnterprise: true,
@@ -283,9 +283,9 @@ void main() {
         await sut.getSales(homePresenter);
 
         expect(
-          sut.saleMovementsByFinalizations,
-          saleMovementEntitys
-              .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+          sut.saleStatisticsByFinalizations,
+          saleStatisticEntities
+              .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
               .toList(),
         );
       });
@@ -303,8 +303,8 @@ void main() {
           homePresenter.selectedDate.day,
         );
 
-        verify(() => loadSaleMovements.get(
-              GetSalesParams(
+        verify(() => loadSaleStatistics.get(
+              GetSaleStatisticsParams(
                 startDate: startDate,
                 endDate: startDate,
                 groupByEnterprise: true,
@@ -328,8 +328,8 @@ void main() {
           1,
         ).subtract(Duration(days: 1));
 
-        verify(() => loadSaleMovements.get(
-              GetSalesParams(
+        verify(() => loadSaleStatistics.get(
+              GetSaleStatisticsParams(
                 startDate: startDate,
                 endDate: endDate,
                 groupByEnterprise: true,
@@ -353,8 +353,8 @@ void main() {
           1,
         ).subtract(Duration(days: 1));
 
-        verify(() => loadSaleMovements.get(
-              GetSalesParams(
+        verify(() => loadSaleStatistics.get(
+              GetSaleStatisticsParams(
                 startDate: startDate,
                 endDate: endDate,
                 groupByEnterprise: true,

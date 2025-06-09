@@ -23,22 +23,22 @@ void main() {
 
   late HomePresenterSpy homePresenter;
 
-  late LoadSaleMovementsSpy loadSaleMovements;
+  late LoadSaleStatisticsSpy loadSaleStatistics;
   late LocalStorageSpy localStorage;
 
-  late List<SaleMovementEntity> saleMovementsEntities;
+  late List<SaleStatisticsEntity> saleStatisticsEntities;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
 
   void initUsecases() {
-    loadSaleMovements = LoadSaleMovementsSpy();
+    loadSaleStatistics = LoadSaleStatisticsSpy();
     localStorage = LocalStorageSpy();
   }
 
   void initPresenters() {
     sut = GetxProductsPresenter(
-      loadSaleMovements: loadSaleMovements,
+      loadSaleStatistics: loadSaleStatistics,
       localStorage: localStorage,
     );
     homePresenter = HomePresenterSpy();
@@ -46,15 +46,15 @@ void main() {
 
   void initEntities() {
     EnterpriseBuilder.entity = EntityFactory.makeFirebaseEnterpriseEntity();
-    saleMovementsEntities = [
-      EntityFactory.makeSaleMovementEntity(),
-      EntityFactory.makeSaleMovementEntity(),
-      EntityFactory.makeSaleMovementEntity(),
+    saleStatisticsEntities = [
+      EntityFactory.makeSaleStatisticEntity(),
+      EntityFactory.makeSaleStatisticEntity(),
+      EntityFactory.makeSaleStatisticEntity(),
     ];
   }
 
   void initMockSuccess() {
-    loadSaleMovements.mockGet(saleMovementsEntities);
+    loadSaleStatistics.mockGet(saleStatisticsEntities);
     homePresenter.selectedEnterpriseMock =
         EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
             .toViewModel();
@@ -90,7 +90,7 @@ void main() {
           emitsInOrder([null, UIError.unexpected]),
         );
 
-        loadSaleMovements.mockGetError();
+        loadSaleStatistics.mockGetError();
 
         await sut.getSales(homePresenter);
       });
@@ -117,18 +117,18 @@ void main() {
         await sut.getSales(homePresenter);
 
         expect(
-          sut.dailySaleMovements,
-          saleMovementsEntities
-              .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+          sut.dailyStatistics,
+          saleStatisticsEntities
+              .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
               .toList(),
         );
 
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
         expect(
-          sut.monthlySaleMovements,
-          saleMovementsEntities
-              .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+          sut.monthlyStatistics,
+          saleStatisticsEntities
+              .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
               .toList(),
         );
       });
@@ -142,8 +142,8 @@ void main() {
         );
 
         verify(
-          () => loadSaleMovements.get(
-            GetSalesParams(
+          () => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
                 homePresenter.selectedDateMock.month,
@@ -176,8 +176,8 @@ void main() {
         );
 
         verify(
-          () => loadSaleMovements.get(
-            GetSalesParams(
+          () => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
               startDate: startDate,
               endDate: startDate,
               groupByDay: true,
@@ -202,8 +202,8 @@ void main() {
         );
 
         verify(
-          () => loadSaleMovements.get(
-            GetSalesParams(
+          () => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
               startDate: startDate,
               endDate: startDate,
               groupByDay: true,
@@ -228,7 +228,7 @@ void main() {
 
         expect(
             sut.lastGetDailyParams,
-            GetSalesParams(
+            GetSaleStatisticsParams(
               startDate: startDate,
               endDate: startDate,
               groupByDay: true,
@@ -245,9 +245,9 @@ void main() {
         await sut.getSales(homePresenter, periodType: PeriodType.daily);
 
         expect(
-          sut.dailySaleMovements,
-          saleMovementsEntities
-              .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+          sut.dailyStatistics,
+          saleStatisticsEntities
+              .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
               .toList(),
         );
       });
@@ -262,8 +262,8 @@ void main() {
         );
 
         verify(
-          () => loadSaleMovements.get(
-            GetSalesParams(
+          () => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
               startDate: startDate,
               endDate: startDate,
               groupByDay: true,
@@ -283,8 +283,8 @@ void main() {
         await sut.getSales(homePresenter);
 
         verify(
-          () => loadSaleMovements.get(
-            GetSalesParams(
+          () => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
               startDate: startDate,
               endDate: startDate,
               groupByDay: true,
@@ -305,8 +305,8 @@ void main() {
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
         verify(
-          () => loadSaleMovements.get(
-            GetSalesParams(
+          () => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
                 homePresenter.selectedDateMock.month,
@@ -333,8 +333,8 @@ void main() {
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
         verify(
-          () => loadSaleMovements.get(
-            GetSalesParams(
+          () => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
                 homePresenter.selectedDateMock.month,
@@ -361,8 +361,8 @@ void main() {
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
         verify(
-          () => loadSaleMovements.get(
-            GetSalesParams(
+          () => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
                 homePresenter.selectedDateMock.month,
@@ -389,7 +389,7 @@ void main() {
 
         expect(
             sut.lastGetMonthlyParams,
-            GetSalesParams(
+            GetSaleStatisticsParams(
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
                 homePresenter.selectedDateMock.month,
@@ -414,9 +414,9 @@ void main() {
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
         expect(
-          sut.monthlySaleMovements,
-          saleMovementsEntities
-              .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+          sut.monthlyStatistics,
+          saleStatisticsEntities
+              .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
               .toList(),
         );
       });
@@ -425,8 +425,8 @@ void main() {
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
         verify(
-          () => loadSaleMovements.get(
-            GetSalesParams(
+          () => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
                 homePresenter.selectedDateMock.month,
@@ -454,8 +454,8 @@ void main() {
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
         verify(
-          () => loadSaleMovements.get(
-            GetSalesParams(
+          () => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
                 homePresenter.selectedDateMock.month,

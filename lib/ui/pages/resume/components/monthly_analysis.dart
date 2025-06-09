@@ -9,8 +9,8 @@ import '../../pages.dart';
 import 'components.dart';
 
 class MonthlyAnalysis extends StatelessWidget {
-  final List<SaleMovementViewModel> saleMovements;
-  const MonthlyAnalysis({super.key, required this.saleMovements});
+  final List<SaleStatisticViewModel> saleStatistics;
+  const MonthlyAnalysis({super.key, required this.saleStatistics});
 
   bool isToday(DateTime? date) {
     final now = DateTime.now();
@@ -24,7 +24,7 @@ class MonthlyAnalysis extends StatelessWidget {
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
 
-    final datesAndValues = (saleMovements
+    final datesAndValues = (saleStatistics
             .where((e) =>
                 e.EnterpriseId == homePresenter.selectedEnterprise?.id &&
                 e.Date?.month == homePresenter.selectedDate.month &&
@@ -34,7 +34,7 @@ class MonthlyAnalysis extends StatelessWidget {
             .toList()
           ..sort())
         .map((day) {
-      final salesByDay = saleMovements
+      final salesByDay = saleStatistics
           .where((e) =>
               e.EnterpriseId == homePresenter.selectedEnterprise?.id &&
               e.Date?.day == day &&
@@ -92,7 +92,7 @@ class MonthlyAnalysis extends StatelessWidget {
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     Text(
-                      saleMovements
+                      saleStatistics
                           .sumLiquidValue(
                             enterprise: homePresenter.selectedEnterprise,
                           )

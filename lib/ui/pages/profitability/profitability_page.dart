@@ -92,7 +92,7 @@ class _ProfitabilityPageState extends State<ProfitabilityPage> {
                       ),
                       Obx(() {
                         final salesDepartments =
-                            departmentsPresenter.saleMovements
+                            departmentsPresenter.saleStatistics
                                 ?.filteredSales(
                                   enterprise: homePresenter.selectedEnterprise,
                                   filterDay: departmentsPresenter
@@ -128,7 +128,7 @@ class _ProfitabilityPageState extends State<ProfitabilityPage> {
                                       salesDepartments: salesDepartments,
                                     ),
                                     Sections(
-                                      saleMovements: salesDepartments,
+                                      saleStatistics: salesDepartments,
                                     ),
                                   ],
                                 ),

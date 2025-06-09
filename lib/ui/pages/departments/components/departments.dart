@@ -5,11 +5,11 @@ import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
 class Departments extends StatelessWidget {
-  final List<SaleMovementViewModel> saleMovements;
+  final List<SaleStatisticViewModel> saleStatistics;
 
   const Departments({
     super.key,
-    required this.saleMovements,
+    required this.saleStatistics,
   });
 
   @override
@@ -35,8 +35,8 @@ class Departments extends StatelessWidget {
             PersonalizedTableCell(value: R.string.ticketAverage),
             PersonalizedTableCell(value: R.string.share),
           ],
-          rowValues: saleMovements
-              .fold<Map<String, List<SaleMovementViewModel>>>({}, (acc, sale) {
+          rowValues: saleStatistics
+              .fold<Map<String, List<SaleStatisticViewModel>>>({}, (acc, sale) {
                 final key = sale.ProductDepartment ?? 'Undefined';
                 acc.putIfAbsent(key, () => []).add(sale);
                 return acc;
@@ -49,7 +49,7 @@ class Departments extends StatelessWidget {
                     0, (sum, s) => sum + (s.LiquidValue?.toDouble() ?? 1));
                 final totalQuantity = sales.fold<int>(
                     0, (sum, s) => sum + (s.QuantitySales?.toInt() ?? 1));
-                final overallValue = saleMovements.toList().sumLiquidValue();
+                final overallValue = saleStatistics.toList().sumLiquidValue();
         
                 return [
                   PersonalizedTableCell(value: department),

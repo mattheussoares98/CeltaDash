@@ -15,12 +15,12 @@ class Products extends StatelessWidget {
   Widget build(BuildContext context) {
     ProductsPresenter productsPresenter = Get.find();
 
-    final saleMovements =
+    final saleStatistics =
         productsPresenter.selectedPeriodValue == PeriodType.daily
-            ? productsPresenter.dailySaleMovements
-            : productsPresenter.monthlySaleMovements;
+            ? productsPresenter.dailyStatistics
+            : productsPresenter.monthlyStatistics;
 
-    if (saleMovements == null || saleMovements.isEmpty) {
+    if (saleStatistics == null || saleStatistics.isEmpty) {
       return EmptySales(isLoading: false);
     }
 
@@ -43,7 +43,7 @@ class Products extends StatelessWidget {
             PersonalizedTableCell(value: R.string.profit),
             PersonalizedTableCell(value: R.string.margin),
           ],
-          rowValues: saleMovements.map((entry) {
+          rowValues: saleStatistics.map((entry) {
             // final sales = entry.value;
             // final section = entry.key;
             // final dept = entry.value.first.ProductDepartment.toString();

@@ -6,11 +6,11 @@ import '../../helpers/helpers.dart';
 import '../pages.dart';
 
 abstract class ResumePresenter implements Listenable {
-  List<SaleMovementViewModel>? get saleMovements;
+  List<SaleStatisticViewModel>? get saleStatistics;
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
   PeriodType get selectedPeriodValue;
-  GetSalesParams? get lastGetSalesParams;
+  GetSaleStatisticsParams? get lastGetStatisticsParams;
 
   void goToProfitabillityPage();
   void goToCompareDays();

@@ -45,7 +45,7 @@ class _PaymentTypePageState extends State<PaymentTypePage>
   }
 
   bool filter(
-    SaleMovementViewModel sale,
+    SaleStatisticViewModel sale,
     HomePresenter homePresenter,
     PaymentTypePresenter paymentTypePresenter,
   ) {
@@ -113,24 +113,24 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                 ),
                 Expanded(
                   child: Obx(() {
-                    final saleMovementsByFinalizations =
-                        paymentTypePresenter.saleMovementsByFinalizations
+                    final saleStatisticsByFinalizations =
+                        paymentTypePresenter.saleStatisticsByFinalizations
                             ?.filteredSales(
                               enterprise: homePresenter.selectedEnterprise,
                             )
                             .map((e) => e.toViewModel());
                   
-                    final saleMovementsByModalities =
-                        paymentTypePresenter.saleMovements
+                    final saleStatisticsByModalities =
+                        paymentTypePresenter.saleStatistics
                             ?.filteredSales(
                               enterprise: homePresenter.selectedEnterprise,
                             )
                             .map((e) => e.toViewModel());
                   
-                    if (saleMovementsByFinalizations == null ||
-                        saleMovementsByFinalizations.isEmpty ||
-                        saleMovementsByModalities == null ||
-                        saleMovementsByModalities.isEmpty) {
+                    if (saleStatisticsByFinalizations == null ||
+                        saleStatisticsByFinalizations.isEmpty ||
+                        saleStatisticsByModalities == null ||
+                        saleStatisticsByModalities.isEmpty) {
                       return EmptySales(isLoading: loadingSnap.data);
                     }
                   
@@ -147,8 +147,8 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                             children: [
                               PaymentsModalities(
                                 filterByFinalizations: false,
-                                saleMovements:
-                                    saleMovementsByModalities.where(
+                                saleStatistics:
+                                    saleStatisticsByModalities.where(
                                   (element) {
                                     return filter(
                                       element,
@@ -160,8 +160,8 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                               ),
                               PaymentsModalities(
                                 filterByFinalizations: true,
-                                saleMovements:
-                                    saleMovementsByFinalizations.where(
+                                saleStatistics:
+                                    saleStatisticsByFinalizations.where(
                                   (element) {
                                     return filter(
                                       element,

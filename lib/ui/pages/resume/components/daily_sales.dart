@@ -6,13 +6,13 @@ import '../../../components/components.dart';
 import '../../pages.dart';
 import 'components.dart';
 
-class DailySales extends StatelessWidget {
+class DailyStatistics extends StatelessWidget {
   final ScrollController scrollController;
-  final List<SaleMovementViewModel> saleMovements;
-  const DailySales({
+  final List<SaleStatisticViewModel> saleStatistics;
+  const DailyStatistics({
     super.key,
     required this.scrollController,
-    required this.saleMovements,
+    required this.saleStatistics,
   });
 
   @override
@@ -23,7 +23,7 @@ class DailySales extends StatelessWidget {
     return SalesInformations(
       scrollController: scrollController,
       title: R.string.salesOfTheDay,
-      totalSales: saleMovements.sumLiquidValue(
+      totalSales: saleStatistics.sumLiquidValue(
         enterprise: homePresenter.selectedEnterprise,
         filterYear: homePresenter.selectedDate.year,
         filterMonth: homePresenter.selectedDate.month,
@@ -66,7 +66,7 @@ class DailySales extends StatelessWidget {
           style: Theme.of(context).textTheme.titleSmall,
         ),
         Text(
-          saleMovements
+          saleStatistics
               .quantitySales(
                 enterprise: homePresenter.selectedEnterprise,
                 filterYear: homePresenter.selectedDate.year,
@@ -84,7 +84,7 @@ class DailySales extends StatelessWidget {
           style: Theme.of(context).textTheme.titleSmall,
         ),
         Text(
-          (saleMovements.ticketAverage(
+          (saleStatistics.ticketAverage(
             homePresenter.selectedEnterprise,
             filterYear: homePresenter.selectedDate.year,
             filterMonth: homePresenter.selectedDate.month,

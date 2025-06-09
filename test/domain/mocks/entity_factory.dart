@@ -49,8 +49,8 @@ class EntityFactory {
     );
   }
 
-  static SaleMovementEntity makeSaleMovementEntity({int? enterpriseId}) =>
-      SaleMovementEntity(
+  static SaleStatisticsEntity makeSaleStatisticEntity({int? enterpriseId}) =>
+      SaleStatisticsEntity(
         QuantityOfProducts: faker.randomGenerator.decimal(),
         TotalRepositionCost: faker.randomGenerator.decimal(),
         LiquidValue: faker.randomGenerator.decimal(),
@@ -97,7 +97,7 @@ class EntityFactory {
         enabled: enabled ?? faker.randomGenerator.boolean(),
       );
 
-  static GetSalesParams makeGetSalesParams() => GetSalesParams(
+  static GetSaleStatisticsParams makeGetSalesParams() => GetSaleStatisticsParams(
         startDate: faker.date.dateTime(),
         endDate: faker.date.dateTime(),
         enterpriseIds: [

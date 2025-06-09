@@ -11,14 +11,14 @@ class GetxProductsPresenter extends GetxController
     with
         LoadingManager,
         UIErrorManager,
-        LastGetSalesParamsManager,
+        LastGetSalesStatisticsParamsManager,
         PeriodTypeManager
     implements ProductsPresenter {
-  final LoadSaleMovements loadSaleMovements;
+  final LoadSaleStatistics loadSaleStatistics;
   final LocalStorage localStorage;
 
   GetxProductsPresenter({
-    required this.loadSaleMovements,
+    required this.loadSaleStatistics,
     required this.localStorage,
   });
 
@@ -35,20 +35,20 @@ class GetxProductsPresenter extends GetxController
         selectedPeriod = periodType;
       }
 
-      final canSearchAgain = SalesHelper.canSearch(
+      final canSearchAgain = StatisticsHelper.canSearch(
         forceRefresh: forceRefresh,
-        lastGetSalesParams: selectedPeriodValue == PeriodType.daily
+        lastParams: selectedPeriodValue == PeriodType.daily
             ? lastGetDailyParams
             : lastGetMonthlyParams,
         selectedDate: homePresenter.selectedDate,
         periodType: selectedPeriodValue,
       );
 
-      bool changedEnterprise = SalesHelper.changedTheEnterprise(
+      bool changedEnterprise = StatisticsHelper.changedTheEnterprise(
         selectedPeriodType: selectedPeriodValue,
         selectedEnterprise: homePresenter.selectedEnterprise,
-        lastGetDailyParams: lastGetDailyParams,
-        lastGetMonthlyParams: lastGetMonthlyParams,
+        lastDailyParams: lastGetDailyParams,
+        lastMonthlyParams: lastGetMonthlyParams,
       );
 
       if (!canSearchAgain && !changedEnterprise) {
@@ -69,7 +69,7 @@ class GetxProductsPresenter extends GetxController
         0,
       );
 
-      final params = GetSalesParams(
+      final params = GetSaleStatisticsParams(
         startDate: startDate,
         endDate: selectedPeriodValue == PeriodType.daily ? startDate : endDate,
         groupByDay: true,
@@ -81,18 +81,18 @@ class GetxProductsPresenter extends GetxController
             : [homePresenter.selectedEnterprise!.id!.toInt()],
       );
 
-      final response = await loadSaleMovements.get(params);
+      final response = await loadSaleStatistics.get(params);
       lastParams = params;
 
       final newSales = (response as List)
-          .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+          .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
           .toList();
       if (selectedPeriodValue == PeriodType.daily) {
         lastGetDailyParams = params;
-        dailySaleMovements = newSales;
+        dailyStatistics = newSales;
       } else {
         lastGetMonthlyParams = params;
-        monthlySaleMovements = newSales;
+        monthlyStatistics = newSales;
       }
     } catch (e) {
       mainError = UIError.unexpected;
@@ -101,17 +101,17 @@ class GetxProductsPresenter extends GetxController
     }
   }
 
-  final _dailySaleMovements = Rx<List<SaleMovementViewModel>?>(null);
+  final _dailyStatistics = Rx<List<SaleStatisticViewModel>?>(null);
   @override
-  List<SaleMovementViewModel>? get dailySaleMovements =>
-      _dailySaleMovements.value;
-  set dailySaleMovements(List<SaleMovementViewModel>? value) =>
-      _dailySaleMovements.value = value;
+  List<SaleStatisticViewModel>? get dailyStatistics =>
+      _dailyStatistics.value;
+  set dailyStatistics(List<SaleStatisticViewModel>? value) =>
+      _dailyStatistics.value = value;
 
-  final _monthlySaleMovements = Rx<List<SaleMovementViewModel>?>(null);
+  final _monthlyStatistics = Rx<List<SaleStatisticViewModel>?>(null);
   @override
-  List<SaleMovementViewModel>? get monthlySaleMovements =>
-      _monthlySaleMovements.value;
-  set monthlySaleMovements(List<SaleMovementViewModel>? value) =>
-      _monthlySaleMovements.value = value;
+  List<SaleStatisticViewModel>? get monthlyStatistics =>
+      _monthlyStatistics.value;
+  set monthlyStatistics(List<SaleStatisticViewModel>? value) =>
+      _monthlyStatistics.value = value;
 }

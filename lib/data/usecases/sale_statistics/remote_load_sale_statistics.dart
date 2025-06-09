@@ -1,4 +1,4 @@
-import 'package:celta_dash/domain/entities/sale_movement_entity.dart';
+import 'package:celta_dash/domain/entities/sale_statistics_entity.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/helpers/helpers.dart';
@@ -7,13 +7,13 @@ import '../../../main/builders/builders.dart';
 import '../../http/http.dart';
 import '../../models/models.dart';
 
-class RemoteLoadSaleMovements implements LoadSaleMovements {
+class RemoteLoadSaleStatistics implements LoadSaleStatistics {
   final HttpClient httpAdapter;
 
-  const RemoteLoadSaleMovements(this.httpAdapter);
+  const RemoteLoadSaleStatistics(this.httpAdapter);
 
   @override
-  Future<List<SaleMovementEntity>> get(GetSalesParams params) async {
+  Future<List<SaleStatisticsEntity>> get(GetSaleStatisticsParams params) async {
     final url = EnterpriseBuilder.entity?.baseUrl;
 
     try {
@@ -48,7 +48,7 @@ class RemoteLoadSaleMovements implements LoadSaleMovements {
       );
 
       return (response['results'] as List)
-          .map((e) => SaleMovementModel.fromJson(e).toEntity())
+          .map((e) => SaleStatisticsModel.fromJson(e).toEntity())
           .toList();
     } catch (e) {
       debugPrint(e.toString());

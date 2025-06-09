@@ -78,15 +78,15 @@ class _ResumePageState extends State<ResumePage>
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
                 child: Obx(() {
-                  final saleMovements = resumePresenter.saleMovements;
-                  final salesByEnterprise = saleMovements
+                  final saleStatistics = resumePresenter.saleStatistics;
+                  final salesByEnterprise = saleStatistics
                       ?.filteredSales(
                         enterprise: homePresenter.selectedEnterprise,
                       )
                       .map((e) => e.toViewModel())
                       .toList();
 
-                  if (saleMovements == null) {
+                  if (saleStatistics == null) {
                     return EmptySales(isLoading: loadingSnap.data == true);
                   }
                   return Column(
@@ -99,16 +99,16 @@ class _ResumePageState extends State<ResumePage>
                           salesByEnterprise.isNotEmpty)
                         Column(
                           children: [
-                            DailySales(
+                            DailyStatistics(
                               scrollController: scrollController,
-                              saleMovements: saleMovements,
+                              saleStatistics: saleStatistics,
                             ),
                             SizedBox(height: 8),
-                            MonthlyAnalysis(saleMovements: saleMovements),
+                            MonthlyAnalysis(saleStatistics: saleStatistics),
                             // const SizedBox(height: 8),
                             // SalesInformations(
                             //   scrollController: scrollController,
-                            //   totalSales: saleMovements.sumLiquidValue(
+                            //   totalSales: saleStatistics.sumLiquidValue(
                             //     enterprise: homePresenter.selectedEnterprise,
                             //     filterYear: homePresenter.selectedDate.year,
                             //     filterMonth: homePresenter.selectedDate.month,
@@ -122,13 +122,13 @@ class _ResumePageState extends State<ResumePage>
                             //
                             // const SizedBox(height: 8),
                             // DailyAnalysis(
-                            //   saleMovements: saleMovements,
+                            //   saleStatistics: saleStatistics,
                             //   scrollController: scrollController,
                             // ),
                             SizedBox(height: 8),
                           ],
                         ),
-                      GroupOfStores(saleMovements: saleMovements),
+                      GroupOfStores(saleStatistics: saleStatistics),
                       SizedBox(height: 15),
                     ],
                   );

@@ -24,18 +24,18 @@ class _OperatorsPageState extends State<OperatorsPage> {
     });
   }
 
-  List<SaleMovementViewModel>? getSales({
-    required List<SaleMovementViewModel>? dailySales,
-    required List<SaleMovementViewModel>? monthlySales,
-    required List<SaleMovementViewModel>? yearlySales,
+  List<SaleStatisticViewModel>? getSales({
+    required List<SaleStatisticViewModel>? dailyStatistics,
+    required List<SaleStatisticViewModel>? monthlyStatistics,
+    required List<SaleStatisticViewModel>? yearlyStatistics,
     required OperatorsPresenter operatorsPresenter,
   }) {
     if (operatorsPresenter.selectedPeriodValue == PeriodType.daily) {
-      return dailySales;
+      return dailyStatistics;
     } else if (operatorsPresenter.selectedPeriodValue == PeriodType.monthly) {
-      return monthlySales;
+      return monthlyStatistics;
     } else if (operatorsPresenter.selectedPeriodValue == PeriodType.yearly) {
-      return yearlySales;
+      return yearlyStatistics;
     }
     return null;
   }
@@ -95,7 +95,7 @@ class _OperatorsPageState extends State<OperatorsPage> {
                   ),
                   Expanded(
                     child: Obx(() {
-                      final dailySales = operatorsPresenter.dailySales
+                      final dailyStatistics = operatorsPresenter.dailyStatistics
                           ?.filteredSales(
                             enterprise: homePresenter.selectedEnterprise,
                             filterMonth: homePresenter.selectedDate.month,
@@ -104,7 +104,7 @@ class _OperatorsPageState extends State<OperatorsPage> {
                           .map((e) => e.toViewModel())
                           .toList();
 
-                      final monthlySales = operatorsPresenter.monthlySales
+                      final monthlyStatistics = operatorsPresenter.monthlyStatistics
                           ?.filteredSales(
                             enterprise: homePresenter.selectedEnterprise,
                             filterMonth: homePresenter.selectedDate.month,
@@ -112,7 +112,7 @@ class _OperatorsPageState extends State<OperatorsPage> {
                           .map((e) => e.toViewModel())
                           .toList();
 
-                      final yearlySales = operatorsPresenter.yearlySales
+                      final yearlyStatistics = operatorsPresenter.yearlyStatistics
                           ?.filteredSales(
                             enterprise: homePresenter.selectedEnterprise,
                             filterYear: homePresenter.selectedDate.year,
@@ -121,9 +121,9 @@ class _OperatorsPageState extends State<OperatorsPage> {
                           .toList();
 
                       final sales = getSales(
-                          dailySales: dailySales,
-                          monthlySales: monthlySales,
-                          yearlySales: yearlySales,
+                          dailyStatistics: dailyStatistics,
+                          monthlyStatistics: monthlyStatistics,
+                          yearlyStatistics: yearlyStatistics,
                           operatorsPresenter: operatorsPresenter);
 
                       if (sales == null || sales.isEmpty == true) {
@@ -154,7 +154,7 @@ class _OperatorsPageState extends State<OperatorsPage> {
                             rowValues: sales
                                 .fold<
                                         Map<String,
-                                            List<SaleMovementViewModel>>>({},
+                                            List<SaleStatisticViewModel>>>({},
                                     (map, e) {
                                   final operator =
                                       e.CashierOperator ?? "Unknown";

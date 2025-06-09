@@ -4,7 +4,7 @@ import '../../helpers/helpers.dart';
 import '../pages.dart';
 
 abstract class CompareDaysPresenter implements Listenable {
-  List<SaleMovementViewModel>? get saleMovements;
+  List<SaleStatisticViewModel>? get saleStatistics;
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
   DateTime? get selectedFirstDay;

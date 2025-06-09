@@ -9,16 +9,16 @@ import '../mixins/mixins.dart';
 
 class GetxPaymentTypePresenter extends GetxController
     with
-        SaleMovementManager,
+        SaleStatisticsManager,
         UIErrorManager,
         LoadingManager,
-        LastGetSalesParamsManager,
+        LastGetSalesStatisticsParamsManager,
         PeriodTypeManager
     implements PaymentTypePresenter {
-  final LoadSaleMovements loadSaleMovements;
+  final LoadSaleStatistics loadSaleStatistics;
 
   GetxPaymentTypePresenter({
-    required this.loadSaleMovements,
+    required this.loadSaleStatistics,
   });
 
   @override
@@ -41,9 +41,9 @@ class GetxPaymentTypePresenter extends GetxController
         selectedPeriod = periodType;
       }
 
-      final canSearchAgain = SalesHelper.canSearch(
+      final canSearchAgain = StatisticsHelper.canSearch(
         forceRefresh: forceRefresh,
-        lastGetSalesParams: lastGetSalesParams,
+        lastParams: lastGetStatisticsParams,
         selectedDate: homePresenter.selectedDate,
         periodType: selectedPeriodValue,
       );
@@ -66,8 +66,8 @@ class GetxPaymentTypePresenter extends GetxController
         1,
       ).subtract(Duration(days: 1));
 
-      final salesByModality = await loadSaleMovements.get(
-        GetSalesParams(
+      final salesByModality = await loadSaleStatistics.get(
+        GetSaleStatisticsParams(
           startDate: startDate,
           endDate:
               selectedPeriodValue == PeriodType.daily ? startDate : endDate,
@@ -77,11 +77,11 @@ class GetxPaymentTypePresenter extends GetxController
         ),
       );
 
-      saleMovements = salesByModality
-          .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+      saleStatistics = salesByModality
+          .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
           .toList();
 
-      final getSalesParams = GetSalesParams(
+      final getSalesParams = GetSaleStatisticsParams(
         startDate: startDate,
         endDate: selectedPeriodValue == PeriodType.daily ? startDate : endDate,
         groupByEnterprise: true,
@@ -89,10 +89,10 @@ class GetxPaymentTypePresenter extends GetxController
         groupByPaymentFinalization: true,
       );
 
-      final salesByFinalization = await loadSaleMovements.get(getSalesParams);
+      final salesByFinalization = await loadSaleStatistics.get(getSalesParams);
 
       salesByFinaliztions = salesByFinalization
-          .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+          .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
           .toList();
 
       lastParams = getSalesParams;
@@ -103,10 +103,11 @@ class GetxPaymentTypePresenter extends GetxController
     }
   }
 
-  final _saleMovementsFinalizations = Rx<List<SaleMovementViewModel>?>(null);
+  final _saleStatisticsByFinalizations =
+      Rx<List<SaleStatisticViewModel>?>(null);
   @override
-  List<SaleMovementViewModel>? get saleMovementsByFinalizations =>
-      _saleMovementsFinalizations.value;
-  set salesByFinaliztions(List<SaleMovementViewModel>? value) =>
-      _saleMovementsFinalizations.value = value;
+  List<SaleStatisticViewModel>? get saleStatisticsByFinalizations =>
+      _saleStatisticsByFinalizations.value;
+  set salesByFinaliztions(List<SaleStatisticViewModel>? value) =>
+      _saleStatisticsByFinalizations.value = value;
 }

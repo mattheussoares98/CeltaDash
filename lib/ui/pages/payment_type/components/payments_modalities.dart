@@ -5,11 +5,11 @@ import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
 class PaymentsModalities extends StatefulWidget {
-  final List<SaleMovementViewModel> saleMovements;
+  final List<SaleStatisticViewModel> saleStatistics;
   final bool filterByFinalizations;
   const PaymentsModalities({
     super.key,
-    required this.saleMovements,
+    required this.saleStatistics,
     required this.filterByFinalizations,
   });
 
@@ -36,8 +36,8 @@ class _PaymentsModalitiesState extends State<PaymentsModalities> {
           titleMinHeight: 40,
           indexToSort: 1,
           columnsIndexToSum: [1],
-          rowValues: widget.saleMovements
-              .fold<Map<String, List<SaleMovementViewModel>>>({}, (acc, sale) {
+          rowValues: widget.saleStatistics
+              .fold<Map<String, List<SaleStatisticViewModel>>>({}, (acc, sale) {
                 final key = widget.filterByFinalizations
                     ? sale.PaymentFinalization ?? 'Undefined'
                     : sale.PaymentModality ?? 'Undefined';
@@ -53,7 +53,7 @@ class _PaymentsModalitiesState extends State<PaymentsModalities> {
                 final totalQuantity = sales.fold<int>(
                     0, (sum, s) => sum + (s.QuantitySales?.toInt() ?? 1));
                 final overallValue =
-                    widget.saleMovements.toList().sumLiquidValue();
+                    widget.saleStatistics.toList().sumLiquidValue();
         
                 return [
                   PersonalizedTableCell(

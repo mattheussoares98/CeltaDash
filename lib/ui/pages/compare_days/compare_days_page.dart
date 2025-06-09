@@ -75,9 +75,9 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
               child: Obx(() {
                 Get.put<CompareDaysPresenter>(compareDaysPresenter);
 
-                final saleMovements = compareDaysPresenter.saleMovements;
+                final saleStatistics = compareDaysPresenter.saleStatistics;
 
-                if (saleMovements == null || saleMovements.isEmpty) {
+                if (saleStatistics == null || saleStatistics.isEmpty) {
                   return EmptySales(isLoading: loadingSnap.data == true);
                 }
 

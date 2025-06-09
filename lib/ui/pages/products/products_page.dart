@@ -20,15 +20,15 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
   StreamSubscription? mainErrorSubscription;
 
   List<List<PersonalizedTableCell>> constructRows(
-    List<SaleMovementViewModel> saleMovements,
+    List<SaleStatisticViewModel> saleStatistics,
   ) {
-    final sorted = [...saleMovements]..sort((a, b) =>
+    final sorted = [...saleStatistics]..sort((a, b) =>
         (b.LiquidValue?.toDouble() ?? 0)
             .compareTo(a.LiquidValue?.toDouble() ?? 0));
 
     List<List<PersonalizedTableCell>> sales = [];
 
-    for (var index = 0; index < saleMovements.length; index++) {
+    for (var index = 0; index < saleStatistics.length; index++) {
       final sale = sorted[index];
       final parts = sale.Product?.split('-');
       final productName =
@@ -118,7 +118,7 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                 ),
                 Expanded(
                   child: Obx(() {
-                    final dailySales = productsPresenter.dailySaleMovements
+                    final dailyStatistics = productsPresenter.dailyStatistics
                         ?.filteredSales(
                           enterprise: homePresenter.selectedEnterprise,
                           filterMonth: homePresenter.selectedDate.month,
@@ -131,7 +131,7 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                         .map((e) => e.toViewModel())
                         .toList();
 
-                    final monthlySales = productsPresenter.monthlySaleMovements
+                    final monthlyStatistics = productsPresenter.monthlyStatistics
                         ?.filteredSales(
                           enterprise: homePresenter.selectedEnterprise,
                           filterMonth: homePresenter.selectedDate.month,
@@ -142,8 +142,8 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
 
                     final sales = productsPresenter.selectedPeriodValue ==
                             PeriodType.daily
-                        ? dailySales
-                        : monthlySales;
+                        ? dailyStatistics
+                        : monthlyStatistics;
 
                     if (sales == null || sales.isEmpty) {
                       return EmptySales(isLoading: loadingSnap.data == true);
@@ -184,8 +184,8 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                           rowValues: constructRows(
                               productsPresenter.selectedPeriodValue ==
                                       PeriodType.daily
-                                  ? dailySales!
-                                  : monthlySales!),
+                                  ? dailyStatistics!
+                                  : monthlyStatistics!),
                         ),
                       ],
                     );

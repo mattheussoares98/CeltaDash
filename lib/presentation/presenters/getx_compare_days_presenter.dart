@@ -8,12 +8,12 @@ import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
 class GetxCompareDaysPresenter extends GetxController
-    with SaleMovementManager, UIErrorManager, LoadingManager
+    with SaleStatisticsManager, UIErrorManager, LoadingManager
     implements CompareDaysPresenter {
-  final LoadSaleMovements loadSaleMovements;
+  final LoadSaleStatistics loadSaleStatistics;
 
   GetxCompareDaysPresenter({
-    required this.loadSaleMovements,
+    required this.loadSaleStatistics,
   });
 
   @override
@@ -36,12 +36,12 @@ class GetxCompareDaysPresenter extends GetxController
 
       _selectedFirstDay = firstDay;
       _selectedSecondDay = secondDay;
-      List<SaleMovementViewModel> firstDayMovements = [];
-      List<SaleMovementViewModel> secondDayMovements = [];
+      List<SaleStatisticViewModel> firstDayMovements = [];
+      List<SaleStatisticViewModel> secondDayMovements = [];
 
       if (firstDay != null) {
-        final saleMovements = await loadSaleMovements.get(
-          GetSalesParams(
+        final saleStatistics = await loadSaleStatistics.get(
+          GetSaleStatisticsParams(
             startDate: firstDay,
             // groupByYear: true,
             // groupByMonth: true,
@@ -56,14 +56,14 @@ class GetxCompareDaysPresenter extends GetxController
           ),
         );
 
-        firstDayMovements = saleMovements
-            .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+        firstDayMovements = saleStatistics
+            .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
             .toList();
       }
 
       if (secondDay != null) {
-        final saleMovements = await loadSaleMovements.get(
-          GetSalesParams(
+        final saleStatistics = await loadSaleStatistics.get(
+          GetSaleStatisticsParams(
             startDate: secondDay,
             // groupByYear: true,
             // groupByMonth: true,
@@ -78,12 +78,12 @@ class GetxCompareDaysPresenter extends GetxController
           ),
         );
 
-        secondDayMovements = saleMovements
-            .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+        secondDayMovements = saleStatistics
+            .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
             .toList();
       }
 
-      saleMovements = firstDayMovements + secondDayMovements;
+      saleStatistics = firstDayMovements + secondDayMovements;
     } on DomainError catch (e) {
       switch (e) {
         case DomainError.sameDays:

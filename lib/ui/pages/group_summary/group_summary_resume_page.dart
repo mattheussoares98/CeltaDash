@@ -7,7 +7,7 @@ import 'components/components.dart';
 
 class GroupSummaryResumePage extends StatelessWidget {
   final double groupSalesTotalLiquid;
-  final List<SaleMovementViewModel> groupSales;
+  final List<SaleStatisticViewModel> groupSales;
   final int groupSalesQuantity;
   const GroupSummaryResumePage({
     super.key,

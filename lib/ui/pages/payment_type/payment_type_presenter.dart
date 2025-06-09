@@ -6,11 +6,11 @@ import '../../helpers/helpers.dart';
 import '../pages.dart';
 
 abstract class PaymentTypePresenter implements Listenable {
-  List<SaleMovementViewModel>? get saleMovements;
-  List<SaleMovementViewModel>? get saleMovementsByFinalizations;
+  List<SaleStatisticViewModel>? get saleStatistics;
+  List<SaleStatisticViewModel>? get saleStatisticsByFinalizations;
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
-  GetSalesParams? get lastGetDailyParams;
+  GetSaleStatisticsParams? get lastGetDailyParams;
   PeriodType get selectedPeriodValue;
 
   Future<void> getSales(

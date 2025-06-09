@@ -51,16 +51,16 @@ class CompareTable extends StatelessWidget {
         2: FixedColumnWidth(dayWidth),
         3: FixedColumnWidth(compareDaysWidth),
       },
-      rowValues: compareDaysPresenter.saleMovements!
+      rowValues: compareDaysPresenter.saleStatistics!
           .uniqueHours()
           .toList()
           .map((hour) {
-        final t1 = compareDaysPresenter.saleMovements!
+        final t1 = compareDaysPresenter.saleStatistics!
             .totalForHourOnDate(hour, firstDay);
-        final t2 = compareDaysPresenter.saleMovements!
+        final t2 = compareDaysPresenter.saleStatistics!
             .totalForHourOnDate(hour, secondDay);
         final diff =
-            compareDaysPresenter.saleMovements!.differenceForHour(t1, t2);
+            compareDaysPresenter.saleStatistics!.differenceForHour(t1, t2);
 
         return [
           PersonalizedTableCell(value: hour),

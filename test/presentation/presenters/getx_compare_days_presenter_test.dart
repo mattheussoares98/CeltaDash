@@ -20,9 +20,9 @@ void main() {
 
   late HomePresenterSpy homePresenter;
 
-  late LoadSaleMovementsSpy loadSaleMovements;
+  late LoadSaleStatisticsSpy loadSaleStatistics;
 
-  late List<SaleMovementEntity> saleMovementsEntities;
+  late List<SaleStatisticsEntity> saleStatisticsEntities;
   late DateTime firstDay;
   late DateTime secondDay;
 
@@ -30,28 +30,28 @@ void main() {
   Get.testMode = true;
 
   void initUsecases() {
-    loadSaleMovements = LoadSaleMovementsSpy();
+    loadSaleStatistics = LoadSaleStatisticsSpy();
   }
 
   void initPresenters() {
     sut = GetxCompareDaysPresenter(
-      loadSaleMovements: loadSaleMovements,
+      loadSaleStatistics: loadSaleStatistics,
     );
     homePresenter = HomePresenterSpy();
   }
 
   void initEntities() {
-    saleMovementsEntities = [
-      EntityFactory.makeSaleMovementEntity(),
-      EntityFactory.makeSaleMovementEntity(),
-      EntityFactory.makeSaleMovementEntity(),
+    saleStatisticsEntities = [
+      EntityFactory.makeSaleStatisticEntity(),
+      EntityFactory.makeSaleStatisticEntity(),
+      EntityFactory.makeSaleStatisticEntity(),
     ];
     firstDay = faker.date.dateTime();
     secondDay = faker.date.dateTime();
   }
 
   void initMockSuccess() {
-    loadSaleMovements.mockGet(saleMovementsEntities);
+    loadSaleStatistics.mockGet(saleStatisticsEntities);
     homePresenter.selectedEnterpriseMock =
         EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
             .toViewModel();
@@ -68,7 +68,7 @@ void main() {
     registerFallbackValue(EntityFactory.makeGetSalesParams());
   });
 
-  group("Load sales movements", () {
+  group("Load sales Statistics", () {
     test("Should emit correct values on success", () async {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(sut.mainErrorStream, emits(null));
@@ -83,7 +83,7 @@ void main() {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(sut.mainErrorStream, emitsInOrder([null, UIError.sameDays]));
 
-      loadSaleMovements.mockGetError();
+      loadSaleStatistics.mockGetError();
 
       await sut.getSales(
         homePresenter: homePresenter,
@@ -96,7 +96,7 @@ void main() {
       expectLater(
           sut.mainErrorStream, emitsInOrder([null, UIError.unexpected]));
 
-      loadSaleMovements.mockGetError();
+      loadSaleStatistics.mockGetError();
 
       await sut.getSales(
         homePresenter: homePresenter,
@@ -104,7 +104,7 @@ void main() {
         secondDay: secondDay,
       );
     });
-    test("Should update firstDaySaleMovements correctly", () async {
+    test("Should update firstDaySaleStatistics correctly", () async {
       await sut.getSales(
         homePresenter: homePresenter,
         firstDay: firstDay,
@@ -112,28 +112,28 @@ void main() {
       );
 
       expect(
-        sut.saleMovements,
+        sut.saleStatistics,
         [
-          ...saleMovementsEntities
-              .map((e) => SaleMovementModel.fromEntity(e).toViewModel()),
-          ...saleMovementsEntities
-              .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+          ...saleStatisticsEntities
+              .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel()),
+          ...saleStatisticsEntities
+              .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
         ],
       );
     });
-    test("Should update secondDaySaleMovements correctly", () async {
+    test("Should update secondDaySaleStatistics correctly", () async {
       await sut.getSales(
           homePresenter: homePresenter,
           firstDay: firstDay,
           secondDay: secondDay);
 
       expect(
-        sut.saleMovements,
+        sut.saleStatistics,
         [
-          ...saleMovementsEntities
-              .map((e) => SaleMovementModel.fromEntity(e).toViewModel()),
-          ...saleMovementsEntities
-              .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+          ...saleStatisticsEntities
+              .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel()),
+          ...saleStatisticsEntities
+              .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
         ],
       );
     });
@@ -161,8 +161,8 @@ void main() {
       );
 
       verify(
-        () => loadSaleMovements.get(
-          GetSalesParams(
+        () => loadSaleStatistics.get(
+          GetSaleStatisticsParams(
             groupByYear: true,
             groupByMonth: true,
             groupByDay: true,
@@ -186,8 +186,8 @@ void main() {
       );
 
       verify(
-        () => loadSaleMovements.get(
-          GetSalesParams(
+        () => loadSaleStatistics.get(
+          GetSaleStatisticsParams(
             groupByYear: true,
             groupByMonth: true,
             groupByDay: true,
@@ -216,8 +216,8 @@ void main() {
       );
 
       verify(
-        () => loadSaleMovements.get(
-          GetSalesParams(
+        () => loadSaleStatistics.get(
+          GetSaleStatisticsParams(
             groupByYear: true,
             groupByMonth: true,
             groupByDay: true,
@@ -246,8 +246,8 @@ void main() {
       );
 
       verify(
-        () => loadSaleMovements.get(
-          GetSalesParams(
+        () => loadSaleStatistics.get(
+          GetSaleStatisticsParams(
             groupByYear: true,
             groupByMonth: true,
             groupByDay: true,

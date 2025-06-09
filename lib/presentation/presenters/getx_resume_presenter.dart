@@ -9,18 +9,18 @@ import '../mixins/mixins.dart';
 
 class GetxResumePresenter extends GetxController
     with
-        SaleMovementManager,
+        SaleStatisticsManager,
         UIErrorManager,
         LoadingManager,
-        LastGetSalesParamsManager,
+        LastGetSalesStatisticsParamsManager,
         PeriodTypeManager
     implements ResumePresenter {
   final NavigateTo navigateTo;
-  final LoadSaleMovements loadSaleMovements;
+  final LoadSaleStatistics loadSaleStatistics;
 
   GetxResumePresenter({
     required this.navigateTo,
-    required this.loadSaleMovements,
+    required this.loadSaleStatistics,
   });
 
   @override
@@ -78,9 +78,9 @@ class GetxResumePresenter extends GetxController
         selectedPeriod = periodType;
       }
 
-      final canSearchAgain = SalesHelper.canSearch(
+      final canSearchAgain = StatisticsHelper.canSearch(
         forceRefresh: forceRefresh,
-        lastGetSalesParams: lastGetSalesParams,
+        lastParams: lastGetStatisticsParams,
         selectedDate: homePresenter.selectedDate,
         periodType: PeriodType.monthly,
       );
@@ -100,16 +100,16 @@ class GetxResumePresenter extends GetxController
         1,
       ).subtract(Duration(days: 1));
 
-      final salesParams = GetSalesParams(
+      final salesParams = GetSaleStatisticsParams(
         startDate: startDate,
         endDate: endDate,
         groupByEnterprise: true,
         groupByDay: true,
       );
-      final result = await loadSaleMovements.get(salesParams);
+      final result = await loadSaleStatistics.get(salesParams);
 
-      saleMovements = result
-          .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+      saleStatistics = result
+          .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
           .toList();
 
       lastParams = salesParams;

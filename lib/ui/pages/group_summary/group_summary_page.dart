@@ -70,13 +70,13 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
                 ),
               ),
               Obx(() {
-                final saleMovements = resumePresenter.saleMovements;
+                final saleStatistics = resumePresenter.saleStatistics;
         
-                if (saleMovements == null || saleMovements.isEmpty) {
+                if (saleStatistics == null || saleStatistics.isEmpty) {
                   return EmptySales(isLoading: false);
                 }
         
-                final groupSales = saleMovements
+                final groupSales = saleStatistics
                     .filteredSales(
                       filterDay:
                           resumePresenter.selectedPeriodValue == PeriodType.daily
@@ -100,7 +100,7 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
                     children: [
                       GroupSummaryDetailsPage(
                         groupSalesTotalLiquid: groupSalesTotalLiquid,
-                        saleMovements: saleMovements,
+                        saleStatistics: saleStatistics,
                       ),
                       GroupSummaryResumePage(
                         groupSalesTotalLiquid: groupSalesTotalLiquid,
