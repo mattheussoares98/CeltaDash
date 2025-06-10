@@ -82,7 +82,7 @@ void main() {
             "endDate": params.endDate.toIso8601String(),
           },
           "DocumentNumbers": params.documentNumbers,
-          "OnlyCancelled": params.onlyCancelled,
+          "onlyCancelled": params.onlyCancelled,
           "MountFiscalNoteType": params.mountFiscalNoteType,
           "MountCustomer": params.mountCustomer,
           "MountSeller": params.mountSeller,
