@@ -99,4 +99,9 @@ class GetxCanceledSalesPresenter extends GetxController
   EcSaleMovementViewModel? get selectedSaleMovement => _selectedSaleMovement;
   set selectedSaleMovement(EcSaleMovementViewModel? value) =>
       _selectedSaleMovement = value;
+
+  @override
+  void updateSelectedSaleMovement(EcSaleMovementViewModel sale) {
+    selectedSaleMovement = sale;
+  }
 }

@@ -20,4 +20,6 @@ abstract class CanceledSalesPresenter implements Listenable {
     PeriodType? periodType,
     bool? forceRefresh,
   });
+
+  void updateSelectedSaleMovement(EcSaleMovementViewModel sale);
 }

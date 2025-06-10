@@ -425,4 +425,17 @@ void main() {
       });
     });
   });
+
+  group("Update selected sale movement", () {
+    test("Should update selected sale movement correctly", () {
+      final newSaleMovement = SaleMovementModel.fromEntity(
+        //TODO change to EcSaleMovementModel
+        EntityFactory.makeEcSaleMovementEntity(),
+      ).toViewModel();
+
+      sut.updateSelectedSaleMovement(newSaleMovement);
+
+      expect(sut.selectedSaleMovement, newSaleMovement);
+    });
+  });
 }
