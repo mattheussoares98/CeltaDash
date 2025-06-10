@@ -22,4 +22,5 @@ abstract class CanceledSalesPresenter implements Listenable {
   });
 
   void updateSelectedSaleMovement(EcSaleMovementViewModel sale);
+  Future<void> getSelectedSaleDetails();
 }

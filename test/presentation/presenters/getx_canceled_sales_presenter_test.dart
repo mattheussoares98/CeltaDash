@@ -4,6 +4,7 @@ import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:faker/faker.dart';
 
 import 'package:get/get.dart';
 
@@ -436,6 +437,81 @@ void main() {
       sut.updateSelectedSaleMovement(newSaleMovement);
 
       expect(sut.selectedSaleMovement, newSaleMovement);
+    });
+  });
+
+  group("Get selected sale movement details", () {
+    test("Should emit correct values on success", () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(sut.mainErrorStream, emits(null));
+
+      await sut.getSelectedSaleDetails();
+    });
+    test("Should emit correct values on error", () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(
+        sut.mainErrorStream,
+        emitsInOrder([null, UIError.unexpected]),
+      );
+
+      ecLoadSaleMovements.mockGetError();
+
+      await sut.getSelectedSaleDetails();
+    });
+    test("Should call load sales with correct values", () async {
+      final firstSale = SaleMovementModel.fromEntity(
+        saleMovementEntities.first,
+      ).toViewModel();
+
+      sut.updateSelectedSaleMovement(firstSale);
+
+      await sut.getSelectedSaleDetails();
+
+      final sale = SaleMovementModel.fromViewModel(sut.selectedSaleMovement!);
+
+      verify(() => ecLoadSaleMovements.get(
+            GetEcSaleMovementParams(
+              documentNumbers: [sale.documentNumber!],
+              enterpriseIds: [sale.enterpriseId!],
+              startDate: sale.dateHourOfBilling!,
+              endDate: sale.dateHourOfBilling!,
+              mountCustomer: true,
+              mountFiscalNoteType: true,
+              mountPaymentFinalizations: true,
+              mountProducts: true,
+              mountSeller: true,
+            ),
+          )).called(1);
+    });
+    test("Should update selected sale correctly", () async {
+      final newSale = SaleMovementModel.fromEntity(
+        SaleMovementEntity(
+          id: faker.randomGenerator.integer(100),
+          enterpriseId: faker.randomGenerator.integer(100),
+          fiscalNoteTypeId: faker.randomGenerator.integer(100),
+          sellerId: faker.randomGenerator.integer(100),
+          documentNumber: faker.randomGenerator.integer(100).toString(),
+          cashierNumber: faker.randomGenerator.integer(100).toString(),
+          dateHourOfBilling: faker.date.dateTime(),
+          totalLiquid: faker.randomGenerator.decimal(),
+          isCancelled: true,
+          fiscalNoteType: null,
+          customer: null,
+          seller: null,
+          products: null,
+          paymentFinalizations: null,
+        ),
+      ).toViewModel();
+      sut.updateSelectedSaleMovement(newSale);
+      //change the selected enterprise, but...
+
+      await sut.getSelectedSaleDetails();
+
+      final sale = SaleMovementModel.fromEntity(saleMovementEntities.first)
+          .toViewModel();
+      //always will update the selectedSaleMovement again, using the first returned value in the usecase
+
+      expect(sut.selectedSaleMovement, sale);
     });
   });
 }

@@ -27,6 +27,12 @@ class GetxCanceledSalesPresenter extends GetxController
     PeriodType? periodType,
     bool? forceRefresh,
   }) async {
+    if (isLoadingValue == true) {
+      isLoading = false;
+      isLoading = true;
+      return;
+    }
+
     isLoading = true;
     mainError = null;
     try {
@@ -103,5 +109,40 @@ class GetxCanceledSalesPresenter extends GetxController
   @override
   void updateSelectedSaleMovement(EcSaleMovementViewModel sale) {
     selectedSaleMovement = sale;
+  }
+
+  @override
+  Future<void> getSelectedSaleDetails() async {
+    isLoading = true;
+    mainError = null;
+    try {
+      if (selectedSaleMovement == null) {
+        throw DomainError.unexpected;
+      }
+      final sale = SaleMovementModel.fromViewModel(selectedSaleMovement!);
+
+      final loadedSale = await ecLoadSaleMovements.get(
+        GetEcSaleMovementParams(
+          documentNumbers: [sale.documentNumber!],
+          enterpriseIds: [sale.enterpriseId!],
+          startDate: sale.dateHourOfBilling!,
+          endDate: sale.dateHourOfBilling!,
+          mountCustomer: true,
+          mountFiscalNoteType: true,
+          mountPaymentFinalizations: true,
+          mountProducts: true,
+          mountSeller: true,
+        ),
+      );
+
+      if (loadedSale.isNotEmpty) {
+        selectedSaleMovement =
+            SaleMovementModel.fromEntity(loadedSale[0]).toViewModel();
+      }
+    } catch (e) {
+      mainError = UIError.unexpected;
+    } finally {
+      isLoading = false;
+    }
   }
 }
