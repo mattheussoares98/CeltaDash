@@ -30,11 +30,11 @@ class _SellersPageState extends State<SellersPage> {
     required List<SaleStatisticViewModel>? yearlyStatistics,
     required SellersPresenter sellersPresenter,
   }) {
-    if (sellersPresenter.selectedPeriodValue == PeriodType.daily) {
+    if (sellersPresenter.selectedPeriod == PeriodType.daily) {
       return dailyStatistics;
-    } else if (sellersPresenter.selectedPeriodValue == PeriodType.monthly) {
+    } else if (sellersPresenter.selectedPeriod == PeriodType.monthly) {
       return monthlyStatistics;
-    } else if (sellersPresenter.selectedPeriodValue == PeriodType.yearly) {
+    } else if (sellersPresenter.selectedPeriod == PeriodType.yearly) {
       return yearlyStatistics;
     }
     return null;
@@ -71,7 +71,7 @@ class _SellersPageState extends State<SellersPage> {
                     padding: const EdgeInsets.all(8.0),
                     child: SelectPeriodItems(
                       isLoading: loadingSnap.data,
-                      selectedPeriodType: sellersPresenter.selectedPeriodValue,
+                      selectedPeriodType: sellersPresenter.selectedPeriod,
                       onTapDaily: () {
                         sellersPresenter.getSales(
                           homePresenter,

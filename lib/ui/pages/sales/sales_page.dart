@@ -35,11 +35,11 @@ class _SalesPageState extends State<SalesPage>
     required List<SaleStatisticViewModel>? yearlyStatistics,
     required SalesPresenter salesPresenter,
   }) {
-    if (salesPresenter.selectedPeriodValue == PeriodType.daily) {
+    if (salesPresenter.selectedPeriod == PeriodType.daily) {
       return dailyStatistics?.isEmpty == true;
-    } else if (salesPresenter.selectedPeriodValue == PeriodType.monthly) {
+    } else if (salesPresenter.selectedPeriod == PeriodType.monthly) {
       return monthlyStatistics?.isEmpty == true;
-    } else if (salesPresenter.selectedPeriodValue == PeriodType.yearly) {
+    } else if (salesPresenter.selectedPeriod == PeriodType.yearly) {
       return yearlyStatistics?.isEmpty == true;
     }
     return true;
@@ -97,7 +97,7 @@ class _SalesPageState extends State<SalesPage>
                     children: [
                       SelectPeriodItems(
                         isLoading: loadingSnap.data,
-                        selectedPeriodType: salesPresenter.selectedPeriodValue,
+                        selectedPeriodType: salesPresenter.selectedPeriod,
                         onTapDaily: () {
                           salesPresenter.getSales(
                             homePresenter,
@@ -171,17 +171,17 @@ class _SalesPageState extends State<SalesPage>
                               //     uniqueHours: uniqueHours,
                               //   ),
                               //TODO implement in presenter
-                              if (salesPresenter.selectedPeriodValue ==
+                              if (salesPresenter.selectedPeriod ==
                                       PeriodType.daily &&
                                   dailyStatistics?.isNotEmpty == true)
                                 DayTable(dailyStatistics: dailyStatistics!),
-                              if (salesPresenter.selectedPeriodValue ==
+                              if (salesPresenter.selectedPeriod ==
                                       PeriodType.monthly &&
                                   monthlyStatistics != null &&
                                   monthlyStatistics.isNotEmpty)
                                 MonthSales(
                                     saleStatisticsByMonth: monthlyStatistics),
-                              if (salesPresenter.selectedPeriodValue ==
+                              if (salesPresenter.selectedPeriod ==
                                       PeriodType.yearly &&
                                   yearlyStatistics != null &&
                                   yearlyStatistics.isNotEmpty)

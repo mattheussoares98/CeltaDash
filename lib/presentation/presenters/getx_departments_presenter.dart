@@ -44,7 +44,7 @@ class GetxDepartmentsPresenter extends GetxController
         forceRefresh: forceRefresh,
         lastParams: lastGetStatisticsParams,
         selectedDate: homePresenter.selectedDate,
-        periodType: selectedPeriodValue,
+        periodType: selectedPeriod,
       );
 
       if (!canSearchAgain) {
@@ -54,7 +54,7 @@ class GetxDepartmentsPresenter extends GetxController
       final startDate = DateTime(
         homePresenter.selectedDate.year,
         homePresenter.selectedDate.month,
-        selectedPeriodValue == PeriodType.daily
+        selectedPeriod == PeriodType.daily
             ? homePresenter.selectedDate.day
             : 1,
       );
@@ -67,7 +67,7 @@ class GetxDepartmentsPresenter extends GetxController
 
       final getSalesParams = GetEcSaleStatisticsParams(
         startDate: startDate,
-        endDate: selectedPeriodValue == PeriodType.daily ? startDate : endDate,
+        endDate: selectedPeriod == PeriodType.daily ? startDate : endDate,
         groupByEnterprise: true,
         groupByDay: true,
         groupByProductDepartment: true,

@@ -14,7 +14,7 @@ abstract class SellersPresenter implements Listenable {
   GetEcSaleStatisticsParams? get lastGetDailyParams;
   GetEcSaleStatisticsParams? get lastGetMonthlyParams;
   GetEcSaleStatisticsParams? get lastGetYearlyParams;
-  PeriodType? get selectedPeriodValue;
+  PeriodType? get selectedPeriod;
 
   Future<void> getSales(
     HomePresenter homePresenter, {

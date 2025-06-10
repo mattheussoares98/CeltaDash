@@ -78,7 +78,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                   child: SelectPeriodItems(
                     isLoading: loadingSnap.data,
                     selectedPeriodType:
-                        departmentsPresenter.selectedPeriodValue,
+                        departmentsPresenter.selectedPeriod,
                     onTapDaily: () {
                       departmentsPresenter.getSales(
                         homePresenter,
@@ -97,7 +97,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                   final saleStatistics = departmentsPresenter.saleStatistics
                       ?.filteredSales(
                         enterprise: homePresenter.selectedEnterprise,
-                        filterDay: departmentsPresenter.selectedPeriodValue ==
+                        filterDay: departmentsPresenter.selectedPeriod ==
                                 PeriodType.daily
                             ? homePresenter.selectedDate.day
                             : null,

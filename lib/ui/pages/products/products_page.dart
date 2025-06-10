@@ -101,7 +101,7 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                   padding: const EdgeInsets.all(8.0),
                   child: SelectPeriodItems(
                     isLoading: loadingSnap.data,
-                    selectedPeriodType: productsPresenter.selectedPeriodValue,
+                    selectedPeriodType: productsPresenter.selectedPeriod,
                     onTapDaily: () {
                       productsPresenter.getSales(
                         homePresenter,
@@ -122,7 +122,7 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                         ?.filteredSales(
                           enterprise: homePresenter.selectedEnterprise,
                           filterMonth: homePresenter.selectedDate.month,
-                          filterDay: productsPresenter.selectedPeriodValue ==
+                          filterDay: productsPresenter.selectedPeriod ==
                                   PeriodType.daily
                               ? homePresenter.selectedDate.day
                               : null,
@@ -140,7 +140,7 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                         .map((e) => e.toViewModel())
                         .toList();
 
-                    final sales = productsPresenter.selectedPeriodValue ==
+                    final sales = productsPresenter.selectedPeriod ==
                             PeriodType.daily
                         ? dailyStatistics
                         : monthlyStatistics;
@@ -182,7 +182,7 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                                 value: R.string.averagePrice.toUpperCase()),
                           ],
                           rowValues: constructRows(
-                              productsPresenter.selectedPeriodValue ==
+                              productsPresenter.selectedPeriod ==
                                       PeriodType.daily
                                   ? dailyStatistics!
                                   : monthlyStatistics!),

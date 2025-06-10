@@ -30,11 +30,11 @@ class _OperatorsPageState extends State<OperatorsPage> {
     required List<SaleStatisticViewModel>? yearlyStatistics,
     required OperatorsPresenter operatorsPresenter,
   }) {
-    if (operatorsPresenter.selectedPeriodValue == PeriodType.daily) {
+    if (operatorsPresenter.selectedPeriod == PeriodType.daily) {
       return dailyStatistics;
-    } else if (operatorsPresenter.selectedPeriodValue == PeriodType.monthly) {
+    } else if (operatorsPresenter.selectedPeriod == PeriodType.monthly) {
       return monthlyStatistics;
-    } else if (operatorsPresenter.selectedPeriodValue == PeriodType.yearly) {
+    } else if (operatorsPresenter.selectedPeriod == PeriodType.yearly) {
       return yearlyStatistics;
     }
     return null;
@@ -72,7 +72,7 @@ class _OperatorsPageState extends State<OperatorsPage> {
                     child: SelectPeriodItems(
                       isLoading: loadingSnap.data,
                       selectedPeriodType:
-                          operatorsPresenter.selectedPeriodValue,
+                          operatorsPresenter.selectedPeriod,
                       onTapDaily: () {
                         operatorsPresenter.getSales(
                           homePresenter,

@@ -12,7 +12,7 @@ abstract class ProductsPresenter implements Listenable {
   List<SaleStatisticViewModel>? get monthlyStatistics;
   GetEcSaleStatisticsParams? get lastGetDailyParams;
   GetEcSaleStatisticsParams? get lastGetMonthlyParams;
-  PeriodType get selectedPeriodValue;
+  PeriodType get selectedPeriod;
 
   Future<void> getSales(
     HomePresenter homePresenter, {

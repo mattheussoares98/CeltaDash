@@ -37,15 +37,15 @@ class GetxProductsPresenter extends GetxController
 
       final canSearchAgain = StatisticsHelper.canSearch(
         forceRefresh: forceRefresh,
-        lastParams: selectedPeriodValue == PeriodType.daily
+        lastParams: selectedPeriod == PeriodType.daily
             ? lastGetDailyParams
             : lastGetMonthlyParams,
         selectedDate: homePresenter.selectedDate,
-        periodType: selectedPeriodValue,
+        periodType: selectedPeriod,
       );
 
       bool changedEnterprise = StatisticsHelper.changedTheEnterprise(
-        selectedPeriodType: selectedPeriodValue,
+        selectedPeriodType: selectedPeriod,
         selectedEnterprise: homePresenter.selectedEnterprise,
         lastDailyParams: lastGetDailyParams,
         lastMonthlyParams: lastGetMonthlyParams,
@@ -58,7 +58,7 @@ class GetxProductsPresenter extends GetxController
       final startDate = DateTime(
         homePresenter.selectedDate.year,
         homePresenter.selectedDate.month,
-        selectedPeriodValue == PeriodType.daily
+        selectedPeriod == PeriodType.daily
             ? homePresenter.selectedDate.day
             : 1,
       );
@@ -71,7 +71,7 @@ class GetxProductsPresenter extends GetxController
 
       final params = GetEcSaleStatisticsParams(
         startDate: startDate,
-        endDate: selectedPeriodValue == PeriodType.daily ? startDate : endDate,
+        endDate: selectedPeriod == PeriodType.daily ? startDate : endDate,
         groupByDay: true,
         groupByProduct: true,
         groupByEnterprise: true,
@@ -87,7 +87,7 @@ class GetxProductsPresenter extends GetxController
       final newSales = (response as List)
           .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
           .toList();
-      if (selectedPeriodValue == PeriodType.daily) {
+      if (selectedPeriod == PeriodType.daily) {
         lastGetDailyParams = params;
         dailyStatistics = newSales;
       } else {

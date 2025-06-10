@@ -75,7 +75,7 @@ class _ProfitabilityPageState extends State<ProfitabilityPage> {
                           isLoading: loadingProductsSnap.data == true ||
                               loadingDepartmentsSnap.data == true,
                           selectedPeriodType:
-                              departmentsPresenter.selectedPeriodValue,
+                              departmentsPresenter.selectedPeriod,
                           onTapDaily: () {
                             departmentsPresenter.getSales(
                               homePresenter,
@@ -96,7 +96,7 @@ class _ProfitabilityPageState extends State<ProfitabilityPage> {
                                 ?.filteredSales(
                                   enterprise: homePresenter.selectedEnterprise,
                                   filterDay: departmentsPresenter
-                                              .selectedPeriodValue ==
+                                              .selectedPeriod ==
                                           PeriodType.daily
                                       ? homePresenter.selectedDate.day
                                       : null,

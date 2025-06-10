@@ -11,7 +11,7 @@ abstract class PaymentTypePresenter implements Listenable {
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
   GetEcSaleStatisticsParams? get lastGetDailyParams;
-  PeriodType get selectedPeriodValue;
+  PeriodType get selectedPeriod;
 
   Future<void> getSales(
     HomePresenter homePresenter, {

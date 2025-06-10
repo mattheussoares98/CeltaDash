@@ -45,7 +45,7 @@ class GetxPaymentTypePresenter extends GetxController
         forceRefresh: forceRefresh,
         lastParams: lastGetStatisticsParams,
         selectedDate: homePresenter.selectedDate,
-        periodType: selectedPeriodValue,
+        periodType: selectedPeriod,
       );
 
       if (!canSearchAgain) {
@@ -55,7 +55,7 @@ class GetxPaymentTypePresenter extends GetxController
       final startDate = DateTime(
         homePresenter.selectedDate.year,
         homePresenter.selectedDate.month,
-        selectedPeriodValue == PeriodType.daily
+        selectedPeriod == PeriodType.daily
             ? homePresenter.selectedDate.day
             : 1,
       );
@@ -70,7 +70,7 @@ class GetxPaymentTypePresenter extends GetxController
         GetEcSaleStatisticsParams(
           startDate: startDate,
           endDate:
-              selectedPeriodValue == PeriodType.daily ? startDate : endDate,
+              selectedPeriod == PeriodType.daily ? startDate : endDate,
           groupByEnterprise: true,
           groupByDay: true,
           groupByPaymentModality: true,
@@ -83,7 +83,7 @@ class GetxPaymentTypePresenter extends GetxController
 
       final getSalesParams = GetEcSaleStatisticsParams(
         startDate: startDate,
-        endDate: selectedPeriodValue == PeriodType.daily ? startDate : endDate,
+        endDate: selectedPeriod == PeriodType.daily ? startDate : endDate,
         groupByEnterprise: true,
         groupByDay: true,
         groupByPaymentFinalization: true,

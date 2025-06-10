@@ -40,11 +40,11 @@ class GetxSellersPresenter extends GetxController
       }
 
       GetEcSaleStatisticsParams? lastGetSalesParams() {
-        if (selectedPeriodValue == PeriodType.daily) {
+        if (selectedPeriod == PeriodType.daily) {
           return lastGetDailyParams;
-        } else if (selectedPeriodValue == PeriodType.monthly) {
+        } else if (selectedPeriod == PeriodType.monthly) {
           return lastGetMonthlyParams;
-        } else if (selectedPeriodValue == PeriodType.yearly) {
+        } else if (selectedPeriod == PeriodType.yearly) {
           return lastGetYearlyParams;
         }
         return null;
@@ -54,11 +54,11 @@ class GetxSellersPresenter extends GetxController
         forceRefresh: forceRefresh,
         lastParams: lastGetSalesParams(),
         selectedDate: homePresenter.selectedDate,
-        periodType: selectedPeriodValue,
+        periodType: selectedPeriod,
       );
 
       final changedTheEnterprise = StatisticsHelper.changedTheEnterprise(
-        selectedPeriodType: selectedPeriodValue,
+        selectedPeriodType: selectedPeriod,
         selectedEnterprise: homePresenter.selectedEnterprise,
         lastDailyParams: lastGetDailyParams,
         lastMonthlyParams: lastGetMonthlyParams,
@@ -71,7 +71,7 @@ class GetxSellersPresenter extends GetxController
 
       late GetEcSaleStatisticsParams getSalesParams;
 
-      if (selectedPeriodValue == PeriodType.daily) {
+      if (selectedPeriod == PeriodType.daily) {
         final startDate = DateTime(
           homePresenter.selectedDate.year,
           homePresenter.selectedDate.month,
@@ -86,7 +86,7 @@ class GetxSellersPresenter extends GetxController
           groupBySeller: true,
           groupByDay: true,
         );
-      } else if (selectedPeriodValue == PeriodType.monthly) {
+      } else if (selectedPeriod == PeriodType.monthly) {
         getSalesParams = GetEcSaleStatisticsParams(
           enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
           startDate: DateTime(
@@ -103,7 +103,7 @@ class GetxSellersPresenter extends GetxController
           groupBySeller: true,
           groupByMonth: true,
         );
-      } else if (selectedPeriodValue == PeriodType.yearly) {
+      } else if (selectedPeriod == PeriodType.yearly) {
         getSalesParams = GetEcSaleStatisticsParams(
           enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
           startDate: DateTime(homePresenter.selectedDate.year),
@@ -119,13 +119,13 @@ class GetxSellersPresenter extends GetxController
           .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
           .toList();
 
-      if (selectedPeriodValue == PeriodType.daily) {
+      if (selectedPeriod == PeriodType.daily) {
         dailyStatistics = newSales;
         lastGetDailyParams = getSalesParams;
-      } else if (selectedPeriodValue == PeriodType.monthly) {
+      } else if (selectedPeriod == PeriodType.monthly) {
         monthlyStatistics = newSales;
         lastGetMonthlyParams = getSalesParams;
-      } else if (selectedPeriodValue == PeriodType.yearly) {
+      } else if (selectedPeriod == PeriodType.yearly) {
         yearlyStatistics = newSales;
         lastGetYearlyParams = getSalesParams;
       }

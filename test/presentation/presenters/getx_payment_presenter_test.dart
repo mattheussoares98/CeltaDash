@@ -86,17 +86,17 @@ void main() {
 
       test("Should update period type correctly", () async {
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
-        expect(sut.selectedPeriodValue, PeriodType.monthly);
+        expect(sut.selectedPeriod, PeriodType.monthly);
 
         homePresenter.selectedDateMock =
             faker.date.dateTime(minYear: 10, maxYear: 20);
         await sut.getSales(homePresenter, periodType: PeriodType.daily);
-        expect(sut.selectedPeriodValue, PeriodType.daily);
+        expect(sut.selectedPeriod, PeriodType.daily);
 
         homePresenter.selectedDateMock =
             faker.date.dateTime(minYear: 1, maxYear: 2);
         await sut.getSales(homePresenter, periodType: PeriodType.weekly);
-        expect(sut.selectedPeriodValue, PeriodType.weekly);
+        expect(sut.selectedPeriod, PeriodType.weekly);
       });
     });
 
@@ -271,10 +271,10 @@ void main() {
       });
       test("Should update selected period correctly", () async {
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
-        expect(sut.selectedPeriodValue, PeriodType.monthly);
+        expect(sut.selectedPeriod, PeriodType.monthly);
 
         await sut.getSales(homePresenter, periodType: PeriodType.daily);
-        expect(sut.selectedPeriodValue, PeriodType.daily);
+        expect(sut.selectedPeriod, PeriodType.daily);
       });
     });
 

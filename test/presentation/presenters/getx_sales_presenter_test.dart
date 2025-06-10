@@ -84,13 +84,13 @@ void main() {
       });
       test("Should update period type correctly", () async {
         await sut.getSales(homePresenter, periodType: PeriodType.daily);
-        expect(sut.selectedPeriodValue, PeriodType.daily);
+        expect(sut.selectedPeriod, PeriodType.daily);
 
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
-        expect(sut.selectedPeriodValue, PeriodType.monthly);
+        expect(sut.selectedPeriod, PeriodType.monthly);
 
         await sut.getSales(homePresenter, periodType: PeriodType.yearly);
-        expect(sut.selectedPeriodValue, PeriodType.yearly);
+        expect(sut.selectedPeriod, PeriodType.yearly);
       });
     });
     group("PeriodType.daily", () {

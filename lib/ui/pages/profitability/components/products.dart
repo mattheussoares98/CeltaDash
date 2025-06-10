@@ -16,7 +16,7 @@ class Products extends StatelessWidget {
     ProductsPresenter productsPresenter = Get.find();
 
     final saleStatistics =
-        productsPresenter.selectedPeriodValue == PeriodType.daily
+        productsPresenter.selectedPeriod == PeriodType.daily
             ? productsPresenter.dailyStatistics
             : productsPresenter.monthlyStatistics;
 
