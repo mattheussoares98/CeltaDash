@@ -48,9 +48,9 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
             onTapRefresh: reloadSales,
           ),
           body: Obx(() {
-            if (canceledSalesPresenter.ecSaleMovements == null) {
+            if (canceledSalesPresenter.dailySales == null) {
               return EmptySales(isLoading: loadingSnap.data == true);
-            } else if (canceledSalesPresenter.ecSaleMovements!.isEmpty) {
+            } else if (canceledSalesPresenter.dailySales!.isEmpty) {
               return Center(
                 child: Image.asset(
                   "lib/ui/assets/images/no_canceled_sales.png",
@@ -79,7 +79,7 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                     PersonalizedTableCell(value: R.string.total),
                   ],
                   rowValues: [
-                    ...canceledSalesPresenter.ecSaleMovements!.map((e) => [
+                    ...canceledSalesPresenter.dailySales!.map((e) => [
                           PersonalizedTableCell(value: e.documentNumber),
                           PersonalizedTableCell(value: e.dateHourOfBilling),
                           PersonalizedTableCell(
