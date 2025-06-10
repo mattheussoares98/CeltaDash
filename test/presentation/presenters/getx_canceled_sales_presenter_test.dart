@@ -439,9 +439,12 @@ void main() {
         EntityFactory.makeEcSaleMovementEntity(),
       ).toViewModel();
 
-      sut.updateSelectedSaleMovement(newSaleMovement);
+      expectLater(
+        sut.selectedSaleStream,
+        emitsInOrder([null, newSaleMovement]),
+      );
 
-      expect(sut.selectedSaleMovement, newSaleMovement);
+      sut.updateSelectedSaleMovement(newSaleMovement);
     });
 
     test("Should go to canceled sale details page", () {
@@ -459,9 +462,25 @@ void main() {
 
   group("Get selected sale movement details", () {
     test("Should emit correct values on success", () async {
+      final selected = SaleMovementModel.fromEntity(
+        saleMovementEntities.first,
+      ).toViewModel();
+
+      final newSaleMovement = EntityFactory.makeEcSaleMovementEntity();
+      final newSaleMovementViewModel = SaleMovementModel.fromEntity(
+        newSaleMovement,
+      ).toViewModel();
+
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(sut.mainErrorStream, emits(null));
+      expectLater(
+        sut.selectedSaleStream,
+        emitsInOrder([null, selected, null, newSaleMovementViewModel]),
+      );
 
+      sut.updateSelectedSaleMovement(selected);
+
+      ecLoadSaleMovements.mockGet([newSaleMovement]);
       await sut.getSelectedSaleDetails();
     });
     test("Should emit correct values on error", () async {
@@ -484,7 +503,7 @@ void main() {
 
       await sut.getSelectedSaleDetails();
 
-      final sale = SaleMovementModel.fromViewModel(sut.selectedSaleMovement!);
+      final sale = SaleMovementModel.fromEntity(saleMovementEntities.first);
 
       final date = DateTime(
         sale.dateHourOfBilling!.year,
@@ -529,13 +548,12 @@ void main() {
       sut.updateSelectedSaleMovement(newSale);
       //change the selected enterprise, but...
 
-      await sut.getSelectedSaleDetails();
-
       final sale = SaleMovementModel.fromEntity(saleMovementEntities.first)
           .toViewModel();
-      //always will update the selectedSaleMovement again, using the first returned value in the usecase
+      expectLater(sut.selectedSaleStream, emitsInOrder([null, sale]));
 
-      expect(sut.selectedSaleMovement, sale);
+      await sut.getSelectedSaleDetails();
+      //always will update the selectedSaleMovement again, using the first returned value in the usecase
     });
   });
 }

@@ -102,15 +102,18 @@ class GetxCanceledSalesPresenter extends GetxController
     }
   }
 
-  EcSaleMovementViewModel? _selectedSaleMovement;
+  final _selectedSale = Rx<EcSaleMovementViewModel?>(null);
   @override
-  EcSaleMovementViewModel? get selectedSaleMovement => _selectedSaleMovement;
-  set selectedSaleMovement(EcSaleMovementViewModel? value) =>
-      _selectedSaleMovement = value;
+  Stream<EcSaleMovementViewModel?> get selectedSaleStream =>
+      _selectedSale.stream;
+  set selectedSale(EcSaleMovementViewModel? value) {
+    _selectedSale.value = null;
+    _selectedSale.value = value;
+  }
 
   @override
   void updateSelectedSaleMovement(EcSaleMovementViewModel sale) {
-    selectedSaleMovement = sale;
+    selectedSale = sale;
 
     navigateTo.navigate(pageRoute: PageRoutes.canceledSaleDetails);
   }
@@ -120,10 +123,10 @@ class GetxCanceledSalesPresenter extends GetxController
     isLoading = true;
     mainError = null;
     try {
-      if (selectedSaleMovement == null) {
+      if (_selectedSale.value == null) {
         throw DomainError.unexpected;
       }
-      final sale = SaleMovementModel.fromViewModel(selectedSaleMovement!);
+      final sale = SaleMovementModel.fromViewModel(_selectedSale.value!);
       final date = DateTime(
         sale.dateHourOfBilling!.year,
         sale.dateHourOfBilling!.month,
@@ -146,7 +149,7 @@ class GetxCanceledSalesPresenter extends GetxController
       );
 
       if (loadedSale.isNotEmpty) {
-        selectedSaleMovement =
+        selectedSale =
             SaleMovementModel.fromEntity(loadedSale[0]).toViewModel();
       }
     } catch (e) {

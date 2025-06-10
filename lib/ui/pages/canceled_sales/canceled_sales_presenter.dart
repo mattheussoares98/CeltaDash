@@ -10,10 +10,10 @@ abstract class CanceledSalesPresenter implements Listenable {
   List<EcSaleMovementViewModel>? get monthlySales;
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
+  Stream<EcSaleMovementViewModel?> get selectedSaleStream;
   PeriodType get selectedPeriod;
   GetEcSaleMovementParams? get lastGetDailyParams;
   GetEcSaleMovementParams? get lastGetMonthlyParams;
-  EcSaleMovementViewModel? get selectedSaleMovement;
 
   Future<void> getSales(
     HomePresenter homePresenter, {
