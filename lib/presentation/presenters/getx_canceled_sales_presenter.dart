@@ -93,4 +93,10 @@ class GetxCanceledSalesPresenter extends GetxController
       isLoading = false;
     }
   }
+
+  EcSaleMovementViewModel? _selectedSaleMovement;
+  @override
+  EcSaleMovementViewModel? get selectedSaleMovement => _selectedSaleMovement;
+  set selectedSaleMovement(EcSaleMovementViewModel? value) =>
+      _selectedSaleMovement = value;
 }

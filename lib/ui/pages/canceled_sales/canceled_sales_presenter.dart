@@ -13,6 +13,7 @@ abstract class CanceledSalesPresenter implements Listenable {
   PeriodType get selectedPeriod;
   GetEcSaleMovementParams? get lastGetDailyParams;
   GetEcSaleMovementParams? get lastGetMonthlyParams;
+  EcSaleMovementViewModel? get selectedSaleMovement;
 
   Future<void> getSales(
     HomePresenter homePresenter, {
