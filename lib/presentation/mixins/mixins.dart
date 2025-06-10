@@ -1,3 +1,4 @@
+export './ec_sale_movement_manager.dart';
 export 'form_manager.dart';
 export 'last_date_loaded_data_manager.dart';
 export './last_get_sale_movement_params_manager.dart';
