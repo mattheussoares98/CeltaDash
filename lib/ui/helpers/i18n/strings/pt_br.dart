@@ -35,6 +35,7 @@ class PtBr implements Translation {
   String get bsUserName => "Usuário do BS";
   String get cancel => "Cancelar";
   String get canceledSales => "Vendas canceladas";
+  String get cashierNumber => "Caixa";
   String get chargeBacks => "Estornos";
   String get close => "Fechar";
   String get cnpj => "CNPJ";
