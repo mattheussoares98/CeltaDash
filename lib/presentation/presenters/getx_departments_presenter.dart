@@ -54,9 +54,7 @@ class GetxDepartmentsPresenter extends GetxController
       final startDate = DateTime(
         homePresenter.selectedDate.year,
         homePresenter.selectedDate.month,
-        selectedPeriod == PeriodType.daily
-            ? homePresenter.selectedDate.day
-            : 1,
+        selectedPeriod == PeriodType.daily ? homePresenter.selectedDate.day : 1,
       );
 
       final endDate = DateTime(
@@ -76,6 +74,7 @@ class GetxDepartmentsPresenter extends GetxController
       final remoteSales = await ecLoadSaleStatistics.get(getSalesParams);
       lastParams = getSalesParams;
 
+      //TODO create daily and monthly sales
       saleStatistics = remoteSales
           .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
           .toList();
