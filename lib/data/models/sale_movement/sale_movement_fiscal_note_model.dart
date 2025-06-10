@@ -18,8 +18,8 @@ class SaleMovementFiscalNoteModel extends Equatable {
 
   factory SaleMovementFiscalNoteModel.fromJson(Map json) =>
       SaleMovementFiscalNoteModel(
-        Id: json['Id'],
-        Name: json['Name'],
+        Id: json['id'],
+        Name: json['name'],
       );
 
   factory SaleMovementFiscalNoteModel.fromEntity(
@@ -30,8 +30,8 @@ class SaleMovementFiscalNoteModel extends Equatable {
       );
 
   Map<String, dynamic> toJson() => {
-        'Id': Id,
-        'Name': Name,
+        'id': Id,
+        'name': Name,
       };
 
   SaleMovementFiscalNoteEntity toEntity() => SaleMovementFiscalNoteEntity(

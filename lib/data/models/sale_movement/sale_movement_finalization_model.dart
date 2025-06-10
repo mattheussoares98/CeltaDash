@@ -32,15 +32,15 @@ class SaleMovementFinalizationModel extends Equatable {
 
   factory SaleMovementFinalizationModel.fromJson(Map json) =>
       SaleMovementFinalizationModel(
-        Id: json['Id'],
-        Value: (json['Value'] as num?)?.toDouble(),
-        QuantityOfPortions: json['QuantityOfPortions'],
-        DateOfExpiration: json['DateOfExpiration'] != null
-            ? DateTime.parse(json['DateOfExpiration'])
+        Id: json['id'],
+        Value: (json['value'] as num?)?.toDouble(),
+        QuantityOfPortions: json['quantityOfPortions'],
+        DateOfExpiration: json['dateOfExpiration'] != null
+            ? DateTime.parse(json['dateOfExpiration'])
             : null,
-        Finalization: json['Finalization'] != null
+        Finalization: json['finalization'] != null
             ? SaleMovementFinalizationFinalizationModel.fromJson(
-                json['Finalization'] as Map)
+                json['finalization'] as Map)
             : null,
       );
 
@@ -58,11 +58,11 @@ class SaleMovementFinalizationModel extends Equatable {
       );
 
   Map<String, dynamic> toJson() => {
-        'Id': Id,
-        'Value': Value,
-        'QuantityOfPortions': QuantityOfPortions,
-        'DateOfExpiration': DateOfExpiration?.toIso8601String(),
-        'Finalization': Finalization?.toJson(),
+        'id': Id,
+        'value': Value,
+        'quantityOfPortions': QuantityOfPortions,
+        'dateOfExpiration': DateOfExpiration?.toIso8601String(),
+        'finalization': Finalization?.toJson(),
       };
 
   SaleMovementFinalizationEntity toEntity() => SaleMovementFinalizationEntity(

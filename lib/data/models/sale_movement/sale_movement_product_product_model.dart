@@ -30,11 +30,11 @@ class SaleMovementProductProductModel extends Equatable {
 
   factory SaleMovementProductProductModel.fromJson(Map json) =>
       SaleMovementProductProductModel(
-        Id: json['Id'],
-        Plu: json['Plu'],
-        Name: json['Name'],
-        PackingAbbreviation: json['PackingAbbreviation'],
-        PackingQuantity: (json['PackingQuantity'] as num?)?.toDouble(),
+        Id: json['id'],
+        Plu: json['plu'],
+        Name: json['name'],
+        PackingAbbreviation: json['packingAbbreviation'],
+        PackingQuantity: (json['packingQuantity'] as num?)?.toDouble(),
       );
 
   factory SaleMovementProductProductModel.fromEntity(
@@ -48,11 +48,11 @@ class SaleMovementProductProductModel extends Equatable {
       );
 
   Map<String, dynamic> toJson() => {
-        'Id': Id,
-        'Plu': Plu,
-        'Name': Name,
-        'PackingAbbreviation': PackingAbbreviation,
-        'PackingQuantity': PackingQuantity,
+        'id': Id,
+        'plu': Plu,
+        'name': Name,
+        'packingAbbreviation': PackingAbbreviation,
+        'packingQuantity': PackingQuantity,
       };
 
   SaleMovementProductProductEntity toEntity() =>

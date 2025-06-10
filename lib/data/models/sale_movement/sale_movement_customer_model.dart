@@ -28,10 +28,10 @@ class SaleMovementCustomerModel extends Equatable {
 
   factory SaleMovementCustomerModel.fromJson(Map json) =>
       SaleMovementCustomerModel(
-        SaleMovementId: json['SaleMovementId'],
-        Id: json['Id'],
-        Name: json['Name'],
-        CpfCnpj: json['CpfCnpj'],
+        SaleMovementId: json['saleMovementId'],
+        Id: json['id'],
+        Name: json['name'],
+        CpfCnpj: json['cpfCnpj'],
       );
 
   factory SaleMovementCustomerModel.fromEntity(
@@ -44,10 +44,10 @@ class SaleMovementCustomerModel extends Equatable {
       );
 
   Map<String, dynamic> toJson() => {
-        'SaleMovementId': SaleMovementId,
-        'Id': Id,
-        'Name': Name,
-        'CpfCnpj': CpfCnpj,
+        'saleMovementId': SaleMovementId,
+        'id': Id,
+        'name': Name,
+        'cpfCnpj': CpfCnpj,
       };
 
   SaleMovementCustomerEntity toEntity() => SaleMovementCustomerEntity(

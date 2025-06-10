@@ -52,19 +52,19 @@ class SaleMovementProductModel extends Equatable {
 
   factory SaleMovementProductModel.fromJson(Map json) =>
       SaleMovementProductModel(
-        Id: json['Id'],
-        Quantity: (json['Quantity'] as num?)?.toDouble(),
-        UnitValue: (json['UnitValue'] as num?)?.toDouble(),
-        IsCancelled: json['IsCancelled'] as bool?,
-        UnitValueLiquid: (json['UnitValueLiquid'] as num?)?.toDouble(),
-        RepositionCost: (json['RepositionCost'] as num?)?.toDouble(),
-        LiquidCost: (json['LiquidCost'] as num?)?.toDouble(),
-        TotalBrute: (json['TotalBrute'] as num?)?.toDouble(),
-        TotalLiquid: (json['TotalLiquid'] as num?)?.toDouble(),
-        TotalDiscounts: (json['TotalDiscounts'] as num?)?.toDouble(),
-        ProductPackingId: json['ProductPackingId'],
-        Product: json['Product'] != null
-            ? SaleMovementProductProductModel.fromJson(json['Product'] as Map)
+        Id: json['id'],
+        Quantity: (json['quantity'] as num?)?.toDouble(),
+        UnitValue: (json['unitValue'] as num?)?.toDouble(),
+        IsCancelled: json['isCancelled'] as bool?,
+        UnitValueLiquid: (json['unitValueLiquid'] as num?)?.toDouble(),
+        RepositionCost: (json['repositionCost'] as num?)?.toDouble(),
+        LiquidCost: (json['liquidCost'] as num?)?.toDouble(),
+        TotalBrute: (json['totalBrute'] as num?)?.toDouble(),
+        TotalLiquid: (json['totalLiquid'] as num?)?.toDouble(),
+        TotalDiscounts: (json['totalDiscounts'] as num?)?.toDouble(),
+        ProductPackingId: json['productPackingId'],
+        Product: json['product'] != null
+            ? SaleMovementProductProductModel.fromJson(json['product'] as Map)
             : null,
       );
 
@@ -88,18 +88,18 @@ class SaleMovementProductModel extends Equatable {
       );
 
   Map<String, dynamic> toJson() => {
-        'Id': Id,
-        'Quantity': Quantity,
-        'UnitValue': UnitValue,
-        'IsCancelled': IsCancelled,
-        'UnitValueLiquid': UnitValueLiquid,
-        'RepositionCost': RepositionCost,
-        'LiquidCost': LiquidCost,
-        'TotalBrute': TotalBrute,
-        'TotalLiquid': TotalLiquid,
-        'TotalDiscounts': TotalDiscounts,
-        'ProductPackingId': ProductPackingId,
-        'Product': Product?.toJson(),
+        'id': Id,
+        'quantity': Quantity,
+        'unitValue': UnitValue,
+        'isCancelled': IsCancelled,
+        'unitValueLiquid': UnitValueLiquid,
+        'repositionCost': RepositionCost,
+        'liquidCost': LiquidCost,
+        'totalBrute': TotalBrute,
+        'totalLiquid': TotalLiquid,
+        'totalDiscounts': TotalDiscounts,
+        'productPackingId': ProductPackingId,
+        'product': Product?.toJson(),
       };
 
   SaleMovementProductEntity toEntity() => SaleMovementProductEntity(

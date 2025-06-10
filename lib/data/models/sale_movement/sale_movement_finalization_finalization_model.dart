@@ -18,8 +18,8 @@ class SaleMovementFinalizationFinalizationModel extends Equatable {
 
   factory SaleMovementFinalizationFinalizationModel.fromJson(Map json) =>
       SaleMovementFinalizationFinalizationModel(
-        Id: json['Id'],
-        Name: json['Name'],
+        Id: json['id'],
+        Name: json['name'],
       );
 
   factory SaleMovementFinalizationFinalizationModel.fromEntity(
@@ -30,8 +30,8 @@ class SaleMovementFinalizationFinalizationModel extends Equatable {
       );
 
   Map<String, dynamic> toJson() => {
-        'Id': Id,
-        'Name': Name,
+        'id': Id,
+        'name': Name,
       };
 
   SaleMovementFinalizationFinalizationEntity toEntity() =>
