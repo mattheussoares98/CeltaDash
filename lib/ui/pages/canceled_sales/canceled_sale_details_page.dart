@@ -67,22 +67,35 @@ class _CanceledSaleDetailsPageState extends State<CanceledSaleDetailsPage> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             Enterprise(sale: sale),
-                            Text("${R.string.date}: ${sale.dateHourOfBilling}"),
-                            Text(
-                              "${R.string.cashierNumber}: ${sale.cashierNumber}",
+                            TitleAndValue(
+                              title: R.string.date,
+                              value: sale.dateHourOfBilling,
                             ),
-                            Text(
-                              "${R.string.couponNumberAbbreviated}: ${sale.documentNumber}",
+                            TitleAndValue(
+                              title: R.string.cashierNumber,
+                              value: sale.cashierNumber,
                             ),
-                            if (sale.seller != null)
-                              Text(
-                                "${R.string.seller}: ${sale.seller?.PersonalizedCode} - ${sale.seller?.Name}",
-                              ),
+                            TitleAndValue(
+                              title: R.string.couponNumberAbbreviated,
+                              value: sale.documentNumber,
+                            ),
+
                             //customer
                             if (sale.customer != null) Customer(sale: sale),
-                            //fiscal note type
-                            if (sale.fiscalNoteType != null)
-                              Text(sale.fiscalNoteType?.Name ?? ""),
+                            TitleAndValue(
+                              title: R.string.seller,
+                              value: sale.seller?.Name,
+                            ),
+                            if (sale.seller != null)
+                              TitleAndValue(
+                                title: R.string.seller,
+                                value:
+                                    "${sale.seller?.PersonalizedCode} - ${sale.seller?.Name}",
+                              ),
+                            TitleAndValue(
+                              title: R.string.type,
+                              value: sale.fiscalNoteType?.Name,
+                            ),
                             PaymentFinalizations(sale: sale),
                             Products(sale: sale),
                             Text(

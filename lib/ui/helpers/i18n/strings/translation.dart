@@ -37,6 +37,8 @@ abstract class Translation {
   String get configurations;
   String get cost;
   String get couponNumberAbbreviated;
+  String get cpfCnpj;
+  String get customerName;
   String get dailyAnalysis;
   String get dailyAnalysisAverage;
   String get date;
@@ -119,6 +121,7 @@ abstract class Translation {
   String get sold;
   String get subEnterprises;
   String get ticketAverage;
+  String get type;
   String get team;
   String get total;
   String get totalSales;

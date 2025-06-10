@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../helpers/helpers.dart';
 import '../../pages.dart';
+import 'components.dart';
 
 class Customer extends StatelessWidget {
   const Customer({
@@ -13,11 +15,11 @@ class Customer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(sale?.customer?.CpfCnpj ?? ""),
-        Text(sale?.customer?.Id ?? ""),
-        Text(sale?.customer?.Name ?? ""),
-        Text(sale?.customer?.SaleMovementId ?? ""),
+        TitleAndValue(title: R.string.cpfCnpj, value: sale?.customer?.CpfCnpj),
+        TitleAndValue(
+            title: R.string.customerName, value: sale?.customer?.Name ?? ""),
       ],
     );
   }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../helpers/helpers.dart';
 import '../../pages.dart';
+import 'components.dart';
 
 class Products extends StatelessWidget {
   const Products({
@@ -20,16 +22,27 @@ class Products extends StatelessWidget {
         final product = sale?.products![index];
         return Column(
           children: [
-            Text(product?.Id ?? ""),
-            Text(product?.IsCancelled ?? ""),
-            Text(product?.LiquidCost ?? ""),
-            Text(product?.ProductPackingId ?? ""),
-            Text(product?.Quantity ?? ""),
-            Text(product?.RepositionCost ?? ""),
-            Text(product?.TotalBrute ?? ""),
-            Text(product?.TotalDiscounts ?? ""),
-            Text(product?.TotalLiquid ?? ""),
+            TitleAndValue(
+              title: R.string.cost,
+              value: product?.LiquidCost,
+            ),
+            TitleAndValue(
+              title: R.string.quantityAbbreviated,
+              value: product?.Quantity,
+            ),
             Text(product?.UnitValue ?? ""),
+            if ((product?.TotalDiscounts?.toDouble() ?? 0) > 0)
+              TitleAndValue(
+                title: R.string.discounts,
+                value: product?.TotalDiscounts,
+              ),
+              //TODO use the TableItem here
+            // Text(product?.RepositionCost ?? ""),
+            // Text(product?.TotalBrute ?? ""),
+            TitleAndValue(
+              title: R.string.total,
+              value: product?.TotalLiquid,
+            ),
             Text(product?.UnitValueLiquid ?? ""),
             Text(product?.Product?.Name ?? ""),
             Text(product?.Product?.PackingAbbreviation ?? ""),
