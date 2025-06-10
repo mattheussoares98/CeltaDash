@@ -258,27 +258,74 @@ class _TableItemState extends State<TableItem> {
                   children: [
                     ...List.generate(
                       sortedRows.length,
-                      //travel a list of PersonalizedTableCell
-                      (index) => TableRow(
-                        children: List.generate(
-                          sortedRows[index].length,
-                          //get each PersonalizedTableCell to insert IntrinsicHeight and center the value
-                          (i) {
-                            return IntrinsicHeight(
-                              child: Container(
+                      (rowIndex) {
+                        final row = sortedRows[rowIndex];
+                        //get all onTap from the row
+                        final taps = row
+                            .map((c) => c.onTap)
+                            .whereType<VoidCallback>()
+                            .toSet();
+                        VoidCallback? unifiedTap;
+                        if (taps.length == 1) {
+                          //if has only one tap in the row, use the same for all row
+                          unifiedTap = taps.first;
+                        }
+
+                        final rowContent =
+                            List.generate(row.length, (colIndex) {
+                          final cell = row[colIndex];
+                          final effectiveTap = unifiedTap ?? cell.onTap;
+
+                          return GestureDetector(
+                            onTap: effectiveTap,
+                            behavior: HitTestBehavior.opaque,
+                            child: Container(
+                              width: double.infinity,
+                              constraints: BoxConstraints(
+                                minHeight: widget.titleMinHeight ?? 1,
+                              ),
+                              child: row[colIndex],
+                            ),
+                          );
+                        });
+
+                        final rowChildren =
+                            rowContent.asMap().entries.map((entry) {
+                          final isLast = entry.key == rowContent.length - 1;
+                          final child = entry.value;
+
+                          return Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Container(
                                 constraints: BoxConstraints(
                                   minHeight: widget.titleMinHeight ?? 1,
                                 ),
-                                child: sortedRows[index][i],
+                                child: child,
                               ),
-                            );
-                          },
-                        ),
-                        decoration: BoxDecoration(
-                          color: getColor(index),
-                          // borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
+                              if (isLast && taps.isNotEmpty)
+                                Positioned(
+                                  right: 3,
+                                  bottom: 3,
+                                  child: Icon(
+                                    Platform.isIOS
+                                        ? CupertinoIcons.hand_point_right
+                                        : Icons.touch_app,
+                                    size: 16,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                            ],
+                          );
+                        }).toList();
+
+                        return TableRow(
+                          children: rowChildren,
+                          decoration: BoxDecoration(
+                            color: getColor(rowIndex),
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
