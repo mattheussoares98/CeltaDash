@@ -170,7 +170,7 @@ class SaleMovementModel extends Equatable {
       cashierNumber: cashierNumber,
       dateHourOfBilling:
           dateHourOfBilling != null ? df.format(dateHourOfBilling!) : null,
-      totalLiquid: totalLiquid?.toString().toBrazilianNumber(2),
+      totalLiquid: totalLiquid?.toString(),
       isCancelled: isCancelled?.toString(),
       fiscalNoteType: fiscalNoteType?.toViewModel(),
       customer: customer?.toViewModel(),

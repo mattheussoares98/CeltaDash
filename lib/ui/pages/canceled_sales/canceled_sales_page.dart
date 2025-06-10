@@ -145,7 +145,7 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                                   value: e.dateHourOfBilling,
                                 ),
                                 PersonalizedTableCell(
-                                  value: e.totalLiquid,
+                                  value: e.totalLiquid?.toDouble(),
                                   isMoney: true,
                                   onTap: () {
                                     canceledSalesPresenter
