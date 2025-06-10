@@ -111,6 +111,8 @@ class GetxCanceledSalesPresenter extends GetxController
   @override
   void updateSelectedSaleMovement(EcSaleMovementViewModel sale) {
     selectedSaleMovement = sale;
+
+    navigateTo.navigate(pageRoute: PageRoutes.canceledSaleDetails);
   }
 
   @override

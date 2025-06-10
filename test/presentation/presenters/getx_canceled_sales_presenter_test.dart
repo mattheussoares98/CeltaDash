@@ -444,15 +444,17 @@ void main() {
       expect(sut.selectedSaleMovement, newSaleMovement);
     });
 
-    // test("Should go to selected sale details page", () {
-    //   final newSaleMovement = SaleMovementModel.fromEntity(
-    //     EntityFactory.makeEcSaleMovementEntity(),
-    //   ).toViewModel();
+    test("Should go to canceled sale details page", () {
+      final newSaleMovement = SaleMovementModel.fromEntity(
+        EntityFactory.makeEcSaleMovementEntity(),
+      ).toViewModel();
 
-    //   sut.updateSelectedSaleMovement(newSaleMovement);
+      sut.updateSelectedSaleMovement(newSaleMovement);
 
-    //   verify(() => navigateTo.goToSaleDetails()).called(1);
-    // });
+      verify(() =>
+              navigateTo.navigate(pageRoute: PageRoutes.canceledSaleDetails))
+          .called(1);
+    });
   });
 
   group("Get selected sale movement details", () {
