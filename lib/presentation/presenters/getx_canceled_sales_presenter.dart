@@ -16,9 +16,11 @@ class GetxCanceledSalesPresenter extends GetxController
         LastGetSaleMovementParamsManager
     implements CanceledSalesPresenter {
   final EcLoadSaleMovements ecLoadSaleMovements;
+  final NavigateTo navigateTo;
 
   GetxCanceledSalesPresenter({
     required this.ecLoadSaleMovements,
+    required this.navigateTo,
   });
 
   @override

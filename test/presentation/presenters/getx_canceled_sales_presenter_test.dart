@@ -22,6 +22,7 @@ void main() {
   late HomePresenterSpy homePresenter;
 
   late EcLoadSaleMovementsSpy ecLoadSaleMovements;
+  late NavigateToSpy navigateTo;
 
   late List<SaleMovementEntity> saleMovementEntities;
 
@@ -30,10 +31,14 @@ void main() {
 
   void initUsecases() {
     ecLoadSaleMovements = EcLoadSaleMovementsSpy();
+    navigateTo = NavigateToSpy();
   }
 
   void initPresenters() {
-    sut = GetxCanceledSalesPresenter(ecLoadSaleMovements: ecLoadSaleMovements);
+    sut = GetxCanceledSalesPresenter(
+      ecLoadSaleMovements: ecLoadSaleMovements,
+      navigateTo: navigateTo,
+    );
     homePresenter = HomePresenterSpy();
   }
 
@@ -438,6 +443,16 @@ void main() {
 
       expect(sut.selectedSaleMovement, newSaleMovement);
     });
+
+    // test("Should go to selected sale details page", () {
+    //   final newSaleMovement = SaleMovementModel.fromEntity(
+    //     EntityFactory.makeEcSaleMovementEntity(),
+    //   ).toViewModel();
+
+    //   sut.updateSelectedSaleMovement(newSaleMovement);
+
+    //   verify(() => navigateTo.goToSaleDetails()).called(1);
+    // });
   });
 
   group("Get selected sale movement details", () {
