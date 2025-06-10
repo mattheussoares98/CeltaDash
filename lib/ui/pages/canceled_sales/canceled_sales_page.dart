@@ -51,7 +51,13 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
             if (canceledSalesPresenter.ecSaleMovements == null) {
               return EmptySales(isLoading: loadingSnap.data == true);
             } else if (canceledSalesPresenter.ecSaleMovements!.isEmpty) {
-              return Center(child: Text("Nenhuma venda cancelada" + ""));
+              return Center(
+                child: Image.asset(
+                  "lib/ui/assets/images/no_canceled_sales.png",
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  height: MediaQuery.of(context).size.height * 0.6,
+                ),
+              );
             }
 
             return Column(
