@@ -486,12 +486,19 @@ void main() {
 
       final sale = SaleMovementModel.fromViewModel(sut.selectedSaleMovement!);
 
+      final date = DateTime(
+        sale.dateHourOfBilling!.year,
+        sale.dateHourOfBilling!.month,
+        sale.dateHourOfBilling!.day,
+      );
+
       verify(() => ecLoadSaleMovements.get(
             GetEcSaleMovementParams(
+              onlyCancelled: true,
               documentNumbers: [sale.documentNumber!],
               enterpriseIds: [sale.enterpriseId!],
-              startDate: sale.dateHourOfBilling!,
-              endDate: sale.dateHourOfBilling!,
+              startDate: date,
+              endDate: date,
               mountCustomer: true,
               mountFiscalNoteType: true,
               mountPaymentFinalizations: true,
