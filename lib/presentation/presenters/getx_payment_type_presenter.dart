@@ -55,9 +55,7 @@ class GetxPaymentTypePresenter extends GetxController
       final startDate = DateTime(
         homePresenter.selectedDate.year,
         homePresenter.selectedDate.month,
-        selectedPeriod == PeriodType.daily
-            ? homePresenter.selectedDate.day
-            : 1,
+        selectedPeriod == PeriodType.daily ? homePresenter.selectedDate.day : 1,
       );
 
       final endDate = DateTime(
@@ -69,8 +67,7 @@ class GetxPaymentTypePresenter extends GetxController
       final salesByModality = await ecLoadSaleStatistics.get(
         GetEcSaleStatisticsParams(
           startDate: startDate,
-          endDate:
-              selectedPeriod == PeriodType.daily ? startDate : endDate,
+          endDate: selectedPeriod == PeriodType.daily ? startDate : endDate,
           groupByEnterprise: true,
           groupByDay: true,
           groupByPaymentModality: true,
@@ -89,11 +86,13 @@ class GetxPaymentTypePresenter extends GetxController
         groupByPaymentFinalization: true,
       );
 
-      final salesByFinalization = await ecLoadSaleStatistics.get(getSalesParams);
+      final salesByFinalization =
+          await ecLoadSaleStatistics.get(getSalesParams);
 
       salesByFinaliztions = salesByFinalization
           .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
           .toList();
+      //TODO create daily and monthly sales
 
       lastParams = getSalesParams;
     } catch (e) {
