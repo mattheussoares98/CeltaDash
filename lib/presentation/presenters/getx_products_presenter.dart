@@ -35,7 +35,7 @@ class GetxProductsPresenter extends GetxController
         selectedPeriod = periodType;
       }
 
-      final canSearchAgain = StatisticsHelper.canSearch(
+      final canSearchAgain = SearchHelper.canSearch(
         forceRefresh: forceRefresh,
         lastParams: selectedPeriod == PeriodType.daily
             ? lastGetDailyParams
@@ -44,7 +44,7 @@ class GetxProductsPresenter extends GetxController
         periodType: selectedPeriod,
       );
 
-      bool changedEnterprise = StatisticsHelper.changedTheEnterprise(
+      bool changedEnterprise = SearchHelper.changedTheEnterprise(
         selectedPeriodType: selectedPeriod,
         selectedEnterprise: homePresenter.selectedEnterprise,
         lastDailyParams: lastGetDailyParams,

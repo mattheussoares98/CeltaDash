@@ -23,12 +23,12 @@ class GetxCanceledSalesPresenter extends GetxController
     try {
       final sales = await ecLoadSaleMovements.get(
         GetEcSaleMovementParams(
-          EnterpriseIds: homePresenter.selectedEnterprise?.id == null
+          enterpriseIds: homePresenter.selectedEnterprise?.id == null
               ? []
               : [homePresenter.selectedEnterprise!.id!.toInt()],
-          StartDate: homePresenter.selectedDate,
-          EndDate: homePresenter.selectedDate,
-          OnlyCancelled: true,
+          startDate: homePresenter.selectedDate,
+          endDate: homePresenter.selectedDate,
+          onlyCancelled: true,
         ),
       );
 

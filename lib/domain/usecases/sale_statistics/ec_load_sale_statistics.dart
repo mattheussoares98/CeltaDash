@@ -1,14 +1,18 @@
 import 'package:equatable/equatable.dart';
 
 import '../../entities/entities.dart';
+import '../../helpers/helpers.dart';
 
 abstract class EcLoadSaleStatistics {
   Future<List<SaleStatisticsEntity>> get(GetEcSaleStatisticsParams params);
 }
 
-class GetEcSaleStatisticsParams extends Equatable {
+class GetEcSaleStatisticsParams extends Equatable implements DateRangeParams {
+  @override
   final DateTime startDate;
+  @override
   final DateTime endDate;
+  @override
   final List<int>? enterpriseIds;
   final bool? groupByEnterprise;
   final bool? groupByYear;

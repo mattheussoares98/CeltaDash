@@ -91,12 +91,12 @@ void main() {
 
       verify(() => ecLoadSaleMovements.get(
             GetEcSaleMovementParams(
-              EndDate: homePresenter.selectedDateMock,
-              StartDate: homePresenter.selectedDateMock,
-              EnterpriseIds: [
+              endDate: homePresenter.selectedDateMock,
+              startDate: homePresenter.selectedDateMock,
+              enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
               ],
-              OnlyCancelled: true,
+              onlyCancelled: true,
             ),
           )).called(1);
     });

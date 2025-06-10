@@ -76,20 +76,20 @@ void main() {
           "accessKey": EnterpriseBuilder.entity?.bsUser?.AccessKey,
         },
         body: {
-          "enterpriseIds": params.EnterpriseIds,
+          "enterpriseIds": params.enterpriseIds,
           "dateHourOfBilling": {
-            "startDate": params.StartDate.toIso8601String(),
-            "endDate": params.EndDate.toIso8601String(),
+            "startDate": params.startDate.toIso8601String(),
+            "endDate": params.endDate.toIso8601String(),
           },
-          "DocumentNumbers": params.DocumentNumbers,
-          "OnlyCancelled": params.OnlyCancelled,
-          "MountFiscalNoteType": params.MountFiscalNoteType,
-          "MountCustomer": params.MountCustomer,
-          "MountSeller": params.MountSeller,
-          "MountProducts": params.MountProducts,
-          "MountPaymentFinalizations": params.MountPaymentFinalizations,
-          "ActualPage": params.ActualPage,
-          "RecordsByPage": params.RecordsByPage,
+          "DocumentNumbers": params.documentNumbers,
+          "OnlyCancelled": params.onlyCancelled,
+          "MountFiscalNoteType": params.mountFiscalNoteType,
+          "MountCustomer": params.mountCustomer,
+          "MountSeller": params.mountSeller,
+          "MountProducts": params.mountProducts,
+          "MountPaymentFinalizations": params.mountPaymentFinalizations,
+          "ActualPage": params.actualPage,
+          "RecordsByPage": params.recordsByPage,
         },
       ),
     ).called(1);
@@ -101,9 +101,9 @@ void main() {
     final date = faker.date.dateTime();
     await sut.get(
       GetEcSaleMovementParams(
-        EnterpriseIds: enterpriseIds,
-        StartDate: date,
-        EndDate: date,
+        enterpriseIds: enterpriseIds,
+        startDate: date,
+        endDate: date,
       ),
     );
 

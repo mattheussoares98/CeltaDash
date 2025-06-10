@@ -189,25 +189,25 @@ class EntityFactory {
     List<int>? enterpriseIds,
   }) =>
       GetEcSaleMovementParams(
-        EnterpriseIds: enterpriseIds ??
+        enterpriseIds: enterpriseIds ??
             [
               faker.randomGenerator.integer(99),
               faker.randomGenerator.integer(99),
             ],
-        StartDate: startDate ?? faker.date.dateTime(),
-        EndDate: endDate ?? faker.date.dateTime(),
-        ActualPage: faker.randomGenerator.integer(10),
-        RecordsByPage: faker.randomGenerator.integer(999),
-        DocumentNumbers: [
+        startDate: startDate ?? faker.date.dateTime(),
+        endDate: endDate ?? faker.date.dateTime(),
+        actualPage: faker.randomGenerator.integer(10),
+        recordsByPage: faker.randomGenerator.integer(999),
+        documentNumbers: [
           faker.randomGenerator.integer(1000).toString(),
           faker.randomGenerator.integer(1000).toString(),
           faker.randomGenerator.integer(1000).toString(),
         ],
-        MountCustomer: faker.randomGenerator.boolean(),
-        MountFiscalNoteType: faker.randomGenerator.boolean(),
-        MountPaymentFinalizations: faker.randomGenerator.boolean(),
-        MountProducts: faker.randomGenerator.boolean(),
-        MountSeller: faker.randomGenerator.boolean(),
-        OnlyCancelled: faker.randomGenerator.boolean(),
+        mountCustomer: faker.randomGenerator.boolean(),
+        mountFiscalNoteType: faker.randomGenerator.boolean(),
+        mountPaymentFinalizations: faker.randomGenerator.boolean(),
+        mountProducts: faker.randomGenerator.boolean(),
+        mountSeller: faker.randomGenerator.boolean(),
+        onlyCancelled: faker.randomGenerator.boolean(),
       );
 }

@@ -41,7 +41,7 @@ class GetxPaymentTypePresenter extends GetxController
         selectedPeriod = periodType;
       }
 
-      final canSearchAgain = StatisticsHelper.canSearch(
+      final canSearchAgain = SearchHelper.canSearch(
         forceRefresh: forceRefresh,
         lastParams: lastGetStatisticsParams,
         selectedDate: homePresenter.selectedDate,

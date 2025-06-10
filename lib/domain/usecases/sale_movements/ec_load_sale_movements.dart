@@ -1,53 +1,57 @@
 import 'package:equatable/equatable.dart';
 
 import '../../entities/entities.dart';
+import '../../helpers/helpers.dart';
 
 abstract class EcLoadSaleMovements {
   Future<List<SaleMovementEntity>> get(GetEcSaleMovementParams params);
 }
 
-class GetEcSaleMovementParams extends Equatable {
-  final List<int> EnterpriseIds;
-  final DateTime StartDate;
-  final DateTime EndDate;
-  final List<String>? DocumentNumbers;
-  final bool? OnlyCancelled;
-  final bool? MountFiscalNoteType;
-  final bool? MountCustomer;
-  final bool? MountSeller;
-  final bool? MountProducts;
-  final bool? MountPaymentFinalizations;
-  final int? ActualPage;
-  final int? RecordsByPage;
+class GetEcSaleMovementParams extends Equatable implements DateRangeParams {
+  @override
+  final List<int> enterpriseIds;
+  @override
+  final DateTime startDate;
+  @override
+  final DateTime endDate;
+  final List<String>? documentNumbers;
+  final bool? onlyCancelled;
+  final bool? mountFiscalNoteType;
+  final bool? mountCustomer;
+  final bool? mountSeller;
+  final bool? mountProducts;
+  final bool? mountPaymentFinalizations;
+  final int? actualPage;
+  final int? recordsByPage;
 
   const GetEcSaleMovementParams({
-    required this.EnterpriseIds,
-    required this.StartDate,
-    required this.EndDate,
-    this.DocumentNumbers,
-    this.OnlyCancelled,
-    this.MountFiscalNoteType,
-    this.MountCustomer,
-    this.MountSeller,
-    this.MountProducts,
-    this.MountPaymentFinalizations,
-    this.ActualPage,
-    this.RecordsByPage,
+    required this.enterpriseIds,
+    required this.startDate,
+    required this.endDate,
+    this.documentNumbers,
+    this.onlyCancelled,
+    this.mountFiscalNoteType,
+    this.mountCustomer,
+    this.mountSeller,
+    this.mountProducts,
+    this.mountPaymentFinalizations,
+    this.actualPage,
+    this.recordsByPage,
   });
 
   @override
   List<Object?> get props => [
-        EnterpriseIds,
-        StartDate,
-        EndDate,
-        DocumentNumbers,
-        OnlyCancelled,
-        MountFiscalNoteType,
-        MountCustomer,
-        MountSeller,
-        MountProducts,
-        MountPaymentFinalizations,
-        ActualPage,
-        RecordsByPage,
+        enterpriseIds,
+        startDate,
+        endDate,
+        documentNumbers,
+        onlyCancelled,
+        mountFiscalNoteType,
+        mountCustomer,
+        mountSeller,
+        mountProducts,
+        mountPaymentFinalizations,
+        actualPage,
+        recordsByPage,
       ];
 }

@@ -1,51 +1,47 @@
 import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
-import '../usecases/usecases.dart';
 import 'helpers.dart';
 
-class StatisticsHelper {
-  StatisticsHelper._();
+abstract class DateRangeParams {
+  List<int>? get enterpriseIds;
+  DateTime get startDate;
+  DateTime get endDate;
+}
 
-  static bool canSearch({
+class SearchHelper {
+  SearchHelper._();
+
+  static bool canSearch<T extends DateRangeParams>({
     required bool? forceRefresh,
-    required GetEcSaleStatisticsParams? lastParams,
+    required T? lastParams,
     required DateTime selectedDate,
     required PeriodType periodType,
   }) {
-    if (forceRefresh == true) {
+    if (forceRefresh == true || lastParams == null) {
       return true;
-    } else if (lastParams == null) {
-      return true;
-    } else if (periodType == PeriodType.daily) {
-      return _canSearchDaily(
-        lastParams: lastParams,
-        selectedDate: selectedDate,
-      );
-    } else if (periodType == PeriodType.weekly) {
-    } else if (periodType == PeriodType.monthly) {
-      return _canSearchMonthly(
-        lastParams: lastParams,
-        selectedDate: selectedDate,
-      );
-    } else if (periodType == PeriodType.yearly) {
-      return _canSearchYearly(
-        lastParams: lastParams,
-        selectedDate: selectedDate,
-      );
     }
 
-    return false;
+    switch (periodType) {
+      case PeriodType.daily:
+        return _canSearchDaily(lastParams, selectedDate);
+      case PeriodType.monthly:
+        return _canSearchMonthly(lastParams, selectedDate);
+      case PeriodType.yearly:
+        return _canSearchYearly(lastParams, selectedDate);
+      default:
+        return false;
+    }
   }
 
-  static bool changedTheEnterprise({
+  static bool changedTheEnterprise<T extends DateRangeParams>({
     required PeriodType selectedPeriodType,
     required EcEnterpriseViewModel? selectedEnterprise,
-    GetEcSaleStatisticsParams? lastGetStatisticsParams,
-    GetEcSaleStatisticsParams? lastDailyParams,
-    GetEcSaleStatisticsParams? lastMonthlyParams,
-    GetEcSaleStatisticsParams? lastYearlyParams,
+    T? lastGetStatisticsParams,
+    T? lastDailyParams,
+    T? lastMonthlyParams,
+    T? lastYearlyParams,
   }) {
-    bool changed(GetEcSaleStatisticsParams? params) {
+    bool changed(T? params) {
       return params?.enterpriseIds
               ?.any((e) => e == selectedEnterprise?.id?.toInt()) ==
           false;
@@ -63,15 +59,14 @@ class StatisticsHelper {
     return false;
   }
 
-  static bool _canSearchYearly({
-    required GetEcSaleStatisticsParams? lastParams,
-    required DateTime selectedDate,
-  }) {
+  static bool _canSearchYearly<T extends DateRangeParams>(
+    T? lastParams,
+    DateTime selectedDate,
+  ) {
     if (lastParams?.startDate == DateTime(selectedDate.year, 1, 1) &&
         lastParams?.endDate == DateTime(selectedDate.year, 12, 31)) {
       return false;
-    } else if (lastParams?.startDate ==
-            DateTime(selectedDate.year - 2) &&
+    } else if (lastParams?.startDate == DateTime(selectedDate.year - 2) &&
         lastParams?.endDate == DateTime(selectedDate.year, 12, 31)) {
       return false;
     } else if (lastParams?.startDate.year == selectedDate.year) {
@@ -81,10 +76,10 @@ class StatisticsHelper {
     return true;
   }
 
-  static bool _canSearchMonthly({
-    required GetEcSaleStatisticsParams? lastParams,
-    required DateTime selectedDate,
-  }) {
+  static bool _canSearchMonthly<T extends DateRangeParams>(
+    T? lastParams,
+    DateTime selectedDate,
+  ) {
     if (lastParams?.startDate == DateTime(selectedDate.year, 1, 1) &&
         lastParams?.endDate == DateTime(selectedDate.year, 12, 31)) {
       return false;
@@ -96,10 +91,10 @@ class StatisticsHelper {
             lastParams?.startDate == lastParams?.endDate);
   }
 
-  static bool _canSearchDaily({
-    required GetEcSaleStatisticsParams? lastParams,
-    required DateTime? selectedDate,
-  }) =>
+  static bool _canSearchDaily<T extends DateRangeParams>(
+    T? lastParams,
+    DateTime? selectedDate,
+  ) =>
       lastParams?.startDate.year != selectedDate?.year ||
       lastParams?.startDate.month != selectedDate?.month ||
       (lastParams?.startDate.day != selectedDate?.day &&

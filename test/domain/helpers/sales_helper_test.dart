@@ -45,7 +45,7 @@ void main() {
   group("Can search", () {
     group("Pattern", () {
       test("Should return true if forceRefresh is true", () {
-        final value = StatisticsHelper.canSearch(
+        final value = SearchHelper.canSearch<GetEcSaleStatisticsParams>(
           forceRefresh: true,
           lastParams: null,
           selectedDate: homePresenter.selectedDateMock,
@@ -54,7 +54,7 @@ void main() {
         expect(value, true);
       });
       test("Should return true if lastGetSalesParams is null", () {
-        final value = StatisticsHelper.canSearch(
+        final value = SearchHelper.canSearch<GetEcSaleStatisticsParams>(
           forceRefresh: false,
           lastParams: null,
           selectedDate: homePresenter.selectedDateMock,
@@ -67,7 +67,7 @@ void main() {
     group("Daily", () {
       test("Should return false if is daily period and didnt change the date",
           () {
-        final value = StatisticsHelper.canSearch(
+        final value = SearchHelper.canSearch(
           forceRefresh: false,
           lastParams: lastGetSalesParams,
           selectedDate: DateTime(
@@ -81,7 +81,7 @@ void main() {
         expect(value, false);
       });
       test("Should return true if is daily period and changed the date", () {
-        final value = StatisticsHelper.canSearch(
+        final value = SearchHelper.canSearch(
           forceRefresh: false,
           lastParams: lastGetSalesParams,
           selectedDate: faker.date.dateTime(),
@@ -97,7 +97,7 @@ void main() {
           startDate: homePresenter.selectedDateMock,
           endDate: homePresenter.selectedDateMock,
         );
-        final value = StatisticsHelper.canSearch(
+        final value = SearchHelper.canSearch(
           forceRefresh: false,
           lastParams: lastParams,
           selectedDate: homePresenter.selectedDateMock.add(
@@ -112,7 +112,7 @@ void main() {
     group("Monthly", () {
       test("Should return false if is monthly period and didnt change the date",
           () {
-        final value = StatisticsHelper.canSearch(
+        final value = SearchHelper.canSearch(
           forceRefresh: false,
           lastParams: lastGetSalesParams,
           selectedDate: DateTime(
@@ -127,7 +127,7 @@ void main() {
       });
       test("Should return true if is monthly period and changed the date month",
           () {
-        final value = StatisticsHelper.canSearch(
+        final value = SearchHelper.canSearch(
           forceRefresh: false,
           lastParams: lastGetSalesParams,
           selectedDate: lastGetSalesParams.startDate.add(Duration(days: 31)),
@@ -141,7 +141,7 @@ void main() {
           startDate: homePresenter.selectedDateMock,
           endDate: homePresenter.selectedDateMock,
         );
-        final value = StatisticsHelper.canSearch(
+        final value = SearchHelper.canSearch(
           forceRefresh: false,
           lastParams: lastParams,
           selectedDate: homePresenter.selectedDateMock,
@@ -153,7 +153,7 @@ void main() {
 
       test("Should return false is getting sales from all year", () {
         final selectedDate = faker.date.dateTime();
-        final value = StatisticsHelper.canSearch(
+        final value = SearchHelper.canSearch(
           forceRefresh: false,
           lastParams: GetEcSaleStatisticsParams(
             startDate: DateTime(selectedDate.year, 1, 1),
@@ -169,7 +169,7 @@ void main() {
 
     group("Yearly", () {
       test("Should return false if didnt change the selected year", () {
-        final value = StatisticsHelper.canSearch(
+        final value = SearchHelper.canSearch(
           forceRefresh: false,
           lastParams: lastGetSalesParams,
           selectedDate: DateTime(lastGetSalesParams.startDate.year),
@@ -179,7 +179,7 @@ void main() {
         expect(value, false);
       });
       test("Should return true if change the selected year", () {
-        final value = StatisticsHelper.canSearch(
+        final value = SearchHelper.canSearch(
           forceRefresh: false,
           lastParams: lastGetSalesParams,
           selectedDate: DateTime(lastGetSalesParams.startDate.year +

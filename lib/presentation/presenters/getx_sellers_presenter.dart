@@ -50,14 +50,14 @@ class GetxSellersPresenter extends GetxController
         return null;
       }
 
-      final canSearchAgain = StatisticsHelper.canSearch(
+      final canSearchAgain = SearchHelper.canSearch(
         forceRefresh: forceRefresh,
         lastParams: lastGetSalesParams(),
         selectedDate: homePresenter.selectedDate,
         periodType: selectedPeriod,
       );
 
-      final changedTheEnterprise = StatisticsHelper.changedTheEnterprise(
+      final changedTheEnterprise = SearchHelper.changedTheEnterprise(
         selectedPeriodType: selectedPeriod,
         selectedEnterprise: homePresenter.selectedEnterprise,
         lastDailyParams: lastGetDailyParams,
