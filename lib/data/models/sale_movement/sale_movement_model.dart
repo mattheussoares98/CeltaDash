@@ -160,7 +160,7 @@ class SaleMovementModel extends Equatable {
       );
 
   EcSaleMovementViewModel toViewModel() {
-    final df = DateFormat('yyyy-MM-dd HH:mm:ss');
+    final df = DateFormat('dd/MM/yyyy HH:mm:ss');
     return EcSaleMovementViewModel(
       Id: Id?.toString(),
       enterpriseId: enterpriseId?.toString(),
@@ -170,7 +170,7 @@ class SaleMovementModel extends Equatable {
       cashierNumber: cashierNumber,
       dateHourOfBilling:
           dateHourOfBilling != null ? df.format(dateHourOfBilling!) : null,
-      totalLiquid: totalLiquid?.toString(),
+      totalLiquid: totalLiquid?.toString().toBrazilianNumber(2),
       isCancelled: isCancelled?.toString(),
       fiscalNoteType: fiscalNoteType?.toViewModel(),
       customer: customer?.toViewModel(),
@@ -182,7 +182,7 @@ class SaleMovementModel extends Equatable {
   }
 
   factory SaleMovementModel.fromViewModel(EcSaleMovementViewModel viewModel) {
-    final df = DateFormat('yyyy-MM-dd HH:mm:ss');
+    final df = DateFormat('dd/MM/yyyy HH:mm:ss');
     return SaleMovementModel(
       Id: viewModel.Id?.toInt(),
       enterpriseId: viewModel.enterpriseId?.toInt(),
