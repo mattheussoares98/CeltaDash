@@ -1,32 +1,19 @@
 import '../helpers.dart';
 
-enum UIError {
-  disabledEnterprise,
-  enterpriseAlreadyExists,
-  enterpriseNotFound,
-  sameDays,
-  sameUrl,
-  unexpected,
-  updateCeltaBs,
-}
+class UIError {
+  final String description;
+  const UIError._(this.description);
+  @override
+  String toString() => description;
 
-extension UIErrorExtension on UIError {
-  String get description {
-    switch (this) {
-      case UIError.disabledEnterprise:
-        return R.string.msgDisabledEnterprise;
-      case UIError.enterpriseAlreadyExists:
-        return R.string.msgEnterpriseAlreadyExists;
-      case UIError.enterpriseNotFound:
-        return R.string.msgEnterpriseNotFound;
-      case UIError.sameDays:
-        return R.string.msgCantCompareSameDays;
-      case UIError.sameUrl:
-        return R.string.msgSameUrl;
-      case UIError.unexpected:
-        return R.string.msgUnexpectedError;
-      case UIError.updateCeltaBs:
-        return R.string.msgUpdateCeltaBs;
-    }
-  }
+  factory UIError.custom(String description) => UIError._(description);
+
+  static final disabledEnterprise = UIError._(R.string.msgDisabledEnterprise);
+  static final enterpriseAlreadyExists =
+      UIError._(R.string.msgEnterpriseAlreadyExists);
+  static final enterpriseNotFound = UIError._(R.string.msgEnterpriseNotFound);
+  static final sameDays = UIError._(R.string.msgCantCompareSameDays);
+  static final sameUrl = UIError._(R.string.msgSameUrl);
+  static final unexpected = UIError._(R.string.msgUnexpectedError);
+  static final updateCeltaBs = UIError._(R.string.msgUpdateCeltaBs);
 }
