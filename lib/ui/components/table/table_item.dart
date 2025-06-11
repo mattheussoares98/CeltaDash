@@ -20,7 +20,7 @@ class TableItem extends StatefulWidget {
     required this.rowValues,
     this.tableColumnWidth,
     this.columnIndexToCompareAndDetachBetterAndWorstValue,
-    this.titleMinHeight,
+    this.titleMinHeight = 40,
     this.indexToSort,
     this.columnsIndexToSum,
   });

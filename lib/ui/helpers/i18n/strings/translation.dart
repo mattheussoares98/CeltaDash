@@ -36,8 +36,10 @@ abstract class Translation {
   String get comparedToDay;
   String get configurations;
   String get cost;
+  String get coupon;
   String get couponNumberAbbreviated;
   String get cpfCnpj;
+  String get customer;
   String get customerName;
   String get dailyAnalysis;
   String get dailyAnalysisAverage;
@@ -61,6 +63,7 @@ abstract class Translation {
   String get enterpriseName;
   String get enterprises;
   String get firstDaySales;
+  String get finalization;
   String get finalizations;
   String get goalHistory;
   String get grossMargin;
@@ -91,7 +94,9 @@ abstract class Translation {
   String get payments;
   String get paymentsType;
   String get percentage;
+  String get portions;
   String get positionAbbreviated;
+  String get price;
   String get product;
   String get products;
   String get productsBySale;

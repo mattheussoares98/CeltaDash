@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../components/components.dart';
+import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
 class PaymentFinalizations extends StatelessWidget {
@@ -12,22 +14,28 @@ class PaymentFinalizations extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: sale?.paymentFinalizations?.length,
-      itemBuilder: (context, index) {
-        final finalization = sale?.paymentFinalizations![index];
-        return Column(
-          children: [
-            Text(finalization?.Id ?? ""),
-            Text(finalization?.QuantityOfPortions ?? ""),
-            Text(finalization?.Value ?? ""),
-            Text(finalization?.DateOfExpiration ?? ""),
-            Text(finalization?.Finalization?.Name ?? ""),
+    if (sale?.paymentFinalizations?.isEmpty == true) {
+      return SizedBox();
+    }
+
+    return Column(
+      children: [
+        TableItem(
+          titleMinHeight: 30,
+          titles: [
+            PersonalizedTableCell(value: R.string.finalization),
+            PersonalizedTableCell(value: R.string.portions),
+            PersonalizedTableCell(value: R.string.total),
           ],
-        );
-      },
+          rowValues: sale!.paymentFinalizations!.map((e) {
+            return [
+              PersonalizedTableCell(value: e.Finalization?.Name),
+              PersonalizedTableCell(value: e.QuantityOfPortions),
+              PersonalizedTableCell(value: e.Value?.toDouble(), isMoney: true),
+            ];
+          }).toList(),
+        ),
+      ],
     );
   }
 }

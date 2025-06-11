@@ -43,8 +43,10 @@ class PtBr implements Translation {
   String get comparedToDay => "Em comparação ao dia";
   String get configurations => "Configurações";
   String get cost => "Custo";
+  String get coupon => "Cupom";
   String get couponNumberAbbreviated => "Cup";
   String get cpfCnpj => "CpfCNPJ";
+  String get customer => "Cliente";
   String get customerName => "Nome do cliente";
   String get dailyAnalysis => "Análise diária";
   String get dailyAnalysisAverage => "Análise diária (média)";
@@ -67,6 +69,7 @@ class PtBr implements Translation {
   String get enterprise => "Empresa";
   String get enterpriseName => "Nome da empresa";
   String get enterprises => "Empresas";
+  String get finalization => "Finalizadora";
   String get finalizations => "Finalizadoras";
   String get firstDaySales => "Vendas do primeiro dia";
   String get goalHistory => "Histórico de metas";
@@ -98,6 +101,8 @@ class PtBr implements Translation {
   String get payments => "Pagamentos";
   String get paymentsType => "Tipos de pagamento";
   String get percentage => "Porcentagem";
+  String get price => "Preço";
+  String get portions => "Parcelas";
   String get positionAbbreviated => "Pos";
   String get product => "Produto";
   String get products => "Produtos";

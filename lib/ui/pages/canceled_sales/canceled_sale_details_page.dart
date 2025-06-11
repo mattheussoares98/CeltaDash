@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../helpers/helpers.dart';
+import '../../mixins/mixins.dart';
 import '../pages.dart';
 import 'components/components.dart';
 
@@ -13,7 +16,9 @@ class CanceledSaleDetailsPage extends StatefulWidget {
       _CanceledSaleDetailsPageState();
 }
 
-class _CanceledSaleDetailsPageState extends State<CanceledSaleDetailsPage> {
+class _CanceledSaleDetailsPageState extends State<CanceledSaleDetailsPage>
+    with UIErrorManager {
+  StreamSubscription? mainErrorSubscription;
   @override
   void initState() {
     super.initState();
@@ -27,18 +32,30 @@ class _CanceledSaleDetailsPageState extends State<CanceledSaleDetailsPage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+
+    mainErrorSubscription?.cancel();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final canceledSalesPresenter = Get.find<CanceledSalesPresenter>();
     final homePresenter = Get.find<HomePresenter>();
+
+    mainErrorSubscription?.cancel();
+    mainErrorSubscription = handleMainError(
+      context,
+      canceledSalesPresenter.mainErrorStream,
+    );
 
     return StreamBuilder(
         stream: canceledSalesPresenter.selectedSaleStream,
         builder: (context, selectedSaleSnap) {
           return Scaffold(
             appBar: AppBar(
-              title: Text(
-                R.string.details,
-              ),
+              toolbarHeight: 40,
+              title: Text(R.string.details),
             ),
             body: StreamBuilder(
                 stream: canceledSalesPresenter.isLoadingStream,
@@ -60,50 +77,50 @@ class _CanceledSaleDetailsPageState extends State<CanceledSaleDetailsPage> {
                     );
                   }
 
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SingleChildScrollView(
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Enterprise(sale: sale),
-                            TitleAndValue(
-                              title: R.string.date,
-                              value: sale.dateHourOfBilling,
-                            ),
-                            TitleAndValue(
-                              title: R.string.cashierNumber,
-                              value: sale.cashierNumber,
-                            ),
-                            TitleAndValue(
-                              title: R.string.couponNumberAbbreviated,
-                              value: sale.documentNumber,
-                            ),
+                  return Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Enterprise(sale: sale),
+                              TitleAndValue(
+                                title: R.string.date,
+                                value: sale.dateHourOfBilling,
+                              ),
+                              TitleAndValue(
+                                title: R.string.cashierNumber,
+                                value: sale.cashierNumber,
+                              ),
+                              TitleAndValue(
+                                title: R.string.coupon,
+                                value: sale.documentNumber,
+                              ),
 
-                            //customer
-                            if (sale.customer != null) Customer(sale: sale),
-                            TitleAndValue(
-                              title: R.string.seller,
-                              value: sale.seller?.Name,
-                            ),
-                            if (sale.seller != null)
+                              //customer
+                              if (sale.customer != null) Customer(sale: sale),
                               TitleAndValue(
                                 title: R.string.seller,
-                                value:
-                                    "${sale.seller?.PersonalizedCode} - ${sale.seller?.Name}",
+                                value: sale.seller?.Name,
                               ),
-                            TitleAndValue(
-                              title: R.string.type,
-                              value: sale.fiscalNoteType?.Name,
-                            ),
-                            PaymentFinalizations(sale: sale),
-                            Products(sale: sale),
-                            Text(
-                              "${R.string.total}: ${sale.totalLiquid?.toDouble().toString().toBrazilianNumber()}",
-                            ),
-                          ]),
-                    ),
-                  );
+                              if (sale.seller != null)
+                                TitleAndValue(
+                                  title: R.string.seller,
+                                  value:
+                                      "${sale.seller?.PersonalizedCode} - ${sale.seller?.Name}",
+                                ),
+                              TitleAndValue(
+                                title: R.string.type,
+                                value: sale.fiscalNoteType?.Name,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Flexible(child: Products(sale: sale)),
+                        Flexible(child: PaymentFinalizations(sale: sale)),
+                      ]);
                 }),
           );
         });

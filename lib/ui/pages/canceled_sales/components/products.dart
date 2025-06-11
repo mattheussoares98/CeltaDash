@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
-import 'components.dart';
 
 class Products extends StatelessWidget {
   const Products({
@@ -14,43 +14,41 @@ class Products extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: sale?.products?.length,
-      itemBuilder: (context, index) {
-        final product = sale?.products![index];
-        return Column(
-          children: [
-            TitleAndValue(
-              title: R.string.cost,
-              value: product?.LiquidCost,
-            ),
-            TitleAndValue(
-              title: R.string.quantityAbbreviated,
-              value: product?.Quantity,
-            ),
-            Text(product?.UnitValue ?? ""),
-            if ((product?.TotalDiscounts?.toDouble() ?? 0) > 0)
-              TitleAndValue(
-                title: R.string.discounts,
-                value: product?.TotalDiscounts,
-              ),
-              //TODO use the TableItem here
-            // Text(product?.RepositionCost ?? ""),
-            // Text(product?.TotalBrute ?? ""),
-            TitleAndValue(
-              title: R.string.total,
-              value: product?.TotalLiquid,
-            ),
-            Text(product?.UnitValueLiquid ?? ""),
-            Text(product?.Product?.Name ?? ""),
-            Text(product?.Product?.PackingAbbreviation ?? ""),
-            Text(product?.Product?.PackingQuantity ?? ""),
-            Text(product?.Product?.Plu ?? ""),
+    if (sale?.products?.isEmpty == true) return SizedBox();
+
+    return Column(
+      children: [
+        TableItem(
+          columnsIndexToSum: [3],
+          indexToSort: 0,
+          titleMinHeight: 30,
+          tableColumnWidth: {
+            1: FixedColumnWidth(MediaQuery.of(context).size.width * 0.12),
+            2: FixedColumnWidth(MediaQuery.of(context).size.width * 0.2),
+            3: FixedColumnWidth(MediaQuery.of(context).size.width * 0.25),
+          },
+          titles: [
+            PersonalizedTableCell(value: R.string.product),
+            PersonalizedTableCell(value: R.string.quantityAbbreviated),
+            PersonalizedTableCell(value: R.string.price),
+            PersonalizedTableCell(value: R.string.total),
           ],
-        );
-      },
+          rowValues: sale!.products!.map((e) {
+            return [
+              PersonalizedTableCell(value: e.Product?.Name ?? ""),
+              PersonalizedTableCell(value: e.Quantity?.toDouble()),
+              PersonalizedTableCell(
+                value: e.UnitValueLiquid?.toDouble(),
+                isMoney: true,
+              ),
+              PersonalizedTableCell(
+                value: e.TotalLiquid?.toDouble(),
+                isMoney: true,
+              ),
+            ];
+          }).toList(),
+        ),
+      ],
     );
   }
 }

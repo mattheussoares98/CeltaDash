@@ -19,7 +19,7 @@ class Customer extends StatelessWidget {
       children: [
         TitleAndValue(title: R.string.cpfCnpj, value: sale?.customer?.CpfCnpj),
         TitleAndValue(
-            title: R.string.customerName, value: sale?.customer?.Name ?? ""),
+            title: R.string.customer, value: sale?.customer?.Name ?? ""),
       ],
     );
   }
