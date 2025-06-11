@@ -1,4 +1,4 @@
-export 'sale_movement_manager.dart';//TODO fix this file name
+export 'sale_movement_manager.dart';
 export './error_handling.dart';
 export 'form_manager.dart';
 export 'last_date_loaded_data_manager.dart';
