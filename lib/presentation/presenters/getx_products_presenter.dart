@@ -58,9 +58,7 @@ class GetxProductsPresenter extends GetxController
       final startDate = DateTime(
         homePresenter.selectedDate.year,
         homePresenter.selectedDate.month,
-        selectedPeriod == PeriodType.daily
-            ? homePresenter.selectedDate.day
-            : 1,
+        selectedPeriod == PeriodType.daily ? homePresenter.selectedDate.day : 1,
       );
 
       final endDate = DateTime(
@@ -72,7 +70,8 @@ class GetxProductsPresenter extends GetxController
       final params = GetSaleStatisticsParams(
         startDate: startDate,
         endDate: selectedPeriod == PeriodType.daily ? startDate : endDate,
-        groupByDay: true,
+        groupByDay:
+            true /* selectedPeriod == PeriodType.daily ? true : false */, //TODO test this
         groupByProduct: true,
         groupByEnterprise: true,
         topCount: 200,
@@ -103,8 +102,7 @@ class GetxProductsPresenter extends GetxController
 
   final _dailyStatistics = Rx<List<SaleStatisticViewModel>?>(null);
   @override
-  List<SaleStatisticViewModel>? get dailyStatistics =>
-      _dailyStatistics.value;
+  List<SaleStatisticViewModel>? get dailyStatistics => _dailyStatistics.value;
   set dailyStatistics(List<SaleStatisticViewModel>? value) =>
       _dailyStatistics.value = value;
 
