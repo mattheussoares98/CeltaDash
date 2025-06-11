@@ -11,6 +11,8 @@ mixin ErrorHandling {
       throw DomainError.unexpected;
     } else if (e is ApiError) {
       throw e; // Let it bubble up to be handled in the presenter
+    } else if (e is BsError) {
+      throw e; // Let it bubble up to be handled in the presenter
     } else if (e is DomainError) {
       throw e;
     }
