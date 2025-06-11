@@ -1,13 +1,13 @@
-import 'package:celta_dash/domain/entities/sale_statistics_entity.dart';
-import 'package:flutter/material.dart';
-
-import '../../../domain/helpers/helpers.dart';
+import '../../../domain/entities/entities.dart';
 import '../../../domain/usecases/usecases.dart';
 import '../../../main/builders/builders.dart';
 import '../../http/http.dart';
+import '../../mixins/mixins.dart';
 import '../../models/models.dart';
 
-class RemoteLoadSaleStatistics implements LoadSaleStatistics {
+class RemoteLoadSaleStatistics
+    with ErrorHandling
+    implements LoadSaleStatistics {
   final HttpClient httpAdapter;
 
   const RemoteLoadSaleStatistics(this.httpAdapter);
@@ -51,8 +51,7 @@ class RemoteLoadSaleStatistics implements LoadSaleStatistics {
           .map((e) => SaleStatisticsModel.fromJson(e).toEntity())
           .toList();
     } catch (e) {
-      debugPrint(e.toString());
-      throw DomainError.unexpected;
+      treatError(e);
     }
   }
 }

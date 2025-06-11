@@ -1,11 +1,11 @@
 import '../../../domain/entities/entities.dart';
-import '../../../domain/helpers/helpers.dart';
 import '../../../domain/usecases/usecases.dart';
 import '../../../main/builders/builders.dart';
 import '../../http/http.dart';
+import '../../mixins/mixins.dart';
 import '../../models/models.dart';
 
-class RemoteLoadEnterprises implements LoadEnterprises {
+class RemoteLoadEnterprises with ErrorHandling implements LoadEnterprises {
   final HttpClient httpAdapter;
 
   RemoteLoadEnterprises(this.httpAdapter);
@@ -30,8 +30,8 @@ class RemoteLoadEnterprises implements LoadEnterprises {
       return (response as List)
           .map((e) => EnterpriseModel.fromJson(e).toEntity())
           .toList();
-    } catch (e) {
-      throw DomainError.unexpected;
+    }  catch (e) {
+      treatError(e);
     }
   }
 }

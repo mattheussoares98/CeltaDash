@@ -2,12 +2,12 @@ import 'dart:convert';
 
 import 'package:xml2json/xml2json.dart';
 
-import '../../../domain/helpers/helpers.dart';
 import '../../../domain/usecases/usecases.dart';
 import '../../http/http.dart';
+import '../../mixins/mixins.dart';
 import '../../models/models.dart';
 
-class RemoteBsLogin implements BsLogin {
+class RemoteBsLogin with ErrorHandling implements BsLogin {
   final SoapRequest soapAdapter;
 
   RemoteBsLogin(this.soapAdapter);
@@ -28,7 +28,9 @@ class RemoteBsLogin implements BsLogin {
         url: url,
       );
 
-      if (response.responseType == SoapResponseType.error) return response;
+      if (response.responseType == SoapResponseType.error) {
+        return response; //TODO create and throw BSError and treat in presenter
+      }
 
       var userUpdated = {};
 
@@ -46,7 +48,7 @@ class RemoteBsLogin implements BsLogin {
         responseType: SoapResponseType.success,
       );
     } catch (e) {
-      throw DomainError.unexpected;
+      treatError(e);
     }
   }
 }

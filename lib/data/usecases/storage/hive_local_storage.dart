@@ -1,10 +1,9 @@
-import 'package:celta_dash/infra/helpers/database_keys.dart';
-
-import '../../../domain/helpers/helpers.dart';
 import '../../../domain/usecases/usecases.dart';
+import '../../../infra/helpers/helpers.dart';
 import '../../database/database.dart';
+import '../../mixins/mixins.dart';
 
-class HiveLocalStorage implements LocalStorage {
+class HiveLocalStorage with ErrorHandling implements LocalStorage {
   final HiveStorage hiveAdapter;
 
   HiveLocalStorage(this.hiveAdapter);
@@ -14,7 +13,7 @@ class HiveLocalStorage implements LocalStorage {
     try {
       return await hiveAdapter.get(key) as T;
     } catch (e) {
-      throw DomainError.unexpected;
+      treatError(e);
     }
   }
 
@@ -23,7 +22,7 @@ class HiveLocalStorage implements LocalStorage {
     try {
       await hiveAdapter.put(key, value);
     } catch (e) {
-      throw DomainError.unexpected;
+      treatError(e);
     }
   }
 
@@ -32,7 +31,7 @@ class HiveLocalStorage implements LocalStorage {
     try {
       await hiveAdapter.delete(key);
     } catch (e) {
-      throw DomainError.unexpected;
+      treatError(e);
     }
   }
 }

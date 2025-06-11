@@ -1,13 +1,11 @@
-import 'package:flutter/material.dart';
-
 import '../../../domain/entities/entities.dart';
-import '../../../domain/helpers/helpers.dart';
 import '../../../domain/usecases/usecases.dart';
 import '../../../main/builders/builders.dart';
 import '../../http/http.dart';
+import '../../mixins/mixins.dart';
 import '../../models/models.dart';
 
-class RemoteLoadSaleMovements implements LoadSaleMovements {
+class RemoteLoadSaleMovements with ErrorHandling implements LoadSaleMovements {
   final HttpClient httpAdapter;
 
   const RemoteLoadSaleMovements(this.httpAdapter);
@@ -38,7 +36,8 @@ class RemoteLoadSaleMovements implements LoadSaleMovements {
           "MountCustomer": params.mountCustomer ?? false,
           "MountSeller": params.mountSeller ?? false,
           "MountProducts": params.mountProducts ?? false,
-          "MountPaymentFinalizations": params.mountPaymentFinalizations ?? false,
+          "MountPaymentFinalizations":
+              params.mountPaymentFinalizations ?? false,
           "ActualPage": params.actualPage ?? 1,
           "RecordsByPage": params.recordsByPage ?? 100,
         },
@@ -48,8 +47,7 @@ class RemoteLoadSaleMovements implements LoadSaleMovements {
           .map((e) => SaleMovementModel.fromJson(e).toEntity())
           .toList();
     } catch (e) {
-      debugPrint(e.toString());
-      throw DomainError.unexpected;
+      treatError(e);
     }
   }
 }
