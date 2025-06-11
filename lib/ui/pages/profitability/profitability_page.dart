@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,6 +7,7 @@ import 'package:get/get.dart';
 import '../../../domain/helpers/helpers.dart';
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
+import '../../mixins/mixins.dart';
 import '../pages.dart';
 import 'components/components.dart';
 
@@ -15,9 +18,11 @@ class ProfitabilityPage extends StatefulWidget {
   State<ProfitabilityPage> createState() => _ProfitabilityPageState();
 }
 
-class _ProfitabilityPageState extends State<ProfitabilityPage> {
+class _ProfitabilityPageState extends State<ProfitabilityPage>
+    with UIErrorManager {
   int selectedPageIndex = 0;
   final pageController = PageController();
+  StreamSubscription? departmentsErrorSubscription;
 
   Future<void> reloadData({
     bool? forceRefresh,
@@ -42,10 +47,20 @@ class _ProfitabilityPageState extends State<ProfitabilityPage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    departmentsErrorSubscription?.cancel();
+  }
+
+  @override
   Widget build(BuildContext context) {
     DepartmentsPresenter departmentsPresenter = Get.find();
     ProductsPresenter productsPresenter = Get.find();
     HomePresenter homePresenter = Get.find();
+
+    departmentsErrorSubscription?.cancel();
+    departmentsErrorSubscription =
+        handleMainError(context, departmentsPresenter.mainErrorStream);
 
     return StreamBuilder(
         stream: productsPresenter.isLoadingStream,
