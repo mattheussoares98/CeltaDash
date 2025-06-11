@@ -108,7 +108,6 @@ class GetxWebEnterprisesPresenter extends GetxController
     required String bsUserName,
     required String bsPassword,
     required void Function() doOnSucceeds,
-    required void Function(String error) showBsErrorMessage,
   }) async {
     isLoading = true;
     mainError = null;
@@ -126,15 +125,12 @@ class GetxWebEnterprisesPresenter extends GetxController
         url: baseUrl.toLowerCase().removeWhiteSpaces(),
       );
 
-      if (loginResult.responseType == SoapResponseType.error) {
-        showBsErrorMessage(loginResult.response);
-        return;
-      } else if (loginResult.response["AccessKey"] == null) {
+      if (loginResult["AccessKey"] == null) {
         throw DomainError.updateCeltaBs;
       }
       final enterprises = await loadEnterprises.get(
         url: baseUrl.toLowerCase().removeWhiteSpaces(),
-        accessKey: loginResult.response["AccessKey"],
+        accessKey: loginResult["AccessKey"],
         userName: bsUserName,
       );
 

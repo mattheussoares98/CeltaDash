@@ -5,4 +5,3 @@ export 'enterprise_model.dart';
 export 'firebase_enterprise_model.dart';
 export 'firebase_sub_enterprise_model.dart';
 export 'sale_statistics_model.dart';
-export './soap_response_model.dart';

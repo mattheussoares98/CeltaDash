@@ -26,7 +26,7 @@ void main() {
   late String enterpriseName;
   late String user;
   late String password;
-  late SoapResponseModel response;
+  late dynamic response;
   late MockedFirebaseGet mockedFirebaseGet;
 
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,12 +54,9 @@ void main() {
     user = faker.person.name();
     password = faker.internet.password();
 
-    response = SoapResponseModel(
-      response:
-          FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson()
-            ..["AccessKey"] = faker.lorem.sentence(),
-      responseType: SoapResponseType.success,
-    );
+    response = FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
+        .toJson()
+      ..["AccessKey"] = faker.lorem.sentence();
     mockedFirebaseGet = MockedFirebaseGet(
       dataToReturn: [
         FakeDoc(
@@ -99,23 +96,22 @@ void main() {
         enterpriseName: enterpriseName,
         user: user,
         password: password,
-        showBsErrorMessage: (_) {},
       );
     });
     test("Should emit correct values on error", () async {
+      final error = faker.lorem.sentence();
       expectLater(
         sut.mainErrorStream,
-        emitsInOrder([null, UIError.unexpected]),
+        emitsInOrder([null, UIError.custom(error)]),
       );
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
 
-      bsLogin.mockLoginError();
+      bsLogin.mockLoginError(error);
 
       await sut.login(
         enterpriseName: enterpriseName,
         user: user,
         password: password,
-        showBsErrorMessage: (_) {},
       );
     });
 
@@ -138,7 +134,6 @@ void main() {
         enterpriseName: enterpriseName,
         user: user,
         password: password,
-        showBsErrorMessage: (_) {},
       );
     });
 
@@ -151,7 +146,6 @@ void main() {
         enterpriseName: enterpriseName,
         user: user,
         password: password,
-        showBsErrorMessage: (_) {},
       );
 
       verify(
@@ -165,7 +159,6 @@ void main() {
         enterpriseName: enterpriseName,
         user: user,
         password: password,
-        showBsErrorMessage: (_) {},
       );
 
       verifyNever(
@@ -186,7 +179,6 @@ void main() {
         enterpriseName: enterpriseName,
         user: user,
         password: password,
-        showBsErrorMessage: (_) {},
       );
 
       verifyNever(() => bsLogin.login(user: user, password: password));
@@ -197,7 +189,6 @@ void main() {
         enterpriseName: enterpriseName.toLowerCase().removeWhiteSpaces(),
         user: user,
         password: password,
-        showBsErrorMessage: (_) {},
       );
 
       verify(() => bsLogin.login(user: user, password: password)).called(1);
@@ -214,7 +205,6 @@ void main() {
         enterpriseName: enterpriseName,
         user: user,
         password: password,
-        showBsErrorMessage: (_) {},
       );
 
       verifyNever(() => bsLogin.login(user: user, password: password));
@@ -224,7 +214,6 @@ void main() {
         enterpriseName: enterpriseName,
         user: user,
         password: password,
-        showBsErrorMessage: (_) {},
       );
 
       verify(
@@ -234,18 +223,12 @@ void main() {
 
     test("Should not navigate to home page if soap response is error",
         () async {
-      bsLogin.mockLogin(
-        SoapResponseModel(
-          response: faker.randomGenerator.string(10),
-          responseType: SoapResponseType.error,
-        ),
-      );
+      bsLogin.mockLogin(faker.randomGenerator.string(10));
 
       await sut.login(
         enterpriseName: enterpriseName,
         user: user,
         password: password,
-        showBsErrorMessage: (_) {},
       );
 
       verifyNever(() => navigateTo.navigate(pageRoute: PageRoutes.home));
@@ -256,7 +239,6 @@ void main() {
         enterpriseName: enterpriseName,
         user: user,
         password: password,
-        showBsErrorMessage: (_) {},
       );
 
       verify(
@@ -272,7 +254,6 @@ void main() {
         enterpriseName: enterpriseName,
         user: user,
         password: password,
-        showBsErrorMessage: (_) {},
       );
 
       expect(
@@ -286,18 +267,12 @@ void main() {
       EnterpriseBuilder.entity =
           EntityFactory.anullEnterpriseProperties(annullbaseUrl: true);
 
-      bsLogin.mockLogin(
-        SoapResponseModel(
-          response: faker.lorem.sentence(),
-          responseType: SoapResponseType.error,
-        ),
-      );
+      bsLogin.mockLogin(faker.lorem.sentence());
 
       await sut.login(
         enterpriseName: enterpriseName,
         user: user,
         password: password,
-        showBsErrorMessage: (_) {},
       );
       mockedFirebaseGet = MockedFirebaseGet(
         dataToReturn: [
@@ -333,20 +308,13 @@ void main() {
           EntityFactory.anullEnterpriseProperties(annullbaseUrl: true);
 
       bsLogin.mockLogin(
-        SoapResponseModel(
-          response:
-              FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
-                  .toJson()
-                ..["AccessKey"] = null,
-          responseType: SoapResponseType.success,
-        ),
-      );
+          FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson()
+            ..["AccessKey"] = null);
 
       await sut.login(
         enterpriseName: enterpriseName,
         user: user,
         password: password,
-        showBsErrorMessage: (_) {},
       );
 
       verifyNever(() => navigateTo.navigate(pageRoute: PageRoutes.login));
@@ -356,14 +324,8 @@ void main() {
           EntityFactory.anullEnterpriseProperties(annullbaseUrl: true);
 
       bsLogin.mockLogin(
-        SoapResponseModel(
-          response:
-              FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
-                  .toJson()
-                ..["AccessKey"] = null,
-          responseType: SoapResponseType.success,
-        ),
-      );
+          FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson()
+            ..["AccessKey"] = null);
 
       expectLater(
           sut.mainErrorStream, emitsInOrder([null, UIError.updateCeltaBs]));
@@ -373,7 +335,6 @@ void main() {
         enterpriseName: enterpriseName,
         user: user,
         password: password,
-        showBsErrorMessage: (_) {},
       );
 
       verifyNever(() => navigateTo.navigate(pageRoute: PageRoutes.login));
@@ -385,7 +346,6 @@ void main() {
         enterpriseName: enterpriseName,
         user: "$user  ",
         password: password,
-        showBsErrorMessage: (_) {},
       );
 
       verify(
@@ -399,7 +359,6 @@ void main() {
         enterpriseName: enterpriseName,
         user: "$user  ",
         password: password,
-        showBsErrorMessage: (_) {},
       );
 
       expect(EnterpriseBuilder.entity?.bsUser?.name, user.trimRight());

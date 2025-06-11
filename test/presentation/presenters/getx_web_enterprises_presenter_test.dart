@@ -28,7 +28,7 @@ void main() {
   late DocumentReferenceFake docRef;
   late String bsUserName;
   late String bsPassword;
-  late SoapResponseModel bsLoginResponse;
+  late dynamic bsLoginResponse;
   late List<EnterpriseEntity> enterprisesInBs;
 
   WidgetsFlutterBinding.ensureInitialized();
@@ -69,12 +69,9 @@ void main() {
     docRef = DocumentReferenceFake();
     bsUserName = faker.internet.userName();
     bsPassword = faker.internet.password();
-    bsLoginResponse = SoapResponseModel(
-      response:
-          FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson()
-            ..["AccessKey"] = faker.lorem.sentence(),
-      responseType: SoapResponseType.success,
-    );
+    bsLoginResponse =
+        FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson()
+          ..["AccessKey"] = faker.lorem.sentence();
     enterprisesInBs = [
       EntityFactory.makeEnterpriseEntity(),
       EntityFactory.makeEnterpriseEntity(),
@@ -266,7 +263,6 @@ void main() {
       expectLater(sut.mainErrorStream, emits(null));
 
       await sut.addNewEnterprise(
-        showBsErrorMessage: (_) {},
         doOnSucceeds: () {},
         bsUserName: bsUserName,
         bsPassword: bsPassword,
@@ -285,7 +281,6 @@ void main() {
       firebaseManager.mockPutError();
 
       await sut.addNewEnterprise(
-        showBsErrorMessage: (_) {},
         doOnSucceeds: () {},
         bsUserName: bsUserName,
         bsPassword: bsPassword,
@@ -298,7 +293,6 @@ void main() {
       final baseUrl = faker.internet.httpsUrl();
 
       await sut.addNewEnterprise(
-        showBsErrorMessage: (_) {},
         doOnSucceeds: () {},
         bsUserName: bsUserName,
         bsPassword: bsPassword,
@@ -323,7 +317,6 @@ void main() {
       final baseUrl = faker.lorem.sentence();
 
       await sut.addNewEnterprise(
-        showBsErrorMessage: (_) {},
         doOnSucceeds: () {},
         bsUserName: bsUserName,
         bsPassword: bsPassword,
@@ -377,7 +370,6 @@ void main() {
 
       await sut.getEnterprises();
       await sut.addNewEnterprise(
-        showBsErrorMessage: (_) {},
         doOnSucceeds: () {},
         bsUserName: bsUserName,
         bsPassword: bsPassword,
@@ -395,7 +387,6 @@ void main() {
 
       await sut.getEnterprises();
       await sut.addNewEnterprise(
-        showBsErrorMessage: (_) {},
         doOnSucceeds: () {},
         bsUserName: bsUserName,
         bsPassword: bsPassword,
@@ -409,7 +400,6 @@ void main() {
       final url = "${faker.internet.httpsUrl().toUpperCase()} anything";
 
       await sut.addNewEnterprise(
-        showBsErrorMessage: (_) {},
         doOnSucceeds: () {},
         bsUserName: bsUserName,
         bsPassword: bsPassword,
@@ -438,17 +428,10 @@ void main() {
           EntityFactory.anullEnterpriseProperties(annullbaseUrl: true);
 
       bsLogin.mockLogin(
-        SoapResponseModel(
-          response:
-              FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
-                  .toJson()
-                ..["AccessKey"] = null,
-          responseType: SoapResponseType.success,
-        ),
-      );
+          FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson()
+            ..["AccessKey"] = null);
 
       await sut.addNewEnterprise(
-        showBsErrorMessage: (_) {},
         doOnSucceeds: () {},
         baseUrl: faker.internet.httpUrl(),
         enterpriseName: faker.company.name(),
@@ -462,7 +445,6 @@ void main() {
       final enterpriseName = faker.company.name();
 
       await sut.addNewEnterprise(
-        showBsErrorMessage: (_) {},
         doOnSucceeds: () {},
         baseUrl: baseUrl,
         enterpriseName: enterpriseName,
@@ -474,7 +456,7 @@ void main() {
       verify(() => loadEnterprises.get(
             url: baseUrl.toLowerCase().removeWhiteSpaces(),
             userName: bsUserName,
-            accessKey: bsLoginResponse.response["AccessKey"],
+            accessKey: bsLoginResponse["AccessKey"],
           )).called(1);
     });
     test("Should add the enterprises got by bsLogin as subenterprises",
@@ -483,7 +465,6 @@ void main() {
       final enterpriseName = faker.company.name();
 
       await sut.addNewEnterprise(
-        showBsErrorMessage: (_) {},
         doOnSucceeds: () {},
         baseUrl: baseUrl,
         enterpriseName: enterpriseName,

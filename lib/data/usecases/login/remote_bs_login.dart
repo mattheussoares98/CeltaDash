@@ -5,7 +5,6 @@ import 'package:xml2json/xml2json.dart';
 import '../../../domain/usecases/usecases.dart';
 import '../../http/http.dart';
 import '../../mixins/mixins.dart';
-import '../../models/models.dart';
 
 class RemoteBsLogin with ErrorHandling implements BsLogin {
   final SoapRequest soapAdapter;
@@ -13,7 +12,7 @@ class RemoteBsLogin with ErrorHandling implements BsLogin {
   RemoteBsLogin(this.soapAdapter);
 
   @override
-  Future<SoapResponseModel> login({
+  Future<dynamic> login({
     required String user,
     required String password,
     String? url,
@@ -28,13 +27,9 @@ class RemoteBsLogin with ErrorHandling implements BsLogin {
         url: url,
       );
 
-      if (response.responseType == SoapResponseType.error) {
-        return response; //TODO create and throw BSError and treat in presenter
-      }
-
       var userUpdated = {};
 
-      Map resultAsMap = json.decode(response.response);
+      Map resultAsMap = json.decode(response);
       userUpdated = resultAsMap["Usuarios"][0];
 
       final myTransformer = Xml2Json();
@@ -43,10 +38,7 @@ class RemoteBsLogin with ErrorHandling implements BsLogin {
       Map toParker2 = json.decode(toParker);
       userUpdated["CrossIdentity_Usuario"] = toParker2["string"];
 
-      return SoapResponseModel(
-        response: userUpdated,
-        responseType: SoapResponseType.success,
-      );
+      return userUpdated;
     } catch (e) {
       treatError(e);
     }

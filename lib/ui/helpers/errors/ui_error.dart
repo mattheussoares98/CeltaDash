@@ -1,10 +1,14 @@
+import 'package:equatable/equatable.dart';
+
 import '../helpers.dart';
 
-class UIError {
+class UIError extends Equatable {
   final String description;
   const UIError._(this.description);
   @override
   String toString() => description;
+  @override
+  List<Object?> get props => [description];
 
   factory UIError.custom(String description) => UIError._(description);
 

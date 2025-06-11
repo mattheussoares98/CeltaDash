@@ -3,13 +3,13 @@ import 'package:xml2json/xml2json.dart';
 import 'package:http/http.dart' as http;
 
 import '../../data/http/http.dart';
-import '../../data/models/models.dart';
 import '../../domain/helpers/helpers.dart';
 import '../../main/builders/builders.dart';
+import '../helpers/helpers.dart';
 
 class SoapAdapter implements SoapRequest {
   @override
-  Future<SoapResponseModel> post({
+  Future<dynamic> post({
     required Map<String, dynamic> parameters,
     required String typeOfResponse,
     required String? typeOfResult,
@@ -17,8 +17,6 @@ class SoapAdapter implements SoapRequest {
     required String serviceASMX,
     String? url,
   }) async {
-    late SoapResponseModel soapResponse;
-
     try {
       final soapHeaders = {
         'Content-Type': 'text/xml; charset=utf-8',
@@ -63,54 +61,29 @@ class SoapAdapter implements SoapRequest {
           parsedJson["soap:Envelope"]["soap:Body"][typeOfResponse];
 
       if (responseBody["status"] == "OK") {
-        soapResponse = _handleSuccessResponse(responseBody, typeOfResult);
+        return _handleSuccessResponse(responseBody, typeOfResult);
       } else {
-        soapResponse = _handleErrorResponse(responseBody, typeOfResult);
+        throw BsError(responseBody["status"]);
       }
-
-      return soapResponse;
     } catch (e) {
       rethrow;
     }
   }
 
-  SoapResponseModel _handleSuccessResponse(
+  String _handleSuccessResponse(
     Map<String, dynamic> responseBody,
     String? typeOfResult,
   ) {
     if (typeOfResult != null && responseBody[typeOfResult] != null) {
       if (_isValidResponse(responseBody, typeOfResult)) {
-        return SoapResponseModel(
-          response: responseBody[typeOfResult]["diffgr:diffgram"]["NewDataSet"]
-              .toString(),
-          responseType: SoapResponseType.success,
-        );
+        return responseBody[typeOfResult]["diffgr:diffgram"]["NewDataSet"]
+            .toString();
       }
-      return SoapResponseModel(
-        response: responseBody[typeOfResult].toString(),
-        responseType: SoapResponseType.success,
-      );
+      return responseBody[typeOfResult].toString();
+    } else if (responseBody.toString().contains("sucesso")) {
+      return responseBody["status"][typeOfResult];
     }
-    return SoapResponseModel(
-      response: 'Invalid response structure',
-      responseType: SoapResponseType.error,
-    );
-  }
-
-  SoapResponseModel _handleErrorResponse(
-    Map<String, dynamic> responseBody,
-    String? typeOfResult,
-  ) {
-    if (responseBody.toString().contains("sucesso")) {
-      return SoapResponseModel(
-        response: responseBody["status"][typeOfResult],
-        responseType: SoapResponseType.success,
-      );
-    }
-    return SoapResponseModel(
-      response: responseBody["status"],
-      responseType: SoapResponseType.error,
-    );
+    throw BsError('Invalid response structure');
   }
 
   bool _isValidResponse(

@@ -30,7 +30,6 @@ class GetxLoginPresenter extends GetxController
     required String enterpriseName,
     required String user,
     required String password,
-    required void Function(String error) showBsErrorMessage,
   }) async {
     mainError = null;
     isLoading = true;
@@ -67,9 +66,7 @@ class GetxLoginPresenter extends GetxController
         password: password,
       );
 
-      if (response.responseType == SoapResponseType.error) {
-        showBsErrorMessage(response.response);
-      } else if (response.response["AccessKey"] == null) {
+      if (response["AccessKey"] == null) {
         throw DomainError.updateCeltaBs;
       } else {
         EnterpriseBuilder.entity = FirebaseEnterpriseEntity(
@@ -79,8 +76,8 @@ class GetxLoginPresenter extends GetxController
           firebaseId: EnterpriseBuilder.entity?.firebaseId,
           bsUser: BsUserEntity(
             name: user.trimRight(),
-            AccessKey: response.response["AccessKey"],
-            CrossIdentity_Usuario: response.response["CrossIdentity_Usuario"],
+            AccessKey: response["AccessKey"],
+            CrossIdentity_Usuario: response["CrossIdentity_Usuario"],
           ),
           enterpriseName: enterpriseName,
         );

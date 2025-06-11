@@ -20,7 +20,6 @@ class LoginPresenterSpy extends Mock implements LoginPresenter {
           enterpriseName: any(named: 'enterpriseName'),
           user: any(named: 'user'),
           password: any(named: 'password'),
-          showBsErrorMessage: any(named: 'showBsErrorMessage'),
         )).thenAnswer((_) async {});
   }
 

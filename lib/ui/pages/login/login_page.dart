@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../main/builders/builders.dart';
-import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 import '../../mixins/mixins.dart';
 import 'components/components.dart';
@@ -70,9 +69,6 @@ class _LoginPageState extends State<LoginPage>
       enterpriseName: enterpriseController.text,
       user: userController.text,
       password: passwordController.text,
-      showBsErrorMessage: (error) {
-        showErrorMessage(context, error);
-      },
     );
   }
 

@@ -42,9 +42,6 @@ class _FloatingButtonState extends State<FloatingButton> {
         bsPassword: bsPasswordController.text,
         baseUrl: baseUrlController.text,
         enterpriseName: enterpriseNameController.text,
-        showBsErrorMessage: (error) {
-          snackBarMessage(context, error, Colors.red);
-        },
         doOnSucceeds: () {
           Navigator.of(context).pop();
           baseUrlController.clear();
