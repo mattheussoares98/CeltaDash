@@ -116,7 +116,8 @@ void main() {
         final endDate = DateTime(
           homePresenter.selectedDateMock.year,
           homePresenter.selectedDateMock.month + 1,
-        ).subtract(Duration(days: 1));
+          0,
+        );
 
         verify(
           () => loadSaleStatistics.get(
@@ -127,7 +128,9 @@ void main() {
               startDate: startDate,
               endDate: endDate,
               groupByEnterprise: true,
-              groupByHour: true,
+              groupByDay: true,
+              groupByMonth: false,
+              groupByYear: false,
             ),
           ),
         ).called(1);
@@ -145,7 +148,8 @@ void main() {
         final endDate = DateTime(
           homePresenter.selectedDateMock.year,
           homePresenter.selectedDateMock.month + 1,
-        ).subtract(Duration(days: 1));
+          0,
+        );
 
         verify(
           () => loadSaleStatistics.get(
@@ -156,7 +160,9 @@ void main() {
               startDate: startDate,
               endDate: endDate,
               groupByEnterprise: true,
-              groupByHour: true,
+              groupByDay: true,
+              groupByMonth: false,
+              groupByYear: false,
             ),
           ),
         ).called(1);
@@ -171,7 +177,8 @@ void main() {
         final endDate = DateTime(
           homePresenter.selectedDateMock.year,
           homePresenter.selectedDateMock.month + 1,
-        ).subtract(Duration(days: 1));
+          0,
+        );
 
         verify(
           () => loadSaleStatistics.get(
@@ -182,7 +189,9 @@ void main() {
               startDate: startDate,
               endDate: endDate,
               groupByEnterprise: true,
-              groupByHour: true,
+              groupByDay: true,
+              groupByMonth: false,
+              groupByYear: false,
             ),
           ),
         ).called(1);
@@ -201,7 +210,9 @@ void main() {
               startDate: startDate,
               endDate: endDate,
               groupByEnterprise: true,
-              groupByHour: true,
+              groupByDay: true,
+              groupByMonth: false,
+              groupByYear: false,
             ),
           ),
         ).called(1);
@@ -223,7 +234,8 @@ void main() {
         final endDate = DateTime(
           homePresenter.selectedDateMock.year,
           homePresenter.selectedDateMock.month + 1,
-        ).subtract(Duration(days: 1));
+          0,
+        );
 
         verify(
           () => loadSaleStatistics.get(
@@ -234,7 +246,9 @@ void main() {
               startDate: startDate,
               endDate: endDate,
               groupByEnterprise: true,
-              groupByHour: true,
+              groupByDay: true,
+              groupByMonth: false,
+              groupByYear: false,
             ),
           ),
         ).called(2);
@@ -251,7 +265,8 @@ void main() {
         final endDate = DateTime(
           homePresenter.selectedDateMock.year,
           homePresenter.selectedDateMock.month + 1,
-        ).subtract(Duration(days: 1));
+          0,
+        );
 
         expect(
             sut.lastGetDailyParams,
@@ -262,7 +277,9 @@ void main() {
               startDate: startDate,
               endDate: endDate,
               groupByEnterprise: true,
-              groupByHour: true,
+              groupByDay: true,
+              groupByMonth: false,
+              groupByYear: false,
             ));
       });
     });
@@ -292,7 +309,9 @@ void main() {
               startDate: startDate,
               endDate: endDate,
               groupByEnterprise: true,
+              groupByDay: false,
               groupByMonth: true,
+              groupByYear: false,
             ),
           ),
         ).called(1);
@@ -313,7 +332,9 @@ void main() {
               startDate: startDate,
               endDate: endDate,
               groupByEnterprise: true,
+              groupByDay: false,
               groupByMonth: true,
+              groupByYear: false,
             ),
           ),
         ).called(1);
@@ -333,7 +354,9 @@ void main() {
               startDate: startDate,
               endDate: endDate,
               groupByEnterprise: true,
+              groupByDay: false,
               groupByMonth: true,
+              groupByYear: false,
             ),
           ),
         ).called(1);
@@ -352,7 +375,9 @@ void main() {
               startDate: startDate,
               endDate: endDate,
               groupByEnterprise: true,
+              groupByDay: false,
               groupByMonth: true,
+              groupByYear: false,
             ),
           ),
         ).called(1);
@@ -377,7 +402,9 @@ void main() {
               startDate: startDate,
               endDate: endDate,
               groupByEnterprise: true,
+              groupByDay: false,
               groupByMonth: true,
+              groupByYear: false,
             ),
           ),
         ).called(2);
@@ -397,7 +424,9 @@ void main() {
               startDate: startDate,
               endDate: endDate,
               groupByEnterprise: true,
+              groupByDay: false,
               groupByMonth: true,
+              groupByYear: false,
             ));
       });
     });
@@ -428,6 +457,8 @@ void main() {
               endDate: endDate,
               groupByEnterprise: true,
               groupByYear: true,
+              groupByMonth: false,
+              groupByDay: false,
             ),
           ),
         ).called(1);
@@ -449,6 +480,8 @@ void main() {
               endDate: endDate,
               groupByEnterprise: true,
               groupByYear: true,
+              groupByMonth: false,
+              groupByDay: false,
             ),
           ),
         ).called(1);
@@ -474,6 +507,8 @@ void main() {
               endDate: endDate,
               groupByEnterprise: true,
               groupByYear: true,
+              groupByMonth: false,
+              groupByDay: false,
             ),
           ),
         ).called(2);
@@ -494,6 +529,8 @@ void main() {
               endDate: endDate,
               groupByEnterprise: true,
               groupByYear: true,
+              groupByMonth: false,
+              groupByDay: false,
             ));
       });
 
@@ -513,6 +550,8 @@ void main() {
               endDate: endDate,
               groupByEnterprise: true,
               groupByYear: true,
+              groupByMonth: false,
+              groupByDay: false,
             ),
           ),
         ).called(1);
@@ -532,6 +571,8 @@ void main() {
               endDate: endDate,
               groupByEnterprise: true,
               groupByYear: true,
+              groupByMonth: false,
+              groupByDay: false,
             ),
           ),
         ).called(1);

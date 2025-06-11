@@ -8,7 +8,8 @@ import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
 class GetxSalesPresenter extends GetxController
-    with ErrorHandling,
+    with
+        ErrorHandling,
         LoadingManager,
         UIErrorManager,
         LastGetSalesStatisticsParamsManager,
@@ -69,53 +70,34 @@ class GetxSalesPresenter extends GetxController
         return;
       }
 
-      late GetSaleStatisticsParams getSalesParams;
+      final startDate = DateTime(
+        selectedPeriod == PeriodType.yearly
+            ? homePresenter.selectedDate.year - 2
+            : homePresenter.selectedDate.year,
+        selectedPeriod == PeriodType.daily
+            ? homePresenter.selectedDate.month
+            : 1,
+        1,
+      );
+      final endDate = DateTime(
+        homePresenter.selectedDate.year,
+        selectedPeriod == PeriodType.daily
+            ? homePresenter.selectedDate.month + 1
+            : 12,
+        selectedPeriod == PeriodType.daily ? 0 : 31,
+      );
 
-      if (selectedPeriod == PeriodType.daily) {
-        final startDate = DateTime(
-          homePresenter.selectedDate.year,
-          homePresenter.selectedDate.month,
-          1,
-        );
-        final endDate = DateTime(
-          homePresenter.selectedDate.year,
-          homePresenter.selectedDate.month + 1,
-        ).subtract(Duration(days: 1));
+      final getSalesParams = GetSaleStatisticsParams(
+        enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+        startDate: startDate,
+        endDate: endDate,
+        groupByEnterprise: true,
+        groupByDay: selectedPeriod == PeriodType.daily,
+        groupByMonth: selectedPeriod == PeriodType.monthly,
+        groupByYear: selectedPeriod == PeriodType.yearly,
+      );
 
-        getSalesParams = GetSaleStatisticsParams(
-          enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
-          startDate: startDate,
-          endDate: endDate,
-          groupByEnterprise: true,
-          groupByHour: true,
-        );
-      } else if (selectedPeriod == PeriodType.monthly) {
-        getSalesParams = GetSaleStatisticsParams(
-          enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
-          startDate: DateTime(homePresenter.selectedDate.year, 1, 1),
-          endDate: DateTime(
-            homePresenter.selectedDate.year,
-            12,
-            31,
-          ),
-          groupByEnterprise: true,
-          groupByMonth: true,
-        );
-      } else if (selectedPeriod == PeriodType.yearly) {
-        getSalesParams = GetSaleStatisticsParams(
-          enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
-          startDate: DateTime(homePresenter.selectedDate.year - 2),
-          endDate: DateTime(
-            homePresenter.selectedDate.year,
-            12,
-            31,
-          ),
-          groupByEnterprise: true,
-          groupByYear: true,
-        );
-      }
       final remoteSales = await loadSaleStatistics.get(getSalesParams);
-
       final newSales = remoteSales
           .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
           .toList();
