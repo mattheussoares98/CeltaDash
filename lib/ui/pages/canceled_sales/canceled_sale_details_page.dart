@@ -118,7 +118,11 @@ class _CanceledSaleDetailsPageState extends State<CanceledSaleDetailsPage>
                             ],
                           ),
                         ),
-                        PaymentFinalizations(sale: sale),
+                        //dont show the payment finalizations because when the sale is canceled in the PDV
+                        //before the BS read the sale, dont save the payments in BS. But when cancel the
+                        //sale after the BS already read the sale, it will save the payments in BS. This can
+                        //cause confusion for the user
+                        // PaymentFinalizations(sale: sale),
                         Expanded(child: Products(sale: sale)),
                       ]);
                 }),

@@ -20,9 +20,9 @@ class PaymentFinalizations extends StatelessWidget {
     double titleMinHeight = 30;
     double getFinalizationsHeight() {
       if (sale?.paymentFinalizations?.length == 1) {
-        return titleMinHeight + 30;
+        return titleMinHeight * 2 + 30;
       }
-      return titleMinHeight + 60;
+      return titleMinHeight * 2 + 60;
     }
 
     return SizedBox(
@@ -31,6 +31,7 @@ class PaymentFinalizations extends StatelessWidget {
         children: [
           TableItem(
             titleMinHeight: titleMinHeight,
+            columnsIndexToSum: [2],
             titles: [
               PersonalizedTableCell(value: R.string.finalization),
               PersonalizedTableCell(value: R.string.portions),
