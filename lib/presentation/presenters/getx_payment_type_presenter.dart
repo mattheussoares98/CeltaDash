@@ -3,12 +3,11 @@ import 'package:get/get.dart';
 import '../../data/models/models.dart';
 import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
-import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
 class GetxPaymentTypePresenter extends GetxController
-    with
+    with ErrorHandling,
         SaleStatisticsManager,
         UIErrorManager,
         LoadingManager,
@@ -96,7 +95,7 @@ class GetxPaymentTypePresenter extends GetxController
 
       lastParams = getSalesParams;
     } catch (e) {
-      mainError = UIError.unexpected;
+      mainError = getUIError(e);
     } finally {
       isLoading = false;
     }

@@ -8,7 +8,7 @@ import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
 class GetxDepartmentsPresenter extends GetxController
-    with
+    with ErrorHandling,
         SaleStatisticsManager,
         UIErrorManager,
         LoadingManager,
@@ -98,7 +98,7 @@ class GetxDepartmentsPresenter extends GetxController
         monthlyStatistics = newSales;
       }
     } catch (e) {
-      mainError = UIError.unexpected;
+      mainError = getUIError(e);
     } finally {
       isLoading = false;
     }

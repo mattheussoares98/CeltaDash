@@ -6,7 +6,7 @@ import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
 class GetxWebLoginPresenter extends GetxController
-    with LoadingManager, UIErrorManager
+    with ErrorHandling, LoadingManager, UIErrorManager
     implements WebLoginPresenter {
   final NavigateTo navigateTo;
   final FirebaseLoginManagement firebaseLoginManagement;
@@ -27,7 +27,7 @@ class GetxWebLoginPresenter extends GetxController
       await firebaseLoginManagement.login(email: email, password: password);
       await navigateTo.navigate(pageRoute: PageRoutes.webEnterprises);
     } catch (e) {
-      mainError = UIError.unexpected;
+      mainError = getUIError(e);
     } finally {
       isLoading = false;
     }
@@ -40,7 +40,7 @@ class GetxWebLoginPresenter extends GetxController
     try {
       await firebaseLoginManagement.logout();
     } catch (e) {
-      mainError = UIError.unexpected;
+      mainError = getUIError(e);
     } finally {
       isLoading = false;
     }

@@ -9,7 +9,7 @@ import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
 class GetxWebEnterprisesPresenter extends GetxController
-    with LoadingManager, UIErrorManager
+    with ErrorHandling, LoadingManager, UIErrorManager
     implements WebEnterprisesPresenter {
   final NavigateTo navigateTo;
   final FirebaseManager firebaseManager;
@@ -37,7 +37,7 @@ class GetxWebEnterprisesPresenter extends GetxController
                   .toViewModel())
           .toList();
     } catch (e) {
-      mainError = UIError.unexpected;
+      mainError = getUIError(e);
     } finally {
       isLoading = false;
     }
@@ -93,14 +93,8 @@ class GetxWebEnterprisesPresenter extends GetxController
         oldEnterprises[index] = _selectedEnterprise!;
         _enterprises.value = oldEnterprises;
       }
-    } on DomainError catch (e) {
-      switch (e) {
-        case DomainError.sameUrl:
-          mainError = UIError.sameUrl;
-          break;
-        default:
-          mainError = UIError.unexpected;
-      }
+    } catch (e) {
+      mainError = getUIError(e);
     } finally {
       isLoading = false;
     }
@@ -178,20 +172,8 @@ class GetxWebEnterprisesPresenter extends GetxController
       ];
 
       doOnSucceeds();
-    } on DomainError catch (e) {
-      switch (e) {
-        case DomainError.enterpriseAlreadyExists:
-          mainError = UIError.enterpriseAlreadyExists;
-          break;
-        case DomainError.updateCeltaBs:
-          mainError = UIError.updateCeltaBs;
-          break;
-        case DomainError.sameUrl:
-          mainError = UIError.sameUrl;
-          break;
-        default:
-          mainError = UIError.unexpected;
-      }
+    } catch (e) {
+      mainError = getUIError(e);
     } finally {
       isLoading = false;
     }
@@ -240,7 +222,7 @@ class GetxWebEnterprisesPresenter extends GetxController
       _selectedEnterprise = firebaseEnterpriseUpdated;
       return true;
     } catch (e) {
-      mainError = UIError.unexpected;
+      mainError = getUIError(e);
       return false;
     } finally {
       isLoading = false;

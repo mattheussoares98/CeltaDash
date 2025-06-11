@@ -8,7 +8,7 @@ import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
 class GetxCompareDaysPresenter extends GetxController
-    with SaleStatisticsManager, UIErrorManager, LoadingManager
+    with ErrorHandling, SaleStatisticsManager, UIErrorManager, LoadingManager
     implements CompareDaysPresenter {
   final LoadSaleStatistics loadSaleStatistics;
 
@@ -84,14 +84,8 @@ class GetxCompareDaysPresenter extends GetxController
       }
 
       saleStatistics = firstDayMovements + secondDayMovements;
-    } on DomainError catch (e) {
-      switch (e) {
-        case DomainError.sameDays:
-          mainError = UIError.sameDays;
-          break;
-        default:
-          mainError = UIError.unexpected;
-      }
+    } catch (e) {
+      mainError = getUIError(e);
     } finally {
       isLoading = false;
     }

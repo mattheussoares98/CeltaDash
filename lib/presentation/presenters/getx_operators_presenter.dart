@@ -8,7 +8,7 @@ import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
 class GetxOperatorsPresenter extends GetxController
-    with
+    with ErrorHandling,
         LoadingManager,
         UIErrorManager,
         SaleStatisticsManager,
@@ -130,7 +130,7 @@ class GetxOperatorsPresenter extends GetxController
         lastGetYearlyParams = getSalesParams;
       }
     } catch (e) {
-      mainError = UIError.unexpected;
+      mainError = getUIError(e);
     } finally {
       isLoading = false;
     }

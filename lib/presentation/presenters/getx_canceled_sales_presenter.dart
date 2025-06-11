@@ -8,7 +8,7 @@ import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
 class GetxCanceledSalesPresenter extends GetxController
-    with
+    with ErrorHandling,
         UIErrorManager,
         LoadingManager,
         EcSaleMovementManager,
@@ -96,7 +96,7 @@ class GetxCanceledSalesPresenter extends GetxController
         monthlySales = newSales;
       }
     } catch (e) {
-      mainError = UIError.unexpected;
+      mainError = getUIError(e);
     } finally {
       isLoading = false;
     }
@@ -153,7 +153,7 @@ class GetxCanceledSalesPresenter extends GetxController
             SaleMovementModel.fromEntity(loadedSale[0]).toViewModel();
       }
     } catch (e) {
-      mainError = UIError.unexpected;
+      mainError = getUIError(e);
     } finally {
       isLoading = false;
     }

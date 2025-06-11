@@ -8,7 +8,7 @@ import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
 
 class GetxProductsPresenter extends GetxController
-    with
+    with ErrorHandling,
         LoadingManager,
         UIErrorManager,
         LastGetSalesStatisticsParamsManager,
@@ -94,7 +94,7 @@ class GetxProductsPresenter extends GetxController
         monthlyStatistics = newSales;
       }
     } catch (e) {
-      mainError = UIError.unexpected;
+      mainError = getUIError(e);
     } finally {
       isLoading = false;
     }

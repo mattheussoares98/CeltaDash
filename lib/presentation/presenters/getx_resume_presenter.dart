@@ -8,7 +8,7 @@ import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
 class GetxResumePresenter extends GetxController
-    with
+    with ErrorHandling,
         SaleStatisticsManager,
         UIErrorManager,
         LoadingManager,
@@ -114,7 +114,7 @@ class GetxResumePresenter extends GetxController
 
       lastParams = salesParams;
     } catch (e) {
-      mainError = UIError.unexpected;
+      mainError = getUIError(e);
     } finally {
       isLoading = false;
     }

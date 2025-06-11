@@ -11,7 +11,7 @@ import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
 class GetxLoginPresenter extends GetxController
-    with LoadingManager, UIErrorManager
+    with ErrorHandling, LoadingManager, UIErrorManager
     implements LoginPresenter {
   final NavigateTo navigateTo;
   final BsLogin bsLogin;
@@ -92,17 +92,8 @@ class GetxLoginPresenter extends GetxController
         );
         navigateTo.navigate(pageRoute: PageRoutes.home, clear: true);
       }
-    } on DomainError catch (e) {
-      switch (e) {
-        case DomainError.enterpriseNotFound:
-          mainError = UIError.enterpriseNotFound;
-          break;
-        case DomainError.updateCeltaBs:
-          mainError = UIError.updateCeltaBs;
-          break;
-        default:
-          mainError = UIError.unexpected;
-      }
+    } catch (e) {
+      mainError = getUIError(e);
     } finally {
       isLoading = false;
     }

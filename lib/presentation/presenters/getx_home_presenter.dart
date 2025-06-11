@@ -13,7 +13,7 @@ import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
 
 class GetxHomePresenter extends GetxController
-    with UIErrorManager, LoadingManager
+    with ErrorHandling, UIErrorManager, LoadingManager
     implements HomePresenter {
   final NavigateTo navigateTo;
   final LoadEnterprises loadEnterprises;
@@ -129,7 +129,7 @@ class GetxHomePresenter extends GetxController
           .toList();
       _selectedEnterprise.value = _bsEnterprises.value?.first;
     } catch (e) {
-      mainError = UIError.unexpected;
+      mainError = getUIError(e);
     } finally {
       isLoading = false;
     }
@@ -257,7 +257,7 @@ class GetxHomePresenter extends GetxController
 
       navigateTo.navigate(pageRoute: PageRoutes.splash, clear: true);
     } catch (e) {
-      mainError = UIError.unexpected;
+      mainError = getUIError(e);
     } finally {
       isLoading = false;
     }
