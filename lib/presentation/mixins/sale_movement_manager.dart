@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 
 import '../../ui/pages/pages.dart';
 
-mixin EcSaleMovementManager on GetxController {
+mixin SaleMovementManager on GetxController {
   final _sales = Rx<List<SaleMovementViewModel>?>(null);
   List<SaleMovementViewModel>? get sales => _sales.value;
   set sales(List<SaleMovementViewModel>? value) => _sales.value = value;

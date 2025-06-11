@@ -11,7 +11,7 @@ class GetxCanceledSalesPresenter extends GetxController
     with ErrorHandling,
         UIErrorManager,
         LoadingManager,
-        EcSaleMovementManager,
+        SaleMovementManager,
         PeriodTypeManager,
         LastGetSaleMovementParamsManager
     implements CanceledSalesPresenter {
