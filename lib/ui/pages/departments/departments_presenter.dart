@@ -6,11 +6,13 @@ import '../../helpers/helpers.dart';
 import '../pages.dart';
 
 abstract class DepartmentsPresenter implements Listenable {
-  List<SaleStatisticViewModel>? get saleStatistics;
+  List<SaleStatisticViewModel>? get dailyStatistics;
+  List<SaleStatisticViewModel>? get monthlyStatistics;
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
   PeriodType get selectedPeriod;
-  GetSaleStatisticsParams? get lastGetStatisticsParams;
+  GetSaleStatisticsParams? get lastGetDailyParams;
+  GetSaleStatisticsParams? get lastGetMonthlyParams;
 
   Future<void> getSales(
     HomePresenter homePresenter, {

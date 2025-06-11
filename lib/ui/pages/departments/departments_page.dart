@@ -77,8 +77,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                   padding: const EdgeInsets.all(8.0),
                   child: SelectPeriodItems(
                     isLoading: loadingSnap.data,
-                    selectedPeriodType:
-                        departmentsPresenter.selectedPeriod,
+                    selectedPeriodType: departmentsPresenter.selectedPeriod,
                     onTapDaily: () {
                       departmentsPresenter.getSales(
                         homePresenter,
@@ -94,20 +93,30 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                   ),
                 ),
                 Obx(() {
-                  final saleStatistics = departmentsPresenter.saleStatistics
+                  final dailyStatistics = departmentsPresenter.dailyStatistics
                       ?.filteredSales(
                         enterprise: homePresenter.selectedEnterprise,
-                        filterDay: departmentsPresenter.selectedPeriod ==
-                                PeriodType.daily
-                            ? homePresenter.selectedDate.day
-                            : null,
+                        filterDay: homePresenter.selectedDate.day,
                         filterMonth: homePresenter.selectedDate.month,
                         filterYear: homePresenter.selectedDate.year,
                       )
                       .map((e) => e.toViewModel())
                       .toList();
+                  final monthlyStatistics =
+                      departmentsPresenter.monthlyStatistics
+                          ?.filteredSales(
+                            enterprise: homePresenter.selectedEnterprise,
+                            filterMonth: homePresenter.selectedDate.month,
+                          )
+                          .map((e) => e.toViewModel())
+                          .toList();
 
-                  if (saleStatistics == null || saleStatistics.isEmpty) {
+                  final sales =
+                      departmentsPresenter.selectedPeriod == PeriodType.daily
+                          ? dailyStatistics
+                          : monthlyStatistics;
+
+                  if (sales == null || sales.isEmpty) {
                     return EmptySales(isLoading: loadingSnap.data);
                   }
 
@@ -123,8 +132,8 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                               });
                             },
                             children: [
-                              Departments(saleStatistics: saleStatistics),
-                              Sections(saleStatistics: saleStatistics),
+                              Departments(saleStatistics: sales),
+                              Sections(saleStatistics: sales),
                             ],
                           ),
                         ),

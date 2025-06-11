@@ -42,12 +42,21 @@ class GetxDepartmentsPresenter extends GetxController
 
       final canSearchAgain = SearchHelper.canSearch(
         forceRefresh: forceRefresh,
-        lastParams: lastGetStatisticsParams,
+        lastParams: selectedPeriod == PeriodType.daily
+            ? lastGetDailyParams
+            : lastGetMonthlyParams,
         selectedDate: homePresenter.selectedDate,
         periodType: selectedPeriod,
       );
 
-      if (!canSearchAgain) {
+      bool changedEnterprise = SearchHelper.changedTheEnterprise(
+        selectedPeriodType: selectedPeriod,
+        selectedEnterprise: homePresenter.selectedEnterprise,
+        lastDailyParams: lastGetDailyParams,
+        lastMonthlyParams: lastGetMonthlyParams,
+      );
+
+      if (!canSearchAgain && !changedEnterprise) {
         return;
       }
 
@@ -63,21 +72,31 @@ class GetxDepartmentsPresenter extends GetxController
         1,
       ).subtract(Duration(days: 1));
 
-      final getSalesParams = GetSaleStatisticsParams(
+      final params = GetSaleStatisticsParams(
         startDate: startDate,
         endDate: selectedPeriod == PeriodType.daily ? startDate : endDate,
         groupByEnterprise: true,
-        groupByDay: true,
+        groupByDay: selectedPeriod == PeriodType.daily,
+        groupByMonth: selectedPeriod == PeriodType.monthly,
+        groupByYear: selectedPeriod == PeriodType.monthly,
         groupByProductDepartment: true,
         groupByProductSection: true,
+        enterpriseIds: homePresenter.selectedEnterprise == null
+            ? []
+            : [homePresenter.selectedEnterprise!.id!.toInt()],
       );
-      final remoteSales = await loadSaleStatistics.get(getSalesParams);
-      lastParams = getSalesParams;
 
-      //TODO create daily and monthly sales
-      saleStatistics = remoteSales
+      final response = await loadSaleStatistics.get(params);
+      final newSales = (response as List)
           .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
           .toList();
+      if (selectedPeriod == PeriodType.daily) {
+        lastGetDailyParams = params;
+        dailyStatistics = newSales;
+      } else {
+        lastGetMonthlyParams = params;
+        monthlyStatistics = newSales;
+      }
     } catch (e) {
       mainError = UIError.unexpected;
     } finally {

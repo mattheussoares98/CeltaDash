@@ -91,27 +91,37 @@ class _ProfitabilityPageState extends State<ProfitabilityPage> {
                         ),
                       ),
                       Obx(() {
-                        final salesDepartments =
-                            departmentsPresenter.saleStatistics
+                        final dailyStatistics =
+                            departmentsPresenter.dailyStatistics
                                 ?.filteredSales(
                                   enterprise: homePresenter.selectedEnterprise,
-                                  filterDay: departmentsPresenter
-                                              .selectedPeriod ==
-                                          PeriodType.daily
-                                      ? homePresenter.selectedDate.day
-                                      : null,
+                                  filterDay: homePresenter.selectedDate.day,
                                   filterMonth: homePresenter.selectedDate.month,
                                   filterYear: homePresenter.selectedDate.year,
                                 )
                                 .map((e) => e.toViewModel())
                                 .toList();
+                        final monthlyStatistics =
+                            departmentsPresenter.monthlyStatistics
+                                ?.filteredSales(
+                                  enterprise: homePresenter.selectedEnterprise,
+                                  filterMonth: homePresenter.selectedDate.month,
+                                )
+                                .map((e) => e.toViewModel())
+                                .toList();
+
+                        final salesDepartments =
+                            departmentsPresenter.selectedPeriod ==
+                                    PeriodType.daily
+                                ? dailyStatistics
+                                : monthlyStatistics;
 
                         if (salesDepartments == null ||
                             salesDepartments.isEmpty) {
                           return EmptySales(
-                              isLoading: loadingDepartmentsSnap.data == true ||
-                                  loadingProductsSnap.data == true);
+                              isLoading: loadingDepartmentsSnap.data);
                         }
+
                         return Expanded(
                           child: Column(
                             children: [
