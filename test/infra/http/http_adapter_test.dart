@@ -1,4 +1,5 @@
 import 'package:celta_dash/data/http/http.dart';
+import 'package:celta_dash/infra/helpers/helpers.dart';
 import 'package:celta_dash/infra/http/http.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -123,12 +124,23 @@ void main() {
       expect(future, throwsA(HttpError.badRequest));
     });
 
-    test('Should return BadRequestError if post returns 400', () async {
-      client.mockPost(400);
+    test('Should return BadRequestError if post returns 400 with empty body',
+        () async {
+      client.mockPost(400, body: "");
 
       final future = sut.request(url: url, method: 'post');
 
       expect(future, throwsA(HttpError.badRequest));
+    });
+    test('Should throw ApiError if post returns 400 with message', () async {
+      client.mockPost(400, body: "message");
+
+      final future = sut.request(url: url, method: 'post');
+
+      expect(
+        future,
+        throwsA(predicate((e) => e is ApiError && e.message == 'message')),
+      );
     });
 
     test('Should return UnauthorizedError if post returns 401', () async {
@@ -227,12 +239,23 @@ void main() {
       expect(future, throwsA(HttpError.badRequest));
     });
 
-    test('Should return BadRequestError if get returns 400', () async {
-      client.mockGet(400);
+    test('Should return BadRequestError if get returns 400 with empty body',
+        () async {
+      client.mockGet(400, body: "");
 
       final future = sut.request(url: url, method: 'get');
 
       expect(future, throwsA(HttpError.badRequest));
+    });
+    test('Should return ApiError if get returns 400 with message', () async {
+      client.mockGet(400, body: "message");
+
+      final future = sut.request(url: url, method: 'get');
+
+      expect(
+        future,
+        throwsA(predicate((e) => e is ApiError && e.message == 'message')),
+      );
     });
 
     test('Should return UnauthorizedError if get returns 401', () async {
@@ -345,12 +368,23 @@ void main() {
       expect(future, throwsA(HttpError.badRequest));
     });
 
-    test('Should return BadRequestError if put returns 400', () async {
-      client.mockPut(400);
+    test('Should return BadRequestError if put returns 400 with empty body',
+        () async {
+      client.mockPut(400, body: "");
 
       final future = sut.request(url: url, method: 'put');
 
       expect(future, throwsA(HttpError.badRequest));
+    });
+    test('Should return ApiError if get returns 400 with message', () async {
+      client.mockPut(400, body: "message");
+
+      final future = sut.request(url: url, method: 'put');
+
+      expect(
+        future,
+        throwsA(predicate((e) => e is ApiError && e.message == 'message')),
+      );
     });
 
     test('Should return UnauthorizedError if put returns 401', () async {

@@ -3,6 +3,7 @@ import 'package:http/http.dart';
 import 'dart:convert';
 
 import '../../data/http/http.dart';
+import '../helpers/helpers.dart';
 
 class HttpAdapter implements HttpClient {
   final Client client;
@@ -58,7 +59,9 @@ class HttpAdapter implements HttpClient {
       case 204:
         return null;
       case 400:
-        throw HttpError.badRequest;
+        response.body.isNotEmpty
+            ? throw ApiError(response.body)
+            : throw HttpError.badRequest;
       case 401:
         throw HttpError.unauthorized;
       case 403:
