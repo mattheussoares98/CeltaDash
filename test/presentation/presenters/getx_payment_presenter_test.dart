@@ -20,21 +20,21 @@ void main() {
   late GetxPaymentTypePresenter sut;
   late HomePresenterSpy homePresenter;
 
-  late EcLoadSaleStatisticsSpy ecLoadSaleStatistics;
+  late LoadSaleStatisticsSpy loadSaleStatistics;
 
   late List<SaleStatisticsEntity> saleStatisticEntities;
-  late EcEnterpriseEntity selectedEnterprise;
+  late EnterpriseEntity selectedEnterprise;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
 
   void initUsecases() {
-    ecLoadSaleStatistics = EcLoadSaleStatisticsSpy();
+    loadSaleStatistics = LoadSaleStatisticsSpy();
   }
 
   void initPresenters() {
     sut = GetxPaymentTypePresenter(
-      ecLoadSaleStatistics: ecLoadSaleStatistics,
+      loadSaleStatistics: loadSaleStatistics,
     );
     homePresenter = HomePresenterSpy();
   }
@@ -45,11 +45,11 @@ void main() {
       EntityFactory.makeSaleStatisticEntity(),
       EntityFactory.makeSaleStatisticEntity(),
     ];
-    selectedEnterprise = EntityFactory.makeEcEnterpriseEntity();
+    selectedEnterprise = EntityFactory.makeEnterpriseEntity();
   }
 
   void initMockSuccess() {
-    ecLoadSaleStatistics.mockGet(saleStatisticEntities);
+    loadSaleStatistics.mockGet(saleStatisticEntities);
   }
 
   setUp(() {
@@ -79,7 +79,7 @@ void main() {
         );
         expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
 
-        ecLoadSaleStatistics.mockGetError();
+        loadSaleStatistics.mockGetError();
 
         await sut.getSales(homePresenter);
       });
@@ -124,7 +124,7 @@ void main() {
 
         expect(
           sut.lastGetStatisticsParams,
-          GetEcSaleStatisticsParams(
+          GetSaleStatisticsParams(
             startDate: startDate,
             endDate: startDate,
             groupByEnterprise: true,
@@ -138,7 +138,7 @@ void main() {
           "Should load sale movements with correct values when period type is daily",
           () async {
         homePresenter.selectedEnterpriseMock =
-            EcEnterpriseModel.fromEntity(selectedEnterprise).toViewModel();
+            EnterpriseModel.fromEntity(selectedEnterprise).toViewModel();
 
         await sut.getSales(homePresenter);
 
@@ -148,8 +148,8 @@ void main() {
           homePresenter.selectedDate.day,
         );
 
-        verify(() => ecLoadSaleStatistics.get(
-              GetEcSaleStatisticsParams(
+        verify(() => loadSaleStatistics.get(
+              GetSaleStatisticsParams(
                 startDate: startDate,
                 endDate: startDate,
                 groupByEnterprise: true,
@@ -162,7 +162,7 @@ void main() {
           "Should load sale movements with correct values when period type is monthly",
           () async {
         homePresenter.selectedEnterpriseMock =
-            EcEnterpriseModel.fromEntity(selectedEnterprise).toViewModel();
+            EnterpriseModel.fromEntity(selectedEnterprise).toViewModel();
 
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
@@ -177,8 +177,8 @@ void main() {
           1,
         ).subtract(Duration(days: 1));
 
-        verify(() => ecLoadSaleStatistics.get(
-              GetEcSaleStatisticsParams(
+        verify(() => loadSaleStatistics.get(
+              GetSaleStatisticsParams(
                 startDate: startDate,
                 endDate: endDate,
                 groupByEnterprise: true,
@@ -202,8 +202,8 @@ void main() {
         );
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
-        verify(() => ecLoadSaleStatistics.get(
-              GetEcSaleStatisticsParams(
+        verify(() => loadSaleStatistics.get(
+              GetSaleStatisticsParams(
                 groupByEnterprise: true,
                 groupByDay: true,
                 groupByPaymentModality: true,
@@ -228,8 +228,8 @@ void main() {
         await sut.getSales(homePresenter);
         await sut.getSales(homePresenter, forceRefresh: true);
 
-        verify(() => ecLoadSaleStatistics.get(
-              GetEcSaleStatisticsParams(
+        verify(() => loadSaleStatistics.get(
+              GetSaleStatisticsParams(
                 groupByEnterprise: true,
                 groupByDay: true,
                 groupByPaymentModality: true,
@@ -259,8 +259,8 @@ void main() {
           homePresenter.selectedDate.day,
         );
 
-        verifyNever(() => ecLoadSaleStatistics.get(
-              GetEcSaleStatisticsParams(
+        verifyNever(() => loadSaleStatistics.get(
+              GetSaleStatisticsParams(
                 startDate: startDate,
                 endDate: startDate,
                 groupByEnterprise: true,
@@ -293,7 +293,7 @@ void main() {
       test("Should load sale movements with correct values if period is daily",
           () async {
         homePresenter.selectedEnterpriseMock =
-            EcEnterpriseModel.fromEntity(selectedEnterprise).toViewModel();
+            EnterpriseModel.fromEntity(selectedEnterprise).toViewModel();
 
         await sut.getSales(homePresenter);
 
@@ -303,8 +303,8 @@ void main() {
           homePresenter.selectedDate.day,
         );
 
-        verify(() => ecLoadSaleStatistics.get(
-              GetEcSaleStatisticsParams(
+        verify(() => loadSaleStatistics.get(
+              GetSaleStatisticsParams(
                 startDate: startDate,
                 endDate: startDate,
                 groupByEnterprise: true,
@@ -328,8 +328,8 @@ void main() {
           1,
         ).subtract(Duration(days: 1));
 
-        verify(() => ecLoadSaleStatistics.get(
-              GetEcSaleStatisticsParams(
+        verify(() => loadSaleStatistics.get(
+              GetSaleStatisticsParams(
                 startDate: startDate,
                 endDate: endDate,
                 groupByEnterprise: true,
@@ -353,8 +353,8 @@ void main() {
           1,
         ).subtract(Duration(days: 1));
 
-        verify(() => ecLoadSaleStatistics.get(
-              GetEcSaleStatisticsParams(
+        verify(() => loadSaleStatistics.get(
+              GetSaleStatisticsParams(
                 startDate: startDate,
                 endDate: endDate,
                 groupByEnterprise: true,

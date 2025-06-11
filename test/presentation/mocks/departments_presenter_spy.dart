@@ -4,7 +4,7 @@ import 'package:celta_dash/ui/pages/pages.dart';
 import 'package:mocktail/mocktail.dart';
 
 class DepartmentsPresenterSpy extends Mock implements DepartmentsPresenter {
-  GetEcSaleStatisticsParams? lastGetSalesParamsMock;
+  GetSaleStatisticsParams? lastGetSalesParamsMock;
 
   DepartmentsPresenterSpy() {
     when(() => this.lastGetStatisticsParams)

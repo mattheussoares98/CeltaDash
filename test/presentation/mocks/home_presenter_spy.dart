@@ -8,12 +8,12 @@ import '../../domain/mocks/mocks.dart';
 class HomePresenterSpy extends Mock implements HomePresenter {
   DateTime selectedDateMock = faker.date.dateTime();
   EcEnterpriseViewModel? selectedEnterpriseMock =
-      EcEnterpriseModel.fromEntity(EntityFactory.makeEcEnterpriseEntity())
+      EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
           .toViewModel();
   List<EcEnterpriseViewModel>? enterprisesMock = [
-    EcEnterpriseModel.fromEntity(EntityFactory.makeEcEnterpriseEntity())
+    EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
         .toViewModel(),
-    EcEnterpriseModel.fromEntity(EntityFactory.makeEcEnterpriseEntity())
+    EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
         .toViewModel(),
   ];
 

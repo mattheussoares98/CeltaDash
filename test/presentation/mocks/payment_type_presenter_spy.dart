@@ -4,7 +4,7 @@ import 'package:celta_dash/ui/pages/pages.dart';
 import 'package:mocktail/mocktail.dart';
 
 class PaymentTypePresenterSpy extends Mock implements PaymentTypePresenter {
-  GetEcSaleStatisticsParams? lastGetSalesParamsMock;
+  GetSaleStatisticsParams? lastGetSalesParamsMock;
 
   PaymentTypePresenterSpy() {
     when(() => this.lastGetDailyParams)

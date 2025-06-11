@@ -15,10 +15,10 @@ class GetxPaymentTypePresenter extends GetxController
         LastGetSalesStatisticsParamsManager,
         PeriodTypeManager
     implements PaymentTypePresenter {
-  final EcLoadSaleStatistics ecLoadSaleStatistics;
+  final LoadSaleStatistics loadSaleStatistics;
 
   GetxPaymentTypePresenter({
-    required this.ecLoadSaleStatistics,
+    required this.loadSaleStatistics,
   });
 
   @override
@@ -64,8 +64,8 @@ class GetxPaymentTypePresenter extends GetxController
         1,
       ).subtract(Duration(days: 1));
 
-      final salesByModality = await ecLoadSaleStatistics.get(
-        GetEcSaleStatisticsParams(
+      final salesByModality = await loadSaleStatistics.get(
+        GetSaleStatisticsParams(
           startDate: startDate,
           endDate: selectedPeriod == PeriodType.daily ? startDate : endDate,
           groupByEnterprise: true,
@@ -78,7 +78,7 @@ class GetxPaymentTypePresenter extends GetxController
           .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
           .toList();
 
-      final getSalesParams = GetEcSaleStatisticsParams(
+      final getSalesParams = GetSaleStatisticsParams(
         startDate: startDate,
         endDate: selectedPeriod == PeriodType.daily ? startDate : endDate,
         groupByEnterprise: true,
@@ -87,7 +87,7 @@ class GetxPaymentTypePresenter extends GetxController
       );
 
       final salesByFinalization =
-          await ecLoadSaleStatistics.get(getSalesParams);
+          await loadSaleStatistics.get(getSalesParams);
 
       salesByFinaliztions = salesByFinalization
           .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())

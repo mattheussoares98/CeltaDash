@@ -5,13 +5,13 @@ import '../../../main/builders/builders.dart';
 import '../../http/http.dart';
 import '../../models/models.dart';
 
-class RemoteEcLoadEnterprises implements EcLoadEnterprises {
+class RemoteLoadEnterprises implements LoadEnterprises {
   final HttpClient httpAdapter;
 
-  RemoteEcLoadEnterprises(this.httpAdapter);
+  RemoteLoadEnterprises(this.httpAdapter);
 
   @override
-  Future<List<EcEnterpriseEntity>> get({
+  Future<List<EnterpriseEntity>> get({
     String? url,
     String? userName,
     String? accessKey,
@@ -28,7 +28,7 @@ class RemoteEcLoadEnterprises implements EcLoadEnterprises {
       );
 
       return (response as List)
-          .map((e) => EcEnterpriseModel.fromJson(e).toEntity())
+          .map((e) => EnterpriseModel.fromJson(e).toEntity())
           .toList();
     } catch (e) {
       throw DomainError.unexpected;

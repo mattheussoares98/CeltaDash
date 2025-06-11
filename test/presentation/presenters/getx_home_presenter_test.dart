@@ -28,18 +28,18 @@ void main() {
   late ProductsPresenterSpy productsPresenter;
 
   late NavigateToSpy navigateTo;
-  late EcLoadEnterprisesSpy ecLoadEnterprises;
+  late LoadEnterprisesSpy loadEnterprises;
   late FirebaseManagerSpy firebaseManager;
   late LocalStorageSpy localStorage;
 
-  late List<EcEnterpriseEntity> enterprisesInBs;
+  late List<EnterpriseEntity> enterprisesInBs;
   late MockedFirebaseGet mockedFirebaseGet;
   late DocumentReferenceFake docRef;
   late FirebaseEnterpriseEntity enterpriseOnLogout;
 
   void initUsecases() {
     navigateTo = NavigateToSpy();
-    ecLoadEnterprises = EcLoadEnterprisesSpy();
+    loadEnterprises = LoadEnterprisesSpy();
     localStorage = LocalStorageSpy();
     firebaseManager = FirebaseManagerSpy(
       mockedFirebaseGet: mockedFirebaseGet,
@@ -49,7 +49,7 @@ void main() {
   void initPresenters() {
     sut = GetxHomePresenter(
       navigateTo: navigateTo,
-      ecLoadEnterprises: ecLoadEnterprises,
+      loadEnterprises: loadEnterprises,
       firebaseManager: firebaseManager,
       localStorage: localStorage,
     );
@@ -61,8 +61,8 @@ void main() {
   void initEntities() {
     EnterpriseBuilder.entity = EntityFactory.makeFirebaseEnterpriseEntity();
     enterprisesInBs = [
-      EntityFactory.makeEcEnterpriseEntity(),
-      EntityFactory.makeEcEnterpriseEntity(),
+      EntityFactory.makeEnterpriseEntity(),
+      EntityFactory.makeEnterpriseEntity(),
     ];
     mockedFirebaseGet = MockedFirebaseGet(
       dataToReturn: [
@@ -87,7 +87,7 @@ void main() {
   }
 
   void initMockSuccess() {
-    ecLoadEnterprises.mockGet(enterprisesInBs);
+    loadEnterprises.mockGet(enterprisesInBs);
     firebaseManager.mockGet(mockedFirebaseGet);
   }
 
@@ -182,7 +182,7 @@ void main() {
         emitsInOrder([null, UIError.unexpected]),
       );
 
-      ecLoadEnterprises.mockGetError();
+      loadEnterprises.mockGetError();
 
       await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
     });
@@ -192,14 +192,14 @@ void main() {
 
       expect(
         sut.selectedEnterprise,
-        EcEnterpriseModel.fromEntity(enterprisesInBs.first).toViewModel(),
+        EnterpriseModel.fromEntity(enterprisesInBs.first).toViewModel(),
       );
     });
 
     test("Should call remoteLoadEnterprises", () async {
       await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
 
-      verify(() => ecLoadEnterprises.get()).called(1);
+      verify(() => loadEnterprises.get()).called(1);
     });
 
     group("Update sub enterprises in firebase", () {
@@ -218,10 +218,10 @@ void main() {
       test(
           "Should NOT get firebase sub enterprises if is not missing enterprises locally",
           () async {
-        ecLoadEnterprises.mockGet(
+        loadEnterprises.mockGet(
           EnterpriseBuilder.entity!.firebaseSubEnterprises!
               .map(
-                (e) => EcEnterpriseEntity(
+                (e) => EnterpriseEntity(
                   id: e.id,
                   name: e.name,
                   personalizedCode: e.personalizedCode,
@@ -267,10 +267,10 @@ void main() {
         ).called(1);
       });
       test("Should no call to put enterprises if is not missing", () async {
-        ecLoadEnterprises.mockGet(
+        loadEnterprises.mockGet(
           EnterpriseBuilder.entity!.firebaseSubEnterprises!
               .map(
-                (e) => EcEnterpriseEntity(
+                (e) => EnterpriseEntity(
                   id: e.id,
                   name: e.name,
                   personalizedCode: e.personalizedCode,
@@ -288,7 +288,7 @@ void main() {
             merge: true,
             data: {
               "subEnterprises": enterprisesInBs
-                  .map((e) => EcEnterpriseModel.fromEntity(e).toJson())
+                  .map((e) => EnterpriseModel.fromEntity(e).toJson())
                   .toList()
             },
           ),
@@ -363,7 +363,7 @@ void main() {
       );
 
       sut.updateSelectedEnterprise(
-        EcEnterpriseModel.fromEntity(EntityFactory.makeEcEnterpriseEntity(
+        EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity(
           id: enterpriseId,
         )).toViewModel(),
       );
@@ -386,8 +386,8 @@ void main() {
         firebaseSubEnterprises: [disabledSubEnterprise],
       );
 
-      final enterprise = EcEnterpriseModel.fromEntity(
-        EntityFactory.makeEcEnterpriseEntity(
+      final enterprise = EnterpriseModel.fromEntity(
+        EntityFactory.makeEnterpriseEntity(
           id: enterpriseId,
         ),
       ).toViewModel();
@@ -420,8 +420,8 @@ void main() {
         emitsInOrder([null, UIError.unexpected]),
       );
 
-      sut.updateSelectedEnterprise(EcEnterpriseModel.fromEntity(
-        EntityFactory.makeEcEnterpriseEntity(
+      sut.updateSelectedEnterprise(EnterpriseModel.fromEntity(
+        EntityFactory.makeEnterpriseEntity(
           id: enterpriseId,
         ),
       ).toViewModel());
@@ -448,8 +448,8 @@ void main() {
         emitsInOrder([null, UIError.disabledEnterprise]),
       );
 
-      sut.updateSelectedEnterprise(EcEnterpriseModel.fromEntity(
-        EntityFactory.makeEcEnterpriseEntity(
+      sut.updateSelectedEnterprise(EnterpriseModel.fromEntity(
+        EntityFactory.makeEnterpriseEntity(
           id: enterpriseId,
         ),
       ).toViewModel());

@@ -4,6 +4,6 @@ import '../../factories.dart';
 
 CanceledSalesPresenter makeGetxCanceledSalesPresenter() =>
     GetxCanceledSalesPresenter(
-      ecLoadSaleMovements: makeRemoteEcLoadSaleMovements(),
+      loadSaleMovements: makeRemoteLoadSaleMovements(),
       navigateTo: makeGetxNavigateTo(),
     );

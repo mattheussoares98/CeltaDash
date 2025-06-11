@@ -3,5 +3,5 @@ import '../../../../ui/pages/pages.dart';
 import '../../factories.dart';
 
 CompareDaysPresenter makeGetxCompareDaysPresenter() => GetxCompareDaysPresenter(
-      ecLoadSaleStatistics: makeRemoteEcLoadSaleStatistics(),
+      loadSaleStatistics: makeRemoteLoadSaleStatistics(),
     );

@@ -12,11 +12,11 @@ import '../../../domain/mocks/mocks.dart';
 import '../../../infra/mocks/mocks.dart';
 
 void main() {
-  late RemoteEcLoadEnterprises sut;
+  late RemoteLoadEnterprises sut;
 
   late HttpClientSpy httpClient;
 
-  late List<EcEnterpriseEntity> enterprises;
+  late List<EnterpriseEntity> enterprises;
 
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -25,24 +25,24 @@ void main() {
   }
 
   void initPresenters() {
-    sut = RemoteEcLoadEnterprises(httpClient);
+    sut = RemoteLoadEnterprises(httpClient);
   }
 
   void initEntities() {
     EnterpriseBuilder.entity = EntityFactory.makeFirebaseEnterpriseEntity();
     enterprises = [
-      EntityFactory.makeEcEnterpriseEntity(),
-      EntityFactory.makeEcEnterpriseEntity(),
-      EntityFactory.makeEcEnterpriseEntity(),
+      EntityFactory.makeEnterpriseEntity(),
+      EntityFactory.makeEnterpriseEntity(),
+      EntityFactory.makeEnterpriseEntity(),
     ];
   }
 
   void initMockSuccess() {
     final results =
-        enterprises.map((e) => EcEnterpriseModel.fromEntity(e).toJson()).toList();
+        enterprises.map((e) => EnterpriseModel.fromEntity(e).toJson()).toList();
 
     httpClient.mockRequest(
-      results.map((e) => EcEnterpriseModel.fromJson(e).toJson()).toList(),
+      results.map((e) => EnterpriseModel.fromJson(e).toJson()).toList(),
     );
   }
 

@@ -23,7 +23,7 @@ void main() {
 
   late HomePresenterSpy homePresenter;
 
-  late EcLoadSaleStatisticsSpy ecLoadSaleStatistics;
+  late LoadSaleStatisticsSpy loadSaleStatistics;
   late LocalStorageSpy localStorage;
 
   late List<SaleStatisticsEntity> saleStatisticsEntities;
@@ -32,13 +32,13 @@ void main() {
   Get.testMode = true;
 
   void initUsecases() {
-    ecLoadSaleStatistics = EcLoadSaleStatisticsSpy();
+    loadSaleStatistics = LoadSaleStatisticsSpy();
     localStorage = LocalStorageSpy();
   }
 
   void initPresenters() {
     sut = GetxProductsPresenter(
-      ecLoadSaleStatistics: ecLoadSaleStatistics,
+      loadSaleStatistics: loadSaleStatistics,
       localStorage: localStorage,
     );
     homePresenter = HomePresenterSpy();
@@ -54,9 +54,9 @@ void main() {
   }
 
   void initMockSuccess() {
-    ecLoadSaleStatistics.mockGet(saleStatisticsEntities);
+    loadSaleStatistics.mockGet(saleStatisticsEntities);
     homePresenter.selectedEnterpriseMock =
-        EcEnterpriseModel.fromEntity(EntityFactory.makeEcEnterpriseEntity())
+        EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
             .toViewModel();
     homePresenter.selectedDateMock = faker.date.dateTime();
   }
@@ -90,7 +90,7 @@ void main() {
           emitsInOrder([null, UIError.unexpected]),
         );
 
-        ecLoadSaleStatistics.mockGetError();
+        loadSaleStatistics.mockGetError();
 
         await sut.getSales(homePresenter);
       });
@@ -142,8 +142,8 @@ void main() {
         );
 
         verify(
-          () => ecLoadSaleStatistics.get(
-            GetEcSaleStatisticsParams(
+          () => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
                 homePresenter.selectedDateMock.month,
@@ -176,8 +176,8 @@ void main() {
         );
 
         verify(
-          () => ecLoadSaleStatistics.get(
-            GetEcSaleStatisticsParams(
+          () => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
               startDate: startDate,
               endDate: startDate,
               groupByDay: true,
@@ -202,8 +202,8 @@ void main() {
         );
 
         verify(
-          () => ecLoadSaleStatistics.get(
-            GetEcSaleStatisticsParams(
+          () => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
               startDate: startDate,
               endDate: startDate,
               groupByDay: true,
@@ -228,7 +228,7 @@ void main() {
 
         expect(
             sut.lastGetDailyParams,
-            GetEcSaleStatisticsParams(
+            GetSaleStatisticsParams(
               startDate: startDate,
               endDate: startDate,
               groupByDay: true,
@@ -262,8 +262,8 @@ void main() {
         );
 
         verify(
-          () => ecLoadSaleStatistics.get(
-            GetEcSaleStatisticsParams(
+          () => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
               startDate: startDate,
               endDate: startDate,
               groupByDay: true,
@@ -278,13 +278,13 @@ void main() {
         ).called(1);
 
         homePresenter.selectedEnterpriseMock =
-            EcEnterpriseModel.fromEntity(EntityFactory.makeEcEnterpriseEntity())
+            EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
                 .toViewModel();
         await sut.getSales(homePresenter);
 
         verify(
-          () => ecLoadSaleStatistics.get(
-            GetEcSaleStatisticsParams(
+          () => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
               startDate: startDate,
               endDate: startDate,
               groupByDay: true,
@@ -305,8 +305,8 @@ void main() {
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
         verify(
-          () => ecLoadSaleStatistics.get(
-            GetEcSaleStatisticsParams(
+          () => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
                 homePresenter.selectedDateMock.month,
@@ -333,8 +333,8 @@ void main() {
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
         verify(
-          () => ecLoadSaleStatistics.get(
-            GetEcSaleStatisticsParams(
+          () => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
                 homePresenter.selectedDateMock.month,
@@ -361,8 +361,8 @@ void main() {
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
         verify(
-          () => ecLoadSaleStatistics.get(
-            GetEcSaleStatisticsParams(
+          () => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
                 homePresenter.selectedDateMock.month,
@@ -389,7 +389,7 @@ void main() {
 
         expect(
             sut.lastGetMonthlyParams,
-            GetEcSaleStatisticsParams(
+            GetSaleStatisticsParams(
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
                 homePresenter.selectedDateMock.month,
@@ -425,8 +425,8 @@ void main() {
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
         verify(
-          () => ecLoadSaleStatistics.get(
-            GetEcSaleStatisticsParams(
+          () => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
                 homePresenter.selectedDateMock.month,
@@ -449,13 +449,13 @@ void main() {
         ).called(1);
 
         homePresenter.selectedEnterpriseMock =
-            EcEnterpriseModel.fromEntity(EntityFactory.makeEcEnterpriseEntity())
+            EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
                 .toViewModel();
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
         verify(
-          () => ecLoadSaleStatistics.get(
-            GetEcSaleStatisticsParams(
+          () => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
                 homePresenter.selectedDateMock.month,

@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
 
-class EcEnterpriseEntity extends Equatable {
+class EnterpriseEntity extends Equatable {
   final int? id;
   final String? name;
   final String? personalizedCode;
   final String? cnpj;
 
-  const EcEnterpriseEntity({
+  const EnterpriseEntity({
     required this.id,
     required this.name,
     required this.personalizedCode,

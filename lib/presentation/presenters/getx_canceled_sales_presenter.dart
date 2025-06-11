@@ -15,11 +15,11 @@ class GetxCanceledSalesPresenter extends GetxController
         PeriodTypeManager,
         LastGetSaleMovementParamsManager
     implements CanceledSalesPresenter {
-  final EcLoadSaleMovements ecLoadSaleMovements;
+  final LoadSaleMovements loadSaleMovements;
   final NavigateTo navigateTo;
 
   GetxCanceledSalesPresenter({
-    required this.ecLoadSaleMovements,
+    required this.loadSaleMovements,
     required this.navigateTo,
   });
 
@@ -74,7 +74,7 @@ class GetxCanceledSalesPresenter extends GetxController
         0,
       );
 
-      final params = GetEcSaleMovementParams(
+      final params = GetSaleMovementParams(
         enterpriseIds: homePresenter.selectedEnterprise?.id == null
             ? []
             : [homePresenter.selectedEnterprise!.id!.toInt()],
@@ -82,7 +82,7 @@ class GetxCanceledSalesPresenter extends GetxController
         endDate: selectedPeriod == PeriodType.daily ? startDate : endDate,
         onlyCancelled: true,
       );
-      final response = await ecLoadSaleMovements.get(params);
+      final response = await loadSaleMovements.get(params);
       lastParams = params;
 
       final newSales = (response as List)
@@ -102,17 +102,17 @@ class GetxCanceledSalesPresenter extends GetxController
     }
   }
 
-  final _selectedSale = Rx<EcSaleMovementViewModel?>(null);
+  final _selectedSale = Rx<SaleMovementViewModel?>(null);
   @override
-  Stream<EcSaleMovementViewModel?> get selectedSaleStream =>
+  Stream<SaleMovementViewModel?> get selectedSaleStream =>
       _selectedSale.stream;
-  set selectedSale(EcSaleMovementViewModel? value) {
+  set selectedSale(SaleMovementViewModel? value) {
     _selectedSale.value = null;
     _selectedSale.value = value;
   }
 
   @override
-  void updateSelectedSaleMovement(EcSaleMovementViewModel sale) {
+  void updateSelectedSaleMovement(SaleMovementViewModel sale) {
     selectedSale = sale;
 
     navigateTo.navigate(pageRoute: PageRoutes.canceledSaleDetails);
@@ -133,8 +133,8 @@ class GetxCanceledSalesPresenter extends GetxController
         sale.dateHourOfBilling!.day,
       );
 
-      final loadedSale = await ecLoadSaleMovements.get(
-        GetEcSaleMovementParams(
+      final loadedSale = await loadSaleMovements.get(
+        GetSaleMovementParams(
           onlyCancelled: true,
           documentNumbers: [sale.documentNumber!],
           enterpriseIds: [sale.enterpriseId!],

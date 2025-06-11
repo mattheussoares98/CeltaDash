@@ -10,7 +10,7 @@ class Products extends StatelessWidget {
     required this.sale,
   });
 
-  final EcSaleMovementViewModel? sale;
+  final SaleMovementViewModel? sale;
 
   @override
   Widget build(BuildContext context) {

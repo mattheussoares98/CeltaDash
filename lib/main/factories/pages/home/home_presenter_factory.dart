@@ -4,7 +4,7 @@ import '../../factories.dart';
 
 HomePresenter makeGetxHomePresenter() => GetxHomePresenter(
       navigateTo: makeGetxNavigateTo(),
-      ecLoadEnterprises: makeRemoteEcLoadEnterprises(),
+      loadEnterprises: makeRemoteLoadEnterprises(),
       firebaseManager: makeRemoteFirebaseManager(),
       localStorage: makeHiveLocalStorage(),
     );

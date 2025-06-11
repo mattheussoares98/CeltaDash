@@ -1,7 +1,7 @@
 import '../../entities/entities.dart';
 
-abstract class EcLoadEnterprises {
-  Future<List<EcEnterpriseEntity>> get({
+abstract class LoadEnterprises {
+  Future<List<EnterpriseEntity>> get({
     String? url,
     String? userName,
     String? accessKey,

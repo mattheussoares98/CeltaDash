@@ -7,5 +7,5 @@ WebEnterprisesPresenter makeGetxWebEnterprisesPresenter() =>
       firebaseManager: makeRemoteFirebaseManager(),
       navigateTo: makeGetxNavigateTo(),
       bsLogin: makeRemoteBsLogin(),
-      ecLoadEnterprises: makeRemoteEcLoadEnterprises(),
+      loadEnterprises: makeRemoteLoadEnterprises(),
     );

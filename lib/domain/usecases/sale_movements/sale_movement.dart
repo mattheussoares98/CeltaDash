@@ -1,1 +1,1 @@
-export 'ec_load_sale_movements.dart';
+export 'load_sale_movements.dart';

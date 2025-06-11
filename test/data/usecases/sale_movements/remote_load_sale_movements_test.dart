@@ -13,11 +13,11 @@ import '../../../domain/mocks/mocks.dart';
 import '../../../infra/mocks/mocks.dart';
 
 void main() {
-  late RemoteEcLoadSaleMovements sut;
+  late RemoteLoadSaleMovements sut;
 
   late HttpClientSpy httpClient;
 
-  late GetEcSaleMovementParams params;
+  late GetSaleMovementParams params;
   late List<SaleMovementEntity> saleMovementEntities;
 
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,17 +27,17 @@ void main() {
   }
 
   void initPresenters() {
-    sut = RemoteEcLoadSaleMovements(httpClient);
+    sut = RemoteLoadSaleMovements(httpClient);
   }
 
   void initEntities() {
     EnterpriseBuilder.entity = EntityFactory.makeFirebaseEnterpriseEntity();
     saleMovementEntities = [
-      EntityFactory.makeEcSaleMovementEntity(),
-      EntityFactory.makeEcSaleMovementEntity(),
-      EntityFactory.makeEcSaleMovementEntity(),
+      EntityFactory.makeSaleMovementEntity(),
+      EntityFactory.makeSaleMovementEntity(),
+      EntityFactory.makeSaleMovementEntity(),
     ];
-    params = EntityFactory.makeGetEcSaleMovementParams();
+    params = EntityFactory.makeGetSaleMovementParams();
   }
 
   void initMockSuccess() {
@@ -100,7 +100,7 @@ void main() {
     final enterpriseIds = [faker.randomGenerator.integer(99)];
     final date = faker.date.dateTime();
     await sut.get(
-      GetEcSaleMovementParams(
+      GetSaleMovementParams(
         enterpriseIds: enterpriseIds,
         startDate: date,
         endDate: date,

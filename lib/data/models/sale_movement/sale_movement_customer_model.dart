@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 import '../../../domain/entities/entities.dart';
 import '../../../ui/helpers/helpers.dart';
 import '../../../ui/pages/pages.dart';
-//TODO change all to EC
 
 class SaleMovementCustomerModel extends Equatable {
   final int? SaleMovementId;

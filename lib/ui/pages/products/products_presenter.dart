@@ -10,8 +10,8 @@ abstract class ProductsPresenter implements Listenable {
   Stream<bool> get isLoadingStream;
   List<SaleStatisticViewModel>? get dailyStatistics;
   List<SaleStatisticViewModel>? get monthlyStatistics;
-  GetEcSaleStatisticsParams? get lastGetDailyParams;
-  GetEcSaleStatisticsParams? get lastGetMonthlyParams;
+  GetSaleStatisticsParams? get lastGetDailyParams;
+  GetSaleStatisticsParams? get lastGetMonthlyParams;
   PeriodType get selectedPeriod;
 
   Future<void> getSales(

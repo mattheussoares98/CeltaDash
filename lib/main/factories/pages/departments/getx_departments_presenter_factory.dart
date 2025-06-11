@@ -3,5 +3,5 @@ import '../../../../ui/pages/pages.dart';
 import '../../factories.dart';
 
 DepartmentsPresenter makeGetxDepartmentsPresenter() => GetxDepartmentsPresenter(
-      ecLoadSaleStatistics: makeRemoteEcLoadSaleStatistics(),
+      loadSaleStatistics: makeRemoteLoadSaleStatistics(),
     );

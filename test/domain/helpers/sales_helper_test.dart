@@ -16,7 +16,7 @@ void main() {
 
   late HomePresenterSpy homePresenter;
   late PeriodType periodType;
-  late GetEcSaleStatisticsParams lastGetSalesParams;
+  late GetSaleStatisticsParams lastGetStatisticsParams;
 
   void initUsecases() {}
 
@@ -28,7 +28,7 @@ void main() {
     homePresenter.selectedDateMock = faker.date.dateTime();
     periodType = PeriodType
         .values[faker.randomGenerator.integer(PeriodType.values.length)];
-    lastGetSalesParams = EntityFactory.makeGetSalesParams();
+    lastGetStatisticsParams = EntityFactory.makeGetSalesParams();
   }
 
   void initMockSuccess() {}
@@ -45,7 +45,7 @@ void main() {
   group("Can search", () {
     group("Pattern", () {
       test("Should return true if forceRefresh is true", () {
-        final value = SearchHelper.canSearch<GetEcSaleStatisticsParams>(
+        final value = SearchHelper.canSearch<GetSaleStatisticsParams>(
           forceRefresh: true,
           lastParams: null,
           selectedDate: homePresenter.selectedDateMock,
@@ -54,7 +54,7 @@ void main() {
         expect(value, true);
       });
       test("Should return true if lastGetSalesParams is null", () {
-        final value = SearchHelper.canSearch<GetEcSaleStatisticsParams>(
+        final value = SearchHelper.canSearch<GetSaleStatisticsParams>(
           forceRefresh: false,
           lastParams: null,
           selectedDate: homePresenter.selectedDateMock,
@@ -69,11 +69,11 @@ void main() {
           () {
         final value = SearchHelper.canSearch(
           forceRefresh: false,
-          lastParams: lastGetSalesParams,
+          lastParams: lastGetStatisticsParams,
           selectedDate: DateTime(
-            lastGetSalesParams.startDate.year,
-            lastGetSalesParams.startDate.month,
-            lastGetSalesParams.startDate.day,
+            lastGetStatisticsParams.startDate.year,
+            lastGetStatisticsParams.startDate.month,
+            lastGetStatisticsParams.startDate.day,
           ),
           periodType: PeriodType.daily,
         );
@@ -83,7 +83,7 @@ void main() {
       test("Should return true if is daily period and changed the date", () {
         final value = SearchHelper.canSearch(
           forceRefresh: false,
-          lastParams: lastGetSalesParams,
+          lastParams: lastGetStatisticsParams,
           selectedDate: faker.date.dateTime(),
           periodType: PeriodType.daily,
         );
@@ -93,7 +93,7 @@ void main() {
       test(
           "Should return true if lastGetSalesParams days are different but endDate is equal firstDate",
           () {
-        final lastParams = GetEcSaleStatisticsParams(
+        final lastParams = GetSaleStatisticsParams(
           startDate: homePresenter.selectedDateMock,
           endDate: homePresenter.selectedDateMock,
         );
@@ -114,11 +114,11 @@ void main() {
           () {
         final value = SearchHelper.canSearch(
           forceRefresh: false,
-          lastParams: lastGetSalesParams,
+          lastParams: lastGetStatisticsParams,
           selectedDate: DateTime(
-            lastGetSalesParams.startDate.year,
-            lastGetSalesParams.startDate.month,
-            lastGetSalesParams.startDate.day,
+            lastGetStatisticsParams.startDate.year,
+            lastGetStatisticsParams.startDate.month,
+            lastGetStatisticsParams.startDate.day,
           ),
           periodType: PeriodType.monthly,
         );
@@ -129,15 +129,15 @@ void main() {
           () {
         final value = SearchHelper.canSearch(
           forceRefresh: false,
-          lastParams: lastGetSalesParams,
-          selectedDate: lastGetSalesParams.startDate.add(Duration(days: 31)),
+          lastParams: lastGetStatisticsParams,
+          selectedDate: lastGetStatisticsParams.startDate.add(Duration(days: 31)),
           periodType: PeriodType.monthly,
         );
 
         expect(value, true);
       });
       test("Should return true if start date is equal last date", () {
-        final lastParams = GetEcSaleStatisticsParams(
+        final lastParams = GetSaleStatisticsParams(
           startDate: homePresenter.selectedDateMock,
           endDate: homePresenter.selectedDateMock,
         );
@@ -155,7 +155,7 @@ void main() {
         final selectedDate = faker.date.dateTime();
         final value = SearchHelper.canSearch(
           forceRefresh: false,
-          lastParams: GetEcSaleStatisticsParams(
+          lastParams: GetSaleStatisticsParams(
             startDate: DateTime(selectedDate.year, 1, 1),
             endDate: DateTime(selectedDate.year, 12, 31),
           ),
@@ -171,8 +171,8 @@ void main() {
       test("Should return false if didnt change the selected year", () {
         final value = SearchHelper.canSearch(
           forceRefresh: false,
-          lastParams: lastGetSalesParams,
-          selectedDate: DateTime(lastGetSalesParams.startDate.year),
+          lastParams: lastGetStatisticsParams,
+          selectedDate: DateTime(lastGetStatisticsParams.startDate.year),
           periodType: PeriodType.yearly,
         );
 
@@ -181,8 +181,8 @@ void main() {
       test("Should return true if change the selected year", () {
         final value = SearchHelper.canSearch(
           forceRefresh: false,
-          lastParams: lastGetSalesParams,
-          selectedDate: DateTime(lastGetSalesParams.startDate.year +
+          lastParams: lastGetStatisticsParams,
+          selectedDate: DateTime(lastGetStatisticsParams.startDate.year +
               faker.randomGenerator.integer(999)),
           periodType: PeriodType.yearly,
         );

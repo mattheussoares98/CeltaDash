@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import '../../pages.dart';
 
 class Enterprise extends StatelessWidget {
-  final EcSaleMovementViewModel sale;
+  final SaleMovementViewModel sale;
   const Enterprise({
     super.key,
     required this.sale,

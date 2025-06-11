@@ -78,8 +78,8 @@ class EntityFactory {
         CrossIdentity_Usuario: faker.guid.guid(),
       );
 
-  static EcEnterpriseEntity makeEcEnterpriseEntity({int? id}) =>
-      EcEnterpriseEntity(
+  static EnterpriseEntity makeEnterpriseEntity({int? id}) =>
+      EnterpriseEntity(
         id: id ?? faker.randomGenerator.integer(100),
         name: faker.company.name(),
         personalizedCode: faker.randomGenerator.integer(10).toString(),
@@ -98,8 +98,8 @@ class EntityFactory {
         enabled: enabled ?? faker.randomGenerator.boolean(),
       );
 
-  static GetEcSaleStatisticsParams makeGetSalesParams() =>
-      GetEcSaleStatisticsParams(
+  static GetSaleStatisticsParams makeGetSalesParams() =>
+      GetSaleStatisticsParams(
         startDate: faker.date.dateTime(),
         endDate: faker.date.dateTime(),
         enterpriseIds: [
@@ -121,7 +121,7 @@ class EntityFactory {
         topCount: faker.randomGenerator.integer(100),
       );
 
-  static SaleMovementEntity makeEcSaleMovementEntity() => SaleMovementEntity(
+  static SaleMovementEntity makeSaleMovementEntity() => SaleMovementEntity(
         id: faker.randomGenerator.integer(100),
         enterpriseId: faker.randomGenerator.integer(100),
         fiscalNoteTypeId: faker.randomGenerator.integer(100),
@@ -183,12 +183,12 @@ class EntityFactory {
         ],
       );
 
-  static GetEcSaleMovementParams makeGetEcSaleMovementParams({
+  static GetSaleMovementParams makeGetSaleMovementParams({
     DateTime? startDate,
     DateTime? endDate,
     List<int>? enterpriseIds,
   }) =>
-      GetEcSaleMovementParams(
+      GetSaleMovementParams(
         enterpriseIds: enterpriseIds ??
             [
               faker.randomGenerator.integer(99),

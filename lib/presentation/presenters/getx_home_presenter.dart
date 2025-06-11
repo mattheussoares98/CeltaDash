@@ -16,13 +16,13 @@ class GetxHomePresenter extends GetxController
     with UIErrorManager, LoadingManager
     implements HomePresenter {
   final NavigateTo navigateTo;
-  final EcLoadEnterprises ecLoadEnterprises;
+  final LoadEnterprises loadEnterprises;
   final FirebaseManager firebaseManager;
   final LocalStorage localStorage;
 
   GetxHomePresenter({
     required this.navigateTo,
-    required this.ecLoadEnterprises,
+    required this.loadEnterprises,
     required this.firebaseManager,
     required this.localStorage,
   });
@@ -38,7 +38,7 @@ class GetxHomePresenter extends GetxController
   }
 
   List<FirebaseSubEnterpriseEntity> _getMissingEnterprises(
-    List<EcEnterpriseEntity> enterprises,
+    List<EnterpriseEntity> enterprises,
     List<FirebaseSubEnterpriseEntity> enterprisesToCompare,
   ) {
     return enterprises
@@ -66,7 +66,7 @@ class GetxHomePresenter extends GetxController
     isLoading = true;
     mainError = null;
     try {
-      final enterprisesInBs = await ecLoadEnterprises.get();
+      final enterprisesInBs = await loadEnterprises.get();
 
       final missingLocal = _getMissingEnterprises(
         enterprisesInBs,
@@ -125,7 +125,7 @@ class GetxHomePresenter extends GetxController
       }
 
       _bsEnterprises.value = enterprisesInBs
-          .map((e) => EcEnterpriseModel.fromEntity(e).toViewModel())
+          .map((e) => EnterpriseModel.fromEntity(e).toViewModel())
           .toList();
       _selectedEnterprise.value = _bsEnterprises.value?.first;
     } catch (e) {

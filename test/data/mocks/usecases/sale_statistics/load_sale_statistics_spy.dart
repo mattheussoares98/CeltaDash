@@ -3,7 +3,7 @@ import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:mocktail/mocktail.dart';
 
-class EcLoadSaleMovementsSpy extends Mock implements EcLoadSaleMovements {
+class LoadSaleMovementsSpy extends Mock implements LoadSaleMovements {
   When _mockGetCall() => when(
         () => this.get(any()),
       );

@@ -21,7 +21,7 @@ void main() {
   late NavigateToSpy navigateTo;
   late FirebaseManagerSpy firebaseManager;
   late BsLoginSpy bsLogin;
-  late EcLoadEnterprisesSpy ecLoadEnterprises;
+  late LoadEnterprisesSpy loadEnterprises;
 
   late List<FirebaseEnterpriseEntity> firebaseEnterprises;
   late MockedFirebaseGet mockedFirebaseGet;
@@ -29,7 +29,7 @@ void main() {
   late String bsUserName;
   late String bsPassword;
   late SoapResponseModel bsLoginResponse;
-  late List<EcEnterpriseEntity> enterprisesInBs;
+  late List<EnterpriseEntity> enterprisesInBs;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
@@ -38,7 +38,7 @@ void main() {
     navigateTo = NavigateToSpy();
     firebaseManager = FirebaseManagerSpy(mockedFirebaseGet: mockedFirebaseGet);
     bsLogin = BsLoginSpy();
-    ecLoadEnterprises = EcLoadEnterprisesSpy();
+    loadEnterprises = LoadEnterprisesSpy();
   }
 
   void initPresenters() {
@@ -46,7 +46,7 @@ void main() {
       navigateTo: navigateTo,
       firebaseManager: firebaseManager,
       bsLogin: bsLogin,
-      ecLoadEnterprises: ecLoadEnterprises,
+      loadEnterprises: loadEnterprises,
     );
   }
 
@@ -76,14 +76,14 @@ void main() {
       responseType: SoapResponseType.success,
     );
     enterprisesInBs = [
-      EntityFactory.makeEcEnterpriseEntity(),
-      EntityFactory.makeEcEnterpriseEntity(),
+      EntityFactory.makeEnterpriseEntity(),
+      EntityFactory.makeEnterpriseEntity(),
     ];
   }
 
   void initMockSuccess() {
     bsLogin.mockLogin(bsLoginResponse);
-    ecLoadEnterprises.mockGet(enterprisesInBs);
+    loadEnterprises.mockGet(enterprisesInBs);
   }
 
   setUp(() {
@@ -313,7 +313,7 @@ void main() {
               "baseUrl": baseUrl,
               "enterpriseName": docRef.id,
               "subEnterprises": enterprisesInBs
-                  .map((e) => EcEnterpriseModel.fromEntity(e).toJson())
+                  .map((e) => EnterpriseModel.fromEntity(e).toJson())
                   .toList(),
             },
           )).called(1);
@@ -338,7 +338,7 @@ void main() {
               "baseUrl": baseUrl.toLowerCase().removeWhiteSpaces(),
               "enterpriseName": docRef.id.toLowerCase().removeWhiteSpaces(),
               "subEnterprises": enterprisesInBs
-                  .map((e) => EcEnterpriseModel.fromEntity(e).toJson())
+                  .map((e) => EnterpriseModel.fromEntity(e).toJson())
                   .toList(),
             },
           )).called(1);
@@ -471,7 +471,7 @@ void main() {
         bsPassword: bsPassword,
       );
 
-      verify(() => ecLoadEnterprises.get(
+      verify(() => loadEnterprises.get(
             url: baseUrl.toLowerCase().removeWhiteSpaces(),
             userName: bsUserName,
             accessKey: bsLoginResponse.response["AccessKey"],
@@ -499,7 +499,7 @@ void main() {
             "baseUrl": baseUrl.toLowerCase().removeWhiteSpaces(),
             "enterpriseName": enterpriseName.toLowerCase().removeWhiteSpaces(),
             "subEnterprises": enterprisesInBs
-                .map((e) => EcEnterpriseModel.fromEntity(e).toJson())
+                .map((e) => EnterpriseModel.fromEntity(e).toJson())
                 .toList(),
           },
         ),

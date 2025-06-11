@@ -3,11 +3,11 @@ import 'package:equatable/equatable.dart';
 import '../../entities/entities.dart';
 import '../../helpers/helpers.dart';
 
-abstract class EcLoadSaleMovements {
-  Future<List<SaleMovementEntity>> get(GetEcSaleMovementParams params);
+abstract class LoadSaleMovements {
+  Future<List<SaleMovementEntity>> get(GetSaleMovementParams params);
 }
 
-class GetEcSaleMovementParams extends Equatable implements DateRangeParams {
+class GetSaleMovementParams extends Equatable implements DateRangeParams {
   @override
   final List<int> enterpriseIds;
   @override
@@ -24,7 +24,7 @@ class GetEcSaleMovementParams extends Equatable implements DateRangeParams {
   final int? actualPage;
   final int? recordsByPage;
 
-  const GetEcSaleMovementParams({
+  const GetSaleMovementParams({
     required this.enterpriseIds,
     required this.startDate,
     required this.endDate,

@@ -21,7 +21,7 @@ void main() {
 
   late HomePresenterSpy homePresenter;
 
-  late EcLoadSaleMovementsSpy ecLoadSaleMovements;
+  late LoadSaleMovementsSpy loadSaleMovements;
   late NavigateToSpy navigateTo;
 
   late List<SaleMovementEntity> saleMovementEntities;
@@ -30,13 +30,13 @@ void main() {
   Get.testMode = true;
 
   void initUsecases() {
-    ecLoadSaleMovements = EcLoadSaleMovementsSpy();
+    loadSaleMovements = LoadSaleMovementsSpy();
     navigateTo = NavigateToSpy();
   }
 
   void initPresenters() {
     sut = GetxCanceledSalesPresenter(
-      ecLoadSaleMovements: ecLoadSaleMovements,
+      loadSaleMovements: loadSaleMovements,
       navigateTo: navigateTo,
     );
     homePresenter = HomePresenterSpy();
@@ -44,14 +44,14 @@ void main() {
 
   void initEntities() {
     saleMovementEntities = [
-      EntityFactory.makeEcSaleMovementEntity(),
-      EntityFactory.makeEcSaleMovementEntity(),
-      EntityFactory.makeEcSaleMovementEntity(),
+      EntityFactory.makeSaleMovementEntity(),
+      EntityFactory.makeSaleMovementEntity(),
+      EntityFactory.makeSaleMovementEntity(),
     ];
   }
 
   void initMockSuccess() {
-    ecLoadSaleMovements.mockGet(saleMovementEntities);
+    loadSaleMovements.mockGet(saleMovementEntities);
   }
 
   setUp(() {
@@ -62,7 +62,7 @@ void main() {
   });
 
   setUpAll(() {
-    registerFallbackValue(EntityFactory.makeGetEcSaleMovementParams());
+    registerFallbackValue(EntityFactory.makeGetSaleMovementParams());
   });
 
   group("Load sale movements", () {
@@ -80,7 +80,7 @@ void main() {
           emitsInOrder([null, UIError.unexpected]),
         );
 
-        ecLoadSaleMovements.mockGetError();
+        loadSaleMovements.mockGetError();
 
         await sut.getSales(homePresenter);
       });
@@ -132,8 +132,8 @@ void main() {
         );
 
         verify(
-          () => ecLoadSaleMovements.get(
-            GetEcSaleMovementParams(
+          () => loadSaleMovements.get(
+            GetSaleMovementParams(
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
               ],
@@ -163,8 +163,8 @@ void main() {
         );
 
         verify(
-          () => ecLoadSaleMovements.get(
-            GetEcSaleMovementParams(
+          () => loadSaleMovements.get(
+            GetSaleMovementParams(
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
               ],
@@ -186,8 +186,8 @@ void main() {
         );
 
         verify(
-          () => ecLoadSaleMovements.get(
-            GetEcSaleMovementParams(
+          () => loadSaleMovements.get(
+            GetSaleMovementParams(
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
               ],
@@ -209,7 +209,7 @@ void main() {
 
         expect(
           sut.lastGetDailyParams,
-          GetEcSaleMovementParams(
+          GetSaleMovementParams(
             onlyCancelled: true,
             enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
             startDate: startDate,
@@ -239,8 +239,8 @@ void main() {
         );
 
         verify(
-          () => ecLoadSaleMovements.get(
-            GetEcSaleMovementParams(
+          () => loadSaleMovements.get(
+            GetSaleMovementParams(
               onlyCancelled: true,
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
@@ -252,13 +252,13 @@ void main() {
         ).called(1);
 
         homePresenter.selectedEnterpriseMock =
-            EcEnterpriseModel.fromEntity(EntityFactory.makeEcEnterpriseEntity())
+            EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
                 .toViewModel();
         await sut.getSales(homePresenter);
 
         verify(
-          () => ecLoadSaleMovements.get(
-            GetEcSaleMovementParams(
+          () => loadSaleMovements.get(
+            GetSaleMovementParams(
               onlyCancelled: true,
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
@@ -276,8 +276,8 @@ void main() {
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
         verify(
-          () => ecLoadSaleMovements.get(
-            GetEcSaleMovementParams(
+          () => loadSaleMovements.get(
+            GetSaleMovementParams(
               onlyCancelled: true,
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
@@ -301,8 +301,8 @@ void main() {
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
         verify(
-          () => ecLoadSaleMovements.get(
-            GetEcSaleMovementParams(
+          () => loadSaleMovements.get(
+            GetSaleMovementParams(
               onlyCancelled: true,
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
@@ -326,8 +326,8 @@ void main() {
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
         verify(
-          () => ecLoadSaleMovements.get(
-            GetEcSaleMovementParams(
+          () => loadSaleMovements.get(
+            GetSaleMovementParams(
               onlyCancelled: true,
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
@@ -351,7 +351,7 @@ void main() {
 
         expect(
           sut.lastGetMonthlyParams,
-          GetEcSaleMovementParams(
+          GetSaleMovementParams(
             onlyCancelled: true,
             enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
             startDate: DateTime(
@@ -383,8 +383,8 @@ void main() {
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
         verify(
-          () => ecLoadSaleMovements.get(
-            GetEcSaleMovementParams(
+          () => loadSaleMovements.get(
+            GetSaleMovementParams(
               onlyCancelled: true,
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
@@ -404,13 +404,13 @@ void main() {
         ).called(1);
 
         homePresenter.selectedEnterpriseMock =
-            EcEnterpriseModel.fromEntity(EntityFactory.makeEcEnterpriseEntity())
+            EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
                 .toViewModel();
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
         verify(
-          () => ecLoadSaleMovements.get(
-            GetEcSaleMovementParams(
+          () => loadSaleMovements.get(
+            GetSaleMovementParams(
               onlyCancelled: true,
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
@@ -435,8 +435,7 @@ void main() {
   group("Update selected sale movement", () {
     test("Should update selected sale movement correctly", () {
       final newSaleMovement = SaleMovementModel.fromEntity(
-        //TODO change to EcSaleMovementModel
-        EntityFactory.makeEcSaleMovementEntity(),
+        EntityFactory.makeSaleMovementEntity(),
       ).toViewModel();
 
       expectLater(
@@ -449,7 +448,7 @@ void main() {
 
     test("Should go to canceled sale details page", () {
       final newSaleMovement = SaleMovementModel.fromEntity(
-        EntityFactory.makeEcSaleMovementEntity(),
+        EntityFactory.makeSaleMovementEntity(),
       ).toViewModel();
 
       sut.updateSelectedSaleMovement(newSaleMovement);
@@ -466,7 +465,7 @@ void main() {
         saleMovementEntities.first,
       ).toViewModel();
 
-      final newSaleMovement = EntityFactory.makeEcSaleMovementEntity();
+      final newSaleMovement = EntityFactory.makeSaleMovementEntity();
       final newSaleMovementViewModel = SaleMovementModel.fromEntity(
         newSaleMovement,
       ).toViewModel();
@@ -480,7 +479,7 @@ void main() {
 
       sut.updateSelectedSaleMovement(selected);
 
-      ecLoadSaleMovements.mockGet([newSaleMovement]);
+      loadSaleMovements.mockGet([newSaleMovement]);
       await sut.getSelectedSaleDetails();
     });
     test("Should emit correct values on error", () async {
@@ -490,7 +489,7 @@ void main() {
         emitsInOrder([null, UIError.unexpected]),
       );
 
-      ecLoadSaleMovements.mockGetError();
+      loadSaleMovements.mockGetError();
 
       await sut.getSelectedSaleDetails();
     });
@@ -511,8 +510,8 @@ void main() {
         sale.dateHourOfBilling!.day,
       );
 
-      verify(() => ecLoadSaleMovements.get(
-            GetEcSaleMovementParams(
+      verify(() => loadSaleMovements.get(
+            GetSaleMovementParams(
               onlyCancelled: true,
               documentNumbers: [sale.documentNumber!],
               enterpriseIds: [sale.enterpriseId!],

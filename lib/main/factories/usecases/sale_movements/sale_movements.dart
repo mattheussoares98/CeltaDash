@@ -1,1 +1,1 @@
-export './remote_ec_load_sale_movements_factory.dart';
+export 'remote_load_sale_movements_factory.dart';

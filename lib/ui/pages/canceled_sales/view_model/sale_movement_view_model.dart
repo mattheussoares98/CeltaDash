@@ -6,7 +6,7 @@ import 'sale_movement_seller_view_model.dart';
 import 'sale_movement_product_view_model.dart';
 import 'sale_movement_finalization_view_model.dart';
 
-class EcSaleMovementViewModel extends Equatable {
+class SaleMovementViewModel extends Equatable {
   final String? Id;
   final String? enterpriseId;
   final String? fiscalNoteTypeId;
@@ -22,7 +22,7 @@ class EcSaleMovementViewModel extends Equatable {
   final List<SaleMovementProductViewModel>? products;
   final List<SaleMovementFinalizationViewModel>? paymentFinalizations;
 
-  const EcSaleMovementViewModel({
+  const SaleMovementViewModel({
     required this.Id,
     required this.enterpriseId,
     required this.fiscalNoteTypeId,

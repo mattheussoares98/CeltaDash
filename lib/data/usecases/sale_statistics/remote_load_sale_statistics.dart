@@ -7,13 +7,13 @@ import '../../../main/builders/builders.dart';
 import '../../http/http.dart';
 import '../../models/models.dart';
 
-class RemoteEcLoadSaleStatistics implements EcLoadSaleStatistics {
+class RemoteLoadSaleStatistics implements LoadSaleStatistics {
   final HttpClient httpAdapter;
 
-  const RemoteEcLoadSaleStatistics(this.httpAdapter);
+  const RemoteLoadSaleStatistics(this.httpAdapter);
 
   @override
-  Future<List<SaleStatisticsEntity>> get(GetEcSaleStatisticsParams params) async {
+  Future<List<SaleStatisticsEntity>> get(GetSaleStatisticsParams params) async {
     final url = EnterpriseBuilder.entity?.baseUrl;
 
     try {

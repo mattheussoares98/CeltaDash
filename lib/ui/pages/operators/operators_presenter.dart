@@ -11,9 +11,9 @@ abstract class OperatorsPresenter implements Listenable {
   List<SaleStatisticViewModel>? get dailyStatistics;
   List<SaleStatisticViewModel>? get monthlyStatistics;
   List<SaleStatisticViewModel>? get yearlyStatistics;
-  GetEcSaleStatisticsParams? get lastGetDailyParams;
-  GetEcSaleStatisticsParams? get lastGetMonthlyParams;
-  GetEcSaleStatisticsParams? get lastGetYearlyParams;
+  GetSaleStatisticsParams? get lastGetDailyParams;
+  GetSaleStatisticsParams? get lastGetMonthlyParams;
+  GetSaleStatisticsParams? get lastGetYearlyParams;
   PeriodType? get selectedPeriod;
 
   Future<void> getSales(

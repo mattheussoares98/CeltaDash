@@ -159,9 +159,9 @@ class SaleMovementModel extends Equatable {
             paymentFinalizations?.map((e) => e.toEntity()).toList(),
       );
 
-  EcSaleMovementViewModel toViewModel() {
+  SaleMovementViewModel toViewModel() {
     final df = DateFormat('dd/MM/yyyy HH:mm:ss');
-    return EcSaleMovementViewModel(
+    return SaleMovementViewModel(
       Id: Id?.toString(),
       enterpriseId: enterpriseId?.toString(),
       fiscalNoteTypeId: fiscalNoteTypeId?.toString(),
@@ -181,7 +181,7 @@ class SaleMovementModel extends Equatable {
     );
   }
 
-  factory SaleMovementModel.fromViewModel(EcSaleMovementViewModel viewModel) {
+  factory SaleMovementModel.fromViewModel(SaleMovementViewModel viewModel) {
     final df = DateFormat('dd/MM/yyyy HH:mm:ss');
     return SaleMovementModel(
       Id: viewModel.Id?.toInt(),

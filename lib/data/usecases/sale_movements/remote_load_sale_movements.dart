@@ -7,14 +7,14 @@ import '../../../main/builders/builders.dart';
 import '../../http/http.dart';
 import '../../models/models.dart';
 
-class RemoteEcLoadSaleMovements implements EcLoadSaleMovements {
+class RemoteLoadSaleMovements implements LoadSaleMovements {
   final HttpClient httpAdapter;
 
-  const RemoteEcLoadSaleMovements(this.httpAdapter);
+  const RemoteLoadSaleMovements(this.httpAdapter);
 
   @override
   Future<List<SaleMovementEntity>> get(
-    GetEcSaleMovementParams params,
+    GetSaleMovementParams params,
   ) async {
     final url = EnterpriseBuilder.entity?.baseUrl;
 

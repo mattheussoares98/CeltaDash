@@ -3,6 +3,6 @@ import '../../../../ui/pages/pages.dart';
 import '../../factories.dart';
 
 ProductsPresenter makeGetxProductsPresenter() => GetxProductsPresenter(
-      ecLoadSaleStatistics: makeRemoteEcLoadSaleStatistics(),
+      loadSaleStatistics: makeRemoteLoadSaleStatistics(),
       localStorage: makeHiveLocalStorage(),
     );

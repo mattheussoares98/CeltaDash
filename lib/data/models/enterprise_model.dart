@@ -4,13 +4,13 @@ import 'package:equatable/equatable.dart';
 import '../../domain/entities/entities.dart';
 import '../../ui/pages/pages.dart';
 
-class EcEnterpriseModel extends Equatable {
+class EnterpriseModel extends Equatable {
   final int? id;
   final String? name;
   final String? personalizedCode;
   final String? cnpj;
 
-  const EcEnterpriseModel({
+  const EnterpriseModel({
     required this.id,
     required this.name,
     required this.personalizedCode,
@@ -25,7 +25,7 @@ class EcEnterpriseModel extends Equatable {
         cnpj,
       ];
 
-  factory EcEnterpriseModel.fromJson(Map json) => EcEnterpriseModel(
+  factory EnterpriseModel.fromJson(Map json) => EnterpriseModel(
         id: json['id'],
         name: json['name'],
         personalizedCode: json['personalizedCode'],
@@ -39,23 +39,23 @@ class EcEnterpriseModel extends Equatable {
         'cnpj': cnpj,
       };
 
-  factory EcEnterpriseModel.fromEntity(EcEnterpriseEntity entity) =>
-      EcEnterpriseModel(
+  factory EnterpriseModel.fromEntity(EnterpriseEntity entity) =>
+      EnterpriseModel(
         id: entity.id,
         name: entity.name,
         personalizedCode: entity.personalizedCode,
         cnpj: entity.cnpj,
       );
 
-  EcEnterpriseEntity toEntity() => EcEnterpriseEntity(
+  EnterpriseEntity toEntity() => EnterpriseEntity(
         id: id,
         name: name,
         personalizedCode: personalizedCode,
         cnpj: cnpj,
       );
 
-  factory EcEnterpriseModel.fromViewModel(EcEnterpriseViewModel viewModel) {
-    return EcEnterpriseModel(
+  factory EnterpriseModel.fromViewModel(EcEnterpriseViewModel viewModel) {
+    return EnterpriseModel(
       id: viewModel.id?.toInt(),
       name: viewModel.name,
       personalizedCode: viewModel.personalizedCode,

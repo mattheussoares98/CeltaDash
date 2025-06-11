@@ -6,14 +6,14 @@ import '../../helpers/helpers.dart';
 import '../pages.dart';
 
 abstract class CanceledSalesPresenter implements Listenable {
-  List<EcSaleMovementViewModel>? get dailySales;
-  List<EcSaleMovementViewModel>? get monthlySales;
+  List<SaleMovementViewModel>? get dailySales;
+  List<SaleMovementViewModel>? get monthlySales;
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
-  Stream<EcSaleMovementViewModel?> get selectedSaleStream;
+  Stream<SaleMovementViewModel?> get selectedSaleStream;
   PeriodType get selectedPeriod;
-  GetEcSaleMovementParams? get lastGetDailyParams;
-  GetEcSaleMovementParams? get lastGetMonthlyParams;
+  GetSaleMovementParams? get lastGetDailyParams;
+  GetSaleMovementParams? get lastGetMonthlyParams;
 
   Future<void> getSales(
     HomePresenter homePresenter, {
@@ -21,6 +21,6 @@ abstract class CanceledSalesPresenter implements Listenable {
     bool? forceRefresh,
   });
 
-  void updateSelectedSaleMovement(EcSaleMovementViewModel sale);
+  void updateSelectedSaleMovement(SaleMovementViewModel sale);
   Future<void> getSelectedSaleDetails();
 }

@@ -11,9 +11,9 @@ abstract class SalesPresenter implements Listenable {
   List<SaleStatisticViewModel>? get yearlyStatistics;
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
-  GetEcSaleStatisticsParams? get lastGetDailyParams;
-  GetEcSaleStatisticsParams? get lastGetMonthlyParams;
-  GetEcSaleStatisticsParams? get lastGetYearlyParams;
+  GetSaleStatisticsParams? get lastGetDailyParams;
+  GetSaleStatisticsParams? get lastGetMonthlyParams;
+  GetSaleStatisticsParams? get lastGetYearlyParams;
   PeriodType get selectedPeriod;
 
   Future<void> getSales(

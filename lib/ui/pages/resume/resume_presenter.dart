@@ -10,7 +10,7 @@ abstract class ResumePresenter implements Listenable {
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
   PeriodType get selectedPeriod;
-  GetEcSaleStatisticsParams? get lastGetStatisticsParams;
+  GetSaleStatisticsParams? get lastGetStatisticsParams;
 
   void goToProfitabillityPage();
   void goToCompareDays();
