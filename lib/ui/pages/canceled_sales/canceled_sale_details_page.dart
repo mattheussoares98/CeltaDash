@@ -118,8 +118,8 @@ class _CanceledSaleDetailsPageState extends State<CanceledSaleDetailsPage>
                             ],
                           ),
                         ),
-                        Flexible(child: Products(sale: sale)),
-                        Flexible(child: PaymentFinalizations(sale: sale)),
+                        PaymentFinalizations(sale: sale),
+                        Expanded(child: Products(sale: sale)),
                       ]);
                 }),
           );
