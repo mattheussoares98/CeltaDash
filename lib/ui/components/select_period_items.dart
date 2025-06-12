@@ -10,6 +10,7 @@ import '../helpers/helpers.dart';
 class SelectPeriodItems extends StatefulWidget {
   final PeriodType? selectedPeriodType;
   final bool? isLoading;
+  final void Function()? onTapHourly;
   final void Function()? onTapDaily;
   final void Function()? onTapWeekly;
   final void Function()? onTapMonthly;
@@ -18,18 +19,12 @@ class SelectPeriodItems extends StatefulWidget {
     super.key,
     required this.selectedPeriodType,
     required this.isLoading,
+    this.onTapHourly,
     this.onTapDaily,
     this.onTapWeekly,
     this.onTapMonthly,
     this.onTapYearly,
   });
-
-  static _PeriodItem createItem({
-    required String title,
-    required void Function() onTap,
-  }) {
-    return _PeriodItem(title: title, onTap: onTap);
-  }
 
   @override
   State<SelectPeriodItems> createState() => _PeriodItems();
@@ -39,32 +34,42 @@ class _PeriodItems extends State<SelectPeriodItems> {
   String? selected;
 
   List<_PeriodItem> get items => <_PeriodItem>[
+        if (widget.onTapHourly != null)
+          _PeriodItem(
+            title: R.string.hour,
+            onTap: widget.onTapHourly!,
+            periodType: PeriodType.hourly,
+          ),
         if (widget.onTapDaily != null)
-          _PeriodItem(title: R.string.day, onTap: widget.onTapDaily!),
+          _PeriodItem(
+            title: R.string.day,
+            onTap: widget.onTapDaily!,
+            periodType: PeriodType.daily,
+          ),
         if (widget.onTapWeekly != null)
-          _PeriodItem(title: R.string.week, onTap: widget.onTapWeekly!),
+          _PeriodItem(
+            title: R.string.week,
+            onTap: widget.onTapWeekly!,
+            periodType: PeriodType.weekly,
+          ),
         if (widget.onTapMonthly != null)
-          _PeriodItem(title: R.string.month, onTap: widget.onTapMonthly!),
+          _PeriodItem(
+            title: R.string.month,
+            onTap: widget.onTapMonthly!,
+            periodType: PeriodType.monthly,
+          ),
         if (widget.onTapYearly != null)
-          _PeriodItem(title: R.string.year, onTap: widget.onTapYearly!),
+          _PeriodItem(
+            title: R.string.year,
+            onTap: widget.onTapYearly!,
+            periodType: PeriodType.yearly,
+          ),
       ];
 
   int get selectedItemIndex {
-    if (widget.selectedPeriodType == PeriodType.daily &&
-        widget.onTapDaily != null) {
-      return items.indexWhere((e) => e.title == R.string.day);
-    } else if (widget.selectedPeriodType == PeriodType.weekly &&
-        widget.onTapWeekly != null) {
-      return items.indexWhere((e) => e.title == R.string.week);
-    } else if (widget.selectedPeriodType == PeriodType.monthly &&
-        widget.onTapMonthly != null) {
-      return items.indexWhere((e) => e.title == R.string.month);
-    } else if (widget.selectedPeriodType == PeriodType.yearly &&
-        widget.onTapYearly != null) {
-      return items.indexWhere((e) => e.title == R.string.year);
-    } else {
-      return 0;
-    }
+    final index =
+        items.indexWhere((e) => e.periodType == widget.selectedPeriodType);
+    return index != -1 ? index : 0;
   }
 
   @override
@@ -78,7 +83,8 @@ class _PeriodItems extends State<SelectPeriodItems> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.onTapDaily == null &&
+    if (widget.onTapHourly == null &&
+        widget.onTapDaily == null &&
         widget.onTapWeekly == null &&
         widget.onTapMonthly == null &&
         widget.onTapYearly == null) {
@@ -164,5 +170,10 @@ class _PeriodItems extends State<SelectPeriodItems> {
 class _PeriodItem {
   final String title;
   final void Function() onTap;
-  _PeriodItem({required this.title, required this.onTap});
+  final PeriodType periodType;
+  _PeriodItem({
+    required this.title,
+    required this.onTap,
+    required this.periodType,
+  });
 }
