@@ -6,30 +6,30 @@ import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
 class HourTable extends StatelessWidget {
-  final List<SaleStatisticViewModel> resumeSaleStatistics;
-  final List<String> uniqueHours;
+  final List<SaleStatisticViewModel> hourlyStatistics;
   const HourTable({
     super.key,
-    required this.resumeSaleStatistics,
-    required this.uniqueHours,
+    required this.hourlyStatistics,
   });
 
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
-    final totalValue = resumeSaleStatistics.sumLiquidValue(
+    final totalValue = hourlyStatistics.sumLiquidValue(
       enterprise: homePresenter.selectedEnterprise,
       filterDay: homePresenter.selectedDate.day,
       filterMonth: homePresenter.selectedDate.month,
       filterYear: homePresenter.selectedDate.year,
     );
 
+    final uniqueHours = hourlyStatistics.uniqueHours();
+
     return TableItem(
       titleMinHeight: 43,
       tableColumnWidth: {
-        0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.12),
+        0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.15),
         2: FixedColumnWidth(MediaQuery.of(context).size.width * 0.19),
-        3: FixedColumnWidth(MediaQuery.of(context).size.width * 0.16),
+        3: FixedColumnWidth(MediaQuery.of(context).size.width * 0.2),
         4: FixedColumnWidth(MediaQuery.of(context).size.width * 0.16),
       },
       columnIndexToCompareAndDetachBetterAndWorstValue: 1,
@@ -37,16 +37,16 @@ class HourTable extends StatelessWidget {
       indexToSort: 0,
       titles: [
         PersonalizedTableCell(value: R.string.hour.toUpperCase()),
-        PersonalizedTableCell(value: R.string.revenue.toUpperCase()),
         PersonalizedTableCell(value: R.string.sales.toUpperCase()),
-        PersonalizedTableCell(value: R.string.ticketAverage.toUpperCase()),
+        PersonalizedTableCell(value: R.string.sales.toUpperCase()),
+        PersonalizedTableCell(value: R.string.average.toUpperCase()),
         PersonalizedTableCell(value: R.string.share.toUpperCase()),
       ],
       rowValues: uniqueHours.map((hour) {
-        final totalByHour = resumeSaleStatistics.totalForHourOnDate(
+        final totalByHour = hourlyStatistics.totalForHourOnDate(
             hour, homePresenter.selectedDate);
 
-        final salesByHour = resumeSaleStatistics
+        final salesByHour = hourlyStatistics
             .filteredSales(
               enterprise: homePresenter.selectedEnterprise,
               filterDay: homePresenter.selectedDate.day,

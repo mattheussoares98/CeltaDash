@@ -30,12 +30,15 @@ class _SalesPageState extends State<SalesPage>
   }
 
   bool salesAreEmpty({
+    required List<SaleStatisticViewModel>? hourlyStatistics,
     required List<SaleStatisticViewModel>? dailyStatistics,
     required List<SaleStatisticViewModel>? monthlyStatistics,
     required List<SaleStatisticViewModel>? yearlyStatistics,
     required SalesPresenter salesPresenter,
   }) {
-    if (salesPresenter.selectedPeriod == PeriodType.daily) {
+    if (salesPresenter.selectedPeriod == PeriodType.hourly) {
+      return hourlyStatistics?.isEmpty == true;
+    } else if (salesPresenter.selectedPeriod == PeriodType.daily) {
       return dailyStatistics?.isEmpty == true;
     } else if (salesPresenter.selectedPeriod == PeriodType.monthly) {
       return monthlyStatistics?.isEmpty == true;
@@ -98,6 +101,12 @@ class _SalesPageState extends State<SalesPage>
                       SelectPeriodItems(
                         isLoading: loadingSnap.data,
                         selectedPeriodType: salesPresenter.selectedPeriod,
+                        onTapHourly: () {
+                          salesPresenter.getSales(
+                            homePresenter,
+                            periodType: PeriodType.hourly,
+                          );
+                        },
                         onTapDaily: () {
                           salesPresenter.getSales(
                             homePresenter,
@@ -130,6 +139,13 @@ class _SalesPageState extends State<SalesPage>
                   //     )
                   //     .toList();
 
+                  final hourlyStatistics = salesPresenter.hourlyStatistics
+                      ?.filteredSales(
+                        enterprise: homePresenter.selectedEnterprise,
+                      )
+                      .map((e) => e.toViewModel())
+                      .toList();
+
                   final dailyStatistics = salesPresenter.dailyStatistics
                       ?.filteredSales(
                         enterprise: homePresenter.selectedEnterprise,
@@ -152,10 +168,12 @@ class _SalesPageState extends State<SalesPage>
                       .toList();
 
                   if (salesAreEmpty(
-                      dailyStatistics: dailyStatistics,
-                      monthlyStatistics: monthlyStatistics,
-                      yearlyStatistics: yearlyStatistics,
-                      salesPresenter: salesPresenter)) {
+                    hourlyStatistics: hourlyStatistics,
+                    dailyStatistics: dailyStatistics,
+                    monthlyStatistics: monthlyStatistics,
+                    yearlyStatistics: yearlyStatistics,
+                    salesPresenter: salesPresenter,
+                  )) {
                     return EmptySales(isLoading: loadingSnap.data == true);
                   }
 
@@ -165,12 +183,10 @@ class _SalesPageState extends State<SalesPage>
                         Expanded(
                           child: Column(
                             children: [
-                              // if (uniqueHours.isNotEmpty)
-                              //   HourTable(
-                              //     resumeSaleMovements: resumeSaleMovements,
-                              //     uniqueHours: uniqueHours,
-                              //   ),
-                              //TODO implement in presenter
+                              if (salesPresenter.selectedPeriod ==
+                                      PeriodType.hourly &&
+                                  hourlyStatistics?.isNotEmpty == true)
+                                HourTable(hourlyStatistics: hourlyStatistics!),
                               if (salesPresenter.selectedPeriod ==
                                       PeriodType.daily &&
                                   dailyStatistics?.isNotEmpty == true)
