@@ -31,7 +31,8 @@ class _PaymentsModalitiesState extends State<PaymentsModalities> {
           ],
           columnIndexToCompareAndDetachBetterAndWorstValue: 1,
           tableColumnWidth: {
-            3: FixedColumnWidth(MediaQuery.of(context).size.width * 0.17),
+            2: FixedColumnWidth(MediaQuery.of(context).size.width * 0.2),
+            3: FixedColumnWidth(MediaQuery.of(context).size.width * 0.15),
           },
           titleMinHeight: 40,
           indexToSort: 1,
