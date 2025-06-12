@@ -182,9 +182,10 @@ void main() {
         ).called(1);
 
         ////////////////////CHANGING ENTERPRISE/////////////////////////////////
-        final newEnterprise =
-            EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
-                .toViewModel();
+        final newEnterprise = EnterpriseModel.fromEntity(
+                EntityFactory.makeEnterpriseEntity(
+                    id: homePresenter.selectedEnterpriseMock!.id!.toInt() + 1))
+            .toViewModel();
         homePresenter.selectedEnterpriseMock = newEnterprise;
         await sut.getSales(homePresenter, periodType: PeriodType.hourly);
 
@@ -485,7 +486,7 @@ void main() {
               groupByHour: false,
               groupByDay: false,
               groupByMonth: true,
-              groupByYear: false,
+              groupByYear: true,
             ),
           ),
         ).called(1);
@@ -509,7 +510,7 @@ void main() {
               groupByHour: false,
               groupByDay: false,
               groupByMonth: true,
-              groupByYear: false,
+              groupByYear: true,
             ),
           ),
         ).called(1);
@@ -532,7 +533,7 @@ void main() {
               groupByHour: false,
               groupByDay: false,
               groupByMonth: true,
-              groupByYear: false,
+              groupByYear: true,
             ),
           ),
         ).called(1);
@@ -554,7 +555,7 @@ void main() {
               groupByHour: false,
               groupByDay: false,
               groupByMonth: true,
-              groupByYear: false,
+              groupByYear: true,
             ),
           ),
         ).called(1);
@@ -582,7 +583,7 @@ void main() {
               groupByHour: false,
               groupByDay: false,
               groupByMonth: true,
-              groupByYear: false,
+              groupByYear: true,
             ),
           ),
         ).called(2);
@@ -605,7 +606,7 @@ void main() {
               groupByHour: false,
               groupByDay: false,
               groupByMonth: true,
-              groupByYear: false,
+              groupByYear: true,
             ));
       });
     });
@@ -636,7 +637,7 @@ void main() {
               endDate: endDate,
               groupByEnterprise: true,
               groupByYear: true,
-              groupByMonth: false,
+              groupByMonth: true,
               groupByHour: false,
               groupByDay: false,
             ),
@@ -660,7 +661,7 @@ void main() {
               endDate: endDate,
               groupByEnterprise: true,
               groupByYear: true,
-              groupByMonth: false,
+              groupByMonth: true,
               groupByHour: false,
               groupByDay: false,
             ),
@@ -688,7 +689,7 @@ void main() {
               endDate: endDate,
               groupByEnterprise: true,
               groupByYear: true,
-              groupByMonth: false,
+              groupByMonth: true,
               groupByHour: false,
               groupByDay: false,
             ),
@@ -711,7 +712,7 @@ void main() {
               endDate: endDate,
               groupByEnterprise: true,
               groupByYear: true,
-              groupByMonth: false,
+              groupByMonth: true,
               groupByHour: false,
               groupByDay: false,
             ));
@@ -733,7 +734,7 @@ void main() {
               endDate: endDate,
               groupByEnterprise: true,
               groupByYear: true,
-              groupByMonth: false,
+              groupByMonth: true,
               groupByHour: false,
               groupByDay: false,
             ),
@@ -755,7 +756,7 @@ void main() {
               endDate: endDate,
               groupByEnterprise: true,
               groupByYear: true,
-              groupByMonth: false,
+              groupByMonth: true,
               groupByHour: false,
               groupByDay: false,
             ),

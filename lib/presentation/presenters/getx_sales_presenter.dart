@@ -108,8 +108,10 @@ class GetxSalesPresenter extends GetxController
         groupByEnterprise: true,
         groupByHour: selectedPeriod == PeriodType.hourly,
         groupByDay: selectedPeriod == PeriodType.daily,
-        groupByMonth: selectedPeriod == PeriodType.monthly,
-        groupByYear: selectedPeriod == PeriodType.yearly,
+        groupByMonth: selectedPeriod == PeriodType.monthly ||
+            selectedPeriod == PeriodType.yearly,
+        groupByYear: selectedPeriod == PeriodType.monthly ||
+            selectedPeriod == PeriodType.yearly,
       );
 
       final remoteSales = await loadSaleStatistics.get(getSalesParams);

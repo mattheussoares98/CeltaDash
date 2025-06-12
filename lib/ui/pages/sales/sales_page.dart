@@ -163,6 +163,7 @@ class _SalesPageState extends State<SalesPage>
                   final monthlyStatistics = salesPresenter.monthlyStatistics
                       ?.filteredSales(
                         enterprise: homePresenter.selectedEnterprise,
+                        filterYear: homePresenter.selectedDate.year,
                       )
                       .map((e) => e.toViewModel())
                       .toList();
