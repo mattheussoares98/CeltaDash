@@ -7,7 +7,8 @@ import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
 class GetxPaymentTypePresenter extends GetxController
-    with ErrorHandling,
+    with
+        ErrorHandling,
         SaleStatisticsManager,
         UIErrorManager,
         LoadingManager,
@@ -42,7 +43,9 @@ class GetxPaymentTypePresenter extends GetxController
 
       final canSearchAgain = SearchHelper.canSearch(
         forceRefresh: forceRefresh,
-        lastParams: lastGetStatisticsParams,
+        lastParams: selectedPeriod == PeriodType.daily
+            ? lastGetDailyParams
+            : lastGetMonthlyParams,
         selectedDate: homePresenter.selectedDate,
         periodType: selectedPeriod,
       );
@@ -63,49 +66,34 @@ class GetxPaymentTypePresenter extends GetxController
         1,
       ).subtract(Duration(days: 1));
 
-      final salesByModality = await loadSaleStatistics.get(
-        GetSaleStatisticsParams(
-          startDate: startDate,
-          endDate: selectedPeriod == PeriodType.daily ? startDate : endDate,
-          groupByEnterprise: true,
-          groupByDay: true,
-          groupByPaymentModality: true,
-        ),
-      );
-
-      saleStatistics = salesByModality
-          .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
-          .toList();
-
-      final getSalesParams = GetSaleStatisticsParams(
+      final params = GetSaleStatisticsParams(
         startDate: startDate,
         endDate: selectedPeriod == PeriodType.daily ? startDate : endDate,
         groupByEnterprise: true,
-        groupByDay: true,
+        groupByDay: selectedPeriod == PeriodType.daily,
+        groupByMonth: selectedPeriod == PeriodType.monthly,
+        groupByYear: selectedPeriod == PeriodType.monthly,
+        groupByPaymentModality: true,
         groupByPaymentFinalization: true,
       );
 
-      final salesByFinalization =
-          await loadSaleStatistics.get(getSalesParams);
+      final response = await loadSaleStatistics.get(params);
+      lastParams = params;
 
-      salesByFinaliztions = salesByFinalization
+      final newSales = (response as List)
           .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
           .toList();
-      //TODO create daily and monthly sales
-
-      lastParams = getSalesParams;
+      if (selectedPeriod == PeriodType.daily) {
+        lastGetDailyParams = params;
+        dailyStatistics = newSales;
+      } else {
+        lastGetMonthlyParams = params;
+        monthlyStatistics = newSales;
+      }
     } catch (e) {
       mainError = getUIError(e);
     } finally {
       isLoading = false;
     }
   }
-
-  final _saleStatisticsByFinalizations =
-      Rx<List<SaleStatisticViewModel>?>(null);
-  @override
-  List<SaleStatisticViewModel>? get saleStatisticsByFinalizations =>
-      _saleStatisticsByFinalizations.value;
-  set salesByFinaliztions(List<SaleStatisticViewModel>? value) =>
-      _saleStatisticsByFinalizations.value = value;
 }

@@ -44,23 +44,6 @@ class _PaymentTypePageState extends State<PaymentTypePage>
     pageController.dispose();
   }
 
-  bool filter(
-    SaleStatisticViewModel sale,
-    HomePresenter homePresenter,
-    PaymentTypePresenter paymentTypePresenter,
-  ) {
-    final selectedDate = homePresenter.selectedDate;
-
-    if (paymentTypePresenter.selectedPeriod == PeriodType.monthly) {
-      return sale.Date?.month == selectedDate.month &&
-          sale.Date?.year == selectedDate.year;
-    } else {
-      return sale.Date?.day == selectedDate.day &&
-          sale.Date?.month == selectedDate.month &&
-          sale.Date?.year == selectedDate.year;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
@@ -95,8 +78,7 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                   padding: const EdgeInsets.all(8.0),
                   child: SelectPeriodItems(
                     isLoading: loadingSnap.data,
-                    selectedPeriodType:
-                        paymentTypePresenter.selectedPeriod,
+                    selectedPeriodType: paymentTypePresenter.selectedPeriod,
                     onTapMonthly: () {
                       paymentTypePresenter.getSales(
                         homePresenter,
@@ -113,27 +95,36 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                 ),
                 Expanded(
                   child: Obx(() {
-                    final saleStatisticsByFinalizations =
-                        paymentTypePresenter.saleStatisticsByFinalizations
+                    final dailyStatistics = paymentTypePresenter.dailyStatistics
+                        ?.filteredSales(
+                          //TODO change to statistics
+                          enterprise: homePresenter.selectedEnterprise,
+                          filterDay: homePresenter.selectedDate.day,
+                          filterMonth: homePresenter.selectedDate.month,
+                          filterYear: homePresenter.selectedDate.year,
+                        )
+                        .map((e) => e.toViewModel())
+                        .toList();
+
+                    final monthlyStatistics =
+                        paymentTypePresenter.monthlyStatistics
                             ?.filteredSales(
                               enterprise: homePresenter.selectedEnterprise,
+                              filterMonth: homePresenter.selectedDate.month,
+                              filterYear: homePresenter.selectedDate.year,
                             )
-                            .map((e) => e.toViewModel());
-                  
-                    final saleStatisticsByModalities =
-                        paymentTypePresenter.saleStatistics
-                            ?.filteredSales(
-                              enterprise: homePresenter.selectedEnterprise,
-                            )
-                            .map((e) => e.toViewModel());
-                  
-                    if (saleStatisticsByFinalizations == null ||
-                        saleStatisticsByFinalizations.isEmpty ||
-                        saleStatisticsByModalities == null ||
-                        saleStatisticsByModalities.isEmpty) {
+                            .map((e) => e.toViewModel())
+                            .toList();
+
+                    final sales =
+                        paymentTypePresenter.selectedPeriod == PeriodType.daily
+                            ? dailyStatistics
+                            : monthlyStatistics;
+
+                    if (sales?.isEmpty == true) {
                       return EmptySales(isLoading: loadingSnap.data);
                     }
-                  
+
                     return Column(
                       children: [
                         Expanded(
@@ -147,29 +138,11 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                             children: [
                               PaymentsModalities(
                                 filterByFinalizations: false,
-                                saleStatistics:
-                                    saleStatisticsByModalities.where(
-                                  (element) {
-                                    return filter(
-                                      element,
-                                      homePresenter,
-                                      paymentTypePresenter,
-                                    );
-                                  },
-                                ).toList(),
+                                saleStatistics: sales!,
                               ),
                               PaymentsModalities(
                                 filterByFinalizations: true,
-                                saleStatistics:
-                                    saleStatisticsByFinalizations.where(
-                                  (element) {
-                                    return filter(
-                                      element,
-                                      homePresenter,
-                                      paymentTypePresenter,
-                                    );
-                                  },
-                                ).toList(),
+                                saleStatistics: sales,
                               ),
                             ],
                           ),
