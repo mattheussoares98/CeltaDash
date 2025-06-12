@@ -8,7 +8,8 @@ import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
 
 class GetxProductsPresenter extends GetxController
-    with ErrorHandling,
+    with
+        ErrorHandling,
         LoadingManager,
         UIErrorManager,
         LastGetSalesStatisticsParamsManager,
@@ -70,8 +71,9 @@ class GetxProductsPresenter extends GetxController
       final params = GetSaleStatisticsParams(
         startDate: startDate,
         endDate: selectedPeriod == PeriodType.daily ? startDate : endDate,
-        groupByDay:
-            true /* selectedPeriod == PeriodType.daily ? true : false */, //TODO test this
+        groupByDay: selectedPeriod == PeriodType.daily,
+        groupByMonth: selectedPeriod == PeriodType.monthly,
+        groupByYear: selectedPeriod == PeriodType.monthly,
         groupByProduct: true,
         groupByEnterprise: true,
         topCount: 200,
