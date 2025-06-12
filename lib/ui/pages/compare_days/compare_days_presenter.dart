@@ -14,5 +14,6 @@ abstract class CompareDaysPresenter implements Listenable {
     required DateTime? firstDay,
     required DateTime? secondDay,
     required HomePresenter homePresenter,
+    bool? forceRefresh,
   });
 }

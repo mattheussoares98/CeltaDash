@@ -263,5 +263,37 @@ void main() {
         ),
       ).called(1);
     });
+
+    test("Should notload again if force refresh", () async {
+      await sut.getSales(
+        homePresenter: homePresenter,
+        firstDay: null,
+        secondDay: secondDay,
+      );
+      await sut.getSales(
+        homePresenter: homePresenter,
+        firstDay: null,
+        secondDay: secondDay,
+        forceRefresh: true,
+      );
+
+      verify(
+        () => loadSaleStatistics.get(
+          GetSaleStatisticsParams(
+            groupByYear: true,
+            groupByMonth: true,
+            groupByDay: true,
+            groupByHour: true,
+            enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+            startDate: secondDay,
+            endDate: DateTime(
+              secondDay.year,
+              secondDay.month,
+              secondDay.day,
+            ),
+          ),
+        ),
+      ).called(2);
+    });
   });
 }

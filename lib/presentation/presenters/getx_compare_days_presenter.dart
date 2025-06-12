@@ -21,6 +21,7 @@ class GetxCompareDaysPresenter extends GetxController
     required DateTime? firstDay,
     required DateTime? secondDay,
     required HomePresenter homePresenter,
+    bool? forceRefresh,
   }) async {
     isLoading = true;
     mainError = null;
@@ -28,7 +29,8 @@ class GetxCompareDaysPresenter extends GetxController
     try {
       if (firstDay != null && firstDay == secondDay) {
         throw DomainError.sameDays;
-      } else if (firstDay == _selectedFirstDay &&
+      } else if (forceRefresh != true &&
+          firstDay == _selectedFirstDay &&
           secondDay == _selectedSecondDay) {
         //TODO add force refresh
         return;
