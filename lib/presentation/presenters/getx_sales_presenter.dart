@@ -21,6 +21,12 @@ class GetxSalesPresenter extends GetxController
   GetxSalesPresenter({required this.loadSaleStatistics});
 
   @override
+  void onInit() {
+    super.onInit();
+    selectedPeriod = PeriodType.hourly;
+  }
+
+  @override
   Future<void> getSales(
     HomePresenter homePresenter, {
     PeriodType? periodType,
