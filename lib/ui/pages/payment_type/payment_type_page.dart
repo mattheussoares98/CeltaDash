@@ -121,7 +121,7 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                             ? dailyStatistics
                             : monthlyStatistics;
 
-                    if (sales?.isEmpty == true) {
+                    if (sales == null || sales.isEmpty == true) {
                       return EmptySales(isLoading: loadingSnap.data);
                     }
 
@@ -138,7 +138,7 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                             children: [
                               PaymentsModalities(
                                 filterByFinalizations: false,
-                                saleStatistics: sales!,
+                                saleStatistics: sales,
                               ),
                               PaymentsModalities(
                                 filterByFinalizations: true,
