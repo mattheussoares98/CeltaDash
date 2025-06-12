@@ -134,6 +134,9 @@ void main() {
             GetSaleStatisticsParams(
               startDate: startDate,
               endDate: startDate,
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
               groupByEnterprise: true,
               groupByDay: true,
               groupByMonth: false,
@@ -159,6 +162,9 @@ void main() {
             GetSaleStatisticsParams(
               startDate: startDate,
               endDate: startDate,
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
               groupByEnterprise: true,
               groupByDay: true,
               groupByMonth: false,
@@ -184,6 +190,9 @@ void main() {
             GetSaleStatisticsParams(
               startDate: startDate,
               endDate: startDate,
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
               groupByEnterprise: true,
               groupByDay: true,
               groupByMonth: false,
@@ -208,6 +217,9 @@ void main() {
             GetSaleStatisticsParams(
               startDate: startDate,
               endDate: startDate,
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
               groupByEnterprise: true,
               groupByDay: true,
               groupByMonth: false,
@@ -230,7 +242,7 @@ void main() {
         );
       });
 
-      test("Should NOT load again if change the selected enterprise", () async {
+      test("Should load again if change the selected enterprise", () async {
         await sut.getSales(homePresenter);
 
         final startDate = DateTime(
@@ -244,6 +256,9 @@ void main() {
             GetSaleStatisticsParams(
               startDate: startDate,
               endDate: startDate,
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
               groupByEnterprise: true,
               groupByDay: true,
               groupByMonth: false,
@@ -259,11 +274,14 @@ void main() {
                 .toViewModel();
         await sut.getSales(homePresenter);
 
-        verifyNever(
+        verify(
           () => loadSaleStatistics.get(
             GetSaleStatisticsParams(
               startDate: startDate,
               endDate: startDate,
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
               groupByEnterprise: true,
               groupByDay: true,
               groupByMonth: false,
@@ -272,7 +290,7 @@ void main() {
               groupByPaymentFinalization: true,
             ),
           ),
-        );
+        ).called(1);
       });
     });
 
@@ -293,6 +311,9 @@ void main() {
                 homePresenter.selectedDateMock.month + 1,
                 0,
               ),
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
               groupByEnterprise: true,
               groupByDay: false,
               groupByMonth: true,
@@ -320,6 +341,9 @@ void main() {
                 homePresenter.selectedDateMock.month + 1,
                 0,
               ),
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
               groupByEnterprise: true,
               groupByDay: false,
               groupByMonth: true,
@@ -347,6 +371,9 @@ void main() {
                 homePresenter.selectedDateMock.month + 1,
                 0,
               ),
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
               groupByEnterprise: true,
               groupByDay: false,
               groupByMonth: true,
@@ -373,6 +400,7 @@ void main() {
               homePresenter.selectedDateMock.month + 1,
               0,
             ),
+            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
             groupByEnterprise: true,
             groupByDay: false,
             groupByMonth: true,
@@ -394,7 +422,7 @@ void main() {
         );
       });
 
-      test("Should NOT load again if change the selected enterprise", () async {
+      test("Should load again if change the selected enterprise", () async {
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
         verify(
@@ -410,6 +438,9 @@ void main() {
                 homePresenter.selectedDateMock.month + 1,
                 0,
               ),
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
               groupByEnterprise: true,
               groupByDay: false,
               groupByMonth: true,
@@ -425,7 +456,7 @@ void main() {
                 .toViewModel();
         await sut.getSales(homePresenter, periodType: PeriodType.monthly);
 
-        verifyNever(
+        verify(
           () => loadSaleStatistics.get(
             GetSaleStatisticsParams(
               startDate: DateTime(
@@ -438,6 +469,9 @@ void main() {
                 homePresenter.selectedDateMock.month + 1,
                 0,
               ),
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
               groupByEnterprise: true,
               groupByDay: false,
               groupByMonth: true,
@@ -446,7 +480,7 @@ void main() {
               groupByPaymentFinalization: true,
             ),
           ),
-        );
+        ).called(1);
       });
     });
   });

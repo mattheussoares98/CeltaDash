@@ -1,3 +1,4 @@
+import 'package:celta_dash/ui/helpers/helpers.dart';
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
@@ -50,7 +51,14 @@ class GetxPaymentTypePresenter extends GetxController
         periodType: selectedPeriod,
       );
 
-      if (!canSearchAgain) {
+      bool changedEnterprise = SearchHelper.changedTheEnterprise(
+        selectedPeriodType: selectedPeriod,
+        selectedEnterprise: homePresenter.selectedEnterprise,
+        lastDailyParams: lastGetDailyParams,
+        lastMonthlyParams: lastGetMonthlyParams,
+      );
+
+      if (!canSearchAgain && !changedEnterprise) {
         return;
       }
 
@@ -67,6 +75,7 @@ class GetxPaymentTypePresenter extends GetxController
       ).subtract(Duration(days: 1));
 
       final params = GetSaleStatisticsParams(
+        enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
         startDate: startDate,
         endDate: selectedPeriod == PeriodType.daily ? startDate : endDate,
         groupByEnterprise: true,
