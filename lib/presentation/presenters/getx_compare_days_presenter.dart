@@ -32,7 +32,6 @@ class GetxCompareDaysPresenter extends GetxController
       } else if (forceRefresh != true &&
           firstDay == _selectedFirstDay &&
           secondDay == _selectedSecondDay) {
-        //TODO add force refresh
         return;
       }
 
