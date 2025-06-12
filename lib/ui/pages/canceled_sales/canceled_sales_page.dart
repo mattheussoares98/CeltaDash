@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../data/models/models.dart';
 import '../../../domain/helpers/helpers.dart';
@@ -124,11 +125,13 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                       TableItem(
                         titleMinHeight: 43,
                         columnIndexToCompareAndDetachBetterAndWorstValue: 1,
-                        columnsIndexToSum: [2],
-                        indexToSort: 2,
+                        columnsIndexToSum: [3],
+                        indexToSort: 1,
                         tableColumnWidth: {
                           0: FixedColumnWidth(
                               MediaQuery.of(context).size.width * 0.2),
+                          2: FixedColumnWidth(
+                              MediaQuery.of(context).size.width * 0.1),
                         },
                         titles: [
                           PersonalizedTableCell(
@@ -136,23 +139,30 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                                 R.string.couponNumberAbbreviated.toUpperCase(),
                           ),
                           PersonalizedTableCell(value: R.string.date),
+                          PersonalizedTableCell(
+                              value: R.string.pdv.toUpperCase()),
                           PersonalizedTableCell(value: R.string.total),
                         ],
                         rowValues: [
-                          ...sales.map((e) => [
-                                PersonalizedTableCell(value: e.documentNumber),
-                                PersonalizedTableCell(
-                                  value: e.dateHourOfBilling,
-                                ),
-                                PersonalizedTableCell(
-                                  value: e.totalLiquid?.toDouble(),
-                                  isMoney: true,
-                                  onTap: () {
-                                    canceledSalesPresenter
-                                        .updateSelectedSaleMovement(e);
-                                  },
-                                ),
-                              ]),
+                          ...sales.map((e) {
+                            final dateTime = DateFormat("dd/MM/yyyy HH:mm:ss")
+                                .parse(e.dateHourOfBilling!);
+                            final formatted =
+                                DateFormat("dd/MM/yyyy").format(dateTime);
+                            return [
+                              PersonalizedTableCell(value: e.documentNumber),
+                              PersonalizedTableCell(value: formatted),
+                              PersonalizedTableCell(value: e.cashierNumber),
+                              PersonalizedTableCell(
+                                value: e.totalLiquid?.toDouble(),
+                                isMoney: true,
+                                onTap: () {
+                                  canceledSalesPresenter
+                                      .updateSelectedSaleMovement(e);
+                                },
+                              ),
+                            ];
+                          }),
                         ],
                       ),
                     ],

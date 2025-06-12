@@ -94,6 +94,7 @@ abstract class Translation {
   String get payments;
   String get paymentsType;
   String get percentage;
+  String get pdv;
   String get portions;
   String get positionAbbreviated;
   String get price;
