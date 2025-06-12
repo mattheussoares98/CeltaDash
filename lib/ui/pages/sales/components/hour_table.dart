@@ -25,7 +25,7 @@ class HourTable extends StatelessWidget {
     final uniqueHours = hourlyStatistics.uniqueHours();
 
     return TableItem(
-      titleMinHeight: 43,
+      titleMinHeight: 45,
       tableColumnWidth: {
         0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.15),
         2: FixedColumnWidth(MediaQuery.of(context).size.width * 0.19),
@@ -38,7 +38,7 @@ class HourTable extends StatelessWidget {
       titles: [
         PersonalizedTableCell(value: R.string.hour.toUpperCase()),
         PersonalizedTableCell(value: R.string.sales.toUpperCase()),
-        PersonalizedTableCell(value: R.string.sales.toUpperCase()),
+        PersonalizedTableCell(value: R.string.quantityAbbreviated.toUpperCase()),
         PersonalizedTableCell(value: R.string.average.toUpperCase()),
         PersonalizedTableCell(value: R.string.share.toUpperCase()),
       ],

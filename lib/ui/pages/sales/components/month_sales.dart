@@ -18,20 +18,21 @@ class MonthSales extends StatelessWidget {
         saleStatisticsByMonth.map((e) => e.Month).toSet().toList()..sort();
 
     return TableItem(
-      titleMinHeight: 43,
+      titleMinHeight: 45,
       tableColumnWidth: {
-        0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.12),
+        0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.15),
         2: FixedColumnWidth(MediaQuery.of(context).size.width * 0.19),
-        3: FixedColumnWidth(MediaQuery.of(context).size.width * 0.16),
+        3: FixedColumnWidth(MediaQuery.of(context).size.width * 0.2),
         4: FixedColumnWidth(MediaQuery.of(context).size.width * 0.16),
       },
       columnIndexToCompareAndDetachBetterAndWorstValue: 1,
       columnsIndexToSum: [1, 2],
       titles: [
-        PersonalizedTableCell(value: R.string.month.toUpperCase()),
-        PersonalizedTableCell(value: R.string.revenue.toUpperCase()),
+        PersonalizedTableCell(value: R.string.hour.toUpperCase()),
         PersonalizedTableCell(value: R.string.sales.toUpperCase()),
-        PersonalizedTableCell(value: R.string.ticketAverage.toUpperCase()),
+        PersonalizedTableCell(
+            value: R.string.quantityAbbreviated.toUpperCase()),
+        PersonalizedTableCell(value: R.string.average.toUpperCase()),
         PersonalizedTableCell(value: R.string.share.toUpperCase()),
       ],
       rowValues: List.generate(uniqueMonths.length, (index) {

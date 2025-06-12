@@ -98,33 +98,35 @@ class _SalesPageState extends State<SalesPage>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SelectPeriodItems(
-                        isLoading: loadingSnap.data,
-                        selectedPeriodType: salesPresenter.selectedPeriod,
-                        onTapHourly: () {
-                          salesPresenter.getSales(
-                            homePresenter,
-                            periodType: PeriodType.hourly,
-                          );
-                        },
-                        onTapDaily: () {
-                          salesPresenter.getSales(
-                            homePresenter,
-                            periodType: PeriodType.daily,
-                          );
-                        },
-                        onTapMonthly: () {
-                          salesPresenter.getSales(
-                            homePresenter,
-                            periodType: PeriodType.monthly,
-                          );
-                        },
-                        onTapYearly: () {
-                          salesPresenter.getSales(
-                            homePresenter,
-                            periodType: PeriodType.yearly,
-                          );
-                        },
+                      Flexible(
+                        child: SelectPeriodItems(
+                          isLoading: loadingSnap.data,
+                          selectedPeriodType: salesPresenter.selectedPeriod,
+                          onTapHourly: () {
+                            salesPresenter.getSales(
+                              homePresenter,
+                              periodType: PeriodType.hourly,
+                            );
+                          },
+                          onTapDaily: () {
+                            salesPresenter.getSales(
+                              homePresenter,
+                              periodType: PeriodType.daily,
+                            );
+                          },
+                          onTapMonthly: () {
+                            salesPresenter.getSales(
+                              homePresenter,
+                              periodType: PeriodType.monthly,
+                            );
+                          },
+                          onTapYearly: () {
+                            salesPresenter.getSales(
+                              homePresenter,
+                              periodType: PeriodType.yearly,
+                            );
+                          },
+                        ),
                       ),
                     ],
                   ),
@@ -142,6 +144,9 @@ class _SalesPageState extends State<SalesPage>
                   final hourlyStatistics = salesPresenter.hourlyStatistics
                       ?.filteredSales(
                         enterprise: homePresenter.selectedEnterprise,
+                        filterDay: homePresenter.selectedDate.day,
+                        filterMonth: homePresenter.selectedDate.month,
+                        filterYear: homePresenter.selectedDate.year,
                       )
                       .map((e) => e.toViewModel())
                       .toList();
@@ -149,6 +154,8 @@ class _SalesPageState extends State<SalesPage>
                   final dailyStatistics = salesPresenter.dailyStatistics
                       ?.filteredSales(
                         enterprise: homePresenter.selectedEnterprise,
+                        filterMonth: homePresenter.selectedDate.month,
+                        filterYear: homePresenter.selectedDate.year,
                       )
                       .map((e) => e.toViewModel())
                       .toList();
