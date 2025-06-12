@@ -22,14 +22,16 @@ class SearchHelper {
     }
 
     switch (periodType) {
+      case PeriodType.hourly:
+        return _canSearchDaily(lastParams, selectedDate);
       case PeriodType.daily:
         return _canSearchDaily(lastParams, selectedDate);
+      case PeriodType.weekly:
+        return true;
       case PeriodType.monthly:
         return _canSearchMonthly(lastParams, selectedDate);
       case PeriodType.yearly:
         return _canSearchYearly(lastParams, selectedDate);
-      default:
-        return false;
     }
   }
 
@@ -37,6 +39,7 @@ class SearchHelper {
     required PeriodType selectedPeriodType,
     required EcEnterpriseViewModel? selectedEnterprise,
     T? lastGetStatisticsParams,
+    T? lastHourlyParams,
     T? lastDailyParams,
     T? lastMonthlyParams,
     T? lastYearlyParams,
@@ -49,6 +52,8 @@ class SearchHelper {
 
     if (lastGetStatisticsParams != null) {
       return changed(lastGetStatisticsParams);
+    } else if (selectedPeriodType == PeriodType.hourly) {
+      return changed(lastHourlyParams);
     } else if (selectedPeriodType == PeriodType.daily) {
       return changed(lastDailyParams);
     } else if (selectedPeriodType == PeriodType.monthly) {

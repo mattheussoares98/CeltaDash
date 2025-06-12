@@ -4,12 +4,20 @@ import '../../domain/usecases/usecases.dart';
 
 mixin LastGetSalesStatisticsParamsManager on GetxController {
   GetSaleStatisticsParams? _lastGetStatisticsParams;
-  GetSaleStatisticsParams? get lastGetStatisticsParams => _lastGetStatisticsParams;
-  set lastParams(GetSaleStatisticsParams? value) => _lastGetStatisticsParams = value;
+  GetSaleStatisticsParams? get lastGetStatisticsParams =>
+      _lastGetStatisticsParams;
+  set lastParams(GetSaleStatisticsParams? value) =>
+      _lastGetStatisticsParams = value;
+
+  GetSaleStatisticsParams? _lastGetHourlyParams;
+  GetSaleStatisticsParams? get lastGetHourlyParams => _lastGetHourlyParams;
+  set lastGetHourlyParams(GetSaleStatisticsParams? value) =>
+      _lastGetHourlyParams = value;
 
   GetSaleStatisticsParams? _lastGetDailyParams;
   GetSaleStatisticsParams? get lastGetDailyParams => _lastGetDailyParams;
-  set lastGetDailyParams(GetSaleStatisticsParams? value) => _lastGetDailyParams = value;
+  set lastGetDailyParams(GetSaleStatisticsParams? value) =>
+      _lastGetDailyParams = value;
 
   GetSaleStatisticsParams? _lastGetMonthlyParams;
   GetSaleStatisticsParams? get lastGetMonthlyParams => _lastGetMonthlyParams;

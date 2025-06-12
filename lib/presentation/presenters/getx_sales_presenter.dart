@@ -41,7 +41,9 @@ class GetxSalesPresenter extends GetxController
       }
 
       GetSaleStatisticsParams? lastGetSalesParams() {
-        if (selectedPeriod == PeriodType.daily) {
+        if (selectedPeriod == PeriodType.hourly) {
+          return lastGetHourlyParams;
+        } else if (selectedPeriod == PeriodType.daily) {
           return lastGetDailyParams;
         } else if (selectedPeriod == PeriodType.monthly) {
           return lastGetMonthlyParams;
@@ -61,6 +63,7 @@ class GetxSalesPresenter extends GetxController
       final changedTheEnterprise = SearchHelper.changedTheEnterprise(
         selectedPeriodType: selectedPeriod,
         selectedEnterprise: homePresenter.selectedEnterprise,
+        lastHourlyParams: lastGetHourlyParams,
         lastDailyParams: lastGetDailyParams,
         lastMonthlyParams: lastGetMonthlyParams,
         lastYearlyParams: lastGetYearlyParams,
@@ -74,24 +77,30 @@ class GetxSalesPresenter extends GetxController
         selectedPeriod == PeriodType.yearly
             ? homePresenter.selectedDate.year - 2
             : homePresenter.selectedDate.year,
-        selectedPeriod == PeriodType.daily
+        selectedPeriod == PeriodType.daily ||
+                selectedPeriod == PeriodType.hourly
             ? homePresenter.selectedDate.month
             : 1,
-        1,
+        selectedPeriod == PeriodType.hourly
+            ? homePresenter.selectedDate.day
+            : 1,
       );
       final endDate = DateTime(
         homePresenter.selectedDate.year,
         selectedPeriod == PeriodType.daily
             ? homePresenter.selectedDate.month + 1
             : 12,
-        selectedPeriod == PeriodType.daily ? 0 : 31,
+        selectedPeriod == PeriodType.hourly
+            ? homePresenter.selectedDate.day
+            : (selectedPeriod == PeriodType.daily ? 0 : 31),
       );
 
       final getSalesParams = GetSaleStatisticsParams(
         enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
         startDate: startDate,
-        endDate: endDate,
+        endDate: selectedPeriod == PeriodType.hourly ? startDate : endDate,
         groupByEnterprise: true,
+        groupByHour: selectedPeriod == PeriodType.hourly,
         groupByDay: selectedPeriod == PeriodType.daily,
         groupByMonth: selectedPeriod == PeriodType.monthly,
         groupByYear: selectedPeriod == PeriodType.yearly,
@@ -102,7 +111,10 @@ class GetxSalesPresenter extends GetxController
           .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
           .toList();
 
-      if (selectedPeriod == PeriodType.daily) {
+      if (selectedPeriod == PeriodType.hourly) {
+        hourlyStatistics = newSales;
+        lastGetHourlyParams = getSalesParams;
+      } else if (selectedPeriod == PeriodType.daily) {
         dailyStatistics = newSales;
         lastGetDailyParams = getSalesParams;
       } else if (selectedPeriod == PeriodType.monthly) {

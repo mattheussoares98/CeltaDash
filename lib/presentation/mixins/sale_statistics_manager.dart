@@ -8,9 +8,13 @@ mixin SaleStatisticsManager on GetxController {
   set saleStatistics(List<SaleStatisticViewModel>? value) =>
       _saleStatistics.value = value;
 
+  final _hourlyStatistics = Rx<List<SaleStatisticViewModel>?>(null);
+  List<SaleStatisticViewModel>? get hourlyStatistics => _hourlyStatistics.value;
+  set hourlyStatistics(List<SaleStatisticViewModel>? value) =>
+      _hourlyStatistics.value = value;
+
   final _dailyStatistics = Rx<List<SaleStatisticViewModel>?>(null);
-  List<SaleStatisticViewModel>? get dailyStatistics =>
-      _dailyStatistics.value;
+  List<SaleStatisticViewModel>? get dailyStatistics => _dailyStatistics.value;
   set dailyStatistics(List<SaleStatisticViewModel>? value) =>
       _dailyStatistics.value = value;
 
@@ -21,8 +25,7 @@ mixin SaleStatisticsManager on GetxController {
       _monthlyStatistics.value = value;
 
   final _yearlyStatistics = Rx<List<SaleStatisticViewModel>?>(null);
-  List<SaleStatisticViewModel>? get yearlyStatistics =>
-      _yearlyStatistics.value;
+  List<SaleStatisticViewModel>? get yearlyStatistics => _yearlyStatistics.value;
   set yearlyStatistics(List<SaleStatisticViewModel>? value) =>
       _yearlyStatistics.value = value;
 }

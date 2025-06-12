@@ -93,6 +93,173 @@ void main() {
         expect(sut.selectedPeriod, PeriodType.yearly);
       });
     });
+    group("PeriodType.hourly", () {
+      test("Should update sale movements correctly", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.hourly);
+
+        expect(
+          sut.hourlyStatistics,
+          saleStatisticsEntities
+              .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
+              .toList(),
+        );
+      });
+      test("Should call load sale movements with correct values", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.hourly);
+
+        final startDate = DateTime(
+          homePresenter.selectedDateMock.year,
+          homePresenter.selectedDateMock.month,
+          homePresenter.selectedDateMock.day,
+        );
+
+        final params = GetSaleStatisticsParams(
+          enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+          startDate: startDate,
+          endDate: startDate,
+          groupByEnterprise: true,
+          groupByHour: true,
+          groupByDay: false,
+          groupByMonth: false,
+          groupByYear: false,
+        );
+
+        verify(
+          () => loadSaleStatistics.get(params),
+        ).called(1);
+      });
+      test("Should not load again if dont force refresh", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.hourly);
+        await sut.getSales(homePresenter, periodType: PeriodType.hourly);
+
+        final startDate = DateTime(
+          homePresenter.selectedDateMock.year,
+          homePresenter.selectedDateMock.month,
+          homePresenter.selectedDateMock.day,
+        );
+
+        verify(
+          () => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
+              startDate: startDate,
+              endDate: startDate,
+              groupByEnterprise: true,
+              groupByHour: true,
+              groupByDay: false,
+              groupByMonth: false,
+              groupByYear: false,
+            ),
+          ),
+        ).called(1);
+      });
+      test("Should load again if change the enterprise", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.hourly);
+
+        final startDate = DateTime(
+          homePresenter.selectedDateMock.year,
+          homePresenter.selectedDateMock.month,
+          homePresenter.selectedDateMock.day,
+        );
+
+        verify(
+          () => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
+              startDate: startDate,
+              endDate: startDate,
+              groupByEnterprise: true,
+              groupByHour: true,
+              groupByDay: false,
+              groupByMonth: false,
+              groupByYear: false,
+            ),
+          ),
+        ).called(1);
+
+        ////////////////////CHANGING ENTERPRISE/////////////////////////////////
+        final newEnterprise =
+            EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
+                .toViewModel();
+        homePresenter.selectedEnterpriseMock = newEnterprise;
+        await sut.getSales(homePresenter, periodType: PeriodType.hourly);
+
+        verify(
+          () => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
+              enterpriseIds: [newEnterprise.id!.toInt()],
+              startDate: startDate,
+              endDate: startDate,
+              groupByEnterprise: true,
+              groupByHour: true,
+              groupByDay: false,
+              groupByMonth: false,
+              groupByYear: false,
+            ),
+          ),
+        ).called(1);
+      });
+      test("Should load again if force refresh", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.hourly);
+        await sut.getSales(
+          homePresenter,
+          periodType: PeriodType.hourly,
+          forceRefresh: true,
+        );
+
+        final startDate = DateTime(
+          homePresenter.selectedDateMock.year,
+          homePresenter.selectedDateMock.month,
+          homePresenter.selectedDateMock.day,
+        );
+
+        verify(
+          () => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
+              startDate: startDate,
+              endDate: startDate,
+              groupByEnterprise: true,
+              groupByHour: true,
+              groupByDay: false,
+              groupByMonth: false,
+              groupByYear: false,
+            ),
+          ),
+        ).called(2);
+      });
+      test("Should update lastGetSalesParams correctly", () async {
+        await sut.getSales(homePresenter, periodType: PeriodType.hourly);
+
+        final startDate = DateTime(
+          homePresenter.selectedDateMock.year,
+          homePresenter.selectedDateMock.month,
+          homePresenter.selectedDateMock.day,
+        );
+
+        expect(
+            sut.lastGetHourlyParams,
+            GetSaleStatisticsParams(
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
+              startDate: startDate,
+              endDate: startDate,
+              groupByEnterprise: true,
+              groupByHour: true,
+              groupByDay: false,
+              groupByMonth: false,
+              groupByYear: false,
+            ));
+      });
+    });
+
     group("PeriodType.daily", () {
       test("Should update sale movements correctly", () async {
         await sut.getSales(homePresenter);
@@ -128,6 +295,7 @@ void main() {
               startDate: startDate,
               endDate: endDate,
               groupByEnterprise: true,
+              groupByHour: false,
               groupByDay: true,
               groupByMonth: false,
               groupByYear: false,
@@ -160,6 +328,7 @@ void main() {
               startDate: startDate,
               endDate: endDate,
               groupByEnterprise: true,
+              groupByHour: false,
               groupByDay: true,
               groupByMonth: false,
               groupByYear: false,
@@ -189,6 +358,7 @@ void main() {
               startDate: startDate,
               endDate: endDate,
               groupByEnterprise: true,
+              groupByHour: false,
               groupByDay: true,
               groupByMonth: false,
               groupByYear: false,
@@ -210,6 +380,7 @@ void main() {
               startDate: startDate,
               endDate: endDate,
               groupByEnterprise: true,
+              groupByHour: false,
               groupByDay: true,
               groupByMonth: false,
               groupByYear: false,
@@ -246,6 +417,7 @@ void main() {
               startDate: startDate,
               endDate: endDate,
               groupByEnterprise: true,
+              groupByHour: false,
               groupByDay: true,
               groupByMonth: false,
               groupByYear: false,
@@ -277,6 +449,7 @@ void main() {
               startDate: startDate,
               endDate: endDate,
               groupByEnterprise: true,
+              groupByHour: false,
               groupByDay: true,
               groupByMonth: false,
               groupByYear: false,
@@ -309,6 +482,7 @@ void main() {
               startDate: startDate,
               endDate: endDate,
               groupByEnterprise: true,
+              groupByHour: false,
               groupByDay: false,
               groupByMonth: true,
               groupByYear: false,
@@ -332,6 +506,7 @@ void main() {
               startDate: startDate,
               endDate: endDate,
               groupByEnterprise: true,
+              groupByHour: false,
               groupByDay: false,
               groupByMonth: true,
               groupByYear: false,
@@ -354,6 +529,7 @@ void main() {
               startDate: startDate,
               endDate: endDate,
               groupByEnterprise: true,
+              groupByHour: false,
               groupByDay: false,
               groupByMonth: true,
               groupByYear: false,
@@ -375,6 +551,7 @@ void main() {
               startDate: startDate,
               endDate: endDate,
               groupByEnterprise: true,
+              groupByHour: false,
               groupByDay: false,
               groupByMonth: true,
               groupByYear: false,
@@ -402,6 +579,7 @@ void main() {
               startDate: startDate,
               endDate: endDate,
               groupByEnterprise: true,
+              groupByHour: false,
               groupByDay: false,
               groupByMonth: true,
               groupByYear: false,
@@ -424,6 +602,7 @@ void main() {
               startDate: startDate,
               endDate: endDate,
               groupByEnterprise: true,
+              groupByHour: false,
               groupByDay: false,
               groupByMonth: true,
               groupByYear: false,
@@ -458,6 +637,7 @@ void main() {
               groupByEnterprise: true,
               groupByYear: true,
               groupByMonth: false,
+              groupByHour: false,
               groupByDay: false,
             ),
           ),
@@ -481,6 +661,7 @@ void main() {
               groupByEnterprise: true,
               groupByYear: true,
               groupByMonth: false,
+              groupByHour: false,
               groupByDay: false,
             ),
           ),
@@ -508,6 +689,7 @@ void main() {
               groupByEnterprise: true,
               groupByYear: true,
               groupByMonth: false,
+              groupByHour: false,
               groupByDay: false,
             ),
           ),
@@ -530,6 +712,7 @@ void main() {
               groupByEnterprise: true,
               groupByYear: true,
               groupByMonth: false,
+              groupByHour: false,
               groupByDay: false,
             ));
       });
@@ -551,6 +734,7 @@ void main() {
               groupByEnterprise: true,
               groupByYear: true,
               groupByMonth: false,
+              groupByHour: false,
               groupByDay: false,
             ),
           ),
@@ -572,6 +756,7 @@ void main() {
               groupByEnterprise: true,
               groupByYear: true,
               groupByMonth: false,
+              groupByHour: false,
               groupByDay: false,
             ),
           ),
