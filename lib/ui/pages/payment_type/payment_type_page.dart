@@ -97,7 +97,6 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                   child: Obx(() {
                     final dailyStatistics = paymentTypePresenter.dailyStatistics
                         ?.filteredSales(
-                          //TODO change to statistics
                           enterprise: homePresenter.selectedEnterprise,
                           filterDay: homePresenter.selectedDate.day,
                           filterMonth: homePresenter.selectedDate.month,
