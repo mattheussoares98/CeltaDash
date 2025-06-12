@@ -112,6 +112,7 @@ class ChangeDatesButtons extends StatelessWidget {
                     firstDay: firstDay,
                     secondDay: secondDay,
                     homePresenter: homePresenter,
+                    forceRefresh: true,
                   );
                 },
                 icon: Icon(Icons.refresh),
