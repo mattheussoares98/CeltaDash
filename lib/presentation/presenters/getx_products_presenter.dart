@@ -29,6 +29,11 @@ class GetxProductsPresenter extends GetxController
     PeriodType? periodType,
     bool? forceRefresh,
   }) async {
+    if (isLoadingValue == true) {
+      isLoading = false;
+      isLoading = true;
+      return;
+    }
     isLoading = true;
     mainError = null;
     try {
