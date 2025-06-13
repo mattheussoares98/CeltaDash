@@ -78,14 +78,17 @@ class _ResumePageState extends State<ResumePage>
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
                 child: Obx(() {
-                  final sales = resumePresenter.saleStatistics
+                  final sales = resumePresenter.saleStatistics;
+                  final salesByEnterprise = resumePresenter.saleStatistics
                       ?.filteredSales(
                         enterprise: homePresenter.selectedEnterprise,
                       )
                       .map((e) => e.toViewModel())
                       .toList();
 
-                  if (sales == null || sales.isEmpty) {
+                  if (sales == null ||
+                      sales.isEmpty ||
+                      salesByEnterprise == null) {
                     return EmptySales(isLoading: loadingSnap.data == true);
                   }
                   return Column(
@@ -95,10 +98,10 @@ class _ResumePageState extends State<ResumePage>
                         children: [
                           DailyStatistics(
                             scrollController: scrollController,
-                            saleStatistics: sales,
+                            saleStatistics: salesByEnterprise,
                           ),
                           SizedBox(height: 8),
-                          MonthlyAnalysis(sales: sales),
+                          MonthlyAnalysis(sales: salesByEnterprise),
                           // const SizedBox(height: 8),
                           // SalesInformations(
                           //   scrollController: scrollController,
