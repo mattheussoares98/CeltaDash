@@ -41,7 +41,6 @@ class _CanceledSaleDetailsPageState extends State<CanceledSaleDetailsPage>
   @override
   Widget build(BuildContext context) {
     final canceledSalesPresenter = Get.find<CanceledSalesPresenter>();
-    final homePresenter = Get.find<HomePresenter>();
 
     mainErrorSubscription?.cancel();
     mainErrorSubscription = handleMainError(
@@ -70,7 +69,7 @@ class _CanceledSaleDetailsPageState extends State<CanceledSaleDetailsPage>
                     return Center(
                       child: ElevatedButton(
                         onPressed: () {
-                          canceledSalesPresenter.getSales(homePresenter);
+                          canceledSalesPresenter.getSelectedSaleDetails();
                         },
                         child: Text(R.string.searchAgain),
                       ),
