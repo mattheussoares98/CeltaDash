@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -18,6 +20,7 @@ class ProductsPage extends StatefulWidget {
 
 class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
   StreamSubscription? mainErrorSubscription;
+  final filterProductController = TextEditingController();
 
   List<List<PersonalizedTableCell>> constructRows(
     List<SaleStatisticViewModel> saleStatistics,
@@ -54,6 +57,7 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
   void dispose() {
     super.dispose();
     mainErrorSubscription?.cancel();
+    filterProductController.dispose();
   }
 
   @override
@@ -95,104 +99,140 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                 );
               },
             ),
-            body: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SelectPeriodItems(
-                    isLoading: loadingSnap.data,
-                    selectedPeriodType: productsPresenter.selectedPeriod,
-                    onTapDaily: () {
-                      productsPresenter.getSales(
-                        homePresenter,
-                        periodType: PeriodType.daily,
-                      );
-                    },
-                    onTapMonthly: () {
-                      productsPresenter.getSales(
-                        homePresenter,
-                        periodType: PeriodType.monthly,
-                      );
-                    },
-                  ),
-                ),
-                Expanded(
-                  child: Obx(() {
-                    final dailyStatistics = productsPresenter.dailyStatistics
-                        ?.filteredSales(
-                          enterprise: homePresenter.selectedEnterprise,
-                          filterMonth: homePresenter.selectedDate.month,
-                          filterDay: productsPresenter.selectedPeriod ==
-                                  PeriodType.daily
-                              ? homePresenter.selectedDate.day
-                              : null,
-                          filterYear: homePresenter.selectedDate.year,
-                        )
-                        .map((e) => e.toViewModel())
-                        .toList();
+            body: Obx(() {
+              final dailyStatistics = productsPresenter.dailyStatistics
+                  ?.filteredSales(
+                    enterprise: homePresenter.selectedEnterprise,
+                    filterMonth: homePresenter.selectedDate.month,
+                    filterDay:
+                        productsPresenter.selectedPeriod == PeriodType.daily
+                            ? homePresenter.selectedDate.day
+                            : null,
+                    filterYear: homePresenter.selectedDate.year,
+                  )
+                  .map((e) => e.toViewModel())
+                  .toList();
 
-                    final monthlyStatistics = productsPresenter.monthlyStatistics
-                        ?.filteredSales(
-                          enterprise: homePresenter.selectedEnterprise,
-                          filterMonth: homePresenter.selectedDate.month,
-                          filterYear: homePresenter.selectedDate.year,
-                        )
-                        .map((e) => e.toViewModel())
-                        .toList();
+              final monthlyStatistics = productsPresenter.monthlyStatistics
+                  ?.filteredSales(
+                    enterprise: homePresenter.selectedEnterprise,
+                    filterMonth: homePresenter.selectedDate.month,
+                    filterYear: homePresenter.selectedDate.year,
+                  )
+                  .map((e) => e.toViewModel())
+                  .toList();
 
-                    final sales = productsPresenter.selectedPeriod ==
-                            PeriodType.daily
-                        ? dailyStatistics
-                        : monthlyStatistics;
+              final sales =
+                  (productsPresenter.selectedPeriod == PeriodType.daily
+                          ? dailyStatistics
+                          : monthlyStatistics)
+                      ?.where((e) {
+                return e.Product?.toLowerCase()
+                        .contains(filterProductController.text.toLowerCase()) ??
+                    false;
+              }).toList();
 
-                    if (sales == null || sales.isEmpty) {
-                      return EmptySales(isLoading: loadingSnap.data == true);
-                    }
-
-                    return Column(
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        TableItem(
-                          titleMinHeight: 43,
-                          tableColumnWidth: {
-                            0: FixedColumnWidth(
-                                MediaQuery.of(context).size.width * 0.1),
-                            2: FixedColumnWidth(
-                                MediaQuery.of(context).size.width * 0.22),
-                            3: FixedColumnWidth(
-                                MediaQuery.of(context).size.width * 0.13),
-                            4: FixedColumnWidth(
-                                MediaQuery.of(context).size.width * 0.16),
+                        SelectPeriodItems(
+                          isLoading: loadingSnap.data,
+                          selectedPeriodType: productsPresenter.selectedPeriod,
+                          onTapDaily: () {
+                            productsPresenter.getSales(
+                              homePresenter,
+                              periodType: PeriodType.daily,
+                            );
                           },
-                          columnIndexToCompareAndDetachBetterAndWorstValue: 2,
-                          columnsIndexToSum: [2, 3],
-                          // indexToSort: 0,
-                          titles: [
-                            PersonalizedTableCell(
-                              value: R.string.positionAbbreviated.toUpperCase(),
-                            ),
-                            PersonalizedTableCell(
-                                value: R.string.product.toUpperCase()),
-                            PersonalizedTableCell(
-                                value: R.string.sales.toUpperCase()),
-                            PersonalizedTableCell(
-                              value: R.string.quantityAbbreviated.toUpperCase(),
-                            ),
-                            PersonalizedTableCell(
-                                value: R.string.averagePrice.toUpperCase()),
-                          ],
-                          rowValues: constructRows(
-                              productsPresenter.selectedPeriod ==
-                                      PeriodType.daily
-                                  ? dailyStatistics!
-                                  : monthlyStatistics!),
+                          onTapMonthly: () {
+                            productsPresenter.getSales(
+                              homePresenter,
+                              periodType: PeriodType.monthly,
+                            );
+                          },
                         ),
+                        if (sales != null)
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 8),
+                              child: SizedBox(
+                                height: 40,
+                                child: TextFormField(
+                                  controller: filterProductController,
+                                  onChanged: (_) {
+                                    setState(() {});
+                                  },
+                                  maxLength: 50,
+                                  decoration: FormFieldDecoration.decoration(
+                                    context: context,
+                                    labelText: R.string.filter,
+                                    hintText: R.string.filter,
+                                    suffixIcon: Icon(
+                                      Platform.isIOS
+                                          ? CupertinoIcons.search
+                                          : Icons.search,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                       ],
-                    );
-                  }),
-                ),
-              ],
-            ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Builder(builder: (context) {
+                      if (sales == null || sales.isEmpty) {
+                        return EmptySales(isLoading: loadingSnap.data == true);
+                      }
+
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TableItem(
+                            titleMinHeight: 43,
+                            tableColumnWidth: {
+                              0: FixedColumnWidth(
+                                  MediaQuery.of(context).size.width * 0.1),
+                              2: FixedColumnWidth(
+                                  MediaQuery.of(context).size.width * 0.22),
+                              3: FixedColumnWidth(
+                                  MediaQuery.of(context).size.width * 0.13),
+                              4: FixedColumnWidth(
+                                  MediaQuery.of(context).size.width * 0.16),
+                            },
+                            columnIndexToCompareAndDetachBetterAndWorstValue: 2,
+                            columnsIndexToSum: [2, 3],
+                            // indexToSort: 0,
+                            titles: [
+                              PersonalizedTableCell(
+                                value:
+                                    R.string.positionAbbreviated.toUpperCase(),
+                              ),
+                              PersonalizedTableCell(
+                                  value: R.string.product.toUpperCase()),
+                              PersonalizedTableCell(
+                                  value: R.string.sales.toUpperCase()),
+                              PersonalizedTableCell(
+                                value:
+                                    R.string.quantityAbbreviated.toUpperCase(),
+                              ),
+                              PersonalizedTableCell(
+                                  value: R.string.averagePrice.toUpperCase()),
+                            ],
+                            rowValues: constructRows(sales),
+                          ),
+                        ],
+                      );
+                    }),
+                  ),
+                ],
+              );
+            }),
           );
         });
   }

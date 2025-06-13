@@ -70,6 +70,7 @@ class PtBr implements Translation {
   String get enterprise => "Empresa";
   String get enterpriseName => "Nome da empresa";
   String get enterprises => "Empresas";
+  String get filter => "Filtrar";
   String get finalization => "Finalizadora";
   String get finalizations => "Finalizadoras";
   String get firstDaySales => "Vendas do primeiro dia";

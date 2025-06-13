@@ -63,9 +63,10 @@ abstract class Translation {
   String get enterprise;
   String get enterpriseName;
   String get enterprises;
-  String get firstDaySales;
+  String get filter;
   String get finalization;
   String get finalizations;
+  String get firstDaySales;
   String get goalHistory;
   String get grossMargin;
   String get grossProfit;
