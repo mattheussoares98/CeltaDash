@@ -21,6 +21,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
   StreamSubscription? mainErrorSubscription;
+  bool loadedEnterprises = false;
 
   @override
   void initState() {
@@ -41,6 +42,10 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
             snackBarMessage(context, error, Colors.red);
           },
         );
+
+        setState(() {
+          loadedEnterprises = true;
+        });
 
         homePresenter.reloadSales(
           resumePresenter,
@@ -103,7 +108,18 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
       stream: homePresenter.currentPageIndexStream,
       builder: (context, currentIndex) {
         return Scaffold(
-          body: pages[currentIndex.data ?? 0],
+          body: Stack(
+            children: [
+              pages[currentIndex.data ?? 0],
+              if (!loadedEnterprises)
+                Container(
+                  height: double.infinity,
+                  width: double.infinity,
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  child: Center(child: CircularProgressIndicator()),
+                ),
+            ],
+          ),
           bottomNavigationBar: BottomNavBar(
             currentIndex: currentIndex.data ?? 0,
             onTap: homePresenter.updateSelectedIndex,
