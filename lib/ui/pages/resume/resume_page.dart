@@ -78,57 +78,51 @@ class _ResumePageState extends State<ResumePage>
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
                 child: Obx(() {
-                  final saleStatistics = resumePresenter.saleStatistics;
-                  final salesByEnterprise = saleStatistics
+                  final sales = resumePresenter.saleStatistics
                       ?.filteredSales(
                         enterprise: homePresenter.selectedEnterprise,
                       )
                       .map((e) => e.toViewModel())
                       .toList();
 
-                  if (saleStatistics == null) {
+                  if (sales == null || sales.isEmpty) {
                     return EmptySales(isLoading: loadingSnap.data == true);
                   }
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      if (salesByEnterprise == null ||
-                          salesByEnterprise.isEmpty)
-                        EmptySales(isLoading: false),
-                      if (salesByEnterprise != null &&
-                          salesByEnterprise.isNotEmpty)
-                        Column(
-                          children: [
-                            DailyStatistics(
-                              scrollController: scrollController,
-                              saleStatistics: saleStatistics,
-                            ),
-                            SizedBox(height: 8),
-                            MonthlyAnalysis(saleStatistics: saleStatistics),
-                            // const SizedBox(height: 8),
-                            // SalesInformations(
-                            //   scrollController: scrollController,
-                            //   totalSales: saleStatistics.sumLiquidValue(
-                            //     enterprise: homePresenter.selectedEnterprise,
-                            //     filterYear: homePresenter.selectedDate.year,
-                            //     filterMonth: homePresenter.selectedDate.month,
-                            //   ),
-                            //   title: R.string.salesOfTheMonth,
-                            // ),
-                            // const SizedBox(height: 8),
-                            // DefaultNavigateButton(
-                            //   onTap: resumePresenter.goToProfitabillityPage,
-                            //   title: R.string.profitability,
-                            //
-                            // const SizedBox(height: 8),
-                            // DailyAnalysis(
-                            //   saleStatistics: saleStatistics,
-                            //   scrollController: scrollController,
-                            // ),
-                            SizedBox(height: 8),
-                          ],
-                        ),
-                      GroupOfStores(saleStatistics: saleStatistics),
+                      Column(
+                        children: [
+                          DailyStatistics(
+                            scrollController: scrollController,
+                            saleStatistics: sales,
+                          ),
+                          SizedBox(height: 8),
+                          MonthlyAnalysis(sales: sales),
+                          // const SizedBox(height: 8),
+                          // SalesInformations(
+                          //   scrollController: scrollController,
+                          //   totalSales: saleStatistics.sumLiquidValue(
+                          //     enterprise: homePresenter.selectedEnterprise,
+                          //     filterYear: homePresenter.selectedDate.year,
+                          //     filterMonth: homePresenter.selectedDate.month,
+                          //   ),
+                          //   title: R.string.salesOfTheMonth,
+                          // ),
+                          // const SizedBox(height: 8),
+                          // DefaultNavigateButton(
+                          //   onTap: resumePresenter.goToProfitabillityPage,
+                          //   title: R.string.profitability,
+                          //
+                          // const SizedBox(height: 8),
+                          // DailyAnalysis(
+                          //   saleStatistics: saleStatistics,
+                          //   scrollController: scrollController,
+                          // ),
+                          SizedBox(height: 8),
+                        ],
+                      ),
+                      GroupOfStores(sales: sales),
                       SizedBox(height: 15),
                     ],
                   );

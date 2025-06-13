@@ -30,23 +30,26 @@ class DailyStatistics extends StatelessWidget {
         filterDay: homePresenter.selectedDate.day,
       ),
       bottomChildren: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Expanded(
-              child: DefaultButton(
-                onTap: resumePresenter.goToPaymentsTypePage,
-                title: R.string.payments,
+        Padding(
+          padding: const EdgeInsets.only(top: 4),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: DefaultButton(
+                  onTap: resumePresenter.goToPaymentsTypePage,
+                  title: R.string.payments,
+                ),
               ),
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: DefaultButton(
-                onTap: resumePresenter.goToDepartmentsPage,
-                title: R.string.departments,
+              const SizedBox(width: 8),
+              Expanded(
+                child: DefaultButton(
+                  onTap: resumePresenter.goToDepartmentsPage,
+                  title: R.string.departments,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -6,16 +6,16 @@ import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
 class GroupOfStores extends StatelessWidget {
-  final List<SaleStatisticViewModel> saleStatistics;
+  final List<SaleStatisticViewModel> sales;
   const GroupOfStores({
     super.key,
-    required this.saleStatistics,
+    required this.sales,
   });
 
   List<MapEntry<String, double>> getSalesByEnterprise(
     HomePresenter homePresenter,
   ) {
-    return saleStatistics
+    return sales
         .fold(<String, List<SaleStatisticViewModel>>{}, (p, e) {
           final key =
               "${e.EnterprisePersonalizedCode}-${e.EnterpriseFantasyName}";
