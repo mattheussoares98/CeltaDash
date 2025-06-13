@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -10,6 +8,7 @@ import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 import '../../mixins/mixins.dart';
 import '../pages.dart';
+import 'components/components.dart';
 
 class ProductsPage extends StatefulWidget {
   const ProductsPage({super.key});
@@ -21,37 +20,6 @@ class ProductsPage extends StatefulWidget {
 class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
   StreamSubscription? mainErrorSubscription;
   final filterProductController = TextEditingController();
-
-  List<List<PersonalizedTableCell>> constructRows(
-    List<SaleStatisticViewModel> saleStatistics,
-  ) {
-    final sorted = [...saleStatistics]..sort((a, b) =>
-        (b.LiquidValue?.toDouble() ?? 0)
-            .compareTo(a.LiquidValue?.toDouble() ?? 0));
-
-    List<List<PersonalizedTableCell>> sales = [];
-
-    for (var index = 0; index < saleStatistics.length; index++) {
-      final sale = sorted[index];
-      final parts = sale.Product?.split('-');
-      final productName =
-          parts?.length != null && parts!.length > 2 ? parts[2] : '';
-
-      final ticketAverage = (sale.LiquidValue?.toDouble() ?? 0) /
-          (sale.QuantityOfProducts?.toDouble() ?? 1);
-
-      sales.add([
-        PersonalizedTableCell(value: index + 1),
-        PersonalizedTableCell(value: productName),
-        PersonalizedTableCell(
-            value: sale.LiquidValue?.toDouble(), isMoney: true),
-        PersonalizedTableCell(value: sale.QuantityOfProducts?.toDouble()),
-        PersonalizedTableCell(value: ticketAverage, isMoney: true),
-      ]);
-    }
-
-    return sales;
-  }
 
   @override
   void dispose() {
@@ -157,78 +125,19 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                         ),
                         if (sales != null)
                           Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 8),
-                              child: SizedBox(
-                                height: 40,
-                                child: TextFormField(
-                                  controller: filterProductController,
-                                  onChanged: (_) {
-                                    setState(() {});
-                                  },
-                                  maxLength: 50,
-                                  decoration: FormFieldDecoration.decoration(
-                                    context: context,
-                                    labelText: R.string.filter,
-                                    hintText: R.string.filter,
-                                    suffixIcon: Icon(
-                                      Platform.isIOS
-                                          ? CupertinoIcons.search
-                                          : Icons.search,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                            child: FilterProductField(
+                              filterProductController: filterProductController,
+                              setState: setState,
                             ),
                           ),
                       ],
                     ),
                   ),
                   Expanded(
-                    child: Builder(builder: (context) {
-                      if (sales == null || sales.isEmpty) {
-                        return EmptySales(isLoading: loadingSnap.data == true);
-                      }
-
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          TableItem(
-                            titleMinHeight: 43,
-                            tableColumnWidth: {
-                              0: FixedColumnWidth(
-                                  MediaQuery.of(context).size.width * 0.1),
-                              2: FixedColumnWidth(
-                                  MediaQuery.of(context).size.width * 0.22),
-                              3: FixedColumnWidth(
-                                  MediaQuery.of(context).size.width * 0.13),
-                              4: FixedColumnWidth(
-                                  MediaQuery.of(context).size.width * 0.16),
-                            },
-                            columnIndexToCompareAndDetachBetterAndWorstValue: 2,
-                            columnsIndexToSum: [2, 3],
-                            // indexToSort: 0,
-                            titles: [
-                              PersonalizedTableCell(
-                                value:
-                                    R.string.positionAbbreviated.toUpperCase(),
-                              ),
-                              PersonalizedTableCell(
-                                  value: R.string.product.toUpperCase()),
-                              PersonalizedTableCell(
-                                  value: R.string.sales.toUpperCase()),
-                              PersonalizedTableCell(
-                                value:
-                                    R.string.quantityAbbreviated.toUpperCase(),
-                              ),
-                              PersonalizedTableCell(
-                                  value: R.string.averagePrice.toUpperCase()),
-                            ],
-                            rowValues: constructRows(sales),
-                          ),
-                        ],
-                      );
-                    }),
+                    child: ProductsTable(
+                      sales: sales,
+                      isLoading: loadingSnap.data == true,
+                    ),
                   ),
                 ],
               );
