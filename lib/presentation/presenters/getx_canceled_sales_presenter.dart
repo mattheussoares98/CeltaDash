@@ -142,7 +142,6 @@ class GetxCanceledSalesPresenter extends GetxController
           endDate: date,
           mountCustomer: true,
           mountFiscalNoteType: true,
-          mountPaymentFinalizations: true,
           mountProducts: true,
           mountSeller: true,
         ),
