@@ -8,7 +8,8 @@ import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
 class GetxResumePresenter extends GetxController
-    with ErrorHandling,
+    with
+        ErrorHandling,
         SaleStatisticsManager,
         UIErrorManager,
         LoadingManager,
@@ -73,10 +74,6 @@ class GetxResumePresenter extends GetxController
     try {
       isLoading = true;
       mainError = null;
-
-      if (periodType != null) {
-        selectedPeriod = periodType;
-      }
 
       final canSearchAgain = SearchHelper.canSearch(
         forceRefresh: forceRefresh,
