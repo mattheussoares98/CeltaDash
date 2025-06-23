@@ -273,5 +273,58 @@ void main() {
             ),
           )).called(2);
     });
+
+    group("Get compare days statistics", () {
+      test("Should call current day get sales with correct values", () async {
+        await sut.getSales(homePresenter);
+
+        verify(() => loadSaleStatistics.get(
+              GetSaleStatisticsParams(
+                startDate: homePresenter.selectedDateMock,
+                endDate: homePresenter.selectedDateMock,
+                groupByHour: true,
+                groupByEnterprise: true,
+                enterpriseIds: [
+                  homePresenter.selectedEnterpriseMock!.id!.toInt()
+                ],
+              ),
+            )).called(1);
+      });
+      test("Should call previous month day get sales with correct values",
+          () async {
+        await sut.getSales(homePresenter);
+
+        verify(() => loadSaleStatistics.get(
+              GetSaleStatisticsParams(
+                startDate: DateTime(
+                  homePresenter.selectedDateMock.year,
+                  homePresenter.selectedDateMock.month - 1,
+                  homePresenter.selectedDateMock.day,
+                ),
+                endDate: DateTime(
+                  homePresenter.selectedDateMock.year,
+                  homePresenter.selectedDateMock.month - 1,
+                  homePresenter.selectedDateMock.day,
+                ),
+                groupByHour: true,
+                groupByEnterprise: true,
+                enterpriseIds: [
+                  homePresenter.selectedEnterpriseMock!.id!.toInt()
+                ],
+              ),
+            )).called(1);
+      });
+
+      test("Should update compare sales statistics correctly", () async {
+        await sut.getSales(homePresenter);
+
+        expect(sut.compareDaysStatistics, [
+          ...saleStatisticsEntities
+              .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel()),
+          ...saleStatisticsEntities
+              .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel()),
+        ]);
+      });
+    });
   });
 }

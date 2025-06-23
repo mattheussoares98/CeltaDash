@@ -82,6 +82,8 @@ class GetxResumePresenter extends GetxController
         periodType: PeriodType.monthly,
       );
 
+      await _getCompareDaysStatistics(homePresenter);
+
       if (!canSearchAgain) {
         return;
       }
@@ -116,4 +118,50 @@ class GetxResumePresenter extends GetxController
       isLoading = false;
     }
   }
+
+  Future<void> _getCompareDaysStatistics(HomePresenter homePresenter) async {
+    _compareDaysStatistics.value?.clear();
+
+    final todaySaleStatistics = await loadSaleStatistics.get(
+      GetSaleStatisticsParams(
+        startDate: homePresenter.selectedDate,
+        endDate: homePresenter.selectedDate,
+        groupByEnterprise: true,
+        groupByHour: true,
+        enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+      ),
+    );
+
+    final lastMonthSaleStatistics = await loadSaleStatistics.get(
+      GetSaleStatisticsParams(
+        startDate: DateTime(
+          homePresenter.selectedDate.year,
+          homePresenter.selectedDate.month - 1,
+          homePresenter.selectedDate.day,
+        ),
+        endDate: DateTime(
+          homePresenter.selectedDate.year,
+          homePresenter.selectedDate.month - 1,
+          homePresenter.selectedDate.day,
+        ),
+        groupByEnterprise: true,
+        groupByHour: true,
+        enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+      ),
+    );
+
+    _compareDaysStatistics.value = [
+      ...todaySaleStatistics
+          .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel()),
+      ...lastMonthSaleStatistics
+          .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
+    ];
+  }
+
+  final _compareDaysStatistics = Rx<List<SaleStatisticViewModel>?>(null);
+  @override
+  List<SaleStatisticViewModel>? get compareDaysStatistics =>
+      _compareDaysStatistics.value;
+  set compareDaysStatistics(List<SaleStatisticViewModel>? value) =>
+      _compareDaysStatistics.value = value;
 }
