@@ -143,6 +143,7 @@ class PtBr implements Translation {
   String get totalSales => "Total de vendas";
   String get totalSalesGroup => "Total de vendas do grupo";
   String get trendSales => "Tendência de vendas";
+  String get until => "Até";
   String get url => "URL";
   String get user => "Usuário";
   String get wait => "Aguarde...";

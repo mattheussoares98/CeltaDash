@@ -1,7 +1,9 @@
-import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
+import '../../../../ui/helpers/helpers.dart';
 import '../../../components/components.dart';
 import '../../pages.dart';
 import 'components.dart';
@@ -19,6 +21,73 @@ class DailyStatistics extends StatelessWidget {
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
     ResumePresenter resumePresenter = Get.find();
+
+    if (kDebugMode) {
+      //TODO remove this
+      final now = DateTime.now();
+
+      final selectedDayStatistics = resumePresenter.compareDaysStatistics
+          ?.filteredSales(
+            enterprise: homePresenter.selectedEnterprise,
+            filterYear: homePresenter.selectedDate.year,
+            filterMonth: homePresenter.selectedDate.month,
+            filterDay: homePresenter.selectedDate.day,
+          )
+          .where((e) {
+            if (e.Date == null) {
+              return false;
+            }
+
+            return e.Hour! <= now.hour && e.Date!.year == now.year;
+          })
+          .map((e) => e.toViewModel())
+          .toList();
+
+      final previousMonthStatistics = resumePresenter.compareDaysStatistics
+          ?.filteredSales(
+            enterprise: homePresenter.selectedEnterprise,
+            filterYear: homePresenter.selectedDate.year,
+          )
+          .where((e) {
+            if (e.Date == null) {
+              return false;
+            }
+
+            return e.Hour! <= now.hour &&
+                e.Date?.month != now.month &&
+                e.Date!.year == now.year;
+          })
+          .map((e) => e.toViewModel())
+          .toList();
+
+      return Container(
+        decoration: ContainerDecoration.decoration,
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+        child: ChartPie(
+          showTotalAmount: false,
+          pieParameters: [
+            PieParameter(
+              title: "${DateFormat("dd/MM").format(
+                homePresenter.selectedDate,
+              )} ${R.string.until.toLowerCase()} ${now.hour + 1}h",
+              color: Colors.amber,
+              subtitle: "subtitle",
+              value: selectedDayStatistics?.sumLiquidValue() ?? 0,
+            ),
+            PieParameter(
+              title: "${DateFormat("dd/MM").format(DateTime(
+                homePresenter.selectedDate.year,
+                homePresenter.selectedDate.month - 1,
+                homePresenter.selectedDate.day,
+              ))} ${R.string.until.toLowerCase()} ${now.hour + 1}h",
+              color: Colors.green,
+              subtitle: "subtitle",
+              value: previousMonthStatistics?.sumLiquidValue() ?? 0,
+            ),
+          ],
+        ),
+      );
+    }
 
     return SalesInformations(
       scrollController: scrollController,

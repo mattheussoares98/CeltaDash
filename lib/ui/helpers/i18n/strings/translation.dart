@@ -135,6 +135,7 @@ abstract class Translation {
   String get totalSales;
   String get totalSalesGroup;
   String get trendSales;
+  String get until;
   String get url;
   String get user;
   String get wait;

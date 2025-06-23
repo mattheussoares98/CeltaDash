@@ -60,7 +60,7 @@ class _ChartPieState extends State<ChartPie> {
       final pieParameter = widget.pieParameters[i];
       sections.add(
         PieChartSectionData(
-          color: colors[i],
+          color: pieParameter.color ?? colors[i],
           value: pieParameter.value,
           title:
               "${(pieParameter.value / totalOfAllPieParameters * 100).toString().toBrazilianNumber(0)}%",
@@ -85,6 +85,7 @@ class _ChartPieState extends State<ChartPie> {
         _Indicator(
           title: pieParameter.title,
           value: pieParameter.value,
+          subtitle: pieParameter.subtitle,
           padding: widget.paddingItems,
           color: colors[i],
           boxShape: widget.itemsShape!,
@@ -184,6 +185,7 @@ class _ChartPieState extends State<ChartPie> {
 class _Indicator extends StatelessWidget {
   final Color color;
   final String title;
+  final String? subtitle;
   final BoxShape? boxShape;
   final EdgeInsetsGeometry? padding;
   final void Function() changeSelectedIndex;
@@ -194,6 +196,7 @@ class _Indicator extends StatelessWidget {
   const _Indicator({
     required this.color,
     required this.title,
+    required this.subtitle,
     required this.boxShape,
     required this.padding,
     required this.changeSelectedIndex,
@@ -231,6 +234,14 @@ class _Indicator extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                     children: [
+                      if (subtitle != null)
+                        TextSpan(
+                          text: "\n$subtitle",
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                        ),
                       TextSpan(
                         text:
                             "\n${value.toString().toBrazilianNumber().addBrazilianCoin()}",
@@ -253,6 +264,13 @@ class _Indicator extends StatelessWidget {
 class PieParameter {
   final double value;
   final String title;
+  final String? subtitle;
+  final Color? color;
 
-  PieParameter({required this.value, required this.title});
+  PieParameter({
+    required this.value,
+    required this.title,
+    this.subtitle,
+    this.color,
+  });
 }
