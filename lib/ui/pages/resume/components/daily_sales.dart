@@ -125,6 +125,7 @@ class DailyStatistics extends StatelessWidget {
                 previousMonthStatistics ?? [],
                 homePresenter,
               ),
+              showSubtitleOnlyOnTap: true,
               value: previousMonthStatistics?.sumLiquidValue() ?? 1,
             ),
           ],

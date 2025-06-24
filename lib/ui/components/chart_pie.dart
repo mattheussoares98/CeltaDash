@@ -63,10 +63,7 @@ class _ChartPieState extends State<ChartPie> {
 
   List<PieChartSectionData> getSections(double chartWidth) {
     double total = widget.pieParameters.fold<double>(0, (p, e) => p + e.value);
-
-    if (total == 0) {
-      total = 0.001;
-    }
+    if (total == 0) total = 0.001;
     return List.generate(
       widget.pieParameters.length,
       (i) {
@@ -76,7 +73,7 @@ class _ChartPieState extends State<ChartPie> {
         final radius = chartWidth * (isTouched ? 0.23 : 0.2);
         return PieChartSectionData(
           color: param.color ?? colors[i],
-          value: param.value == 0 && i == 1 ? 0.01 : param.value,
+          value: (param.value == 0 && i == 1) ? 0.01 : param.value,
           title:
               '${(param.value / total * 100).toString().toBrazilianNumber(0)}%',
           radius: radius,
@@ -84,6 +81,18 @@ class _ChartPieState extends State<ChartPie> {
         );
       },
     ).whereType<PieChartSectionData>().toList();
+  }
+
+  void changeSelectedIndex(int? index) {
+    if (selectedIndex == index) {
+      setState(() {
+        selectedIndex = null;
+      });
+    } else {
+      setState(() {
+        selectedIndex = index;
+      });
+    }
   }
 
   List<_Indicator> getIndicators() {
@@ -95,13 +104,16 @@ class _ChartPieState extends State<ChartPie> {
         return _Indicator(
           title: param.title,
           subtitle: param.subtitle,
+          showOnlyOnTap: param.showSubtitleOnlyOnTap,
           value: param.value,
           color: param.color ?? colors[i],
           boxShape: widget.itemsShape!,
           padding: widget.paddingItems,
           isSelected: i == selectedIndex,
           indicatorSize: indicatorSize,
-          changeSelectedIndex: () => setState(() => selectedIndex = i),
+          changeSelectedIndex: () {
+            changeSelectedIndex(i);
+          },
         );
       },
     ).whereType<_Indicator>().toList();
@@ -125,13 +137,17 @@ class _ChartPieState extends State<ChartPie> {
                     PieChart(
                       PieChartData(
                         pieTouchData: PieTouchData(
-                          touchCallback: (e, resp) {
-                            final idx =
-                                resp?.touchedSection?.touchedSectionIndex;
-                            if (e.isInterestedForInteractions &&
-                                idx != null &&
-                                idx >= 0) {
-                              setState(() => selectedIndex = idx);
+                          touchCallback:
+                              (FlTouchEvent event, PieTouchResponse? resp) {
+                            // Only act once on tap up
+                            if (event is FlTapUpEvent) {
+                              final idx =
+                                  resp?.touchedSection?.touchedSectionIndex;
+                              if (idx != null && idx >= 0) {
+                                changeSelectedIndex(idx);
+                              } else {
+                                changeSelectedIndex(null);
+                              }
                             }
                           },
                         ),
@@ -195,6 +211,7 @@ class _Indicator extends StatelessWidget {
   final Color color;
   final String title;
   final String? subtitle;
+  final bool showOnlyOnTap;
   final BoxShape? boxShape;
   final EdgeInsetsGeometry? padding;
   final void Function() changeSelectedIndex;
@@ -206,6 +223,7 @@ class _Indicator extends StatelessWidget {
     required this.color,
     required this.title,
     required this.subtitle,
+    required this.showOnlyOnTap,
     required this.boxShape,
     required this.padding,
     required this.changeSelectedIndex,
@@ -216,6 +234,8 @@ class _Indicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (showOnlyOnTap && !isSelected) return const SizedBox.shrink();
+
     return MouseRegion(
       onEnter: (_) => changeSelectedIndex(),
       child: GestureDetector(
@@ -242,9 +262,9 @@ class _Indicator extends StatelessWidget {
                         .bodySmall
                         ?.copyWith(fontWeight: FontWeight.bold),
                     children: [
-                      if (subtitle != null)
+                      if (subtitle != null && (!showOnlyOnTap || isSelected))
                         TextSpan(
-                          text: "\n$subtitle",
+                          text: '\n$subtitle',
                           style: Theme.of(context)
                               .textTheme
                               .bodySmall
@@ -266,12 +286,14 @@ class PieParameter {
   final double value;
   final String title;
   final String? subtitle;
+  final bool showSubtitleOnlyOnTap;
   final Color? color;
 
   PieParameter({
     required this.value,
     required this.title,
     this.subtitle,
+    this.showSubtitleOnlyOnTap = false,
     this.color,
   });
 }
@@ -317,32 +339,25 @@ class DayProgressClockState extends State<DayProgressClock> {
   void didUpdateWidget(covariant DayProgressClock oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.date != oldWidget.date) {
-      // Cancel the old timer before setting up a new one
-      _timer?.cancel(); // <--- This line is crucial
+      _timer?.cancel();
       _setupClock();
     }
   }
 
   void _setupClock() {
+    _timer?.cancel();
     final now = DateTime.now();
     _isCurrentDay = widget.date.year == now.year &&
         widget.date.month == now.month &&
         widget.date.day == now.day;
 
-    // Always cancel any existing timer before potentially creating a new one
-    _timer?.cancel();
-    _timer = null; // Clear the reference
-
     if (_isCurrentDay) {
       _displayTime = now;
       _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-        // Only call setState if the widget is still mounted
-        if (mounted) {
-          // <--- Added this check
-          setState(() => _displayTime = DateTime.now());
-        }
+        if (mounted) setState(() => _displayTime = DateTime.now());
       });
     } else {
+      _timer = null;
       _displayTime = DateTime(
         widget.date.year,
         widget.date.month,
@@ -351,14 +366,12 @@ class DayProgressClockState extends State<DayProgressClock> {
         59,
         59,
       );
-      // No timer needed if it's not the current day
     }
   }
 
   @override
   void dispose() {
-    _timer
-        ?.cancel(); // Ensure the timer is cancelled when the widget is disposed
+    _timer?.cancel();
     super.dispose();
   }
 
@@ -416,11 +429,9 @@ class _DayProgressPainter extends CustomPainter {
     const startAngle = -pi / 2;
     final sweepAngle = 2 * pi * fraction;
 
-    // Draw the remaining background
     final paintRemaining = Paint()..color = remainingColor;
     canvas.drawCircle(center, radius, paintRemaining);
 
-    // Draw the passed slice
     final paintPassed = Paint()..color = passedColor;
     canvas.drawArc(rect, startAngle, sweepAngle, true, paintPassed);
   }
