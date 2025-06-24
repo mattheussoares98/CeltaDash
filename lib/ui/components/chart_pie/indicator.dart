@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class Indicator extends StatelessWidget {
   final Color color;
-  final String title;
-  final String? subtitle;
+  final Widget title;
+  final Widget? subtitle;
   final bool showOnlyOnTap;
   final BoxShape? boxShape;
   final EdgeInsetsGeometry? padding;
@@ -48,26 +48,31 @@ class Indicator extends StatelessWidget {
               ),
               const SizedBox(width: 4),
               Expanded(
-                child: RichText(
-                  text: TextSpan(
-                    text: title,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                    children: [
-                      if (subtitle != null && (!showOnlyOnTap || isSelected))
-                        TextSpan(
-                          text: '\n$subtitle',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall
-                              ?.copyWith(fontStyle: FontStyle.italic),
-                        ),
-                    ],
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    title,
+                    if (subtitle != null) subtitle!,
+                  ],
                 ),
               ),
+              // Expanded(
+              //   child: RichText(
+              //     text: TextSpan(
+              //       text: title,
+              //       children: [
+              //         if (subtitle != null && (!showOnlyOnTap || isSelected))
+              //           TextSpan(
+              //             text: '\n$subtitle',
+              //             style: Theme.of(context)
+              //                 .textTheme
+              //                 .bodySmall
+              //                 ?.copyWith(fontStyle: FontStyle.italic),
+              //           ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),

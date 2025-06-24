@@ -1,9 +1,9 @@
-import 'dart:ui';
+import 'package:flutter/widgets.dart';
 
 class PieParameter {
   final double value;
-  final String title;
-  final String? subtitle;
+  final Widget title;
+  final Widget? subtitle;
   final bool showSubtitleOnlyOnTap;
   final Color? color;
 

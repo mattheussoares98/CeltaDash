@@ -34,7 +34,8 @@ class GroupOfStores extends StatelessWidget {
       ..sort((a, b) => b.value.compareTo(a.value));
   }
 
-  List<PieParameter> getPieParameters(HomePresenter homePresenter) {
+  List<PieParameter> getPieParameters(
+      HomePresenter homePresenter, BuildContext context) {
     final salesByEnterprise = getSalesByEnterprise(homePresenter);
     final pieParameters = <PieParameter>[];
 
@@ -43,8 +44,9 @@ class GroupOfStores extends StatelessWidget {
         salesByEnterprise.map(
           (e) => PieParameter(
             value: e.value,
-            title: e.key,
-            subtitle: e.value.toString().toBrazilianNumber().addBrazilianCoin(),
+            title: Text(e.key),
+            subtitle:
+                Text(e.value.toString().toBrazilianNumber().addBrazilianCoin()),
           ),
         ),
       );
@@ -58,16 +60,24 @@ class GroupOfStores extends StatelessWidget {
       pieParameters.addAll(topFour.map(
         (e) => PieParameter(
           value: e.value,
-          title: e.key,
-          subtitle: e.value.toString().toBrazilianNumber().addBrazilianCoin(),
+          title: Text(
+            e.key,
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          subtitle:
+              Text(e.value.toString().toBrazilianNumber().addBrazilianCoin()),
         ),
       ));
       pieParameters.add(
         PieParameter(
           value: othersTotal,
-          title: R.string.anothersEnterprises,
-          subtitle:
-              othersTotal.toString().toBrazilianNumber().addBrazilianCoin(),
+          title: Text(R.string.anothersEnterprises),
+          subtitle: Text(
+            othersTotal.toString().toBrazilianNumber().addBrazilianCoin(),
+          ),
         ),
       );
     }
@@ -96,7 +106,8 @@ class GroupOfStores extends StatelessWidget {
             style: Theme.of(context).textTheme.labelLarge,
             textAlign: TextAlign.center,
           ),
-          ChartPieWidget(pieParameters: getPieParameters(homePresenter)),
+          ChartPieWidget(
+              pieParameters: getPieParameters(homePresenter, context)),
           DefaultButton(
             onTap: resumePresenter.goToGroupSummaryPage,
             title: R.string.groupSummary,

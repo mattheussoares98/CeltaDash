@@ -102,29 +102,37 @@ class DailyStatistics extends StatelessWidget {
           centerRemainingColor: Colors.white,
           pieParameters: [
             PieParameter(
-              title: "${DateFormat("dd/MM").format(
-                homePresenter.selectedDate,
-              )}"
-                  "${isCurrentDay ? " ${R.string.until.toLowerCase()} ${now.hour + 1}h" : ""}",
+              title: Text(
+                "${DateFormat("dd/MM").format(
+                  homePresenter.selectedDate,
+                )}"
+                "${isCurrentDay ? " ${R.string.until.toLowerCase()} ${now.hour + 1}h" : ""}",
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge
+                    ?.copyWith(fontWeight: FontWeight.bold),
+              ),
               color: Colors.green,
-              subtitle: getSubTitle(
-                selectedDayStatistics ?? [],
-                homePresenter,
+              subtitle: Text(
+                getSubTitle(
+                  selectedDayStatistics ?? [],
+                  homePresenter,
+                ),
               ),
               value: selectedDayStatistics?.sumLiquidValue() ?? 1,
             ),
             PieParameter(
-              title: "${DateFormat("dd/MM").format(DateTime(
+              title: Text("${DateFormat("dd/MM").format(DateTime(
                 homePresenter.selectedDate.year,
                 homePresenter.selectedDate.month - 1,
                 homePresenter.selectedDate.day,
               ))}"
-                  "${isCurrentDay ? " ${R.string.until.toLowerCase()} ${now.hour + 1}h" : ""}",
+                  "${isCurrentDay ? " ${R.string.until.toLowerCase()} ${now.hour + 1}h" : ""}"),
               color: Colors.orange,
-              subtitle: getSubTitle(
+              subtitle: Text(getSubTitle(
                 previousMonthStatistics ?? [],
                 homePresenter,
-              ),
+              )),
               showSubtitleOnlyOnTap: true,
               value: previousMonthStatistics?.sumLiquidValue() ?? 1,
             ),
