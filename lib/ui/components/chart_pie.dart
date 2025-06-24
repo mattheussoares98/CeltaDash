@@ -73,7 +73,7 @@ class _ChartPieState extends State<ChartPie> {
         if (needBreakLoop(i)) return null;
         final param = widget.pieParameters[i];
         final isTouched = i == selectedIndex;
-        final radius = chartWidth * (isTouched ? 0.29 : 0.25);
+        final radius = chartWidth * (isTouched ? 0.23 : 0.2);
         return PieChartSectionData(
           color: param.color ?? colors[i],
           value: param.value == 0 && i == 1 ? 0.01 : param.value,
