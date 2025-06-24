@@ -25,28 +25,8 @@ class GetxResumePresenter extends GetxController
   });
 
   @override
-  void goToCompareDays() {
-    navigateTo.navigate(pageRoute: PageRoutes.compareDays);
-  }
-
-  @override
-  void goToProfitabillityPage() {
-    navigateTo.navigate(pageRoute: PageRoutes.profitability);
-  }
-
-  @override
-  void goToDepartmentsPage() {
-    navigateTo.navigate(pageRoute: PageRoutes.departments);
-  }
-
-  @override
   void goToSetGoalPage() {
     navigateTo.navigate(pageRoute: PageRoutes.setGoal);
-  }
-
-  @override
-  void goToPaymentsTypePage() {
-    navigateTo.navigate(pageRoute: PageRoutes.paymentsType);
   }
 
   @override

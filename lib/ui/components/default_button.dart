@@ -12,7 +12,7 @@ class DefaultButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 4),
+      padding: const EdgeInsets.only(top: 3),
       child: ElevatedButton.icon(
         onPressed: onTap,
         label: FittedBox(child: Text(title)),

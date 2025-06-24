@@ -166,6 +166,28 @@ void main() {
         () => navigateTo.navigate(pageRoute: PageRoutes.canceledSales),
       ).called(1);
     });
+
+    test("Should navigate to profitability correctly", () async {
+      sut.goToProfitabilityPage();
+
+      verify(
+        () => navigateTo.navigate(pageRoute: PageRoutes.profitability),
+      ).called(1);
+    });
+    test("Should navigate to daily analysis page correctly", () async {
+      sut.goToCompareDays();
+
+      verify(
+        () => navigateTo.navigate(pageRoute: PageRoutes.compareDays),
+      ).called(1);
+    });
+    test("Should navigate to sections page correctly", () async {
+      sut.goToDepartmentsPage();
+
+      verify(
+        () => navigateTo.navigate(pageRoute: PageRoutes.departments),
+      ).called(1);
+    });
   });
 
   group("Get enterprises", () {

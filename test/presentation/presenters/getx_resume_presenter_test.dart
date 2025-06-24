@@ -68,27 +68,6 @@ void main() {
   });
 
   group("Navigate to", () {
-    test("Should navigate to profitability correctly", () async {
-      sut.goToProfitabillityPage();
-
-      verify(
-        () => navigateTo.navigate(pageRoute: PageRoutes.profitability),
-      ).called(1);
-    });
-    test("Should navigate to daily analysis page correctly", () async {
-      sut.goToCompareDays();
-
-      verify(
-        () => navigateTo.navigate(pageRoute: PageRoutes.compareDays),
-      ).called(1);
-    });
-    test("Should navigate to sections page correctly", () async {
-      sut.goToDepartmentsPage();
-
-      verify(
-        () => navigateTo.navigate(pageRoute: PageRoutes.departments),
-      ).called(1);
-    });
     test("Should navigate to set goal page correctly", () async {
       sut.goToSetGoalPage();
 
@@ -96,13 +75,7 @@ void main() {
         () => navigateTo.navigate(pageRoute: PageRoutes.setGoal),
       ).called(1);
     });
-    test("Should navigate to types page correctly", () async {
-      sut.goToPaymentsTypePage();
 
-      verify(
-        () => navigateTo.navigate(pageRoute: PageRoutes.paymentsType),
-      ).called(1);
-    });
     test("Should navigate to group summary correctly", () async {
       sut.goToGroupSummaryPage();
 

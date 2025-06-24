@@ -20,6 +20,10 @@ class HomePresenterSpy extends Mock implements HomePresenter {
   HomePresenterSpy() {
     this.mockCurrentPageIndexStream(Stream.value(0));
 
+    when(() => this.goToProfitabilityPage()).thenAnswer((any) => any);
+    when(() => this.goToCompareDays()).thenAnswer((any) => any);
+    when(() => this.goToDepartmentsPage()).thenAnswer((any) => any);
+    when(() => this.goToPaymentsTypePage()).thenAnswer((any) => any);
     when(() => this.selectedDate).thenAnswer((_) => selectedDateMock);
     when(() => this.enterprises).thenAnswer((_) => enterprisesMock);
     when(() => this.selectedEnterprise)

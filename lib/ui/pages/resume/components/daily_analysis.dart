@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 import 'components.dart';
@@ -18,7 +17,6 @@ class DailyAnalysis extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ResumePresenter resumePresenter = Get.find();
     HomePresenter homePresenter = Get.find();
 
     final now = DateTime.now();
@@ -62,12 +60,6 @@ class DailyAnalysis extends StatelessWidget {
               worstValue: worstAverage.value,
               betterTimeMessage: R.string.bestHourOfTheDay,
               worstTimeMessage: R.string.worstHourOfTheDay,
-            ),
-          ],
-          bottomChildren: [
-            DefaultButton(
-              onTap: resumePresenter.goToCompareDays,
-              title: R.string.compareDays,
             ),
           ],
         ),

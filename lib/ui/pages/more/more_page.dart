@@ -16,7 +16,6 @@ class MorePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
-    ResumePresenter resumePresenter = Get.find();
 
     final buttons = <DefaultButton>[
       DefaultButton(
@@ -36,16 +35,15 @@ class MorePage extends StatelessWidget {
         title: R.string.sellers,
       ),
       DefaultButton(
-        onTap:
-            resumePresenter.goToPaymentsTypePage, //TODO move to homePresenter
+        onTap: homePresenter.goToPaymentsTypePage,
         title: R.string.payments,
       ),
       DefaultButton(
-        onTap: resumePresenter.goToDepartmentsPage,
+        onTap: homePresenter.goToDepartmentsPage,
         title: R.string.departments,
       ),
       DefaultButton(
-        onTap: resumePresenter.goToCompareDays,
+        onTap: homePresenter.goToCompareDays,
         title: R.string.compareDays,
       ),
     ];

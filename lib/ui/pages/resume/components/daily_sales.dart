@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -6,7 +5,6 @@ import 'package:intl/intl.dart';
 import '../../../../ui/helpers/helpers.dart';
 import '../../../components/components.dart';
 import '../../pages.dart';
-import 'components.dart';
 
 class DailyStatistics extends StatelessWidget {
   final ScrollController scrollController;
@@ -22,196 +20,112 @@ class DailyStatistics extends StatelessWidget {
     HomePresenter homePresenter = Get.find();
     ResumePresenter resumePresenter = Get.find();
 
-    if (kDebugMode) {
-      //TODO remove this
-      final now = DateTime.now();
-      bool isCurrentDay = now.day == homePresenter.selectedDate.day &&
-          now.month == homePresenter.selectedDate.month &&
-          now.year == homePresenter.selectedDate.year;
+    final now = DateTime.now();
+    bool isCurrentDay = now.day == homePresenter.selectedDate.day &&
+        now.month == homePresenter.selectedDate.month &&
+        now.year == homePresenter.selectedDate.year;
 
-      final selectedDayStatistics = resumePresenter.compareDaysStatistics
-          ?.filteredSales(
-            enterprise: homePresenter.selectedEnterprise,
-            filterYear: homePresenter.selectedDate.year,
-            filterMonth: homePresenter.selectedDate.month,
-            filterDay: homePresenter.selectedDate.day,
-          )
-          .where((e) {
-            if (e.Date == null) {
-              return false;
-            } else if (isCurrentDay) {
-              return e.Hour! <= now.hour && e.Date!.year == now.year;
-            } else {
-              return e.Date!.year == now.year;
-            }
-          })
-          .map((e) => e.toViewModel())
-          .toList();
+    final selectedDayStatistics = resumePresenter.compareDaysStatistics
+        ?.filteredSales(
+          enterprise: homePresenter.selectedEnterprise,
+          filterYear: homePresenter.selectedDate.year,
+          filterMonth: homePresenter.selectedDate.month,
+          filterDay: homePresenter.selectedDate.day,
+        )
+        .where((e) {
+          if (e.Date == null) {
+            return false;
+          } else if (isCurrentDay) {
+            return e.Hour! <= now.hour && e.Date!.year == now.year;
+          } else {
+            return e.Date!.year == now.year;
+          }
+        })
+        .map((e) => e.toViewModel())
+        .toList();
 
-      final previousMonthStatistics = resumePresenter.compareDaysStatistics
-          ?.filteredSales(
-            enterprise: homePresenter.selectedEnterprise,
-            filterYear: homePresenter.selectedDate.year,
-          )
-          .where((e) {
-            if (e.Date == null) {
-              return false;
-            } else if (isCurrentDay) {
-              return e.Hour! <= now.hour &&
-                  e.Date?.month != now.month &&
-                  e.Date!.year == now.year;
-            } else {
-              return e.Date?.month != now.month && e.Date!.year == now.year;
-            }
-          })
-          .map((e) => e.toViewModel())
-          .toList();
+    final previousMonthStatistics = resumePresenter.compareDaysStatistics
+        ?.filteredSales(
+          enterprise: homePresenter.selectedEnterprise,
+          filterYear: homePresenter.selectedDate.year,
+        )
+        .where((e) {
+          if (e.Date == null) {
+            return false;
+          } else if (isCurrentDay) {
+            return e.Hour! <= now.hour &&
+                e.Date?.month != now.month &&
+                e.Date!.year == now.year;
+          } else {
+            return e.Date?.month != now.month && e.Date!.year == now.year;
+          }
+        })
+        .map((e) => e.toViewModel())
+        .toList();
 
-      final selectedDayLiquidValue =
-          selectedDayStatistics?.sumLiquidValue() ?? 1;
-      final previousMonthLiquidValue =
-          previousMonthStatistics?.sumLiquidValue() ?? 0;
+    final selectedDayLiquidValue = selectedDayStatistics?.sumLiquidValue() ?? 1;
+    final previousMonthLiquidValue =
+        previousMonthStatistics?.sumLiquidValue() ?? 0;
 
-      final percentageResult =
-          (selectedDayLiquidValue / previousMonthLiquidValue * 100 - 100);
+    final percentageResult =
+        (selectedDayLiquidValue / previousMonthLiquidValue * 100 - 100);
 
-      return Container(
-        decoration: ContainerDecoration.decoration,
-        padding: EdgeInsets.symmetric(vertical: 4),
-        child: Column(
-          children: [
-            Text(
-              R.string.salesOfTheDay.toUpperCase(),
-              style: Theme.of(context).textTheme.displayLarge,
-            ),
-            ChartPieWidget(
-              showTotalAmount: false,
-              centerSpaceRadius: 50,
-              centerDate: homePresenter.selectedDate,
-              centerPassedColor: Colors.grey[350]!,
-              centerRemainingColor: Colors.white,
-              pieParameters: [
-                PieParameter(
-                  title: Title(
-                    isCurrentDay: isCurrentDay,
-                    now: now,
-                    isPreviousMonth: false,
-                    statistics: selectedDayStatistics ?? [],
-                    color: percentageResult >= 0 ? Colors.green : Colors.red,
-                  ),
+    return Container(
+      decoration: ContainerDecoration.decoration,
+      padding: EdgeInsets.symmetric(vertical: 4),
+      child: Column(
+        children: [
+          Text(
+            R.string.salesOfTheDay.toUpperCase(),
+            style: Theme.of(context).textTheme.displayLarge,
+          ),
+          ChartPieWidget(
+            showTotalAmount: false,
+            centerSpaceRadius: 50,
+            centerDate: homePresenter.selectedDate,
+            centerPassedColor: Colors.grey[350]!,
+            centerRemainingColor: Colors.white,
+            pieParameters: [
+              PieParameter(
+                title: Title(
+                  isCurrentDay: isCurrentDay,
+                  now: now,
+                  isPreviousMonth: false,
+                  statistics: selectedDayStatistics ?? [],
                   color: percentageResult >= 0 ? Colors.green : Colors.red,
-                  subtitle: SubTitle(
-                    statistics: selectedDayStatistics ?? [],
-                  ),
-                  value: selectedDayLiquidValue,
                 ),
-                PieParameter(
-                  title: Title(
-                    isCurrentDay: isCurrentDay,
-                    now: now,
-                    isPreviousMonth: true,
-                    statistics: previousMonthStatistics ?? [],
-                    color: Colors.orange,
-                  ),
-                  color: Colors.orange,
-                  subtitle: SubTitle(
-                    statistics: previousMonthStatistics ?? [],
-                  ),
-                  showSubtitleOnlyOnTap: true,
-                  value: previousMonthLiquidValue,
-                ),
-              ],
-            ),
-            Text(
-              "${percentageResult.toStringAsFixed(2).toBrazilianNumber()}%",
-              style: TextStyle(
                 color: percentageResult >= 0 ? Colors.green : Colors.red,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    return SalesInformations(
-      scrollController: scrollController,
-      title: R.string.salesOfTheDay,
-      totalSales: saleStatistics.sumLiquidValue(
-        enterprise: homePresenter.selectedEnterprise,
-        filterYear: homePresenter.selectedDate.year,
-        filterMonth: homePresenter.selectedDate.month,
-        filterDay: homePresenter.selectedDate.day,
-      ),
-      bottomChildren: [
-        Padding(
-          padding: const EdgeInsets.only(top: 4),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Expanded(
-                child: DefaultButton(
-                  onTap: resumePresenter.goToPaymentsTypePage,
-                  title: R.string.payments,
+                subtitle: SubTitle(
+                  statistics: selectedDayStatistics ?? [],
                 ),
+                value: selectedDayLiquidValue,
               ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: DefaultButton(
-                  onTap: resumePresenter.goToDepartmentsPage,
-                  title: R.string.departments,
+              PieParameter(
+                title: Title(
+                  isCurrentDay: isCurrentDay,
+                  now: now,
+                  isPreviousMonth: true,
+                  statistics: previousMonthStatistics ?? [],
+                  color: Colors.orange,
                 ),
+                color: Colors.orange,
+                subtitle: SubTitle(
+                  statistics: previousMonthStatistics ?? [],
+                ),
+                showSubtitleOnlyOnTap: true,
+                value: previousMonthLiquidValue,
               ),
             ],
           ),
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            DefaultButton(
-              onTap: resumePresenter.goToCompareDays,
-              title: R.string.compareDays,
+          Text(
+            "${percentageResult.toStringAsFixed(2).toBrazilianNumber()}%",
+            style: TextStyle(
+              color: percentageResult >= 0 ? Colors.green : Colors.red,
+              fontWeight: FontWeight.bold,
             ),
-          ],
-        ),
-      ],
-      leftButton: null,
-      rightButton: null,
-      rightChildren: [
-        Text(
-          R.string.salesQuantity,
-          style: Theme.of(context).textTheme.titleSmall,
-        ),
-        Text(
-          saleStatistics
-              .quantitySales(
-                enterprise: homePresenter.selectedEnterprise,
-                filterYear: homePresenter.selectedDate.year,
-                filterMonth: homePresenter.selectedDate.month,
-                filterDay: homePresenter.selectedDate.day,
-              )
-              .toString()
-              .toBrazilianNumber(0),
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontStyle: FontStyle.italic,
-              ),
-        ),
-        Text(
-          R.string.ticketAverage,
-          style: Theme.of(context).textTheme.titleSmall,
-        ),
-        Text(
-          (saleStatistics.ticketAverage(
-            homePresenter.selectedEnterprise,
-            filterYear: homePresenter.selectedDate.year,
-            filterMonth: homePresenter.selectedDate.month,
-            filterDay: homePresenter.selectedDate.day,
-          )).toString().toBrazilianNumber().addBrazilianCoin(),
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontStyle: FontStyle.italic,
-              ),
-        ),
-      ],
+          ),
+        ],
+      ),
     );
   }
 }

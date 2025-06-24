@@ -10,10 +10,6 @@ class ResumePresenterSpy extends Mock implements ResumePresenter {
     when(() => this.lastGetStatisticsParams)
         .thenAnswer((_) => lastGetSalesParamsMock);
 
-    when(() => this.goToProfitabillityPage()).thenAnswer((any) => any);
-    when(() => this.goToCompareDays()).thenAnswer((any) => any);
-    when(() => this.goToDepartmentsPage()).thenAnswer((any) => any);
-    when(() => this.goToPaymentsTypePage()).thenAnswer((any) => any);
     when(() => this.goToSetGoalPage()).thenAnswer((any) => any);
     when(() => this.goToGoalHistoryPage()).thenAnswer((any) => any);
     when(() => this.goToGroupSummaryPage()).thenAnswer((any) => any);

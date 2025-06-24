@@ -16,10 +16,13 @@ abstract class HomePresenter implements Listenable {
   void initFirebaseStream();
   void updateSelectedIndex(int index);
   void updateSelectedDate(DateTime date);
-  void goToOperatorsPage();
-  void goToSellersPage();
   void goToCanceledSalesPage();
+  void goToCompareDays();
+  void goToDepartmentsPage();
+  void goToOperatorsPage();
+  void goToPaymentsTypePage();
   void goToProfitabilityPage();
+  void goToSellersPage();
 
   Future<void> getBsEnterprises({
     required void Function(String) showBsErrorMessage,
