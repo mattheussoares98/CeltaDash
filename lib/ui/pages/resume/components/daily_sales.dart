@@ -94,7 +94,7 @@ class DailyStatistics extends StatelessWidget {
       return Container(
         decoration: ContainerDecoration.decoration,
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-        child: ChartPie(
+        child: ChartPieWidget(
           showTotalAmount: false,
           centerSpaceRadius: 50,
           centerDate: homePresenter.selectedDate,

@@ -96,7 +96,7 @@ class GroupOfStores extends StatelessWidget {
             style: Theme.of(context).textTheme.labelLarge,
             textAlign: TextAlign.center,
           ),
-          ChartPie(pieParameters: getPieParameters(homePresenter)),
+          ChartPieWidget(pieParameters: getPieParameters(homePresenter)),
           DefaultButton(
             onTap: resumePresenter.goToGroupSummaryPage,
             title: R.string.groupSummary,

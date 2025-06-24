@@ -1,7 +1,7 @@
+export 'chart_pie/chart_pie.dart';
 export './table/table.dart';
 export './bottom_nav_bar.dart';
 export "./app_theme.dart";
-export './chart_pie.dart';
 export './chart_prices.dart';
 export './circle_progress.dart';
 export './default_app_bar.dart';
