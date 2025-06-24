@@ -41,7 +41,11 @@ class GroupOfStores extends StatelessWidget {
     if (salesByEnterprise.length <= 4) {
       pieParameters.addAll(
         salesByEnterprise.map(
-          (e) => PieParameter(value: e.value, title: e.key),
+          (e) => PieParameter(
+            value: e.value,
+            title: e.key,
+            subtitle: e.value.toString().toBrazilianNumber().addBrazilianCoin(),
+          ),
         ),
       );
     } else {
@@ -51,13 +55,20 @@ class GroupOfStores extends StatelessWidget {
             (sum, e) => sum + e.value,
           );
 
-      pieParameters.addAll(
-        topFour.map(
-          (e) => PieParameter(value: e.value, title: e.key),
+      pieParameters.addAll(topFour.map(
+        (e) => PieParameter(
+          value: e.value,
+          title: e.key,
+          subtitle: e.value.toString().toBrazilianNumber().addBrazilianCoin(),
         ),
-      );
+      ));
       pieParameters.add(
-        PieParameter(value: othersTotal, title: R.string.anothersEnterprises),
+        PieParameter(
+          value: othersTotal,
+          title: R.string.anothersEnterprises,
+          subtitle:
+              othersTotal.toString().toBrazilianNumber().addBrazilianCoin(),
+        ),
       );
     }
 
