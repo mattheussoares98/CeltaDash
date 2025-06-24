@@ -25,6 +25,9 @@ class DailyStatistics extends StatelessWidget {
     if (kDebugMode) {
       //TODO remove this
       final now = DateTime.now();
+      bool isCurrentDay = now.day == homePresenter.selectedDate.day &&
+          now.month == homePresenter.selectedDate.month &&
+          now.year == homePresenter.selectedDate.year;
 
       final selectedDayStatistics = resumePresenter.compareDaysStatistics
           ?.filteredSales(
@@ -36,9 +39,11 @@ class DailyStatistics extends StatelessWidget {
           .where((e) {
             if (e.Date == null) {
               return false;
+            } else if (isCurrentDay) {
+              return e.Hour! <= now.hour && e.Date!.year == now.year;
+            } else {
+              return e.Date!.year == now.year;
             }
-
-            return e.Hour! <= now.hour && e.Date!.year == now.year;
           })
           .map((e) => e.toViewModel())
           .toList();
@@ -51,11 +56,13 @@ class DailyStatistics extends StatelessWidget {
           .where((e) {
             if (e.Date == null) {
               return false;
+            } else if (isCurrentDay) {
+              return e.Hour! <= now.hour &&
+                  e.Date?.month != now.month &&
+                  e.Date!.year == now.year;
+            } else {
+              return e.Date?.month != now.month && e.Date!.year == now.year;
             }
-
-            return e.Hour! <= now.hour &&
-                e.Date?.month != now.month &&
-                e.Date!.year == now.year;
           })
           .map((e) => e.toViewModel())
           .toList();
@@ -69,7 +76,8 @@ class DailyStatistics extends StatelessWidget {
             PieParameter(
               title: "${DateFormat("dd/MM").format(
                 homePresenter.selectedDate,
-              )} ${R.string.until.toLowerCase()} ${now.hour + 1}h",
+              )}"
+                  "${isCurrentDay ? " ${R.string.until.toLowerCase()} ${now.hour + 1}h" : ""}",
               color: Colors.amber,
               subtitle: "subtitle",
               value: selectedDayStatistics?.sumLiquidValue() ?? 0,
@@ -79,7 +87,8 @@ class DailyStatistics extends StatelessWidget {
                 homePresenter.selectedDate.year,
                 homePresenter.selectedDate.month - 1,
                 homePresenter.selectedDate.day,
-              ))} ${R.string.until.toLowerCase()} ${now.hour + 1}h",
+              ))} "
+                  "${isCurrentDay ? " ${R.string.until.toLowerCase()} ${now.hour + 1}h" : ""}",
               color: Colors.green,
               subtitle: "subtitle",
               value: previousMonthStatistics?.sumLiquidValue() ?? 0,
