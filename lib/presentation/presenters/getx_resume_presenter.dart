@@ -120,8 +120,6 @@ class GetxResumePresenter extends GetxController
   }
 
   Future<void> _getCompareDaysStatistics(HomePresenter homePresenter) async {
-    _compareDaysStatistics.value?.clear();
-
     final todaySaleStatistics = await loadSaleStatistics.get(
       GetSaleStatisticsParams(
         startDate: DateTime(
