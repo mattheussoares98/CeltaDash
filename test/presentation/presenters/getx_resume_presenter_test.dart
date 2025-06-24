@@ -280,8 +280,16 @@ void main() {
 
         verify(() => loadSaleStatistics.get(
               GetSaleStatisticsParams(
-                startDate: homePresenter.selectedDateMock,
-                endDate: homePresenter.selectedDateMock,
+                startDate: DateTime(
+                  homePresenter.selectedDateMock.year,
+                  homePresenter.selectedDateMock.month,
+                  homePresenter.selectedDateMock.day,
+                ),
+                endDate: DateTime(
+                  homePresenter.selectedDateMock.year,
+                  homePresenter.selectedDateMock.month,
+                  homePresenter.selectedDateMock.day,
+                ),
                 groupByHour: true,
                 groupByEnterprise: true,
                 enterpriseIds: [

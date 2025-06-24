@@ -519,7 +519,6 @@ void main() {
               endDate: date,
               mountCustomer: true,
               mountFiscalNoteType: true,
-              mountPaymentFinalizations: false,
               mountProducts: true,
               mountSeller: true,
             ),
