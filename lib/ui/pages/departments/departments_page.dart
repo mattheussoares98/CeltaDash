@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -20,90 +19,113 @@ class DepartmentsPage extends StatefulWidget {
 
 class _DepartmentsPageState extends State<DepartmentsPage>
     with LoadingManager, UIErrorManager {
-  int selectedPageIndex = 0;
   StreamSubscription? mainErrorSubscription;
-  final pageController = PageController();
 
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
-        DepartmentsPresenter departmentsPresenter = Get.find();
-        departmentsPresenter.getSales(Get.find<HomePresenter>());
+        final home = Get.find<HomePresenter>();
+        Get.find<DepartmentsPresenter>().getSales(home);
       }
     });
   }
 
   @override
   void dispose() {
-    super.dispose();
     mainErrorSubscription?.cancel();
-    pageController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    HomePresenter homePresenter = Get.find();
-    DepartmentsPresenter departmentsPresenter = Get.find();
+    final homePresenter = Get.find<HomePresenter>();
+    final departmentsPresenter = Get.find<DepartmentsPresenter>();
 
+    // handle errors
     mainErrorSubscription?.cancel();
     mainErrorSubscription =
         handleMainError(context, departmentsPresenter.mainErrorStream);
 
     return StreamBuilder<bool>(
-        stream: departmentsPresenter.isLoadingStream,
-        builder: (context, loadingSnap) {
-          return Scaffold(
-            appBar: DefaultAppBar(
-              isLoading: loadingSnap.data == true,
-              onChangeEnterprise: (_) {
-                departmentsPresenter.getSales(homePresenter);
-              },
-              onChangeDate: (_) {
-                departmentsPresenter.getSales(homePresenter);
-              },
-              onTapRefresh: () {
-                departmentsPresenter.getSales(
-                  homePresenter,
-                  forceRefresh: true,
-                );
-              },
-            ),
-            body: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SelectPeriodItems(
-                    isLoading: loadingSnap.data,
-                    selectedPeriodType: departmentsPresenter.selectedPeriod,
-                    onTapDaily: () {
-                      departmentsPresenter.getSales(
-                        homePresenter,
-                        periodType: PeriodType.daily,
-                      );
-                    },
-                    onTapMonthly: () {
-                      departmentsPresenter.getSales(
-                        homePresenter,
-                        periodType: PeriodType.monthly,
-                      );
-                    },
+      stream: departmentsPresenter.isLoadingStream,
+      builder: (context, loadingSnap) {
+        final isLoading = loadingSnap.data == true;
+
+        return Scaffold(
+          appBar: DefaultAppBar(
+            isLoading: isLoading,
+            onChangeEnterprise: (_) {
+              departmentsPresenter.getSales(homePresenter);
+            },
+            onChangeDate: (_) {
+              departmentsPresenter.getSales(homePresenter);
+            },
+            onTapRefresh: () {
+              departmentsPresenter.getSales(
+                homePresenter,
+                forceRefresh: true,
+              );
+            },
+          ),
+          body: SafeArea(
+            child: DefaultTabController(
+              length: 2,
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SelectPeriodItems(
+                        isLoading: isLoading,
+                        selectedPeriodType: departmentsPresenter.selectedPeriod,
+                        onTapDaily: () {
+                          departmentsPresenter.getSales(
+                            homePresenter,
+                            periodType: PeriodType.daily,
+                          );
+                        },
+                        onTapMonthly: () {
+                          departmentsPresenter.getSales(
+                            homePresenter,
+                            periodType: PeriodType.monthly,
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                ),
-                Obx(() {
-                  final dailyStatistics = departmentsPresenter.dailyStatistics
-                      ?.filteredSales(
-                        enterprise: homePresenter.selectedEnterprise,
-                        filterDay: homePresenter.selectedDate.day,
-                        filterMonth: homePresenter.selectedDate.month,
-                        filterYear: homePresenter.selectedDate.year,
-                      )
-                      .map((e) => e.toViewModel())
-                      .toList();
-                  final monthlyStatistics =
-                      departmentsPresenter.monthlyStatistics
+
+                  TabBar(
+                    labelColor: Theme.of(context).primaryColor,
+                    unselectedLabelColor: Colors.grey,
+                    dividerColor: Colors.transparent,
+                    tabs: [
+                      Tab(
+                        icon: Icon(Icons.apartment),
+                        text: R.string.departments,
+                      ),
+                      Tab(
+                        icon: Icon(Icons.view_module),
+                        text: R.string.sections,
+                      ),
+                    ],
+                  ),
+
+                  // the content
+                  Expanded(
+                    child: Obx(() {
+                      final daily = departmentsPresenter.dailyStatistics
+                          ?.filteredSales(
+                            enterprise: homePresenter.selectedEnterprise,
+                            filterDay: homePresenter.selectedDate.day,
+                            filterMonth: homePresenter.selectedDate.month,
+                            filterYear: homePresenter.selectedDate.year,
+                          )
+                          .map((e) => e.toViewModel())
+                          .toList();
+
+                      final monthly = departmentsPresenter.monthlyStatistics
                           ?.filteredSales(
                             enterprise: homePresenter.selectedEnterprise,
                             filterMonth: homePresenter.selectedDate.month,
@@ -111,66 +133,29 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                           .map((e) => e.toViewModel())
                           .toList();
 
-                  final sales =
-                      departmentsPresenter.selectedPeriod == PeriodType.daily
-                          ? dailyStatistics
-                          : monthlyStatistics;
+                      final sales = departmentsPresenter.selectedPeriod ==
+                              PeriodType.daily
+                          ? daily
+                          : monthly;
 
-                  if (sales == null || sales.isEmpty) {
-                    return EmptySales(isLoading: loadingSnap.data);
-                  }
+                      if (sales == null || sales.isEmpty) {
+                        return EmptySales(isLoading: isLoading);
+                      }
 
-                  return Expanded(
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: PageView(
-                            controller: pageController,
-                            onPageChanged: (value) {
-                              setState(() {
-                                selectedPageIndex = value;
-                              });
-                            },
-                            children: [
-                              Departments(saleStatistics: sales),
-                              Sections(saleStatistics: sales),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }),
-              ],
+                      return TabBarView(
+                        children: [
+                          Departments(saleStatistics: sales),
+                          Sections(saleStatistics: sales),
+                        ],
+                      );
+                    }),
+                  ),
+                ],
+              ),
             ),
-            bottomNavigationBar: BottomNavBar(
-              currentIndex: selectedPageIndex,
-              onTap: (value) {
-                setState(() {
-                  selectedPageIndex = value;
-                });
-                if (pageController.hasClients) {
-                  pageController.animateToPage(
-                    value,
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                  );
-                }
-              },
-              items: [
-                BottomNavItem(
-                  materialIcon: Icon(Icons.apartment),
-                  cupertinoIcon: Icon(CupertinoIcons.building_2_fill),
-                  label: R.string.departments,
-                ),
-                BottomNavItem(
-                  materialIcon: Icon(Icons.view_module),
-                  cupertinoIcon: Icon(CupertinoIcons.square_grid_2x2),
-                  label: R.string.sections,
-                ),
-              ],
-            ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }
