@@ -124,8 +124,16 @@ class GetxResumePresenter extends GetxController
 
     final todaySaleStatistics = await loadSaleStatistics.get(
       GetSaleStatisticsParams(
-        startDate: homePresenter.selectedDate,
-        endDate: homePresenter.selectedDate,
+        startDate: DateTime(
+          homePresenter.selectedDate.year,
+          homePresenter.selectedDate.month,
+          homePresenter.selectedDate.day,
+        ),
+        endDate: DateTime(
+          homePresenter.selectedDate.year,
+          homePresenter.selectedDate.month,
+          homePresenter.selectedDate.day,
+        ),
         groupByEnterprise: true,
         groupByHour: true,
         enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
