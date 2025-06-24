@@ -102,7 +102,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                     dividerColor: Colors.transparent,
                     tabs: [
                       Tab(
-                        icon: Icon(Icons.apartment),
+                        icon: Icon(Icons.apartment),//TODO add cupertino as well
                         text: R.string.departments,
                       ),
                       Tab(

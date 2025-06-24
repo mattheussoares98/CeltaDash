@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -72,112 +73,99 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                 );
               },
             ),
-            body: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SelectPeriodItems(
-                    isLoading: loadingSnap.data,
-                    selectedPeriodType: paymentTypePresenter.selectedPeriod,
-                    onTapMonthly: () {
-                      paymentTypePresenter.getSales(
-                        homePresenter,
-                        periodType: PeriodType.monthly,
-                      );
-                    },
-                    onTapDaily: () {
-                      paymentTypePresenter.getSales(
-                        homePresenter,
-                        periodType: PeriodType.daily,
-                      );
-                    },
-                  ),
-                ),
-                Expanded(
-                  child: Obx(() {
-                    final dailyStatistics = paymentTypePresenter.dailyStatistics
-                        ?.filteredSales(
-                          enterprise: homePresenter.selectedEnterprise,
-                          filterDay: homePresenter.selectedDate.day,
-                          filterMonth: homePresenter.selectedDate.month,
-                          filterYear: homePresenter.selectedDate.year,
-                        )
-                        .map((e) => e.toViewModel())
-                        .toList();
+            body: SafeArea(
+              child: DefaultTabController(
+                length: 2,
+                child: Column(
+                  children: [
+                    SelectPeriodItems(
+                      isLoading: loadingSnap.data,
+                      selectedPeriodType: paymentTypePresenter.selectedPeriod,
+                      onTapMonthly: () {
+                        paymentTypePresenter.getSales(
+                          homePresenter,
+                          periodType: PeriodType.monthly,
+                        );
+                      },
+                      onTapDaily: () {
+                        paymentTypePresenter.getSales(
+                          homePresenter,
+                          periodType: PeriodType.daily,
+                        );
+                      },
+                    ),
+                    TabBar(
+                      labelColor: Theme.of(context).primaryColor,
+                      unselectedLabelColor: Colors.grey,
+                      dividerColor: Colors.transparent,
+                      tabs: [
+                        Tab(
+                          icon: Icon(
+                            Platform.isIOS
+                                ? CupertinoIcons.creditcard
+                                : Icons.credit_card,
+                          ),
+                          text: R.string.modalities,
+                        ),
+                        Tab(
+                          icon: Icon(
+                            Platform.isIOS
+                                ? CupertinoIcons.list_bullet
+                                : Icons.receipt_long,
+                          ),
+                          text: R.string.sections,
+                        ),
+                      ],
+                    ),
+                    Expanded(
+                      child: Obx(() {
+                        final dailyStatistics =
+                            paymentTypePresenter.dailyStatistics
+                                ?.filteredSales(
+                                  enterprise: homePresenter.selectedEnterprise,
+                                  filterDay: homePresenter.selectedDate.day,
+                                  filterMonth: homePresenter.selectedDate.month,
+                                  filterYear: homePresenter.selectedDate.year,
+                                )
+                                .map((e) => e.toViewModel())
+                                .toList();
 
-                    final monthlyStatistics =
-                        paymentTypePresenter.monthlyStatistics
-                            ?.filteredSales(
-                              enterprise: homePresenter.selectedEnterprise,
-                              filterMonth: homePresenter.selectedDate.month,
-                              filterYear: homePresenter.selectedDate.year,
-                            )
-                            .map((e) => e.toViewModel())
-                            .toList();
+                        final monthlyStatistics =
+                            paymentTypePresenter.monthlyStatistics
+                                ?.filteredSales(
+                                  enterprise: homePresenter.selectedEnterprise,
+                                  filterMonth: homePresenter.selectedDate.month,
+                                  filterYear: homePresenter.selectedDate.year,
+                                )
+                                .map((e) => e.toViewModel())
+                                .toList();
 
-                    final sales =
-                        paymentTypePresenter.selectedPeriod == PeriodType.daily
+                        final sales = paymentTypePresenter.selectedPeriod ==
+                                PeriodType.daily
                             ? dailyStatistics
                             : monthlyStatistics;
 
-                    if (sales == null || sales.isEmpty == true) {
-                      return EmptySales(isLoading: loadingSnap.data);
-                    }
+                        if (sales == null || sales.isEmpty == true) {
+                          return EmptySales(isLoading: loadingSnap.data);
+                        }
 
-                    return Column(
-                      children: [
-                        Expanded(
-                          child: PageView(
-                            controller: pageController,
-                            onPageChanged: (value) {
-                              setState(() {
-                                selectedPageIndex = value;
-                              });
-                            },
-                            children: [
-                              PaymentsModalities(
-                                filterByFinalizations: false,
-                                saleStatistics: sales,
-                              ),
-                              PaymentsModalities(
-                                filterByFinalizations: true,
-                                saleStatistics: sales,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    );
-                  }),
+                        return TabBarView(
+                          children: [
+                            PaymentsModalities(
+                              filterByFinalizations: false,
+                              saleStatistics: sales,
+                            ),
+                            PaymentsModalities(
+                              filterByFinalizations: true,
+                              saleStatistics: sales,
+                            ),
+                          ],
+                        );
+                      }),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            bottomNavigationBar: BottomNavBar(
-              currentIndex: selectedPageIndex,
-              onTap: (value) {
-                setState(() {
-                  selectedPageIndex = value;
-                });
-                if (pageController.hasClients) {
-                  pageController.animateToPage(
-                    value,
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                  );
-                }
-              },
-              items: [
-                BottomNavItem(
-                  materialIcon: Icon(Icons.credit_card),
-                  cupertinoIcon: Icon(CupertinoIcons.creditcard),
-                  label: R.string.modalities,
-                ),
-                BottomNavItem(
-                  materialIcon: Icon(Icons.receipt_long),
-                  cupertinoIcon: Icon(CupertinoIcons.list_bullet),
-                  label: R.string.finalizations,
-                ),
-              ],
+              ),
             ),
           );
         });
