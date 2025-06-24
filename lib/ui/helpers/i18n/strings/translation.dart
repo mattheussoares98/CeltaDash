@@ -42,6 +42,7 @@ abstract class Translation {
   String get cpfCnpj;
   String get customer;
   String get customerName;
+  String get customers;
   String get dailyAnalysis;
   String get dailyAnalysisAverage;
   String get date;

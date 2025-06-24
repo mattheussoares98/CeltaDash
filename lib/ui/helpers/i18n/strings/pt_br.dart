@@ -49,6 +49,7 @@ class PtBr implements Translation {
   String get cpfCnpj => "CpfCNPJ";
   String get customer => "Cliente";
   String get customerName => "Nome do cliente";
+  String get customers => "Clientes";
   String get dailyAnalysis => "Análise diária";
   String get dailyAnalysisAverage => "Análise diária (média)";
   String get date => "Data";

@@ -34,11 +34,34 @@ class DailyStatistics extends StatelessWidget {
     subtitle +=
         "${R.string.sales}: ${totalValue.toString().toBrazilianNumber().addBrazilianCoin()}";
     subtitle +=
-        "\n${R.string.quantityAbbreviated}: ${totalTickets.toString().toBrazilianNumber()}";
+        "\n${R.string.customers}: ${totalTickets.toString().toBrazilianNumber(0)}";
     subtitle +=
         "\n${R.string.average}: ${statistics.ticketAverage(homePresenter.selectedEnterprise).toString().toBrazilianNumber().addBrazilianCoin()}";
 
     return subtitle;
+  }
+
+  Widget getTitle({
+    required HomePresenter homePresenter,
+    required bool isCurrentDay,
+    required DateTime now,
+    required bool isPreviousMonth,
+  }) {
+    final dateToFormat = isPreviousMonth
+        ? DateTime(
+            homePresenter.selectedDate.year,
+            homePresenter.selectedDate.month - 1,
+            homePresenter.selectedDate.day,
+          )
+        : homePresenter.selectedDate;
+
+    return Text(
+      "${DateFormat("dd/MM").format(dateToFormat)}"
+      "${isCurrentDay ? " ${R.string.until.toLowerCase()} ${now.hour + 1}h" : ""}",
+      style: Theme.of(Get.context!).textTheme.bodyLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+    );
   }
 
   @override
@@ -102,15 +125,11 @@ class DailyStatistics extends StatelessWidget {
           centerRemainingColor: Colors.white,
           pieParameters: [
             PieParameter(
-              title: Text(
-                "${DateFormat("dd/MM").format(
-                  homePresenter.selectedDate,
-                )}"
-                "${isCurrentDay ? " ${R.string.until.toLowerCase()} ${now.hour + 1}h" : ""}",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge
-                    ?.copyWith(fontWeight: FontWeight.bold),
+              title: getTitle(
+                homePresenter: homePresenter,
+                isCurrentDay: isCurrentDay,
+                now: now,
+                isPreviousMonth: false,
               ),
               color: Colors.green,
               subtitle: Text(
@@ -122,12 +141,12 @@ class DailyStatistics extends StatelessWidget {
               value: selectedDayStatistics?.sumLiquidValue() ?? 1,
             ),
             PieParameter(
-              title: Text("${DateFormat("dd/MM").format(DateTime(
-                homePresenter.selectedDate.year,
-                homePresenter.selectedDate.month - 1,
-                homePresenter.selectedDate.day,
-              ))}"
-                  "${isCurrentDay ? " ${R.string.until.toLowerCase()} ${now.hour + 1}h" : ""}"),
+              title: getTitle(
+                homePresenter: homePresenter,
+                isCurrentDay: isCurrentDay,
+                now: now,
+                isPreviousMonth: true,
+              ),
               color: Colors.orange,
               subtitle: Text(getSubTitle(
                 previousMonthStatistics ?? [],
