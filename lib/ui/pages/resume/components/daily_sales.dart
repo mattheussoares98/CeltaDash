@@ -17,53 +17,6 @@ class DailyStatistics extends StatelessWidget {
     required this.saleStatistics,
   });
 
-  String getSubTitle(
-    List<SaleStatisticViewModel> statistics,
-    HomePresenter homePresenter,
-  ) {
-    String subtitle = "";
-
-    if (statistics.isEmpty) {
-      return subtitle;
-    }
-    double totalTickets = statistics
-        .quantitySales(enterprise: homePresenter.selectedEnterprise)
-        .toDouble();
-
-    double totalValue = statistics.sumLiquidValue();
-    subtitle +=
-        "${R.string.sales}: ${totalValue.toString().toBrazilianNumber().addBrazilianCoin()}";
-    subtitle +=
-        "\n${R.string.customers}: ${totalTickets.toString().toBrazilianNumber(0)}";
-    subtitle +=
-        "\n${R.string.average}: ${statistics.ticketAverage(homePresenter.selectedEnterprise).toString().toBrazilianNumber().addBrazilianCoin()}";
-
-    return subtitle;
-  }
-
-  Widget getTitle({
-    required HomePresenter homePresenter,
-    required bool isCurrentDay,
-    required DateTime now,
-    required bool isPreviousMonth,
-  }) {
-    final dateToFormat = isPreviousMonth
-        ? DateTime(
-            homePresenter.selectedDate.year,
-            homePresenter.selectedDate.month - 1,
-            homePresenter.selectedDate.day,
-          )
-        : homePresenter.selectedDate;
-
-    return Text(
-      "${DateFormat("dd/MM").format(dateToFormat)}"
-      "${isCurrentDay ? " ${R.string.until.toLowerCase()} ${now.hour + 1}h" : ""}",
-      style: Theme.of(Get.context!).textTheme.bodyLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
@@ -114,46 +67,67 @@ class DailyStatistics extends StatelessWidget {
           .map((e) => e.toViewModel())
           .toList();
 
+      final selectedDayLiquidValue =
+          selectedDayStatistics?.sumLiquidValue() ?? 1;
+      final previousMonthLiquidValue =
+          previousMonthStatistics?.sumLiquidValue() ?? 0;
+
+      final percentageResult =
+          (selectedDayLiquidValue / previousMonthLiquidValue * 100 - 100);
+
       return Container(
         decoration: ContainerDecoration.decoration,
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-        child: ChartPieWidget(
-          showTotalAmount: false,
-          centerSpaceRadius: 50,
-          centerDate: homePresenter.selectedDate,
-          centerPassedColor: Colors.grey[350]!,
-          centerRemainingColor: Colors.white,
-          pieParameters: [
-            PieParameter(
-              title: getTitle(
-                homePresenter: homePresenter,
-                isCurrentDay: isCurrentDay,
-                now: now,
-                isPreviousMonth: false,
-              ),
-              color: Colors.green,
-              subtitle: Text(
-                getSubTitle(
-                  selectedDayStatistics ?? [],
-                  homePresenter,
-                ),
-              ),
-              value: selectedDayStatistics?.sumLiquidValue() ?? 1,
+        padding: EdgeInsets.symmetric(vertical: 4),
+        child: Column(
+          children: [
+            Text(
+              R.string.salesOfTheDay.toUpperCase(),
+              style: Theme.of(context).textTheme.displayLarge,
             ),
-            PieParameter(
-              title: getTitle(
-                homePresenter: homePresenter,
-                isCurrentDay: isCurrentDay,
-                now: now,
-                isPreviousMonth: true,
+            ChartPieWidget(
+              showTotalAmount: false,
+              centerSpaceRadius: 50,
+              centerDate: homePresenter.selectedDate,
+              centerPassedColor: Colors.grey[350]!,
+              centerRemainingColor: Colors.white,
+              pieParameters: [
+                PieParameter(
+                  title: Title(
+                    isCurrentDay: isCurrentDay,
+                    now: now,
+                    isPreviousMonth: false,
+                    statistics: selectedDayStatistics ?? [],
+                    color: percentageResult >= 0 ? Colors.green : Colors.red,
+                  ),
+                  color: percentageResult >= 0 ? Colors.green : Colors.red,
+                  subtitle: SubTitle(
+                    statistics: selectedDayStatistics ?? [],
+                  ),
+                  value: selectedDayLiquidValue,
+                ),
+                PieParameter(
+                  title: Title(
+                    isCurrentDay: isCurrentDay,
+                    now: now,
+                    isPreviousMonth: true,
+                    statistics: previousMonthStatistics ?? [],
+                    color: Colors.orange,
+                  ),
+                  color: Colors.orange,
+                  subtitle: SubTitle(
+                    statistics: previousMonthStatistics ?? [],
+                  ),
+                  showSubtitleOnlyOnTap: true,
+                  value: previousMonthLiquidValue,
+                ),
+              ],
+            ),
+            Text(
+              "${percentageResult.toStringAsFixed(2).toBrazilianNumber()}%",
+              style: TextStyle(
+                color: percentageResult >= 0 ? Colors.green : Colors.red,
+                fontWeight: FontWeight.bold,
               ),
-              color: Colors.orange,
-              subtitle: Text(getSubTitle(
-                previousMonthStatistics ?? [],
-                homePresenter,
-              )),
-              showSubtitleOnlyOnTap: true,
-              value: previousMonthStatistics?.sumLiquidValue() ?? 1,
             ),
           ],
         ),
@@ -235,6 +209,90 @@ class DailyStatistics extends StatelessWidget {
           )).toString().toBrazilianNumber().addBrazilianCoin(),
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 fontStyle: FontStyle.italic,
+              ),
+        ),
+      ],
+    );
+  }
+}
+
+class SubTitle extends StatelessWidget {
+  final List<SaleStatisticViewModel> statistics;
+  const SubTitle({super.key, required this.statistics});
+
+  @override
+  Widget build(BuildContext context) {
+    final homePresenter = Get.find<HomePresenter>();
+
+    String subtitle = "";
+
+    if (statistics.isEmpty) {
+      return Text(subtitle);
+    }
+    double totalTickets = statistics
+        .quantitySales(enterprise: homePresenter.selectedEnterprise)
+        .toDouble();
+
+    subtitle +=
+        "${R.string.customers}: ${totalTickets.toString().toBrazilianNumber(0)}";
+    subtitle +=
+        "\n${R.string.average}: ${statistics.ticketAverage(homePresenter.selectedEnterprise).toString().toBrazilianNumber().addBrazilianCoin()}";
+
+    return Text(
+      subtitle,
+      style: Theme.of(Get.context!).textTheme.titleMedium?.copyWith(
+            fontStyle: FontStyle.italic,
+          ),
+    );
+  }
+}
+
+class Title extends StatelessWidget {
+  final bool isCurrentDay;
+  final DateTime now;
+  final bool isPreviousMonth;
+  final List<SaleStatisticViewModel> statistics;
+  final Color color;
+  const Title({
+    super.key,
+    required this.isCurrentDay,
+    required this.now,
+    required this.isPreviousMonth,
+    required this.statistics,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final homePresenter = Get.find<HomePresenter>();
+    double totalValue = statistics.sumLiquidValue();
+    "${R.string.sales}: ${totalValue.toString().toBrazilianNumber().addBrazilianCoin()}";
+
+    final previowsDate = DateTime(
+      homePresenter.selectedDate.year,
+      homePresenter.selectedDate.month - 1,
+      homePresenter.selectedDate.day,
+    );
+
+    final title = isPreviousMonth
+        ? "${DateFormat("dd/MM").format(previowsDate)} ${R.string.until.toLowerCase()} ${now.hour + 1}h"
+        : "${R.string.until} ${now.hour + 1}h";
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: Theme.of(Get.context!).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+        Text(
+          totalValue.toString().toBrazilianNumber().addBrazilianCoin(),
+          style: Theme.of(Get.context!).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 25,
+                color: color,
               ),
         ),
       ],
