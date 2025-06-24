@@ -1,14 +1,30 @@
+import 'dart:async';
+import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
 import '../../ui/helpers/helpers.dart';
 
+/// A pie chart widget that can optionally show a day-progress clock in its center hole.
 class ChartPie extends StatefulWidget {
   final List<PieParameter> pieParameters;
   final int? quantityToShow;
   final BoxShape? itemsShape;
   final EdgeInsetsGeometry? paddingItems;
   final bool? showTotalAmount;
+
+  /// Date for the clock: if null, no clock; if not today's date, shows completed.
+  final DateTime? centerDate;
+
+  /// Radius of the center hole (and clock).
+  final double centerSpaceRadius;
+
+  /// Color for the passed slice in the clock.
+  final Color centerPassedColor;
+
+  /// Color for the remaining slice in the clock.
+  final Color centerRemainingColor;
+
   const ChartPie({
     super.key,
     required this.pieParameters,
@@ -16,6 +32,10 @@ class ChartPie extends StatefulWidget {
     this.quantityToShow,
     this.paddingItems,
     this.showTotalAmount = true,
+    this.centerDate,
+    this.centerSpaceRadius = 40,
+    this.centerPassedColor = Colors.blue,
+    this.centerRemainingColor = const Color(0xFFE0E0E0),
   });
 
   @override
@@ -40,108 +60,97 @@ class _ChartPieState extends State<ChartPie> {
 
   bool needBreakLoop(int index) =>
       index > (widget.quantityToShow ?? 4) || (index + 1) > colors.length;
+
   List<PieChartSectionData> getSections(double chartWidth) {
-    final totalOfAllPieParameters = widget.pieParameters.fold(
-      0.0,
-      (p, e) => p + e.value,
-    );
+    double total = widget.pieParameters.fold<double>(0, (p, e) => p + e.value);
 
-    List<PieChartSectionData> sections = [];
-
-    for (var i = 0; i < widget.pieParameters.length; i++) {
-      final isTouched = i == selectedIndex;
-      final chartSize = chartWidth;
-      final radius = isTouched ? chartSize * 0.29 : chartSize * 0.25;
-
-      if (needBreakLoop(i)) {
-        break;
-      }
-
-      final pieParameter = widget.pieParameters[i];
-      sections.add(
-        PieChartSectionData(
-          color: pieParameter.color ?? colors[i],
-          value: pieParameter.value,
+    if (total == 0) {
+      total = 0.001;
+    }
+    return List.generate(
+      widget.pieParameters.length,
+      (i) {
+        if (needBreakLoop(i)) return null;
+        final param = widget.pieParameters[i];
+        final isTouched = i == selectedIndex;
+        final radius = chartWidth * (isTouched ? 0.29 : 0.25);
+        return PieChartSectionData(
+          color: param.color ?? colors[i],
+          value: param.value == 0 && i == 1 ? 0.01 : param.value,
           title:
-              "${(pieParameter.value / totalOfAllPieParameters * 100).toString().toBrazilianNumber(0)}%",
+              '${(param.value / total * 100).toString().toBrazilianNumber(0)}%',
           radius: radius,
           titleStyle: Theme.of(context).textTheme.titleSmall,
-        ),
-      );
-    }
-
-    return sections;
+        );
+      },
+    ).whereType<PieChartSectionData>().toList();
   }
 
   List<_Indicator> getIndicators() {
-    List<_Indicator> indicators = [];
-    for (var i = 0; i < widget.pieParameters.length; i++) {
-      if (needBreakLoop(i)) {
-        break;
-      }
-
-      final pieParameter = widget.pieParameters[i];
-      indicators.add(
-        _Indicator(
-          title: pieParameter.title,
-          value: pieParameter.value,
-          subtitle: pieParameter.subtitle,
-          padding: widget.paddingItems,
-          color: colors[i],
+    return List.generate(
+      widget.pieParameters.length,
+      (i) {
+        if (needBreakLoop(i)) return null;
+        final param = widget.pieParameters[i];
+        return _Indicator(
+          title: param.title,
+          subtitle: param.subtitle,
+          value: param.value,
+          color: param.color ?? colors[i],
           boxShape: widget.itemsShape!,
+          padding: widget.paddingItems,
           isSelected: i == selectedIndex,
           indicatorSize: indicatorSize,
-          changeSelectedIndex: () {
-            setState(() {
-              selectedIndex = i;
-            });
-          },
-        ),
-      );
-    }
-
-    return indicators;
+          changeSelectedIndex: () => setState(() => selectedIndex = i),
+        );
+      },
+    ).whereType<_Indicator>().toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    final chartWidth = MediaQuery.of(context).size.width * 0.4;
+    final chartSize = MediaQuery.of(context).size.width * 0.4;
     return Padding(
       padding: const EdgeInsets.only(left: 8),
       child: Row(
-        children: <Widget>[
+        children: [
           Column(
             children: [
               SizedBox(
-                width: chartWidth,
-                height: chartWidth,
-                child: PieChart(
-                  PieChartData(
-                    pieTouchData: PieTouchData(
-                      touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                        final newIndex = pieTouchResponse
-                            ?.touchedSection?.touchedSectionIndex;
-                        setState(() {
-                          if (!event.isInterestedForInteractions ||
-                              newIndex == null ||
-                              newIndex == -1) {
-                            return;
-                          }
-                          selectedIndex = pieTouchResponse!
-                              .touchedSection!.touchedSectionIndex;
-                        });
-
-                        // setState(() {
-                        //   selectedIndex = pieTouchResponse!
-                        //       .touchedSection!.touchedSectionIndex;
-                        // });
-                      },
+                width: chartSize,
+                height: chartSize,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    PieChart(
+                      PieChartData(
+                        pieTouchData: PieTouchData(
+                          touchCallback: (e, resp) {
+                            final idx =
+                                resp?.touchedSection?.touchedSectionIndex;
+                            if (e.isInterestedForInteractions &&
+                                idx != null &&
+                                idx >= 0) {
+                              setState(() => selectedIndex = idx);
+                            }
+                          },
+                        ),
+                        borderData: null,
+                        sectionsSpace: 3,
+                        centerSpaceRadius: widget.centerSpaceRadius,
+                        centerSpaceColor: Colors.transparent,
+                        sections: getSections(chartSize),
+                        startDegreeOffset: 180,
+                      ),
                     ),
-                    borderData: null,
-                    sectionsSpace: 3,
-                    centerSpaceRadius: 40,
-                    sections: getSections(chartWidth),
-                  ),
+                    if (widget.centerDate != null)
+                      DayProgressClock(
+                        date: widget.centerDate!,
+                        radius: widget.centerSpaceRadius,
+                        passedColor: widget.centerPassedColor,
+                        remainingColor: widget.centerRemainingColor,
+                      ),
+                  ],
                 ),
               ),
               if (widget.showTotalAmount == true)
@@ -163,7 +172,7 @@ class _ChartPieState extends State<ChartPie> {
                       ),
                     ],
                   ),
-                )
+                ),
             ],
           ),
           Expanded(
@@ -208,15 +217,13 @@ class _Indicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
-      onEnter: (_) {
-        changeSelectedIndex();
-      },
+      onEnter: (_) => changeSelectedIndex(),
       child: GestureDetector(
         onTap: changeSelectedIndex,
         child: Padding(
-          padding: padding ?? const EdgeInsets.only(bottom: 0),
+          padding: padding ?? const EdgeInsets.only(bottom: 8),
           child: Row(
-            children: <Widget>[
+            children: [
               Container(
                 width: isSelected ? indicatorSize * 1.3 : indicatorSize,
                 height: isSelected ? indicatorSize * 1.3 : indicatorSize,
@@ -230,25 +237,19 @@ class _Indicator extends StatelessWidget {
                 child: RichText(
                   text: TextSpan(
                     text: title,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(fontWeight: FontWeight.bold),
                     children: [
                       if (subtitle != null)
                         TextSpan(
                           text: "\n$subtitle",
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    fontStyle: FontStyle.italic,
-                                  ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.copyWith(fontStyle: FontStyle.italic),
                         ),
-                      TextSpan(
-                        text:
-                            "\n${value.toString().toBrazilianNumber().addBrazilianCoin()}",
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              fontStyle: FontStyle.italic,
-                            ),
-                      ),
                     ],
                   ),
                 ),
@@ -273,4 +274,161 @@ class PieParameter {
     this.subtitle,
     this.color,
   });
+}
+
+/// A clock that paints the passed portion of the day as a filled pie slice.
+class DayProgressClock extends StatefulWidget {
+  /// The date to represent (if not today, will show as completed).
+  final DateTime date;
+
+  /// Radius of the clock circle.
+  final double radius;
+
+  /// Color for the passed slice.
+  final Color passedColor;
+
+  /// Color for the remaining area.
+  final Color remainingColor;
+
+  const DayProgressClock({
+    super.key,
+    required this.date,
+    this.radius = 40,
+    this.passedColor = Colors.blue,
+    this.remainingColor = Colors.grey,
+  });
+
+  @override
+  DayProgressClockState createState() => DayProgressClockState();
+}
+
+class DayProgressClockState extends State<DayProgressClock> {
+  late bool _isCurrentDay;
+  late DateTime _displayTime;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _setupClock();
+  }
+
+  @override
+  void didUpdateWidget(covariant DayProgressClock oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.date != oldWidget.date) {
+      // Cancel the old timer before setting up a new one
+      _timer?.cancel(); // <--- This line is crucial
+      _setupClock();
+    }
+  }
+
+  void _setupClock() {
+    final now = DateTime.now();
+    _isCurrentDay = widget.date.year == now.year &&
+        widget.date.month == now.month &&
+        widget.date.day == now.day;
+
+    // Always cancel any existing timer before potentially creating a new one
+    _timer?.cancel();
+    _timer = null; // Clear the reference
+
+    if (_isCurrentDay) {
+      _displayTime = now;
+      _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+        // Only call setState if the widget is still mounted
+        if (mounted) {
+          // <--- Added this check
+          setState(() => _displayTime = DateTime.now());
+        }
+      });
+    } else {
+      _displayTime = DateTime(
+        widget.date.year,
+        widget.date.month,
+        widget.date.day,
+        23,
+        59,
+        59,
+      );
+      // No timer needed if it's not the current day
+    }
+  }
+
+  @override
+  void dispose() {
+    _timer
+        ?.cancel(); // Ensure the timer is cancelled when the widget is disposed
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final totalSeconds = 24 * 3600;
+    final passedSeconds = _isCurrentDay
+        ? _displayTime.hour * 3600 +
+            _displayTime.minute * 60 +
+            _displayTime.second
+        : totalSeconds;
+    final fraction = passedSeconds / totalSeconds;
+    final timeString = DateFormat.Hm().format(_displayTime);
+
+    return SizedBox(
+      width: widget.radius * 2,
+      height: widget.radius * 2,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          CustomPaint(
+            size: Size(widget.radius * 2, widget.radius * 2),
+            painter: _DayProgressPainter(
+              fraction: fraction,
+              passedColor: widget.passedColor,
+              remainingColor: widget.remainingColor,
+            ),
+          ),
+          Text(
+            timeString,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _DayProgressPainter extends CustomPainter {
+  final double fraction;
+  final Color passedColor;
+  final Color remainingColor;
+
+  _DayProgressPainter({
+    required this.fraction,
+    required this.passedColor,
+    required this.remainingColor,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final center = Offset(size.width / 2, size.height / 2);
+    final radius = size.width / 2;
+    final rect = Rect.fromCircle(center: center, radius: radius);
+    const startAngle = -pi / 2;
+    final sweepAngle = 2 * pi * fraction;
+
+    // Draw the remaining background
+    final paintRemaining = Paint()..color = remainingColor;
+    canvas.drawCircle(center, radius, paintRemaining);
+
+    // Draw the passed slice
+    final paintPassed = Paint()..color = passedColor;
+    canvas.drawArc(rect, startAngle, sweepAngle, true, paintPassed);
+  }
+
+  @override
+  bool shouldRepaint(covariant _DayProgressPainter old) {
+    return old.fraction != fraction ||
+        old.passedColor != passedColor ||
+        old.remainingColor != remainingColor;
+  }
 }

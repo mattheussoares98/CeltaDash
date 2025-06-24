@@ -17,6 +17,30 @@ class DailyStatistics extends StatelessWidget {
     required this.saleStatistics,
   });
 
+  String getSubTitle(
+    List<SaleStatisticViewModel> statistics,
+    HomePresenter homePresenter,
+  ) {
+    String subtitle = "";
+
+    if (statistics.isEmpty) {
+      return subtitle;
+    }
+    double totalTickets = statistics
+        .quantitySales(enterprise: homePresenter.selectedEnterprise)
+        .toDouble();
+
+    double totalValue = statistics.sumLiquidValue();
+    subtitle +=
+        "${R.string.sales}: ${totalValue.toString().toBrazilianNumber().addBrazilianCoin()}";
+    subtitle +=
+        "\n${R.string.quantityAbbreviated}: ${totalTickets.toString().toBrazilianNumber()}";
+    subtitle +=
+        "\n${R.string.average}: ${statistics.ticketAverage(homePresenter.selectedEnterprise).toString().toBrazilianNumber().addBrazilianCoin()}";
+
+    return subtitle;
+  }
+
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
@@ -72,26 +96,36 @@ class DailyStatistics extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
         child: ChartPie(
           showTotalAmount: false,
+          centerSpaceRadius: 50,
+          centerDate: homePresenter.selectedDate,
+          centerPassedColor: Colors.grey[350]!,
+          centerRemainingColor: Colors.white,
           pieParameters: [
             PieParameter(
               title: "${DateFormat("dd/MM").format(
                 homePresenter.selectedDate,
               )}"
                   "${isCurrentDay ? " ${R.string.until.toLowerCase()} ${now.hour + 1}h" : ""}",
-              color: Colors.amber,
-              subtitle: "subtitle",
-              value: selectedDayStatistics?.sumLiquidValue() ?? 0,
+              color: Colors.green,
+              subtitle: getSubTitle(
+                selectedDayStatistics ?? [],
+                homePresenter,
+              ),
+              value: selectedDayStatistics?.sumLiquidValue() ?? 1,
             ),
             PieParameter(
               title: "${DateFormat("dd/MM").format(DateTime(
                 homePresenter.selectedDate.year,
                 homePresenter.selectedDate.month - 1,
                 homePresenter.selectedDate.day,
-              ))} "
+              ))}"
                   "${isCurrentDay ? " ${R.string.until.toLowerCase()} ${now.hour + 1}h" : ""}",
-              color: Colors.green,
-              subtitle: "subtitle",
-              value: previousMonthStatistics?.sumLiquidValue() ?? 0,
+              color: Colors.orange,
+              subtitle: getSubTitle(
+                previousMonthStatistics ?? [],
+                homePresenter,
+              ),
+              value: previousMonthStatistics?.sumLiquidValue() ?? 1,
             ),
           ],
         ),
