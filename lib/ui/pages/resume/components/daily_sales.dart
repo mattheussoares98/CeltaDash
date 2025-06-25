@@ -35,8 +35,6 @@ class DailyStatistics extends StatelessWidget {
         .where((e) {
           if (e.Date == null) {
             return false;
-          } else if (isCurrentDay) {
-            return e.Hour! <= now.hour && e.Date!.year == now.year;
           } else {
             return e.Date!.year == now.year;
           }
@@ -52,10 +50,6 @@ class DailyStatistics extends StatelessWidget {
         .where((e) {
           if (e.Date == null) {
             return false;
-          } else if (isCurrentDay) {
-            return e.Hour! <= now.hour &&
-                e.Date?.month != now.month &&
-                e.Date!.year == now.year;
           } else {
             return e.Date?.month != now.month && e.Date!.year == now.year;
           }

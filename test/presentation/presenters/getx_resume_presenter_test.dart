@@ -271,7 +271,7 @@ void main() {
                   now.hour,
                   now.minute,
                 ),
-                groupByHour: true,
+                groupByDay: true,
                 groupByEnterprise: true,
                 enterpriseIds: [
                   homePresenter.selectedEnterpriseMock!.id!.toInt()
@@ -297,7 +297,7 @@ void main() {
                   now.hour,
                   now.minute,
                 ),
-                groupByHour: true,
+                groupByDay: true,
                 groupByEnterprise: true,
                 enterpriseIds: [
                   homePresenter.selectedEnterpriseMock!.id!.toInt()

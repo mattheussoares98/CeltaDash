@@ -119,7 +119,7 @@ class GetxResumePresenter extends GetxController
           now.minute,
         ),
         groupByEnterprise: true,
-        groupByHour: true,
+        groupByDay: true,
         enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
       ),
     );
@@ -139,7 +139,7 @@ class GetxResumePresenter extends GetxController
           now.minute,
         ),
         groupByEnterprise: true,
-        groupByHour: true,
+        groupByDay: true,
         enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
       ),
     );
