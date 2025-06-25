@@ -1,8 +1,9 @@
-import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import '../../helpers/helpers.dart';
 
 /// A clock that paints the passed portion of the day as a filled pie slice.
 class DayProgressClock extends StatefulWidget {
@@ -32,38 +33,65 @@ class DayProgressClock extends StatefulWidget {
 
 class DayProgressClockState extends State<DayProgressClock> {
   late bool _isCurrentDay;
-  late DateTime _displayTime;
-  Timer? _timer;
+  late DateTime? _displayTime;
+  // Timer? _timer;
 
   @override
   void initState() {
     super.initState();
-    _setupClock();
+    // _setupClock();
   }
 
   @override
   void didUpdateWidget(covariant DayProgressClock oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.date != oldWidget.date) {
-      _timer?.cancel();
-      _setupClock();
-    }
+    // if (widget.date != oldWidget.date) {
+    //   _timer?.cancel();
+    //   _setupClock();
+    // }
   }
 
-  void _setupClock() {
-    _timer?.cancel();
+  // void _setupClock() {
+  //   _timer?.cancel();
+  //   final now = DateTime.now();
+  // _isCurrentDay = widget.date.year == now.year &&
+  //       widget.date.month == now.month &&
+  //       widget.date.day == now.day;
+
+  //   if (_isCurrentDay) {
+  //     _displayTime = now;
+  //     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+  //       if (mounted) setState(() => _displayTime = DateTime.now());
+  //     });
+  //   } else {
+  //     _timer = null;
+  //     _displayTime = DateTime(
+  //       widget.date.year,
+  //       widget.date.month,
+  //       widget.date.day,
+  //       23,
+  //       59,
+  //       59,
+  //     );
+  //   }
+  // }
+
+  @override
+  void dispose() {
+    // _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final now = DateTime.now();
     _isCurrentDay = widget.date.year == now.year &&
         widget.date.month == now.month &&
         widget.date.day == now.day;
 
     if (_isCurrentDay) {
-      _displayTime = now;
-      _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-        if (mounted) setState(() => _displayTime = DateTime.now());
-      });
+      _displayTime = widget.date;
     } else {
-      _timer = null;
       _displayTime = DateTime(
         widget.date.year,
         widget.date.month,
@@ -73,24 +101,15 @@ class DayProgressClockState extends State<DayProgressClock> {
         59,
       );
     }
-  }
 
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     final totalSeconds = 24 * 3600;
     final passedSeconds = _isCurrentDay
-        ? _displayTime.hour * 3600 +
-            _displayTime.minute * 60 +
-            _displayTime.second
+        ? _displayTime!.hour * 3600 +
+            _displayTime!.minute * 60 +
+            _displayTime!.second
         : totalSeconds;
     final fraction = passedSeconds / totalSeconds;
-    final timeString = DateFormat.Hm().format(_displayTime);
+    final timeString = DateFormat.Hm().format(_displayTime!);
 
     return SizedBox(
       width: widget.radius * 2,
@@ -107,7 +126,8 @@ class DayProgressClockState extends State<DayProgressClock> {
             ),
           ),
           Text(
-            timeString,
+            "${R.string.until}\n$timeString",
+            textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
         ],

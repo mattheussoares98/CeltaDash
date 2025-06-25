@@ -76,7 +76,7 @@ class DailyStatistics extends StatelessWidget {
           ChartPieWidget(
             showTotalAmount: false,
             centerSpaceRadius: 50,
-            centerDate: homePresenter.selectedDate,
+            centerDate: resumePresenter.lastDateGetCompareDays,
             centerPassedColor: Colors.grey[350]!,
             centerRemainingColor: Colors.white,
             pieParameters: [
@@ -182,9 +182,8 @@ class Title extends StatelessWidget {
       homePresenter.selectedDate.day,
     );
 
-    final title = isPreviousMonth
-        ? "${DateFormat("dd/MM").format(previowsDate)} ${R.string.until.toLowerCase()} ${now.hour + 1}h"
-        : "${R.string.until} ${now.hour + 1}h";
+    final title =
+        isPreviousMonth ? DateFormat("dd/MM").format(previowsDate) : "";
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
