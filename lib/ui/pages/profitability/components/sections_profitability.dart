@@ -4,10 +4,10 @@ import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
-class Sections extends StatelessWidget {
+class SectionsProfitability extends StatelessWidget {
   final List<SaleStatisticViewModel> saleStatistics;
 
-  const Sections({
+  const SectionsProfitability({
     super.key,
     required this.saleStatistics,
   });

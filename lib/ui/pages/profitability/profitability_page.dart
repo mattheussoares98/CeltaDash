@@ -164,7 +164,9 @@ class _ProfitabilityPageState extends State<ProfitabilityPage>
                                   DepartmentsProfitability(
                                     salesDepartments: salesDepartments,
                                   ),
-                                  Sections(saleStatistics: salesDepartments),
+                                  SectionsProfitability(
+                                    saleStatistics: salesDepartments,
+                                  ),
                                 ],
                               );
                             }),
