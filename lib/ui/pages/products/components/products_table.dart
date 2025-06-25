@@ -32,7 +32,7 @@ class ProductsTable extends StatelessWidget {
         PersonalizedTableCell(value: index + 1),
         PersonalizedTableCell(value: productName),
         PersonalizedTableCell(
-            value: sale.LiquidValue?.toDouble(), isMoney: true),
+            value: sale.LiquidValue?.toDouble() ?? 0, isMoney: true),
         PersonalizedTableCell(value: sale.QuantityOfProducts?.toDouble()),
         PersonalizedTableCell(value: ticketAverage, isMoney: true),
       ]);
