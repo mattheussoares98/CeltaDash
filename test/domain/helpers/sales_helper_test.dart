@@ -101,7 +101,7 @@ void main() {
           forceRefresh: false,
           lastParams: lastParams,
           selectedDate: homePresenter.selectedDateMock.add(
-            Duration(days: faker.randomGenerator.integer(30)),
+            Duration(days: faker.randomGenerator.integer(min: 1, 30)),
           ),
           periodType: PeriodType.daily,
         );
@@ -130,7 +130,8 @@ void main() {
         final value = SearchHelper.canSearch(
           forceRefresh: false,
           lastParams: lastGetStatisticsParams,
-          selectedDate: lastGetStatisticsParams.startDate.add(Duration(days: 31)),
+          selectedDate:
+              lastGetStatisticsParams.startDate.add(Duration(days: 31)),
           periodType: PeriodType.monthly,
         );
 
