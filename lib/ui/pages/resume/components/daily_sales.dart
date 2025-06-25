@@ -66,7 +66,7 @@ class DailyStatistics extends StatelessWidget {
 
     return Container(
       decoration: ContainerDecoration.decoration,
-      padding: EdgeInsets.symmetric(vertical: 4),
+      padding: EdgeInsets.all(8),
       child: Column(
         children: [
           Text(
@@ -74,10 +74,10 @@ class DailyStatistics extends StatelessWidget {
             style: Theme.of(context).textTheme.displayLarge,
           ),
           ChartPieWidget(
+            paddingItems: EdgeInsets.all(1),
             showTotalAmount: false,
-            centerSpaceRadius: 50,
             centerDate: resumePresenter.lastDateGetCompareDays,
-            centerPassedColor: Colors.grey[350]!,
+            centerPassedColor: Colors.grey[400]!,
             centerRemainingColor: Colors.white,
             pieParameters: [
               PieParameter(
@@ -194,13 +194,15 @@ class Title extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
         ),
-        Text(
-          totalValue.toString().toBrazilianNumber().addBrazilianCoin(),
-          style: Theme.of(Get.context!).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-                fontSize: 25,
-                color: color,
-              ),
+        FittedBox(
+          child: Text(
+            totalValue.toString().toBrazilianNumber().addBrazilianCoin(),
+            style: Theme.of(Get.context!).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  color: color,
+                ),
+          ),
         ),
       ],
     );

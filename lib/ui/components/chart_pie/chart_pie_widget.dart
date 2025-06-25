@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import '../../../main/utils/utils.dart';
 import '../../helpers/helpers.dart';
 import 'chart_pie.dart';
 
@@ -13,8 +14,6 @@ class ChartPieWidget extends StatefulWidget {
 
   // Date for the clock: if null, no clock; if not today's date, shows completed.
   final DateTime? centerDate;
-  // Radius of the center hole (and clock).
-  final double centerSpaceRadius;
   // Color for the passed slice in the clock.
   final Color centerPassedColor;
   // Color for the remaining slice in the clock.
@@ -28,7 +27,6 @@ class ChartPieWidget extends StatefulWidget {
     this.paddingItems,
     this.showTotalAmount = true,
     this.centerDate,
-    this.centerSpaceRadius = 40,
     this.centerPassedColor = Colors.blue,
     this.centerRemainingColor = const Color(0xFFE0E0E0),
   });
@@ -39,7 +37,7 @@ class ChartPieWidget extends StatefulWidget {
 
 class _ChartPieWidgetState extends State<ChartPieWidget> {
   int? selectedIndex;
-  double indicatorSize = 16;
+
   final colors = [
     Colors.green,
     Colors.amber,
@@ -90,7 +88,7 @@ class _ChartPieWidgetState extends State<ChartPieWidget> {
     }
   }
 
-  List<Indicator> getIndicators() {
+  List<Indicator> getIndicators(double indicatorSize) {
     return List.generate(
       widget.pieParameters.length,
       (i) {
@@ -116,88 +114,91 @@ class _ChartPieWidgetState extends State<ChartPieWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final chartSize = MediaQuery.of(context).size.width * 0.4;
-    return Padding(
-      padding: const EdgeInsets.only(left: 8),
-      child: Row(
-        children: [
-          Column(
-            children: [
-              SizedBox(
-                width: chartSize,
-                height: chartSize,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    PieChart(
-                      PieChartData(
-                        pieTouchData: PieTouchData(
-                          touchCallback:
-                              (FlTouchEvent event, PieTouchResponse? resp) {
-                            // Only act once on tap up
-                            if (event is FlTapUpEvent) {
-                              final idx =
-                                  resp?.touchedSection?.touchedSectionIndex;
-                              if (idx != null && idx >= 0) {
-                                changeSelectedIndex(idx);
-                              } else {
-                                changeSelectedIndex(null);
-                              }
+    double screenWidth =
+        MediaQuery.of(NavigatorKey.key.currentState!.context).size.width;
+    double chartWidth = screenWidth * 0.4;
+    double indicatorSize = screenWidth * 0.06;
+    double chartPadding = screenWidth * 0.01;
+    double centerSpaceRadius = screenWidth * 0.1;
+
+    return Row(
+      children: [
+        Column(
+          children: [
+            SizedBox(
+              width: chartWidth,
+              height: chartWidth,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  PieChart(
+                    PieChartData(
+                      pieTouchData: PieTouchData(
+                        touchCallback:
+                            (FlTouchEvent event, PieTouchResponse? resp) {
+                          // Only act once on tap up
+                          if (event is FlTapUpEvent) {
+                            final idx =
+                                resp?.touchedSection?.touchedSectionIndex;
+                            if (idx != null && idx >= 0) {
+                              changeSelectedIndex(idx);
+                            } else {
+                              changeSelectedIndex(null);
                             }
-                          },
-                        ),
-                        borderData: null,
-                        sectionsSpace: 3,
-                        centerSpaceRadius: widget.centerSpaceRadius,
-                        centerSpaceColor: Colors.transparent,
-                        sections: getSections(chartSize),
-                        startDegreeOffset: 180,
+                          }
+                        },
                       ),
+                      borderData: null,
+                      sectionsSpace: 3,
+                      centerSpaceRadius: centerSpaceRadius,
+                      centerSpaceColor: Colors.transparent,
+                      sections: getSections(chartWidth),
+                      startDegreeOffset: 180,
                     ),
-                    if (widget.centerDate != null)
-                      DayProgressClock(
-                        date: widget.centerDate!,
-                        radius: widget.centerSpaceRadius,
-                        passedColor: widget.centerPassedColor,
-                        remainingColor: widget.centerRemainingColor,
-                      ),
+                  ),
+                  if (widget.centerDate != null)
+                    DayProgressClock(
+                      date: widget.centerDate!,
+                      radius: centerSpaceRadius,
+                      passedColor: widget.centerPassedColor,
+                      remainingColor: widget.centerRemainingColor,
+                    ),
+                ],
+              ),
+            ),
+            if (widget.showTotalAmount == true)
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Column(
+                  children: [
+                    Text(
+                      R.string.total,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    Text(
+                      widget.pieParameters
+                          .fold(0.0, (p, e) => p + e.value)
+                          .toString()
+                          .toBrazilianNumber()
+                          .addBrazilianCoin(),
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
                   ],
                 ),
               ),
-              if (widget.showTotalAmount == true)
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Column(
-                    children: [
-                      Text(
-                        R.string.total,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      Text(
-                        widget.pieParameters
-                            .fold(0.0, (p, e) => p + e.value)
-                            .toString()
-                            .toBrazilianNumber()
-                            .addBrazilianCoin(),
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ],
-                  ),
-                ),
-            ],
-          ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(left: indicatorSize),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: getIndicators(),
-              ),
+          ],
+        ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.only(left: chartPadding),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: getIndicators(indicatorSize),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
