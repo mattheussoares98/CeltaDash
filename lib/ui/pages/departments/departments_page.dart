@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -95,24 +96,20 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                       ),
                     ],
                   ),
-
-                  TabBar(
-                    labelColor: Theme.of(context).primaryColor,
-                    unselectedLabelColor: Colors.grey,
-                    dividerColor: Colors.transparent,
+                  DefaultTabBar(
                     tabs: [
-                      Tab(
-                        icon: Icon(Icons.apartment),//TODO add cupertino as well
-                        text: R.string.departments,
+                      DefaultTab(
+                        title: R.string.departments,
+                        materialIcon: Icons.apartment,
+                        cupertinoIcon: CupertinoIcons.building_2_fill,
                       ),
-                      Tab(
-                        icon: Icon(Icons.view_module),
-                        text: R.string.sections,
+                      DefaultTab(
+                        title: R.string.sections,
+                        materialIcon: Icons.view_module,
+                        cupertinoIcon: CupertinoIcons.square_grid_2x2,
                       ),
                     ],
                   ),
-
-                  // the content
                   Expanded(
                     child: Obx(() {
                       final daily = departmentsPresenter.dailyStatistics
