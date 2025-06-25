@@ -16,9 +16,8 @@ class CompareDaysPage extends StatefulWidget {
 }
 
 class _ProfitabilityPageState extends State<CompareDaysPage>
-    with UIErrorManager, LoadingManager {
+    with UIErrorManager {
   StreamSubscription? mainErrorSubscription;
-  StreamSubscription? loadingSubscription;
   static final _now = DateTime.now();
   final firstDay = DateTime(_now.year, _now.month, _now.day - 1);
   final secondDay = DateTime(_now.year, _now.month, _now.day);
@@ -45,7 +44,6 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
   void dispose() {
     super.dispose();
     mainErrorSubscription?.cancel();
-    loadingSubscription?.cancel();
   }
 
   @override
@@ -53,64 +51,79 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
     HomePresenter homePresenter = Get.find();
     CompareDaysPresenter compareDaysPresenter = Get.find();
 
-    loadingSubscription?.cancel();
-    loadingSubscription =
-        handleLoading(context, compareDaysPresenter.isLoadingStream);
     mainErrorSubscription?.cancel();
     mainErrorSubscription =
         handleMainError(context, compareDaysPresenter.mainErrorStream);
 
-    return Scaffold(
-      appBar: DefaultAppBar(
-        onChangeEnterprise: (_) async {
-          await compareDaysPresenter.getSales(
-            firstDay: compareDaysPresenter.selectedFirstDay ?? firstDay,
-            secondDay: compareDaysPresenter.selectedSecondDay ?? secondDay,
-            homePresenter: homePresenter,
-          );
-        },
-        showDatePicker: false,
-      ),
-      body: SafeArea(
-        child: Obx(() {
-          Get.put<CompareDaysPresenter>(compareDaysPresenter);
-
-          final saleStatistics = compareDaysPresenter.saleStatistics;
-
-          if (saleStatistics == null || saleStatistics.isEmpty) {
-            return EmptySales(isLoading: false);
-          }
-
-          return Column(
-            children: [
-              ChangeDatesButtons(
-                firstDay: compareDaysPresenter.selectedFirstDay ?? firstDay,
-                secondDay: compareDaysPresenter.selectedSecondDay ?? secondDay,
-              ),
-              if (compareDaysPresenter.selectedFirstDay != null &&
-                  compareDaysPresenter.selectedSecondDay != null)
-                Expanded(
-                  child: Column(
-                    children: [
-                      CompareTable(
-                        firstDay:
-                            compareDaysPresenter.selectedFirstDay ?? firstDay,
-                        secondDay:
-                            compareDaysPresenter.selectedSecondDay ?? secondDay,
-                      ),
-                      Result(
-                        firstDay:
-                            compareDaysPresenter.selectedFirstDay ?? firstDay,
-                        secondDay:
-                            compareDaysPresenter.selectedSecondDay ?? secondDay,
-                      ),
-                    ],
+    return StreamBuilder(
+        stream: compareDaysPresenter.isLoadingStream,
+        builder: (context, loadingSnap) {
+          return Scaffold(
+            appBar: DefaultAppBar(
+              onChangeEnterprise: (_) async {
+                await compareDaysPresenter.getSales(
+                  firstDay: compareDaysPresenter.selectedFirstDay ?? firstDay,
+                  secondDay:
+                      compareDaysPresenter.selectedSecondDay ?? secondDay,
+                  homePresenter: homePresenter,
+                );
+              },
+              showDatePicker: false,
+            ),
+            body: SafeArea(
+              child: Column(
+                children: [
+                  ChangeDatesButtons(
+                    firstDay: compareDaysPresenter.selectedFirstDay ?? firstDay,
+                    secondDay:
+                        compareDaysPresenter.selectedSecondDay ?? secondDay,
+                    isLoading: loadingSnap.data,
                   ),
-                ),
-            ],
+                  Expanded(
+                    child: Obx(() {
+                      Get.put<CompareDaysPresenter>(compareDaysPresenter);
+
+                      final saleStatistics =
+                          compareDaysPresenter.saleStatistics;
+
+                      if (saleStatistics == null || saleStatistics.isEmpty) {
+                        return EmptySales(isLoading: loadingSnap.data == true);
+                      }
+
+                      return Column(
+                        children: [
+                          if (compareDaysPresenter.selectedFirstDay != null &&
+                              compareDaysPresenter.selectedSecondDay != null)
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  CompareTable(
+                                    firstDay:
+                                        compareDaysPresenter.selectedFirstDay ??
+                                            firstDay,
+                                    secondDay: compareDaysPresenter
+                                            .selectedSecondDay ??
+                                        secondDay,
+                                  ),
+                                  Result(
+                                    firstDay:
+                                        compareDaysPresenter.selectedFirstDay ??
+                                            firstDay,
+                                    secondDay: compareDaysPresenter
+                                            .selectedSecondDay ??
+                                        secondDay,
+                                  ),
+                                ],
+                              ),
+                            ),
+                        ],
+                      );
+                    }),
+                  ),
+                ],
+              ),
+            ),
           );
-        }),
-      ),
-    );
+        });
   }
 }
