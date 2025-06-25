@@ -24,6 +24,7 @@ void main() {
   late LoadSaleStatisticsSpy loadSaleStatistics;
 
   late List<SaleStatisticsEntity> saleStatisticsEntities;
+  late DateTime now;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
@@ -47,6 +48,7 @@ void main() {
       EntityFactory.makeSaleStatisticEntity(),
       EntityFactory.makeSaleStatisticEntity(),
     ];
+    now = DateTime.now();
   }
 
   void initMockSuccess() {
@@ -97,7 +99,7 @@ void main() {
       expectLater(sut.mainErrorStream, emits(null));
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
 
-      await sut.getSales(homePresenter);
+      await sut.getSales(now: now, homePresenter);
     });
 
     test("Should emit correct values on error", () async {
@@ -109,11 +111,11 @@ void main() {
 
       loadSaleStatistics.mockGetError();
 
-      await sut.getSales(homePresenter);
+      await sut.getSales(now: now, homePresenter);
     });
 
     test("Should update sale movements correctly", () async {
-      await sut.getSales(homePresenter);
+      await sut.getSales(now: now, homePresenter);
 
       expect(
         sut.saleStatistics,
@@ -124,7 +126,7 @@ void main() {
     });
 
     test("Should load sale movements with correct values", () async {
-      await sut.getSales(homePresenter);
+      await sut.getSales(now: now, homePresenter);
 
       DateTime startDate = DateTime(
         homePresenter.selectedDateMock.year,
@@ -150,6 +152,7 @@ void main() {
     test("Should update last get sales params correctly when is daily",
         () async {
       await sut.getSales(
+        now: now,
         homePresenter,
         forceRefresh: true,
         periodType: PeriodType.daily,
@@ -178,6 +181,7 @@ void main() {
     test("Should update last get sales params correctly when is monthly",
         () async {
       await sut.getSales(
+        now: now,
         homePresenter,
         forceRefresh: true,
         periodType: PeriodType.monthly,
@@ -201,8 +205,10 @@ void main() {
     });
 
     test("Should not load sales again if dont change the month", () async {
-      await sut.getSales(homePresenter, periodType: PeriodType.monthly);
-      await sut.getSales(homePresenter, periodType: PeriodType.monthly);
+      await sut.getSales(
+          now: now, homePresenter, periodType: PeriodType.monthly);
+      await sut.getSales(
+          now: now, homePresenter, periodType: PeriodType.monthly);
 
       verify(() => loadSaleStatistics.get(
             GetSaleStatisticsParams(
@@ -223,8 +229,8 @@ void main() {
     });
     test("Should load sales again if force refresh", () async {
       homePresenter.selectedDateMock = faker.date.dateTime();
-      await sut.getSales(homePresenter);
-      await sut.getSales(homePresenter, forceRefresh: true);
+      await sut.getSales(now: now, homePresenter);
+      await sut.getSales(now: now, homePresenter, forceRefresh: true);
 
       DateTime startDate = DateTime(
         homePresenter.selectedDateMock.year,
@@ -249,7 +255,7 @@ void main() {
 
     group("Get compare days statistics", () {
       test("Should call current day get sales with correct values", () async {
-        await sut.getSales(homePresenter);
+        await sut.getSales(now: now, homePresenter);
 
         verify(() => loadSaleStatistics.get(
               GetSaleStatisticsParams(
@@ -273,7 +279,7 @@ void main() {
       });
       test("Should call previous month day get sales with correct values",
           () async {
-        await sut.getSales(homePresenter);
+        await sut.getSales(now: now, homePresenter);
 
         verify(() => loadSaleStatistics.get(
               GetSaleStatisticsParams(
@@ -297,7 +303,7 @@ void main() {
       });
 
       test("Should update compare sales statistics correctly", () async {
-        await sut.getSales(homePresenter);
+        await sut.getSales(now: now, homePresenter);
 
         expect(sut.compareDaysStatistics, [
           ...saleStatisticsEntities

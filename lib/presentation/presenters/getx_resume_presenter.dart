@@ -42,6 +42,7 @@ class GetxResumePresenter extends GetxController
   @override
   Future<void> getSales(
     HomePresenter homePresenter, {
+    required DateTime now,
     PeriodType? periodType,
     bool? forceRefresh,
   }) async {
@@ -62,7 +63,7 @@ class GetxResumePresenter extends GetxController
         periodType: PeriodType.monthly,
       );
 
-      await _getCompareDaysStatistics(homePresenter);
+      await _getCompareDaysStatistics(homePresenter, now);
 
       if (!canSearchAgain) {
         return;
@@ -99,7 +100,10 @@ class GetxResumePresenter extends GetxController
     }
   }
 
-  Future<void> _getCompareDaysStatistics(HomePresenter homePresenter) async {
+  Future<void> _getCompareDaysStatistics(
+    HomePresenter homePresenter,
+    DateTime now,
+  ) async {
     final todaySaleStatistics = await loadSaleStatistics.get(
       GetSaleStatisticsParams(
         startDate: DateTime(

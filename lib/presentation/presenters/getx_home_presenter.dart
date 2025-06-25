@@ -273,9 +273,10 @@ class GetxHomePresenter extends GetxController
     ResumePresenter resumePresenter,
     SalesPresenter salesPresenter,
     ProductsPresenter productsPresenter, {
+    required DateTime now,
     bool? forceRefresh,
   }) {
-    resumePresenter.getSales(this, forceRefresh: forceRefresh);
+    resumePresenter.getSales(this, forceRefresh: forceRefresh, now: now);
     salesPresenter.getSales(this, forceRefresh: forceRefresh);
     productsPresenter.getSales(this, forceRefresh: forceRefresh);
   }

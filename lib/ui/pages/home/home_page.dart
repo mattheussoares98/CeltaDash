@@ -51,6 +51,7 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
           resumePresenter,
           salesPresenter,
           productsPresenter,
+          now: DateTime.now(),
         );
       }
     });
@@ -83,6 +84,7 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
         resumePresenter,
         salesPresenter,
         productsPresenter,
+        now: DateTime.now(),
       ),
     );
   }

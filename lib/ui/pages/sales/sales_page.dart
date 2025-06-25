@@ -73,6 +73,7 @@ class _SalesPageState extends State<SalesPage>
                   resumePresenter,
                   salesPresenter,
                   productsPresenter,
+                  now: DateTime.now(),
                 );
               },
               onChangeDate: (_) {
@@ -80,6 +81,7 @@ class _SalesPageState extends State<SalesPage>
                   resumePresenter,
                   salesPresenter,
                   productsPresenter,
+                  now: DateTime.now(),
                 );
               },
               onTapRefresh: () {
@@ -88,6 +90,7 @@ class _SalesPageState extends State<SalesPage>
                   salesPresenter,
                   productsPresenter,
                   forceRefresh: true,
+                  now: DateTime.now(),
                 );
               },
             ),

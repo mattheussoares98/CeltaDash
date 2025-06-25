@@ -49,6 +49,7 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                   resumePresenter,
                   salesPresenter,
                   productsPresenter,
+                  now: DateTime.now(),
                 );
               },
               onChangeDate: (_) {
@@ -56,6 +57,7 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                   resumePresenter,
                   salesPresenter,
                   productsPresenter,
+                  now: DateTime.now(),
                 );
               },
               onTapRefresh: () {
@@ -64,6 +66,7 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                   salesPresenter,
                   productsPresenter,
                   forceRefresh: true,
+                  now: DateTime.now(),
                 );
               },
             ),

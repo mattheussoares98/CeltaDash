@@ -19,6 +19,7 @@ abstract class ResumePresenter implements Listenable {
 
   Future<void> getSales(
     HomePresenter homePresenter, {
+    required DateTime now,
     PeriodType? periodType,
     bool? forceRefresh,
   });

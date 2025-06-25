@@ -16,8 +16,11 @@ class ResumePresenterSpy extends Mock implements ResumePresenter {
     this._mockGetSalesCall().thenAnswer((any) async => any);
   }
 
-  When _mockGetSalesCall() => when(
-      () => this.getSales(any(), forceRefresh: any(named: "forceRefresh")));
+  When _mockGetSalesCall() => when(() => this.getSales(
+        any(),
+        forceRefresh: any(named: "forceRefresh"),
+        now: any(named: "now"),
+      ));
   void mockGetSalesError() {
     this._mockGetSalesCall().thenThrow(DomainError.unexpected);
   }

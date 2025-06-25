@@ -36,6 +36,7 @@ abstract class HomePresenter implements Listenable {
     ResumePresenter resumePresenter,
     SalesPresenter salesPresenter,
     ProductsPresenter productsPresenter, {
+    required DateTime now,
     bool? forceRefresh,
   });
 }

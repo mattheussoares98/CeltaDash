@@ -36,6 +36,7 @@ void main() {
   late MockedFirebaseGet mockedFirebaseGet;
   late DocumentReferenceFake docRef;
   late FirebaseEnterpriseEntity enterpriseOnLogout;
+  late DateTime now;
 
   void initUsecases() {
     navigateTo = NavigateToSpy();
@@ -84,6 +85,7 @@ void main() {
         CrossIdentity_Usuario: null,
       ),
     );
+    now = DateTime.now();
   }
 
   void initMockSuccess() {
@@ -517,9 +519,17 @@ void main() {
   group("Reload sales", () {
     group("Resume presenter", () {
       test("Should call resumePresenter get sales", () async {
-        sut.reloadSales(resumePresenter, salesPresenter, productsPresenter);
+        sut.reloadSales(
+          resumePresenter,
+          salesPresenter,
+          productsPresenter,
+          now: now,
+        );
 
-        verify(() => resumePresenter.getSales(sut)).called(1);
+        verify(() => resumePresenter.getSales(
+              sut,
+              now: now,
+            )).called(1);
       });
 
       test("Should call resumePresenter get sales forcing refresh", () async {
@@ -528,16 +538,25 @@ void main() {
           salesPresenter,
           productsPresenter,
           forceRefresh: true,
+          now: now,
         );
 
-        verify(() => resumePresenter.getSales(sut, forceRefresh: true))
-            .called(1);
+        verify(() => resumePresenter.getSales(
+              sut,
+              forceRefresh: true,
+              now: now,
+            )).called(1);
       });
     });
 
     group("SalesPresenter", () {
       test("Should call salesPresenter get sales", () async {
-        sut.reloadSales(resumePresenter, salesPresenter, productsPresenter);
+        sut.reloadSales(
+          resumePresenter,
+          salesPresenter,
+          productsPresenter,
+          now: now,
+        );
 
         verify(() => salesPresenter.getSales(sut)).called(1);
       });
@@ -548,6 +567,7 @@ void main() {
           salesPresenter,
           productsPresenter,
           forceRefresh: true,
+          now: now,
         );
 
         verify(() => salesPresenter.getSales(sut, forceRefresh: true))
@@ -556,7 +576,12 @@ void main() {
     });
     group("ProductsPresenter", () {
       test("Should call ProductsPresenter get sales", () async {
-        sut.reloadSales(resumePresenter, salesPresenter, productsPresenter);
+        sut.reloadSales(
+          resumePresenter,
+          salesPresenter,
+          productsPresenter,
+          now: now,
+        );
 
         verify(() => productsPresenter.getSales(sut)).called(1);
       });
@@ -567,6 +592,7 @@ void main() {
           salesPresenter,
           productsPresenter,
           forceRefresh: true,
+          now: now,
         );
 
         verify(() => productsPresenter.getSales(sut, forceRefresh: true))
