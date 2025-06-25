@@ -32,7 +32,11 @@ class _ProfitabilityPageState extends State<ProfitabilityPage>
     DepartmentsPresenter departmentsPresenter = Get.find();
 
     departmentsPresenter.getSales(homePresenter, forceRefresh: forceRefresh);
-    productsPresenter.getSales(homePresenter, forceRefresh: forceRefresh);
+    productsPresenter.getSales(
+      homePresenter,
+      forceRefresh: forceRefresh,
+      periodType: departmentsPresenter.selectedPeriod,
+    );
   }
 
   @override
@@ -84,29 +88,26 @@ class _ProfitabilityPageState extends State<ProfitabilityPage>
                   ),
                   body: SafeArea(
                     child: DefaultTabController(
-                      length: 2,
+                      length: 3,
                       child: Column(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SelectPeriodItems(
-                              isLoading: loadingProductsSnap.data == true ||
-                                  loadingDepartmentsSnap.data == true,
-                              selectedPeriodType:
-                                  departmentsPresenter.selectedPeriod,
-                              onTapDaily: () {
-                                departmentsPresenter.getSales(
-                                  homePresenter,
-                                  periodType: PeriodType.daily,
-                                );
-                              },
-                              onTapMonthly: () {
-                                departmentsPresenter.getSales(
-                                  homePresenter,
-                                  periodType: PeriodType.monthly,
-                                );
-                              },
-                            ),
+                          SelectPeriodItems(
+                            isLoading: loadingProductsSnap.data == true ||
+                                loadingDepartmentsSnap.data == true,
+                            selectedPeriodType:
+                                departmentsPresenter.selectedPeriod,
+                            onTapDaily: () {
+                              departmentsPresenter.getSales(
+                                homePresenter,
+                                periodType: PeriodType.daily,
+                              );
+                            },
+                            onTapMonthly: () {
+                              departmentsPresenter.getSales(
+                                homePresenter,
+                                periodType: PeriodType.monthly,
+                              );
+                            },
                           ),
                           DefaultTabBar(
                             tabs: [
@@ -119,6 +120,11 @@ class _ProfitabilityPageState extends State<ProfitabilityPage>
                                 title: R.string.sections,
                                 materialIcon: Icons.view_module,
                                 cupertinoIcon: CupertinoIcons.square_grid_2x2,
+                              ),
+                              DefaultTab(
+                                title: R.string.products,
+                                materialIcon: Icons.shopping_cart_rounded,
+                                cupertinoIcon: CupertinoIcons.cart,
                               ),
                             ],
                           ),
@@ -166,6 +172,10 @@ class _ProfitabilityPageState extends State<ProfitabilityPage>
                                   ),
                                   SectionsProfitability(
                                     saleStatistics: salesDepartments,
+                                  ),
+                                  ProductsProfitability(
+                                    selectedPeriod:
+                                        departmentsPresenter.selectedPeriod,
                                   ),
                                 ],
                               );
