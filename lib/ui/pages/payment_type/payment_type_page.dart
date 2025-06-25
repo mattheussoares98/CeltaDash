@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +22,6 @@ class _PaymentTypePageState extends State<PaymentTypePage>
     with LoadingManager, UIErrorManager {
   int selectedPageIndex = 0;
   StreamSubscription? mainErrorSubscription;
-  final pageController = PageController();
 
   @override
   void initState() {
@@ -42,7 +40,6 @@ class _PaymentTypePageState extends State<PaymentTypePage>
   void dispose() {
     super.dispose();
     mainErrorSubscription?.cancel();
-    pageController.dispose();
   }
 
   @override
@@ -94,26 +91,17 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                         );
                       },
                     ),
-                    TabBar(
-                      labelColor: Theme.of(context).primaryColor,
-                      unselectedLabelColor: Colors.grey,
-                      dividerColor: Colors.transparent,
+                    DefaultTabBar(
                       tabs: [
-                        Tab(
-                          icon: Icon(
-                            Platform.isIOS
-                                ? CupertinoIcons.creditcard
-                                : Icons.credit_card,
-                          ),
-                          text: R.string.modalities,
+                        DefaultTab(
+                          title: R.string.modalities,
+                          materialIcon: Icons.credit_card,
+                          cupertinoIcon: CupertinoIcons.creditcard,
                         ),
-                        Tab(
-                          icon: Icon(
-                            Platform.isIOS
-                                ? CupertinoIcons.list_bullet
-                                : Icons.receipt_long,
-                          ),
-                          text: R.string.sections,
+                        DefaultTab(
+                          title: R.string.finalizations,
+                          materialIcon: Icons.receipt_long,
+                          cupertinoIcon: CupertinoIcons.list_bullet,
                         ),
                       ],
                     ),
