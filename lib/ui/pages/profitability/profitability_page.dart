@@ -82,114 +82,96 @@ class _ProfitabilityPageState extends State<ProfitabilityPage>
                       reloadData(forceRefresh: true);
                     },
                   ),
-                  body: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SelectPeriodItems(
-                          isLoading: loadingProductsSnap.data == true ||
-                              loadingDepartmentsSnap.data == true,
-                          selectedPeriodType:
-                              departmentsPresenter.selectedPeriod,
-                          onTapDaily: () {
-                            departmentsPresenter.getSales(
-                              homePresenter,
-                              periodType: PeriodType.daily,
-                            );
-                          },
-                          onTapMonthly: () {
-                            departmentsPresenter.getSales(
-                              homePresenter,
-                              periodType: PeriodType.monthly,
-                            );
-                          },
-                        ),
-                      ),
-                      Obx(() {
-                        final dailyStatistics =
-                            departmentsPresenter.dailyStatistics
-                                ?.filteredSales(
-                                  enterprise: homePresenter.selectedEnterprise,
-                                  filterDay: homePresenter.selectedDate.day,
-                                  filterMonth: homePresenter.selectedDate.month,
-                                  filterYear: homePresenter.selectedDate.year,
-                                )
-                                .map((e) => e.toViewModel())
-                                .toList();
-                        final monthlyStatistics =
-                            departmentsPresenter.monthlyStatistics
-                                ?.filteredSales(
-                                  enterprise: homePresenter.selectedEnterprise,
-                                  filterMonth: homePresenter.selectedDate.month,
-                                )
-                                .map((e) => e.toViewModel())
-                                .toList();
-
-                        final salesDepartments =
-                            departmentsPresenter.selectedPeriod ==
-                                    PeriodType.daily
-                                ? dailyStatistics
-                                : monthlyStatistics;
-
-                        if (salesDepartments == null ||
-                            salesDepartments.isEmpty) {
-                          return EmptySales(
-                              isLoading: loadingDepartmentsSnap.data);
-                        }
-
-                        return Expanded(
-                          child: Column(
-                            children: [
-                              Expanded(
-                                child: PageView(
-                                  controller: pageController,
-                                  onPageChanged: (value) {
-                                    setState(() {
-                                      selectedPageIndex = value;
-                                    });
-                                  },
-                                  children: [
-                                    DepartmentsProfitability(
-                                      salesDepartments: salesDepartments,
-                                    ),
-                                    Sections(
-                                      saleStatistics: salesDepartments,
-                                    ),
-                                  ],
-                                ),
+                  body: SafeArea(
+                    child: DefaultTabController(
+                      length: 2,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SelectPeriodItems(
+                              isLoading: loadingProductsSnap.data == true ||
+                                  loadingDepartmentsSnap.data == true,
+                              selectedPeriodType:
+                                  departmentsPresenter.selectedPeriod,
+                              onTapDaily: () {
+                                departmentsPresenter.getSales(
+                                  homePresenter,
+                                  periodType: PeriodType.daily,
+                                );
+                              },
+                              onTapMonthly: () {
+                                departmentsPresenter.getSales(
+                                  homePresenter,
+                                  periodType: PeriodType.monthly,
+                                );
+                              },
+                            ),
+                          ),
+                          DefaultTabBar(
+                            tabs: [
+                              DefaultTab(
+                                title: R.string.departments,
+                                materialIcon: Icons.apartment,
+                                cupertinoIcon: CupertinoIcons.building_2_fill,
+                              ),
+                              DefaultTab(
+                                title: R.string.sections,
+                                materialIcon: Icons.view_module,
+                                cupertinoIcon: CupertinoIcons.square_grid_2x2,
                               ),
                             ],
                           ),
-                        );
-                      }),
-                    ],
-                  ),
-                  bottomNavigationBar: BottomNavBar(
-                    currentIndex: selectedPageIndex,
-                    onTap: (value) {
-                      setState(() {
-                        selectedPageIndex = value;
-                      });
-                      if (pageController.hasClients) {
-                        pageController.animateToPage(
-                          value,
-                          duration: Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        );
-                      }
-                    },
-                    items: [
-                      BottomNavItem(
-                        materialIcon: Icon(Icons.apartment),
-                        cupertinoIcon: Icon(CupertinoIcons.building_2_fill),
-                        label: R.string.departments,
+                          Expanded(
+                            child: Obx(() {
+                              final dailyStatistics = departmentsPresenter
+                                  .dailyStatistics
+                                  ?.filteredSales(
+                                    enterprise:
+                                        homePresenter.selectedEnterprise,
+                                    filterDay: homePresenter.selectedDate.day,
+                                    filterMonth:
+                                        homePresenter.selectedDate.month,
+                                    filterYear: homePresenter.selectedDate.year,
+                                  )
+                                  .map((e) => e.toViewModel())
+                                  .toList();
+                              final monthlyStatistics =
+                                  departmentsPresenter.monthlyStatistics
+                                      ?.filteredSales(
+                                        enterprise:
+                                            homePresenter.selectedEnterprise,
+                                        filterMonth:
+                                            homePresenter.selectedDate.month,
+                                      )
+                                      .map((e) => e.toViewModel())
+                                      .toList();
+
+                              final salesDepartments =
+                                  departmentsPresenter.selectedPeriod ==
+                                          PeriodType.daily
+                                      ? dailyStatistics
+                                      : monthlyStatistics;
+
+                              if (salesDepartments == null ||
+                                  salesDepartments.isEmpty) {
+                                return EmptySales(
+                                    isLoading: loadingDepartmentsSnap.data);
+                              }
+
+                              return TabBarView(
+                                children: [
+                                  DepartmentsProfitability(
+                                    salesDepartments: salesDepartments,
+                                  ),
+                                  Sections(saleStatistics: salesDepartments),
+                                ],
+                              );
+                            }),
+                          ),
+                        ],
                       ),
-                      BottomNavItem(
-                        materialIcon: Icon(Icons.view_module),
-                        cupertinoIcon: Icon(CupertinoIcons.square_grid_2x2),
-                        label: R.string.sections,
-                      ),
-                    ],
+                    ),
                   ),
                 );
               });
