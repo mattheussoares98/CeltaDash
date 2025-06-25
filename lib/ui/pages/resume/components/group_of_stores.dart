@@ -74,7 +74,11 @@ class GroupOfStores extends StatelessWidget {
       pieParameters.add(
         PieParameter(
           value: othersTotal,
-          title: Text(R.string.anothersEnterprises),
+          title: Text(R.string.anothersEnterprises,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(fontWeight: FontWeight.bold)),
           subtitle: Text(
             othersTotal.toString().toBrazilianNumber().addBrazilianCoin(),
           ),
@@ -107,6 +111,7 @@ class GroupOfStores extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           ChartPieWidget(
+              paddingItems: EdgeInsets.all(0),
               pieParameters: getPieParameters(homePresenter, context)),
           DefaultButton(
             onTap: resumePresenter.goToGroupSummaryPage,
