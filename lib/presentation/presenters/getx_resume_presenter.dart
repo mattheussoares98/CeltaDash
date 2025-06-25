@@ -144,6 +144,8 @@ class GetxResumePresenter extends GetxController
       ),
     );
 
+    _lastDateGetCompareDays = now;
+
     _compareDaysStatistics.value = [
       ...todaySaleStatistics
           .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel()),
@@ -158,4 +160,8 @@ class GetxResumePresenter extends GetxController
       _compareDaysStatistics.value;
   set compareDaysStatistics(List<SaleStatisticViewModel>? value) =>
       _compareDaysStatistics.value = value;
+
+  DateTime? _lastDateGetCompareDays;
+  @override
+  DateTime? get lastDateGetCompareDays => _lastDateGetCompareDays;
 }

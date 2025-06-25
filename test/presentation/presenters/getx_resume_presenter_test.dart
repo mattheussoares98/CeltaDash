@@ -316,6 +316,11 @@ void main() {
               .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel()),
         ]);
       });
+      test("Should update lastDateGetCompareDays", () async {
+        await sut.getSales(now: now, homePresenter);
+
+        expect(sut.lastDateGetCompareDays, now);
+      });
     });
   });
 }
