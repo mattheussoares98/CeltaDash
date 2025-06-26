@@ -35,14 +35,6 @@ class MorePage extends StatelessWidget {
         title: R.string.sellers,
       ),
       DefaultButton(
-        onTap: homePresenter.goToPaymentsTypePage,
-        title: R.string.payments,
-      ),
-      DefaultButton(
-        onTap: homePresenter.goToDepartmentsPage,
-        title: R.string.departments,
-      ),
-      DefaultButton(
         onTap: homePresenter.goToCompareDays,
         title: R.string.compareDays,
       ),

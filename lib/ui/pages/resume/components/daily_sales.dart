@@ -25,11 +25,6 @@ class DailyStatistics extends StatelessWidget {
         now.month == homePresenter.selectedDate.month &&
         now.year == homePresenter.selectedDate.year;
 
-    if (resumePresenter.compareDaysStatistics == null ||
-        resumePresenter.compareDaysStatistics!.isEmpty) {
-      return EmptySales(isLoading: false);
-    }
-
     final selectedDayStatistics = resumePresenter.compareDaysStatistics
         ?.filteredSales(
           enterprise: homePresenter.selectedEnterprise,
@@ -74,57 +69,86 @@ class DailyStatistics extends StatelessWidget {
       padding: EdgeInsets.all(8),
       child: Column(
         children: [
-          RichText(
-            textAlign: TextAlign.center,
-            text: TextSpan(
+          if (resumePresenter.compareDaysStatistics == null ||
+              resumePresenter.compareDaysStatistics!.isEmpty)
+            EmptySales(isLoading: false),
+          if (resumePresenter.compareDaysStatistics != null &&
+              resumePresenter.compareDaysStatistics!.isNotEmpty)
+            Column(
               children: [
-                TextSpan(text: R.string.salesOfTheDay.toUpperCase()),
-                TextSpan(
-                  text: " (${percentageResult.toStringAsFixed(0)}%)",
-                  style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    children: [
+                      TextSpan(text: R.string.salesOfTheDay.toUpperCase()),
+                      TextSpan(
+                        text: " (${percentageResult.toStringAsFixed(0)}%)",
+                        style:
+                            Theme.of(context).textTheme.displayLarge?.copyWith(
+                                  color: percentageResult >= 0
+                                      ? Colors.green
+                                      : Colors.red,
+                                ),
+                      ),
+                    ],
+                    style: Theme.of(context).textTheme.displayLarge,
+                  ),
+                ),
+                ChartPieWidget(
+                  paddingItems: EdgeInsets.all(1),
+                  showTotalAmount: false,
+                  centerDate: resumePresenter.lastDateGetCompareDays,
+                  centerPassedColor: Colors.grey[400]!,
+                  centerRemainingColor: Colors.white,
+                  pieParameters: [
+                    PieParameter(
+                      title: Title(
+                        isCurrentDay: isCurrentDay,
+                        now: now,
+                        isPreviousMonth: false,
+                        statistics: selectedDayStatistics ?? [],
                         color:
                             percentageResult >= 0 ? Colors.green : Colors.red,
                       ),
+                      color: percentageResult >= 0 ? Colors.green : Colors.red,
+                      subtitle: SubTitle(
+                        statistics: selectedDayStatistics ?? [],
+                      ),
+                      value: selectedDayLiquidValue,
+                    ),
+                    PieParameter(
+                      title: Title(
+                        isCurrentDay: isCurrentDay,
+                        now: now,
+                        isPreviousMonth: true,
+                        statistics: previousMonthStatistics ?? [],
+                        color: Colors.orange,
+                      ),
+                      color: Colors.orange,
+                      subtitle: SubTitle(
+                        statistics: previousMonthStatistics ?? [],
+                      ),
+                      showSubtitleOnlyOnTap: true,
+                      value: previousMonthLiquidValue,
+                    ),
+                  ],
                 ),
               ],
-              style: Theme.of(context).textTheme.displayLarge,
             ),
-          ),
-          ChartPieWidget(
-            paddingItems: EdgeInsets.all(1),
-            showTotalAmount: false,
-            centerDate: resumePresenter.lastDateGetCompareDays,
-            centerPassedColor: Colors.grey[400]!,
-            centerRemainingColor: Colors.white,
-            pieParameters: [
-              PieParameter(
-                title: Title(
-                  isCurrentDay: isCurrentDay,
-                  now: now,
-                  isPreviousMonth: false,
-                  statistics: selectedDayStatistics ?? [],
-                  color: percentageResult >= 0 ? Colors.green : Colors.red,
+          Row(
+            children: [
+              Expanded(
+                child: DefaultButton(
+                  onTap: homePresenter.goToPaymentsTypePage,
+                  title: R.string.payments,
                 ),
-                color: percentageResult >= 0 ? Colors.green : Colors.red,
-                subtitle: SubTitle(
-                  statistics: selectedDayStatistics ?? [],
-                ),
-                value: selectedDayLiquidValue,
               ),
-              PieParameter(
-                title: Title(
-                  isCurrentDay: isCurrentDay,
-                  now: now,
-                  isPreviousMonth: true,
-                  statistics: previousMonthStatistics ?? [],
-                  color: Colors.orange,
+              const SizedBox(width: 8),
+              Expanded(
+                child: DefaultButton(
+                  onTap: homePresenter.goToDepartmentsPage,
+                  title: R.string.departments,
                 ),
-                color: Colors.orange,
-                subtitle: SubTitle(
-                  statistics: previousMonthStatistics ?? [],
-                ),
-                showSubtitleOnlyOnTap: true,
-                value: previousMonthLiquidValue,
               ),
             ],
           ),
