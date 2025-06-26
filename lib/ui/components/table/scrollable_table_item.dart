@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+// Assuming these are your custom imports.
+// You may need to adjust the paths if they are incorrect.
 import '../../../ui/helpers/helpers.dart';
 import 'table.dart';
 
@@ -11,7 +13,7 @@ class ScrollableTableItem extends StatefulWidget {
   final List<List<PersonalizedTableCell>> rowValues;
   final List<double>? columnsWidths;
   final int? columnIndexToCompareAndDetachBetterAndWorstValue;
-  final double? titleMinHeight;
+  final double titleMinHeight;
   final int? indexToSort;
   final List<int>? columnsIndexToSum;
   final bool fixFirstColumn;
@@ -33,8 +35,11 @@ class ScrollableTableItem extends StatefulWidget {
 }
 
 class _ScrollableTableItemState extends State<ScrollableTableItem> {
-  bool ascending = false;
-  List<List<PersonalizedTableCell>> sortedRows = [];
+  // --- MODIFIED: State variables to hold the current sort order ---
+  late List<List<PersonalizedTableCell>> _sortedRows;
+  int? _currentSortColumn;
+  bool _isAscending = false;
+
   int? minValueRowIndex;
   int? maxValueRowIndex;
 
@@ -51,17 +56,22 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
   @override
   void initState() {
     super.initState();
-    _initializeAndSort();
+    // --- MODIFIED: Setup data state first ---
+    _resetDataAndSort();
     _setupVerticalScrollControllers();
-    _setupHorizontalScrollControllers(); // Setup for horizontal sync
+    _setupHorizontalScrollControllers();
   }
 
   @override
   void didUpdateWidget(covariant ScrollableTableItem oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.rowValues != widget.rowValues ||
-        oldWidget.indexToSort != widget.indexToSort) {
-      _initializeAndSort();
+    // --- MODIFIED: If the data changes, update the rows but preserve the user's chosen sort order ---
+    // This prevents the sort order from being reset on every hot reload.
+    if (widget.rowValues != oldWidget.rowValues) {
+      setState(() {
+        _sortedRows = [...widget.rowValues]; // Update the data
+        _sortRows(); // Re-apply the existing sort, not the initial one
+      });
     }
   }
 
@@ -73,6 +83,69 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
     _bodyHorizontalController.dispose();
     _sumHorizontalController.dispose();
     super.dispose();
+  }
+
+  // --- NEW: Handles the initial data setup and sorting ---
+  void _resetDataAndSort() {
+    setState(() {
+      _sortedRows = [...widget.rowValues];
+      _currentSortColumn = widget.indexToSort;
+      _isAscending = false; // Default sort direction
+
+      if (_currentSortColumn != null) {
+        _sortRows();
+      } else {
+        _calculateMinMaxIndexes();
+      }
+    });
+  }
+
+  // --- NEW: Handles user tap on a header for sorting ---
+  void _handleHeaderTap(int columnIndex) {
+    setState(() {
+      if (_currentSortColumn == columnIndex) {
+        // If tapping the same column, reverse the sort direction
+        _isAscending = !_isAscending;
+      } else {
+        // If tapping a new column, set it and use the default direction
+        _currentSortColumn = columnIndex;
+        _isAscending = false;
+      }
+      _sortRows();
+    });
+  }
+
+  // --- MODIFIED: Sorts the list based on the current state (_currentSortColumn, _isAscending) ---
+  void _sortRows() {
+    if (_currentSortColumn == null) {
+      _calculateMinMaxIndexes();
+      return;
+    }
+
+    final int columnIndex = _currentSortColumn!;
+
+    _sortedRows.sort((a, b) {
+      final aValue = a[columnIndex].value.toString();
+      final bValue = b[columnIndex].value.toString();
+      final aNum = double.tryParse(aValue);
+      final bNum = double.tryParse(bValue);
+
+      if (aNum != null && bNum != null) {
+        return _isAscending ? aNum.compareTo(bNum) : bNum.compareTo(aNum);
+      }
+      try {
+        final aTime = _parseTime(aValue);
+        final bTime = _parseTime(bValue);
+        // Assuming time comparison logic might be different
+        return _isAscending ? aTime.compareTo(bTime) : bTime.compareTo(aTime);
+      } catch (_) {
+        return _isAscending
+            ? aValue.compareTo(bValue)
+            : bValue.compareTo(aValue);
+      }
+    });
+
+    _calculateMinMaxIndexes();
   }
 
   void _setupVerticalScrollControllers() {
@@ -94,19 +167,13 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
     }
   }
 
-  // Method to synchronize horizontal controllers ---
   void _setupHorizontalScrollControllers() {
-    // Sync Header scroll with Body and Sum
     _headerHorizontalController.addListener(() {
       _syncHorizontalScroll(_headerHorizontalController);
     });
-
-    // Sync Body scroll with Header and Sum
     _bodyHorizontalController.addListener(() {
       _syncHorizontalScroll(_bodyHorizontalController);
     });
-
-    // Sync Sum scroll with Header and Body
     _sumHorizontalController.addListener(() {
       _syncHorizontalScroll(_sumHorizontalController);
     });
@@ -128,35 +195,6 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
     }
   }
 
-  void _initializeAndSort() {
-    sortedRows = [...widget.rowValues];
-    if (widget.indexToSort != null) {
-      _sortRows(widget.indexToSort!);
-    } else {
-      _calculateMinMaxIndexes();
-    }
-  }
-
-  void _sortRows(int columnIndex) {
-    sortedRows.sort((a, b) {
-      final aValue = a[columnIndex].value.toString();
-      final bValue = b[columnIndex].value.toString();
-      final aNum = double.tryParse(aValue);
-      final bNum = double.tryParse(bValue);
-      if (aNum != null && bNum != null) {
-        return ascending ? aNum.compareTo(bNum) : bNum.compareTo(aNum);
-      }
-      try {
-        final aTime = _parseTime(aValue);
-        final bTime = _parseTime(bValue);
-        return ascending ? bTime.compareTo(aTime) : aTime.compareTo(bTime);
-      } catch (_) {
-        return ascending ? aValue.compareTo(bValue) : bValue.compareTo(aValue);
-      }
-    });
-    _calculateMinMaxIndexes();
-  }
-
   void _calculateMinMaxIndexes() {
     if (widget.columnIndexToCompareAndDetachBetterAndWorstValue == null) return;
     final columnIndex =
@@ -165,9 +203,9 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
     double? maxValue;
     minValueRowIndex = null;
     maxValueRowIndex = null;
-    for (int i = 0; i < sortedRows.length; i++) {
+    for (int i = 0; i < _sortedRows.length; i++) {
       final value = double.tryParse(
-        sortedRows[i][columnIndex].value.toString(),
+        _sortedRows[i][columnIndex].value.toString(),
       );
       if (value != null) {
         if (minValue == null || value < minValue) {
@@ -191,10 +229,10 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
   }
 
   Color getColor(int rowIndex) {
-    final isDark = IsDarkTheme.isDark;
-    if (rowIndex == maxValueRowIndex && sortedRows.length > 1) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    if (rowIndex == maxValueRowIndex && _sortedRows.length > 1) {
       return Colors.green.withAlpha(isDark ? 120 : 120);
-    } else if (rowIndex == minValueRowIndex && sortedRows.length > 1) {
+    } else if (rowIndex == minValueRowIndex && _sortedRows.length > 1) {
       return Colors.red.withAlpha(isDark ? 120 : 120);
     } else if (rowIndex % 2 == 0) {
       return Theme.of(context).disabledColor.withAlpha(isDark ? 40 : 30);
@@ -209,7 +247,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
       bool isPercentage = false;
       if (widget.columnsIndexToSum?.contains(col) == true) {
         double sum = 0.0;
-        for (var row in sortedRows) {
+        for (var row in _sortedRows) {
           if (row.isNotEmpty && col < row.length) {
             if (row[col].isMoney == true) isMoney = true;
             if (row[col].isPercentage == true) isPercentage = true;
@@ -255,7 +293,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
         behavior: HitTestBehavior.opaque,
         child: Container(
           width: double.infinity,
-          constraints: BoxConstraints(minHeight: widget.titleMinHeight ?? 1),
+          constraints: BoxConstraints(minHeight: widget.titleMinHeight),
           child: cell,
         ),
       );
@@ -267,7 +305,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
         alignment: Alignment.center,
         children: [
           Container(
-            constraints: BoxConstraints(minHeight: widget.titleMinHeight ?? 1),
+            constraints: BoxConstraints(minHeight: widget.titleMinHeight),
             child: child,
           ),
           if (isLast && taps.isNotEmpty && !isSumRow)
@@ -293,17 +331,24 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
 
   @override
   Widget build(BuildContext context) {
+    if (_sortedRows.isEmpty && widget.rowValues.isNotEmpty) {
+      // This can act as a fallback if the state somehow isn't initialized yet.
+      _resetDataAndSort();
+    }
+
     final List<PersonalizedTableCell> fixedTitles =
         widget.fixFirstColumn ? [widget.titles[0]] : [];
     final List<PersonalizedTableCell> scrollableTitles =
         widget.fixFirstColumn ? widget.titles.sublist(1) : widget.titles;
 
     final List<List<PersonalizedTableCell>> fixedRowValues =
-        widget.fixFirstColumn ? sortedRows.map((row) => [row[0]]).toList() : [];
+        widget.fixFirstColumn
+            ? _sortedRows.map((row) => [row[0]]).toList()
+            : [];
     final List<List<PersonalizedTableCell>> scrollableRowValues =
         widget.fixFirstColumn
-            ? sortedRows.map((row) => row.sublist(1)).toList()
-            : sortedRows;
+            ? _sortedRows.map((row) => row.sublist(1)).toList()
+            : _sortedRows;
 
     final List<PersonalizedTableCell> fullSumRow = _buildSumRow();
     final List<PersonalizedTableCell> fixedSumRow =
@@ -312,9 +357,11 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
         widget.fixFirstColumn ? fullSumRow.sublist(1) : fullSumRow;
 
     final screenWidth = MediaQuery.of(context).size.width;
-    final sumColumnsWidths = widget.columnsWidths?.reduce((p, e) => p + e);
+    final sumColumnsWidths =
+        widget.columnsWidths?.reduce((p, e) => p + e) ?? 0.0;
+
     double availableSize() {
-      if (screenWidth > sumColumnsWidths!) {
+      if (widget.columnsWidths != null && screenWidth > sumColumnsWidths) {
         return (screenWidth - sumColumnsWidths) /
             (widget.columnsWidths?.length ?? 1);
       }
@@ -322,25 +369,28 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
     }
 
     final Map<int, TableColumnWidth> fixedColumnWidthsMap =
-        widget.fixFirstColumn
+        widget.fixFirstColumn && widget.columnsWidths != null
             ? {
                 0: FixedColumnWidth(widget.columnsWidths![0] + availableSize()),
               }
             : {};
 
     final Map<int, TableColumnWidth> scrollableColumnWidthsMap = {};
-    if (widget.fixFirstColumn) {
-      for (int i = 0; i < scrollableTitles.length; i++) {
-        scrollableColumnWidthsMap[i] = FixedColumnWidth(
-          widget.columnsWidths![i + 1] + availableSize(),
-        );
+    if (widget.columnsWidths != null) {
+      if (widget.fixFirstColumn) {
+        for (int i = 0; i < scrollableTitles.length; i++) {
+          scrollableColumnWidthsMap[i] =
+              FixedColumnWidth(widget.columnsWidths![i + 1] + availableSize());
+        }
+      } else {
+        for (int i = 0; i < widget.titles.length; i++) {
+          scrollableColumnWidthsMap[i] =
+              FixedColumnWidth(widget.columnsWidths![i] + availableSize());
+        }
       }
     } else {
       for (int i = 0; i < widget.titles.length; i++) {
-        scrollableColumnWidthsMap[i] =
-            widget.columnsWidths != null && i < widget.columnsWidths!.length
-                ? FixedColumnWidth(widget.columnsWidths![i] + availableSize())
-                : const FlexColumnWidth(1);
+        scrollableColumnWidthsMap[i] = const FlexColumnWidth(1);
       }
     }
 
@@ -349,7 +399,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
         children: [
           // Header Row
           SizedBox(
-            height: widget.titleMinHeight ?? 1,
+            height: widget.titleMinHeight,
             child: DefaultTextStyle(
               style: CupertinoTheme.of(context).textTheme.textStyle,
               child: Row(
@@ -366,17 +416,13 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
                             IntrinsicHeight(
                               child: Container(
                                 constraints: BoxConstraints(
-                                    minHeight: widget.titleMinHeight ?? 1),
+                                    minHeight: widget.titleMinHeight),
                                 color: Theme.of(context)
                                     .disabledColor
                                     .withAlpha(70),
+                                // --- MODIFIED: Use the new tap handler ---
                                 child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      ascending = !ascending;
-                                      _sortRows(0);
-                                    });
-                                  },
+                                  onTap: () => _handleHeaderTap(0),
                                   child: fixedTitles[0],
                                 ),
                               ),
@@ -388,7 +434,6 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
                   Expanded(
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
-                      // --- MODIFIED: Use dedicated header controller ---
                       controller: _headerHorizontalController,
                       child: Table(
                         border: TableBorder.all(
@@ -405,17 +450,14 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
                               return IntrinsicHeight(
                                 child: Container(
                                   constraints: BoxConstraints(
-                                      minHeight: widget.titleMinHeight ?? 1),
+                                      minHeight: widget.titleMinHeight),
                                   color: Theme.of(context)
                                       .disabledColor
                                       .withAlpha(70),
+                                  // --- MODIFIED: Use the new tap handler ---
                                   child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        ascending = !ascending;
-                                        _sortRows(originalIndex);
-                                      });
-                                    },
+                                    onTap: () =>
+                                        _handleHeaderTap(originalIndex),
                                     child: tableCell,
                                   ),
                                 ),
@@ -459,7 +501,6 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
                     controller: _scrollableColumnsScrollController,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
-                      // --- MODIFIED: Use dedicated body controller ---
                       controller: _bodyHorizontalController,
                       child: DefaultTextStyle(
                         style: CupertinoTheme.of(context).textTheme.textStyle,
@@ -487,7 +528,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
           if (widget.columnsIndexToSum != null &&
               widget.columnsIndexToSum!.isNotEmpty)
             SizedBox(
-              height: widget.titleMinHeight ?? 1,
+              height: widget.titleMinHeight,
               child: DefaultTextStyle(
                 style: CupertinoTheme.of(context).textTheme.textStyle,
                 child: Row(
@@ -510,7 +551,6 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
                     Expanded(
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
-                        // --- MODIFIED: Use dedicated sum row controller ---
                         controller: _sumHorizontalController,
                         child: Table(
                           border: TableBorder.all(
