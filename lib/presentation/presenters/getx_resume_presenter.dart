@@ -63,8 +63,15 @@ class GetxResumePresenter extends GetxController
         periodType: PeriodType.monthly,
       );
 
-      await _getCompareDaysStatistics(homePresenter, now);
+      final changedEnterprise = SearchHelper.changedTheEnterprise(
+        selectedPeriodType: selectedPeriod,
+        selectedEnterprise: homePresenter.selectedEnterprise,
+        lastGetStatisticsParams: lastGetComparisonParams,
+      );
 
+      if (changedEnterprise || canSearchAgain) {
+        await _getCompareDaysStatistics(homePresenter, now);
+      }
       if (!canSearchAgain) {
         return;
       }
@@ -104,25 +111,24 @@ class GetxResumePresenter extends GetxController
     HomePresenter homePresenter,
     DateTime now,
   ) async {
-    final todaySaleStatistics = await loadSaleStatistics.get(
-      GetSaleStatisticsParams(
-        startDate: DateTime(
-          homePresenter.selectedDate.year,
-          homePresenter.selectedDate.month,
-          homePresenter.selectedDate.day,
-        ),
-        endDate: DateTime(
-          homePresenter.selectedDate.year,
-          homePresenter.selectedDate.month,
-          homePresenter.selectedDate.day,
-          now.hour,
-          now.minute,
-        ),
-        groupByEnterprise: true,
-        groupByDay: true,
-        enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+    final todayParams = GetSaleStatisticsParams(
+      startDate: DateTime(
+        homePresenter.selectedDate.year,
+        homePresenter.selectedDate.month,
+        homePresenter.selectedDate.day,
       ),
+      endDate: DateTime(
+        homePresenter.selectedDate.year,
+        homePresenter.selectedDate.month,
+        homePresenter.selectedDate.day,
+        now.hour,
+        now.minute,
+      ),
+      groupByEnterprise: true,
+      groupByDay: true,
+      enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
     );
+    final todaySaleStatistics = await loadSaleStatistics.get(todayParams);
 
     final lastMonthSaleStatistics = await loadSaleStatistics.get(
       GetSaleStatisticsParams(
@@ -144,7 +150,7 @@ class GetxResumePresenter extends GetxController
       ),
     );
 
-    _lastDateGetCompareDays = now;
+    lastGetComparisonParams = todayParams;
 
     _compareDaysStatistics.value = [
       ...todaySaleStatistics
@@ -160,8 +166,4 @@ class GetxResumePresenter extends GetxController
       _compareDaysStatistics.value;
   set compareDaysStatistics(List<SaleStatisticViewModel>? value) =>
       _compareDaysStatistics.value = value;
-
-  DateTime? _lastDateGetCompareDays;
-  @override
-  DateTime? get lastDateGetCompareDays => _lastDateGetCompareDays;
 }

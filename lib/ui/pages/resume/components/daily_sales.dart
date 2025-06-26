@@ -97,7 +97,7 @@ class DailyStatistics extends StatelessWidget {
                 ChartPieWidget(
                   paddingItems: EdgeInsets.all(1),
                   showTotalAmount: false,
-                  centerDate: resumePresenter.lastDateGetCompareDays,
+                  centerDate: resumePresenter.lastGetComparisonParams?.endDate,
                   centerPassedColor: Colors.grey[400]!,
                   centerRemainingColor: Colors.white,
                   pieParameters: [
