@@ -41,13 +41,14 @@ class PersonalizedTableCell extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(3),
+        // padding: const EdgeInsets.all(3),
         decoration: decoration,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             RichText(
               textAlign: TextAlign.center,
+              maxLines: 2,
               text: TextSpan(
                 children: [
                   if (isMoney == true)

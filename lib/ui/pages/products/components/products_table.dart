@@ -7,8 +7,11 @@ import '../../pages.dart';
 class ProductsTable extends StatelessWidget {
   final List<SaleStatisticViewModel>? sales;
   final bool isLoading;
-  const ProductsTable(
-      {super.key, required this.sales, required this.isLoading});
+  const ProductsTable({
+    super.key,
+    required this.sales,
+    required this.isLoading,
+  });
 
   List<List<PersonalizedTableCell>> constructRows(
     List<SaleStatisticViewModel> saleStatistics,
@@ -48,34 +51,24 @@ class ProductsTable extends StatelessWidget {
         return EmptySales(isLoading: isLoading);
       }
 
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TableItem(
-            titleMinHeight: 43,
-            tableColumnWidth: {
-              0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.1),
-              2: FixedColumnWidth(MediaQuery.of(context).size.width * 0.22),
-              3: FixedColumnWidth(MediaQuery.of(context).size.width * 0.13),
-              4: FixedColumnWidth(MediaQuery.of(context).size.width * 0.16),
-            },
-            columnIndexToCompareAndDetachBetterAndWorstValue: 2,
-            columnsIndexToSum: [2, 3],
-            // indexToSort: 0,
-            titles: [
-              PersonalizedTableCell(
-                value: R.string.positionAbbreviated.toUpperCase(),
-              ),
-              PersonalizedTableCell(value: R.string.product.toUpperCase()),
-              PersonalizedTableCell(value: R.string.sales.toUpperCase()),
-              PersonalizedTableCell(
-                value: R.string.quantityAbbreviated.toUpperCase(),
-              ),
-              PersonalizedTableCell(value: R.string.averagePrice.toUpperCase()),
-            ],
-            rowValues: constructRows(sales!),
+      return DataTableItem(
+        titleMinHeight: 43,
+        tableColumnWidth: [45, 150, 70, 50, 70],
+        columnIndexToCompareAndDetachBetterAndWorstValue: 2,
+        columnsIndexToSum: [2, 3],
+        indexToSort: 0,
+        titles: [
+          PersonalizedTableCell(
+            value: R.string.positionAbbreviated.toUpperCase(),
           ),
+          PersonalizedTableCell(value: R.string.product.toUpperCase()),
+          PersonalizedTableCell(value: R.string.sales.toUpperCase()),
+          PersonalizedTableCell(
+            value: R.string.quantityAbbreviated.toUpperCase(),
+          ),
+          PersonalizedTableCell(value: R.string.averagePrice.toUpperCase()),
         ],
+        rowValues: constructRows(sales!),
       );
     });
   }

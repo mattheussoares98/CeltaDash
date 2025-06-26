@@ -136,11 +136,9 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                       ],
                     ),
                   ),
-                  Expanded(
-                    child: ProductsTable(
-                      sales: sales,
-                      isLoading: loadingSnap.data == true,
-                    ),
+                  ProductsTable(
+                    sales: sales,
+                    isLoading: loadingSnap.data == true,
                   ),
                 ],
               );
