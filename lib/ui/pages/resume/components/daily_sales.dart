@@ -148,7 +148,7 @@ class SubTitle extends StatelessWidget {
 
     return Text(
       subtitle,
-      style: Theme.of(Get.context!).textTheme.titleMedium?.copyWith(
+      style: Theme.of(Get.context!).textTheme.bodySmall?.copyWith(
             fontStyle: FontStyle.italic,
           ),
     );

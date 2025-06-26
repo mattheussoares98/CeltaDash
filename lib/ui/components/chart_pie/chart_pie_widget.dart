@@ -117,7 +117,7 @@ class _ChartPieWidgetState extends State<ChartPieWidget> {
     double screenWidth =
         MediaQuery.of(NavigatorKey.key.currentState!.context).size.width;
     double chartWidth = screenWidth * 0.4;
-    double indicatorSize = screenWidth * 0.06;
+    double indicatorSize = screenWidth * 0.04;
     double chartPadding = screenWidth * 0.01;
     double centerSpaceRadius = screenWidth * 0.1;
 
