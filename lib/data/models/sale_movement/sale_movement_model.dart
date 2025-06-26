@@ -1,3 +1,4 @@
+import 'package:celta_dash/data/models/sale_movement/sale_movement_user_of_cancellation_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 
@@ -18,11 +19,13 @@ class SaleMovementModel extends Equatable {
   final String? documentNumber;
   final String? cashierNumber;
   final DateTime? dateHourOfBilling;
+  final DateTime? dateHourOfCancellation;
   final double? totalLiquid;
   final bool? isCancelled;
   final SaleMovementFiscalNoteModel? fiscalNoteType;
   final SaleMovementCustomerModel? customer;
   final SaleMovementSellerModel? seller;
+  final SaleMovementUserOfCancellationModel? userOfCancellation;
   final List<SaleMovementProductModel>? products;
   final List<SaleMovementFinalizationModel>? paymentFinalizations;
 
@@ -34,11 +37,13 @@ class SaleMovementModel extends Equatable {
     required this.documentNumber,
     required this.cashierNumber,
     required this.dateHourOfBilling,
+    required this.dateHourOfCancellation,
     required this.totalLiquid,
     required this.isCancelled,
     required this.fiscalNoteType,
     required this.customer,
     required this.seller,
+    required this.userOfCancellation,
     required this.products,
     required this.paymentFinalizations,
   });
@@ -52,11 +57,13 @@ class SaleMovementModel extends Equatable {
         documentNumber,
         cashierNumber,
         dateHourOfBilling,
+        dateHourOfCancellation,
         totalLiquid,
         isCancelled,
         fiscalNoteType,
         customer,
         seller,
+        userOfCancellation,
         products,
         paymentFinalizations,
       ];
@@ -71,6 +78,9 @@ class SaleMovementModel extends Equatable {
         dateHourOfBilling: json['dateHourOfBilling'] != null
             ? DateTime.parse(json['dateHourOfBilling'])
             : null,
+        dateHourOfCancellation: json['dateHourOfCancellation'] != null
+            ? DateTime.parse(json['dateHourOfCancellation'])
+            : null,
         totalLiquid: (json['totalLiquid'] as num?)?.toDouble(),
         isCancelled: json['isCancelled'] as bool?,
         fiscalNoteType: json['fiscalNoteType'] != null
@@ -82,6 +92,10 @@ class SaleMovementModel extends Equatable {
             : null,
         seller: json['seller'] != null
             ? SaleMovementSellerModel.fromJson(json['seller'] as Map)
+            : null,
+        userOfCancellation: json['userOfCancellation'] != null
+            ? SaleMovementUserOfCancellationModel.fromJson(
+                json['userOfCancellation'] as Map)
             : null,
         products: json['products'] != null
             ? (json['products'] as List)
@@ -104,6 +118,7 @@ class SaleMovementModel extends Equatable {
         documentNumber: entity?.documentNumber,
         cashierNumber: entity?.cashierNumber,
         dateHourOfBilling: entity?.dateHourOfBilling,
+        dateHourOfCancellation: entity?.dateHourOfCancellation,
         totalLiquid: entity?.totalLiquid,
         isCancelled: entity?.isCancelled,
         fiscalNoteType: entity?.fiscalNoteType != null
@@ -114,6 +129,11 @@ class SaleMovementModel extends Equatable {
             : null,
         seller: entity?.seller != null
             ? SaleMovementSellerModel.fromEntity(entity!.seller)
+            : null,
+        userOfCancellation: entity?.userOfCancellation != null
+            ? SaleMovementUserOfCancellationModel.fromEntity(
+                entity!.userOfCancellation,
+              )
             : null,
         products: entity?.products
             ?.map((e) => SaleMovementProductModel.fromEntity(e))
@@ -131,10 +151,12 @@ class SaleMovementModel extends Equatable {
         'documentNumber': documentNumber,
         'cashierNumber': cashierNumber,
         'dateHourOfBilling': dateHourOfBilling?.toIso8601String(),
+        'dateHourOfCancellation': dateHourOfCancellation?.toIso8601String(),
         'totalLiquid': totalLiquid,
         'isCancelled': isCancelled,
         'fiscalNoteType': fiscalNoteType?.toJson(),
         'customer': customer?.toJson(),
+        'userOfCancellation': userOfCancellation?.toJson(),
         'seller': seller?.toJson(),
         'products': products?.map((e) => e.toJson()).toList(),
         'paymentFinalizations':
@@ -149,11 +171,13 @@ class SaleMovementModel extends Equatable {
         documentNumber: documentNumber,
         cashierNumber: cashierNumber,
         dateHourOfBilling: dateHourOfBilling,
+        dateHourOfCancellation: dateHourOfCancellation,
         totalLiquid: totalLiquid,
         isCancelled: isCancelled,
         fiscalNoteType: fiscalNoteType?.toEntity(),
         customer: customer?.toEntity(),
         seller: seller?.toEntity(),
+        userOfCancellation: userOfCancellation?.toEntity(),
         products: products?.map((e) => e.toEntity()).toList(),
         paymentFinalizations:
             paymentFinalizations?.map((e) => e.toEntity()).toList(),
@@ -170,11 +194,15 @@ class SaleMovementModel extends Equatable {
       cashierNumber: cashierNumber,
       dateHourOfBilling:
           dateHourOfBilling != null ? df.format(dateHourOfBilling!) : null,
+      dateHourOfCancellation: dateHourOfCancellation != null
+          ? df.format(dateHourOfCancellation!)
+          : null,
       totalLiquid: totalLiquid?.toString(),
       isCancelled: isCancelled?.toString(),
       fiscalNoteType: fiscalNoteType?.toViewModel(),
       customer: customer?.toViewModel(),
       seller: seller?.toViewModel(),
+      userOfCancellation: userOfCancellation?.toViewModel(),
       products: products?.map((e) => e.toViewModel()).toList(),
       paymentFinalizations:
           paymentFinalizations?.map((e) => e.toViewModel()).toList(),
@@ -193,6 +221,9 @@ class SaleMovementModel extends Equatable {
       dateHourOfBilling: viewModel.dateHourOfBilling != null
           ? df.parse(viewModel.dateHourOfBilling!)
           : null,
+      dateHourOfCancellation: viewModel.dateHourOfCancellation != null
+          ? df.parse(viewModel.dateHourOfCancellation!)
+          : null,
       totalLiquid: viewModel.totalLiquid?.toDouble(),
       isCancelled: bool.tryParse(viewModel.isCancelled ?? ""),
       fiscalNoteType: viewModel.fiscalNoteType != null
@@ -203,6 +234,10 @@ class SaleMovementModel extends Equatable {
           : null,
       seller: viewModel.seller != null
           ? SaleMovementSellerModel.fromViewModel(viewModel.seller!)
+          : null,
+      userOfCancellation: viewModel.userOfCancellation != null
+          ? SaleMovementUserOfCancellationModel.fromViewModel(
+              viewModel.userOfCancellation!)
           : null,
       products: viewModel.products
           ?.map((e) => SaleMovementProductModel.fromViewModel(e))

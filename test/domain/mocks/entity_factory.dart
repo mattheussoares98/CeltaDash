@@ -78,8 +78,7 @@ class EntityFactory {
         CrossIdentity_Usuario: faker.guid.guid(),
       );
 
-  static EnterpriseEntity makeEnterpriseEntity({int? id}) =>
-      EnterpriseEntity(
+  static EnterpriseEntity makeEnterpriseEntity({int? id}) => EnterpriseEntity(
         id: id ?? faker.randomGenerator.integer(100),
         name: faker.company.name(),
         personalizedCode: faker.randomGenerator.integer(10).toString(),
@@ -129,6 +128,7 @@ class EntityFactory {
         documentNumber: faker.randomGenerator.string(50),
         cashierNumber: faker.randomGenerator.string(50),
         dateHourOfBilling: faker.date.dateTime(),
+        dateHourOfCancellation: faker.date.dateTime(),
         totalLiquid: faker.randomGenerator.decimal(),
         isCancelled: faker.randomGenerator.boolean(),
         fiscalNoteType: SaleMovementFiscalNoteEntity(
@@ -143,8 +143,12 @@ class EntityFactory {
         ),
         seller: SaleMovementSellerEntity(
           Id: faker.randomGenerator.integer(99),
-          PersonalizedCode: faker.randomGenerator.integer(99).toString(),
           Name: faker.person.name(),
+          PersonalizedCode: faker.randomGenerator.integer(99).toString(),
+        ),
+        userOfCancellation: SaleMovementUserOfCancellationEntity(
+          id: faker.randomGenerator.integer(99),
+          name: faker.person.name(),
         ),
         products: [
           SaleMovementProductEntity(

@@ -10,11 +10,13 @@ class SaleMovementEntity extends Equatable {
   final String? documentNumber;
   final String? cashierNumber;
   final DateTime? dateHourOfBilling;
+  final DateTime? dateHourOfCancellation;
   final double? totalLiquid;
   final bool? isCancelled;
   final SaleMovementFiscalNoteEntity? fiscalNoteType;
   final SaleMovementCustomerEntity? customer;
   final SaleMovementSellerEntity? seller;
+  final SaleMovementUserOfCancellationEntity? userOfCancellation;
   final List<SaleMovementProductEntity>? products;
   final List<SaleMovementFinalizationEntity>? paymentFinalizations;
 
@@ -26,11 +28,13 @@ class SaleMovementEntity extends Equatable {
     required this.documentNumber,
     required this.cashierNumber,
     required this.dateHourOfBilling,
+    required this.dateHourOfCancellation,
     required this.totalLiquid,
     required this.isCancelled,
     required this.fiscalNoteType,
     required this.customer,
     required this.seller,
+    required this.userOfCancellation,
     required this.products,
     required this.paymentFinalizations,
   });
@@ -46,9 +50,11 @@ class SaleMovementEntity extends Equatable {
         seller,
         documentNumber,
         dateHourOfBilling,
+        dateHourOfCancellation,
         cashierNumber,
         totalLiquid,
         isCancelled,
+        userOfCancellation,
         products,
         paymentFinalizations,
       ];

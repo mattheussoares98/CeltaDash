@@ -1,10 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'sale_movement_fiscal_note_view_model.dart';
-import 'sale_movement_customer_view_model.dart';
-import 'sale_movement_seller_view_model.dart';
-import 'sale_movement_product_view_model.dart';
-import 'sale_movement_finalization_view_model.dart';
+import '../../pages.dart';
 
 class SaleMovementViewModel extends Equatable {
   final String? Id;
@@ -14,11 +10,13 @@ class SaleMovementViewModel extends Equatable {
   final String? totalLiquid;
   final String? isCancelled;
   final String? dateHourOfBilling;
+  final String? dateHourOfCancellation;
   final String? documentNumber;
   final String? cashierNumber;
   final SaleMovementFiscalNoteViewModel? fiscalNoteType;
   final SaleMovementCustomerViewModel? customer;
   final SaleMovementSellerViewModel? seller;
+  final SaleMovementUserOfCancellationViewModel? userOfCancellation;
   final List<SaleMovementProductViewModel>? products;
   final List<SaleMovementFinalizationViewModel>? paymentFinalizations;
 
@@ -30,11 +28,13 @@ class SaleMovementViewModel extends Equatable {
     required this.documentNumber,
     required this.cashierNumber,
     required this.dateHourOfBilling,
+    required this.dateHourOfCancellation,
     required this.totalLiquid,
     required this.isCancelled,
     required this.fiscalNoteType,
     required this.customer,
     required this.seller,
+    required this.userOfCancellation,
     required this.products,
     required this.paymentFinalizations,
   });
@@ -48,11 +48,13 @@ class SaleMovementViewModel extends Equatable {
         documentNumber,
         cashierNumber,
         dateHourOfBilling,
+        dateHourOfCancellation,
         totalLiquid,
         isCancelled,
         fiscalNoteType,
         customer,
         seller,
+        userOfCancellation,
         products,
         paymentFinalizations,
       ];

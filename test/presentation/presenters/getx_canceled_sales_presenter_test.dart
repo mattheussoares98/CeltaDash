@@ -534,6 +534,7 @@ void main() {
           documentNumber: faker.randomGenerator.integer(100).toString(),
           cashierNumber: faker.randomGenerator.integer(100).toString(),
           dateHourOfBilling: faker.date.dateTime(),
+          dateHourOfCancellation: faker.date.dateTime(),
           totalLiquid: faker.randomGenerator.decimal(),
           isCancelled: true,
           fiscalNoteType: null,
@@ -541,6 +542,7 @@ void main() {
           seller: null,
           products: null,
           paymentFinalizations: null,
+          userOfCancellation: null,
         ),
       ).toViewModel();
       sut.updateSelectedSaleMovement(newSale);
