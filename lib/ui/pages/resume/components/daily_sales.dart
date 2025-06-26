@@ -25,6 +25,11 @@ class DailyStatistics extends StatelessWidget {
         now.month == homePresenter.selectedDate.month &&
         now.year == homePresenter.selectedDate.year;
 
+    if (resumePresenter.compareDaysStatistics == null ||
+        resumePresenter.compareDaysStatistics!.isEmpty) {
+      return EmptySales(isLoading: false);
+    }
+
     final selectedDayStatistics = resumePresenter.compareDaysStatistics
         ?.filteredSales(
           enterprise: homePresenter.selectedEnterprise,
@@ -69,9 +74,21 @@ class DailyStatistics extends StatelessWidget {
       padding: EdgeInsets.all(8),
       child: Column(
         children: [
-          Text(
-            R.string.salesOfTheDay.toUpperCase(),
-            style: Theme.of(context).textTheme.displayLarge,
+          RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              children: [
+                TextSpan(text: R.string.salesOfTheDay.toUpperCase()),
+                TextSpan(
+                  text: " (${percentageResult.toStringAsFixed(0)}%)",
+                  style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                        color:
+                            percentageResult >= 0 ? Colors.green : Colors.red,
+                      ),
+                ),
+              ],
+              style: Theme.of(context).textTheme.displayLarge,
+            ),
           ),
           ChartPieWidget(
             paddingItems: EdgeInsets.all(1),
@@ -110,13 +127,6 @@ class DailyStatistics extends StatelessWidget {
                 value: previousMonthLiquidValue,
               ),
             ],
-          ),
-          Text(
-            "${percentageResult.toStringAsFixed(2).toBrazilianNumber()}%",
-            style: TextStyle(
-              color: percentageResult >= 0 ? Colors.green : Colors.red,
-              fontWeight: FontWeight.bold,
-            ),
           ),
         ],
       ),
