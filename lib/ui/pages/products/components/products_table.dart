@@ -32,7 +32,7 @@ class ProductsTable extends StatelessWidget {
           (sale.QuantityOfProducts?.toDouble() ?? 1);
 
       sales.add([
-        PersonalizedTableCell(value: index + 1),
+        // PersonalizedTableCell(value: index + 1),
         PersonalizedTableCell(value: productName),
         PersonalizedTableCell(
             value: sale.LiquidValue?.toDouble() ?? 0, isMoney: true),
@@ -51,16 +51,14 @@ class ProductsTable extends StatelessWidget {
         return EmptySales(isLoading: isLoading);
       }
 
-      return DataTableItem(
+      return ScrollableTableItem(
         titleMinHeight: 43,
-        tableColumnWidth: [45, 150, 70, 50, 70],
-        columnIndexToCompareAndDetachBetterAndWorstValue: 2,
+        columnsWidths: [150, 70, 50, 70],
+        fixFirstColumn: true,
         columnsIndexToSum: [2, 3],
-        indexToSort: 0,
+        columnIndexToCompareAndDetachBetterAndWorstValue: 1,
+        indexToSort: 1,
         titles: [
-          PersonalizedTableCell(
-            value: R.string.positionAbbreviated.toUpperCase(),
-          ),
           PersonalizedTableCell(value: R.string.product.toUpperCase()),
           PersonalizedTableCell(value: R.string.sales.toUpperCase()),
           PersonalizedTableCell(
@@ -68,7 +66,22 @@ class ProductsTable extends StatelessWidget {
           ),
           PersonalizedTableCell(value: R.string.averagePrice.toUpperCase()),
         ],
-        rowValues: constructRows(sales!),
+        rowValues: sales!.map((sale) {
+          final parts = sale.Product?.split('-');
+          final productName =
+              parts?.length != null && parts!.length > 2 ? parts[2] : '';
+
+          final ticketAverage = (sale.LiquidValue?.toDouble() ?? 0) /
+              (sale.QuantityOfProducts?.toDouble() ?? 1);
+          return [
+            // PersonalizedTableCell(value: index + 1),
+            PersonalizedTableCell(value: productName),
+            PersonalizedTableCell(
+                value: sale.LiquidValue?.toDouble() ?? 0, isMoney: true),
+            PersonalizedTableCell(value: sale.QuantityOfProducts?.toDouble()),
+            PersonalizedTableCell(value: ticketAverage, isMoney: true),
+          ];
+        }).toList(),
       );
     });
   }
