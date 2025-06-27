@@ -41,7 +41,6 @@ class ScrollableTableItem extends StatefulWidget {
 }
 
 class _ScrollableTableItemState extends State<ScrollableTableItem> {
-  // --- MODIFIED: State variables to hold the current sort order ---
   late List<List<PersonalizedTableCell>> _sortedRows;
   int? _currentSortColumn;
   bool _isAscending = false;
@@ -63,7 +62,6 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
   @override
   void initState() {
     super.initState();
-    // --- MODIFIED: Setup data state first ---
     _resetDataAndSort();
     _setupVerticalScrollControllers();
     _setupHorizontalScrollControllers();
@@ -72,7 +70,6 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
   @override
   void didUpdateWidget(covariant ScrollableTableItem oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // --- MODIFIED: If the data changes, update the rows but preserve the user's chosen sort order ---
     // This prevents the sort order from being reset on every hot reload.
     if (widget.rowValues != oldWidget.rowValues) {
       setState(() {
@@ -92,7 +89,6 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
     super.dispose();
   }
 
-  // --- NEW: Handles the initial data setup and sorting ---
   void _resetDataAndSort() {
     setState(() {
       _sortedRows = [...widget.rowValues];
@@ -107,7 +103,6 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
     });
   }
 
-  // --- NEW: Handles user tap on a header for sorting ---
   void _handleHeaderTap(int columnIndex) {
     setState(() {
       if (_currentSortColumn == columnIndex) {
@@ -122,7 +117,6 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
     });
   }
 
-  // --- MODIFIED: Sorts the list based on the current state (_currentSortColumn, _isAscending) ---
   void _sortRows() {
     if (_currentSortColumn == null) {
       _calculateMinMaxIndexes();
@@ -390,6 +384,10 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
       }
     }
 
+    if (fixedTitles.where((e) => e.isTitle != true).isNotEmpty) {
+      return Text("Some titles are not defined as title");
+    }
+
     return Expanded(
       child: Column(
         children: [
@@ -410,15 +408,14 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
                         TableRow(
                           children: [
                             IntrinsicHeight(
-                              child: Container(
-                                constraints: BoxConstraints(
-                                    minHeight: widget.titleMinHeight),
-                                color: Theme.of(context)
-                                    .disabledColor
-                                    .withAlpha(70),
-                                // --- MODIFIED: Use the new tap handler ---
-                                child: GestureDetector(
-                                  onTap: () => _handleHeaderTap(0),
+                              child: InkWell(
+                                onTap: () => _handleHeaderTap(0),
+                                child: Container(
+                                  constraints: BoxConstraints(
+                                      minHeight: widget.titleMinHeight),
+                                  color: Theme.of(context)
+                                      .disabledColor
+                                      .withAlpha(70),
                                   child: fixedTitles[0],
                                 ),
                               ),
@@ -444,16 +441,14 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
                                   widget.fixFirstColumn ? index + 1 : index;
                               final tableCell = scrollableTitles[index];
                               return IntrinsicHeight(
-                                child: Container(
-                                  constraints: BoxConstraints(
-                                      minHeight: widget.titleMinHeight),
-                                  color: Theme.of(context)
-                                      .disabledColor
-                                      .withAlpha(70),
-                                  // --- MODIFIED: Use the new tap handler ---
-                                  child: GestureDetector(
-                                    onTap: () =>
-                                        _handleHeaderTap(originalIndex),
+                                child: InkWell(
+                                  onTap: () => _handleHeaderTap(originalIndex),
+                                  child: Container(
+                                    constraints: BoxConstraints(
+                                        minHeight: widget.titleMinHeight),
+                                    color: Theme.of(context)
+                                        .disabledColor
+                                        .withAlpha(70),
                                     child: tableCell,
                                   ),
                                 ),
