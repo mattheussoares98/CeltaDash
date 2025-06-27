@@ -66,15 +66,24 @@ class ProductsTable extends StatelessWidget {
         columnIndexToCompareAndDetachBetterAndWorstValue: 5,
         indexToSort: 5,
         titles: [
-          PersonalizedTableCell(value: R.string.product.toUpperCase()),
-          PersonalizedTableCell(value: R.string.sales.toUpperCase()),
+          PersonalizedTableCell(
+              value: R.string.product.toUpperCase(), isTitle: true),
+          PersonalizedTableCell(
+              value: R.string.sales.toUpperCase(), isTitle: true),
           PersonalizedTableCell(
             value: R.string.quantityAbbreviated.toUpperCase(),
+            isTitle: true,
           ),
-          PersonalizedTableCell(value: R.string.averagePrice.toUpperCase()),
-          PersonalizedTableCell(value: R.string.cost.toUpperCase()),
-          PersonalizedTableCell(value: R.string.profit.toUpperCase()),
-          PersonalizedTableCell(value: R.string.margin.toUpperCase()),
+          PersonalizedTableCell(
+            value: R.string.averagePrice.toUpperCase(),
+            isTitle: true,
+          ),
+          PersonalizedTableCell(
+              value: R.string.cost.toUpperCase(), isTitle: true),
+          PersonalizedTableCell(
+              value: R.string.profit.toUpperCase(), isTitle: true),
+          PersonalizedTableCell(
+              value: R.string.margin.toUpperCase(), isTitle: true),
         ],
         rowValues: sales!.map((sale) {
           final parts = sale.Product?.split('-');
