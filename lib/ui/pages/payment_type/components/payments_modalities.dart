@@ -4,6 +4,8 @@ import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
+bool showAnimation = true;
+
 class PaymentsModalities extends StatefulWidget {
   final List<SaleStatisticViewModel> saleStatistics;
   final bool filterByFinalizations;
@@ -22,21 +24,24 @@ class _PaymentsModalitiesState extends State<PaymentsModalities> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TableItem(
-          titles: [
-            PersonalizedTableCell(value: R.string.paymentsType),
-            PersonalizedTableCell(value: R.string.sales),
-            PersonalizedTableCell(value: R.string.ticketAverage),
-            PersonalizedTableCell(value: R.string.share),
-          ],
+        ScrollableTableItem(
+          columnsWidths: [100, 90, 50, 70, 70],
           columnIndexToCompareAndDetachBetterAndWorstValue: 1,
-          tableColumnWidth: {
-            2: FixedColumnWidth(MediaQuery.of(context).size.width * 0.2),
-            3: FixedColumnWidth(MediaQuery.of(context).size.width * 0.15),
+          showAnimation: showAnimation,
+          hideShowAnimation: () {
+            showAnimation = false;
           },
-          titleMinHeight: 40,
-          indexToSort: 1,
-          columnsIndexToSum: [1],
+          columnsIndexToSum: [1, 2],
+          titles: [
+            PersonalizedTableCell(value: R.string.paymentsType, isTitle: true),
+            PersonalizedTableCell(value: R.string.sales, isTitle: true),
+            PersonalizedTableCell(
+              value: R.string.quantityAbbreviated,
+              isTitle: true,
+            ),
+            PersonalizedTableCell(value: R.string.ticketAverage, isTitle: true),
+            PersonalizedTableCell(value: R.string.share, isTitle: true),
+          ],
           rowValues: widget.saleStatistics
               .fold<Map<String, List<SaleStatisticViewModel>>>({}, (acc, sale) {
                 final key = widget.filterByFinalizations
@@ -55,13 +60,11 @@ class _PaymentsModalitiesState extends State<PaymentsModalities> {
                     0, (sum, s) => sum + (s.QuantitySales?.toInt() ?? 1));
                 final overallValue =
                     widget.saleStatistics.toList().sumLiquidValue();
-        
+
                 return [
-                  PersonalizedTableCell(
-                    value: modality,
-                    subtile: "$totalQuantity ${R.string.sales.toLowerCase()}",
-                  ),
+                  PersonalizedTableCell(value: modality),
                   PersonalizedTableCell(value: totalValue, isMoney: true),
+                  PersonalizedTableCell(value: totalQuantity),
                   PersonalizedTableCell(
                     value: totalQuantity > 0 ? totalValue / totalQuantity : 0,
                     isMoney: true,
