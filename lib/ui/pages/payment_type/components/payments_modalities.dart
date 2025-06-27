@@ -4,7 +4,7 @@ import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
-bool showAnimation = true;
+bool _showAnimation = true;
 
 class PaymentsModalities extends StatefulWidget {
   final List<SaleStatisticViewModel> saleStatistics;
@@ -27,9 +27,10 @@ class _PaymentsModalitiesState extends State<PaymentsModalities> {
         ScrollableTableItem(
           columnsWidths: [100, 90, 50, 70, 70],
           columnIndexToCompareAndDetachBetterAndWorstValue: 1,
-          showAnimation: showAnimation,
+          showAnimation: _showAnimation,
+          fixFirstColumn: true,
           hideShowAnimation: () {
-            showAnimation = false;
+            _showAnimation = false;
           },
           columnsIndexToSum: [1, 2],
           titles: [
