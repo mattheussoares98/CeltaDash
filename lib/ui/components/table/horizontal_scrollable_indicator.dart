@@ -49,7 +49,19 @@ class _HorizontalScrollableIndicatorState
           offset: Offset(_handAnimation.value, 0),
           child: Icon(
             Icons.swipe_rounded,
-            size: 30,
+            shadows: [
+              Shadow(
+                color: Colors.black,
+                offset: const Offset(0, 0),
+                blurRadius: 1,
+              ),
+              Shadow(
+                color: Colors.black,
+                offset: const Offset(-1, -1),
+                blurRadius: 1,
+              )
+            ],
+            size: 50,
             color: Color(0xFFE0AC69),
           ),
         );
