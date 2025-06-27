@@ -217,17 +217,19 @@ class Title extends StatelessWidget {
     );
 
     final title =
-        isPreviousMonth ? DateFormat("dd/MM").format(previowsDate) : "";
+        isPreviousMonth ? DateFormat("dd/MM").format(previowsDate) : null;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: Theme.of(Get.context!).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-        ),
+        if (title != null)
+          Text(
+            title,
+            style: Theme.of(Get.context!).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: color,
+                ),
+          ),
         FittedBox(
           child: Text(
             totalValue.toString().toBrazilianNumber().addBrazilianCoin(),
