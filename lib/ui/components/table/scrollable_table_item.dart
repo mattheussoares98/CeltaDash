@@ -360,18 +360,15 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
     final sumColumnsWidths =
         widget.columnsWidths?.reduce((p, e) => p + e) ?? 0.0;
 
-    double availableSize() {
-      if (widget.columnsWidths != null && screenWidth > sumColumnsWidths) {
-        return (screenWidth - sumColumnsWidths) /
-            (widget.columnsWidths?.length ?? 1);
-      }
-      return 0;
-    }
+    final availableSize =
+        (widget.columnsWidths != null && screenWidth > sumColumnsWidths)
+            ? (screenWidth - sumColumnsWidths) / (widget.columnsWidths!.length)
+            : 0.0;
 
     final Map<int, TableColumnWidth> fixedColumnWidthsMap =
         widget.fixFirstColumn && widget.columnsWidths != null
             ? {
-                0: FixedColumnWidth(widget.columnsWidths![0] + availableSize()),
+                0: FixedColumnWidth(widget.columnsWidths![0] + availableSize),
               }
             : {};
 
@@ -380,12 +377,12 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
       if (widget.fixFirstColumn) {
         for (int i = 0; i < scrollableTitles.length; i++) {
           scrollableColumnWidthsMap[i] =
-              FixedColumnWidth(widget.columnsWidths![i + 1] + availableSize());
+              FixedColumnWidth(widget.columnsWidths![i + 1] + availableSize);
         }
       } else {
         for (int i = 0; i < widget.titles.length; i++) {
           scrollableColumnWidthsMap[i] =
-              FixedColumnWidth(widget.columnsWidths![i] + availableSize());
+              FixedColumnWidth(widget.columnsWidths![i] + availableSize);
         }
       }
     } else {
