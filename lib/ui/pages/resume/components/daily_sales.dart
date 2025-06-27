@@ -62,7 +62,9 @@ class DailyStatistics extends StatelessWidget {
         previousMonthStatistics?.sumLiquidValue() ?? 0;
 
     final percentageResult =
-        (selectedDayLiquidValue / previousMonthLiquidValue * 100 - 100);
+        selectedDayLiquidValue == 0.0 || previousMonthLiquidValue == 0.0
+            ? 0.0
+            : (selectedDayLiquidValue / previousMonthLiquidValue * 100 - 100);
 
     return Container(
       decoration: ContainerDecoration.decoration,
@@ -82,7 +84,8 @@ class DailyStatistics extends StatelessWidget {
                     children: [
                       TextSpan(text: R.string.salesOfTheDay.toUpperCase()),
                       TextSpan(
-                        text: " (${percentageResult.toStringAsFixed(0)}%)",
+                        text:
+                            " (${percentageResult.toString().toBrazilianNumber(0)}%)",
                         style:
                             Theme.of(context).textTheme.displayLarge?.copyWith(
                                   color: percentageResult >= 0
