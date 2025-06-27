@@ -11,7 +11,7 @@ import 'table.dart';
 class ScrollableTableItem extends StatefulWidget {
   final List<PersonalizedTableCell> titles;
   final List<List<PersonalizedTableCell>> rowValues;
-  final List<double>? columnsWidths;
+  final List<double> columnsWidths;
   final int? columnIndexToCompareAndDetachBetterAndWorstValue;
   final double titleMinHeight;
   final int? indexToSort;
@@ -22,7 +22,7 @@ class ScrollableTableItem extends StatefulWidget {
     super.key,
     required this.titles,
     required this.rowValues,
-    this.columnsWidths,
+    required this.columnsWidths,
     this.columnIndexToCompareAndDetachBetterAndWorstValue,
     this.titleMinHeight = 40,
     this.indexToSort,
@@ -357,37 +357,29 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
         widget.fixFirstColumn ? fullSumRow.sublist(1) : fullSumRow;
 
     final screenWidth = MediaQuery.of(context).size.width;
-    final sumColumnsWidths =
-        widget.columnsWidths?.reduce((p, e) => p + e) ?? 0.0;
+    final sumColumnsWidths = widget.columnsWidths.reduce((p, e) => p + e);
 
-    final availableSize =
-        (widget.columnsWidths != null && screenWidth > sumColumnsWidths)
-            ? (screenWidth - sumColumnsWidths) / (widget.columnsWidths!.length)
-            : 0.0;
+    final availableSize = screenWidth > sumColumnsWidths
+        ? (screenWidth - sumColumnsWidths) / (widget.columnsWidths.length)
+        : 0.0;
 
     final Map<int, TableColumnWidth> fixedColumnWidthsMap =
-        widget.fixFirstColumn && widget.columnsWidths != null
+        widget.fixFirstColumn
             ? {
-                0: FixedColumnWidth(widget.columnsWidths![0] + availableSize),
+                0: FixedColumnWidth(widget.columnsWidths[0] + availableSize),
               }
             : {};
 
     final Map<int, TableColumnWidth> scrollableColumnWidthsMap = {};
-    if (widget.columnsWidths != null) {
-      if (widget.fixFirstColumn) {
-        for (int i = 0; i < scrollableTitles.length; i++) {
-          scrollableColumnWidthsMap[i] =
-              FixedColumnWidth(widget.columnsWidths![i + 1] + availableSize);
-        }
-      } else {
-        for (int i = 0; i < widget.titles.length; i++) {
-          scrollableColumnWidthsMap[i] =
-              FixedColumnWidth(widget.columnsWidths![i] + availableSize);
-        }
+    if (widget.fixFirstColumn) {
+      for (int i = 0; i < scrollableTitles.length; i++) {
+        scrollableColumnWidthsMap[i] =
+            FixedColumnWidth(widget.columnsWidths[i + 1] + availableSize);
       }
     } else {
       for (int i = 0; i < widget.titles.length; i++) {
-        scrollableColumnWidthsMap[i] = const FlexColumnWidth(1);
+        scrollableColumnWidthsMap[i] =
+            FixedColumnWidth(widget.columnsWidths[i] + availableSize);
       }
     }
 
@@ -469,55 +461,85 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
               ),
             ),
           ),
+
           // Body Rows
           Flexible(
-            child: Row(
+            child: Stack(
               children: [
-                if (widget.fixFirstColumn)
-                  SingleChildScrollView(
-                    controller: _fixedColumnScrollController,
-                    child: DefaultTextStyle(
-                      style: CupertinoTheme.of(context).textTheme.textStyle,
-                      child: Table(
-                        border: TableBorder.all(
-                            color: getTableBorderColor(), width: 0.06),
-                        defaultColumnWidth: const FlexColumnWidth(1),
-                        columnWidths: fixedColumnWidthsMap,
-                        children:
-                            List.generate(fixedRowValues.length, (rowIndex) {
-                          return _buildTableRow(
-                            fixedRowValues[rowIndex],
-                            rowColor: getColor(rowIndex),
-                          );
-                        }),
+                Row(
+                  children: [
+                    if (widget.fixFirstColumn)
+                      SingleChildScrollView(
+                        controller: _fixedColumnScrollController,
+                        child: DefaultTextStyle(
+                          style: CupertinoTheme.of(context).textTheme.textStyle,
+                          child: Table(
+                            border: TableBorder.all(
+                                color: getTableBorderColor(), width: 0.06),
+                            defaultColumnWidth: const FlexColumnWidth(1),
+                            columnWidths: fixedColumnWidthsMap,
+                            children: List.generate(fixedRowValues.length,
+                                (rowIndex) {
+                              return _buildTableRow(
+                                fixedRowValues[rowIndex],
+                                rowColor: getColor(rowIndex),
+                              );
+                            }),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    controller: _scrollableColumnsScrollController,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      controller: _bodyHorizontalController,
-                      child: DefaultTextStyle(
-                        style: CupertinoTheme.of(context).textTheme.textStyle,
-                        child: Table(
-                          border: TableBorder.all(
-                              color: getTableBorderColor(), width: 0.06),
-                          defaultColumnWidth: const FlexColumnWidth(1),
-                          columnWidths: scrollableColumnWidthsMap,
-                          children: List.generate(scrollableRowValues.length,
-                              (rowIndex) {
-                            return _buildTableRow(
-                              scrollableRowValues[rowIndex],
-                              rowColor: getColor(rowIndex),
-                            );
-                          }),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        controller: _scrollableColumnsScrollController,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          controller: _bodyHorizontalController,
+                          child: DefaultTextStyle(
+                            style:
+                                CupertinoTheme.of(context).textTheme.textStyle,
+                            child: Table(
+                              border: TableBorder.all(
+                                  color: getTableBorderColor(), width: 0.06),
+                              defaultColumnWidth: const FlexColumnWidth(1),
+                              columnWidths: scrollableColumnWidthsMap,
+                              children: List.generate(
+                                  scrollableRowValues.length, (rowIndex) {
+                                return _buildTableRow(
+                                  scrollableRowValues[rowIndex],
+                                  rowColor: getColor(rowIndex),
+                                );
+                              }),
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
+                if (availableSize == 0)
+                  Builder(builder: (context) {
+                    final animationDuration = Duration(seconds: 1);
+                    _bodyHorizontalController.animateTo(
+                      curve: Curves.linear,
+                      duration: animationDuration,
+                      widget.columnsWidths.reduce((p, e) => p + e),
+                    );
+
+                    Future.delayed(animationDuration, () {
+                      _bodyHorizontalController.animateTo(
+                        curve: Curves.linear,
+                        duration: animationDuration,
+                        0,
+                      );
+                    });
+
+                    return Positioned(
+                      bottom: 0,
+                      top: 0,
+                      left: widget.columnsWidths.first,
+                      child: HorizontalScrollableIndicator(),
+                    );
+                  }),
               ],
             ),
           ),
