@@ -10,7 +10,7 @@ import '../../mixins/mixins.dart';
 import '../pages.dart';
 import 'components/components.dart';
 
-bool showAnimation = true;
+bool _showAnimation = true;
 
 class ProductsPage extends StatefulWidget {
   const ProductsPage({super.key});
@@ -140,10 +140,10 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                   ),
                   ProductsTable(
                     sales: sales,
-                    showAnimation: showAnimation,
+                    showAnimation: _showAnimation,
                     isLoading: loadingSnap.data == true,
                     hideShowAnimation: () {
-                      showAnimation = false;
+                      _showAnimation = false;
                     },
                   ),
                 ],
