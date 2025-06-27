@@ -5,33 +5,48 @@ import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
 class Departments extends StatelessWidget {
+  final bool showAnimation;
+  final void Function() hideShowAnimation;
   final List<SaleStatisticViewModel> saleStatistics;
 
   const Departments({
     super.key,
     required this.saleStatistics,
+    required this.showAnimation,
+    required this.hideShowAnimation,
   });
 
   @override
   Widget build(BuildContext context) {
+    final totalDepartmentsLiquid = saleStatistics.sumLiquidValue();
+
     return Column(
       children: [
-        TableItem(
-          columnIndexToCompareAndDetachBetterAndWorstValue: 1,
-          columnsIndexToSum: [1, 2],
-          indexToSort: 1,
+        ScrollableTableItem(
+          showAnimation: showAnimation,
+          hideShowAnimation: hideShowAnimation,
+          animationSecondsDuration: 3,
           titleMinHeight: 43,
-          tableColumnWidth: {
-            2: FixedColumnWidth(MediaQuery.of(context).size.width * 0.17),
-            3: FixedColumnWidth(MediaQuery.of(context).size.width * 0.16),
-            4: FixedColumnWidth(MediaQuery.of(context).size.width * 0.16),
-          },
+          columnsWidths: [110, 85, 85, 85, 55, 55],
+          fixFirstColumn: true,
+          columnsIndexToSum: [1, 2, 3],
+          columnIndexToCompareAndDetachBetterAndWorstValue: 3,
+          indexToSort: 3,
           titles: [
-            PersonalizedTableCell(value: R.string.departmentAbbreviated),
-            PersonalizedTableCell(value: R.string.sales),
-            PersonalizedTableCell(value: R.string.quantityAbbreviated),
-            PersonalizedTableCell(value: R.string.ticketAverage),
-            PersonalizedTableCell(value: R.string.share),
+            PersonalizedTableCell(
+              value: R.string.departmentAbbreviated.toUpperCase(),
+              isTitle: true,
+            ),
+            PersonalizedTableCell(
+                value: R.string.sales.toUpperCase(), isTitle: true),
+            PersonalizedTableCell(
+                value: R.string.cost.toUpperCase(), isTitle: true),
+            PersonalizedTableCell(
+                value: R.string.profit.toUpperCase(), isTitle: true),
+            PersonalizedTableCell(
+                value: R.string.margin.toUpperCase(), isTitle: true),
+            PersonalizedTableCell(
+                value: R.string.share.toUpperCase(), isTitle: true),
           ],
           rowValues: saleStatistics
               .fold<Map<String, List<SaleStatisticViewModel>>>({}, (acc, sale) {
@@ -43,24 +58,22 @@ class Departments extends StatelessWidget {
               .map((entry) {
                 final department = entry.key;
                 final sales = entry.value;
-                final totalValue = sales.fold<double>(
-                    0, (sum, s) => sum + (s.LiquidValue?.toDouble() ?? 1));
-                final totalQuantity = sales.fold<int>(
-                    0, (sum, s) => sum + (s.QuantitySales?.toInt() ?? 1));
-                final overallValue = saleStatistics.toList().sumLiquidValue();
+                final totalValue = sales.toList().sumLiquidValue();
+                final cost = sales.sumCost();
+                final profit = totalValue - cost;
+                final profitPercent = profit == 0 || totalValue == 0
+                    ? 0
+                    : (profit / (totalValue)) * 100;
+                final share = totalValue / totalDepartmentsLiquid * 100;
 
                 return [
                   PersonalizedTableCell(value: department),
                   PersonalizedTableCell(value: totalValue, isMoney: true),
-                  PersonalizedTableCell(value: totalQuantity),
+                  PersonalizedTableCell(value: cost, isMoney: true),
+                  PersonalizedTableCell(value: profit, isMoney: true),
                   PersonalizedTableCell(
-                    value: totalQuantity > 0 ? totalValue / totalQuantity : 0,
-                    isMoney: true,
-                  ),
-                  PersonalizedTableCell(
-                    value: (totalValue / overallValue) * 100,
-                    isPercentage: true,
-                  ),
+                      value: profitPercent, isPercentage: true),
+                  PersonalizedTableCell(value: share, isPercentage: true),
                 ];
               })
               .toList(),
