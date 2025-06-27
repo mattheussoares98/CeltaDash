@@ -50,11 +50,9 @@ class Sections extends StatelessWidget {
             4: FixedColumnWidth(MediaQuery.of(context).size.width * 0.17),
           },
           titles: [
-            PersonalizedTableCell(
-              value: R.string.department,
-            ),
-            PersonalizedTableCell(value: R.string.total),
+            PersonalizedTableCell(value: R.string.sections),
             PersonalizedTableCell(value: R.string.sales),
+            PersonalizedTableCell(value: R.string.quantityAbbreviated),
             PersonalizedTableCell(value: R.string.ticketAverage),
             PersonalizedTableCell(value: R.string.share),
           ],

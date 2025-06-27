@@ -27,11 +27,9 @@ class Departments extends StatelessWidget {
             4: FixedColumnWidth(MediaQuery.of(context).size.width * 0.16),
           },
           titles: [
-            PersonalizedTableCell(
-              value: R.string.department,
-            ),
-            PersonalizedTableCell(value: R.string.total),
+            PersonalizedTableCell(value: R.string.departmentAbbreviated),
             PersonalizedTableCell(value: R.string.sales),
+            PersonalizedTableCell(value: R.string.quantityAbbreviated),
             PersonalizedTableCell(value: R.string.ticketAverage),
             PersonalizedTableCell(value: R.string.share),
           ],
@@ -50,7 +48,7 @@ class Departments extends StatelessWidget {
                 final totalQuantity = sales.fold<int>(
                     0, (sum, s) => sum + (s.QuantitySales?.toInt() ?? 1));
                 final overallValue = saleStatistics.toList().sumLiquidValue();
-        
+
                 return [
                   PersonalizedTableCell(value: department),
                   PersonalizedTableCell(value: totalValue, isMoney: true),

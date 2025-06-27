@@ -25,7 +25,7 @@ class _PaymentsModalitiesState extends State<PaymentsModalities> {
         TableItem(
           titles: [
             PersonalizedTableCell(value: R.string.paymentsType),
-            PersonalizedTableCell(value: R.string.total),
+            PersonalizedTableCell(value: R.string.sales),
             PersonalizedTableCell(value: R.string.ticketAverage),
             PersonalizedTableCell(value: R.string.share),
           ],
