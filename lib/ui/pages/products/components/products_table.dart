@@ -87,8 +87,9 @@ class ProductsTable extends StatelessWidget {
           final profit = (sale.LiquidValue?.toDouble() ?? 0) -
               (sale.TotalRepositionCost?.toDouble() ?? 0);
 
-          final profitPercent =
-              (profit / (sale.LiquidValue?.toDouble() ?? 0)) * 100;
+          final profitPercent = profit == 0 || sale.LiquidValue?.toDouble() == 0
+              ? 0
+              : (profit / (sale.LiquidValue?.toDouble() ?? 0)) * 100;
           return [
             // PersonalizedTableCell(value: index + 1),
             PersonalizedTableCell(value: productName),
