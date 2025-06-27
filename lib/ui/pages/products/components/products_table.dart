@@ -53,11 +53,11 @@ class ProductsTable extends StatelessWidget {
 
       return ScrollableTableItem(
         titleMinHeight: 43,
-        columnsWidths: [150, 70, 50, 70],
+        columnsWidths: [150, 70, 55, 70, 70, 70, 55],
         fixFirstColumn: true,
-        columnsIndexToSum: [1, 2],
-        columnIndexToCompareAndDetachBetterAndWorstValue: 1,
-        indexToSort: 1,
+        columnsIndexToSum: [1, 2, 4, 5],
+        columnIndexToCompareAndDetachBetterAndWorstValue: 5,
+        indexToSort: 5,
         titles: [
           PersonalizedTableCell(value: R.string.product.toUpperCase()),
           PersonalizedTableCell(value: R.string.sales.toUpperCase()),
@@ -65,6 +65,9 @@ class ProductsTable extends StatelessWidget {
             value: R.string.quantityAbbreviated.toUpperCase(),
           ),
           PersonalizedTableCell(value: R.string.averagePrice.toUpperCase()),
+          PersonalizedTableCell(value: R.string.cost.toUpperCase()),
+          PersonalizedTableCell(value: R.string.profit.toUpperCase()),
+          PersonalizedTableCell(value: R.string.margin.toUpperCase()),
         ],
         rowValues: sales!.map((sale) {
           final parts = sale.Product?.split('-');
@@ -73,6 +76,12 @@ class ProductsTable extends StatelessWidget {
 
           final ticketAverage = (sale.LiquidValue?.toDouble() ?? 0) /
               (sale.QuantityOfProducts?.toDouble() ?? 1);
+
+          final profit = (sale.LiquidValue?.toDouble() ?? 0) -
+              (sale.TotalRepositionCost?.toDouble() ?? 0);
+
+          final profitPercent =
+              (profit / (sale.LiquidValue?.toDouble() ?? 0)) * 100;
           return [
             // PersonalizedTableCell(value: index + 1),
             PersonalizedTableCell(value: productName),
@@ -80,8 +89,16 @@ class ProductsTable extends StatelessWidget {
               value: sale.LiquidValue?.toDouble() ?? 0,
               isMoney: true,
             ),
-            PersonalizedTableCell(value: sale.QuantityOfProducts?.toDouble()),
+            PersonalizedTableCell(
+              value: sale.QuantityOfProducts?.toDouble() ?? 0,
+            ),
             PersonalizedTableCell(value: ticketAverage, isMoney: true),
+            PersonalizedTableCell(
+              value: sale.TotalRepositionCost?.toDouble() ?? 0,
+              isMoney: true,
+            ),
+            PersonalizedTableCell(value: profit, isMoney: true),
+            PersonalizedTableCell(value: profitPercent, isPercentage: true),
           ];
         }).toList(),
       );
