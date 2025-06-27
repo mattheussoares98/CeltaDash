@@ -17,12 +17,18 @@ class ScrollableTableItem extends StatefulWidget {
   final int? indexToSort;
   final List<int>? columnsIndexToSum;
   final bool fixFirstColumn;
+  final bool showAnimation;
+  final void Function() hideShowAnimation;
+  final int animationSecondsDuration;
 
   const ScrollableTableItem({
     super.key,
     required this.titles,
     required this.rowValues,
     required this.columnsWidths,
+    required this.showAnimation,
+    required this.hideShowAnimation,
+    this.animationSecondsDuration = 2,
     this.columnIndexToCompareAndDetachBetterAndWorstValue,
     this.titleMinHeight = 40,
     this.indexToSort,
@@ -39,6 +45,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
   late List<List<PersonalizedTableCell>> _sortedRows;
   int? _currentSortColumn;
   bool _isAscending = false;
+  bool alreadyShowedAnimation = false;
 
   int? minValueRowIndex;
   int? maxValueRowIndex;
@@ -516,22 +523,31 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
                     ),
                   ],
                 ),
-                if (availableSize == 0)
+                if (availableSize == 0 &&
+                    widget.showAnimation &&
+                    !alreadyShowedAnimation)
                   Builder(builder: (context) {
-                    final animationDuration = Duration(seconds: 1);
+                    final animationDuration = Duration(
+                        seconds: (widget.animationSecondsDuration / 2).toInt());
+
                     _bodyHorizontalController.animateTo(
                       curve: Curves.linear,
                       duration: animationDuration,
                       widget.columnsWidths.reduce((p, e) => p + e),
                     );
 
-                    Future.delayed(animationDuration, () {
-                      _bodyHorizontalController.animateTo(
+                    Future.delayed(animationDuration, () async {
+                      await _bodyHorizontalController.animateTo(
                         curve: Curves.linear,
                         duration: animationDuration,
                         0,
                       );
+                      setState(() {
+                        alreadyShowedAnimation = true;
+                      });
                     });
+
+                    widget.hideShowAnimation();
 
                     return Positioned(
                       bottom: 0,

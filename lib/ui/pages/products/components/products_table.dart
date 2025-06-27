@@ -7,10 +7,14 @@ import '../../pages.dart';
 class ProductsTable extends StatelessWidget {
   final List<SaleStatisticViewModel>? sales;
   final bool isLoading;
+  final bool showAnimation;
+  final VoidCallback hideShowAnimation;
   const ProductsTable({
     super.key,
     required this.sales,
     required this.isLoading,
+    required this.showAnimation,
+    required this.hideShowAnimation,
   });
 
   List<List<PersonalizedTableCell>> constructRows(
@@ -52,6 +56,9 @@ class ProductsTable extends StatelessWidget {
       }
 
       return ScrollableTableItem(
+        showAnimation: showAnimation,
+        hideShowAnimation: hideShowAnimation,
+        animationSecondsDuration: 3,
         titleMinHeight: 43,
         columnsWidths: [150, 70, 55, 70, 70, 70, 55],
         fixFirstColumn: true,
