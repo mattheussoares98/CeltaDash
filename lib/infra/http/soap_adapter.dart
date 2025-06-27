@@ -43,11 +43,13 @@ class SoapAdapter implements SoapRequest {
       </soap12:Envelope>''';
 
       final baseUrl = url ?? EnterpriseBuilder.entity?.baseUrl;
-      final response = await http.post(
-        Uri.parse('$baseUrl/ccs/$serviceASMX'),
-        body: envelope,
-        headers: soapHeaders,
-      );
+      final response = await http
+          .post(
+            Uri.parse('$baseUrl/ccs/$serviceASMX'),
+            body: envelope,
+            headers: soapHeaders,
+          )
+          .timeout(Duration(seconds: 30));
 
       if (response.statusCode != 200) {
         throw DomainError.unexpected;
