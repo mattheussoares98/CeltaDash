@@ -22,7 +22,7 @@ class Sections extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final totalValue = saleStatistics.sumLiquidValue();
+    final totalStatisticsLiquid = saleStatistics.sumLiquidValue();
     final departmentColorMap = <String, Color>{};
 
     final grouped =
@@ -40,39 +40,53 @@ class Sections extends StatelessWidget {
 
     return Column(
       children: [
-        TableItem(
-          columnIndexToCompareAndDetachBetterAndWorstValue: 1,
-          columnsIndexToSum: [1, 2],
+        ScrollableTableItem(
+          showAnimation: false,
+          hideShowAnimation: () {},
+          animationSecondsDuration: 3,
           titleMinHeight: 43,
-          tableColumnWidth: {
-            2: FixedColumnWidth(MediaQuery.of(context).size.width * 0.13),
-            3: FixedColumnWidth(MediaQuery.of(context).size.width * 0.2),
-            4: FixedColumnWidth(MediaQuery.of(context).size.width * 0.17),
-          },
+          columnsWidths: [110, 85, 85, 85, 57, 55],
+          fixFirstColumn: true,
+          columnsIndexToSum: [1, 2, 3],
+          columnIndexToCompareAndDetachBetterAndWorstValue: 3,
+          indexToSort: 3,
           titles: [
-            PersonalizedTableCell(value: R.string.sections),
-            PersonalizedTableCell(value: R.string.sales),
-            PersonalizedTableCell(value: R.string.quantityAbbreviated),
-            PersonalizedTableCell(value: R.string.ticketAverage),
-            PersonalizedTableCell(value: R.string.share),
+            PersonalizedTableCell(
+              value: R.string.sections.toUpperCase(),
+              isTitle: true,
+            ),
+            PersonalizedTableCell(
+                value: R.string.sales.toUpperCase(), isTitle: true),
+            PersonalizedTableCell(
+                value: R.string.cost.toUpperCase(), isTitle: true),
+            PersonalizedTableCell(
+                value: R.string.profit.toUpperCase(), isTitle: true),
+            PersonalizedTableCell(
+                value: R.string.margin.toUpperCase(), isTitle: true),
+            PersonalizedTableCell(
+                value: R.string.share.toUpperCase(), isTitle: true),
           ],
           rowValues: grouped.entries.map((entry) {
             // dept & section from the first item in the group
             final first = entry.value.first;
             final dept = first.ProductDepartment ?? '';
             final sect = first.ProductSection ?? '';
-
+//TODO verify if the values are corrects
             // sum up this group
-            final groupValue = entry.value.sumLiquidValue();
-            final groupQty = entry.value.quantitySales();
+            final sectionValueLiquid = entry.value.sumLiquidValue();
+            final cost = entry.value.sumCost();
+            final profit = sectionValueLiquid - cost;
+            final profitPercent = profit == 0 || totalStatisticsLiquid == 0
+                ? 0
+                : (profit / (sectionValueLiquid)) * 100;
 
             // assign a consistent color per department
             departmentColorMap.putIfAbsent(
                 dept, () => generateColorFromString(dept));
 
-            // calculate averages/shares
-            final avgTicket = groupQty > 0 ? groupValue / groupQty : 0;
-            final share = totalValue > 0 ? groupValue / totalValue * 100 : 0;
+            final share = totalStatisticsLiquid > 0
+                ? sectionValueLiquid / totalStatisticsLiquid * 100
+                : 0;
 
             return [
               PersonalizedTableCell(
@@ -80,13 +94,63 @@ class Sections extends StatelessWidget {
                 subtile: sect,
                 decoration: BoxDecoration(color: departmentColorMap[dept]),
               ),
-              PersonalizedTableCell(value: groupValue, isMoney: true),
-              PersonalizedTableCell(value: groupQty),
-              PersonalizedTableCell(value: avgTicket, isMoney: true),
+              PersonalizedTableCell(value: sectionValueLiquid, isMoney: true),
+              PersonalizedTableCell(value: cost, isMoney: true),
+              PersonalizedTableCell(value: profit, isMoney: true),
+              PersonalizedTableCell(value: profitPercent, isPercentage: true),
               PersonalizedTableCell(value: share, isPercentage: true),
             ];
           }).toList(),
         ),
+        // TableItem(
+        //   columnIndexToCompareAndDetachBetterAndWorstValue: 1,
+        //   columnsIndexToSum: [1, 2],
+        //   titleMinHeight: 43,
+        //   tableColumnWidth: {
+        //     2: FixedColumnWidth(MediaQuery.of(context).size.width * 0.13),
+        //     3: FixedColumnWidth(MediaQuery.of(context).size.width * 0.2),
+        //     4: FixedColumnWidth(MediaQuery.of(context).size.width * 0.17),
+        //   },
+        //   titles: [
+        //     PersonalizedTableCell(value: R.string.sections),
+        //     PersonalizedTableCell(value: R.string.sales),
+        //     PersonalizedTableCell(value: R.string.quantityAbbreviated),
+        //     PersonalizedTableCell(value: R.string.ticketAverage),
+        //     PersonalizedTableCell(value: R.string.share),
+        //   ],
+        //   rowValues: grouped.entries.map((entry) {
+        //     // dept & section from the first item in the group
+        //     final first = entry.value.first;
+        //     final dept = first.ProductDepartment ?? '';
+        //     final sect = first.ProductSection ?? '';
+
+        //     // sum up this group
+        //     final groupValue = entry.value.sumLiquidValue();
+        //     final groupQty = entry.value.quantitySales();
+
+        //     // assign a consistent color per department
+        //     departmentColorMap.putIfAbsent(
+        //         dept, () => generateColorFromString(dept));
+
+        //     // calculate averages/shares
+        //     final avgTicket = groupQty > 0 ? groupValue / groupQty : 0;
+        //     final share = totalStatisticsLiquid > 0
+        //         ? groupValue / totalStatisticsLiquid * 100
+        //         : 0;
+
+        //     return [
+        //       PersonalizedTableCell(
+        //         value: dept,
+        //         subtile: sect,
+        //         decoration: BoxDecoration(color: departmentColorMap[dept]),
+        //       ),
+        //       PersonalizedTableCell(value: groupValue, isMoney: true),
+        //       PersonalizedTableCell(value: groupQty),
+        //       PersonalizedTableCell(value: avgTicket, isMoney: true),
+        //       PersonalizedTableCell(value: share, isPercentage: true),
+        //     ];
+        //   }).toList(),
+        // ),
       ],
     );
   }
