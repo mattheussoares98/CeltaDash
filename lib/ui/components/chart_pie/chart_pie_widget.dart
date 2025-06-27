@@ -1,6 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import '../../../main/utils/utils.dart';
 import '../../helpers/helpers.dart';
 import 'chart_pie.dart';
 
@@ -114,8 +113,7 @@ class _ChartPieWidgetState extends State<ChartPieWidget> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth =
-        MediaQuery.of(NavigatorKey.key.currentState!.context).size.width;
+    double screenWidth = MediaQuery.of(context).size.width;
     double chartWidth = screenWidth * 0.4;
     double indicatorSize = screenWidth * 0.04;
     double chartPadding = screenWidth * 0.01;
