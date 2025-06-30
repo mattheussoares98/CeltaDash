@@ -11,8 +11,6 @@ import '../../mixins/mixins.dart';
 import '../pages.dart';
 import 'components/components.dart';
 
-bool _showAnimation = true;
-
 class DepartmentsPage extends StatefulWidget {
   const DepartmentsPage({super.key});
 
@@ -143,13 +141,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
 
                       return TabBarView(
                         children: [
-                          Departments(
-                            saleStatistics: sales,
-                            hideShowAnimation: () {
-                              _showAnimation = false;
-                            },
-                            showAnimation: _showAnimation,
-                          ),
+                          Departments(saleStatistics: sales),
                           Sections(saleStatistics: sales),
                         ],
                       );

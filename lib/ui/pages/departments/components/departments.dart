@@ -4,16 +4,14 @@ import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
+bool _showAnimation = true;
+
 class Departments extends StatelessWidget {
-  final bool showAnimation;
-  final void Function() hideShowAnimation;
   final List<SaleStatisticViewModel> saleStatistics;
 
   const Departments({
     super.key,
     required this.saleStatistics,
-    required this.showAnimation,
-    required this.hideShowAnimation,
   });
 
   @override
@@ -23,8 +21,10 @@ class Departments extends StatelessWidget {
     return Column(
       children: [
         ScrollableTableItem(
-          showAnimation: showAnimation,
-          hideShowAnimation: hideShowAnimation,
+          showAnimation: _showAnimation,
+          hideShowAnimation: () {
+            _showAnimation = false;
+          },
           animationSecondsDuration: 3,
           titleMinHeight: 43,
           columnsWidths: [110, 85, 85, 85, 55, 55],
