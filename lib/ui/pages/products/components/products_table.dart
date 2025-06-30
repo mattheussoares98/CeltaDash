@@ -67,7 +67,10 @@ class ProductsTable extends StatelessWidget {
         indexToSort: 5,
         titles: [
           PersonalizedTableCell(
-              value: R.string.product.toUpperCase(), isTitle: true),
+            value: R.string.product.toUpperCase(),
+            isTitle: true,
+            subtile: "Top 200",
+          ),
           PersonalizedTableCell(
               value: R.string.sales.toUpperCase(), isTitle: true),
           PersonalizedTableCell(
