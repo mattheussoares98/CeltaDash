@@ -37,54 +37,55 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
           color: IsDarkTheme.isDark
               ? Theme.of(context).disabledColor
               : Theme.of(context).disabledColor.withAlpha(40),
-          onPressed: widget.onChanged == null
-              ? null
-              : () async {
-                  final selected = await showCupertinoModalPopup<T>(
-                    context: context,
-                    builder: (_) => CupertinoActionSheet(
-                      title: Text(R.string.selectOneEnterprise),
-                      actions: widget.items!.map((item) {
-                        String text = '';
-                        if (item.child is Text) {
-                          final textWidget = item.child as Text;
-                          text = textWidget.data ?? '';
-                        }
+          onPressed:
+              widget.onChanged == null || (widget.items?.length ?? 0) <= 1
+                  ? null
+                  : () async {
+                      final selected = await showCupertinoModalPopup<T>(
+                        context: context,
+                        builder: (_) => CupertinoActionSheet(
+                          title: Text(R.string.selectOneEnterprise),
+                          actions: widget.items!.map((item) {
+                            String text = '';
+                            if (item.child is Text) {
+                              final textWidget = item.child as Text;
+                              text = textWidget.data ?? '';
+                            }
 
-                        Color getColor() {
-                          if (item.enabled == false) {
-                            return Colors.red;
-                          } else if (item.value == widget.selectedItem) {
-                            return Theme.of(context).primaryColorDark;
-                          } else {
-                            return Theme.of(context).disabledColor;
-                          }
-                        }
+                            Color getColor() {
+                              if (item.enabled == false) {
+                                return Colors.red;
+                              } else if (item.value == widget.selectedItem) {
+                                return Theme.of(context).primaryColorDark;
+                              } else {
+                                return Theme.of(context).disabledColor;
+                              }
+                            }
 
-                        return CupertinoActionSheetAction(
-                          onPressed: () {
-                            Navigator.of(context).pop(item.value);
-                          },
-                          child: Text(
-                            text,
-                            style: TextStyle(
-                              color: getColor(),
-                            ),
+                            return CupertinoActionSheetAction(
+                              onPressed: () {
+                                Navigator.of(context).pop(item.value);
+                              },
+                              child: Text(
+                                text,
+                                style: TextStyle(
+                                  color: getColor(),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                          cancelButton: CupertinoActionSheetAction(
+                            isDefaultAction: true,
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: Text(R.string.cancel),
                           ),
-                        );
-                      }).toList(),
-                      cancelButton: CupertinoActionSheetAction(
-                        isDefaultAction: true,
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: Text(R.string.cancel),
-                      ),
-                    ),
-                  );
+                        ),
+                      );
 
-                  if (selected != null && widget.onChanged != null) {
-                    widget.onChanged!(selected);
-                  }
-                },
+                      if (selected != null && widget.onChanged != null) {
+                        widget.onChanged!(selected);
+                      }
+                    },
           child: Align(
             alignment: Alignment.center,
             child: Text(
@@ -126,7 +127,7 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
           height: 1,
         ),
         items: widget.items,
-        onChanged: widget.onChanged == null
+        onChanged: widget.onChanged == null || (widget.items?.length ?? 0) <= 1
             ? null
             : (value) {
                 if (value != null && widget.onChanged != null) {
