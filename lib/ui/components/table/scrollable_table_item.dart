@@ -314,13 +314,13 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
           ),
           if (isLast && taps.isNotEmpty && !isSumRow)
             Positioned(
-              right: 3,
-              bottom: 3,
+              left: 0,
+              bottom: 1,
               child: Icon(
                 Platform.isIOS
-                    ? CupertinoIcons.hand_point_right
-                    : Icons.touch_app,
-                size: 16,
+                    ? CupertinoIcons.hand_point_left
+                    : Icons.touch_app_sharp,
+                size: 12,
                 color: Theme.of(context).primaryColor,
               ),
             ),
@@ -356,8 +356,26 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
 
     final List<List<PersonalizedTableCell>> fixedRowValues =
         widget.fixFirstColumn
-            ? _sortedRows.map((row) => [row[0]]).toList()
+            ? _sortedRows.map((row) {
+                // find any onTap in the full row
+                final fallbackTap = row
+                    .firstWhere((c) => c.onTap != null, orElse: () => row[0])
+                    .onTap;
+                // if the first cell has its own onTap, leave it; otherwise clone it with fallbackTap
+                final first = row[0].onTap != null
+                    ? row[0]
+                    : PersonalizedTableCell(
+                        value: row[0].value,
+                        isTitle: row[0].isTitle,
+                        isMoney: row[0].isMoney,
+                        isPercentage: row[0].isPercentage,
+                        onTap: fallbackTap,
+                        // …copy any other needed params here…
+                      );
+                return [first];
+              }).toList()
             : [];
+
     final List<List<PersonalizedTableCell>> scrollableRowValues =
         widget.fixFirstColumn
             ? _sortedRows.map((row) => row.sublist(1)).toList()
@@ -375,13 +393,6 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
     final availableSize = screenWidth > sumColumnsWidths
         ? (screenWidth - sumColumnsWidths) / (widget.columnsWidths.length)
         : 0.0;
-
-    final Map<int, TableColumnWidth> fixedColumnWidthsMap =
-        widget.fixFirstColumn
-            ? {
-                0: FixedColumnWidth(widget.columnsWidths[0] + availableSize),
-              }
-            : {};
 
     final Map<int, TableColumnWidth> scrollableColumnWidthsMap = {};
     if (widget.fixFirstColumn) {
@@ -415,7 +426,10 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
                       border: TableBorder.all(
                           color: getTableBorderColor(), width: 0.06),
                       defaultColumnWidth: const FlexColumnWidth(1),
-                      columnWidths: fixedColumnWidthsMap,
+                      columnWidths: {
+                        0: FixedColumnWidth(
+                            widget.columnsWidths[0] + availableSize)
+                      },
                       children: [
                         TableRow(
                           children: [
@@ -498,7 +512,10 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
                             border: TableBorder.all(
                                 color: getTableBorderColor(), width: 0.06),
                             defaultColumnWidth: const FlexColumnWidth(1),
-                            columnWidths: fixedColumnWidthsMap,
+                            columnWidths: {
+                              0: FixedColumnWidth(
+                                  widget.columnsWidths[0] + availableSize)
+                            },
                             children: List.generate(fixedRowValues.length,
                                 (rowIndex) {
                               return _buildTableRow(
@@ -587,7 +604,10 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
                         border: TableBorder.all(
                             color: getTableBorderColor(), width: 0.06),
                         defaultColumnWidth: const FlexColumnWidth(1),
-                        columnWidths: fixedColumnWidthsMap,
+                        columnWidths: {
+                          0: FixedColumnWidth(
+                              widget.columnsWidths[0] + availableSize)
+                        },
                         children: [
                           _buildTableRow(
                             fixedSumRow,
