@@ -293,6 +293,9 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
         onTap: effectiveTap,
         behavior: HitTestBehavior.opaque,
         child: Container(
+          decoration: BoxDecoration(
+            border: getBorderDecoration(),
+          ),
           width: double.infinity,
           constraints: BoxConstraints(minHeight: widget.titleMinHeight),
           child: cell,
@@ -327,6 +330,15 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
     return TableRow(
       children: rowChildren,
       decoration: BoxDecoration(color: rowColor),
+    );
+  }
+
+  BorderDirectional getBorderDecoration() {
+    return BorderDirectional(
+      end: BorderSide(
+        width: 0.5,
+        color: Colors.white,
+      ),
     );
   }
 
@@ -413,9 +425,12 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
                                 child: Container(
                                   constraints: BoxConstraints(
                                       minHeight: widget.titleMinHeight),
-                                  color: Theme.of(context)
-                                      .disabledColor
-                                      .withAlpha(70),
+                                  decoration: BoxDecoration(
+                                    border: getBorderDecoration(),
+                                    color: Theme.of(context)
+                                        .disabledColor
+                                        .withAlpha(70),
+                                  ),
                                   child: fixedTitles[0],
                                 ),
                               ),
@@ -445,10 +460,14 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
                                   onTap: () => _handleHeaderTap(originalIndex),
                                   child: Container(
                                     constraints: BoxConstraints(
-                                        minHeight: widget.titleMinHeight),
-                                    color: Theme.of(context)
-                                        .disabledColor
-                                        .withAlpha(70),
+                                      minHeight: widget.titleMinHeight,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      border: getBorderDecoration(),
+                                      color: Theme.of(context)
+                                          .disabledColor
+                                          .withAlpha(70),
+                                    ),
                                     child: tableCell,
                                   ),
                                 ),
