@@ -396,7 +396,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
       }
     }
 
-    if (fixedTitles.where((e) => e.isTitle != true).isNotEmpty) {
+    if (widget.titles.where((e) => e.isTitle != true).isNotEmpty) {
       return Text("Some titles are not defined as title");
     }
 
