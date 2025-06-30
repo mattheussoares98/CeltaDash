@@ -12,7 +12,24 @@ class TitleAndValue extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (title?.isNotEmpty == true && value?.isNotEmpty == true) {
-      return Text("$title: $value");
+      return RichText(
+        text: TextSpan(
+          text: "$title: ",
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+          children: [
+            TextSpan(
+              text: value,
+              style: const TextStyle(
+                fontWeight: FontWeight.w400,
+                color: Colors.black,
+              ),
+            ),
+          ],
+        ),
+      );
     }
     return SizedBox();
   }
