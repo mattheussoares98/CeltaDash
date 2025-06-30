@@ -59,7 +59,7 @@ class PersonalizedTableCell extends StatelessWidget {
                           ),
                     ),
                   TextSpan(
-                    text: getName(),
+                    text: isTitle == true ? getName().toUpperCase() : getName(),
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           fontWeight: isTitle == true ? FontWeight.bold : null,
                         ),
@@ -76,7 +76,7 @@ class PersonalizedTableCell extends StatelessWidget {
             ),
             if (subtile != null)
               Text(
-                subtile!,
+                isTitle == true ? subtile!.toUpperCase() : subtile!,
                 style: Theme.of(context).textTheme.bodySmall,
               ),
           ],
