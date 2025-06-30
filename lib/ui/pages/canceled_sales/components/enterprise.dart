@@ -22,6 +22,11 @@ class Enterprise extends StatelessWidget {
     }
 
     final enterprise = enterprises!.first;
-    return Text("${enterprise.personalizedCode} - ${enterprise.name}");
+    return Text(
+      "${enterprise.personalizedCode} - ${enterprise.name}",
+      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+    );
   }
 }

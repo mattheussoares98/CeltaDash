@@ -86,9 +86,20 @@ class _CanceledSaleDetailsPageState extends State<CanceledSaleDetailsPage>
                             children: [
                               Enterprise(sale: sale),
                               TitleAndValue(
-                                title: R.string.date,
+                                title:
+                                    "${R.string.date} ${R.string.sale.toLowerCase()}",
                                 value: sale.dateHourOfBilling,
                               ),
+                              TitleAndValue(
+                                title:
+                                    "${R.string.date} ${R.string.cancellation.toLowerCase()}",
+                                value: sale.dateHourOfCancellation,
+                              ),
+                              if (sale.userOfCancellation?.name != null)
+                                TitleAndValue(
+                                  title: R.string.cancelledBy,
+                                  value: sale.userOfCancellation?.name,
+                                ),
                               TitleAndValue(
                                 title: R.string.cashierNumber,
                                 value: sale.cashierNumber,

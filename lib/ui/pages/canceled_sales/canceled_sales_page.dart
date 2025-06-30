@@ -126,10 +126,9 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                     children: [
                       ScrollableTableItem(
                         titleMinHeight: 43,
-                        columnIndexToCompareAndDetachBetterAndWorstValue: 1,
                         columnsIndexToSum: [3],
                         fixFirstColumn: true,
-                        indexToSort: 1,
+                        indexToSort: 2,
                         columnsWidths: [65, 35, 80, 90, 80],
                         showAnimation: _showAnimation,
                         hideShowAnimation: () {
