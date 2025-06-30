@@ -69,7 +69,9 @@ class GetxResumePresenter extends GetxController
         lastGetStatisticsParams: lastGetComparisonParams,
       );
 
-      if (changedEnterprise || canSearchAgain) {
+      if (changedEnterprise ||
+          canSearchAgain ||
+          homePresenter.selectedDate != lastGetComparisonParams?.startDate) {
         await _getCompareDaysStatistics(homePresenter, now);
       }
       if (!canSearchAgain) {

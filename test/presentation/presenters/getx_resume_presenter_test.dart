@@ -547,6 +547,111 @@ void main() {
               ),
             )).called(1);
       });
+      test("Should call again if change the selected date", () async {
+        await sut.getSales(now: now, homePresenter);
+
+        //first date
+        verify(() => loadSaleStatistics.get(
+              GetSaleStatisticsParams(
+                startDate: DateTime(
+                  homePresenter.selectedDateMock.year,
+                  homePresenter.selectedDateMock.month,
+                  homePresenter.selectedDateMock.day,
+                ),
+                endDate: DateTime(
+                  homePresenter.selectedDateMock.year,
+                  homePresenter.selectedDateMock.month,
+                  homePresenter.selectedDateMock.day,
+                  now.hour,
+                  now.minute,
+                ),
+                groupByDay: true,
+                groupByEnterprise: true,
+                enterpriseIds: [
+                  homePresenter.selectedEnterpriseMock!.id!.toInt()
+                ],
+              ),
+            )).called(1);
+
+        //second date
+        verify(() => loadSaleStatistics.get(
+              GetSaleStatisticsParams(
+                startDate: DateTime(
+                  homePresenter.selectedDateMock.year,
+                  homePresenter.selectedDateMock.month - 1,
+                  homePresenter.selectedDateMock.day,
+                ),
+                endDate: DateTime(
+                  homePresenter.selectedDateMock.year,
+                  homePresenter.selectedDateMock.month - 1,
+                  homePresenter.selectedDateMock.day,
+                  now.hour,
+                  now.minute,
+                ),
+                groupByDay: true,
+                groupByEnterprise: true,
+                enterpriseIds: [
+                  homePresenter.selectedEnterpriseMock!.id!.toInt()
+                ],
+              ),
+            )).called(1);
+
+        //change date
+        final newDay = faker.randomGenerator.integer(28);
+        homePresenter.selectedDateMock = DateTime(
+          homePresenter.selectedDateMock.year,
+          homePresenter.selectedDateMock.month,
+          newDay == homePresenter.selectedDateMock.day ? newDay + 1 : newDay,
+        );
+
+        await sut.getSales(now: now, homePresenter);
+
+        //first date
+        verify(() => loadSaleStatistics.get(
+              GetSaleStatisticsParams(
+                startDate: DateTime(
+                  homePresenter.selectedDateMock.year,
+                  homePresenter.selectedDateMock.month,
+                  homePresenter.selectedDateMock.day,
+                ),
+                endDate: DateTime(
+                  homePresenter.selectedDateMock.year,
+                  homePresenter.selectedDateMock.month,
+                  homePresenter.selectedDateMock.day,
+                  now.hour,
+                  now.minute,
+                ),
+                groupByDay: true,
+                groupByEnterprise: true,
+                enterpriseIds: [
+                  homePresenter.selectedEnterpriseMock!.id!.toInt()
+                ],
+              ),
+            )).called(1);
+
+        //second date
+        verify(() => loadSaleStatistics.get(
+              GetSaleStatisticsParams(
+                startDate: DateTime(
+                  homePresenter.selectedDateMock.year,
+                  homePresenter.selectedDateMock.month - 1,
+                  homePresenter.selectedDateMock.day,
+                ),
+                endDate: DateTime(
+                  homePresenter.selectedDateMock.year,
+                  homePresenter.selectedDateMock.month - 1,
+                  homePresenter.selectedDateMock.day,
+                  now.hour,
+                  now.minute,
+                ),
+                groupByDay: true,
+                groupByEnterprise: true,
+                enterpriseIds: [
+                  homePresenter.selectedEnterpriseMock!.id!.toInt()
+                ],
+              ),
+            )).called(1);
+      });
     });
   });
 }
