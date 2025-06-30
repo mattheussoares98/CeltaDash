@@ -8,6 +8,8 @@ import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 import '../pages.dart';
 
+bool _showAnimation = true;
+
 class CanceledSalesPage extends StatefulWidget {
   const CanceledSalesPage({super.key});
 
@@ -122,48 +124,66 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
 
                   return Column(
                     children: [
-                      TableItem(
+                      ScrollableTableItem(
                         titleMinHeight: 43,
                         columnIndexToCompareAndDetachBetterAndWorstValue: 1,
                         columnsIndexToSum: [3],
+                        fixFirstColumn: true,
                         indexToSort: 1,
-                        tableColumnWidth: {
-                          0: FixedColumnWidth(
-                              MediaQuery.of(context).size.width * 0.2),
-                          2: FixedColumnWidth(
-                              MediaQuery.of(context).size.width * 0.1),
+                        columnsWidths: [65, 35, 80, 90, 80],
+                        showAnimation: _showAnimation,
+                        hideShowAnimation: () {
+                          _showAnimation = false;
                         },
                         titles: [
                           PersonalizedTableCell(
                             value:
                                 R.string.couponNumberAbbreviated.toUpperCase(),
+                            isTitle: true,
                           ),
-                          PersonalizedTableCell(value: R.string.date),
                           PersonalizedTableCell(
-                              value: R.string.pdv.toUpperCase()),
-                          PersonalizedTableCell(value: R.string.total),
+                            value: R.string.pdv.toUpperCase(),
+                            isTitle: true,
+                          ),
+                          PersonalizedTableCell(
+                            value: R.string.date,
+                            subtile: R.string.sale,
+                            isTitle: true,
+                          ),
+                          PersonalizedTableCell(
+                            value: R.string.total,
+                            isTitle: true,
+                          ),
+                          PersonalizedTableCell(
+                            value: R.string.cancelledBy,
+                            isTitle: true,
+                          ),
                         ],
-                        rowValues: [
-                          ...sales.map((e) {
-                            final dateTime = DateFormat("dd/MM/yyyy HH:mm:ss")
-                                .parse(e.dateHourOfBilling!);
-                            final formatted =
-                                DateFormat("dd/MM/yyyy").format(dateTime);
-                            return [
-                              PersonalizedTableCell(value: e.documentNumber),
-                              PersonalizedTableCell(value: formatted),
-                              PersonalizedTableCell(value: e.cashierNumber),
-                              PersonalizedTableCell(
-                                value: e.totalLiquid?.toDouble(),
-                                isMoney: true,
-                                onTap: () {
-                                  canceledSalesPresenter
-                                      .updateSelectedSaleMovement(e);
-                                },
-                              ),
-                            ];
-                          }),
-                        ],
+                        rowValues: sales.map((e) {
+                          final dateTime = DateFormat("dd/MM/yyyy HH:mm:ss")
+                              .parse(e.dateHourOfBilling!);
+                          final formatted =
+                              DateFormat("dd/MM/yyyy").format(dateTime);
+                          return [
+                            PersonalizedTableCell(value: e.documentNumber),
+                            PersonalizedTableCell(value: e.cashierNumber),
+                            PersonalizedTableCell(value: formatted),
+                            PersonalizedTableCell(
+                              value: e.totalLiquid?.toDouble(),
+                              isMoney: true,
+                              onTap: () {
+                                canceledSalesPresenter
+                                    .updateSelectedSaleMovement(e);
+                              },
+                            ),
+                            PersonalizedTableCell(
+                              value: e.userOfCancellation?.name ?? "indefinido",
+                            ),
+                            PersonalizedTableCell(
+                              value: e.dateHourOfCancellation ?? "indefinido",
+                            ),
+                          ];
+                        }).toList(),
                       ),
                     ],
                   );

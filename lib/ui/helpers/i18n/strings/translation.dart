@@ -29,6 +29,8 @@ abstract class Translation {
   String get bsUserName;
   String get cancel;
   String get canceledSales;
+  String get cancellation;
+  String get cancelledBy;
   String get cashierNumber;
   String get chargeBacks;
   String get close;
@@ -110,6 +112,7 @@ abstract class Translation {
   String get quantityAbbreviated;
   String get resume;
   String get revenue;
+  String get sale;
   String get sales;
   String get salesOfTheDay;
   String get salesOfTheMonth;

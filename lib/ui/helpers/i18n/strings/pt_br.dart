@@ -36,6 +36,8 @@ class PtBr implements Translation {
   String get bsUserName => "Usuário do BS";
   String get cancel => "Cancelar";
   String get canceledSales => "Vendas canceladas";
+  String get cancellation => "Cancelamento";
+  String get cancelledBy => "Cancelado por";
   String get cashierNumber => "Caixa";
   String get chargeBacks => "Estornos";
   String get close => "Fechar";
@@ -117,6 +119,7 @@ class PtBr implements Translation {
   String get quantityAbbreviated => "Qtd";
   String get resume => "Resumo";
   String get revenue => "Faturamento";
+  String get sale => "Venda";
   String get sales => "Vendas";
   String get salesOfTheDay => "Vendas do dia";
   String get salesOfTheMonth => "Vendas do mês";
