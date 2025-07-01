@@ -457,6 +457,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       controller: _headerHorizontalController,
+                      physics: const ClampingScrollPhysics(),
                       child: Table(
                         border: TableBorder.all(
                             color: getTableBorderColor(), width: 0.06),
@@ -529,9 +530,11 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
                     Expanded(
                       child: SingleChildScrollView(
                         controller: _scrollableColumnsScrollController,
+                        physics: const ClampingScrollPhysics(),
                         child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           controller: _bodyHorizontalController,
+                          physics: const ClampingScrollPhysics(),
                           child: DefaultTextStyle(
                             style:
                                 CupertinoTheme.of(context).textTheme.textStyle,
@@ -624,6 +627,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         controller: _sumHorizontalController,
+                        physics: const ClampingScrollPhysics(),
                         child: Table(
                           border: TableBorder.all(
                               color: getTableBorderColor(), width: 0.06),
