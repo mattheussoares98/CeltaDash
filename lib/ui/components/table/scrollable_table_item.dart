@@ -230,17 +230,16 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
   }
 
   Color getColor(int rowIndex) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    if (_sortedRows.isNotEmpty &&
+    if (rowIndex == maxValueRowIndex && _sortedRows.length > 1) {
+      return Colors.green.withAlpha(120);
+    } else if (rowIndex == minValueRowIndex && _sortedRows.length > 1) {
+      return Colors.red.withAlpha(120);
+    } else if (_sortedRows.isNotEmpty &&
         _sortedRows[rowIndex].first.decoration != null) {
       return _sortedRows[rowIndex].first.decoration?.color ??
           Colors.transparent;
-    } else if (rowIndex == maxValueRowIndex && _sortedRows.length > 1) {
-      return Colors.green.withAlpha(isDark ? 120 : 120);
-    } else if (rowIndex == minValueRowIndex && _sortedRows.length > 1) {
-      return Colors.red.withAlpha(isDark ? 120 : 120);
     } else if (rowIndex % 2 == 0) {
-      return Theme.of(context).disabledColor.withAlpha(isDark ? 40 : 30);
+      return Theme.of(context).disabledColor.withAlpha(30);
     }
     return Colors.transparent;
   }
