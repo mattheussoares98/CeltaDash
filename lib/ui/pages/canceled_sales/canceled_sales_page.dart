@@ -56,139 +56,141 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
               reloadSales(forceRefresh: true);
             },
           ),
-          body: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SelectPeriodItems(
-                  isLoading: loadingSnap.data,
-                  selectedPeriodType: canceledSalesPresenter.selectedPeriod,
-                  onTapDaily: () {
-                    canceledSalesPresenter.getSales(
-                      homePresenter,
-                      periodType: PeriodType.daily,
-                    );
-                  },
-                  onTapMonthly: () {
-                    canceledSalesPresenter.getSales(
-                      homePresenter,
-                      periodType: PeriodType.monthly,
-                    );
-                  },
+          body: SafeArea(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SelectPeriodItems(
+                    isLoading: loadingSnap.data,
+                    selectedPeriodType: canceledSalesPresenter.selectedPeriod,
+                    onTapDaily: () {
+                      canceledSalesPresenter.getSales(
+                        homePresenter,
+                        periodType: PeriodType.daily,
+                      );
+                    },
+                    onTapMonthly: () {
+                      canceledSalesPresenter.getSales(
+                        homePresenter,
+                        periodType: PeriodType.monthly,
+                      );
+                    },
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Obx(() {
-                  final dailySales = canceledSalesPresenter.dailySales
-                      ?.map((e) => SaleMovementModel.fromViewModel(e))
-                      .where((e) {
-                        return e.dateHourOfBilling?.year ==
-                                homePresenter.selectedDate.year &&
-                            e.dateHourOfBilling?.month ==
-                                homePresenter.selectedDate.month &&
-                            e.dateHourOfBilling?.day ==
-                                homePresenter.selectedDate.day;
-                      })
-                      .toList()
-                      .map((e) => e.toViewModel())
-                      .toList();
-
-                  final monthlySales = canceledSalesPresenter.monthlySales
-                      ?.map((e) => SaleMovementModel.fromViewModel(e))
-                      .where((e) {
-                        return e.dateHourOfBilling?.year ==
-                                homePresenter.selectedDate.year &&
-                            e.dateHourOfBilling?.month ==
-                                homePresenter.selectedDate.month;
-                      })
-                      .toList()
-                      .map((e) => e.toViewModel())
-                      .toList();
-
-                  final sales =
-                      canceledSalesPresenter.selectedPeriod == PeriodType.daily
-                          ? dailySales
-                          : monthlySales;
-
-                  if (sales == null) {
-                    return EmptySales(isLoading: loadingSnap.data == true);
-                  } else if (sales.isEmpty) {
-                    return Center(
-                      child: Image.asset(
-                        "lib/ui/assets/images/no_canceled_sales.png",
-                        width: MediaQuery.of(context).size.width * 0.6,
-                        height: MediaQuery.of(context).size.height * 0.6,
-                      ),
+                Expanded(
+                  child: Obx(() {
+                    final dailySales = canceledSalesPresenter.dailySales
+                        ?.map((e) => SaleMovementModel.fromViewModel(e))
+                        .where((e) {
+                          return e.dateHourOfBilling?.year ==
+                                  homePresenter.selectedDate.year &&
+                              e.dateHourOfBilling?.month ==
+                                  homePresenter.selectedDate.month &&
+                              e.dateHourOfBilling?.day ==
+                                  homePresenter.selectedDate.day;
+                        })
+                        .toList()
+                        .map((e) => e.toViewModel())
+                        .toList();
+            
+                    final monthlySales = canceledSalesPresenter.monthlySales
+                        ?.map((e) => SaleMovementModel.fromViewModel(e))
+                        .where((e) {
+                          return e.dateHourOfBilling?.year ==
+                                  homePresenter.selectedDate.year &&
+                              e.dateHourOfBilling?.month ==
+                                  homePresenter.selectedDate.month;
+                        })
+                        .toList()
+                        .map((e) => e.toViewModel())
+                        .toList();
+            
+                    final sales =
+                        canceledSalesPresenter.selectedPeriod == PeriodType.daily
+                            ? dailySales
+                            : monthlySales;
+            
+                    if (sales == null) {
+                      return EmptySales(isLoading: loadingSnap.data == true);
+                    } else if (sales.isEmpty) {
+                      return Center(
+                        child: Image.asset(
+                          "lib/ui/assets/images/no_canceled_sales.png",
+                          width: MediaQuery.of(context).size.width * 0.6,
+                          height: MediaQuery.of(context).size.height * 0.6,
+                        ),
+                      );
+                    }
+            
+                    return Column(
+                      children: [
+                        ScrollableTableItem(
+                          titleMinHeight: 43,
+                          columnsIndexToSum: [3],
+                          fixFirstColumn: true,
+                          indexToSort: 2,
+                          columnsWidths: [65, 35, 80, 90, 80],
+                          showAnimation: _showAnimation,
+                          hideShowAnimation: () {
+                            _showAnimation = false;
+                          },
+                          titles: [
+                            PersonalizedTableCell(
+                              value:
+                                  R.string.couponNumberAbbreviated.toUpperCase(),
+                              isTitle: true,
+                            ),
+                            PersonalizedTableCell(
+                              value: R.string.pdv.toUpperCase(),
+                              isTitle: true,
+                            ),
+                            PersonalizedTableCell(
+                              value: R.string.date,
+                              subtile: R.string.sale,
+                              isTitle: true,
+                            ),
+                            PersonalizedTableCell(
+                              value: R.string.total,
+                              isTitle: true,
+                            ),
+                            PersonalizedTableCell(
+                              value: R.string.cancelledBy,
+                              isTitle: true,
+                            ),
+                          ],
+                          rowValues: sales.map((e) {
+                            final dateTime = DateFormat("dd/MM/yyyy HH:mm:ss")
+                                .parse(e.dateHourOfBilling!);
+                            final formatted =
+                                DateFormat("dd/MM/yyyy").format(dateTime);
+                            return [
+                              PersonalizedTableCell(value: e.documentNumber),
+                              PersonalizedTableCell(value: e.cashierNumber),
+                              PersonalizedTableCell(value: formatted),
+                              PersonalizedTableCell(
+                                value: e.totalLiquid?.toDouble(),
+                                isMoney: true,
+                                onTap: () {
+                                  canceledSalesPresenter
+                                      .updateSelectedSaleMovement(e);
+                                },
+                              ),
+                              PersonalizedTableCell(
+                                value: e.userOfCancellation?.name ?? "indefinido",
+                              ),
+                              PersonalizedTableCell(
+                                value: e.dateHourOfCancellation ?? "indefinido",
+                              ),
+                            ];
+                          }).toList(),
+                        ),
+                      ],
                     );
-                  }
-
-                  return Column(
-                    children: [
-                      ScrollableTableItem(
-                        titleMinHeight: 43,
-                        columnsIndexToSum: [3],
-                        fixFirstColumn: true,
-                        indexToSort: 2,
-                        columnsWidths: [65, 35, 80, 90, 80],
-                        showAnimation: _showAnimation,
-                        hideShowAnimation: () {
-                          _showAnimation = false;
-                        },
-                        titles: [
-                          PersonalizedTableCell(
-                            value:
-                                R.string.couponNumberAbbreviated.toUpperCase(),
-                            isTitle: true,
-                          ),
-                          PersonalizedTableCell(
-                            value: R.string.pdv.toUpperCase(),
-                            isTitle: true,
-                          ),
-                          PersonalizedTableCell(
-                            value: R.string.date,
-                            subtile: R.string.sale,
-                            isTitle: true,
-                          ),
-                          PersonalizedTableCell(
-                            value: R.string.total,
-                            isTitle: true,
-                          ),
-                          PersonalizedTableCell(
-                            value: R.string.cancelledBy,
-                            isTitle: true,
-                          ),
-                        ],
-                        rowValues: sales.map((e) {
-                          final dateTime = DateFormat("dd/MM/yyyy HH:mm:ss")
-                              .parse(e.dateHourOfBilling!);
-                          final formatted =
-                              DateFormat("dd/MM/yyyy").format(dateTime);
-                          return [
-                            PersonalizedTableCell(value: e.documentNumber),
-                            PersonalizedTableCell(value: e.cashierNumber),
-                            PersonalizedTableCell(value: formatted),
-                            PersonalizedTableCell(
-                              value: e.totalLiquid?.toDouble(),
-                              isMoney: true,
-                              onTap: () {
-                                canceledSalesPresenter
-                                    .updateSelectedSaleMovement(e);
-                              },
-                            ),
-                            PersonalizedTableCell(
-                              value: e.userOfCancellation?.name ?? "indefinido",
-                            ),
-                            PersonalizedTableCell(
-                              value: e.dateHourOfCancellation ?? "indefinido",
-                            ),
-                          ];
-                        }).toList(),
-                      ),
-                    ],
-                  );
-                }),
-              ),
-            ],
+                  }),
+                ),
+              ],
+            ),
           ),
         );
       },
