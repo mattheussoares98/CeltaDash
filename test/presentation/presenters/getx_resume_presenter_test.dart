@@ -696,6 +696,23 @@ void main() {
               ),
             )).called(1);
       });
+      test("Should update selected period correctly", () async {
+        await sut.getSales(
+          now: now,
+          homePresenter,
+          periodType: PeriodType.daily,
+          forceRefresh: true,
+        );
+        expect(sut.selectedPeriod, PeriodType.daily);
+        
+        await sut.getSales(
+          now: now,
+          homePresenter,
+          periodType: PeriodType.monthly,
+          forceRefresh: true,
+        );
+        expect(sut.selectedPeriod, PeriodType.monthly);
+      });
     });
   });
 }

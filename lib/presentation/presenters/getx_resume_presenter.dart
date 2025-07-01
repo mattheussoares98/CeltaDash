@@ -52,9 +52,12 @@ class GetxResumePresenter extends GetxController
       return;
     }
 
+    isLoading = true;
+    mainError = null;
     try {
-      isLoading = true;
-      mainError = null;
+      if (periodType != null) {
+        selectedPeriod = periodType;
+      }
 
       final canSearchAgain = SearchHelper.canSearch(
         forceRefresh: forceRefresh,
