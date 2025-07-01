@@ -231,7 +231,11 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
 
   Color getColor(int rowIndex) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    if (rowIndex == maxValueRowIndex && _sortedRows.length > 1) {
+    if (_sortedRows.isNotEmpty &&
+        _sortedRows[rowIndex].first.decoration != null) {
+      return _sortedRows[rowIndex].first.decoration?.color ??
+          Colors.transparent;
+    } else if (rowIndex == maxValueRowIndex && _sortedRows.length > 1) {
       return Colors.green.withAlpha(isDark ? 120 : 120);
     } else if (rowIndex == minValueRowIndex && _sortedRows.length > 1) {
       return Colors.red.withAlpha(isDark ? 120 : 120);
@@ -293,9 +297,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
         onTap: effectiveTap,
         behavior: HitTestBehavior.opaque,
         child: Container(
-          decoration: BoxDecoration(
-            border: getBorderDecoration(),
-          ),
+          decoration: BoxDecoration(border: getBorderDecoration()),
           width: double.infinity,
           constraints: BoxConstraints(minHeight: widget.titleMinHeight),
           child: cell,
@@ -367,6 +369,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
                     : PersonalizedTableCell(
                         value: row[0].value,
                         isTitle: row[0].isTitle,
+                        subtile: row[0].subtile,
                         isMoney: row[0].isMoney,
                         isPercentage: row[0].isPercentage,
                         onTap: fallbackTap,
