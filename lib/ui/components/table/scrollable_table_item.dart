@@ -561,21 +561,24 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
                     final animationDuration = Duration(
                         seconds: (widget.animationSecondsDuration / 2).toInt());
 
-                    _bodyHorizontalController.animateTo(
-                      curve: Curves.linear,
-                      duration: animationDuration,
-                      widget.columnsWidths.reduce((p, e) => p + e),
-                    );
-
-                    Future.delayed(animationDuration, () async {
-                      await _bodyHorizontalController.animateTo(
+                    if (_bodyHorizontalController.hasClients) {
+                      _bodyHorizontalController.animateTo(
                         curve: Curves.linear,
                         duration: animationDuration,
-                        0,
+                        widget.columnsWidths.reduce((p, e) => p + e),
                       );
-                      setState(() {
-                        alreadyShowedAnimation = true;
-                      });
+                    }
+                    Future.delayed(animationDuration, () async {
+                      if (_bodyHorizontalController.hasClients) {
+                        await _bodyHorizontalController.animateTo(
+                          curve: Curves.linear,
+                          duration: animationDuration,
+                          0,
+                        );
+                        setState(() {
+                          alreadyShowedAnimation = true;
+                        });
+                      }
                     });
 
                     widget.hideShowAnimation();
