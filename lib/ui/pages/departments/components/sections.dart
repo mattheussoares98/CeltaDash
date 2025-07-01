@@ -71,7 +71,6 @@ class Sections extends StatelessWidget {
             final first = entry.value.first;
             final dept = first.ProductDepartment ?? '';
             final sect = first.ProductSection ?? '';
-//TODO verify if the values are corrects
             // sum up this group
             final sectionValueLiquid = entry.value.sumLiquidValue();
             final cost = entry.value.sumCost();
