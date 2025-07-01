@@ -60,7 +60,7 @@ class ProductsTable extends StatelessWidget {
         hideShowAnimation: hideShowAnimation,
         animationSecondsDuration: 3,
         titleMinHeight: 43,
-        columnsWidths: [130, 100, 70, 70, 70, 70, 60],
+        columnsWidths: [130, 100, 70, 70, 90, 90, 60],
         fixFirstColumn: true,
         columnsIndexToSum: [1, 2, 4, 5],
         columnIndexToCompareAndDetachBetterAndWorstValue: 5,
