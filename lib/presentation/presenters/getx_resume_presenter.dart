@@ -71,7 +71,8 @@ class GetxResumePresenter extends GetxController
 
       if (changedEnterprise ||
           canSearchAgain ||
-          homePresenter.selectedDate != lastGetComparisonParams?.startDate) {
+          homePresenter.selectedDate.day !=
+              lastGetComparisonParams?.startDate.day) {
         await _getCompareDaysStatistics(homePresenter, now);
       }
       if (!canSearchAgain) {
@@ -113,6 +114,10 @@ class GetxResumePresenter extends GetxController
     HomePresenter homePresenter,
     DateTime now,
   ) async {
+    final isCurrentDay = homePresenter.selectedDate.day == now.day &&
+        homePresenter.selectedDate.month == now.month &&
+        homePresenter.selectedDate.year == now.year;
+
     final todayParams = GetSaleStatisticsParams(
       startDate: DateTime(
         homePresenter.selectedDate.year,
@@ -123,8 +128,8 @@ class GetxResumePresenter extends GetxController
         homePresenter.selectedDate.year,
         homePresenter.selectedDate.month,
         homePresenter.selectedDate.day,
-        now.hour,
-        now.minute,
+        isCurrentDay ? now.hour : 23,
+        isCurrentDay ? now.minute : 59,
       ),
       groupByEnterprise: true,
       groupByDay: true,
@@ -143,8 +148,8 @@ class GetxResumePresenter extends GetxController
           homePresenter.selectedDate.year,
           homePresenter.selectedDate.month - 1,
           homePresenter.selectedDate.day,
-          now.hour,
-          now.minute,
+          isCurrentDay ? now.hour : 23,
+          isCurrentDay ? now.minute : 59,
         ),
         groupByEnterprise: true,
         groupByDay: true,

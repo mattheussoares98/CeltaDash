@@ -270,8 +270,8 @@ void main() {
                 homePresenter.selectedDateMock.year,
                 homePresenter.selectedDateMock.month,
                 homePresenter.selectedDateMock.day,
-                now.hour,
-                now.minute,
+                23,
+                59,
               ),
               groupByDay: true,
               groupByEnterprise: true,
@@ -294,8 +294,8 @@ void main() {
                   homePresenter.selectedDateMock.year,
                   homePresenter.selectedDateMock.month,
                   homePresenter.selectedDateMock.day,
-                  now.hour,
-                  now.minute,
+                  23,
+                  59,
                 ),
                 groupByDay: true,
                 groupByEnterprise: true,
@@ -320,8 +320,8 @@ void main() {
                   homePresenter.selectedDateMock.year,
                   homePresenter.selectedDateMock.month - 1,
                   homePresenter.selectedDateMock.day,
-                  now.hour,
-                  now.minute,
+                  23,
+                  59,
                 ),
                 groupByDay: true,
                 groupByEnterprise: true,
@@ -349,50 +349,44 @@ void main() {
         await sut.getSales(now: now, homePresenter);
 
         //first date
-        verify(() => loadSaleStatistics.get(
-              GetSaleStatisticsParams(
-                startDate: DateTime(
-                  homePresenter.selectedDateMock.year,
-                  homePresenter.selectedDateMock.month,
-                  homePresenter.selectedDateMock.day,
-                ),
-                endDate: DateTime(
-                  homePresenter.selectedDateMock.year,
-                  homePresenter.selectedDateMock.month,
-                  homePresenter.selectedDateMock.day,
-                  now.hour,
-                  now.minute,
-                ),
-                groupByDay: true,
-                groupByEnterprise: true,
-                enterpriseIds: [
-                  homePresenter.selectedEnterpriseMock!.id!.toInt()
-                ],
-              ),
-            )).called(1);
+        final firstParams = GetSaleStatisticsParams(
+          startDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month,
+            homePresenter.selectedDateMock.day,
+          ),
+          endDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month,
+            homePresenter.selectedDateMock.day,
+            23,
+            59,
+          ),
+          groupByDay: true,
+          groupByEnterprise: true,
+          enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+        );
+        verify(() => loadSaleStatistics.get(firstParams)).called(1);
 
         //second date
-        verify(() => loadSaleStatistics.get(
-              GetSaleStatisticsParams(
-                startDate: DateTime(
-                  homePresenter.selectedDateMock.year,
-                  homePresenter.selectedDateMock.month - 1,
-                  homePresenter.selectedDateMock.day,
-                ),
-                endDate: DateTime(
-                  homePresenter.selectedDateMock.year,
-                  homePresenter.selectedDateMock.month - 1,
-                  homePresenter.selectedDateMock.day,
-                  now.hour,
-                  now.minute,
-                ),
-                groupByDay: true,
-                groupByEnterprise: true,
-                enterpriseIds: [
-                  homePresenter.selectedEnterpriseMock!.id!.toInt()
-                ],
-              ),
-            )).called(1);
+        final secondParams = GetSaleStatisticsParams(
+          startDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month - 1,
+            homePresenter.selectedDateMock.day,
+          ),
+          endDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month - 1,
+            homePresenter.selectedDateMock.day,
+            23,
+            59,
+          ),
+          groupByDay: true,
+          groupByEnterprise: true,
+          enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+        );
+        verify(() => loadSaleStatistics.get(secondParams)).called(1);
       });
       test("Should call again if is forcing refresh", () async {
         await sut.getSales(now: now, homePresenter);
@@ -410,8 +404,8 @@ void main() {
                   homePresenter.selectedDateMock.year,
                   homePresenter.selectedDateMock.month,
                   homePresenter.selectedDateMock.day,
-                  now.hour,
-                  now.minute,
+                  23,
+                  59,
                 ),
                 groupByDay: true,
                 groupByEnterprise: true,
@@ -433,8 +427,8 @@ void main() {
                   homePresenter.selectedDateMock.year,
                   homePresenter.selectedDateMock.month - 1,
                   homePresenter.selectedDateMock.day,
-                  now.hour,
-                  now.minute,
+                  23,
+                  59,
                 ),
                 groupByDay: true,
                 groupByEnterprise: true,
@@ -459,8 +453,8 @@ void main() {
                   homePresenter.selectedDateMock.year,
                   homePresenter.selectedDateMock.month,
                   homePresenter.selectedDateMock.day,
-                  now.hour,
-                  now.minute,
+                  23,
+                  59,
                 ),
                 groupByDay: true,
                 groupByEnterprise: true,
@@ -482,8 +476,8 @@ void main() {
                   homePresenter.selectedDateMock.year,
                   homePresenter.selectedDateMock.month - 1,
                   homePresenter.selectedDateMock.day,
-                  now.hour,
-                  now.minute,
+                  23,
+                  59,
                 ),
                 groupByDay: true,
                 groupByEnterprise: true,
@@ -513,8 +507,8 @@ void main() {
                   homePresenter.selectedDateMock.year,
                   homePresenter.selectedDateMock.month,
                   homePresenter.selectedDateMock.day,
-                  now.hour,
-                  now.minute,
+                  23,
+                  59,
                 ),
                 groupByDay: true,
                 groupByEnterprise: true,
@@ -536,8 +530,8 @@ void main() {
                   homePresenter.selectedDateMock.year,
                   homePresenter.selectedDateMock.month - 1,
                   homePresenter.selectedDateMock.day,
-                  now.hour,
-                  now.minute,
+                  23,
+                  59,
                 ),
                 groupByDay: true,
                 groupByEnterprise: true,
@@ -562,8 +556,8 @@ void main() {
                   homePresenter.selectedDateMock.year,
                   homePresenter.selectedDateMock.month,
                   homePresenter.selectedDateMock.day,
-                  now.hour,
-                  now.minute,
+                  23,
+                  59,
                 ),
                 groupByDay: true,
                 groupByEnterprise: true,
@@ -585,8 +579,8 @@ void main() {
                   homePresenter.selectedDateMock.year,
                   homePresenter.selectedDateMock.month - 1,
                   homePresenter.selectedDateMock.day,
-                  now.hour,
-                  now.minute,
+                  23,
+                  59,
                 ),
                 groupByDay: true,
                 groupByEnterprise: true,
@@ -604,6 +598,56 @@ void main() {
           newDay == homePresenter.selectedDateMock.day ? newDay + 1 : newDay,
         );
 
+        await sut.getSales(now: now, homePresenter);
+
+        //first date
+        verify(() => loadSaleStatistics.get(
+              GetSaleStatisticsParams(
+                startDate: DateTime(
+                  homePresenter.selectedDateMock.year,
+                  homePresenter.selectedDateMock.month,
+                  homePresenter.selectedDateMock.day,
+                ),
+                endDate: DateTime(
+                  homePresenter.selectedDateMock.year,
+                  homePresenter.selectedDateMock.month,
+                  homePresenter.selectedDateMock.day,
+                  23,
+                  59,
+                ),
+                groupByDay: true,
+                groupByEnterprise: true,
+                enterpriseIds: [
+                  homePresenter.selectedEnterpriseMock!.id!.toInt()
+                ],
+              ),
+            )).called(1);
+
+        //second date
+        verify(() => loadSaleStatistics.get(
+              GetSaleStatisticsParams(
+                startDate: DateTime(
+                  homePresenter.selectedDateMock.year,
+                  homePresenter.selectedDateMock.month - 1,
+                  homePresenter.selectedDateMock.day,
+                ),
+                endDate: DateTime(
+                  homePresenter.selectedDateMock.year,
+                  homePresenter.selectedDateMock.month - 1,
+                  homePresenter.selectedDateMock.day,
+                  23,
+                  59,
+                ),
+                groupByDay: true,
+                groupByEnterprise: true,
+                enterpriseIds: [
+                  homePresenter.selectedEnterpriseMock!.id!.toInt()
+                ],
+              ),
+            )).called(1);
+      });
+      test("Should call with correct values when select today", () async {
+        homePresenter.selectedDateMock = now;
         await sut.getSales(now: now, homePresenter);
 
         //first date
