@@ -58,99 +58,85 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
                 );
               },
             ),
-            body: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(4),
-                  child: SelectPeriodItems(
-                    isLoading: loadingSnap.data,
-                    selectedPeriodType: resumePresenter.selectedPeriod,
-                    onTapDaily: () {
-                      resumePresenter.getSales(
-                        homePresenter,
-                        periodType: PeriodType.daily,
-                        now: DateTime.now(),
-                      );
-                    },
-                    onTapMonthly: () {
-                      resumePresenter.getSales(
-                        homePresenter,
-                        periodType: PeriodType.monthly,
-                        now: DateTime.now(),
-                      );
-                    },
-                  ),
-                ),
-                Obx(() {
-                  final saleStatistics = resumePresenter.saleStatistics;
-
-                  if (saleStatistics == null || saleStatistics.isEmpty) {
-                    return EmptySales(isLoading: false);
-                  }
-
-                  final groupSales = saleStatistics
-                      .filteredSales(
-                        filterDay:
-                            resumePresenter.selectedPeriod == PeriodType.daily
-                                ? homePresenter.selectedDate.day
-                                : null,
-                      )
-                      .map((e) => e.toViewModel())
-                      .toList();
-
-                  final groupSalesTotalLiquid = groupSales.sumLiquidValue();
-                  int groupSalesQuantity = groupSales.quantitySales();
-
-                  return Expanded(
-                    child: PageView(
-                      controller: pageController,
-                      onPageChanged: (index) {
-                        setState(() {
-                          currentIndex = index;
-                        });
-                      },
-                      children: [
-                        GroupSummaryDetailsPage(
-                          groupSalesTotalLiquid: groupSalesTotalLiquid,
-                          saleStatistics: saleStatistics,
+            body: SafeArea(
+              child: DefaultTabController(
+                length: 2,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: SelectPeriodItems(
+                        isLoading: loadingSnap.data,
+                        selectedPeriodType: resumePresenter.selectedPeriod,
+                        onTapDaily: () {
+                          resumePresenter.getSales(
+                            homePresenter,
+                            periodType: PeriodType.daily,
+                            now: DateTime.now(),
+                          );
+                        },
+                        onTapMonthly: () {
+                          resumePresenter.getSales(
+                            homePresenter,
+                            periodType: PeriodType.monthly,
+                            now: DateTime.now(),
+                          );
+                        },
+                      ),
+                    ),
+                    DefaultTabBar(
+                      tabs: [
+                        DefaultTab(
+                          title: R.string.details,
+                          materialIcon: Icons.bar_chart_rounded,
+                          cupertinoIcon: CupertinoIcons.list_dash,
                         ),
-                        GroupSummaryResumePage(
-                          groupSalesTotalLiquid: groupSalesTotalLiquid,
-                          groupSales: groupSales,
-                          groupSalesQuantity: groupSalesQuantity,
+                        DefaultTab(
+                          title: R.string.resume,
+                          materialIcon: Icons.pie_chart,
+                          cupertinoIcon: CupertinoIcons.chart_pie,
                         ),
                       ],
                     ),
-                  );
-                }),
-              ],
-            ),
-            bottomNavigationBar: BottomNavBar(
-              currentIndex: currentIndex,
-              items: [
-                BottomNavItem(
-                  materialIcon: Icon(Icons.bar_chart_rounded),
-                  cupertinoIcon: Icon(CupertinoIcons.list_dash),
-                  label: R.string.details,
+                    Expanded(
+                      child: Obx(() {
+                        final saleStatistics = resumePresenter.saleStatistics;
+                      
+                        if (saleStatistics == null || saleStatistics.isEmpty) {
+                          return EmptySales(isLoading: false);
+                        }
+                      
+                        final groupSales = saleStatistics
+                            .filteredSales(
+                              filterDay: resumePresenter.selectedPeriod ==
+                                      PeriodType.daily
+                                  ? homePresenter.selectedDate.day
+                                  : null,
+                            )
+                            .map((e) => e.toViewModel())
+                            .toList();
+                      
+                        final groupSalesTotalLiquid = groupSales.sumLiquidValue();
+                        int groupSalesQuantity = groupSales.quantitySales();
+                      
+                        return TabBarView(
+                          children: [
+                            GroupSummaryDetailsPage(
+                              groupSalesTotalLiquid: groupSalesTotalLiquid,
+                              saleStatistics: saleStatistics,
+                            ),
+                            GroupSummaryResumePage(
+                              groupSalesTotalLiquid: groupSalesTotalLiquid,
+                              groupSales: groupSales,
+                              groupSalesQuantity: groupSalesQuantity,
+                            ),
+                          ],
+                        );
+                      }),
+                    ),
+                  ],
                 ),
-                BottomNavItem(
-                  materialIcon: Icon(Icons.pie_chart),
-                  cupertinoIcon: Icon(CupertinoIcons.chart_pie),
-                  label: R.string.resume,
-                ),
-              ],
-              onTap: (index) {
-                setState(() {
-                  currentIndex = index;
-                });
-                if (pageController.hasClients) {
-                  pageController.animateToPage(
-                    index,
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                  );
-                }
-              },
+              ),
             ),
           );
         });
