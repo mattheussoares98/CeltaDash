@@ -27,7 +27,7 @@ class Departments extends StatelessWidget {
           },
           animationSecondsDuration: 3,
           titleMinHeight: 43,
-          columnsWidths: [110, 85, 85, 85, 55, 55],
+          columnsWidths: [110, 85, 85, 85, 60, 55],
           fixFirstColumn: true,
           columnsIndexToSum: [1, 2, 3],
           columnIndexToCompareAndDetachBetterAndWorstValue: 3,
