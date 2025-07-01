@@ -44,7 +44,7 @@ class Sections extends StatelessWidget {
           showAnimation: false,
           hideShowAnimation: () {},
           animationSecondsDuration: 3,
-          titleMinHeight: 43,
+          titleMinHeight: 50,
           columnsWidths: [110, 85, 85, 85, 60, 55],
           fixFirstColumn: true,
           columnsIndexToSum: [1, 2, 3],
