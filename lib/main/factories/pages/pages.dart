@@ -2,6 +2,7 @@ export './canceled_sales/canceled_sales.dart';
 export './compare_days/compare_days.dart';
 export 'more/more.dart';
 export './departments/departments.dart';
+export './enterprises_manager/enterprises_manager.dart';
 export './group_summary/group_summary.dart';
 export './home/home.dart';
 export './login/login.dart';

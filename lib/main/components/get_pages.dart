@@ -29,6 +29,16 @@ class GetPages {
       transition: transition,
     ),
     GetPage(
+      name: PageRoutes.departments,
+      page: makeDepartmentsPage,
+      transition: transition,
+    ),
+    GetPage(
+      name: PageRoutes.compareDays,
+      page: makeEnterprisesManagerPage,
+      transition: transition,
+    ),
+    GetPage(
       name: PageRoutes.more,
       page: makeMorePage,
       transition: transition,
@@ -66,11 +76,6 @@ class GetPages {
     GetPage(
       name: PageRoutes.sellers,
       page: makeSellersPage,
-      transition: transition,
-    ),
-    GetPage(
-      name: PageRoutes.departments,
-      page: makeDepartmentsPage,
       transition: transition,
     ),
     GetPage(
