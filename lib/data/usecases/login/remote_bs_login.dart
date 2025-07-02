@@ -15,7 +15,7 @@ class RemoteBsLogin with ErrorHandling implements BsLogin {
   Future<dynamic> login({
     required String user,
     required String password,
-    required String? url,
+    required String url,
   }) async {
     try {
       final response = await soapAdapter.post(

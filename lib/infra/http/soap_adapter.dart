@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 
 import '../../data/http/http.dart';
 import '../../domain/helpers/helpers.dart';
-import '../../main/builders/builders.dart';
 import '../helpers/helpers.dart';
 
 class SoapAdapter implements SoapRequest {
@@ -15,7 +14,7 @@ class SoapAdapter implements SoapRequest {
     required String? typeOfResult,
     required String soapAction,
     required String serviceASMX,
-    String? url,
+    required String url,
   }) async {
     try {
       final soapHeaders = {
@@ -42,10 +41,9 @@ class SoapAdapter implements SoapRequest {
         </soap12:Body>
       </soap12:Envelope>''';
 
-      final baseUrl = url ?? EnterpriseBuilder.entity?.baseUrl;
       final response = await http
           .post(
-            Uri.parse('$baseUrl/ccs/$serviceASMX'),
+            Uri.parse('$url/ccs/$serviceASMX'),
             body: envelope,
             headers: soapHeaders,
           )
