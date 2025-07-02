@@ -59,6 +59,15 @@ class GetxEnterprisesManagerPresenter extends GetxController
         EnterpriseBuilder.entity =
             FirebaseEnterpriseModel.fromJson(selectedEnterprise).toEntity();
       }
+
+      final localAllEnterprises =
+          await localStorage.get(DatabaseKeys.allEnterprises);
+
+      if (localAllEnterprises != null && localAllEnterprises != "") {
+        allEnterprises = (localAllEnterprises as List)
+            .map((e) => FirebaseEnterpriseModel.fromJson(e).toViewModel())
+            .toList();
+      }
     } catch (e) {
       mainError = getUIError(e);
     } finally {

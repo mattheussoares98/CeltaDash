@@ -1,4 +1,5 @@
 import 'package:celta_dash/domain/usecases/usecases.dart';
+import 'package:celta_dash/infra/helpers/helpers.dart';
 import 'package:mocktail/mocktail.dart';
 
 class LocalStorageSpy extends Mock implements LocalStorage {
@@ -7,13 +8,13 @@ class LocalStorageSpy extends Mock implements LocalStorage {
     this._mockPut();
   }
 
-  When _mockGetCall() => when(() => this.get(any()));
-  void mockGet(dynamic value) {
-    this._mockGetCall().thenAnswer((any) async => value);
+  When _mockGetCall(DatabaseKeys key) => when(() => this.get(key));
+  void mockGet(DatabaseKeys key, dynamic value) {
+    this._mockGetCall(key).thenAnswer((any) async => value);
   }
 
-  void mockGetError() {
-    this._mockGetCall().thenThrow(Exception());
+  void mockGetError(DatabaseKeys key) {
+    this._mockGetCall(key).thenThrow(Exception());
   }
 
   When _mockPutCall() => when(() => put(any(), any()));

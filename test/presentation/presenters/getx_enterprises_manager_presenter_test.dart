@@ -79,6 +79,7 @@ void main() {
     bsLogin.mockLogin(bsUserResponse.toJson());
     firebaseManager.mockGet(mockedFirebaseGet);
     localStorage.mockGet(
+      DatabaseKeys.enterprise,
       FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson(),
     );
   }
@@ -130,7 +131,7 @@ void main() {
         emitsInOrder([null, UIError.unexpected]),
       );
 
-      localStorage.mockGetError();
+      localStorage.mockGetError(DatabaseKeys.enterprise);
 
       await sut.loadLocalEnterprises();
     });
@@ -145,10 +146,31 @@ void main() {
         EntityFactory.makeFirebaseEnterpriseEntity(),
       );
 
-      localStorage.mockGet(enterprise.toJson());
+      localStorage.mockGet(DatabaseKeys.enterprise, enterprise.toJson());
       await sut.loadLocalEnterprises();
 
       expect(EnterpriseBuilder.entity, enterprise.toEntity());
+    });
+    test("Should load all enterprises", () async {
+      await sut.loadLocalEnterprises();
+
+      verify(() => localStorage.get(DatabaseKeys.allEnterprises)).called(1);
+    });
+    test("Should update all enterprises correctly", () async {
+      localStorage.mockGet(
+        DatabaseKeys.allEnterprises,
+        firebaseEnterprisesEntities
+            .map((e) => FirebaseEnterpriseModel.fromEntity(e).toJson())
+            .toList(),
+      );
+
+      await sut.loadLocalEnterprises();
+
+      expect(
+          sut.allEnterprises,
+          firebaseEnterprisesEntities
+              .map((e) => FirebaseEnterpriseModel.fromEntity(e).toViewModel())
+              .toList());
     });
   });
 
