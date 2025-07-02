@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import './splash.dart';
+import '../pages.dart';
 
 class SplashPage extends StatefulWidget {
   final SplashPresenter presenter;
@@ -18,7 +19,9 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    widget.presenter.checkPageToGo();
+    widget.presenter.checkPageToGo(
+      enterprisesManagerPresenter: Get.find<EnterprisesManagerPresenter>(),
+    );
 
     _opacityController = AnimationController(
       vsync: this,

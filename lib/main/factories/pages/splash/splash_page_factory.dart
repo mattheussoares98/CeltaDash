@@ -1,6 +1,10 @@
+import 'package:get/get.dart';
+
 import '../../../../ui/pages/pages.dart';
 import '../../factories.dart';
 
-SplashPage makeSplashPage() => SplashPage(
-      presenter: makeGetxSplashPresenter(),
-    );
+SplashPage makeSplashPage() {
+  Get.put<EnterprisesManagerPresenter>(makeGetxEnterprisesManagerPresenter());
+
+  return SplashPage(presenter: makeGetxSplashPresenter());
+}

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import 'package:flutter/material.dart';
 
+import '../../presentation/mocks/mocks.dart';
 import '../mocks/mocks.dart';
 
 Widget makePage({
@@ -11,6 +12,8 @@ Widget makePage({
   required Widget Function() page,
   dynamic arguments,
 }) {
+  Get.put<EnterprisesManagerPresenter>(EnterprisesManagerPresenterSpy());
+
   final allPages = [
     GetPage(
       name: '/any_route',
@@ -22,6 +25,10 @@ Widget makePage({
     GetPage(
       name: PageRoutes.login,
       page: () => LoginPage(presenter: LoginPresenterSpy()),
+    ),
+    GetPage(
+      name: PageRoutes.enterprisesManager,
+      page: () => EnterprisesManagerPage(),
     ),
     GetPage(
       name: PageRoutes.splash,

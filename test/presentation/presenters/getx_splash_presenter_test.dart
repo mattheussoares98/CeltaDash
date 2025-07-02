@@ -13,10 +13,13 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../data/mocks/mocks.dart';
 import '../../domain/mocks/mocks.dart';
+import '../mocks/mocks.dart';
 
 void main() {
   // ignore: unused_local_variable
   late GetxSplashPresenter sut;
+
+  late EnterprisesManagerPresenterSpy enterprisesManagerPresenter;
 
   late NavigateToSpy navigateTo;
   late LocalStorageSpy localStorage;
@@ -37,6 +40,7 @@ void main() {
       localStorage: localStorage,
       getPlatform: getPlatform,
     );
+    enterprisesManagerPresenter = EnterprisesManagerPresenterSpy();
   }
 
   void initEntities() {
@@ -69,7 +73,9 @@ void main() {
       ).toJson(),
     );
 
-    await sut.checkPageToGo(durationInSeconds: 0);
+    await sut.checkPageToGo(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
+        durationInSeconds: 0);
 
     verify(
       () => navigateTo.navigate(pageRoute: PageRoutes.login, clear: true),
@@ -82,14 +88,18 @@ void main() {
       ).toJson(),
     );
 
-    await sut.checkPageToGo(durationInSeconds: 0);
+    await sut.checkPageToGo(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
+        durationInSeconds: 0);
 
     verify(
       () => navigateTo.navigate(pageRoute: PageRoutes.login, clear: true),
     ).called(1);
   });
   test("Should load local enterprise", () async {
-    await sut.checkPageToGo(durationInSeconds: 0);
+    await sut.checkPageToGo(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
+        durationInSeconds: 0);
 
     verify(() => localStorage.get(DatabaseKeys.enterprise)).called(1);
   });
@@ -100,7 +110,9 @@ void main() {
     localStorage
         .mockGet(FirebaseEnterpriseModel.fromEntity(newEnterprise).toJson());
 
-    await sut.checkPageToGo(durationInSeconds: 0);
+    await sut.checkPageToGo(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
+        durationInSeconds: 0);
 
     expect(EnterpriseBuilder.entity, newEnterprise);
   });
@@ -108,7 +120,9 @@ void main() {
   test("Should navigate to all customers page if is web platform", () async {
     getPlatform.mockGet(PlatformType.web);
 
-    await sut.checkPageToGo(durationInSeconds: 0);
+    await sut.checkPageToGo(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
+        durationInSeconds: 0);
 
     verify(
       () => navigateTo.navigate(pageRoute: PageRoutes.webLogin, clear: true),
@@ -117,7 +131,9 @@ void main() {
   test("Should call verify platform", () async {
     getPlatform.mockGet(PlatformType.web);
 
-    await sut.checkPageToGo(durationInSeconds: 0);
+    await sut.checkPageToGo(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
+        durationInSeconds: 0);
 
     verify(() => getPlatform.get()).called(1);
   });

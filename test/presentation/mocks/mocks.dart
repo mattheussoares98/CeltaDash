@@ -1,5 +1,6 @@
 export './compare_days_presenter_spy.dart';
 export './departments_presenter_spy.dart';
+export './enterprises_manager_presenter_spy.dart';
 export './home_presenter_spy.dart';
 export './operators_presenter_spy.dart';
 export './payment_type_presenter_spy.dart';

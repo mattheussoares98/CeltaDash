@@ -1,6 +1,8 @@
 import 'package:celta_dash/ui/helpers/helpers.dart';
 import 'package:celta_dash/ui/pages/pages.dart';
+import 'package:mocktail/mocktail.dart';
 
+import '../../presentation/mocks/enterprises_manager_presenter_spy.dart';
 import '../helpers/helpers.dart';
 import '../mocks/mocks.dart';
 
@@ -12,7 +14,9 @@ import '../navigation/navigation.dart';
 void main() {
   late SplashPresenterSpy presenter;
 
-  setUpAll(() {});
+  setUpAll(() {
+    registerFallbackValue(EnterprisesManagerPresenterSpy());
+  });
 
   Future<void> loadPage(WidgetTester tester) async {
     presenter = SplashPresenterSpy();

@@ -20,7 +20,10 @@ class GetxSplashPresenter extends GetxController implements SplashPresenter {
   });
 
   @override
-  Future<void> checkPageToGo({int durationInSeconds = 2}) async {
+  Future<void> checkPageToGo({
+    int durationInSeconds = 2,
+    required EnterprisesManagerPresenter enterprisesManagerPresenter,
+  }) async {
     try {
       await Future.delayed(Duration(seconds: durationInSeconds));
 

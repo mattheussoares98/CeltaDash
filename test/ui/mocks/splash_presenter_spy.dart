@@ -5,6 +5,7 @@ class SplashPresenterSpy extends Mock implements SplashPresenter {
   SplashPresenterSpy() {
     when(
       () => this.checkPageToGo(
+        enterprisesManagerPresenter: any(named: 'enterprisesManagerPresenter'),
         durationInSeconds: any(named: 'durationInSeconds'),
       ),
     ).thenAnswer((any) async => any);

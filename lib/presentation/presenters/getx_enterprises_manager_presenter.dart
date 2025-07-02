@@ -35,9 +35,13 @@ class GetxEnterprisesManagerPresenter extends GetxController
   ) async {
     _selectedEnterprise.value = enterprise;
 
-    await localStorage.put(
-      DatabaseKeys.selectedEnterprise,
-      FirebaseEnterpriseModel.fromViewModel(enterprise!).toJson(),
-    );
+    if (enterprise == null) {
+      await localStorage.delete(DatabaseKeys.selectedEnterprise);
+    } else {
+      await localStorage.put(
+        DatabaseKeys.selectedEnterprise,
+        FirebaseEnterpriseModel.fromViewModel(enterprise).toJson(),
+      );
+    }
   }
 }

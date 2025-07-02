@@ -110,5 +110,12 @@ void main() {
             FirebaseEnterpriseModel.fromViewModel(enterprise).toJson()),
       ).called(1);
     });
+    test("Should delete selected enterprise in database if is null value",
+        () async {
+      await sut.updateSelectedEnterprise(null);
+
+      verify(() => localStorage.delete(DatabaseKeys.selectedEnterprise))
+          .called(1);
+    });
   });
 }
