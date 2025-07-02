@@ -22,7 +22,6 @@ void main() {
   late EnterprisesManagerPresenterSpy enterprisesManagerPresenter;
 
   late NavigateToSpy navigateTo;
-  late LocalStorageSpy localStorage;
   late GetPlatformTypeSpy getPlatform;
 
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,14 +29,12 @@ void main() {
 
   void initUsecases() {
     navigateTo = NavigateToSpy();
-    localStorage = LocalStorageSpy();
     getPlatform = GetPlatformTypeSpy();
   }
 
   void initPresenters() {
     sut = GetxSplashPresenter(
       navigateTo: navigateTo,
-      localStorage: localStorage,
       getPlatform: getPlatform,
     );
     enterprisesManagerPresenter = EnterprisesManagerPresenterSpy();
@@ -48,8 +45,6 @@ void main() {
   }
 
   void initMockSuccess() {
-    localStorage.mockGet(
-        FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson());
     getPlatform.mockGet(PlatformType.android);
   }
 
@@ -67,26 +62,26 @@ void main() {
   });
 
   test("Should navigate to login page if accessKey is null", () async {
-    localStorage.mockGet(
-      FirebaseEnterpriseModel.fromEntity(
-        EntityFactory.anullEnterpriseProperties(anullUserAccessKey: true),
-      ).toJson(),
-    );
+    enterprisesManagerPresenter
+        .selectedEnterpriseMock = FirebaseEnterpriseModel.fromEntity(
+            EntityFactory.anullEnterpriseProperties(anullUserAccessKey: true))
+        .toViewModel();
 
     await sut.checkPageToGo(
-        enterprisesManagerPresenter: enterprisesManagerPresenter,
-        durationInSeconds: 0);
+      enterprisesManagerPresenter: enterprisesManagerPresenter,
+      durationInSeconds: 0,
+    );
 
     verify(
       () => navigateTo.navigate(pageRoute: PageRoutes.login, clear: true),
     ).called(1);
   });
   test("Should navigate to login page if crossIdentity is null", () async {
-    localStorage.mockGet(
-      FirebaseEnterpriseModel.fromEntity(
-        EntityFactory.anullEnterpriseProperties(anullUserCrossIdentity: true),
-      ).toJson(),
-    );
+    enterprisesManagerPresenter.selectedEnterpriseMock =
+        FirebaseEnterpriseModel.fromEntity(
+                EntityFactory.anullEnterpriseProperties(
+                    anullUserCrossIdentity: true))
+            .toViewModel();
 
     await sut.checkPageToGo(
         enterprisesManagerPresenter: enterprisesManagerPresenter,
@@ -96,25 +91,13 @@ void main() {
       () => navigateTo.navigate(pageRoute: PageRoutes.login, clear: true),
     ).called(1);
   });
-  test("Should load local enterprise", () async {
+  test("Should call enterprisesManagerPresenter.loadLocalEnterprises",
+      () async {
     await sut.checkPageToGo(
         enterprisesManagerPresenter: enterprisesManagerPresenter,
         durationInSeconds: 0);
 
-    verify(() => localStorage.get(DatabaseKeys.enterprise)).called(1);
-  });
-
-  test("Should update EnterpriseBuilder.entity correctly", () async {
-    final newEnterprise = EntityFactory.makeFirebaseEnterpriseEntity();
-
-    localStorage
-        .mockGet(FirebaseEnterpriseModel.fromEntity(newEnterprise).toJson());
-
-    await sut.checkPageToGo(
-        enterprisesManagerPresenter: enterprisesManagerPresenter,
-        durationInSeconds: 0);
-
-    expect(EnterpriseBuilder.entity, newEnterprise);
+    verify(() => enterprisesManagerPresenter.loadLocalEnterprises()).called(1);
   });
 
   test("Should navigate to all customers page if is web platform", () async {
@@ -136,5 +119,13 @@ void main() {
         durationInSeconds: 0);
 
     verify(() => getPlatform.get()).called(1);
+  });
+  test("Should load enterprisesManagerPresenter.loadLocallEnterprises",
+      () async {
+    await sut.checkPageToGo(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
+        durationInSeconds: 0);
+
+    verify(() => enterprisesManagerPresenter.loadLocalEnterprises()).called(1);
   });
 }

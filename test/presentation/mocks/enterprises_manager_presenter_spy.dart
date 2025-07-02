@@ -11,6 +11,7 @@ class EnterprisesManagerPresenterSpy extends Mock
         .thenAnswer((_) => selectedEnterpriseMock);
 
     _mockUpdateSelectedEnterpriseCall().thenAnswer((any) async => any);
+    when(() => this.loadLocalEnterprises()).thenAnswer((any) async => any);
   }
 
   When _mockUpdateSelectedEnterpriseCall() =>

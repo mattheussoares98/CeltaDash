@@ -4,6 +4,5 @@ import '../../factories.dart';
 
 SplashPresenter makeGetxSplashPresenter() => GetxSplashPresenter(
       navigateTo: makeGetxNavigateTo(),
-      localStorage: makeHiveLocalStorage(),
       getPlatform: makeLocalGetPlatform(),
     );

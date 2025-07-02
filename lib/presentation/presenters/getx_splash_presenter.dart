@@ -1,21 +1,16 @@
 import 'package:get/get.dart';
 
-import '../../data/models/models.dart';
 import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
-import '../../infra/helpers/helpers.dart';
-import '../../main/builders/builders.dart';
 import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
 
 class GetxSplashPresenter extends GetxController implements SplashPresenter {
   final NavigateTo navigateTo;
-  final LocalStorage localStorage;
   final GetPlatformType getPlatform;
 
   GetxSplashPresenter({
     required this.navigateTo,
-    required this.localStorage,
     required this.getPlatform,
   });
 
@@ -33,15 +28,12 @@ class GetxSplashPresenter extends GetxController implements SplashPresenter {
         return;
       }
 
-      final enterprise = await localStorage.get(DatabaseKeys.enterprise);
-      if (enterprise != null) {
-        EnterpriseBuilder.entity =
-            FirebaseEnterpriseModel.fromJson(enterprise).toEntity();
-      }
+      await enterprisesManagerPresenter.loadLocalEnterprises();
 
-      if (EnterpriseBuilder.entity?.bsUser?.name == null ||
-          EnterpriseBuilder.entity?.bsUser?.AccessKey == null ||
-          EnterpriseBuilder.entity?.bsUser?.CrossIdentity_Usuario == null) {
+      final selectedEnterprise = enterprisesManagerPresenter.selectedEnterprise;
+      if (selectedEnterprise?.bsUser?.name == null ||
+          selectedEnterprise?.bsUser?.AccessKey == null ||
+          selectedEnterprise?.bsUser?.CrossIdentity_Usuario == null) {
         navigateTo.navigate(pageRoute: PageRoutes.login, clear: true);
       } else {
         navigateTo.navigate(pageRoute: PageRoutes.home, clear: true);
