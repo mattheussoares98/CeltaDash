@@ -382,5 +382,34 @@ void main() {
             firebaseId: mockedFirebaseGet.id,
           )).toEntity());
     });
+    test("Should add locally the enterprise if all enterprises is empty",
+        () async {
+      await sut.addNewEnterprise(
+        enterpriseName: enterpriseName,
+        userName: userName,
+        userPassword: userPassword,
+      );
+      await sut.addNewEnterprise(
+        enterpriseName: faker.randomGenerator.string(10),
+        userName: faker.randomGenerator.string(10),
+        userPassword: faker.randomGenerator.string(10),
+      );
+
+      verify(
+        () => localStorage.put(
+            DatabaseKeys.enterprise,
+            FirebaseEnterpriseModel.fromViewModel(FirebaseEnterpriseViewModel(
+              baseUrl: mockedFirebaseGet.data()!["baseUrl"],
+              enterpriseName: enterpriseName,
+              bsUser: bsUserResponse,
+              firebaseSubEnterprises:
+                  (mockedFirebaseGet.data()!["subEnterprises"] as List?)
+                      ?.map<FirebaseSubEnterpriseViewModel>((e) =>
+                          FirebaseSubEnterpriseModel.fromJson(e).toViewModel())
+                      .toList(),
+              firebaseId: mockedFirebaseGet.id,
+            )).toJson()),
+      ).called(1);
+    });
   });
 }

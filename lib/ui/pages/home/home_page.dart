@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
         SalesPresenter salesPresenter = Get.find();
         ProductsPresenter productsPresenter = Get.find();
         EnterprisesManagerPresenter enterprisesManagerPresenter = Get.find();
-        enterprisesManagerPresenter.loadLocalEnterprises();
+        await enterprisesManagerPresenter.loadLocalEnterprises();
         homePresenter.updateSelectedIndex(0);
         await homePresenter.getBsEnterprises(
           docRef: FirebaseFirestore.instance.collection("enterprises").doc(

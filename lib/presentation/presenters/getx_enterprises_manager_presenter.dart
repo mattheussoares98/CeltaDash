@@ -129,6 +129,10 @@ class GetxEnterprisesManagerPresenter extends GetxController
 
       if (_allEnterprises.value == null || _allEnterprises.value!.isEmpty) {
         EnterpriseBuilder.entity = newEnterprise;
+        await localStorage.put(
+          DatabaseKeys.enterprise,
+          FirebaseEnterpriseModel.fromEntity(newEnterprise).toJson(),
+        );
       }
 
       allEnterprises = [
