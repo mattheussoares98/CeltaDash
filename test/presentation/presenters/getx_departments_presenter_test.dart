@@ -278,9 +278,10 @@ void main() {
           ),
         ).called(1);
 
-        homePresenter.selectedEnterpriseMock =
-            EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
-                .toViewModel();
+        homePresenter.selectedEnterpriseMock = EnterpriseModel.fromEntity(
+                EntityFactory.makeEnterpriseEntity(
+                    id: homePresenter.selectedEnterpriseMock!.id!.toInt() + 1))
+            .toViewModel();
         await sut.getSales(homePresenter);
 
         verify(
