@@ -38,10 +38,6 @@ class MorePage extends StatelessWidget {
         onTap: homePresenter.goToCompareDays,
         title: R.string.compareDays,
       ),
-      DefaultButton(
-        onTap: homePresenter.goToEnterprisesManagerPage,
-        title: R.string.enterprises,
-      ),
     ];
     buttons.sort((a, b) => a.title.compareTo(b.title));
 
