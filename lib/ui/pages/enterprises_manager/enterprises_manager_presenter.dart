@@ -8,6 +8,7 @@ abstract class EnterprisesManagerPresenter implements Listenable {
   Stream<bool> get isLoadingStream;
 
   FirebaseEnterpriseViewModel? selectedEnterprise;
+  List<FirebaseEnterpriseViewModel>? allEnterprises;
 
   Future<void> updateSelectedEnterprise(
     FirebaseEnterpriseViewModel? enterprise,

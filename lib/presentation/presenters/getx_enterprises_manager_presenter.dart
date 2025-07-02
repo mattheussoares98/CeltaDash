@@ -29,6 +29,14 @@ class GetxEnterprisesManagerPresenter extends GetxController
   set selectedEnterprise(FirebaseEnterpriseViewModel? value) =>
       _selectedEnterprise.value = value;
 
+  final _allEnterprises = Rx<List<FirebaseEnterpriseViewModel>?>(null);
+  @override
+  List<FirebaseEnterpriseViewModel>? get allEnterprises =>
+      _allEnterprises.value;
+  @override
+  set allEnterprises(List<FirebaseEnterpriseViewModel>? value) =>
+      _allEnterprises.value = value;
+
   @override
   Future<void> updateSelectedEnterprise(
     FirebaseEnterpriseViewModel? enterprise,
