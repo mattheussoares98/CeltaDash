@@ -52,13 +52,13 @@ class GetxEnterprisesManagerPresenter extends GetxController
     mainError = null;
 
     try {
-      final localEnterprise = await localStorage.get(DatabaseKeys.enterprise);
+      final selectedEnterprise =
+          await localStorage.get(DatabaseKeys.enterprise);
 
-      if (localEnterprise != null && localEnterprise != "") {
+      if (selectedEnterprise != null && selectedEnterprise != "") {
         EnterpriseBuilder.entity =
-            FirebaseEnterpriseModel.fromJson(localEnterprise).toEntity();
+            FirebaseEnterpriseModel.fromJson(selectedEnterprise).toEntity();
       }
-      localStorage.delete(DatabaseKeys.enterprise);
     } catch (e) {
       mainError = getUIError(e);
     } finally {

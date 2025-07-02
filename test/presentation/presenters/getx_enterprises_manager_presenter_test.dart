@@ -150,11 +150,6 @@ void main() {
 
       expect(EnterpriseBuilder.entity, enterprise.toEntity());
     });
-    test("Should delete DatabaseKeys.enterprise", () async {
-      await sut.loadLocalEnterprises();
-
-      verify(() => localStorage.delete(DatabaseKeys.enterprise)).called(1);
-    });
   });
 
   group("Add new enterprise", () {
