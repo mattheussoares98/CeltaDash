@@ -14,6 +14,7 @@ HomePage makeHomePage() {
   Get.replace<SalesPresenter>(makeGetxSalesPresenter());
   Get.replace<SellersPresenter>(makeGetxSellersPresenter());
   Get.replace<OperatorsPresenter>(makeGetxOperatorsPresenter());
+  Get.put<EnterprisesManagerPresenter>(makeGetxEnterprisesManagerPresenter());
 
   return HomePage();
 }

@@ -57,6 +57,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
+    EnterprisesManagerPresenter enterprisesManagerPresenter = Get.find();
     final isIOS = Platform.isIOS;
 
     return AppBar(
@@ -95,43 +96,60 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
         return Column(
           children: [
             if (widget.showEnterpriseDropdown == true)
-              DefaultDropDown<EcEnterpriseViewModel?>(
-                onChanged: widget.isLoading == true
-                    ? null
-                    : (e) {
-                        if (e == homePresenter.selectedEnterprise) return;
-                        homePresenter.updateSelectedEnterprise(e);
-                        widget.onChangeEnterprise(true);
-                      },
-                hint: Text(
-                    "${selectedEnterprise?.personalizedCode} - ${selectedEnterprise?.name}"),
-                items: enterprises.map(
-                  (e) {
-                    final enabled = enterpriseIsEnabled(e);
-                    return DropdownMenuItem<EcEnterpriseViewModel?>(
-                      value: e,
-                      enabled: enabled,
-                      onTap: enabled == false
+              Row(
+                children: [
+                  Expanded(
+                    child: DefaultDropDown<EcEnterpriseViewModel?>(
+                      onChanged: widget.isLoading == true
                           ? null
-                          : () {
-                              debugPrint("apertou");
+                          : (e) {
+                              if (e == homePresenter.selectedEnterprise) return;
+                              homePresenter.updateSelectedEnterprise(e);
+                              widget.onChangeEnterprise(true);
                             },
-                      alignment: Alignment.center,
-                      child: Text(
-                        "${e.personalizedCode} - ${e.name}${enabled == true ? "" : " (${R.string.disabled})"}",
-                        maxLines: 1,
-                        style: TextStyle(
-                          color: enabled
-                              ? Theme.of(context).textTheme.titleSmall?.color
-                              : Colors.red,
-                        ),
-                      ),
-                    );
-                  },
-                ).toList(),
-                selectedItem: selectedEnterprise,
-                label:
-                    "${selectedEnterprise?.personalizedCode} - ${selectedEnterprise?.name}",
+                      hint: Text(
+                          "${selectedEnterprise?.personalizedCode} - ${selectedEnterprise?.name}"),
+                      items: enterprises.map(
+                        (e) {
+                          final enabled = enterpriseIsEnabled(e);
+                          return DropdownMenuItem<EcEnterpriseViewModel?>(
+                            value: e,
+                            enabled: enabled,
+                            onTap: enabled == false
+                                ? null
+                                : () {
+                                    debugPrint("apertou");
+                                  },
+                            alignment: Alignment.center,
+                            child: Text(
+                              "${e.personalizedCode} - ${e.name}${enabled == true ? "" : " (${R.string.disabled})"}",
+                              maxLines: 1,
+                              style: TextStyle(
+                                color: enabled
+                                    ? Theme.of(context)
+                                        .textTheme
+                                        .titleSmall
+                                        ?.color
+                                    : Colors.red,
+                              ),
+                            ),
+                          );
+                        },
+                      ).toList(),
+                      selectedItem: selectedEnterprise,
+                      label:
+                          "${selectedEnterprise?.personalizedCode} - ${selectedEnterprise?.name}",
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      EnterprisesManagerPage.showEnterpriseSelection(
+                          context, enterprisesManagerPresenter);
+                    },
+                    icon: Icon(Icons
+                        .manage_accounts), //TODO change to be according to the platform
+                  )
+                ],
               ),
             if (widget.showDatePicker == true)
               Row(
