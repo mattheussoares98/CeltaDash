@@ -18,4 +18,12 @@ class GetxEnterprisesManagerPresenter extends GetxController
     required this.firebaseManager,
     required this.localStorage,
   });
+
+  final _selectedEnterprise = Rx<FirebaseEnterpriseViewModel?>(null);
+  @override
+  FirebaseEnterpriseViewModel? get selectedEnterprise =>
+      _selectedEnterprise.value;
+  @override
+  set selectedEnterprise(FirebaseEnterpriseViewModel? value) =>
+      _selectedEnterprise.value = value;
 }
