@@ -23,12 +23,17 @@ class MonthlyAnalysis extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
+    int daysQuantity = sales.map((e) => e.Date?.day).toSet().length;
+
+    if (daysQuantity <= 1) {
+      return SizedBox.shrink();
+    }
 
     final datesAndValues = (sales
             .where((e) =>
                 e.EnterpriseId == homePresenter.selectedEnterprise?.id &&
                 e.Date?.month == homePresenter.selectedDate.month &&
-                !isToday(e.Date))
+                (!isToday(e.Date) || daysQuantity <= 2))
             .map((e) => e.Date!.day)
             .toSet()
             .toList()
@@ -138,7 +143,7 @@ class MonthlyAnalysis extends StatelessWidget {
             worstTimeMessage: R.string.worstDayOfTheMonth,
           ),
           const SizedBox(height: 8),
-          ChartPrices(datesAndValues: datesAndValues),
+          if (daysQuantity > 1) ChartPrices(datesAndValues: datesAndValues),
         ],
       ),
     );
