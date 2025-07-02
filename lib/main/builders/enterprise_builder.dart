@@ -1,5 +1,5 @@
 import '../../domain/entities/entities.dart';
 
 class EnterpriseBuilder {
-  static FirebaseEnterpriseEntity? entity;
+  static FirebaseEnterpriseEntity? entity;//TODO remove this
 }

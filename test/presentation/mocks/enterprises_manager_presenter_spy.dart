@@ -10,6 +10,7 @@ class EnterprisesManagerPresenterSpy extends Mock
     when(() => this.selectedEnterprise)
         .thenAnswer((_) => selectedEnterpriseMock);
 
+    _mockAddNewEnterpriseCall().thenAnswer((any) async => true);
     _mockUpdateSelectedEnterpriseCall().thenAnswer((any) async => any);
     _mockLoadLocalEnterprisesCall().thenAnswer((any) async => any);
   }
@@ -26,5 +27,19 @@ class EnterprisesManagerPresenterSpy extends Mock
 
   void mockLoadLocalEnterprisesError() {
     _mockLoadLocalEnterprisesCall().thenThrow(DomainError.unexpected);
+  }
+
+  When _mockAddNewEnterpriseCall() => when(() => this.addNewEnterprise(
+        enterpriseName: any(named: "enterpriseName"),
+        userName: any(named: "userName"),
+        userPassword: any(named: "userPassword"),
+      ));
+
+  void mockAddNewEnterpriseError() {
+    _mockAddNewEnterpriseCall().thenThrow(DomainError.unexpected);
+  }
+
+  void mockAddNewEnterprise(bool value) {
+    _mockAddNewEnterpriseCall().thenAnswer((any) async => value);
   }
 }

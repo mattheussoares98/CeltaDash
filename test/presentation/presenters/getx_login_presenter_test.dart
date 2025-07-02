@@ -60,15 +60,49 @@ void main() {
   });
 
   group("Login", () {
-    test("Should emit correct values on success", () async {
-      expectLater(sut.mainErrorStream, emits(null));
-      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+    test(
+        "Should call EnterprisesManagerPresenter.addNewEnterprise with correct values",
+        () async {
+      await sut.login(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
+        enterpriseName: enterpriseName,
+        user: user,
+        password: password,
+      );
+
+      verify(() => enterprisesManagerPresenter.addNewEnterprise(
+            enterpriseName: enterpriseName,
+            userName: user,
+            userPassword: password,
+          )).called(1);
+    });
+    test(
+        "Should go to home page when EnterprisesManagerPresenter.addNewEnterprise returns true",
+        () async {
+      await sut.login(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
+        enterpriseName: enterpriseName,
+        user: user,
+        password: password,
+      );
+
+      verify(() => navigateTo.navigate(pageRoute: PageRoutes.home, clear: true))
+          .called(1);
+    });
+    test(
+        "Should NOT go to home page when EnterprisesManagerPresenter.addNewEnterprise returns false",
+        () async {
+      enterprisesManagerPresenter.mockAddNewEnterprise(false);
 
       await sut.login(
         enterprisesManagerPresenter: enterprisesManagerPresenter,
         enterpriseName: enterpriseName,
         user: user,
         password: password,
+      );
+
+      verifyNever(
+        () => navigateTo.navigate(pageRoute: PageRoutes.home, clear: true),
       );
     });
   });

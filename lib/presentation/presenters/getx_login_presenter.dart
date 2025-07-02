@@ -23,22 +23,14 @@ class GetxLoginPresenter extends GetxController
     required String password,
     required EnterprisesManagerPresenter enterprisesManagerPresenter,
   }) async {
-    mainError = null;
-    isLoading = true;
-    try {
-      final added = await enterprisesManagerPresenter.addNewEnterprise(
-        enterpriseName: enterpriseName,
-        userName: user,
-        userPassword: password,
-      );
+    final added = await enterprisesManagerPresenter.addNewEnterprise(
+      enterpriseName: enterpriseName,
+      userName: user,
+      userPassword: password,
+    );
 
-      if (added) {
-        navigateTo.navigate(pageRoute: PageRoutes.home, clear: true);
-      }
-    } catch (e) {
-      mainError = getUIError(e);
-    } finally {
-      isLoading = false;
+    if (added) {
+      navigateTo.navigate(pageRoute: PageRoutes.home, clear: true);
     }
   }
 
