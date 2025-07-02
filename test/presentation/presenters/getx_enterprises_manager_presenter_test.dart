@@ -97,11 +97,10 @@ void main() {
   group("Update selected enterprise", () {
     test("Should update selected enterprise correctly", () async {
       final enterprise = FirebaseEnterpriseModel.fromEntity(
-              EntityFactory.makeFirebaseEnterpriseEntity())
-          .toViewModel();
+          EntityFactory.makeFirebaseEnterpriseEntity());
 
-      await sut.updateSelectedEnterprise(enterprise);
-      expect(sut.selectedEnterprise, enterprise);
+      await sut.updateSelectedEnterprise(enterprise.toViewModel());
+      expect(EnterpriseBuilder.entity, enterprise.toEntity());
     });
     test("Should update selected enterprise in the database", () async {
       final enterprise =
@@ -142,13 +141,14 @@ void main() {
     });
 
     test("Should update selected enterprise correctly", () async {
-      final oldEnterprise = FirebaseEnterpriseModel.fromEntity(
-          EntityFactory.makeFirebaseEnterpriseEntity());
+      final enterprise = FirebaseEnterpriseModel.fromEntity(
+        EntityFactory.makeFirebaseEnterpriseEntity(),
+      );
 
-      localStorage.mockGet(oldEnterprise.toJson());
+      localStorage.mockGet(enterprise.toJson());
       await sut.loadLocalEnterprises();
 
-      expect(sut.selectedEnterprise, oldEnterprise.toViewModel());
+      expect(EnterpriseBuilder.entity, enterprise.toEntity());
     });
     test("Should delete DatabaseKeys.enterprise", () async {
       await sut.loadLocalEnterprises();

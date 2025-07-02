@@ -77,7 +77,7 @@ class FirebaseEnterpriseModel extends Equatable {
         baseUrl: viewModel.baseUrl,
         enterpriseName: viewModel.enterpriseName,
         firebaseId: viewModel.firebaseId,
-        bsUser: null,
+        bsUser: viewModel.bsUser,
         subEnterprises: viewModel.firebaseSubEnterprises
             ?.map((e) => FirebaseSubEnterpriseModel.fromViewModel(e))
             .toList(),

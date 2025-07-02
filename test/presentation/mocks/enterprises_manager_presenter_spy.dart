@@ -4,12 +4,7 @@ import 'package:mocktail/mocktail.dart';
 
 class EnterprisesManagerPresenterSpy extends Mock
     implements EnterprisesManagerPresenter {
-  FirebaseEnterpriseViewModel? selectedEnterpriseMock;
-
   EnterprisesManagerPresenterSpy() {
-    when(() => this.selectedEnterprise)
-        .thenAnswer((_) => selectedEnterpriseMock);
-
     _mockAddNewEnterpriseCall().thenAnswer((any) async => true);
     _mockUpdateSelectedEnterpriseCall().thenAnswer((any) async => any);
     _mockLoadLocalEnterprisesCall().thenAnswer((any) async => any);

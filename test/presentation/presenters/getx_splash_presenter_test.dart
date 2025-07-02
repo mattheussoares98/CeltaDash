@@ -45,10 +45,6 @@ void main() {
 
   void initMockSuccess() {
     getPlatform.mockGet(PlatformType.android);
-    enterprisesManagerPresenter.selectedEnterpriseMock =
-        FirebaseEnterpriseModel.fromEntity(
-                EntityFactory.makeFirebaseEnterpriseEntity())
-            .toViewModel();
   }
 
   setUp(() {
@@ -62,13 +58,14 @@ void main() {
     for (var key in DatabaseKeys.values) {
       registerFallbackValue(key);
     }
+    registerFallbackValue(FirebaseEnterpriseModel.fromEntity(
+            EntityFactory.makeFirebaseEnterpriseEntity())
+        .toViewModel());
   });
 
   test("Should navigate to login page if accessKey is null", () async {
-    enterprisesManagerPresenter
-        .selectedEnterpriseMock = FirebaseEnterpriseModel.fromEntity(
-            EntityFactory.anullEnterpriseProperties(anullUserAccessKey: true))
-        .toViewModel();
+    EnterpriseBuilder.entity =
+        EntityFactory.anullEnterpriseProperties(anullUserAccessKey: true);
 
     await sut.checkPageToGo(
       enterprisesManagerPresenter: enterprisesManagerPresenter,
@@ -80,11 +77,8 @@ void main() {
     ).called(1);
   });
   test("Should navigate to login page if crossIdentity is null", () async {
-    enterprisesManagerPresenter.selectedEnterpriseMock =
-        FirebaseEnterpriseModel.fromEntity(
-                EntityFactory.anullEnterpriseProperties(
-                    anullUserCrossIdentity: true))
-            .toViewModel();
+    EnterpriseBuilder.entity =
+        EntityFactory.anullEnterpriseProperties(anullUserCrossIdentity: true);
 
     await sut.checkPageToGo(
         enterprisesManagerPresenter: enterprisesManagerPresenter,
@@ -95,10 +89,8 @@ void main() {
     ).called(1);
   });
   test("Should navigate to login page if user name is null", () async {
-    enterprisesManagerPresenter.selectedEnterpriseMock =
-        FirebaseEnterpriseModel.fromEntity(
-      EntityFactory.anullEnterpriseProperties(anullUserName: true),
-    ).toViewModel();
+    EnterpriseBuilder.entity =
+        EntityFactory.anullEnterpriseProperties(anullUserName: true);
 
     await sut.checkPageToGo(
         enterprisesManagerPresenter: enterprisesManagerPresenter,

@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 
 import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
+import '../../main/builders/builders.dart';
 import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
 
@@ -30,7 +31,7 @@ class GetxSplashPresenter extends GetxController implements SplashPresenter {
 
       await enterprisesManagerPresenter.loadLocalEnterprises();
 
-      final selectedEnterprise = enterprisesManagerPresenter.selectedEnterprise;
+      final selectedEnterprise = EnterpriseBuilder.entity;
       if (selectedEnterprise?.bsUser?.name == null ||
           selectedEnterprise?.bsUser?.AccessKey == null ||
           selectedEnterprise?.bsUser?.CrossIdentity_Usuario == null) {

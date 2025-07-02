@@ -1,3 +1,4 @@
+import 'package:celta_dash/data/models/models.dart';
 import 'package:celta_dash/infra/helpers/helpers.dart';
 import 'package:celta_dash/main/builders/builders.dart';
 import 'package:celta_dash/presentation/presenters/presenters.dart';
@@ -51,6 +52,9 @@ void main() {
     for (var key in DatabaseKeys.values) {
       registerFallbackValue(key);
     }
+    registerFallbackValue(FirebaseEnterpriseModel.fromEntity(
+            EntityFactory.makeFirebaseEnterpriseEntity())
+        .toViewModel());
 
     initEntities();
     initUsecases();

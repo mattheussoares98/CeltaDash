@@ -5,6 +5,7 @@ import '../../domain/entities/entities.dart';
 import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
 import '../../infra/helpers/helpers.dart';
+import '../../main/builders/builders.dart';
 import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
@@ -24,14 +25,6 @@ class GetxEnterprisesManagerPresenter extends GetxController
     required this.localStorage,
   });
 
-  final _selectedEnterprise = Rx<FirebaseEnterpriseViewModel?>(null);
-  @override
-  FirebaseEnterpriseViewModel? get selectedEnterprise =>
-      _selectedEnterprise.value;
-  @override
-  set selectedEnterprise(FirebaseEnterpriseViewModel? value) =>
-      _selectedEnterprise.value = value;
-
   final _allEnterprises = Rx<List<FirebaseEnterpriseViewModel>?>(null);
   @override
   List<FirebaseEnterpriseViewModel>? get allEnterprises =>
@@ -44,7 +37,8 @@ class GetxEnterprisesManagerPresenter extends GetxController
   Future<void> updateSelectedEnterprise(
     FirebaseEnterpriseViewModel enterprise,
   ) async {
-    _selectedEnterprise.value = enterprise;
+    EnterpriseBuilder.entity =
+        FirebaseEnterpriseModel.fromViewModel(enterprise).toEntity();
 
     await localStorage.put(
       DatabaseKeys.enterprise,
@@ -58,12 +52,11 @@ class GetxEnterprisesManagerPresenter extends GetxController
     mainError = null;
 
     try {
-      final localOldEnterprise =
-          await localStorage.get(DatabaseKeys.enterprise);
+      final localEnterprise = await localStorage.get(DatabaseKeys.enterprise);
 
-      if (localOldEnterprise != null && localOldEnterprise != "") {
-        selectedEnterprise =
-            FirebaseEnterpriseModel.fromJson(localOldEnterprise).toViewModel();
+      if (localEnterprise != null && localEnterprise != "") {
+        EnterpriseBuilder.entity =
+            FirebaseEnterpriseModel.fromJson(localEnterprise).toEntity();
       }
       localStorage.delete(DatabaseKeys.enterprise);
     } catch (e) {
