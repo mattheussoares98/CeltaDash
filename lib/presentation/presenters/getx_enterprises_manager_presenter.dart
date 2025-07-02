@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 
+import '../../data/models/models.dart';
 import '../../domain/usecases/usecases.dart';
+import '../../infra/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
@@ -26,4 +28,16 @@ class GetxEnterprisesManagerPresenter extends GetxController
   @override
   set selectedEnterprise(FirebaseEnterpriseViewModel? value) =>
       _selectedEnterprise.value = value;
+
+  @override
+  Future<void> updateSelectedEnterprise(
+    FirebaseEnterpriseViewModel? enterprise,
+  ) async {
+    _selectedEnterprise.value = enterprise;
+
+    await localStorage.put(
+      DatabaseKeys.selectedEnterprise,
+      FirebaseEnterpriseModel.fromViewModel(enterprise!).toJson(),
+    );
+  }
 }
