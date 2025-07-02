@@ -83,6 +83,7 @@ class GetxWebEnterprisesPresenter extends GetxController
         enterpriseName: _selectedEnterprise?.enterpriseName,
         firebaseSubEnterprises: _selectedEnterprise?.firebaseSubEnterprises,
         firebaseId: _selectedEnterprise?.firebaseId,
+        bsUser: _selectedEnterprise?.bsUser,
       );
 
       int? index = _enterprises.value
@@ -125,12 +126,14 @@ class GetxWebEnterprisesPresenter extends GetxController
         url: baseUrl.toLowerCase().removeWhiteSpaces(),
       );
 
-      if (loginResult["AccessKey"] == null) {
+      BsUserModel bsUser = BsUserModel.fromJson(loginResult);
+
+      if (bsUser.AccessKey == null) {
         throw DomainError.updateCeltaBs;
       }
       final enterprises = await loadEnterprises.get(
         url: baseUrl.toLowerCase().removeWhiteSpaces(),
-        accessKey: loginResult["AccessKey"],
+        accessKey: bsUser.AccessKey,
         userName: bsUserName,
       );
 
@@ -151,6 +154,7 @@ class GetxWebEnterprisesPresenter extends GetxController
         FirebaseEnterpriseViewModel(
           baseUrl: baseUrl.toLowerCase().removeWhiteSpaces(),
           enterpriseName: enterpriseName.toLowerCase().removeWhiteSpaces(),
+          bsUser: bsUser,
           firebaseSubEnterprises: enterprises
               .map(
                 (e) => FirebaseSubEnterpriseViewModel(
@@ -205,6 +209,7 @@ class GetxWebEnterprisesPresenter extends GetxController
         baseUrl: _selectedEnterprise?.baseUrl,
         enterpriseName: _selectedEnterprise?.enterpriseName,
         firebaseId: _selectedEnterprise?.firebaseId,
+        bsUser: _selectedEnterprise?.bsUser,
         firebaseSubEnterprises: oldSelectedEnterprise?.firebaseSubEnterprises,
       );
 

@@ -69,9 +69,12 @@ void main() {
     docRef = DocumentReferenceFake();
     bsUserName = faker.internet.userName();
     bsPassword = faker.internet.password();
-    bsLoginResponse =
-        FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson()
-          ..["AccessKey"] = faker.lorem.sentence();
+    bsLoginResponse = BsUserModel(
+      name: faker.person.name(),
+      AccessKey: faker.guid.guid(),
+      CrossIdentity_Usuario: faker.guid.guid(),
+    ).toJson();
+
     enterprisesInBs = [
       EntityFactory.makeEnterpriseEntity(),
       EntityFactory.makeEnterpriseEntity(),
@@ -228,6 +231,7 @@ void main() {
         baseUrl: faker.internet.httpUrl(),
         enterpriseName: selectedEnterprise.enterpriseName,
         firebaseSubEnterprises: selectedEnterprise.firebaseSubEnterprises,
+        bsUser: selectedEnterprise.bsUser,
         firebaseId: selectedEnterprise.firebaseId,
       );
 
@@ -347,6 +351,7 @@ void main() {
           baseUrl: baseUrl.toLowerCase().removeWhiteSpaces(),
           enterpriseName: docRef.id.toLowerCase().removeWhiteSpaces(),
           firebaseId: docRef.id.toLowerCase().removeWhiteSpaces(),
+          bsUser: BsUserModel.fromJson(bsLoginResponse),
           firebaseSubEnterprises: enterprisesInBs
               .map(
                 (e) => FirebaseSubEnterpriseViewModel(
@@ -427,9 +432,11 @@ void main() {
       EnterpriseBuilder.entity =
           EntityFactory.anullEnterpriseProperties(annullbaseUrl: true);
 
-      bsLogin.mockLogin(
-          FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson()
-            ..["AccessKey"] = null);
+      bsLogin.mockLogin(BsUserModel(
+        name: faker.internet.userName(),
+        AccessKey: null,
+        CrossIdentity_Usuario: faker.guid.guid(),
+      ).toJson());
 
       await sut.addNewEnterprise(
         doOnSucceeds: () {},
@@ -494,6 +501,7 @@ void main() {
         baseUrl: EnterpriseBuilder.entity?.baseUrl,
         enterpriseName: EnterpriseBuilder.entity?.enterpriseName,
         firebaseId: EnterpriseBuilder.entity?.firebaseId,
+        bsUser: BsUserModel.fromEntity(EnterpriseBuilder.entity?.bsUser),
         firebaseSubEnterprises: [
           FirebaseSubEnterpriseModel.fromEntity(
                   EntityFactory.makeFirebaseSubEnterpriseEntity(enabled: true))
@@ -516,6 +524,7 @@ void main() {
               baseUrl: enterprise.baseUrl,
               enterpriseName: enterprise.enterpriseName,
               firebaseId: enterprise.firebaseId,
+              bsUser: enterprise.bsUser,
               firebaseSubEnterprises: [
                 FirebaseSubEnterpriseModel(
                   id: enterprise.firebaseSubEnterprises![0].id?.toInt(),

@@ -89,5 +89,6 @@ class FirebaseEnterpriseModel extends Equatable {
         firebaseId: firebaseId,
         firebaseSubEnterprises:
             subEnterprises?.map((e) => e.toViewModel()).toList(),
+        bsUser: bsUser,
       );
 }
