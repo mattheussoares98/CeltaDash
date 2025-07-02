@@ -85,13 +85,6 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                         .doc(
                           EnterpriseBuilder.entity?.firebaseId,
                         ),
-                    showBsErrorMessage: (error) {
-                      snackBarMessage(
-                        context,
-                        error,
-                        Colors.red,
-                      );
-                    },
                   );
                 },
                 child: Text(R.string.loadEnterprises),

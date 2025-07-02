@@ -38,9 +38,6 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
           docRef: FirebaseFirestore.instance.collection("enterprises").doc(
                 EnterpriseBuilder.entity?.firebaseId,
               ),
-          showBsErrorMessage: (error) {
-            snackBarMessage(context, error, Colors.red);
-          },
         );
 
         setState(() {

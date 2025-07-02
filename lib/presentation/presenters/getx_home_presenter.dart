@@ -60,7 +60,6 @@ class GetxHomePresenter extends GetxController
 
   @override
   Future<void> getBsEnterprises({
-    required void Function(String) showBsErrorMessage,
     required DocumentReference<Map<String, dynamic>> docRef,
   }) async {
     isLoading = true;

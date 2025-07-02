@@ -25,7 +25,6 @@ abstract class HomePresenter implements Listenable {
   void goToSellersPage();
 
   Future<void> getBsEnterprises({
-    required void Function(String) showBsErrorMessage,
     required DocumentReference<Map<String, dynamic>> docRef,
   });
 

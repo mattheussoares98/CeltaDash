@@ -197,7 +197,7 @@ void main() {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(sut.mainErrorStream, emits(null));
 
-      await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
+      await sut.getBsEnterprises(docRef: docRef);
     });
     test("Should emit correct values on error", () async {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
@@ -208,11 +208,11 @@ void main() {
 
       loadEnterprises.mockGetError();
 
-      await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
+      await sut.getBsEnterprises(docRef: docRef);
     });
 
     test("Should update selected enterprise correctly", () async {
-      await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
+      await sut.getBsEnterprises(docRef: docRef);
 
       expect(
         sut.selectedEnterprise,
@@ -221,7 +221,7 @@ void main() {
     });
 
     test("Should call remoteLoadEnterprises", () async {
-      await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
+      await sut.getBsEnterprises(docRef: docRef);
 
       verify(() => loadEnterprises.get()).called(1);
     });
@@ -230,7 +230,7 @@ void main() {
       test(
           "Should get firebase sub enterprises if is missing enterprises locally",
           () async {
-        await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
+        await sut.getBsEnterprises(docRef: docRef);
 
         verify(
           () => firebaseManager.get(
@@ -255,7 +255,7 @@ void main() {
               .toList(),
         );
 
-        await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
+        await sut.getBsEnterprises(docRef: docRef);
 
         verifyNever(
           () => firebaseManager.get(
@@ -265,7 +265,7 @@ void main() {
         );
       });
       test("Should update add missing enterprises in firebase", () async {
-        await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
+        await sut.getBsEnterprises(docRef: docRef);
 
         verify(
           () => firebaseManager.put(
@@ -304,7 +304,7 @@ void main() {
               .toList(),
         );
 
-        await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
+        await sut.getBsEnterprises(docRef: docRef);
 
         verifyNever(
           () => firebaseManager.put(
@@ -319,7 +319,7 @@ void main() {
         );
       });
       test("Should update enterprise locally", () async {
-        await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
+        await sut.getBsEnterprises(docRef: docRef);
 
         verify(
           () => localStorage.put(
@@ -342,7 +342,7 @@ void main() {
           ...EnterpriseBuilder.entity!.firebaseSubEnterprises!
         ];
 
-        await sut.getBsEnterprises(docRef: docRef, showBsErrorMessage: (_) {});
+        await sut.getBsEnterprises(docRef: docRef);
 
         expect(
           EnterpriseBuilder.entity,
