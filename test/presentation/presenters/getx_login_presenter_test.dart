@@ -14,9 +14,11 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../data/mocks/mocks.dart';
 import '../../domain/mocks/mocks.dart';
+import '../mocks/mocks.dart';
 
 void main() {
   late GetxLoginPresenter sut;
+  late EnterprisesManagerPresenterSpy enterprisesManagerPresenter;
 
   late NavigateToSpy navigateTo;
   late BsLoginSpy bsLogin;
@@ -47,6 +49,7 @@ void main() {
       firebaseManager: firebaseManager,
       localStorage: localStorage,
     );
+    enterprisesManagerPresenter = EnterprisesManagerPresenterSpy();
   }
 
   void initEntities() {
@@ -95,6 +98,7 @@ void main() {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
 
       await sut.login(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
         enterpriseName: enterpriseName,
         user: user,
         password: password,
@@ -111,6 +115,7 @@ void main() {
       bsLogin.mockLoginError(error);
 
       await sut.login(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
         enterpriseName: enterpriseName,
         user: user,
         password: password,
@@ -133,6 +138,7 @@ void main() {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
 
       await sut.login(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
         enterpriseName: enterpriseName,
         user: user,
         password: password,
@@ -145,6 +151,7 @@ void main() {
       );
 
       await sut.login(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
         enterpriseName: enterpriseName,
         user: user,
         password: password,
@@ -158,6 +165,7 @@ void main() {
     });
     test("Should not get enterprise in firebase if has urlCcs", () async {
       await sut.login(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
         enterpriseName: enterpriseName,
         user: user,
         password: password,
@@ -178,6 +186,7 @@ void main() {
           .mockGet(MockedFirebaseGet(dataToReturn: [FakeDoc(null, null)]));
 
       await sut.login(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
         enterpriseName: enterpriseName,
         user: user,
         password: password,
@@ -189,6 +198,7 @@ void main() {
 
     test("Should call bsLogin with correct values", () async {
       await sut.login(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
         enterpriseName: enterpriseName.toLowerCase().removeWhiteSpaces(),
         user: user,
         password: password,
@@ -208,6 +218,7 @@ void main() {
       firebaseManager.mockGetError();
 
       await sut.login(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
         enterpriseName: enterpriseName,
         user: user,
         password: password,
@@ -218,6 +229,7 @@ void main() {
     });
     test("Should navigate to home page", () async {
       await sut.login(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
         enterpriseName: enterpriseName,
         user: user,
         password: password,
@@ -233,6 +245,7 @@ void main() {
       bsLogin.mockLogin(faker.randomGenerator.string(10));
 
       await sut.login(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
         enterpriseName: enterpriseName,
         user: user,
         password: password,
@@ -243,6 +256,7 @@ void main() {
 
     test("Should save enterprise locally in success", () async {
       await sut.login(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
         enterpriseName: enterpriseName,
         user: user,
         password: password,
@@ -258,6 +272,7 @@ void main() {
     test("Should update EnterpriseBuilder correctly when login is successful",
         () async {
       await sut.login(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
         enterpriseName: enterpriseName,
         user: user,
         password: password,
@@ -277,6 +292,7 @@ void main() {
       bsLogin.mockLogin(faker.lorem.sentence());
 
       await sut.login(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
         enterpriseName: enterpriseName,
         user: user,
         password: password,
@@ -319,6 +335,7 @@ void main() {
             ..["AccessKey"] = null);
 
       await sut.login(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
         enterpriseName: enterpriseName,
         user: user,
         password: password,
@@ -339,6 +356,7 @@ void main() {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
 
       await sut.login(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
         enterpriseName: enterpriseName,
         user: user,
         password: password,
@@ -350,6 +368,7 @@ void main() {
       final user = "${faker.person.name()}  ${faker.person.name()}";
 
       await sut.login(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
         enterpriseName: enterpriseName,
         user: "$user  ",
         password: password,
@@ -366,6 +385,7 @@ void main() {
       final user = "${faker.person.name()}  ${faker.person.name()}";
 
       await sut.login(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
         enterpriseName: enterpriseName,
         user: "$user  ",
         password: password,

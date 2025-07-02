@@ -17,6 +17,8 @@ class LoginPresenterSpy extends Mock implements LoginPresenter {
     // Mock methods
     when(() => onChangedEnterpriseName()).thenReturn(null);
     when(() => login(
+          enterprisesManagerPresenter:
+              any(named: 'enterprisesManagerPresenter'),
           enterpriseName: any(named: 'enterpriseName'),
           user: any(named: 'user'),
           password: any(named: 'password'),

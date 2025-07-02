@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../main/builders/builders.dart';
+import '../../../ui/pages/pages.dart';
 import '../../helpers/helpers.dart';
 import '../../mixins/mixins.dart';
 import 'components/components.dart';
-import 'login.dart';
 
 class LoginPage extends StatefulWidget {
   final LoginPresenter presenter;
@@ -69,6 +69,7 @@ class _LoginPageState extends State<LoginPage>
       enterpriseName: enterpriseController.text,
       user: userController.text,
       password: passwordController.text,
+      enterprisesManagerPresenter: Get.find<EnterprisesManagerPresenter>(),
     );
   }
 

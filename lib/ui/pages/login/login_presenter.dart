@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../helpers/helpers.dart';
+import '../pages.dart';
 
 abstract class LoginPresenter implements Listenable {
   Stream<UIError?> get mainErrorStream;
@@ -11,6 +12,6 @@ abstract class LoginPresenter implements Listenable {
     required String enterpriseName,
     required String user,
     required String password,
-    
+    required EnterprisesManagerPresenter enterprisesManagerPresenter,
   });
 }

@@ -30,6 +30,7 @@ class GetxLoginPresenter extends GetxController
     required String enterpriseName,
     required String user,
     required String password,
+    required EnterprisesManagerPresenter enterprisesManagerPresenter,
   }) async {
     mainError = null;
     isLoading = true;
