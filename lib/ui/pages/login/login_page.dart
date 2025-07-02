@@ -76,16 +76,17 @@ class _LoginPageState extends State<LoginPage>
   @override
   Widget build(BuildContext context) {
     Get.put<LoginPresenter>(widget.presenter);
+    final enterprisesManagerPresenter = Get.find<EnterprisesManagerPresenter>();
     errorSubscription?.cancel();
     loadingSubscription?.cancel();
 
     errorSubscription = handleMainError(
       context,
-      widget.presenter.mainErrorStream,
+      enterprisesManagerPresenter.mainErrorStream,
     );
     loadingSubscription = handleLoading(
       context,
-      widget.presenter.isLoadingStream,
+      enterprisesManagerPresenter.isLoadingStream,
     );
 
     return Scaffold(
