@@ -23,6 +23,7 @@ class PtBr implements Translation {
   String get msgWriteSomething => "Digite algo";
 
   String get add => "Adicionar";
+  String get addNewEnterprise => "Adicionar nova empresa";
   String get anothersEnterprises => "Outras empresas";
   String get anothersProducts => "Outros produtos";
   String get all => "Todas";
@@ -45,6 +46,7 @@ class PtBr implements Translation {
   String get compareDays => "Comparar dias";
   String get comparedToDay => "Em comparação ao dia";
   String get configurations => "Configurações";
+  String get connectedEnterprises => "Empresas conectadas";
   String get cost => "Custo";
   String get coupon => "Cupom";
   String get couponNumberAbbreviated => "Cup";

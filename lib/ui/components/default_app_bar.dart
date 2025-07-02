@@ -146,8 +146,11 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                       EnterprisesManagerPage.showEnterpriseSelection(
                           context, enterprisesManagerPresenter);
                     },
-                    icon: Icon(Icons
-                        .manage_accounts), //TODO change to be according to the platform
+                    icon: Icon(
+                      Platform.isIOS
+                          ? CupertinoIcons.person_add
+                          : Icons.manage_accounts,
+                    ),
                   )
                 ],
               ),

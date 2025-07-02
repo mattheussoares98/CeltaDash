@@ -1,7 +1,11 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../main/builders/builders.dart';
+import '../../helpers/helpers.dart';
 import '../pages.dart';
 
 class EnterprisesManagerPage extends StatefulWidget {
@@ -21,13 +25,21 @@ class EnterprisesManagerPage extends StatefulWidget {
       enableDrag: true,
       useSafeArea: true,
       builder: (context) {
-        return DraggableScrollableSheet(
-          initialChildSize: 0.95, // Set the initial height to 90% of the screen
-          minChildSize: 0.5,
-          maxChildSize: 0.95,
-          builder: (_, controller) {
-            return EnterprisesManagerPage();
-          },
+        return Stack(
+          children: [
+            Positioned.fill(
+                child: GestureDetector(
+              onTap: Navigator.of(context).pop,
+            )),
+            DraggableScrollableSheet(
+              initialChildSize: 0.95,
+              minChildSize: 0.5,
+              maxChildSize: 0.95,
+              builder: (_, controller) {
+                return EnterprisesManagerPage();
+              },
+            ),
+          ],
         );
       },
     );
@@ -50,57 +62,51 @@ class _EnterprisesManagerPageState extends State<EnterprisesManagerPage> {
     final theme = Theme.of(context);
     return Obx(() {
       return Container(
-        // This creates the rounded top corners for the modal sheet
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
         ),
+        padding: const EdgeInsets.all(8),
         child: Column(
           children: [
-            // --- Custom AppBar for the Modal ---
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Manage Connections',
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    R.string.connectedEnterprises,
+                    style: Theme.of(context).textTheme.displayLarge,
+                    textAlign: TextAlign.center,
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ],
-              ),
+                ),
+                IconButton(
+                  icon:
+                      Icon(Platform.isIOS ? CupertinoIcons.xmark : Icons.close),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
             ),
-            // --- Add New Company Button ---
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  // TODO: Implement navigation to your "Add New Enterprise" page
-                  print('Navigate to Add New Company Page');
-                },
-                icon: const Icon(Icons.add_circle_outline),
-                label: const Text('Add New Company'),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 50),
-                  backgroundColor: theme.colorScheme.primary,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+            ElevatedButton.icon(
+              onPressed: () {
+                // TODO: Implement navigation to your "Add New Enterprise" page
+                print('Navigate to Add New Company Page');
+              },
+              icon: Icon(Platform.isIOS
+                  ? CupertinoIcons.add_circled
+                  : Icons.add_circle_outline),
+              label: Text(R.string.addNewEnterprise),
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(double.infinity, 50),
+                backgroundColor: theme.colorScheme.primary,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
                 ),
               ),
             ),
-            const Divider(indent: 16, endIndent: 16),
-            // --- List of Available Companies ---
-
+            const Divider(),
             Expanded(
               child: ListView.builder(
-                controller: scrollController, // Connect the scroll controller
+                controller: scrollController,
                 itemCount:
                     enterprisesManagerPresenter.allEnterprises?.length ?? 0,
                 itemBuilder: (context, index) {
@@ -110,8 +116,6 @@ class _EnterprisesManagerPageState extends State<EnterprisesManagerPage> {
                       enterprise.firebaseId;
 
                   return Card(
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                     elevation: isSelected ? 4.0 : 1.0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -122,14 +126,17 @@ class _EnterprisesManagerPageState extends State<EnterprisesManagerPage> {
                     ),
                     child: ListTile(
                       title: Text(
-                        enterprise.enterpriseName ?? "null",
+                        enterprise.enterpriseName?.toUpperCase() ?? "null",
                         style: TextStyle(
                           fontWeight:
                               isSelected ? FontWeight.bold : FontWeight.normal,
                         ),
                       ),
                       trailing: isSelected
-                          ? Icon(Icons.check_circle,
+                          ? Icon(
+                              Platform.isIOS
+                                  ? CupertinoIcons.checkmark
+                                  : Icons.check_circle,
                               color: theme.colorScheme.primary)
                           : null,
                       onTap: () => enterprisesManagerPresenter
@@ -143,113 +150,5 @@ class _EnterprisesManagerPageState extends State<EnterprisesManagerPage> {
         ),
       );
     });
-  }
-}
-
-class EnterpriseSelectionPage extends StatelessWidget {
-  final Function(FirebaseEnterpriseViewModel) onCompanySelected;
-  final ScrollController scrollController;
-
-  const EnterpriseSelectionPage({
-    super.key,
-    required this.onCompanySelected,
-    required this.scrollController,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final enterprisesManagerPresenter = Get.find<EnterprisesManagerPresenter>();
-
-    final theme = Theme.of(context);
-    return Container(
-      // This creates the rounded top corners for the modal sheet
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      child: Column(
-        children: [
-          // --- Custom AppBar for the Modal ---
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Manage Connections',
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ],
-            ),
-          ),
-          // --- Add New Company Button ---
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            child: ElevatedButton.icon(
-              onPressed: () {
-                // TODO: Implement navigation to your "Add New Enterprise" page
-                print('Navigate to Add New Company Page');
-              },
-              icon: const Icon(Icons.add_circle_outline),
-              label: const Text('Add New Company'),
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 50),
-                backgroundColor: theme.colorScheme.primary,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            ),
-          ),
-          const Divider(indent: 16, endIndent: 16),
-          // --- List of Available Companies ---
-          Expanded(
-            child: ListView.builder(
-              controller: scrollController, // Connect the scroll controller
-              itemCount:
-                  enterprisesManagerPresenter.allEnterprises?.length ?? 0,
-              itemBuilder: (context, index) {
-                final enterprise =
-                    enterprisesManagerPresenter.allEnterprises![index];
-                final isSelected = EnterpriseBuilder.entity?.firebaseId ==
-                    enterprise.firebaseId;
-
-                return Card(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                  elevation: isSelected ? 4.0 : 1.0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    side: isSelected
-                        ? BorderSide(color: theme.colorScheme.primary, width: 2)
-                        : BorderSide.none,
-                  ),
-                  child: ListTile(
-                    title: Text(
-                      enterprise.enterpriseName ?? "",
-                      style: TextStyle(
-                        fontWeight:
-                            isSelected ? FontWeight.bold : FontWeight.normal,
-                      ),
-                    ),
-                    trailing: isSelected
-                        ? Icon(Icons.check_circle,
-                            color: theme.colorScheme.primary)
-                        : null,
-                    onTap: () => onCompanySelected(enterprise),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }

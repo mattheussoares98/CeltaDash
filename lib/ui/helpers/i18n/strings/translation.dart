@@ -16,6 +16,7 @@ abstract class Translation {
   String get msgWriteSomething;
 
   String get add;
+  String get addNewEnterprise;
   String get anothersEnterprises;
   String get anothersProducts;
   String get all;
@@ -38,6 +39,7 @@ abstract class Translation {
   String get compareDays;
   String get comparedToDay;
   String get configurations;
+  String get connectedEnterprises;
   String get cost;
   String get coupon;
   String get couponNumberAbbreviated;
