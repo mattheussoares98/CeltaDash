@@ -23,6 +23,7 @@ abstract class HomePresenter implements Listenable {
   void goToPaymentsTypePage();
   void goToProfitabilityPage();
   void goToSellersPage();
+  void goToEnterprisesManagerPage();
 
   Future<void> getBsEnterprises({
     required DocumentReference<Map<String, dynamic>> docRef,

@@ -190,6 +190,13 @@ void main() {
         () => navigateTo.navigate(pageRoute: PageRoutes.departments),
       ).called(1);
     });
+    test("Should navigate to enterprises manager page correctly", () async {
+      sut.goToEnterprisesManagerPage();
+
+      verify(
+        () => navigateTo.navigate(pageRoute: PageRoutes.enterprisesManager),
+      ).called(1);
+    });
   });
 
   group("Get enterprises", () {

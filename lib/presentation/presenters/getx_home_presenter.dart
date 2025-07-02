@@ -300,4 +300,9 @@ class GetxHomePresenter extends GetxController
   void goToPaymentsTypePage() {
     navigateTo.navigate(pageRoute: PageRoutes.paymentsType);
   }
+
+  @override
+  void goToEnterprisesManagerPage() {
+    navigateTo.navigate(pageRoute: PageRoutes.enterprisesManager);
+  }
 }
