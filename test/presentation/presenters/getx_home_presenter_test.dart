@@ -514,6 +514,11 @@ void main() {
             clear: true,
           )).called(1);
     });
+    test("Should clear all enterprises", () async {
+      await sut.doLogout();
+
+      verify(() => localStorage.delete(DatabaseKeys.allEnterprises)).called(1);
+    });
   });
 
   group("Reload sales", () {

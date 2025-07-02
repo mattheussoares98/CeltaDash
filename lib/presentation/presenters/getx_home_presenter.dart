@@ -253,6 +253,7 @@ class GetxHomePresenter extends GetxController
           DatabaseKeys.enterprise,
           FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
               .toJson());
+      await localStorage.delete(DatabaseKeys.allEnterprises);
 
       navigateTo.navigate(pageRoute: PageRoutes.splash, clear: true);
     } catch (e) {
