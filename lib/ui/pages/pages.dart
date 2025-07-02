@@ -5,7 +5,6 @@ export './departments/departments.dart';
 export './goal_history/goal_history.dart';
 export './group_summary/group_summary.dart';
 export './home/home.dart';
-export './indicators/indicators.dart';
 export './login/login.dart';
 export 'operators/operators.dart';
 export './payment_type/payment_type.dart';

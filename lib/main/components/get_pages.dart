@@ -34,11 +34,6 @@ class GetPages {
       transition: transition,
     ),
     GetPage(
-      name: PageRoutes.goalHistory,
-      page: makeGoalHistoryPage,
-      transition: transition,
-    ),
-    GetPage(
       name: PageRoutes.groupSummary,
       page: makeGroupSummaryPage,
       transition: transition,
@@ -76,11 +71,6 @@ class GetPages {
     GetPage(
       name: PageRoutes.departments,
       page: makeDepartmentsPage,
-      transition: transition,
-    ),
-    GetPage(
-      name: PageRoutes.setGoal,
-      page: makeSetGoalPage,
       transition: transition,
     ),
     GetPage(
