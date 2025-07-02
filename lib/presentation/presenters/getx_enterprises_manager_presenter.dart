@@ -138,7 +138,7 @@ class GetxEnterprisesManagerPresenter extends GetxController
       //TODO new test
 
       await localStorage.put(
-        DatabaseKeys.selectedEnterprise, //add allEnterprises
+        DatabaseKeys.allEnterprises, //TODO new test
         FirebaseEnterpriseModel.fromEntity(newEnterprise).toJson(),
       );
 
