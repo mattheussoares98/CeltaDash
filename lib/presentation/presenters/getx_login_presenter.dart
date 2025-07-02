@@ -1,8 +1,6 @@
 import 'package:get/get.dart';
 
-import '../../domain/entities/entities.dart';
 import '../../domain/usecases/usecases.dart';
-import '../../main/builders/builders.dart';
 import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
@@ -32,24 +30,6 @@ class GetxLoginPresenter extends GetxController
     if (added) {
       navigateTo.navigate(pageRoute: PageRoutes.home, clear: true);
     }
-  }
-
-  @override
-  void onChangedEnterpriseName() {
-    //TODO remove this function
-    final oldEnterprise = EnterpriseBuilder.entity;
-
-    EnterpriseBuilder.entity = FirebaseEnterpriseEntity(
-      baseUrl: null,
-      firebaseSubEnterprises: null,
-      enterpriseName: oldEnterprise?.enterpriseName,
-      firebaseId: null,
-      bsUser: BsUserEntity(
-        name: oldEnterprise?.bsUser?.name,
-        AccessKey: null,
-        CrossIdentity_Usuario: null,
-      ),
-    );
   }
 
   @override

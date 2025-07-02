@@ -15,7 +15,6 @@ class LoginPresenterSpy extends Mock implements LoginPresenter {
     when(() => isLoadingStream).thenAnswer((_) => isLoadingController.stream);
 
     // Mock methods
-    when(() => onChangedEnterpriseName()).thenReturn(null);
     when(() => login(
           enterprisesManagerPresenter:
               any(named: 'enterprisesManagerPresenter'),

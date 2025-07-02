@@ -1,4 +1,3 @@
-import 'package:celta_dash/domain/entities/entities.dart';
 import 'package:celta_dash/infra/helpers/helpers.dart';
 import 'package:celta_dash/main/builders/builders.dart';
 import 'package:celta_dash/presentation/presenters/presenters.dart';
@@ -103,26 +102,6 @@ void main() {
 
       verifyNever(
         () => navigateTo.navigate(pageRoute: PageRoutes.home, clear: true),
-      );
-    });
-  });
-  group("On change enterprise name", () {
-    test("Should update enterprise correctly when call the funcion", () async {
-      sut.onChangedEnterpriseName();
-
-      expect(
-        EnterpriseBuilder.entity,
-        FirebaseEnterpriseEntity(
-          baseUrl: null,
-          enterpriseName: EnterpriseBuilder.entity?.enterpriseName,
-          firebaseSubEnterprises: null,
-          firebaseId: null,
-          bsUser: BsUserEntity(
-            name: EnterpriseBuilder.entity?.bsUser?.name,
-            AccessKey: null,
-            CrossIdentity_Usuario: null,
-          ),
-        ),
       );
     });
   });

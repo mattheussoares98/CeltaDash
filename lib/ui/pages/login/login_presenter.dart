@@ -6,7 +6,6 @@ import '../pages.dart';
 abstract class LoginPresenter implements Listenable {
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
-  void onChangedEnterpriseName();
   void goToWebLoginPage();
   Future<void> login({
     required String enterpriseName,

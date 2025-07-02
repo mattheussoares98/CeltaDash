@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import '../../../../main/composites/composites.dart';
 import '../../../../presentation/protocols/protocols.dart';
 import '../../../../validation/validators/validators.dart';
 import '../../../helpers/helpers.dart';
-import '../login.dart';
 
 class EnterpriseField extends StatelessWidget {
   final TextEditingController enterpriseController;
@@ -21,14 +19,9 @@ class EnterpriseField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    LoginPresenter loginPresenter = Get.find();
-
     return TextFormField(
       controller: enterpriseController,
       focusNode: enterpriseFocusNode,
-      onChanged: (_) {
-        loginPresenter.onChangedEnterpriseName();
-      },
       onFieldSubmitted: (_) {
         Future.delayed(Duration.zero, () {
           emailFocusNode.requestFocus();
