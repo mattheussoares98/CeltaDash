@@ -96,8 +96,15 @@ class GetxEnterprisesManagerPresenter extends GetxController
   }) async {
     isLoading = true;
     mainError = null;
-//TODO add tests. Copy from login presenter
+
     try {
+      if (_allEnterprises.value?.any((e) =>
+              e.enterpriseName?.toLowerCase().removeWhiteSpaces() ==
+              enterpriseName.toLowerCase().removeWhiteSpaces()) ??
+          false) {
+        throw DomainError.enterpriseAlreadyExists;
+      }
+
       final enterprise = await firebaseManager.get(
         collection: "enterprises",
         doc: enterpriseName.toLowerCase().removeWhiteSpaces(),
@@ -121,7 +128,7 @@ class GetxEnterprisesManagerPresenter extends GetxController
       final newEnterprise = FirebaseEnterpriseEntity(
         baseUrl: enterpriseData["baseUrl"],
         firebaseId: enterprise.id,
-        enterpriseName: enterpriseName,
+        enterpriseName: enterpriseName.trimRight(),
         bsUser: BsUserEntity(
           name: userName.trimRight(),
           AccessKey: response["AccessKey"],
@@ -133,13 +140,16 @@ class GetxEnterprisesManagerPresenter extends GetxController
             .toList(),
       );
 
-      allEnterprises?.add(
-          FirebaseEnterpriseModel.fromEntity(newEnterprise).toViewModel());
-      //TODO new test
+      allEnterprises = [
+        ...?_allEnterprises.value,
+        FirebaseEnterpriseModel.fromEntity(newEnterprise).toViewModel(),
+      ];
 
       await localStorage.put(
-        DatabaseKeys.allEnterprises, //TODO new test
-        FirebaseEnterpriseModel.fromEntity(newEnterprise).toJson(),
+        DatabaseKeys.allEnterprises,
+        _allEnterprises.value
+            ?.map((e) => FirebaseEnterpriseModel.fromViewModel(e).toJson())
+            .toList(),
       );
 
       return true;

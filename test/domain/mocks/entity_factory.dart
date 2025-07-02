@@ -72,8 +72,8 @@ class EntityFactory {
         Seller: faker.person.name(),
       );
 
-  static BsUserEntity makeBsUserEntity() => BsUserEntity(
-        name: faker.person.name(),
+  static BsUserEntity makeBsUserEntity({String? name}) => BsUserEntity(
+        name: name ?? faker.person.name(),
         AccessKey: faker.guid.guid(),
         CrossIdentity_Usuario: faker.guid.guid(),
       );

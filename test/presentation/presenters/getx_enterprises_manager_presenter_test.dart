@@ -4,6 +4,7 @@ import 'package:celta_dash/infra/helpers/helpers.dart';
 import 'package:celta_dash/main/builders/builders.dart';
 import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:celta_dash/ui/pages/pages.dart';
 import 'package:faker/faker.dart';
 
 import 'package:get/get.dart';
@@ -23,9 +24,12 @@ void main() {
   late FirebaseManagerSpy firebaseManager;
   late LocalStorageSpy localStorage;
 
-  late dynamic response;
   late MockedFirebaseGet mockedFirebaseGet;
   late List<FirebaseEnterpriseEntity> firebaseEnterprisesEntities;
+  late String enterpriseName;
+  late String userName;
+  late String userPassword;
+  late BsUserModel bsUserResponse;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
@@ -49,9 +53,6 @@ void main() {
   void initEntities() {
     EnterpriseBuilder.entity = EntityFactory.makeFirebaseEnterpriseEntity();
 
-    response = FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
-        .toJson()
-      ..["AccessKey"] = faker.lorem.sentence();
     mockedFirebaseGet = MockedFirebaseGet(
       dataToReturn: [
         FakeDoc(
@@ -66,14 +67,21 @@ void main() {
       EntityFactory.makeFirebaseEnterpriseEntity(),
       EntityFactory.makeFirebaseEnterpriseEntity(),
     ];
+    enterpriseName = faker.company.name();
+    userName = faker.person.name();
+    userPassword = faker.internet.password();
+    bsUserResponse = BsUserModel.fromEntity(
+      EntityFactory.makeBsUserEntity(name: userName),
+    );
   }
 
   void initMockSuccess() {
-    bsLogin.mockLogin(response);
+    bsLogin.mockLogin(bsUserResponse.toJson());
     firebaseManager.mockGet(mockedFirebaseGet);
     localStorage.mockGet(
       FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson(),
     );
+    localStorage.mockPut<List>();
   }
 
   setUp(() {
@@ -165,6 +173,166 @@ void main() {
       await sut.loadLocalEnterprises();
 
       verify(() => localStorage.delete(DatabaseKeys.enterprise)).called(1);
+    });
+  });
+
+  group("Add new enterprise", () {
+    test("Should emit correct values on success", () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(sut.mainErrorStream, emits(null));
+
+      await sut.addNewEnterprise(
+        enterpriseName: enterpriseName,
+        userName: userName,
+        userPassword: userPassword,
+      );
+    });
+    test("Should emit correct values on error", () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(
+        sut.mainErrorStream,
+        emitsInOrder([null, UIError.unexpected]),
+      );
+
+      firebaseManager.mockGetError();
+
+      await sut.addNewEnterprise(
+        enterpriseName: enterpriseName,
+        userName: userName,
+        userPassword: userPassword,
+      );
+    });
+    test("Should emit correct values on firebase data is null", () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(
+        sut.mainErrorStream,
+        emitsInOrder([null, UIError.enterpriseNotFound]),
+      );
+
+      firebaseManager.mockGet(MockedFirebaseGet(dataToReturn: null));
+
+      await sut.addNewEnterprise(
+        enterpriseName: enterpriseName,
+        userName: userName,
+        userPassword: userPassword,
+      );
+    });
+    test("Should call bsLogin with correct values", () async {
+      await sut.addNewEnterprise(
+        enterpriseName: enterpriseName,
+        userName: userName,
+        userPassword: userPassword,
+      );
+
+      verify(() => bsLogin.login(
+            user: userName.trimRight(),
+            password: userPassword,
+            url: mockedFirebaseGet.data()!["baseUrl"],
+          )).called(1);
+    });
+    test("Should emit correct values on bs login return null accessKey",
+        () async {
+      bsLogin.mockLogin(
+        BsUserModel.fromEntity(
+          EntityFactory.makeBsUserEntity(),
+        ).toJson()
+          ..["AccessKey"] = null,
+      );
+
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(
+        sut.mainErrorStream,
+        emitsInOrder([null, UIError.updateCeltaBs]),
+      );
+
+      await sut.addNewEnterprise(
+        enterpriseName: enterpriseName,
+        userName: userName,
+        userPassword: userPassword,
+      );
+    });
+    test("Should add the new enterprise in all enterprises", () async {
+      await sut.addNewEnterprise(
+        enterpriseName: enterpriseName,
+        userName: userName,
+        userPassword: userPassword,
+      );
+
+      expect(
+        sut.allEnterprises,
+        [
+          FirebaseEnterpriseViewModel(
+            baseUrl: mockedFirebaseGet.data()!["baseUrl"],
+            enterpriseName: enterpriseName,
+            bsUser: bsUserResponse,
+            firebaseSubEnterprises: (mockedFirebaseGet.data()!["subEnterprises"]
+                    as List?)
+                ?.map<FirebaseSubEnterpriseViewModel>(
+                    (e) => FirebaseSubEnterpriseModel.fromJson(e).toViewModel())
+                .toList(),
+            firebaseId: mockedFirebaseGet.id,
+          ),
+        ],
+      );
+    });
+    test("Should throw error if already exists enterprise with the same name",
+        () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(
+        sut.mainErrorStream,
+        emitsInOrder([null, UIError.enterpriseAlreadyExists]),
+      );
+
+      await sut.addNewEnterprise(
+        enterpriseName: enterpriseName,
+        userName: userName,
+        userPassword: userPassword,
+      );
+
+      await sut.addNewEnterprise(
+        enterpriseName: enterpriseName,
+        userName: userName,
+        userPassword: userPassword,
+      );
+    });
+    test("Should save all enterprises locally", () async {
+      await sut.addNewEnterprise(
+        enterpriseName: enterpriseName,
+        userName: userName,
+        userPassword: userPassword,
+      );
+
+      verify(
+        () => localStorage.put(
+          DatabaseKeys.allEnterprises,
+          sut.allEnterprises
+              ?.map((e) => FirebaseEnterpriseModel.fromViewModel(e).toJson())
+              .toList(),
+        ),
+      ).called(1);
+    });
+
+    test("Should return true on success", () async {
+      expect(
+        await sut.addNewEnterprise(
+          enterpriseName: enterpriseName,
+          userName: userName,
+          userPassword: userPassword,
+        ),
+        true,
+      );
+    });
+    test("Should return false on error", () async {
+      firebaseManager.mockGetError();
+
+      expect(
+        await sut.addNewEnterprise(
+          enterpriseName: enterpriseName,
+          userName: userName,
+          userPassword: userPassword,
+        ),
+        false,
+      );
     });
   });
 }

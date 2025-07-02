@@ -4,7 +4,7 @@ import 'package:mocktail/mocktail.dart';
 class LocalStorageSpy extends Mock implements LocalStorage {
   LocalStorageSpy() {
     this.mockDelete();
-    this.mockPut(<String, dynamic>{});
+    this.mockPut<Map<String, dynamic>>();
   }
 
   When _mockGetCall() => when(() => this.get(any()));
@@ -18,7 +18,7 @@ class LocalStorageSpy extends Mock implements LocalStorage {
 
   When _mockPutCall<T>() => when(() => put<T>(any(), any()));
 
-  void mockPut<T>(T insertTheGenerics) {
+  void mockPut<T>() {
     _mockPutCall<T>().thenAnswer((any) async => any);
   }
 
