@@ -1,8 +1,11 @@
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
+import '../../domain/entities/entities.dart';
+import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
 import '../../infra/helpers/helpers.dart';
+import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
@@ -80,6 +83,69 @@ class GetxEnterprisesManagerPresenter extends GetxController
           .enterprise); //TODO delete this key in the future, wont use more
     } catch (e) {
       mainError = getUIError(e);
+    } finally {
+      isLoading = false;
+    }
+  }
+
+  @override
+  Future<bool> addNewEnterprise({
+    required String enterpriseName,
+    required String userName,
+    required String userPassword,
+  }) async {
+    isLoading = true;
+    mainError = null;
+//TODO add tests. Copy from login presenter
+    try {
+      final enterprise = await firebaseManager.get(
+        collection: "enterprises",
+        doc: enterpriseName.toLowerCase().removeWhiteSpaces(),
+      );
+
+      final enterpriseData = enterprise.data();
+      if (enterpriseData == null) {
+        throw DomainError.enterpriseNotFound;
+      }
+
+      final response = await bsLogin.login(
+        user: userName.trimRight(),
+        password: userPassword,
+        //TODO add url parameter
+      );
+
+      if (response["AccessKey"] == null) {
+        throw DomainError.updateCeltaBs;
+      }
+
+      final newEnterprise = FirebaseEnterpriseEntity(
+        baseUrl: enterpriseData["baseUrl"],
+        firebaseId: enterprise.id,
+        enterpriseName: enterpriseName,
+        bsUser: BsUserEntity(
+          name: userName.trimRight(),
+          AccessKey: response["AccessKey"],
+          CrossIdentity_Usuario: response["CrossIdentity_Usuario"],
+        ),
+        firebaseSubEnterprises: (enterpriseData["subEnterprises"] as List?)
+            ?.map<FirebaseSubEnterpriseEntity>(
+                (e) => FirebaseSubEnterpriseModel.fromJson(e).toEntity())
+            .toList(),
+      );
+
+      allEnterprises?.add(
+          FirebaseEnterpriseModel.fromEntity(newEnterprise).toViewModel());
+      //TODO new test
+
+      await localStorage.put(
+        DatabaseKeys.selectedEnterprise, //add allEnterprises
+        FirebaseEnterpriseModel.fromEntity(newEnterprise).toJson(),
+      );
+
+      return true;
+    } catch (e) {
+      mainError = getUIError(e);
+      return false;
     } finally {
       isLoading = false;
     }

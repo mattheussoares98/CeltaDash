@@ -15,4 +15,9 @@ abstract class EnterprisesManagerPresenter implements Listenable {
   );
 
   Future<void> loadLocalEnterprises();
+  Future<bool> addNewEnterprise({
+    required String enterpriseName,
+    required String userName,
+    required String userPassword,
+  });
 }
