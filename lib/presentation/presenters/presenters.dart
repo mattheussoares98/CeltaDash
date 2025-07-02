@@ -1,6 +1,7 @@
 export './getx_canceled_sales_presenter.dart';
 export './getx_compare_days_presenter.dart';
 export './getx_departments_presenter.dart';
+export './getx_enterprises_manager_presenter.dart';
 export './getx_home_presenter.dart';
 export 'getx_operators_presenter.dart';
 export './getx_login_presenter.dart';
