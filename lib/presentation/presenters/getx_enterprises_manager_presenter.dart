@@ -127,6 +127,10 @@ class GetxEnterprisesManagerPresenter extends GetxController
             .toList(),
       );
 
+      if (_allEnterprises.value == null || _allEnterprises.value!.isEmpty) {
+        EnterpriseBuilder.entity = newEnterprise;
+      }
+
       allEnterprises = [
         ...?_allEnterprises.value,
         FirebaseEnterpriseModel.fromEntity(newEnterprise).toViewModel(),

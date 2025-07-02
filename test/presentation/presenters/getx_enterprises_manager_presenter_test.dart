@@ -332,5 +332,55 @@ void main() {
         false,
       );
     });
+    test("Should update EnterpriseBuilder if all enterprise is empty",
+        () async {
+      await sut.addNewEnterprise(
+        enterpriseName: enterpriseName,
+        userName: userName,
+        userPassword: userPassword,
+      );
+
+      expect(
+          EnterpriseBuilder.entity,
+          FirebaseEnterpriseModel.fromViewModel(FirebaseEnterpriseViewModel(
+            baseUrl: mockedFirebaseGet.data()!["baseUrl"],
+            enterpriseName: enterpriseName,
+            bsUser: bsUserResponse,
+            firebaseSubEnterprises: (mockedFirebaseGet.data()!["subEnterprises"]
+                    as List?)
+                ?.map<FirebaseSubEnterpriseViewModel>(
+                    (e) => FirebaseSubEnterpriseModel.fromJson(e).toViewModel())
+                .toList(),
+            firebaseId: mockedFirebaseGet.id,
+          )).toEntity());
+    });
+    test(
+        "Should not update selected enterprise if all enterprises is not empty",
+        () async {
+      await sut.addNewEnterprise(
+        enterpriseName: enterpriseName,
+        userName: userName,
+        userPassword: userPassword,
+      );
+      await sut.addNewEnterprise(
+        enterpriseName: faker.randomGenerator.string(10),
+        userName: faker.randomGenerator.string(10),
+        userPassword: faker.randomGenerator.string(10),
+      );
+
+      expect(
+          EnterpriseBuilder.entity,
+          FirebaseEnterpriseModel.fromViewModel(FirebaseEnterpriseViewModel(
+            baseUrl: mockedFirebaseGet.data()!["baseUrl"],
+            enterpriseName: enterpriseName,
+            bsUser: bsUserResponse,
+            firebaseSubEnterprises: (mockedFirebaseGet.data()!["subEnterprises"]
+                    as List?)
+                ?.map<FirebaseSubEnterpriseViewModel>(
+                    (e) => FirebaseSubEnterpriseModel.fromJson(e).toViewModel())
+                .toList(),
+            firebaseId: mockedFirebaseGet.id,
+          )).toEntity());
+    });
   });
 }
