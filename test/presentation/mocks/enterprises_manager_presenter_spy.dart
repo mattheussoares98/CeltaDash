@@ -11,7 +11,7 @@ class EnterprisesManagerPresenterSpy extends Mock
         .thenAnswer((_) => selectedEnterpriseMock);
 
     _mockUpdateSelectedEnterpriseCall().thenAnswer((any) async => any);
-    when(() => this.loadLocalEnterprises()).thenAnswer((any) async => any);
+    _mockLoadLocalEnterprisesCall().thenAnswer((any) async => any);
   }
 
   When _mockUpdateSelectedEnterpriseCall() =>
@@ -19,5 +19,12 @@ class EnterprisesManagerPresenterSpy extends Mock
 
   void mockUpdateSelectedEnterpriseError() {
     _mockUpdateSelectedEnterpriseCall().thenThrow(DomainError.unexpected);
+  }
+
+  When _mockLoadLocalEnterprisesCall() =>
+      when(() => this.loadLocalEnterprises());
+
+  void mockLoadLocalEnterprisesError() {
+    _mockLoadLocalEnterprisesCall().thenThrow(DomainError.unexpected);
   }
 }

@@ -16,7 +16,6 @@ import '../../domain/mocks/mocks.dart';
 import '../mocks/mocks.dart';
 
 void main() {
-  // ignore: unused_local_variable
   late GetxSplashPresenter sut;
 
   late EnterprisesManagerPresenterSpy enterprisesManagerPresenter;
@@ -46,6 +45,10 @@ void main() {
 
   void initMockSuccess() {
     getPlatform.mockGet(PlatformType.android);
+    enterprisesManagerPresenter.selectedEnterpriseMock =
+        FirebaseEnterpriseModel.fromEntity(
+                EntityFactory.makeFirebaseEnterpriseEntity())
+            .toViewModel();
   }
 
   setUp(() {
@@ -91,6 +94,33 @@ void main() {
       () => navigateTo.navigate(pageRoute: PageRoutes.login, clear: true),
     ).called(1);
   });
+  test("Should navigate to login page if user name is null", () async {
+    enterprisesManagerPresenter.selectedEnterpriseMock =
+        FirebaseEnterpriseModel.fromEntity(
+      EntityFactory.anullEnterpriseProperties(anullUserName: true),
+    ).toViewModel();
+
+    await sut.checkPageToGo(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
+        durationInSeconds: 0);
+
+    verify(
+      () => navigateTo.navigate(pageRoute: PageRoutes.login, clear: true),
+    ).called(1);
+  });
+  test(
+      "Should go to login page if enterprise manager load all enterprises fails",
+      () async {
+    enterprisesManagerPresenter.mockLoadLocalEnterprisesError();
+
+    await sut.checkPageToGo(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
+        durationInSeconds: 0);
+
+    verify(
+      () => navigateTo.navigate(pageRoute: PageRoutes.login, clear: true),
+    ).called(1);
+  });
   test("Should call enterprisesManagerPresenter.loadLocalEnterprises",
       () async {
     await sut.checkPageToGo(
@@ -127,5 +157,17 @@ void main() {
         durationInSeconds: 0);
 
     verify(() => enterprisesManagerPresenter.loadLocalEnterprises()).called(1);
+  });
+
+  test(
+      "Should go to home page if enterprise manager load all enterprises correctly",
+      () async {
+    await sut.checkPageToGo(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
+        durationInSeconds: 0);
+
+    verify(
+      () => navigateTo.navigate(pageRoute: PageRoutes.home, clear: true),
+    ).called(1);
   });
 }
