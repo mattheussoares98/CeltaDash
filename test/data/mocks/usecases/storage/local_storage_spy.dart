@@ -3,8 +3,8 @@ import 'package:mocktail/mocktail.dart';
 
 class LocalStorageSpy extends Mock implements LocalStorage {
   LocalStorageSpy() {
-    this.mockDelete();
-    this.mockPut<Map<String, dynamic>>();
+    this._mockDelete();
+    this._mockPut();
   }
 
   When _mockGetCall() => when(() => this.get(any()));
@@ -16,22 +16,21 @@ class LocalStorageSpy extends Mock implements LocalStorage {
     this._mockGetCall().thenThrow(Exception());
   }
 
-  When _mockPutCall<T>() => when(() => put<T>(any(), any()));
-
-  void mockPut<T>() {
-    _mockPutCall<T>().thenAnswer((any) async => any);
+  When _mockPutCall() => when(() => put(any(), any()));
+  void _mockPut() {
+    _mockPutCall().thenAnswer((_) async {});
   }
 
   void mockPutError() {
-    this._mockPutCall().thenThrow(Exception());
+    _mockPutCall().thenThrow(Exception());
   }
 
-  When _mockDeleteCall() => when(() => this.delete(any()));
-  void mockDelete() {
-    this._mockDeleteCall().thenAnswer((any) async => any);
+  When _mockDeleteCall() => when(() => delete(any()));
+  void _mockDelete() {
+    _mockDeleteCall().thenAnswer((_) async {});
   }
 
   void mockDeleteError() {
-    this._mockDeleteCall().thenThrow(Exception());
+    _mockDeleteCall().thenThrow(Exception());
   }
 }

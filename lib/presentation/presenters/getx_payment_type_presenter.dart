@@ -71,8 +71,8 @@ class GetxPaymentTypePresenter extends GetxController
       final endDate = DateTime(
         homePresenter.selectedDate.year,
         homePresenter.selectedDate.month + 1,
-        1,
-      ).subtract(Duration(days: 1));
+        0,
+      );
 
       final params = GetSaleStatisticsParams(
         enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],

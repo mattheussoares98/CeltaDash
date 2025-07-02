@@ -81,7 +81,6 @@ void main() {
     localStorage.mockGet(
       FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson(),
     );
-    localStorage.mockPut<List>();
   }
 
   setUp(() {

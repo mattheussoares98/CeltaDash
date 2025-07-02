@@ -19,7 +19,7 @@ class HiveAdapter implements HiveStorage {
   }
 
   @override
-  Future<void> put(DatabaseKeys key, value) async {
+  Future<void> put(DatabaseKeys key, dynamic value) async {
     await box.delete(key.name);
     await box.put(key.name, value);
   }
