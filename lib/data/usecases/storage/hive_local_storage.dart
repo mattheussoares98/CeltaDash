@@ -19,7 +19,6 @@ class HiveLocalStorage with ErrorHandling implements LocalStorage {
 
   @override
   Future<void> put(DatabaseKeys key, dynamic value) async {
-    //TODO change to String
     try {
       await hiveAdapter.put(key, value);
     } catch (e) {
