@@ -5,6 +5,6 @@ abstract class SoapRequest {
     required String? typeOfResult,
     required String soapAction,
     required String serviceASMX,
-    String? url,
+    String? url,//TODO make obligatory
   });
 }

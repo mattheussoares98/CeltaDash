@@ -64,6 +64,7 @@ class GetxLoginPresenter extends GetxController
       final response = await bsLogin.login(
         user: user.trimRight(),
         password: password,
+        url: EnterpriseBuilder.entity?.baseUrl,
       );
 
       if (response["AccessKey"] == null) {

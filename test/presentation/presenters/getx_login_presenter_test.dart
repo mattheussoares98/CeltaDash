@@ -28,6 +28,7 @@ void main() {
   late String password;
   late dynamic response;
   late MockedFirebaseGet mockedFirebaseGet;
+  late String baseUrl;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
@@ -66,6 +67,7 @@ void main() {
         )
       ],
     );
+    baseUrl = faker.internet.httpsUrl();
   }
 
   void initMockSuccess() {
@@ -181,7 +183,8 @@ void main() {
         password: password,
       );
 
-      verifyNever(() => bsLogin.login(user: user, password: password));
+      verifyNever(
+          () => bsLogin.login(url: baseUrl, user: user, password: password));
     });
 
     test("Should call bsLogin with correct values", () async {
@@ -191,7 +194,10 @@ void main() {
         password: password,
       );
 
-      verify(() => bsLogin.login(user: user, password: password)).called(1);
+      verify(() => bsLogin.login(
+          url: mockedFirebaseGet.data()!["baseUrl"],
+          user: user,
+          password: password)).called(1);
     });
 
     test("Should not call remote login if firebaseManager throws", () async {
@@ -207,7 +213,8 @@ void main() {
         password: password,
       );
 
-      verifyNever(() => bsLogin.login(user: user, password: password));
+      verifyNever(
+          () => bsLogin.login(url: baseUrl, user: user, password: password));
     });
     test("Should navigate to home page", () async {
       await sut.login(
@@ -349,7 +356,10 @@ void main() {
       );
 
       verify(
-        () => bsLogin.login(user: user, password: password),
+        () => bsLogin.login(
+            url: mockedFirebaseGet.data()!["baseUrl"],
+            user: user,
+            password: password),
       ).called(1);
     });
     test("Should update customer name correctly in Entity", () async {

@@ -111,7 +111,7 @@ class GetxEnterprisesManagerPresenter extends GetxController
       final response = await bsLogin.login(
         user: userName.trimRight(),
         password: userPassword,
-        //TODO add url parameter
+        url: enterpriseData["baseUrl"],
       );
 
       if (response["AccessKey"] == null) {
