@@ -63,7 +63,7 @@ class DailyStatistics extends StatelessWidget {
 
     final percentageResult =
         selectedDayLiquidValue == 0.0 || previousMonthLiquidValue == 0.0
-            ? 0.0
+            ? 100
             : (selectedDayLiquidValue / previousMonthLiquidValue * 100 - 100);
 
     return Container(
@@ -119,21 +119,22 @@ class DailyStatistics extends StatelessWidget {
                       ),
                       value: selectedDayLiquidValue,
                     ),
-                    PieParameter(
-                      title: Title(
-                        isCurrentDay: isCurrentDay,
-                        now: now,
-                        isPreviousMonth: true,
-                        statistics: previousMonthStatistics ?? [],
+                    if (previousMonthLiquidValue > 0)
+                      PieParameter(
+                        title: Title(
+                          isCurrentDay: isCurrentDay,
+                          now: now,
+                          isPreviousMonth: true,
+                          statistics: previousMonthStatistics ?? [],
+                          color: Colors.orange,
+                        ),
                         color: Colors.orange,
+                        subtitle: SubTitle(
+                          statistics: previousMonthStatistics ?? [],
+                        ),
+                        showSubtitleOnlyOnTap: true,
+                        value: previousMonthLiquidValue,
                       ),
-                      color: Colors.orange,
-                      subtitle: SubTitle(
-                        statistics: previousMonthStatistics ?? [],
-                      ),
-                      showSubtitleOnlyOnTap: true,
-                      value: previousMonthLiquidValue,
-                    ),
                   ],
                 ),
               ],
