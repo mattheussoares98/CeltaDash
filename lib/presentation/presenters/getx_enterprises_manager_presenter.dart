@@ -44,4 +44,36 @@ class GetxEnterprisesManagerPresenter extends GetxController
       );
     }
   }
+
+  @override
+  Future<void> loadLocalEnterprises() async {
+    isLoading = true;
+    mainError = null;
+
+    try {
+      final localOldEnterprise =
+          await localStorage.get(DatabaseKeys.enterprise);
+
+      if (localOldEnterprise != null && localOldEnterprise != "") {
+        selectedEnterprise =
+            FirebaseEnterpriseModel.fromJson(localOldEnterprise).toViewModel();
+      } else {
+        final localSelectedEnterprise =
+            await localStorage.get(DatabaseKeys.selectedEnterprise);
+
+        if (localSelectedEnterprise != null && localSelectedEnterprise != "") {
+          selectedEnterprise =
+              FirebaseEnterpriseModel.fromJson(localSelectedEnterprise)
+                  .toViewModel();
+        }
+      }
+
+      localStorage.delete(DatabaseKeys
+          .enterprise); //TODO delete this key in the future, wont use more
+    } catch (e) {
+      mainError = getUIError(e);
+    } finally {
+      isLoading = false;
+    }
+  }
 }
