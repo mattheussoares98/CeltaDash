@@ -42,18 +42,14 @@ class GetxEnterprisesManagerPresenter extends GetxController
 
   @override
   Future<void> updateSelectedEnterprise(
-    FirebaseEnterpriseViewModel? enterprise,
+    FirebaseEnterpriseViewModel enterprise,
   ) async {
     _selectedEnterprise.value = enterprise;
 
-    if (enterprise == null) {
-      await localStorage.delete(DatabaseKeys.selectedEnterprise);
-    } else {
-      await localStorage.put(
-        DatabaseKeys.selectedEnterprise,
-        FirebaseEnterpriseModel.fromViewModel(enterprise).toJson(),
-      );
-    }
+    await localStorage.put(
+      DatabaseKeys.enterprise,
+      FirebaseEnterpriseModel.fromViewModel(enterprise).toJson(),
+    );
   }
 
   @override
@@ -68,19 +64,8 @@ class GetxEnterprisesManagerPresenter extends GetxController
       if (localOldEnterprise != null && localOldEnterprise != "") {
         selectedEnterprise =
             FirebaseEnterpriseModel.fromJson(localOldEnterprise).toViewModel();
-      } else {
-        final localSelectedEnterprise =
-            await localStorage.get(DatabaseKeys.selectedEnterprise);
-
-        if (localSelectedEnterprise != null && localSelectedEnterprise != "") {
-          selectedEnterprise =
-              FirebaseEnterpriseModel.fromJson(localSelectedEnterprise)
-                  .toViewModel();
-        }
       }
-
-      localStorage.delete(DatabaseKeys
-          .enterprise); //TODO delete this key in the future, wont use more
+      localStorage.delete(DatabaseKeys.enterprise);
     } catch (e) {
       mainError = getUIError(e);
     } finally {

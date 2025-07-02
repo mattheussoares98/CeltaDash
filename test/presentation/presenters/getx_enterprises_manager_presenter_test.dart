@@ -96,15 +96,12 @@ void main() {
 
   group("Update selected enterprise", () {
     test("Should update selected enterprise correctly", () async {
-      final enterprise =
-          FirebaseEnterpriseModel.fromEntity(firebaseEnterprisesEntities.first)
-              .toViewModel();
+      final enterprise = FirebaseEnterpriseModel.fromEntity(
+              EntityFactory.makeFirebaseEnterpriseEntity())
+          .toViewModel();
 
       await sut.updateSelectedEnterprise(enterprise);
       expect(sut.selectedEnterprise, enterprise);
-
-      await sut.updateSelectedEnterprise(null);
-      expect(sut.selectedEnterprise, null);
     });
     test("Should update selected enterprise in the database", () async {
       final enterprise =
@@ -114,16 +111,9 @@ void main() {
       await sut.updateSelectedEnterprise(enterprise);
 
       verify(
-        () => localStorage.put(DatabaseKeys.selectedEnterprise,
+        () => localStorage.put(DatabaseKeys.enterprise,
             FirebaseEnterpriseModel.fromViewModel(enterprise).toJson()),
       ).called(1);
-    });
-    test("Should delete selected enterprise in database if is null value",
-        () async {
-      await sut.updateSelectedEnterprise(null);
-
-      verify(() => localStorage.delete(DatabaseKeys.selectedEnterprise))
-          .called(1);
     });
   });
 
@@ -150,15 +140,7 @@ void main() {
 
       verify(() => localStorage.get(DatabaseKeys.enterprise)).called(1);
     });
-    test(
-        "Should load DatabaseKeys.selectedEnterprise if DatabaseKeys.enterprise return null",
-        () async {
-      localStorage.mockGet(null);
 
-      await sut.loadLocalEnterprises();
-
-      verify(() => localStorage.get(DatabaseKeys.selectedEnterprise)).called(1);
-    });
     test("Should update selected enterprise correctly", () async {
       final oldEnterprise = FirebaseEnterpriseModel.fromEntity(
           EntityFactory.makeFirebaseEnterpriseEntity());

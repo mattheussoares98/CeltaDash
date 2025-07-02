@@ -11,7 +11,7 @@ abstract class EnterprisesManagerPresenter implements Listenable {
   List<FirebaseEnterpriseViewModel>? allEnterprises;
 
   Future<void> updateSelectedEnterprise(
-    FirebaseEnterpriseViewModel? enterprise,
+    FirebaseEnterpriseViewModel enterprise,
   );
 
   Future<void> loadLocalEnterprises();
