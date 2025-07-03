@@ -18,6 +18,7 @@ class DefaultAppBar extends StatefulWidget implements PreferredSizeWidget {
   final bool? showDatePicker;
   final bool? showEnterpriseDropdown;
   final bool? isLoading;
+  final bool? showAddNewEnterpriseButton;
   final double datePickerHeight;
   final double paddingPattern;
   const DefaultAppBar({
@@ -25,6 +26,7 @@ class DefaultAppBar extends StatefulWidget implements PreferredSizeWidget {
     required this.onChangeEnterprise,
     this.showDatePicker = true,
     this.showEnterpriseDropdown = true,
+    this.showAddNewEnterpriseButton = false,
     this.onTapRefresh,
     this.onChangeDate,
     this.isLoading,
@@ -141,6 +143,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                           "${selectedEnterprise?.personalizedCode} - ${selectedEnterprise?.name}",
                     ),
                   ),
+                  if(widget.showAddNewEnterpriseButton == true)
                   IconButton(
                     onPressed: () {
                       EnterprisesManagerPage.showEnterpriseSelection(
