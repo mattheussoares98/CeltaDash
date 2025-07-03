@@ -49,6 +49,7 @@ class _ResumePageState extends State<ResumePage>
         builder: (context, loadingSnap) {
           return Scaffold(
             appBar: DefaultAppBar(
+              showEnterpriseManagerButton: true,
               isLoading: loadingSnap.data == true,
               onChangeEnterprise: (_) {
                 homePresenter.reloadSales(

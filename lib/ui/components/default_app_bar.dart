@@ -18,7 +18,7 @@ class DefaultAppBar extends StatefulWidget implements PreferredSizeWidget {
   final bool? showDatePicker;
   final bool? showEnterpriseDropdown;
   final bool? isLoading;
-  final bool? showAddNewEnterpriseButton;
+  final bool? showEnterpriseManagerButton;
   final double datePickerHeight;
   final double paddingPattern;
   const DefaultAppBar({
@@ -26,7 +26,7 @@ class DefaultAppBar extends StatefulWidget implements PreferredSizeWidget {
     required this.onChangeEnterprise,
     this.showDatePicker = true,
     this.showEnterpriseDropdown = true,
-    this.showAddNewEnterpriseButton = false,
+    this.showEnterpriseManagerButton = false,
     this.onTapRefresh,
     this.onChangeDate,
     this.isLoading,
@@ -80,18 +80,35 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
           return Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ElevatedButton(
-                onPressed: () async {
-                  await homePresenter.getBsEnterprises(
-                    docRef: FirebaseFirestore.instance
-                        .collection("enterprises")
-                        .doc(
-                          EnterpriseBuilder.entity?.firebaseId,
-                        ),
-                  );
-                },
-                child: Text(R.string.loadEnterprises),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    await homePresenter.getBsEnterprises(
+                      docRef: FirebaseFirestore.instance
+                          .collection("enterprises")
+                          .doc(
+                            EnterpriseBuilder.entity?.firebaseId,
+                          ),
+                    );
+                  },
+                  child: Text(R.string.loadEnterprises),
+                ),
               ),
+              if (widget.showEnterpriseManagerButton == true)
+                Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: IconButton(
+                    onPressed: () {
+                      EnterprisesManagerPage.showEnterpriseSelection(
+                          context, enterprisesManagerPresenter);
+                    },
+                    icon: Icon(
+                      Platform.isIOS
+                          ? CupertinoIcons.person_add
+                          : Icons.manage_accounts,
+                    ),
+                  ),
+                )
             ],
           );
         }
@@ -143,18 +160,18 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                           "${selectedEnterprise?.personalizedCode} - ${selectedEnterprise?.name}",
                     ),
                   ),
-                  if(widget.showAddNewEnterpriseButton == true)
-                  IconButton(
-                    onPressed: () {
-                      EnterprisesManagerPage.showEnterpriseSelection(
-                          context, enterprisesManagerPresenter);
-                    },
-                    icon: Icon(
-                      Platform.isIOS
-                          ? CupertinoIcons.person_add
-                          : Icons.manage_accounts,
-                    ),
-                  )
+                  if (widget.showEnterpriseManagerButton == true)
+                    IconButton(
+                      onPressed: () {
+                        EnterprisesManagerPage.showEnterpriseSelection(
+                            context, enterprisesManagerPresenter);
+                      },
+                      icon: Icon(
+                        Platform.isIOS
+                            ? CupertinoIcons.person_add
+                            : Icons.manage_accounts,
+                      ),
+                    )
                 ],
               ),
             if (widget.showDatePicker == true)
