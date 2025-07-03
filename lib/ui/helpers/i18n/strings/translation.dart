@@ -113,6 +113,7 @@ abstract class Translation {
   String get profit;
   String get profitability;
   String get quantityAbbreviated;
+  String get removeEnterprise;
   String get resume;
   String get revenue;
   String get sale;

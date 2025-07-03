@@ -121,6 +121,7 @@ class PtBr implements Translation {
   String get profit => "Lucro";
   String get profitability => "Rentabilidade";
   String get quantityAbbreviated => "Qtd";
+  String get removeEnterprise => "Remover empresa";
   String get resume => "Resumo";
   String get revenue => "Faturamento";
   String get sale => "Venda";

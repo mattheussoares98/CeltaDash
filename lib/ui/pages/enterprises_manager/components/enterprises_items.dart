@@ -1,11 +1,12 @@
 import 'dart:io';
 
-import 'package:celta_dash/ui/helpers/helpers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../main/builders/builders.dart';
+import '../../../../ui/components/components.dart';
+import '../../../../ui/helpers/helpers.dart';
 import '../../pages.dart';
 
 class EnterprisesItems extends StatelessWidget {
@@ -29,28 +30,55 @@ class EnterprisesItems extends StatelessWidget {
           final isSelected =
               EnterpriseBuilder.entity?.firebaseId == enterprise.firebaseId;
 
-          return Container(
-            margin: EdgeInsets.only(bottom: 8),
-            decoration: isSelected
-                ? ContainerDecoration.enabled
-                : ContainerDecoration.disabled,
-            child: ListTile(
-              title: Text(
-                enterprise.enterpriseName?.toUpperCase() ?? "null",
-                style: TextStyle(
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          return Row(
+            children: [
+              Expanded(
+                child: Container(
+                  margin: EdgeInsets.only(bottom: 8),
+                  decoration: isSelected
+                      ? ContainerDecoration.enabled
+                      : ContainerDecoration.disabled,
+                  child: ListTile(
+                    title: Text(
+                      enterprise.enterpriseName?.toUpperCase() ?? "null",
+                      style: TextStyle(
+                        fontWeight:
+                            isSelected ? FontWeight.bold : FontWeight.normal,
+                      ),
+                    ),
+                    trailing: isSelected
+                        ? Icon(
+                            Platform.isIOS
+                                ? CupertinoIcons.checkmark
+                                : Icons.check_circle,
+                            color: theme.colorScheme.primary)
+                        : null,
+                    onTap: () => enterprisesManagerPresenter
+                        .updateSelectedEnterprise(enterprise),
+                  ),
                 ),
               ),
-              trailing: isSelected
-                  ? Icon(
-                      Platform.isIOS
-                          ? CupertinoIcons.checkmark
-                          : Icons.check_circle,
-                      color: theme.colorScheme.primary)
-                  : null,
-              onTap: () => enterprisesManagerPresenter
-                  .updateSelectedEnterprise(enterprise),
-            ),
+              Padding(
+                padding: const EdgeInsets.only(left: 4),
+                child: IconButton(
+                  onPressed: () {
+                    notificationDialog(
+                      context: context,
+                      titleMessage: "${R.string.removeEnterprise}?",
+                      content: null,
+                      onPress: () async {
+                        await enterprisesManagerPresenter
+                            .removeEnterprise(enterprise);
+                      },
+                    );
+                  },
+                  icon: Icon(
+                    Platform.isIOS ? CupertinoIcons.trash : Icons.delete,
+                    color: theme.colorScheme.error,
+                  ),
+                ),
+              )
+            ],
           );
         },
       );
