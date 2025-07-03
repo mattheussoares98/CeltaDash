@@ -6,25 +6,20 @@ class ContainerDecoration {
   ContainerDecoration._();
 
   static final context = NavigatorKey.key.currentState!.context;
+  static final theme = Theme.of(context);
 
   static BoxDecoration get defaultDecoration => BoxDecoration(
-        color: Theme.of(context).cardTheme.color,
+        color: theme.cardTheme.color,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Theme.of(context).primaryColorLight.withAlpha(60),
-        ),
+        border: Border.all(color: theme.disabledColor.withAlpha(100)),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(
-              context,
-            ).primaryColorLight.withAlpha(50),
+            color: theme.primaryColorLight.withAlpha(50),
             offset: Offset(2, 2),
             blurRadius: 4,
           ),
           BoxShadow(
-            color: Theme.of(
-              context,
-            ).primaryColorLight.withAlpha(50),
+            color: theme.primaryColorLight.withAlpha(50),
             offset: Offset(-2, -2),
             blurRadius: 4,
           ),
@@ -32,29 +27,26 @@ class ContainerDecoration {
       );
 
   static BoxDecoration get disabled => BoxDecoration(
-        color: Theme.of(context).cardTheme.color,
+        color: theme.cardTheme.color,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Theme.of(context).colorScheme.error,
-          strokeAlign: 0.4,
-          width: 0.4,
-        ),
+        border: Border.all(color: theme.colorScheme.error),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(
-              context,
-            ).colorScheme.error,
-            offset: Offset(1, 1),
-            blurRadius: 1,
+            color: theme.colorScheme.error.withAlpha(50),
+            offset: Offset(2, 2),
+            blurRadius: 4,
+          ),
+          BoxShadow(
+            color: theme.colorScheme.error.withAlpha(50),
+            offset: Offset(-2, -2),
+            blurRadius: 4,
           ),
         ],
       );
   static BoxDecoration get enabled => BoxDecoration(
-        color: Theme.of(context).cardTheme.color,
+        color: theme.cardTheme.color,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Colors.green,
-        ),
+        border: Border.all(color: Colors.green),
         boxShadow: [
           BoxShadow(
             color: Colors.green,

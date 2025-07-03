@@ -58,12 +58,9 @@ class _AddNewEnterpriseState extends State<AddNewEnterprise> {
 
     return Form(
       key: _formKey,
-      child: Card(
-        elevation: 2,
+      child: Container(
         margin: const EdgeInsets.symmetric(vertical: 8),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        decoration: ContainerDecoration.defaultDecoration,
         clipBehavior: Clip.antiAlias,
         child: ExpansionTile(
           controller: _expansibleController,
