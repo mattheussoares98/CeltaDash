@@ -44,6 +44,8 @@ class GetxEnterprisesManagerPresenter extends GetxController
       DatabaseKeys.enterprise,
       FirebaseEnterpriseModel.fromViewModel(enterprise).toJson(),
     );
+
+    navigateTo.navigate(pageRoute: PageRoutes.splash, clear: true);
   }
 
   @override

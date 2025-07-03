@@ -115,6 +115,15 @@ void main() {
             FirebaseEnterpriseModel.fromViewModel(enterprise).toJson()),
       ).called(1);
     });
+    test("Should go to splash page", () async {
+      await sut.updateSelectedEnterprise(
+          FirebaseEnterpriseModel.fromEntity(firebaseEnterprisesEntities.first)
+              .toViewModel());
+
+      verify(
+        () => navigateTo.navigate(pageRoute: PageRoutes.splash, clear: true),
+      ).called(1);
+    });
   });
 
   group("Load local enterprises", () {
