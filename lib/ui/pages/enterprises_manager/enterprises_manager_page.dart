@@ -12,7 +12,7 @@ class EnterprisesManagerPage extends StatefulWidget {
 
   @override
   State<EnterprisesManagerPage> createState() => _EnterprisesManagerPageState();
-  static void showEnterpriseSelection(
+  static void openModalButtonEnterpriseSelection(
     BuildContext context,
     EnterprisesManagerPresenter enterprisesManagerPresenter,
   ) {

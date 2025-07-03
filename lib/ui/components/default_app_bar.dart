@@ -99,7 +99,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                   padding: const EdgeInsets.only(left: 8),
                   child: IconButton(
                     onPressed: () {
-                      EnterprisesManagerPage.showEnterpriseSelection(
+                      EnterprisesManagerPage.openModalButtonEnterpriseSelection(
                           context, enterprisesManagerPresenter);
                     },
                     icon: Icon(
@@ -163,8 +163,9 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                   if (widget.showEnterpriseManagerButton == true)
                     IconButton(
                       onPressed: () {
-                        EnterprisesManagerPage.showEnterpriseSelection(
-                            context, enterprisesManagerPresenter);
+                        EnterprisesManagerPage
+                            .openModalButtonEnterpriseSelection(
+                                context, enterprisesManagerPresenter);
                       },
                       icon: Icon(
                         Platform.isIOS
