@@ -50,7 +50,9 @@ class _PasswordFieldState extends State<PasswordField> {
             },
           ),
         ),
-        onFieldSubmitted: (_) => widget.onSubmit(),
+        onFieldSubmitted: (_) {
+          widget.onSubmit();
+        },
       ),
     );
   }

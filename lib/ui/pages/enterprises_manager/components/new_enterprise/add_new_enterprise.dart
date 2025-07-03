@@ -30,7 +30,17 @@ class AddNewEnterprise extends StatelessWidget {
       return;
     }
 
-    debugPrint("Can save");
+    bool added = await enterprisesManagerPresenter.addNewEnterprise(
+      enterpriseName: enterpriseNameController.text,
+      userName: bsUserNameController.text,
+      userPassword: bsPasswordController.text,
+    );
+
+    if (added) {
+      enterpriseNameController.clear();
+      bsUserNameController.clear();
+      bsPasswordController.clear();
+    }
   }
 
   static final _formKey = GlobalKey<FormState>();
@@ -75,7 +85,7 @@ class AddNewEnterprise extends StatelessWidget {
               bsPasswordFocusNode: bsPasswordFocusNode,
               onSubmit: () async {
                 await onSubmit(enterprisesManagerPresenter);
-              }, //TODO implement
+              },
             ),
             SubmitButton(
               onSubmit: () async {
