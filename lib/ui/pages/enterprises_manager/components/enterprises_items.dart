@@ -37,13 +37,15 @@ class EnterprisesItems extends StatelessWidget {
                   margin: EdgeInsets.only(bottom: 8),
                   decoration: isSelected
                       ? ContainerDecoration.enabled
-                      : ContainerDecoration.disabled,
+                      : ContainerDecoration.defaultDecoration,
                   child: ListTile(
                     title: Text(
                       enterprise.enterpriseName?.toUpperCase() ?? "null",
-                      style: TextStyle(
-                        fontWeight:
-                            isSelected ? FontWeight.bold : FontWeight.normal,
+                      style: theme.textTheme.headlineSmall?.copyWith(
+                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                        color: isSelected
+                            ? theme.primaryColor
+                            : Colors.black,
                       ),
                     ),
                     trailing: isSelected
@@ -53,28 +55,34 @@ class EnterprisesItems extends StatelessWidget {
                                 : Icons.check_circle,
                             color: theme.colorScheme.primary)
                         : null,
-                    onTap: () => enterprisesManagerPresenter
-                        .updateSelectedEnterprise(enterprise),
+                    onTap: () {
+                      enterprisesManagerPresenter
+                          .updateSelectedEnterprise(enterprise);
+                    },
                   ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 4),
                 child: IconButton(
-                  onPressed: () {
-                    notificationDialog(
-                      context: context,
-                      titleMessage: "${R.string.removeEnterprise}?",
-                      content: null,
-                      onPress: () async {
-                        await enterprisesManagerPresenter
-                            .removeEnterprise(enterprise.enterpriseName);
-                      },
-                    );
-                  },
+                  onPressed: isSelected
+                      ? null
+                      : () {
+                          notificationDialog(
+                            context: context,
+                            titleMessage: "${R.string.removeEnterprise}?",
+                            content: null,
+                            onPress: () async {
+                              await enterprisesManagerPresenter
+                                  .removeEnterprise(enterprise.enterpriseName);
+                            },
+                          );
+                        },
                   icon: Icon(
                     Platform.isIOS ? CupertinoIcons.trash : Icons.delete,
-                    color: theme.colorScheme.error,
+                    color: isSelected
+                        ? theme.disabledColor
+                        : theme.colorScheme.error,
                   ),
                 ),
               )
