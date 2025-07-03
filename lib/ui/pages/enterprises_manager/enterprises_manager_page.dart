@@ -1,12 +1,8 @@
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../main/builders/builders.dart';
-import '../../helpers/helpers.dart';
 import '../pages.dart';
+import 'components/components.dart';
 
 class EnterprisesManagerPage extends StatefulWidget {
   const EnterprisesManagerPage({super.key});
@@ -48,17 +44,28 @@ class EnterprisesManagerPage extends StatefulWidget {
 
 class _EnterprisesManagerPageState extends State<EnterprisesManagerPage> {
   final scrollController = ScrollController();
+  final enterpriseNameController = TextEditingController();
+  final bsUserNameController = TextEditingController();
+  final bsPasswordController = TextEditingController();
+  final enterpriseNameFocusNode = FocusNode();
+  final bsUserNameFocusNode = FocusNode();
+  final bsPasswordFocusNode = FocusNode();
 
   @override
   void dispose() {
     super.dispose();
     scrollController.dispose();
+    enterpriseNameController.dispose();
+    bsUserNameController.dispose();
+    bsPasswordController.dispose();
+
+    enterpriseNameFocusNode.dispose();
+    bsUserNameFocusNode.dispose();
+    bsPasswordFocusNode.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final enterprisesManagerPresenter = Get.find<EnterprisesManagerPresenter>();
-
     final theme = Theme.of(context);
     return Obx(() {
       return Container(
@@ -69,82 +76,18 @@ class _EnterprisesManagerPageState extends State<EnterprisesManagerPage> {
         padding: const EdgeInsets.all(8),
         child: Column(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    R.string.connectedEnterprises,
-                    style: Theme.of(context).textTheme.displayLarge,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                IconButton(
-                  icon:
-                      Icon(Platform.isIOS ? CupertinoIcons.xmark : Icons.close),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ],
-            ),
-            ElevatedButton.icon(
-              onPressed: () {
-                // TODO: Implement navigation to your "Add New Enterprise" page
-                print('Navigate to Add New Company Page');
-              },
-              icon: Icon(Platform.isIOS
-                  ? CupertinoIcons.add_circled
-                  : Icons.add_circle_outline),
-              label: Text(R.string.addNewEnterprise),
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 50),
-                backgroundColor: theme.colorScheme.primary,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
+            ConnectedEnterprises(),
+            AddNewEnterprise(
+              enterpriseNameController: enterpriseNameController,
+              bsUserNameController: bsUserNameController,
+              bsPasswordController: bsPasswordController,
+              enterpriseNameFocusNode: enterpriseNameFocusNode,
+              bsUserNameFocusNode: bsUserNameFocusNode,
+              bsPasswordFocusNode: bsPasswordFocusNode,
             ),
             const Divider(),
             Expanded(
-              child: ListView.builder(
-                controller: scrollController,
-                itemCount:
-                    enterprisesManagerPresenter.allEnterprises?.length ?? 0,
-                itemBuilder: (context, index) {
-                  final enterprise =
-                      enterprisesManagerPresenter.allEnterprises![index];
-                  final isSelected = EnterpriseBuilder.entity?.firebaseId ==
-                      enterprise.firebaseId;
-
-                  return Card(
-                    elevation: isSelected ? 4.0 : 1.0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      side: isSelected
-                          ? BorderSide(
-                              color: theme.colorScheme.primary, width: 2)
-                          : BorderSide.none,
-                    ),
-                    child: ListTile(
-                      title: Text(
-                        enterprise.enterpriseName?.toUpperCase() ?? "null",
-                        style: TextStyle(
-                          fontWeight:
-                              isSelected ? FontWeight.bold : FontWeight.normal,
-                        ),
-                      ),
-                      trailing: isSelected
-                          ? Icon(
-                              Platform.isIOS
-                                  ? CupertinoIcons.checkmark
-                                  : Icons.check_circle,
-                              color: theme.colorScheme.primary)
-                          : null,
-                      onTap: () => enterprisesManagerPresenter
-                          .updateSelectedEnterprise(enterprise),
-                    ),
-                  );
-                },
-              ),
+              child: EnterprisesItems(scrollController: scrollController),
             ),
           ],
         ),
