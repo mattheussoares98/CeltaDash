@@ -37,13 +37,13 @@ class _SalesPageState extends State<SalesPage>
     required SalesPresenter salesPresenter,
   }) {
     if (salesPresenter.selectedPeriod == PeriodType.hourly) {
-      return hourlyStatistics?.isEmpty == true;
+      return hourlyStatistics == null || hourlyStatistics.isEmpty == true;
     } else if (salesPresenter.selectedPeriod == PeriodType.daily) {
-      return dailyStatistics?.isEmpty == true;
+      return dailyStatistics == null || dailyStatistics.isEmpty == true;
     } else if (salesPresenter.selectedPeriod == PeriodType.monthly) {
-      return monthlyStatistics?.isEmpty == true;
+      return monthlyStatistics == null || monthlyStatistics.isEmpty == true;
     } else if (salesPresenter.selectedPeriod == PeriodType.yearly) {
-      return yearlyStatistics?.isEmpty == true;
+      return yearlyStatistics == null || yearlyStatistics.isEmpty == true;
     }
     return true;
   }
@@ -101,36 +101,38 @@ class _SalesPageState extends State<SalesPage>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Flexible(
-                        child: SelectPeriodItems(
-                          isLoading: loadingSnap.data,
-                          selectedPeriodType: salesPresenter.selectedPeriod,
-                          onTapHourly: () {
-                            salesPresenter.getSales(
-                              homePresenter,
-                              periodType: PeriodType.hourly,
-                            );
-                          },
-                          onTapDaily: () {
-                            salesPresenter.getSales(
-                              homePresenter,
-                              periodType: PeriodType.daily,
-                            );
-                          },
-                          onTapMonthly: () {
-                            salesPresenter.getSales(
-                              homePresenter,
-                              periodType: PeriodType.monthly,
-                            );
-                          },
-                          onTapYearly: () {
-                            salesPresenter.getSales(
-                              homePresenter,
-                              periodType: PeriodType.yearly,
-                            );
-                          },
+                      if (homePresenter.enterprises != null &&
+                          homePresenter.enterprises!.isNotEmpty)
+                        Flexible(
+                          child: SelectPeriodItems(
+                            isLoading: loadingSnap.data,
+                            selectedPeriodType: salesPresenter.selectedPeriod,
+                            onTapHourly: () {
+                              salesPresenter.getSales(
+                                homePresenter,
+                                periodType: PeriodType.hourly,
+                              );
+                            },
+                            onTapDaily: () {
+                              salesPresenter.getSales(
+                                homePresenter,
+                                periodType: PeriodType.daily,
+                              );
+                            },
+                            onTapMonthly: () {
+                              salesPresenter.getSales(
+                                homePresenter,
+                                periodType: PeriodType.monthly,
+                              );
+                            },
+                            onTapYearly: () {
+                              salesPresenter.getSales(
+                                homePresenter,
+                                periodType: PeriodType.yearly,
+                              );
+                            },
+                          ),
                         ),
-                      ),
                     ],
                   ),
                 ),

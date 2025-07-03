@@ -68,7 +68,10 @@ class MorePage extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: buttons,
+            children: homePresenter.enterprises == null ||
+                    homePresenter.enterprises!.isEmpty
+                ? [EmptySales(isLoading: false)]
+                : buttons,
           ),
         ));
   }

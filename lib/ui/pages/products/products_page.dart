@@ -112,22 +112,25 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SelectPeriodItems(
-                          isLoading: loadingSnap.data,
-                          selectedPeriodType: productsPresenter.selectedPeriod,
-                          onTapDaily: () {
-                            productsPresenter.getSales(
-                              homePresenter,
-                              periodType: PeriodType.daily,
-                            );
-                          },
-                          onTapMonthly: () {
-                            productsPresenter.getSales(
-                              homePresenter,
-                              periodType: PeriodType.monthly,
-                            );
-                          },
-                        ),
+                        if (homePresenter.enterprises != null &&
+                            homePresenter.enterprises!.isNotEmpty)
+                          SelectPeriodItems(
+                            isLoading: loadingSnap.data,
+                            selectedPeriodType:
+                                productsPresenter.selectedPeriod,
+                            onTapDaily: () {
+                              productsPresenter.getSales(
+                                homePresenter,
+                                periodType: PeriodType.daily,
+                              );
+                            },
+                            onTapMonthly: () {
+                              productsPresenter.getSales(
+                                homePresenter,
+                                periodType: PeriodType.monthly,
+                              );
+                            },
+                          ),
                         if (sales != null)
                           Expanded(
                             child: FilterProductField(
