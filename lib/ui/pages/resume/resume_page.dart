@@ -77,64 +77,81 @@ class _ResumePageState extends State<ResumePage>
                 );
               },
             ),
-            body: SingleChildScrollView(
-              controller: scrollController,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
-                child: Obx(() {
-                  final sales = resumePresenter.saleStatistics;
-                  final salesByEnterprise = resumePresenter.saleStatistics
-                      ?.filteredSales(
-                        enterprise: homePresenter.selectedEnterprise,
-                      )
-                      .map((e) => e.toViewModel())
-                      .toList();
+            body: Stack(
+              children: [
+                SingleChildScrollView(
+                  controller: scrollController,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
+                    child: Obx(() {
+                      final sales = resumePresenter.saleStatistics;
+                      final salesByEnterprise = resumePresenter.saleStatistics
+                          ?.filteredSales(
+                            enterprise: homePresenter.selectedEnterprise,
+                          )
+                          .map((e) => e.toViewModel())
+                          .toList();
 
-                  if (sales == null ||
-                      sales.isEmpty ||
-                      salesByEnterprise == null) {
-                    return EmptySales(isLoading: loadingSnap.data == true);
-                  }
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Column(
+                      if (sales == null ||
+                          sales.isEmpty ||
+                          salesByEnterprise == null) {
+                        return EmptySales(isLoading: loadingSnap.data == true);
+                      }
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          DailyStatistics(
-                            scrollController: scrollController,
-                            saleStatistics: salesByEnterprise,
+                          Column(
+                            children: [
+                              DailyStatistics(
+                                scrollController: scrollController,
+                                saleStatistics: salesByEnterprise,
+                              ),
+                              SizedBox(height: 8),
+                              MonthlyAnalysis(sales: salesByEnterprise),
+                              // const SizedBox(height: 8),
+                              // SalesInformations(
+                              //   scrollController: scrollController,
+                              //   totalSales: saleStatistics.sumLiquidValue(
+                              //     enterprise: homePresenter.selectedEnterprise,
+                              //     filterYear: homePresenter.selectedDate.year,
+                              //     filterMonth: homePresenter.selectedDate.month,
+                              //   ),
+                              //   title: R.string.salesOfTheMonth,
+                              // ),
+                              // const SizedBox(height: 8),
+                              // DefaultNavigateButton(
+                              //   onTap: resumePresenter.goToProfitabillityPage,
+                              //   title: R.string.profitability,
+                              //
+                              // const SizedBox(height: 8),
+                              // DailyAnalysis(
+                              //   saleStatistics: saleStatistics,
+                              //   scrollController: scrollController,
+                              // ),
+                              SizedBox(height: 8),
+                            ],
                           ),
-                          SizedBox(height: 8),
-                          MonthlyAnalysis(sales: salesByEnterprise),
-                          // const SizedBox(height: 8),
-                          // SalesInformations(
-                          //   scrollController: scrollController,
-                          //   totalSales: saleStatistics.sumLiquidValue(
-                          //     enterprise: homePresenter.selectedEnterprise,
-                          //     filterYear: homePresenter.selectedDate.year,
-                          //     filterMonth: homePresenter.selectedDate.month,
-                          //   ),
-                          //   title: R.string.salesOfTheMonth,
-                          // ),
-                          // const SizedBox(height: 8),
-                          // DefaultNavigateButton(
-                          //   onTap: resumePresenter.goToProfitabillityPage,
-                          //   title: R.string.profitability,
-                          //
-                          // const SizedBox(height: 8),
-                          // DailyAnalysis(
-                          //   saleStatistics: saleStatistics,
-                          //   scrollController: scrollController,
-                          // ),
-                          SizedBox(height: 8),
+                          GroupOfStores(sales: sales),
+                          SizedBox(height: 15),
                         ],
-                      ),
-                      GroupOfStores(sales: sales),
-                      SizedBox(height: 15),
-                    ],
-                  );
-                }),
-              ),
+                      );
+                    }),
+                  ),
+                ),
+                StreamBuilder(
+                  stream: homePresenter.selectedEnterpriseIsEnabledStream,
+                  builder: (context, enabledSnap) => enabledSnap.data == false
+                      ? Positioned(
+                          // Start after the status bar and the AppBar
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          child: DisabledEnterpriseBlur(),
+                        )
+                      : SizedBox.shrink(),
+                ),
+              ],
             ),
           );
         });
