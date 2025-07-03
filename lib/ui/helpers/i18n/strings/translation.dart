@@ -1,4 +1,5 @@
 abstract class Translation {
+  String get msgCannotRemoveSelectedEnterprise;
   String get msgCantCompareSameDays;
   String get msgDisabledEnterprise;
   String get msgEnterpriseAlreadyExists;

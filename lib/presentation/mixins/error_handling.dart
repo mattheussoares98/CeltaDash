@@ -6,6 +6,8 @@ mixin ErrorHandling {
   UIError getUIError(dynamic error) {
     if (error is DomainError) {
       switch (error) {
+        case DomainError.cannotRemoveSelectedEnterprise:
+          return UIError.cannotRemoveSelectedEnterprise;
         case DomainError.enterpriseAlreadyExists:
           return UIError.enterpriseAlreadyExists;
         case DomainError.enterpriseNotFound:

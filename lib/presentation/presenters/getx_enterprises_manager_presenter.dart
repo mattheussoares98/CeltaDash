@@ -157,4 +157,34 @@ class GetxEnterprisesManagerPresenter extends GetxController
       isLoading = false;
     }
   }
+
+  @override
+  Future<void> removeEnterprise(FirebaseEnterpriseViewModel enterprise) async {
+    isLoading = true;
+    mainError = null;
+    try {
+      if (EnterpriseBuilder.entity != null &&
+          enterprise ==
+              FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
+                  .toViewModel()) {
+        throw DomainError.cannotRemoveSelectedEnterprise;
+      }
+
+      bool? removed = allEnterprises?.remove(enterprise);
+
+      if (removed == true) {
+        await localStorage.put(
+            DatabaseKeys.allEnterprises,
+            allEnterprises
+                ?.map((e) => FirebaseEnterpriseModel.fromViewModel(e).toJson())
+                .toList());
+      } else {
+        throw DomainError.unexpected;
+      }
+    } catch (e) {
+      mainError = getUIError(e);
+    } finally {
+      isLoading = false;
+    }
+  }
 }

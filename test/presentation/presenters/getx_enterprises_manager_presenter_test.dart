@@ -30,6 +30,7 @@ void main() {
   late String userName;
   late String userPassword;
   late BsUserModel bsUserResponse;
+  late FirebaseEnterpriseViewModel addedEnterprise;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
@@ -72,6 +73,17 @@ void main() {
     userPassword = faker.internet.password();
     bsUserResponse = BsUserModel.fromEntity(
       EntityFactory.makeBsUserEntity(name: userName),
+    );
+    addedEnterprise = FirebaseEnterpriseViewModel(
+      baseUrl: mockedFirebaseGet.data()!["baseUrl"],
+      enterpriseName: enterpriseName,
+      bsUser: bsUserResponse,
+      firebaseSubEnterprises:
+          (mockedFirebaseGet.data()!["subEnterprises"] as List?)
+              ?.map<FirebaseSubEnterpriseViewModel>(
+                  (e) => FirebaseSubEnterpriseModel.fromJson(e).toViewModel())
+              .toList(),
+      firebaseId: mockedFirebaseGet.id,
     );
   }
 
@@ -265,22 +277,7 @@ void main() {
         userPassword: userPassword,
       );
 
-      expect(
-        sut.allEnterprises,
-        [
-          FirebaseEnterpriseViewModel(
-            baseUrl: mockedFirebaseGet.data()!["baseUrl"],
-            enterpriseName: enterpriseName,
-            bsUser: bsUserResponse,
-            firebaseSubEnterprises: (mockedFirebaseGet.data()!["subEnterprises"]
-                    as List?)
-                ?.map<FirebaseSubEnterpriseViewModel>(
-                    (e) => FirebaseSubEnterpriseModel.fromJson(e).toViewModel())
-                .toList(),
-            firebaseId: mockedFirebaseGet.id,
-          ),
-        ],
-      );
+      expect(sut.allEnterprises, [addedEnterprise]);
     });
     test("Should throw error if already exists enterprise with the same name",
         () async {
@@ -350,18 +347,9 @@ void main() {
       );
 
       expect(
-          EnterpriseBuilder.entity,
-          FirebaseEnterpriseModel.fromViewModel(FirebaseEnterpriseViewModel(
-            baseUrl: mockedFirebaseGet.data()!["baseUrl"],
-            enterpriseName: enterpriseName,
-            bsUser: bsUserResponse,
-            firebaseSubEnterprises: (mockedFirebaseGet.data()!["subEnterprises"]
-                    as List?)
-                ?.map<FirebaseSubEnterpriseViewModel>(
-                    (e) => FirebaseSubEnterpriseModel.fromJson(e).toViewModel())
-                .toList(),
-            firebaseId: mockedFirebaseGet.id,
-          )).toEntity());
+        EnterpriseBuilder.entity,
+        FirebaseEnterpriseModel.fromViewModel(addedEnterprise).toEntity(),
+      );
     });
     test(
         "Should not update selected enterprise if all enterprises is not empty",
@@ -378,18 +366,9 @@ void main() {
       );
 
       expect(
-          EnterpriseBuilder.entity,
-          FirebaseEnterpriseModel.fromViewModel(FirebaseEnterpriseViewModel(
-            baseUrl: mockedFirebaseGet.data()!["baseUrl"],
-            enterpriseName: enterpriseName,
-            bsUser: bsUserResponse,
-            firebaseSubEnterprises: (mockedFirebaseGet.data()!["subEnterprises"]
-                    as List?)
-                ?.map<FirebaseSubEnterpriseViewModel>(
-                    (e) => FirebaseSubEnterpriseModel.fromJson(e).toViewModel())
-                .toList(),
-            firebaseId: mockedFirebaseGet.id,
-          )).toEntity());
+        EnterpriseBuilder.entity,
+        FirebaseEnterpriseModel.fromViewModel(addedEnterprise).toEntity(),
+      );
     });
     test("Should add locally the enterprise if all enterprises is empty",
         () async {
@@ -406,19 +385,93 @@ void main() {
 
       verify(
         () => localStorage.put(
-            DatabaseKeys.enterprise,
-            FirebaseEnterpriseModel.fromViewModel(FirebaseEnterpriseViewModel(
-              baseUrl: mockedFirebaseGet.data()!["baseUrl"],
-              enterpriseName: enterpriseName,
-              bsUser: bsUserResponse,
-              firebaseSubEnterprises:
-                  (mockedFirebaseGet.data()!["subEnterprises"] as List?)
-                      ?.map<FirebaseSubEnterpriseViewModel>((e) =>
-                          FirebaseSubEnterpriseModel.fromJson(e).toViewModel())
-                      .toList(),
-              firebaseId: mockedFirebaseGet.id,
-            )).toJson()),
+          DatabaseKeys.enterprise,
+          FirebaseEnterpriseModel.fromViewModel(addedEnterprise).toJson(),
+        ),
       ).called(1);
+    });
+  });
+
+  group("Remove enterprise", () {
+    test("Should emit correct values on success", () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(sut.mainErrorStream, emits(null));
+
+      await sut.addNewEnterprise(
+        enterpriseName: enterpriseName,
+        userName: userName,
+        userPassword: userPassword,
+      );
+
+      await sut.removeEnterprise(addedEnterprise);
+    });
+
+    test("Should emit correct error when try to remove the selected enterprise",
+        () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(
+        sut.mainErrorStream,
+        emitsInOrder([null, UIError.cannotRemoveSelectedEnterprise]),
+      );
+
+      await sut.addNewEnterprise(
+        enterpriseName: enterpriseName,
+        userName: userName,
+        userPassword: userPassword,
+      );
+
+      await sut.removeEnterprise(addedEnterprise);
+    });
+    test("Should call localStorage put with the correct values", () async {
+      await sut.addNewEnterprise(
+        enterpriseName: enterpriseName,
+        userName: userName,
+        userPassword: userPassword,
+      ); //select this enterprise because allenterprises are empty here
+
+      final newEnterprise = EntityFactory.makeFirebaseEnterpriseEntity();
+      firebaseManager.mockGet(MockedFirebaseGet(
+        dataToReturn: [
+          FakeDoc(
+            FirebaseEnterpriseModel.fromEntity(newEnterprise).toJson(),
+            newEnterprise.firebaseId!,
+          )
+        ],
+      )); //mock new enterprise return because when add a new, will return this enterprise from firebase
+      await sut.addNewEnterprise(
+        enterpriseName: newEnterprise.enterpriseName!,
+        userName: newEnterprise.bsUser!.name!,
+        userPassword: userPassword,
+      ); //add new enterprise to maintain at leats one enterprise in allEnterprises.
+      //Because cant remove the selected enterprise
+
+      await sut.removeEnterprise(
+        FirebaseEnterpriseModel.fromEntity(newEnterprise).toViewModel(),
+      ); //remove the new enterprise
+
+      verify(() => localStorage.put(
+            DatabaseKeys.allEnterprises,
+            [FirebaseEnterpriseModel.fromViewModel(addedEnterprise).toJson()],
+          ));
+    });
+    test("Should emit correct error when try to remove inexistent enterprise",
+        () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(
+        sut.mainErrorStream,
+        emitsInOrder([null, UIError.unexpected]),
+      );
+
+      await sut.addNewEnterprise(
+        enterpriseName: enterpriseName,
+        userName: userName,
+        userPassword: userPassword,
+      );
+
+      final newEnterprise = EntityFactory.makeFirebaseEnterpriseEntity();
+      await sut.removeEnterprise(
+        FirebaseEnterpriseModel.fromEntity(newEnterprise).toViewModel(),
+      ); //remove the new enterprise
     });
   });
 }

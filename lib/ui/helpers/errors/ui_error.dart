@@ -12,6 +12,8 @@ class UIError extends Equatable {
 
   factory UIError.custom(String description) => UIError._(description);
 
+  static final cannotRemoveSelectedEnterprise =
+      UIError._(R.string.msgCannotRemoveSelectedEnterprise);
   static final disabledEnterprise = UIError._(R.string.msgDisabledEnterprise);
   static final enterpriseAlreadyExists =
       UIError._(R.string.msgEnterpriseAlreadyExists);
