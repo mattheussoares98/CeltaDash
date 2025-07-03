@@ -5,7 +5,7 @@ import '../../../../helpers/helpers.dart';
 import '../../../pages.dart';
 import 'new_enterprise.dart';
 
-class AddNewEnterprise extends StatelessWidget {
+class AddNewEnterprise extends StatefulWidget {
   final TextEditingController enterpriseNameController;
   final TextEditingController bsUserNameController;
   final TextEditingController bsPasswordController;
@@ -23,6 +23,14 @@ class AddNewEnterprise extends StatelessWidget {
     required this.bsPasswordFocusNode,
   });
 
+  @override
+  State<AddNewEnterprise> createState() => _AddNewEnterpriseState();
+}
+
+class _AddNewEnterpriseState extends State<AddNewEnterprise> {
+  final _formKey = GlobalKey<FormState>();
+  final _expansibleController = ExpansibleController();
+
   Future<void> onSubmit(
     EnterprisesManagerPresenter enterprisesManagerPresenter,
   ) async {
@@ -31,19 +39,18 @@ class AddNewEnterprise extends StatelessWidget {
     }
 
     bool added = await enterprisesManagerPresenter.addNewEnterprise(
-      enterpriseName: enterpriseNameController.text,
-      userName: bsUserNameController.text,
-      userPassword: bsPasswordController.text,
+      enterpriseName: widget.enterpriseNameController.text,
+      userName: widget.bsUserNameController.text,
+      userPassword: widget.bsPasswordController.text,
     );
 
-    if (added) {
-      enterpriseNameController.clear();
-      bsUserNameController.clear();
-      bsPasswordController.clear();
+    if (added && mounted) {
+      widget.enterpriseNameController.clear();
+      widget.bsUserNameController.clear();
+      widget.bsPasswordController.clear();
+      _expansibleController.collapse();
     }
   }
-
-  static final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +66,7 @@ class AddNewEnterprise extends StatelessWidget {
         ),
         clipBehavior: Clip.antiAlias,
         child: ExpansionTile(
+          controller: _expansibleController,
           childrenPadding: EdgeInsets.all(4),
           title: Text(
             R.string.addNewEnterprise,
@@ -66,23 +74,23 @@ class AddNewEnterprise extends StatelessWidget {
           ),
           onExpansionChanged: (value) {
             if (value) {
-              enterpriseNameFocusNode.requestFocus();
+              widget.enterpriseNameFocusNode.requestFocus();
             }
           },
           children: [
             EnterpriseNameField(
-              enterpriseNameController: enterpriseNameController,
-              enterpriseNameFocusNode: enterpriseNameFocusNode,
-              bsUserNameFocusNode: bsUserNameFocusNode,
+              enterpriseNameController: widget.enterpriseNameController,
+              enterpriseNameFocusNode: widget.enterpriseNameFocusNode,
+              bsUserNameFocusNode: widget.bsUserNameFocusNode,
             ),
             UserNameField(
-              bsUserNameController: bsUserNameController,
-              bsUserNameFocusNode: bsUserNameFocusNode,
-              bsPasswordFocusNode: bsPasswordFocusNode,
+              bsUserNameController: widget.bsUserNameController,
+              bsUserNameFocusNode: widget.bsUserNameFocusNode,
+              bsPasswordFocusNode: widget.bsPasswordFocusNode,
             ),
             PasswordField(
-              bsPasswordController: bsPasswordController,
-              bsPasswordFocusNode: bsPasswordFocusNode,
+              bsPasswordController: widget.bsPasswordController,
+              bsPasswordFocusNode: widget.bsPasswordFocusNode,
               onSubmit: () async {
                 await onSubmit(enterprisesManagerPresenter);
               },
