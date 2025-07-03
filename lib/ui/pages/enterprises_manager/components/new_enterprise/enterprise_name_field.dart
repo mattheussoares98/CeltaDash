@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../main/composites/composites.dart';
+import '../../../../../presentation/protocols/protocols.dart';
+import '../../../../../validation/validators/validators.dart';
 import '../../../../helpers/helpers.dart';
 
 class EnterpriseNameField extends StatelessWidget {
@@ -25,6 +28,10 @@ class EnterpriseNameField extends StatelessWidget {
       onFieldSubmitted: (_) {
         bsUserNameFocusNode.requestFocus();
       },
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (value) => ValidationComposite([
+        RequiredFieldValidation(),
+      ]).validate(value)?.description,
     );
   }
 }

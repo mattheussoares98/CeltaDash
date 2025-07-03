@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../../helpers/helpers.dart';
+import '../../../pages.dart';
 import 'new_enterprise.dart';
 
 class AddNewEnterprise extends StatelessWidget {
@@ -21,46 +23,67 @@ class AddNewEnterprise extends StatelessWidget {
     required this.bsPasswordFocusNode,
   });
 
-  void onSubmit() {}
+  Future<void> onSubmit(
+    EnterprisesManagerPresenter enterprisesManagerPresenter,
+  ) async {
+    if (_formKey.currentState?.validate() != true) {
+      return;
+    }
+
+    debugPrint("Can save");
+  }
+
+  static final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: ExpansionTile(
-        childrenPadding: EdgeInsets.all(4),
-        title: Text(
-          R.string.addNewEnterprise,
-          style: Theme.of(context).textTheme.headlineSmall,
+    final enterprisesManagerPresenter = Get.find<EnterprisesManagerPresenter>();
+
+    return Form(
+      key: _formKey,
+      child: Card(
+        elevation: 2,
+        margin: const EdgeInsets.symmetric(vertical: 8),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
         ),
-        onExpansionChanged: (value) {
-          if (value) {
-            enterpriseNameFocusNode.requestFocus();
-          }
-        },
-        children: [
-          EnterpriseNameField(
-            enterpriseNameController: enterpriseNameController,
-            enterpriseNameFocusNode: enterpriseNameFocusNode,
-            bsUserNameFocusNode: bsUserNameFocusNode,
+        clipBehavior: Clip.antiAlias,
+        child: ExpansionTile(
+          childrenPadding: EdgeInsets.all(4),
+          title: Text(
+            R.string.addNewEnterprise,
+            style: Theme.of(context).textTheme.headlineSmall,
           ),
-          UserNameField(
-            bsUserNameController: bsUserNameController,
-            bsUserNameFocusNode: bsUserNameFocusNode,
-            bsPasswordFocusNode: bsPasswordFocusNode,
-          ),
-          PasswordField(
-            bsPasswordController: bsPasswordController,
-            bsPasswordFocusNode: bsPasswordFocusNode,
-            onSubmit: onSubmit, //TODO implement
-          ),
-          SubmitButton(onSubmit: onSubmit),
-        ],
+          onExpansionChanged: (value) {
+            if (value) {
+              enterpriseNameFocusNode.requestFocus();
+            }
+          },
+          children: [
+            EnterpriseNameField(
+              enterpriseNameController: enterpriseNameController,
+              enterpriseNameFocusNode: enterpriseNameFocusNode,
+              bsUserNameFocusNode: bsUserNameFocusNode,
+            ),
+            UserNameField(
+              bsUserNameController: bsUserNameController,
+              bsUserNameFocusNode: bsUserNameFocusNode,
+              bsPasswordFocusNode: bsPasswordFocusNode,
+            ),
+            PasswordField(
+              bsPasswordController: bsPasswordController,
+              bsPasswordFocusNode: bsPasswordFocusNode,
+              onSubmit: () async {
+                await onSubmit(enterprisesManagerPresenter);
+              }, //TODO implement
+            ),
+            SubmitButton(
+              onSubmit: () async {
+                await onSubmit(enterprisesManagerPresenter);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

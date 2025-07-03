@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import '../pages.dart';
 import 'components/components.dart';
@@ -67,31 +66,29 @@ class _EnterprisesManagerPageState extends State<EnterprisesManagerPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Obx(() {
-      return Container(
-        decoration: BoxDecoration(
-          color: theme.colorScheme.surface,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-        ),
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          children: [
-            ConnectedEnterprises(),
-            AddNewEnterprise(
-              enterpriseNameController: enterpriseNameController,
-              bsUserNameController: bsUserNameController,
-              bsPasswordController: bsPasswordController,
-              enterpriseNameFocusNode: enterpriseNameFocusNode,
-              bsUserNameFocusNode: bsUserNameFocusNode,
-              bsPasswordFocusNode: bsPasswordFocusNode,
-            ),
-            const Divider(),
-            Expanded(
-              child: EnterprisesItems(scrollController: scrollController),
-            ),
-          ],
-        ),
-      );
-    });
+    return Container(
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        children: [
+          ConnectedEnterprises(),
+          AddNewEnterprise(
+            enterpriseNameController: enterpriseNameController,
+            bsUserNameController: bsUserNameController,
+            bsPasswordController: bsPasswordController,
+            enterpriseNameFocusNode: enterpriseNameFocusNode,
+            bsUserNameFocusNode: bsUserNameFocusNode,
+            bsPasswordFocusNode: bsPasswordFocusNode,
+          ),
+          const Divider(),
+          Expanded(
+            child: EnterprisesItems(scrollController: scrollController),
+          ),
+        ],
+      ),
+    );
   }
 }

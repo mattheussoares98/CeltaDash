@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../main/composites/composites.dart';
+import '../../../../../presentation/protocols/protocols.dart';
+import '../../../../../validation/validators/validators.dart';
 import '../../../../helpers/helpers.dart';
 
 class UserNameField extends StatelessWidget {
@@ -27,6 +30,11 @@ class UserNameField extends StatelessWidget {
         onFieldSubmitted: (_) {
           bsPasswordFocusNode.requestFocus();
         },
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: (value) => ValidationComposite([
+          RequiredFieldValidation(),
+          MinLengthValidation(size: 2),
+        ]).validate(value)?.description,
       ),
     );
   }
