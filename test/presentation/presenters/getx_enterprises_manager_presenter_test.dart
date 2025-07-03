@@ -115,6 +115,21 @@ void main() {
       await sut.updateSelectedEnterprise(enterprise.toViewModel());
       expect(EnterpriseBuilder.entity, enterprise.toEntity());
     });
+
+    test("Should not update enterprise locally if enterprise is the same",
+        () async {
+      final enterprise = FirebaseEnterpriseModel.fromEntity(
+          EntityFactory.makeFirebaseEnterpriseEntity());
+
+      await sut.updateSelectedEnterprise(enterprise.toViewModel());
+      await sut.updateSelectedEnterprise(enterprise.toViewModel());
+      verify(
+        () => localStorage.put(
+          DatabaseKeys.enterprise,
+          enterprise.toJson(),
+        ),
+      ).called(1);
+    });
     test("Should update selected enterprise in the database", () async {
       final enterprise =
           FirebaseEnterpriseModel.fromEntity(firebaseEnterprisesEntities.first)

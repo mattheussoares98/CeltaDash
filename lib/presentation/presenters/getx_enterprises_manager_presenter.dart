@@ -37,6 +37,9 @@ class GetxEnterprisesManagerPresenter extends GetxController
   Future<void> updateSelectedEnterprise(
     FirebaseEnterpriseViewModel enterprise,
   ) async {
+    if (enterprise.enterpriseName == EnterpriseBuilder.entity?.enterpriseName) {
+      return;
+    }
     EnterpriseBuilder.entity =
         FirebaseEnterpriseModel.fromViewModel(enterprise).toEntity();
 
