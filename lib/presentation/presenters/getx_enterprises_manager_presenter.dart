@@ -159,28 +159,28 @@ class GetxEnterprisesManagerPresenter extends GetxController
   }
 
   @override
-  Future<void> removeEnterprise(FirebaseEnterpriseViewModel enterprise) async {
+  Future<void> removeEnterprise(String? enterpriseName) async {
     isLoading = true;
     mainError = null;
     try {
       if (EnterpriseBuilder.entity != null &&
-          enterprise ==
-              FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
-                  .toViewModel()) {
+          EnterpriseBuilder.entity?.enterpriseName == enterpriseName) {
         throw DomainError.cannotRemoveSelectedEnterprise;
       }
 
-      bool? removed = allEnterprises?.remove(enterprise);
+      final enterpriseIndex =
+          allEnterprises?.indexWhere((e) => e.enterpriseName == enterpriseName);
 
-      if (removed == true) {
-        await localStorage.put(
-            DatabaseKeys.allEnterprises,
-            allEnterprises
-                ?.map((e) => FirebaseEnterpriseModel.fromViewModel(e).toJson())
-                .toList());
-      } else {
+      if (enterpriseIndex == null || enterpriseIndex == -1) {
         throw DomainError.unexpected;
       }
+
+      allEnterprises?.removeAt(enterpriseIndex);
+      await localStorage.put(
+          DatabaseKeys.allEnterprises,
+          allEnterprises
+              ?.map((e) => FirebaseEnterpriseModel.fromViewModel(e).toJson())
+              .toList());
     } catch (e) {
       mainError = getUIError(e);
     } finally {

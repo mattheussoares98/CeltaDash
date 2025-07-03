@@ -19,5 +19,5 @@ abstract class EnterprisesManagerPresenter implements Listenable {
     required String userName,
     required String userPassword,
   });
-  Future<void> removeEnterprise(FirebaseEnterpriseViewModel enterprise);
+  Future<void> removeEnterprise(String? enterpriseName);
 }

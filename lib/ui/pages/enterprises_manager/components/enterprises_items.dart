@@ -68,7 +68,7 @@ class EnterprisesItems extends StatelessWidget {
                       content: null,
                       onPress: () async {
                         await enterprisesManagerPresenter
-                            .removeEnterprise(enterprise);
+                            .removeEnterprise(enterprise.enterpriseName);
                       },
                     );
                   },

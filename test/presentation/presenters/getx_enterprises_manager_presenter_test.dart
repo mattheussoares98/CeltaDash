@@ -401,9 +401,24 @@ void main() {
         enterpriseName: enterpriseName,
         userName: userName,
         userPassword: userPassword,
+      ); //select this enterprise because allenterprises are empty here
+
+      final newEnterprise = EntityFactory.makeFirebaseEnterpriseEntity();
+      firebaseManager.mockGet(MockedFirebaseGet(
+        dataToReturn: [
+          FakeDoc(
+            FirebaseEnterpriseModel.fromEntity(newEnterprise).toJson(),
+            newEnterprise.firebaseId!,
+          )
+        ],
+      )); //mock new enterprise return because when add a new, will return this enterprise from firebase
+      await sut.addNewEnterprise(
+        enterpriseName: newEnterprise.enterpriseName!,
+        userName: newEnterprise.bsUser!.name!,
+        userPassword: userPassword,
       );
 
-      await sut.removeEnterprise(addedEnterprise);
+      await sut.removeEnterprise(newEnterprise.enterpriseName);
     });
 
     test("Should emit correct error when try to remove the selected enterprise",
@@ -420,7 +435,7 @@ void main() {
         userPassword: userPassword,
       );
 
-      await sut.removeEnterprise(addedEnterprise);
+      await sut.removeEnterprise(addedEnterprise.enterpriseName);
     });
     test("Should call localStorage put with the correct values", () async {
       await sut.addNewEnterprise(
@@ -446,8 +461,7 @@ void main() {
       //Because cant remove the selected enterprise
 
       await sut.removeEnterprise(
-        FirebaseEnterpriseModel.fromEntity(newEnterprise).toViewModel(),
-      ); //remove the new enterprise
+          newEnterprise.enterpriseName); //remove the new enterprise
 
       verify(() => localStorage.put(
             DatabaseKeys.allEnterprises,
@@ -470,8 +484,7 @@ void main() {
 
       final newEnterprise = EntityFactory.makeFirebaseEnterpriseEntity();
       await sut.removeEnterprise(
-        FirebaseEnterpriseModel.fromEntity(newEnterprise).toViewModel(),
-      ); //remove the new enterprise
+          newEnterprise.enterpriseName); //remove the new enterprise
     });
   });
 }

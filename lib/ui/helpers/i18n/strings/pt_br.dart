@@ -4,7 +4,7 @@ import './translation.dart';
 
 class PtBr implements Translation {
   String get msgCannotRemoveSelectedEnterprise =>
-      "Não pode remover a empresa selecionada. Selecione outra antes de remover";
+      "Não é permitido remover a empresa selecionada. Selecione outra antes de remover";
   String get msgCantCompareSameDays =>
       "Não é permitido comparar os mesmos dias";
   String get msgDisabledEnterprise =>
