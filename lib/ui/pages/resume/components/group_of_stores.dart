@@ -95,7 +95,7 @@ class GroupOfStores extends StatelessWidget {
     HomePresenter homePresenter = Get.find();
 
     return Container(
-      decoration: ContainerDecoration.decoration,
+      decoration: ContainerDecoration.defaultDecoration,
       padding: const EdgeInsets.all(8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

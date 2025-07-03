@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:celta_dash/ui/helpers/helpers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,6 +19,8 @@ class EnterprisesItems extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Obx(() {
+      enterprisesManagerPresenter.allEnterprises
+          ?.sort((a, b) => a.enterpriseName!.compareTo(b.enterpriseName!));
       return ListView.builder(
         controller: scrollController,
         itemCount: enterprisesManagerPresenter.allEnterprises?.length ?? 0,
@@ -26,14 +29,11 @@ class EnterprisesItems extends StatelessWidget {
           final isSelected =
               EnterpriseBuilder.entity?.firebaseId == enterprise.firebaseId;
 
-          return Card(
-            elevation: isSelected ? 4.0 : 1.0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-              side: isSelected
-                  ? BorderSide(color: theme.colorScheme.primary, width: 2)
-                  : BorderSide.none,
-            ),
+          return Container(
+            margin: EdgeInsets.only(bottom: 8),
+            decoration: isSelected
+                ? ContainerDecoration.enabled
+                : ContainerDecoration.disabled,
             child: ListTile(
               title: Text(
                 enterprise.enterpriseName?.toUpperCase() ?? "null",

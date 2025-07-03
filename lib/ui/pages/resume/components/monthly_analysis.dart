@@ -73,7 +73,7 @@ class MonthlyAnalysis extends StatelessWidget {
     if (betterValue == null || worstValue == null) return SizedBox();
 
     return Container(
-      decoration: ContainerDecoration.decoration,
+      decoration: ContainerDecoration.defaultDecoration,
       padding: EdgeInsets.fromLTRB(4, 8, 8, 8),
       child: Column(
         children: [

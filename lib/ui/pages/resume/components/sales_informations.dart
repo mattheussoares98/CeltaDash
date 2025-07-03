@@ -29,7 +29,7 @@ class SalesInformations extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: ContainerDecoration.decoration,
+      decoration: ContainerDecoration.defaultDecoration,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(

@@ -20,7 +20,7 @@ class Indicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: ContainerDecoration.decoration,
+      decoration: ContainerDecoration.defaultDecoration,
       child: Row(
         children: [
           Padding(

@@ -42,7 +42,7 @@ class _SubEnterprisesState extends State<SubEnterprises> {
                 .selectedEnterprise?.firebaseSubEnterprises?[index];
 
             return Container(
-              decoration: ContainerDecoration.decoration,
+              decoration: ContainerDecoration.defaultDecoration,
               padding: EdgeInsets.all(8),
               margin: EdgeInsets.symmetric(vertical: 4),
               child: Column(

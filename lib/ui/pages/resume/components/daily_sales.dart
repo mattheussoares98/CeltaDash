@@ -67,7 +67,7 @@ class DailyStatistics extends StatelessWidget {
             : (selectedDayLiquidValue / previousMonthLiquidValue * 100 - 100);
 
     return Container(
-      decoration: ContainerDecoration.decoration,
+      decoration: ContainerDecoration.defaultDecoration,
       padding: EdgeInsets.all(8),
       child: Column(
         children: [
