@@ -42,10 +42,9 @@ class EnterprisesItems extends StatelessWidget {
                     title: Text(
                       enterprise.enterpriseName?.toUpperCase() ?? "null",
                       style: theme.textTheme.headlineSmall?.copyWith(
-                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                        color: isSelected
-                            ? theme.primaryColor
-                            : Colors.black,
+                        fontWeight:
+                            isSelected ? FontWeight.bold : FontWeight.normal,
+                        color: isSelected ? theme.primaryColor : Colors.black,
                       ),
                     ),
                     trailing: isSelected
@@ -62,12 +61,12 @@ class EnterprisesItems extends StatelessWidget {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 4),
-                child: IconButton(
-                  onPressed: isSelected
-                      ? null
-                      : () {
+              isSelected
+                  ? SizedBox.shrink()
+                  : Padding(
+                      padding: const EdgeInsets.only(left: 4),
+                      child: IconButton(
+                        onPressed: () {
                           notificationDialog(
                             context: context,
                             titleMessage: "${R.string.removeEnterprise}?",
@@ -78,14 +77,14 @@ class EnterprisesItems extends StatelessWidget {
                             },
                           );
                         },
-                  icon: Icon(
-                    Platform.isIOS ? CupertinoIcons.trash : Icons.delete,
-                    color: isSelected
-                        ? theme.disabledColor
-                        : theme.colorScheme.error,
-                  ),
-                ),
-              )
+                        icon: Icon(
+                          Platform.isIOS ? CupertinoIcons.trash : Icons.delete,
+                          color: isSelected
+                              ? theme.disabledColor
+                              : theme.colorScheme.error,
+                        ),
+                      ),
+                    )
             ],
           );
         },
