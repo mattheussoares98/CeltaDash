@@ -126,7 +126,7 @@ class GetxHomePresenter extends GetxController
       _bsEnterprises.value = enterprisesInBs
           .map((e) => EnterpriseModel.fromEntity(e).toViewModel())
           .toList();
-      _selectedEnterprise.value = _bsEnterprises.value?.first;
+      selectedEnterprise = _bsEnterprises.value?.first;
     } catch (e) {
       mainError = getUIError(e);
     } finally {
@@ -147,7 +147,7 @@ class GetxHomePresenter extends GetxController
 
     if (EnterpriseBuilder.entity?.firebaseSubEnterprises?[index].enabled ==
         true) {
-      _selectedEnterprise.value = enterprise;
+      selectedEnterprise = enterprise;
     } else {
       mainError = UIError.disabledEnterprise;
     }
@@ -156,6 +156,25 @@ class GetxHomePresenter extends GetxController
   final _selectedEnterprise = Rx<EcEnterpriseViewModel?>(null);
   @override
   EcEnterpriseViewModel? get selectedEnterprise => _selectedEnterprise.value;
+  set selectedEnterprise(EcEnterpriseViewModel? enterprise) {
+    _selectedEnterprise.value = enterprise;
+
+    int? subEnterpriseIndex = EnterpriseBuilder.entity?.firebaseSubEnterprises
+        ?.indexWhere((e) => e.id == enterprise?.id?.toInt());
+
+    if (subEnterpriseIndex != null && subEnterpriseIndex != -1) {
+      bool isEnabled = EnterpriseBuilder
+              .entity?.firebaseSubEnterprises?[subEnterpriseIndex].enabled ??
+          false;
+
+      selectedEnterpriseIsEnabled = isEnabled;
+      if (!isEnabled) {
+        _currentPageIndex.value = 0;
+      }
+    } else {
+      selectedEnterpriseIsEnabled = true;
+    }
+  }
 
   final Rx<List<EcEnterpriseViewModel>?> _bsEnterprises =
       Rx<List<EcEnterpriseViewModel>?>(null);
@@ -305,4 +324,13 @@ class GetxHomePresenter extends GetxController
   void goToEnterprisesManagerPage() {
     navigateTo.navigate(pageRoute: PageRoutes.enterprisesManager);
   }
+
+  final _selectedEnterpriseIsEnabled = false.obs;
+  @override
+  Stream<bool> get selectedEnterpriseIsEnabledStream =>
+      _selectedEnterpriseIsEnabled.stream;
+  set selectedEnterpriseIsEnabled(bool value) =>
+      _selectedEnterpriseIsEnabled.value = value;
+  bool get selectedEnterpriseIsEnabledValue =>
+      _selectedEnterpriseIsEnabled.value;
 }
