@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 
-class SaleMovementUserOfCancellationViewModel extends Equatable {
+class SaleMovementUserCancellationViewModel extends Equatable {
   final String? id;
   final String? name;
 
-  const SaleMovementUserOfCancellationViewModel({
+  const SaleMovementUserCancellationViewModel({
     required this.id,
     required this.name,
   });

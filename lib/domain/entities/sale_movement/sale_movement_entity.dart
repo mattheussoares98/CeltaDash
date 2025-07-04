@@ -16,7 +16,7 @@ class SaleMovementEntity extends Equatable {
   final SaleMovementFiscalNoteEntity? fiscalNoteType;
   final SaleMovementCustomerEntity? customer;
   final SaleMovementSellerEntity? seller;
-  final SaleMovementUserOfCancellationEntity? userOfCancellation;
+  final SaleMovementUserCancellationEntity? userCancellation;
   final List<SaleMovementProductEntity>? products;
   final List<SaleMovementFinalizationEntity>? paymentFinalizations;
 
@@ -34,7 +34,7 @@ class SaleMovementEntity extends Equatable {
     required this.fiscalNoteType,
     required this.customer,
     required this.seller,
-    required this.userOfCancellation,
+    required this.userCancellation,
     required this.products,
     required this.paymentFinalizations,
   });
@@ -54,7 +54,7 @@ class SaleMovementEntity extends Equatable {
         cashierNumber,
         totalLiquid,
         isCancelled,
-        userOfCancellation,
+        userCancellation,
         products,
         paymentFinalizations,
       ];

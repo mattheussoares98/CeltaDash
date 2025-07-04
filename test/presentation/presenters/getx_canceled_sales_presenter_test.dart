@@ -542,7 +542,7 @@ void main() {
           seller: null,
           products: null,
           paymentFinalizations: null,
-          userOfCancellation: null,
+          userCancellation: null,
         ),
       ).toViewModel();
       sut.updateSelectedSaleMovement(newSale);

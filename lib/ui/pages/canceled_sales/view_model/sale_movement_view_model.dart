@@ -16,7 +16,7 @@ class SaleMovementViewModel extends Equatable {
   final SaleMovementFiscalNoteViewModel? fiscalNoteType;
   final SaleMovementCustomerViewModel? customer;
   final SaleMovementSellerViewModel? seller;
-  final SaleMovementUserOfCancellationViewModel? userOfCancellation;
+  final SaleMovementUserCancellationViewModel? userCancellation;
   final List<SaleMovementProductViewModel>? products;
   final List<SaleMovementFinalizationViewModel>? paymentFinalizations;
 
@@ -34,7 +34,7 @@ class SaleMovementViewModel extends Equatable {
     required this.fiscalNoteType,
     required this.customer,
     required this.seller,
-    required this.userOfCancellation,
+    required this.userCancellation,
     required this.products,
     required this.paymentFinalizations,
   });
@@ -54,7 +54,7 @@ class SaleMovementViewModel extends Equatable {
         fiscalNoteType,
         customer,
         seller,
-        userOfCancellation,
+        userCancellation,
         products,
         paymentFinalizations,
       ];

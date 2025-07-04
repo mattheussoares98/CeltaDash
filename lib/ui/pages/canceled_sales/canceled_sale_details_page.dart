@@ -95,10 +95,10 @@ class _CanceledSaleDetailsPageState extends State<CanceledSaleDetailsPage>
                                     "${R.string.date} ${R.string.cancellation.toLowerCase()}",
                                 value: sale.dateHourOfCancellation,
                               ),
-                              if (sale.userOfCancellation?.name != null)
+                              if (sale.userCancellation?.name != null)
                                 TitleAndValue(
                                   title: R.string.cancelledBy,
-                                  value: sale.userOfCancellation?.name,
+                                  value: sale.userCancellation?.name,
                                 ),
                               TitleAndValue(
                                 title: R.string.cashierNumber,

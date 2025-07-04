@@ -6,4 +6,4 @@ export './sale_movement_fiscal_note_entity.dart';
 export './sale_movement_product_entity.dart';
 export './sale_movement_product_product_entity.dart';
 export './sale_movement_seller_entity.dart';
-export './sale_movement_user_of_cancelation_entity.dart';
+export 'sale_movement_user_cancelation_entity.dart';

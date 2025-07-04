@@ -177,7 +177,7 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                                 },
                               ),
                               PersonalizedTableCell(
-                                value: e.userOfCancellation?.name ?? "indefinido",
+                                value: e.userCancellation?.name ?? "indefinido",
                               ),
                               PersonalizedTableCell(
                                 value: e.dateHourOfCancellation ?? "indefinido",
