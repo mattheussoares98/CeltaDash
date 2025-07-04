@@ -169,7 +169,7 @@ class GetxHomePresenter extends GetxController
 
       selectedEnterpriseIsEnabled = isEnabled;
       if (isEnabled == false) {
-        _currentPageIndex.value = 0;
+        updateSelectedIndex(0);
       }
     } else {
       selectedEnterpriseIsEnabled = true;
