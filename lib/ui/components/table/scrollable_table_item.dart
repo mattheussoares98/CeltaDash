@@ -580,9 +580,11 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
                           duration: animationDuration,
                           0,
                         );
-                        setState(() {
-                          alreadyShowedAnimation = true;
-                        });
+                        if (mounted) {
+                          setState(() {
+                            alreadyShowedAnimation = true;
+                          });
+                        }
                       }
                     });
 
