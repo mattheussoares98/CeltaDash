@@ -67,6 +67,7 @@ class _SalesPageState extends State<SalesPage>
         builder: (context, loadingSnap) {
           return Scaffold(
             appBar: DefaultAppBar(
+              showEnterpriseManagerButton: true,
               isLoading: loadingSnap.data == true,
               onChangeEnterprise: (_) {
                 homePresenter.reloadSales(

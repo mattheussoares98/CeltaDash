@@ -45,6 +45,7 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
         builder: (context, loadingSnap) {
           return Scaffold(
             appBar: DefaultAppBar(
+              showEnterpriseManagerButton: true,
               isLoading: loadingSnap.data == true,
               onChangeEnterprise: (_) {
                 homePresenter.reloadSales(
