@@ -20,8 +20,19 @@ class EnterprisesItems extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Obx(() {
-      enterprisesManagerPresenter.allEnterprises
-          ?.sort((a, b) => a.enterpriseName!.compareTo(b.enterpriseName!));
+      final selectedId = EnterpriseBuilder.entity?.firebaseId;
+
+      enterprisesManagerPresenter.allEnterprises?.sort((a, b) {
+        final isASelected = a.firebaseId == selectedId;
+        final isBSelected = b.firebaseId == selectedId;
+
+        if (isASelected) return -1; // 'a' is selected, it comes first
+        if (isBSelected) return 1; // 'b' is selected, it comes first
+
+        // Otherwise, sort alphabetically
+        return a.enterpriseName!.compareTo(b.enterpriseName!);
+      });
+
       return ListView.builder(
         controller: scrollController,
         itemCount: enterprisesManagerPresenter.allEnterprises?.length ?? 0,
