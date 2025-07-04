@@ -136,7 +136,12 @@ class _ResumePageState extends State<ResumePage>
                                 SizedBox(height: 8),
                               ],
                             ),
-                            GroupOfStores(sales: sales),
+                            if (sales
+                                    .map((e) => e.EnterpriseId)
+                                    .toSet()
+                                    .length >
+                                1)
+                              GroupOfStores(sales: sales),
                             SizedBox(height: 15),
                           ],
                         );
