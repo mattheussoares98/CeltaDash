@@ -3,4 +3,6 @@ abstract class NavigateTo {
     required String pageRoute,
     bool? clear = false,
   });
+
+  void closePage();
 }

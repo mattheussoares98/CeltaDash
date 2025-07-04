@@ -14,4 +14,9 @@ class GetxNavigateTo implements NavigateTo {
       return await Get.toNamed(pageRoute);
     }
   }
+
+  @override
+  void closePage() {
+    Get.back();
+  }
 }
