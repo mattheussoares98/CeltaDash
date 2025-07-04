@@ -327,8 +327,8 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
             ),
             if (showIndicator)
               Positioned(
-                left: 4,
-                bottom: 4,
+                left: 0,
+                bottom: 0,
                 child: Icon(
                   Platform.isIOS
                       ? CupertinoIcons.hand_point_right
