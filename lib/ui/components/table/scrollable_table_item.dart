@@ -284,53 +284,67 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
     return Platform.isIOS ? CupertinoColors.separator : Colors.black;
   }
 
-  TableRow _buildTableRow(List<PersonalizedTableCell> cells,
-      {Color? rowColor, bool isSumRow = false}) {
-    final taps = cells.map((c) => c.onTap).whereType<VoidCallback>().toSet();
-    VoidCallback? unifiedTap;
-    if (taps.length == 1) unifiedTap = taps.first;
-    final rowContent = List.generate(cells.length, (colIndex) {
+  TableRow _buildTableRow(
+    List<PersonalizedTableCell> cells, {
+    required Color? rowColor,
+    required bool isSumRow,
+    required bool isUnifiedTapRow,
+    required VoidCallback? unifiedTap,
+    required int startingColumnIndex,
+  }) {
+    final rowChildren = List.generate(cells.length, (colIndex) {
       final cell = cells[colIndex];
-      final effectiveTap = unifiedTap ?? cell.onTap;
+      // The cell's absolute position in the original row (e.g., 0, 1, 2, ...)
+      final absoluteCellIndex = startingColumnIndex + colIndex;
+
+      // If it's a unified row, all cells use the single tap. Otherwise, each uses its own.
+      final effectiveTap = isUnifiedTapRow ? unifiedTap : cell.onTap;
+
+      bool showIndicator = false;
+      if (effectiveTap != null && !isSumRow) {
+        // If there's ONE tap for the whole row, show the icon ONLY on the FIRST column.
+        if (isUnifiedTapRow && absoluteCellIndex == 0) {
+          showIndicator = true;
+        }
+        // If there are MULTIPLE taps, show the icon on each specific cell that has a tap.
+        else if (!isUnifiedTapRow && cell.onTap != null) {
+          showIndicator = true;
+        }
+      }
+
+      // Build the cell with a GestureDetector and a conditional Stack for the icon
       return GestureDetector(
         onTap: effectiveTap,
         behavior: HitTestBehavior.opaque,
-        child: Container(
-          decoration: BoxDecoration(border: getBorderDecoration()),
-          width: double.infinity,
-          constraints: BoxConstraints(minHeight: widget.titleMinHeight),
-          child: cell,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Container(
+              decoration: BoxDecoration(border: getBorderDecoration()),
+              width: double.infinity,
+              constraints: BoxConstraints(minHeight: widget.titleMinHeight),
+              child: cell,
+            ),
+            if (showIndicator)
+              Positioned(
+                left: 4,
+                bottom: 4,
+                child: Icon(
+                  Platform.isIOS
+                      ? CupertinoIcons.hand_point_right
+                      : Icons.touch_app_outlined,
+                  size: 14,
+                  color: Theme.of(context).primaryColor.withAlpha(200),
+                ),
+              ),
+          ],
         ),
       );
-    });
-    final rowChildren = rowContent.asMap().entries.map((entry) {
-      final isLast = entry.key == rowContent.length - 1;
-      final child = entry.value;
-      return Stack(
-        alignment: Alignment.center,
-        children: [
-          Container(
-            constraints: BoxConstraints(minHeight: widget.titleMinHeight),
-            child: child,
-          ),
-          if (isLast && taps.isNotEmpty && !isSumRow)
-            Positioned(
-              left: 0,
-              bottom: 1,
-              child: Icon(
-                Platform.isIOS
-                    ? CupertinoIcons.hand_point_left
-                    : Icons.touch_app_sharp,
-                size: 12,
-                color: Theme.of(context).primaryColor,
-              ),
-            ),
-        ],
-      );
     }).toList();
+
     return TableRow(
-      children: rowChildren,
       decoration: BoxDecoration(color: rowColor),
+      children: rowChildren,
     );
   }
 
@@ -355,27 +369,10 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
     final List<PersonalizedTableCell> scrollableTitles =
         widget.fixFirstColumn ? widget.titles.sublist(1) : widget.titles;
 
+    // NEW, SIMPLIFIED LOGIC
     final List<List<PersonalizedTableCell>> fixedRowValues =
         widget.fixFirstColumn
-            ? _sortedRows.map((row) {
-                // find any onTap in the full row
-                final fallbackTap = row
-                    .firstWhere((c) => c.onTap != null, orElse: () => row[0])
-                    .onTap;
-                // if the first cell has its own onTap, leave it; otherwise clone it with fallbackTap
-                final first = row[0].onTap != null
-                    ? row[0]
-                    : PersonalizedTableCell(
-                        value: row[0].value,
-                        isTitle: row[0].isTitle,
-                        subtile: row[0].subtile,
-                        isMoney: row[0].isMoney,
-                        isPercentage: row[0].isPercentage,
-                        onTap: fallbackTap,
-                        // …copy any other needed params here…
-                      );
-                return [first];
-              }).toList()
+            ? _sortedRows.map((row) => [row[0]]).toList()
             : [];
 
     final List<List<PersonalizedTableCell>> scrollableRowValues =
@@ -521,9 +518,22 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
                             },
                             children: List.generate(fixedRowValues.length,
                                 (rowIndex) {
+                              final fullRow = _sortedRows[rowIndex];
+                              final tapsInRow = fullRow
+                                  .map((c) => c.onTap)
+                                  .whereType<VoidCallback>()
+                                  .toSet();
+                              final isUnifiedTapRow = tapsInRow.length == 1;
+                              final unifiedTap =
+                                  isUnifiedTapRow ? tapsInRow.first : null;
+
                               return _buildTableRow(
                                 fixedRowValues[rowIndex],
                                 rowColor: getColor(rowIndex),
+                                isSumRow: false,
+                                isUnifiedTapRow: isUnifiedTapRow,
+                                unifiedTap: unifiedTap,
+                                startingColumnIndex: 0,
                               );
                             }),
                           ),
@@ -547,9 +557,23 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
                               columnWidths: scrollableColumnWidthsMap,
                               children: List.generate(
                                   scrollableRowValues.length, (rowIndex) {
+                                final fullRow = _sortedRows[rowIndex];
+                                final tapsInRow = fullRow
+                                    .map((c) => c.onTap)
+                                    .whereType<VoidCallback>()
+                                    .toSet();
+                                final isUnifiedTapRow = tapsInRow.length == 1;
+                                final unifiedTap =
+                                    isUnifiedTapRow ? tapsInRow.first : null;
+
                                 return _buildTableRow(
                                   scrollableRowValues[rowIndex],
                                   rowColor: getColor(rowIndex),
+                                  isSumRow: false,
+                                  isUnifiedTapRow: isUnifiedTapRow,
+                                  unifiedTap: unifiedTap,
+                                  startingColumnIndex:
+                                      widget.fixFirstColumn ? 1 : 0,
                                 );
                               }),
                             ),
@@ -624,6 +648,9 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
                             rowColor:
                                 Theme.of(context).disabledColor.withAlpha(70),
                             isSumRow: true,
+                            isUnifiedTapRow: false, // Sum row is not tappable
+                            unifiedTap: null,
+                            startingColumnIndex: 0,
                           ),
                         ],
                       ),
@@ -643,6 +670,10 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
                               rowColor:
                                   Theme.of(context).disabledColor.withAlpha(70),
                               isSumRow: true,
+                              isUnifiedTapRow: false, // Sum row is not tappable
+                              unifiedTap: null,
+                              startingColumnIndex:
+                                  widget.fixFirstColumn ? 1 : 0,
                             ),
                           ],
                         ),
