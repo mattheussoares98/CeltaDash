@@ -8,15 +8,15 @@ import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
-class FloatingButton extends StatefulWidget {
+class AddEnterpriseButton extends StatefulWidget {
   final WebEnterprisesPresenter presenter;
-  const FloatingButton({super.key, required this.presenter});
+  const AddEnterpriseButton({super.key, required this.presenter});
 
   @override
-  State<FloatingButton> createState() => _FloatingButtonState();
+  State<AddEnterpriseButton> createState() => _AddEnterpriseButtonState();
 }
 
-class _FloatingButtonState extends State<FloatingButton> {
+class _AddEnterpriseButtonState extends State<AddEnterpriseButton> {
   final baseUrlController = TextEditingController();
   final enterpriseNameController = TextEditingController();
   final bsUserNameController = TextEditingController();
@@ -58,7 +58,7 @@ class _FloatingButtonState extends State<FloatingButton> {
 
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton(
+    return IconButton(
       onPressed: () {
         notificationDialog(
             context: context,
@@ -169,7 +169,7 @@ class _FloatingButtonState extends State<FloatingButton> {
               bsPasswordController.clear();
             });
       },
-      child: Icon(Icons.add),
+      icon: Icon(Icons.add),
     );
   }
 }

@@ -5,10 +5,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 import '../../mixins/mixins.dart';
 import '../pages.dart';
 import 'components/components.dart';
+
+bool _showAnimation = true;
 
 class WebEnterprisesPage extends StatefulWidget {
   final WebEnterprisesPresenter presenter;
@@ -64,6 +67,7 @@ class _WebEnterprisesPageState extends State<WebEnterprisesPage>
       appBar: AppBar(
         title: Text(R.string.enterprises),
         actions: [
+          AddEnterpriseButton(presenter: widget.presenter),
           IconButton(
             onPressed: () async {
               await widget.presenter.getEnterprises();
@@ -109,57 +113,53 @@ class _WebEnterprisesPageState extends State<WebEnterprisesPage>
                     ),
                   ),
                 ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: enterprises.length,
-                    itemBuilder: (context, index) {
-                      final enterprise = enterprises[index];
+                ScrollableTableItem(
+                  columnsWidths: [150, 80, 60],
+                  showAnimation: _showAnimation,
+                  indexToSort: 0,
+                  fixFirstColumn: true,
+                  hideShowAnimation: () {
+                    _showAnimation = false;
+                  },
+                  titles: [
+                    PersonalizedTableCell(
+                      value: R.string.enterprise,
+                      isTitle: true,
+                    ),
+                    PersonalizedTableCell(
+                      value: R.string.enabled,
+                      isTitle: true,
+                    ),
+                    PersonalizedTableCell(
+                      value: R.string.total,
+                      isTitle: true,
+                    ),
+                  ],
+                  rowValues: enterprises.map((enterprise) {
+                    final totalQuantity =
+                        enterprise.firebaseSubEnterprises?.length ?? 0;
+                    final enabledQuantity = enterprise.firebaseSubEnterprises
+                            ?.where((element) => element.enabled == "true")
+                            .length ??
+                        0;
 
-                      final totalQuantity =
-                          enterprise.firebaseSubEnterprises?.length ?? 0;
-                      final enabledQuantity = enterprise.firebaseSubEnterprises
-                              ?.where((element) => element.enabled == "true")
-                              .length ??
-                          0;
-                      return Container(
-                        padding: EdgeInsets.all(8),
-                        margin: EdgeInsets.fromLTRB(4, 0, 4, 4),
-                        decoration: ContainerDecoration.defaultDecoration,
-                        child: InkWell(
-                          onTap: () {
-                            onTap(enterprise);
-                          },
-                          child: Row(
-                            children: [
-                              Expanded(
-                                  child: Text("${enterprise.enterpriseName}")),
-                              RichText(
-                                  text: TextSpan(children: [
-                                TextSpan(
-                                  text: "$enabledQuantity/",
-                                  style: Theme.of(context).textTheme.titleSmall,
-                                ),
-                                TextSpan(
-                                  text: "$totalQuantity",
-                                  style: Theme.of(context).textTheme.titleSmall,
-                                ),
-                              ])),
-                              Icon(
-                                Platform.isIOS
-                                    ? CupertinoIcons.chevron_right
-                                    : Icons.chevron_right_rounded,
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                    return [
+                      PersonalizedTableCell(
+                        value: enterprise.enterpriseName,
+                        onTap: () {
+                          onTap(enterprise);
+                        },
+                      ),
+                      PersonalizedTableCell(value: enabledQuantity),
+                      PersonalizedTableCell(
+                        value: totalQuantity,
+                      ),
+                    ];
+                  }).toList(),
                 ),
               ],
             );
           }),
-      floatingActionButton: FloatingButton(presenter: widget.presenter),
     );
   }
 }
