@@ -106,65 +106,59 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
         handleMainError(context, homePresenter.mainErrorStream);
 
     return Obx(() {
-      final selectedEnterpriseEnabled =
-          homePresenter.selectedEnterpriseIsEnabled;
-      return StreamBuilder<int>(
-        stream: homePresenter.currentPageIndexStream,
-        builder: (context, currentIndex) {
-          return Scaffold(
-            body: Stack(
-              children: [
-                pages[currentIndex.data ?? 0],
-                if (!loadedEnterprises)
-                  Container(
-                    height: double.infinity,
-                    width: double.infinity,
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    child: Center(child: CircularProgressIndicator()),
-                  ),
-              ],
+      final currentIndex = homePresenter.currentPageIndex;
+      return Scaffold(
+        body: Stack(
+          children: [
+            pages[currentIndex],
+            if (!loadedEnterprises)
+              Container(
+                height: double.infinity,
+                width: double.infinity,
+                color: Theme.of(context).scaffoldBackgroundColor,
+                child: Center(child: CircularProgressIndicator()),
+              ),
+          ],
+        ),
+        bottomNavigationBar: BottomNavBar(
+          currentIndex: currentIndex,
+          onTap: homePresenter.selectedEnterpriseIsEnabled
+              ? homePresenter.updateSelectedIndex
+              : (_) {
+                  snackBarMessage(
+                    context,
+                    R.string.msgDisabledEnterprise,
+                    Colors.red,
+                  );
+                },
+          items: [
+            BottomNavItem(
+              materialIcon: Icon(Icons.pie_chart),
+              cupertinoIcon: Icon(CupertinoIcons.chart_pie),
+              label: R.string.resume,
             ),
-            bottomNavigationBar: BottomNavBar(
-              currentIndex: currentIndex.data ?? 0,
-              onTap: selectedEnterpriseEnabled
-                  ? homePresenter.updateSelectedIndex
-                  : (_) {
-                      snackBarMessage(
-                        context,
-                        R.string.msgDisabledEnterprise,
-                        Colors.red,
-                      );
-                    },
-              items: [
-                BottomNavItem(
-                  materialIcon: Icon(Icons.pie_chart),
-                  cupertinoIcon: Icon(CupertinoIcons.chart_pie),
-                  label: R.string.resume,
-                ),
-                BottomNavItem(
-                  materialIcon: Icon(Icons.monetization_on),
-                  cupertinoIcon: Icon(CupertinoIcons.money_dollar),
-                  label: R.string.sales,
-                ),
-                BottomNavItem(
-                  materialIcon: Icon(Icons.shopping_cart_rounded),
-                  cupertinoIcon: Icon(CupertinoIcons.cart),
-                  label: R.string.products,
-                ),
-                BottomNavItem(
-                  materialIcon: Icon(Icons.grid_view_rounded),
-                  cupertinoIcon: Icon(CupertinoIcons.square_grid_2x2_fill),
-                  label: R.string.more,
-                ),
-                // BottomNavItem(
-                //   materialIcon: Icon(Icons.person_pin_sharp),
-                //   cupertinoIcon: Icon(CupertinoIcons.person_2),
-                //   label: R.string.team,
-                // ),
-              ],
+            BottomNavItem(
+              materialIcon: Icon(Icons.monetization_on),
+              cupertinoIcon: Icon(CupertinoIcons.money_dollar),
+              label: R.string.sales,
             ),
-          );
-        },
+            BottomNavItem(
+              materialIcon: Icon(Icons.shopping_cart_rounded),
+              cupertinoIcon: Icon(CupertinoIcons.cart),
+              label: R.string.products,
+            ),
+            BottomNavItem(
+              materialIcon: Icon(Icons.grid_view_rounded),
+              cupertinoIcon: Icon(CupertinoIcons.square_grid_2x2_fill),
+              label: R.string.more,
+            ),
+            // BottomNavItem(
+            //   materialIcon: Icon(Icons.person_pin_sharp),
+            //   cupertinoIcon: Icon(CupertinoIcons.person_2),
+            //   label: R.string.team,
+            // ),
+          ],
+        ),
       );
     });
   }

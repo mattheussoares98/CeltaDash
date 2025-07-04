@@ -29,7 +29,7 @@ class GetxHomePresenter extends GetxController
 
   @override
   void updateSelectedIndex(int index) {
-    _currentPageIndex.subject.add(index);
+    _currentPageIndex.value = index;
   }
 
   @override
@@ -183,8 +183,7 @@ class GetxHomePresenter extends GetxController
   List<EcEnterpriseViewModel>? get enterprises => _bsEnterprises.value;
 
   @override
-  Stream<int> get currentPageIndexStream => _currentPageIndex.stream;
-
+  int get currentPageIndex => _currentPageIndex.value;
   final _currentPageIndex = 0.obs;
 
   DateTime _selectedDate = DateTime.now();

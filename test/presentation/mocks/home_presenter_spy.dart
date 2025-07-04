@@ -7,6 +7,7 @@ import '../../domain/mocks/mocks.dart';
 
 class HomePresenterSpy extends Mock implements HomePresenter {
   DateTime selectedDateMock = faker.date.dateTime();
+  int currentPageIndexMock = faker.randomGenerator.integer(100);
   EcEnterpriseViewModel? selectedEnterpriseMock =
       EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
           .toViewModel();
@@ -18,14 +19,13 @@ class HomePresenterSpy extends Mock implements HomePresenter {
   ];
 
   HomePresenterSpy() {
-    this.mockCurrentPageIndexStream(Stream.value(0));
-
     when(() => this.goToProfitabilityPage()).thenAnswer((any) => any);
     when(() => this.goToCompareDays()).thenAnswer((any) => any);
     when(() => this.goToDepartmentsPage()).thenAnswer((any) => any);
     when(() => this.goToPaymentsTypePage()).thenAnswer((any) => any);
     when(() => this.selectedDate).thenAnswer((_) => selectedDateMock);
     when(() => this.enterprises).thenAnswer((_) => enterprisesMock);
+    when(() => this.currentPageIndex).thenAnswer((_) => currentPageIndexMock);
     when(() => this.selectedEnterprise)
         .thenAnswer((_) => selectedEnterpriseMock);
   }
@@ -43,8 +43,4 @@ class HomePresenterSpy extends Mock implements HomePresenter {
   When _mockSelectedDateCall() => when(() => selectedDate);
   void mockSelectedDate(DateTime value) =>
       _mockSelectedDateCall().thenReturn(value);
-
-  When _mockCurrentPageIndexStreamCall() => when(() => currentPageIndexStream);
-  void mockCurrentPageIndexStream(Stream<int> stream) =>
-      _mockCurrentPageIndexStreamCall().thenAnswer((_) => stream);
 }

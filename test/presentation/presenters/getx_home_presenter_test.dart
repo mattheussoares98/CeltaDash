@@ -114,15 +114,15 @@ void main() {
       final first = faker.randomGenerator.integer(100);
       final second = faker.randomGenerator.integer(100);
       final third = faker.randomGenerator.integer(100);
-      expectLater(
-        sut.currentPageIndexStream,
-        emitsInOrder([first, second, third, third]),
-      );
 
       sut.updateSelectedIndex(first);
+      expect(sut.currentPageIndex, first);
       sut.updateSelectedIndex(second);
+      expect(sut.currentPageIndex, second);
       sut.updateSelectedIndex(third);
+      expect(sut.currentPageIndex, third);
       sut.updateSelectedIndex(third);
+      expect(sut.currentPageIndex, third);
     });
   });
 

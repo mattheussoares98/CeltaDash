@@ -7,7 +7,7 @@ import '../../helpers/helpers.dart';
 import '../pages.dart';
 
 abstract class HomePresenter implements Listenable {
-  Stream<int> get currentPageIndexStream;
+  int get currentPageIndex;
   Stream<UIError?> get mainErrorStream;
   bool get selectedEnterpriseIsEnabled;
   DateTime get selectedDate;
