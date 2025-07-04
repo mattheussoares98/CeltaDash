@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -20,6 +22,7 @@ class _WebEnterprisesPageState extends State<WebEnterprisesPage>
     with LoadingManager, UIErrorManager {
   StreamSubscription? loadingSubscription;
   StreamSubscription? mainErrorSubscription;
+  final filterController = TextEditingController();
 
   @override
   void initState() {
@@ -39,6 +42,7 @@ class _WebEnterprisesPageState extends State<WebEnterprisesPage>
     super.dispose();
     loadingSubscription?.cancel();
     mainErrorSubscription?.cancel();
+    filterController.dispose();
   }
 
   void onTap(FirebaseEnterpriseViewModel enterprise) {
@@ -77,32 +81,82 @@ class _WebEnterprisesPageState extends State<WebEnterprisesPage>
                 child: Text(R.string.empty),
               );
             }
-            return ListView.builder(
-              shrinkWrap: true,
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                final enterprise = snapshot.data![index];
-                return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      onTap(enterprise);
+            final enterprises = snapshot.data!
+                .where((e) =>
+                    e.enterpriseName
+                        ?.toLowerCase()
+                        .contains(filterController.text.toLowerCase()) ??
+                    false)
+                .toList();
+
+            return Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: filterController,
+                    onChanged: (_) {
+                      setState(() {});
                     },
-                    child: Row(
-                      children: [
-                        Expanded(child: Text("${enterprise.enterpriseName}")),
-                        IconButton(
-                          onPressed: () {
-                            onTap(enterprise);
-                          },
-                          icon: Icon(Icons.mode_rounded),
-                        ),
-                      ],
+                    decoration: FormFieldDecoration.decoration(
+                      context: context,
+                      labelText: R.string.filter,
+                      suffixIcon: Icon(
+                        Platform.isIOS
+                            ? CupertinoIcons.search
+                            : Icons.search_rounded,
+                      ),
                     ),
                   ),
-                );
-              },
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: enterprises.length,
+                    itemBuilder: (context, index) {
+                      final enterprise = enterprises[index];
+
+                      final totalQuantity =
+                          enterprise.firebaseSubEnterprises?.length ?? 0;
+                      final enabledQuantity = enterprise.firebaseSubEnterprises
+                              ?.where((element) => element.enabled == "true")
+                              .length ??
+                          0;
+                      return Container(
+                        padding: EdgeInsets.all(8),
+                        margin: EdgeInsets.fromLTRB(4, 0, 4, 4),
+                        decoration: ContainerDecoration.defaultDecoration,
+                        child: InkWell(
+                          onTap: () {
+                            onTap(enterprise);
+                          },
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  child: Text("${enterprise.enterpriseName}")),
+                              RichText(
+                                  text: TextSpan(children: [
+                                TextSpan(
+                                  text: "$enabledQuantity/",
+                                  style: Theme.of(context).textTheme.titleSmall,
+                                ),
+                                TextSpan(
+                                  text: "$totalQuantity",
+                                  style: Theme.of(context).textTheme.titleSmall,
+                                ),
+                              ])),
+                              Icon(
+                                Platform.isIOS
+                                    ? CupertinoIcons.chevron_right
+                                    : Icons.chevron_right_rounded,
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             );
           }),
       floatingActionButton: FloatingButton(presenter: widget.presenter),
