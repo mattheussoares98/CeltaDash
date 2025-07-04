@@ -9,6 +9,7 @@ class FirebaseLoginManagementSpy extends Mock
   FirebaseLoginManagementSpy() {
     this._mockLogout();
     this._mockLogin();
+    this.mockIsLoggedIn(true);
   }
   When _mockLogoutCall() => when(() => this.logout());
 
@@ -31,5 +32,15 @@ class FirebaseLoginManagementSpy extends Mock
 
   void mockLoginError() {
     this._mockLoginCall().thenThrow(DomainError.unexpected);
+  }
+
+  When _mockIsLoggedInCall() => when(() => this.isLoggedIn());
+
+  void mockIsLoggedIn(bool value) {
+    this._mockIsLoggedInCall().thenAnswer((any) async => value);
+  }
+
+  void mockIsLoggedError() {
+    this._mockIsLoggedInCall().thenThrow(DomainError.unexpected);
   }
 }

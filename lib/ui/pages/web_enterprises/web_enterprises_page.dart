@@ -58,13 +58,6 @@ class _WebEnterprisesPageState extends State<WebEnterprisesPage>
 
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: widget.presenter.goToLoginPage,
-          icon: Icon(
-            Icons.arrow_back,
-            color: Theme.of(context).primaryColorDark,
-          ),
-        ),
         title: Text(R.string.enterprises),
         actions: [
           IconButton(

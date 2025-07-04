@@ -104,4 +104,28 @@ void main() {
       verify(() => firebaseLoginManagement.logout()).called(1);
     });
   });
+
+  group("Go to web customers if still logged", () {
+    test("Should call navigateTo web customers when is logged", () async {
+      await sut.goToWebCustomersIfStillLogged();
+
+      verify(() => navigateTo.navigate(pageRoute: PageRoutes.webEnterprises))
+          .called(1);
+    });
+    test("Should NOT call navigateTo web customers when is NOT logged",
+        () async {
+      firebaseLoginManagement.mockIsLoggedIn(false);
+
+      await sut.goToWebCustomersIfStillLogged();
+
+      verifyNever(
+        () => navigateTo.navigate(pageRoute: PageRoutes.webEnterprises),
+      );
+    });
+    test("Should close the current page", () async {
+      await sut.goToWebCustomersIfStillLogged();
+
+      verify(() => navigateTo.closePage()).called(1);
+    });
+  });
 }

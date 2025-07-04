@@ -52,6 +52,7 @@ class GetxWebLoginPresenter extends GetxController
     bool isLogged = await firebaseLoginManagement.isLoggedIn();
     if (isLogged) {
       isLoading = false;
+      navigateTo.closePage();
       navigateTo.navigate(pageRoute: PageRoutes.webEnterprises);
     } else {
       isLoading = false;
