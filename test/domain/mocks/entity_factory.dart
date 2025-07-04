@@ -127,6 +127,7 @@ class EntityFactory {
         sellerId: faker.randomGenerator.integer(100),
         documentNumber: faker.randomGenerator.string(50),
         cashierNumber: faker.randomGenerator.string(50),
+        motiveCancellation: faker.randomGenerator.string(50),
         dateHourOfBilling: faker.date.dateTime(),
         dateHourOfCancellation: faker.date.dateTime(),
         totalLiquid: faker.randomGenerator.decimal(),

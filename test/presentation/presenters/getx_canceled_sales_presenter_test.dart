@@ -532,6 +532,7 @@ void main() {
           fiscalNoteTypeId: faker.randomGenerator.integer(100),
           sellerId: faker.randomGenerator.integer(100),
           documentNumber: faker.randomGenerator.integer(100).toString(),
+          motiveCancellation: faker.lorem.word(),
           cashierNumber: faker.randomGenerator.integer(100).toString(),
           dateHourOfBilling: faker.date.dateTime(),
           dateHourOfCancellation: faker.date.dateTime(),

@@ -17,6 +17,8 @@ class SaleMovementModel extends Equatable {
   final int? sellerId;
   final String? documentNumber;
   final String? cashierNumber;
+  final String? userCancellation;
+  final String? motiveCancellation;
   final DateTime? dateHourOfBilling;
   final DateTime? dateHourOfCancellation;
   final double? totalLiquid;
@@ -24,7 +26,6 @@ class SaleMovementModel extends Equatable {
   final SaleMovementFiscalNoteModel? fiscalNoteType;
   final SaleMovementCustomerModel? customer;
   final SaleMovementSellerModel? seller;
-  final String? userCancellation;
   final List<SaleMovementProductModel>? products;
   final List<SaleMovementFinalizationModel>? paymentFinalizations;
 
@@ -35,6 +36,8 @@ class SaleMovementModel extends Equatable {
     required this.sellerId,
     required this.documentNumber,
     required this.cashierNumber,
+    required this.userCancellation,
+    required this.motiveCancellation,
     required this.dateHourOfBilling,
     required this.dateHourOfCancellation,
     required this.totalLiquid,
@@ -42,7 +45,6 @@ class SaleMovementModel extends Equatable {
     required this.fiscalNoteType,
     required this.customer,
     required this.seller,
-    required this.userCancellation,
     required this.products,
     required this.paymentFinalizations,
   });
@@ -65,6 +67,7 @@ class SaleMovementModel extends Equatable {
         userCancellation,
         products,
         paymentFinalizations,
+        motiveCancellation,
       ];
 
   factory SaleMovementModel.fromJson(Map json) => SaleMovementModel(
@@ -74,6 +77,8 @@ class SaleMovementModel extends Equatable {
         sellerId: json['sellerId'],
         documentNumber: json['documentNumber'],
         cashierNumber: json['cashierNumber'],
+        userCancellation: json['userCancellation'],
+        motiveCancellation: json['motiveCancellation'],
         dateHourOfBilling: json['dateHourOfBilling'] != null
             ? DateTime.parse(json['dateHourOfBilling'])
             : null,
@@ -92,7 +97,6 @@ class SaleMovementModel extends Equatable {
         seller: json['seller'] != null
             ? SaleMovementSellerModel.fromJson(json['seller'] as Map)
             : null,
-        userCancellation: json['userCancellation'],
         products: json['products'] != null
             ? (json['products'] as List)
                 .map((e) => SaleMovementProductModel.fromJson(e as Map))
@@ -117,6 +121,7 @@ class SaleMovementModel extends Equatable {
         dateHourOfCancellation: entity?.dateHourOfCancellation,
         totalLiquid: entity?.totalLiquid,
         isCancelled: entity?.isCancelled,
+        motiveCancellation: entity?.motiveCancellation,
         fiscalNoteType: entity?.fiscalNoteType != null
             ? SaleMovementFiscalNoteModel.fromEntity(entity!.fiscalNoteType)
             : null,
@@ -146,6 +151,7 @@ class SaleMovementModel extends Equatable {
         'dateHourOfCancellation': dateHourOfCancellation?.toIso8601String(),
         'totalLiquid': totalLiquid,
         'isCancelled': isCancelled,
+        'motiveCancellation': motiveCancellation,
         'fiscalNoteType': fiscalNoteType?.toJson(),
         'customer': customer?.toJson(),
         'userCancellation': userCancellation,
@@ -166,6 +172,7 @@ class SaleMovementModel extends Equatable {
         dateHourOfCancellation: dateHourOfCancellation,
         totalLiquid: totalLiquid,
         isCancelled: isCancelled,
+        motiveCancellation: motiveCancellation,
         fiscalNoteType: fiscalNoteType?.toEntity(),
         customer: customer?.toEntity(),
         seller: seller?.toEntity(),
@@ -184,6 +191,7 @@ class SaleMovementModel extends Equatable {
       sellerId: sellerId?.toString(),
       documentNumber: documentNumber,
       cashierNumber: cashierNumber,
+      motiveCancellation: motiveCancellation,
       dateHourOfBilling:
           dateHourOfBilling != null ? df.format(dateHourOfBilling!) : null,
       dateHourOfCancellation: dateHourOfCancellation != null
@@ -210,6 +218,7 @@ class SaleMovementModel extends Equatable {
       sellerId: viewModel.sellerId?.toInt(),
       documentNumber: viewModel.documentNumber,
       cashierNumber: viewModel.cashierNumber,
+      motiveCancellation: viewModel.motiveCancellation,
       dateHourOfBilling: viewModel.dateHourOfBilling != null
           ? df.parse(viewModel.dateHourOfBilling!)
           : null,
