@@ -100,6 +100,11 @@ class _CanceledSaleDetailsPageState extends State<CanceledSaleDetailsPage>
                                   title: R.string.cancelledBy,
                                   value: sale.userCancellation,
                                 ),
+                              if (sale.motiveCancellation != null)
+                                TitleAndValue(
+                                  title: R.string.justification,
+                                  value: sale.motiveCancellation,
+                                ),
                               TitleAndValue(
                                 title: R.string.cashierNumber,
                                 value: sale.cashierNumber,
