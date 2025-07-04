@@ -168,7 +168,7 @@ class GetxHomePresenter extends GetxController
           false;
 
       selectedEnterpriseIsEnabled = isEnabled;
-      if (!isEnabled) {
+      if (isEnabled == false) {
         _currentPageIndex.value = 0;
       }
     } else {
@@ -223,6 +223,8 @@ class GetxHomePresenter extends GetxController
         DatabaseKeys.enterprise,
         FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson(),
       );
+
+      selectedEnterprise = _selectedEnterprise.value;
     });
   }
 
