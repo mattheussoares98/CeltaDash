@@ -47,12 +47,12 @@ dependencies:
   faker: ^2.2.0
   intl: ^0.20.2
   fl_chart: ^1.0.0
-  firebase_core: ^3.13.0
-  cloud_firestore: ^5.6.6
-  firebase_crashlytics: ^4.3.5
-  firebase_analytics: ^11.4.5
+  firebase_core: ^3.15.1
+  cloud_firestore: ^5.6.11
+  firebase_crashlytics: ^4.3.9
+  firebase_analytics: ^11.5.2
   icons_launcher: ^3.0.0 #dart run icons_launcher:create
-  firebase_auth: ^5.5.3
+  firebase_auth: ^5.6.2
 
 icons_launcher:
   image_path: "lib/ui/assets/dev_assets/CeltaDashIcon.png"
