@@ -329,10 +329,12 @@ class GetxHomePresenter extends GetxController
 
   final _selectedEnterpriseIsEnabled = false.obs;
   @override
-  Stream<bool> get selectedEnterpriseIsEnabledStream =>
-      _selectedEnterpriseIsEnabled.stream;
-  set selectedEnterpriseIsEnabled(bool value) =>
-      _selectedEnterpriseIsEnabled.subject.add(value);
+  bool get selectedEnterpriseIsEnabled => _selectedEnterpriseIsEnabled.value;
+  set selectedEnterpriseIsEnabled(bool value) {
+    _selectedEnterpriseIsEnabled.subject.add(value);
+    _selectedEnterpriseIsEnabled.value = value;
+  }
+
   bool get selectedEnterpriseIsEnabledValue =>
       _selectedEnterpriseIsEnabled.value;
 }
