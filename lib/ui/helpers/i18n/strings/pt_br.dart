@@ -90,6 +90,7 @@ class PtBr implements Translation {
   String get hours => "Horas";
   String get indicators => "Indicadores";
   String get insertGoal => "Inserir meta";
+  String get justification => "Justificativa";
   String get loadEnterprises => "Carregar empresas";
   String get login => "Login";
   String get logout => "Sair";

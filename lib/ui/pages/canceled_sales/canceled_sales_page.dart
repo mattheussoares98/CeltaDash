@@ -93,7 +93,7 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                         .toList()
                         .map((e) => e.toViewModel())
                         .toList();
-            
+
                     final monthlySales = canceledSalesPresenter.monthlySales
                         ?.map((e) => SaleMovementModel.fromViewModel(e))
                         .where((e) {
@@ -105,12 +105,12 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                         .toList()
                         .map((e) => e.toViewModel())
                         .toList();
-            
-                    final sales =
-                        canceledSalesPresenter.selectedPeriod == PeriodType.daily
-                            ? dailySales
-                            : monthlySales;
-            
+
+                    final sales = canceledSalesPresenter.selectedPeriod ==
+                            PeriodType.daily
+                        ? dailySales
+                        : monthlySales;
+
                     if (sales == null) {
                       return EmptySales(isLoading: loadingSnap.data == true);
                     } else if (sales.isEmpty) {
@@ -122,7 +122,7 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                         ),
                       );
                     }
-            
+
                     return Column(
                       children: [
                         ScrollableTableItem(
@@ -130,15 +130,15 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                           columnsIndexToSum: [3],
                           fixFirstColumn: true,
                           indexToSort: 2,
-                          columnsWidths: [65, 35, 80, 90, 80],
+                          columnsWidths: [65, 35, 80, 90, 80, 150],
                           showAnimation: _showAnimation,
                           hideShowAnimation: () {
                             _showAnimation = false;
                           },
                           titles: [
                             PersonalizedTableCell(
-                              value:
-                                  R.string.couponNumberAbbreviated.toUpperCase(),
+                              value: R.string.couponNumberAbbreviated
+                                  .toUpperCase(),
                               isTitle: true,
                             ),
                             PersonalizedTableCell(
@@ -156,6 +156,10 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                             ),
                             PersonalizedTableCell(
                               value: R.string.cancelledBy,
+                              isTitle: true,
+                            ),
+                            PersonalizedTableCell(
+                              value: R.string.justification,
                               isTitle: true,
                             ),
                           ],
@@ -180,7 +184,7 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                                 value: e.userCancellation ?? "indefinido",
                               ),
                               PersonalizedTableCell(
-                                value: e.dateHourOfCancellation ?? "indefinido",
+                                value: e.motiveCancellation ?? "indefinido",
                               ),
                             ];
                           }).toList(),

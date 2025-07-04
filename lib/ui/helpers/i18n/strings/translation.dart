@@ -82,6 +82,7 @@ abstract class Translation {
   String get hours;
   String get indicators;
   String get insertGoal;
+  String get justification;
   String get loadEnterprises;
   String get login;
   String get logout;
