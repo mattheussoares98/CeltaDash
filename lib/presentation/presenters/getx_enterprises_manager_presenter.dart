@@ -190,4 +190,9 @@ class GetxEnterprisesManagerPresenter extends GetxController
       isLoading = false;
     }
   }
+
+  @override
+  void goToWebLoginPage() {
+    navigateTo.navigate(pageRoute: PageRoutes.webLogin);
+  }
 }

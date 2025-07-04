@@ -20,4 +20,5 @@ abstract class EnterprisesManagerPresenter implements Listenable {
     required String userPassword,
   });
   Future<void> removeEnterprise(String? enterpriseName);
+  void goToWebLoginPage();
 }

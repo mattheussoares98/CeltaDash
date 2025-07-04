@@ -502,4 +502,13 @@ void main() {
           newEnterprise.enterpriseName); //remove the new enterprise
     });
   });
+
+  group("Go to web login", () {
+    test("Should call navigate with correct values", () {
+      sut.goToWebLoginPage();
+
+      verify(() => navigateTo.navigate(pageRoute: PageRoutes.webLogin))
+          .called(1);
+    });
+  });
 }
