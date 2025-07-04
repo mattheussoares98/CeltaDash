@@ -1,10 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../components/components.dart';
 import '../../helpers/helpers.dart';
-import '../../mixins/mixins.dart';
 import '../pages.dart';
 import 'components/components.dart';
 
@@ -16,132 +14,53 @@ class CanceledSaleDetailsPage extends StatefulWidget {
       _CanceledSaleDetailsPageState();
 }
 
-class _CanceledSaleDetailsPageState extends State<CanceledSaleDetailsPage>
-    with UIErrorManager {
-  StreamSubscription? mainErrorSubscription;
+class _CanceledSaleDetailsPageState extends State<CanceledSaleDetailsPage> {
   @override
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (mounted) {
-        final canceledSalesPresenter = Get.find<CanceledSalesPresenter>();
-        await canceledSalesPresenter.getSelectedSaleDetails();
-      }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<CanceledSalesPresenter>().getSelectedSaleDetails();
     });
   }
 
   @override
-  void dispose() {
-    super.dispose();
-
-    mainErrorSubscription?.cancel();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final canceledSalesPresenter = Get.find<CanceledSalesPresenter>();
+    final presenter = Get.find<CanceledSalesPresenter>();
 
-    mainErrorSubscription?.cancel();
-    mainErrorSubscription = handleMainError(
-      context,
-      canceledSalesPresenter.mainErrorStream,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(R.string.details),
+      ),
+      body: StreamBuilder(
+          stream: presenter.isLoadingStream,
+          builder: (context, loadingSnap) {
+            return StreamBuilder(
+              stream: presenter.selectedSaleStream,
+              builder: (context, saleSnap) {
+                if (loadingSnap.data == true) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (!saleSnap.hasData || saleSnap.data == null) {
+                  return EmptySales(isLoading: loadingSnap.data == true);
+                }
+
+                final sale = saleSnap.data!;
+
+                return SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      CancellationSection(sale: sale),
+                      SaleSection(sale: sale),
+                      ProductsSection(sale: sale),
+                    ],
+                  ),
+                );
+              },
+            );
+          }),
     );
-
-    return StreamBuilder(
-        stream: canceledSalesPresenter.selectedSaleStream,
-        builder: (context, selectedSaleSnap) {
-          return Scaffold(
-            appBar: AppBar(
-              toolbarHeight: 40,
-              title: Text(R.string.details),
-            ),
-            body: StreamBuilder(
-                stream: canceledSalesPresenter.isLoadingStream,
-                builder: (context, loadingSnap) {
-                  if (loadingSnap.data == true) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-
-                  final sale = selectedSaleSnap.data;
-
-                  if (sale == null) {
-                    return Center(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          canceledSalesPresenter.getSelectedSaleDetails();
-                        },
-                        child: Text(R.string.searchAgain),
-                      ),
-                    );
-                  }
-
-                  return Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Enterprise(sale: sale),
-                              TitleAndValue(
-                                title:
-                                    "${R.string.date} ${R.string.sale.toLowerCase()}",
-                                value: sale.dateHourOfBilling,
-                              ),
-                              TitleAndValue(
-                                title:
-                                    "${R.string.date} ${R.string.cancellation.toLowerCase()}",
-                                value: sale.dateHourOfCancellation,
-                              ),
-                              if (sale.userCancellation != null)
-                                TitleAndValue(
-                                  title: R.string.cancelledBy,
-                                  value: sale.userCancellation,
-                                ),
-                              if (sale.motiveCancellation != null)
-                                TitleAndValue(
-                                  title: R.string.justification,
-                                  value: sale.motiveCancellation,
-                                ),
-                              TitleAndValue(
-                                title: R.string.cashierNumber,
-                                value: sale.cashierNumber,
-                              ),
-                              TitleAndValue(
-                                title: R.string.coupon,
-                                value: sale.documentNumber,
-                              ),
-
-                              //customer
-                              if (sale.customer != null) Customer(sale: sale),
-                              TitleAndValue(
-                                title: R.string.seller,
-                                value: sale.seller?.Name,
-                              ),
-                              if (sale.seller != null)
-                                TitleAndValue(
-                                  title: R.string.seller,
-                                  value:
-                                      "${sale.seller?.PersonalizedCode} - ${sale.seller?.Name}",
-                                ),
-                              TitleAndValue(
-                                title: R.string.type,
-                                value: sale.fiscalNoteType?.Name,
-                              ),
-                            ],
-                          ),
-                        ),
-                        //dont show the payment finalizations because when the sale is canceled in the PDV
-                        //before the BS read the sale, dont save the payments in BS. But when cancel the
-                        //sale after the BS already read the sale, it will save the payments in BS. This can
-                        //cause confusion for the user
-                        // PaymentFinalizations(sale: sale),
-                        Expanded(child: Products(sale: sale)),
-                      ]);
-                }),
-          );
-        });
   }
 }

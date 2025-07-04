@@ -32,6 +32,7 @@ abstract class Translation {
   String get cancel;
   String get canceledSales;
   String get cancellation;
+  String get cancellationAbbreviated;
   String get cancelledBy;
   String get cashierNumber;
   String get chargeBacks;
