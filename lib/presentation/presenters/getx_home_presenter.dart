@@ -332,7 +332,7 @@ class GetxHomePresenter extends GetxController
   Stream<bool> get selectedEnterpriseIsEnabledStream =>
       _selectedEnterpriseIsEnabled.stream;
   set selectedEnterpriseIsEnabled(bool value) =>
-      _selectedEnterpriseIsEnabled.value = value;
+      _selectedEnterpriseIsEnabled.subject.add(value);
   bool get selectedEnterpriseIsEnabledValue =>
       _selectedEnterpriseIsEnabled.value;
 }
