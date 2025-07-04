@@ -146,10 +146,7 @@ class EntityFactory {
           Name: faker.person.name(),
           PersonalizedCode: faker.randomGenerator.integer(99).toString(),
         ),
-        userCancellation: SaleMovementUserCancellationEntity(
-          id: faker.randomGenerator.integer(99),
-          name: faker.person.name(),
-        ),
+        userCancellation: faker.person.name(),
         products: [
           SaleMovementProductEntity(
             Quantity: faker.randomGenerator.decimal(),

@@ -16,7 +16,7 @@ class SaleMovementEntity extends Equatable {
   final SaleMovementFiscalNoteEntity? fiscalNoteType;
   final SaleMovementCustomerEntity? customer;
   final SaleMovementSellerEntity? seller;
-  final SaleMovementUserCancellationEntity? userCancellation;
+  final String? userCancellation;
   final List<SaleMovementProductEntity>? products;
   final List<SaleMovementFinalizationEntity>? paymentFinalizations;
 

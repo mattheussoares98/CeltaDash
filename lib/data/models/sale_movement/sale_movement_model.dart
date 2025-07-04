@@ -1,4 +1,3 @@
-import 'package:celta_dash/data/models/sale_movement/sale_movement_user_cancellation_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 
@@ -25,7 +24,7 @@ class SaleMovementModel extends Equatable {
   final SaleMovementFiscalNoteModel? fiscalNoteType;
   final SaleMovementCustomerModel? customer;
   final SaleMovementSellerModel? seller;
-  final SaleMovementUserCancellationModel? userCancellation;
+  final String? userCancellation;
   final List<SaleMovementProductModel>? products;
   final List<SaleMovementFinalizationModel>? paymentFinalizations;
 
@@ -93,10 +92,7 @@ class SaleMovementModel extends Equatable {
         seller: json['seller'] != null
             ? SaleMovementSellerModel.fromJson(json['seller'] as Map)
             : null,
-        userCancellation: json['userCancellation'] != null
-            ? SaleMovementUserCancellationModel.fromJson(
-                json['userCancellation'] as Map)
-            : null,
+        userCancellation: json['userCancellation'],
         products: json['products'] != null
             ? (json['products'] as List)
                 .map((e) => SaleMovementProductModel.fromJson(e as Map))
@@ -130,11 +126,7 @@ class SaleMovementModel extends Equatable {
         seller: entity?.seller != null
             ? SaleMovementSellerModel.fromEntity(entity!.seller)
             : null,
-        userCancellation: entity?.userCancellation != null
-            ? SaleMovementUserCancellationModel.fromEntity(
-                entity!.userCancellation,
-              )
-            : null,
+        userCancellation: entity?.userCancellation,
         products: entity?.products
             ?.map((e) => SaleMovementProductModel.fromEntity(e))
             .toList(),
@@ -156,7 +148,7 @@ class SaleMovementModel extends Equatable {
         'isCancelled': isCancelled,
         'fiscalNoteType': fiscalNoteType?.toJson(),
         'customer': customer?.toJson(),
-        'userCancellation': userCancellation?.toJson(),
+        'userCancellation': userCancellation,
         'seller': seller?.toJson(),
         'products': products?.map((e) => e.toJson()).toList(),
         'paymentFinalizations':
@@ -177,7 +169,7 @@ class SaleMovementModel extends Equatable {
         fiscalNoteType: fiscalNoteType?.toEntity(),
         customer: customer?.toEntity(),
         seller: seller?.toEntity(),
-        userCancellation: userCancellation?.toEntity(),
+        userCancellation: userCancellation,
         products: products?.map((e) => e.toEntity()).toList(),
         paymentFinalizations:
             paymentFinalizations?.map((e) => e.toEntity()).toList(),
@@ -202,7 +194,7 @@ class SaleMovementModel extends Equatable {
       fiscalNoteType: fiscalNoteType?.toViewModel(),
       customer: customer?.toViewModel(),
       seller: seller?.toViewModel(),
-      userCancellation: userCancellation?.toViewModel(),
+      userCancellation: userCancellation,
       products: products?.map((e) => e.toViewModel()).toList(),
       paymentFinalizations:
           paymentFinalizations?.map((e) => e.toViewModel()).toList(),
@@ -235,10 +227,7 @@ class SaleMovementModel extends Equatable {
       seller: viewModel.seller != null
           ? SaleMovementSellerModel.fromViewModel(viewModel.seller!)
           : null,
-      userCancellation: viewModel.userCancellation != null
-          ? SaleMovementUserCancellationModel.fromViewModel(
-              viewModel.userCancellation!)
-          : null,
+      userCancellation: viewModel.userCancellation,
       products: viewModel.products
           ?.map((e) => SaleMovementProductModel.fromViewModel(e))
           .toList(),

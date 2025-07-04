@@ -13,10 +13,10 @@ class SaleMovementViewModel extends Equatable {
   final String? dateHourOfCancellation;
   final String? documentNumber;
   final String? cashierNumber;
+  final String? userCancellation;
   final SaleMovementFiscalNoteViewModel? fiscalNoteType;
   final SaleMovementCustomerViewModel? customer;
   final SaleMovementSellerViewModel? seller;
-  final SaleMovementUserCancellationViewModel? userCancellation;
   final List<SaleMovementProductViewModel>? products;
   final List<SaleMovementFinalizationViewModel>? paymentFinalizations;
 
