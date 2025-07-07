@@ -1,3 +1,4 @@
+export 'analytics/analytics.dart';
 export './sale_movement/sale_movement.dart';
 export './bs_user_entity.dart';
 export 'enterprise_entity.dart';
