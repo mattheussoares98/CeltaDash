@@ -116,7 +116,6 @@ class _WebEnterprisesPageState extends State<WebEnterprisesPage>
                 ScrollableTableItem(
                   columnsWidths: [150, 80, 60],
                   showAnimation: _showAnimation,
-                  indexToSort: 0,
                   fixFirstColumn: true,
                   hideShowAnimation: () {
                     _showAnimation = false;
