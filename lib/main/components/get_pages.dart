@@ -14,6 +14,11 @@ class GetPages {
 
   static final getPages = [
     GetPage(
+      name: PageRoutes.appAnalytics,
+      page: makeAppAnalyticsPage,
+      transition: transition,
+    ),
+    GetPage(
       name: PageRoutes.canceledSaleDetails,
       page: makeCanceledSaleDetailsPage,
       transition: transition,

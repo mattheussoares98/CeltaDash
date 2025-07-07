@@ -1,4 +1,5 @@
 class PageRoutes {
+  static const String appAnalytics = "/app_analytics";
   static const String canceledSaleDetails = "/canceled_sale_details";
   static const String canceledSales = "/canceled_sales";
   static const String compareDays = "/daily_analysis";
