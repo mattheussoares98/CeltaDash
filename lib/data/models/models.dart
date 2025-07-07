@@ -1,3 +1,4 @@
+export './analytics/analytics.dart';
 export './sale_movement/sale_movement.dart';
 export './bs_user_model.dart';
 export './date_and_value_model.dart';
