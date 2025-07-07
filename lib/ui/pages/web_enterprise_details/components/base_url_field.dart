@@ -1,5 +1,4 @@
 import 'package:celta_dash/presentation/protocols/protocols.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -25,12 +24,7 @@ class BaseUrlField extends StatelessWidget {
       return;
     }
 
-    await webEnterprisesPresenter.changeEnterpriseUrl(
-      newUrl: urlController.text,
-      docRef: FirebaseFirestore.instance.collection("enterprises").doc(
-            webEnterprisesPresenter.selectedEnterprise?.firebaseId,
-          ),
-    );
+    await webEnterprisesPresenter.changeEnterpriseUrl(urlController.text);
     onChange();
   }
 

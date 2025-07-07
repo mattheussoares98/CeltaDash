@@ -99,7 +99,7 @@ void main() {
       verify(() => localStorage.put(DatabaseKeys.monthlyAnalytics, any()))
           .called(1);
       verifyNever(() => firebaseManager.put(
-            documentReference: any(named: "documentReference"),
+            path: any(named: "path"),
             data: any(named: "data"),
             merge: any(named: "merge"),
           ));
@@ -124,7 +124,7 @@ void main() {
       verify(() => localStorage.put(DatabaseKeys.monthlyAnalytics, any()))
           .called(1);
       verifyNever(() => firebaseManager.put(
-            documentReference: any(named: "documentReference"),
+            path: any(named: "path"),
             data: any(named: "data"),
             merge: any(named: "merge"),
           ));
@@ -148,7 +148,7 @@ void main() {
       verify(() => localStorage.put(DatabaseKeys.monthlyAnalytics, any()))
           .called(1);
       verify(() => firebaseManager.put(
-            documentReference: any(named: "documentReference"),
+            path: any(named: "path"),
             data: any(named: "data"),
             merge: true,
           )).called(1);
@@ -173,7 +173,7 @@ void main() {
       verify(() => localStorage.put(DatabaseKeys.monthlyAnalytics, any()))
           .called(1);
       verify(() => firebaseManager.put(
-            documentReference: any(named: "documentReference"),
+            path: any(named: "path"),
             data: any(named: "data"),
             merge: true,
           )).called(1);
@@ -197,7 +197,7 @@ void main() {
       verify(() => localStorage.put(DatabaseKeys.monthlyAnalytics, any()))
           .called(1);
       verify(() => firebaseManager.put(
-            documentReference: any(named: "documentReference"),
+            path: any(named: "path"),
             data: any(named: "data"),
             merge: true,
           )).called(1);
@@ -219,7 +219,7 @@ void main() {
       await expectLater(future, completes);
       verifyNever(() => localStorage.put(any(), any()));
       verifyNever(() => firebaseManager.put(
-          documentReference: any(named: 'documentReference'),
+          path: any(named: 'path'),
           data: any(named: 'data')));
     });
   });

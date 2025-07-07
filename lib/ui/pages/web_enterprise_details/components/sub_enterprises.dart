@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -59,15 +58,7 @@ class _SubEnterprisesState extends State<SubEnterprises> {
                         value: subEnterprise?.enabled == "true",
                         onChanged: (value) async {
                           await webEnterprisesPresenter
-                              .changeEnterpriseIsEnabled(
-                            subEnterpriseIndex: index,
-                            docRef: FirebaseFirestore.instance
-                                .collection("enterprises")
-                                .doc(
-                                  webEnterprisesPresenter
-                                      .selectedEnterprise?.firebaseId,
-                                ),
-                          );
+                              .changeEnterpriseIsEnabled(index);
                           setState(() {});
                         },
                       ),

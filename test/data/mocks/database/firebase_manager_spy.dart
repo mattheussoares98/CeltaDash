@@ -55,7 +55,7 @@ class FirebaseManagerSpy extends Mock implements FirebaseManager {
 
   When _mockPutCall() => when(
         () => this.put(
-          documentReference: any(named: "documentReference"),
+          path: any(named: "path"),
           data: any(named: "data"),
           arrayUnion: any(named: "arrayUnion"),
           increment: any(named: "increment"),
@@ -72,8 +72,7 @@ class FirebaseManagerSpy extends Mock implements FirebaseManager {
 
   When _mockGetCall() => when(
         () => this.get(
-          collection: any(named: "collection"),
-          doc: any(named: "doc"),
+          path: any(named: "path"),
           fieldToSearch: any(named: "fieldToSearch"),
           valueToSearch: any(named: "valueToSearch"),
         ),

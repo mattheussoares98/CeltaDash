@@ -98,8 +98,7 @@ class GetxEnterprisesManagerPresenter extends GetxController
       }
 
       final enterprise = await firebaseManager.get(
-        collection: "enterprises",
-        doc: enterpriseName.toLowerCase().removeWhiteSpaces(),
+        path: "enterprises/${enterpriseName.toLowerCase().removeWhiteSpaces()}",
       );
 
       final enterpriseData = enterprise.data();

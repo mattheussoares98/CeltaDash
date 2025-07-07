@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../main/composites/composites.dart';
@@ -49,9 +48,6 @@ class _AddEnterpriseButtonState extends State<AddEnterpriseButton> {
           bsUserNameController.clear();
           bsPasswordController.clear();
         },
-        docRef: FirebaseFirestore.instance.collection("enterprises").doc(
-              enterpriseNameController.text.toLowerCase().removeWhiteSpaces(),
-            ),
       );
     }
   }

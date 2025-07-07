@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
@@ -28,8 +27,7 @@ class GetxWebEnterprisesPresenter extends GetxController
     isLoading = true;
     mainError = null;
     try {
-      final remoteEnterprises =
-          await firebaseManager.get(collection: "enterprises");
+      final remoteEnterprises = await firebaseManager.get(path: "enterprises");
 
       enterprises = remoteEnterprises.docs
           .map<FirebaseEnterpriseViewModel>((e) =>
@@ -61,10 +59,7 @@ class GetxWebEnterprisesPresenter extends GetxController
   FirebaseEnterpriseViewModel? get selectedEnterprise => _selectedEnterprise;
 
   @override
-  Future<void> changeEnterpriseUrl({
-    required String newUrl,
-    required DocumentReference<Map<String, dynamic>> docRef,
-  }) async {
+  Future<void> changeEnterpriseUrl(String newUrl) async {
     isLoading = true;
     mainError = null;
     try {
@@ -73,7 +68,7 @@ class GetxWebEnterprisesPresenter extends GetxController
       }
 
       await firebaseManager.put(
-        documentReference: docRef,
+        path: "enterprises/${_selectedEnterprise?.firebaseId}",
         data: {"baseUrl": newUrl},
         merge: true,
       );
@@ -105,7 +100,6 @@ class GetxWebEnterprisesPresenter extends GetxController
   Future<void> addNewEnterprise({
     required String baseUrl,
     required String enterpriseName,
-    required DocumentReference<Map<String, dynamic>> docRef,
     required String bsUserName,
     required String bsPassword,
     required void Function() doOnSucceeds,
@@ -138,7 +132,7 @@ class GetxWebEnterprisesPresenter extends GetxController
       );
 
       await firebaseManager.put(
-        documentReference: docRef,
+        path: "enterprises/${enterpriseName.toLowerCase().removeWhiteSpaces()}",
         data: {
           "baseUrl": baseUrl.toLowerCase().removeWhiteSpaces(),
           "enterpriseName": enterpriseName.toLowerCase().removeWhiteSpaces(),
@@ -185,10 +179,7 @@ class GetxWebEnterprisesPresenter extends GetxController
   }
 
   @override
-  Future<bool> changeEnterpriseIsEnabled({
-    required int subEnterpriseIndex,
-    required DocumentReference<Map<String, dynamic>> docRef,
-  }) async {
+  Future<bool> changeEnterpriseIsEnabled(int subEnterpriseIndex) async {
     isLoading = true;
     mainError = null;
     try {
@@ -214,7 +205,7 @@ class GetxWebEnterprisesPresenter extends GetxController
       );
 
       await firebaseManager.put(
-        documentReference: docRef,
+        path: "enterprises/${_selectedEnterprise?.firebaseId}",
         data: FirebaseEnterpriseModel.fromViewModel(firebaseEnterpriseUpdated)
             .toJson(),
         merge: false,

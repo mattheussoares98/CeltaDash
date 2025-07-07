@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -82,15 +81,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
             children: [
               Expanded(
                 child: ElevatedButton(
-                  onPressed: () async {
-                    await homePresenter.getBsEnterprises(
-                      docRef: FirebaseFirestore.instance
-                          .collection("enterprises")
-                          .doc(
-                            EnterpriseBuilder.entity?.firebaseId,
-                          ),
-                    );
-                  },
+                  onPressed: homePresenter.getBsEnterprises,
                   child: Text(R.string.loadEnterprises),
                 ),
               ),

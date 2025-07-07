@@ -59,9 +59,7 @@ class GetxHomePresenter extends GetxController
   }
 
   @override
-  Future<void> getBsEnterprises({
-    required DocumentReference<Map<String, dynamic>> docRef,
-  }) async {
+  Future<void> getBsEnterprises() async {
     isLoading = true;
     mainError = null;
     try {
@@ -73,10 +71,8 @@ class GetxHomePresenter extends GetxController
       );
 
       if (missingLocal.isNotEmpty) {
-        final firebaseEnterprise = await firebaseManager.get(
-          collection: "enterprises",
-          doc: EnterpriseBuilder.entity?.firebaseId,
-        );
+        final docPath = "enterprises/${EnterpriseBuilder.entity!.firebaseId}";
+        final firebaseEnterprise = await firebaseManager.get(path: docPath);
 
         List<FirebaseSubEnterpriseEntity>? firebaseSubEnterprises =
             firebaseEnterprise
@@ -92,7 +88,7 @@ class GetxHomePresenter extends GetxController
 
         if (missingRemote.isNotEmpty) {
           await firebaseManager.put(
-            documentReference: docRef,
+            path: docPath,
             arrayUnion: [
               {
                 "subEnterprises": FieldValue.arrayUnion(

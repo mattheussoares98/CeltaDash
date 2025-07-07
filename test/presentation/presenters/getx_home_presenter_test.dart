@@ -34,7 +34,6 @@ void main() {
 
   late List<EnterpriseEntity> enterprisesInBs;
   late MockedFirebaseGet mockedFirebaseGet;
-  late DocumentReferenceFake docRef;
   late FirebaseEnterpriseEntity enterpriseOnLogout;
   late DateTime now;
 
@@ -73,7 +72,6 @@ void main() {
             EnterpriseBuilder.entity!.firebaseId!)
       ],
     );
-    docRef = DocumentReferenceFake();
     enterpriseOnLogout = FirebaseEnterpriseEntity(
       baseUrl: null,
       firebaseSubEnterprises: null,
@@ -204,7 +202,7 @@ void main() {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(sut.mainErrorStream, emits(null));
 
-      await sut.getBsEnterprises(docRef: docRef);
+      await sut.getBsEnterprises();
     });
     test("Should emit correct values on error", () async {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
@@ -215,11 +213,11 @@ void main() {
 
       loadEnterprises.mockGetError();
 
-      await sut.getBsEnterprises(docRef: docRef);
+      await sut.getBsEnterprises();
     });
 
     test("Should update selected enterprise correctly", () async {
-      await sut.getBsEnterprises(docRef: docRef);
+      await sut.getBsEnterprises();
 
       expect(
         sut.selectedEnterprise,
@@ -228,7 +226,7 @@ void main() {
     });
 
     test("Should call remoteLoadEnterprises", () async {
-      await sut.getBsEnterprises(docRef: docRef);
+      await sut.getBsEnterprises();
 
       verify(() => loadEnterprises.get()).called(1);
     });
@@ -237,13 +235,11 @@ void main() {
       test(
           "Should get firebase sub enterprises if is missing enterprises locally",
           () async {
-        await sut.getBsEnterprises(docRef: docRef);
+        await sut.getBsEnterprises();
 
         verify(
           () => firebaseManager.get(
-            collection: "enterprises",
-            doc: EnterpriseBuilder.entity?.firebaseId,
-          ),
+              path: "enterprises/${EnterpriseBuilder.entity!.firebaseId}"),
         ).called(1);
       });
       test(
@@ -262,21 +258,20 @@ void main() {
               .toList(),
         );
 
-        await sut.getBsEnterprises(docRef: docRef);
+        await sut.getBsEnterprises();
 
         verifyNever(
           () => firebaseManager.get(
-            collection: "enterprises",
-            doc: EnterpriseBuilder.entity?.firebaseId,
+            path: "enterprises/${sut.selectedEnterprise!.id}",
           ),
         );
       });
       test("Should update add missing enterprises in firebase", () async {
-        await sut.getBsEnterprises(docRef: docRef);
+        await sut.getBsEnterprises();
 
         verify(
           () => firebaseManager.put(
-              documentReference: docRef,
+              path: "enterprises/${EnterpriseBuilder.entity!.firebaseId}",
               merge: true,
               data: {},
               arrayUnion: [
@@ -311,11 +306,11 @@ void main() {
               .toList(),
         );
 
-        await sut.getBsEnterprises(docRef: docRef);
+        await sut.getBsEnterprises();
 
         verifyNever(
           () => firebaseManager.put(
-            documentReference: docRef,
+            path: "enterprises/${sut.selectedEnterprise!.id}",
             merge: true,
             data: {
               "subEnterprises": enterprisesInBs
@@ -326,7 +321,7 @@ void main() {
         );
       });
       test("Should update enterprise locally", () async {
-        await sut.getBsEnterprises(docRef: docRef);
+        await sut.getBsEnterprises();
 
         verify(
           () => localStorage.put(
@@ -349,7 +344,7 @@ void main() {
           ...EnterpriseBuilder.entity!.firebaseSubEnterprises!
         ];
 
-        await sut.getBsEnterprises(docRef: docRef);
+        await sut.getBsEnterprises();
 
         expect(
           EnterpriseBuilder.entity,

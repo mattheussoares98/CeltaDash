@@ -8,22 +8,28 @@ class FirebaseAdapter implements FirebaseStorage {
 
   @override
   Future<dynamic> get({
-    required String collection,
-    String? doc,
+    required String path,
     String? fieldToSearch,
     String? valueToSearch,
   }) async {
     try {
-      if (fieldToSearch == null || valueToSearch == null) {
-        return doc == null
-            ? await instance.collection(collection).get()
-            : await instance.collection(collection).doc(doc).get();
-      } else {
-        return await instance
-            .collection(collection)
-            .where(fieldToSearch, isEqualTo: valueToSearch)
-            .get()
-            .timeout(Duration(seconds: 30));
+      final pathSegments = path.split('/');
+
+      // If path has an odd number of segments, it's a collection query
+      if (pathSegments.length % 2 != 0) {
+        final collectionRef = instance.collection(path);
+        if (fieldToSearch != null && valueToSearch != null) {
+          return await collectionRef
+              .where(fieldToSearch, isEqualTo: valueToSearch)
+              .get()
+              .timeout(Duration(seconds: 30));
+        } else {
+          return await collectionRef.get().timeout(Duration(seconds: 30));
+        }
+      }
+      // If path has an even number of segments, it's a document query
+      else {
+        return await instance.doc(path).get().timeout(Duration(seconds: 30));
       }
     } on FirebaseException {
       throw DomainError.unexpected;
@@ -37,7 +43,7 @@ class FirebaseAdapter implements FirebaseStorage {
     List<Map<String, FieldValue>?>? increment,
     List<Map<String, FieldValue>?>? arrayUnion,
     bool? merge,
-    required DocumentReference<Map<String, dynamic>> documentReference,
+    required String path,
     required Map<String, dynamic>? data,
   }) async {
     try {
@@ -53,6 +59,16 @@ class FirebaseAdapter implements FirebaseStorage {
           json == null) {
         throw DomainError.unexpected;
       }
+
+      final pathSegments = path.split('/');
+      if (pathSegments.length % 2 != 0) {
+        throw ArgumentError(
+            'Invalid document path: $path. Path must have an even number of segments.');
+      }
+
+      // Create the DocumentReference from the path
+      final DocumentReference<Map<String, dynamic>> documentReference =
+          instance.doc(path);
 
       await documentReference
           .set(json, SetOptions(merge: merge == true))

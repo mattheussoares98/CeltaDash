@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../helpers/helpers.dart';
@@ -12,22 +11,14 @@ abstract class WebEnterprisesPresenter implements Listenable {
 
   Future<void> getEnterprises();
   void goToEnterpriseDetails(FirebaseEnterpriseViewModel enterprise);
-  Future<void> changeEnterpriseUrl({
-    required String newUrl,
-    required DocumentReference<Map<String, dynamic>> docRef,
-  });
+  Future<void> changeEnterpriseUrl(String newUrl);
   Future<void> addNewEnterprise({
     required String baseUrl,
     required String enterpriseName,
-    required DocumentReference<Map<String, dynamic>> docRef,
     required String bsUserName,
     required String bsPassword,
     required void Function() doOnSucceeds,
-    
   });
   void goToLoginPage();
-  Future<bool> changeEnterpriseIsEnabled({
-    required int subEnterpriseIndex,
-    required DocumentReference<Map<String, dynamic>> docRef,
-  });
+  Future<bool> changeEnterpriseIsEnabled(int subEnterpriseIndex);
 }

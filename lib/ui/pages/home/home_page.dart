@@ -1,11 +1,9 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../main/builders/builders.dart';
 import '../../../main/factories/factories.dart';
 import '../../../ui/mixins/mixins.dart';
 import '../../components/components.dart';
@@ -36,11 +34,7 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
         EnterprisesManagerPresenter enterprisesManagerPresenter = Get.find();
         await enterprisesManagerPresenter.loadLocalEnterprises();
         homePresenter.updateSelectedIndex(0);
-        await homePresenter.getBsEnterprises(
-          docRef: FirebaseFirestore.instance.collection("enterprises").doc(
-                EnterpriseBuilder.entity?.firebaseId,
-              ),
-        );
+        await homePresenter.getBsEnterprises();
 
         setState(() {
           loadedEnterprises = true;

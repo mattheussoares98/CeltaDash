@@ -9,14 +9,12 @@ class RemoteFirebaseManager implements FirebaseManager {
   RemoteFirebaseManager({required this.firebaseStorage});
   @override
   Future get({
-    required String collection,
-    String? doc,
+    required String path,
     String? fieldToSearch,
     String? valueToSearch,
   }) async {
     return await firebaseStorage.get(
-      collection: collection,
-      doc: doc,
+      path: path,
       fieldToSearch: fieldToSearch,
       valueToSearch: valueToSearch,
     );
@@ -27,11 +25,11 @@ class RemoteFirebaseManager implements FirebaseManager {
     List<Map<String, FieldValue>?>? increment,
     List<Map<String, FieldValue>?>? arrayUnion,
     bool? merge,
-    required DocumentReference<Map<String, dynamic>> documentReference,
+    required String path,
     required Map<String, dynamic> data,
   }) async {
     await firebaseStorage.put(
-      documentReference: documentReference,
+      path: path,
       data: data,
       arrayUnion: arrayUnion,
       increment: increment,

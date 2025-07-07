@@ -25,11 +25,11 @@ void main() {
 
   late List<FirebaseEnterpriseEntity> firebaseEnterprises;
   late MockedFirebaseGet mockedFirebaseGet;
-  late DocumentReferenceFake docRef;
   late String bsUserName;
   late String bsPassword;
   late dynamic bsLoginResponse;
   late List<EnterpriseEntity> enterprisesInBs;
+  late String enterpriseName;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
@@ -66,7 +66,7 @@ void main() {
         ),
       ],
     );
-    docRef = DocumentReferenceFake();
+    enterpriseName = faker.company.name();
     bsUserName = faker.internet.userName();
     bsPassword = faker.internet.password();
     bsLoginResponse = BsUserModel(
@@ -121,7 +121,7 @@ void main() {
     test("Should call firebaseManager get with correct values", () async {
       await sut.getEnterprises();
 
-      verify(() => firebaseManager.get(collection: "enterprises")).called(1);
+      verify(() => firebaseManager.get(path: "enterprises")).called(1);
     });
   });
 
@@ -162,14 +162,11 @@ void main() {
       sut.goToEnterpriseDetails(enterpriseViewModel);
       final newUrl = faker.internet.httpUrl();
 
-      await sut.changeEnterpriseUrl(
-        newUrl: newUrl,
-        docRef: docRef,
-      );
+      await sut.changeEnterpriseUrl(newUrl);
 
       verify(
         () => firebaseManager.put(
-          documentReference: docRef,
+          path: "enterprises/${enterpriseViewModel.firebaseId}",
           data: {"baseUrl": newUrl},
           merge: true,
         ),
@@ -182,10 +179,7 @@ void main() {
       sut.goToEnterpriseDetails(enterpriseViewModel);
       final newUrl = faker.internet.httpUrl();
 
-      await sut.changeEnterpriseUrl(
-        newUrl: newUrl,
-        docRef: docRef,
-      );
+      await sut.changeEnterpriseUrl(newUrl);
 
       expect(sut.selectedEnterprise?.baseUrl, newUrl);
     });
@@ -196,14 +190,11 @@ void main() {
               .toViewModel();
       sut.goToEnterpriseDetails(enterpriseViewModel);
 
-      await sut.changeEnterpriseUrl(
-        newUrl: enterpriseViewModel.baseUrl!,
-        docRef: docRef,
-      );
+      await sut.changeEnterpriseUrl(enterpriseViewModel.baseUrl!);
 
       verifyNever(
         () => firebaseManager.put(
-          documentReference: docRef,
+          path: "enterprises/${enterpriseViewModel.firebaseId}",
           data: {"baseUrl": enterpriseViewModel.baseUrl!},
           merge: true,
         ),
@@ -218,10 +209,7 @@ void main() {
               .toViewModel();
       sut.goToEnterpriseDetails(enterpriseViewModel);
 
-      await sut.changeEnterpriseUrl(
-        newUrl: enterpriseViewModel.baseUrl!,
-        docRef: docRef,
-      );
+      await sut.changeEnterpriseUrl(enterpriseViewModel.baseUrl!);
     });
     test("Should emit correct values when change enterprise", () async {
       final selectedEnterprise =
@@ -254,10 +242,7 @@ void main() {
       await sut.getEnterprises();
       sut.goToEnterpriseDetails(selectedEnterprise);
 
-      await sut.changeEnterpriseUrl(
-        newUrl: enterpriseUpdated.baseUrl!,
-        docRef: docRef,
-      );
+      await sut.changeEnterpriseUrl(enterpriseUpdated.baseUrl!);
     });
   });
 
@@ -271,8 +256,7 @@ void main() {
         bsUserName: bsUserName,
         bsPassword: bsPassword,
         baseUrl: faker.internet.httpsUrl(),
-        enterpriseName: docRef.id,
-        docRef: docRef,
+        enterpriseName: enterpriseName,
       );
     });
     test("Should emit correct values on error", () async {
@@ -289,8 +273,7 @@ void main() {
         bsUserName: bsUserName,
         bsPassword: bsPassword,
         baseUrl: faker.internet.httpsUrl(),
-        enterpriseName: docRef.id,
-        docRef: docRef,
+        enterpriseName: enterpriseName,
       );
     });
     test("Should call firebase manager with correct values", () async {
@@ -301,15 +284,16 @@ void main() {
         bsUserName: bsUserName,
         bsPassword: bsPassword,
         baseUrl: baseUrl,
-        enterpriseName: docRef.id,
-        docRef: docRef,
+        enterpriseName: enterpriseName,
       );
 
       verify(() => firebaseManager.put(
-            documentReference: docRef,
+            path:
+                "enterprises/${enterpriseName.toLowerCase().removeWhiteSpaces()}",
             data: {
               "baseUrl": baseUrl,
-              "enterpriseName": docRef.id,
+              "enterpriseName":
+                  enterpriseName.toLowerCase().removeWhiteSpaces(),
               "subEnterprises": enterprisesInBs
                   .map((e) => EnterpriseModel.fromEntity(e).toJson())
                   .toList(),
@@ -325,15 +309,16 @@ void main() {
         bsUserName: bsUserName,
         bsPassword: bsPassword,
         baseUrl: baseUrl,
-        enterpriseName: docRef.id,
-        docRef: docRef,
+        enterpriseName: enterpriseName,
       );
 
       verify(() => firebaseManager.put(
-            documentReference: docRef,
+            path:
+                "enterprises/${enterpriseName.toLowerCase().removeWhiteSpaces()}",
             data: {
               "baseUrl": baseUrl.toLowerCase().removeWhiteSpaces(),
-              "enterpriseName": docRef.id.toLowerCase().removeWhiteSpaces(),
+              "enterpriseName":
+                  enterpriseName.toLowerCase().removeWhiteSpaces(),
               "subEnterprises": enterprisesInBs
                   .map((e) => EnterpriseModel.fromEntity(e).toJson())
                   .toList(),
@@ -344,33 +329,31 @@ void main() {
       final oldEnterprises = firebaseEnterprises
           .map((e) => FirebaseEnterpriseModel.fromEntity(e).toViewModel())
           .toList();
-      final baseUrl = faker.internet.httpsUrl();
-      final newEnterprises = [
-        ...oldEnterprises,
-        FirebaseEnterpriseViewModel(
-          baseUrl: baseUrl.toLowerCase().removeWhiteSpaces(),
-          enterpriseName: docRef.id.toLowerCase().removeWhiteSpaces(),
-          firebaseId: docRef.id.toLowerCase().removeWhiteSpaces(),
-          bsUser: BsUserModel.fromJson(bsLoginResponse),
-          firebaseSubEnterprises: enterprisesInBs
-              .map(
-                (e) => FirebaseSubEnterpriseViewModel(
-                  id: docRef.id.toLowerCase().removeWhiteSpaces(),
-                  name: e.name,
-                  personalizedCode: e.personalizedCode,
-                  cnpj: e.cnpj,
-                  enabled: false.toString(),
-                ),
-              )
-              .toList(),
-        ),
-      ];
+
+      final newEnterprise = FirebaseEnterpriseViewModel(
+        baseUrl: faker.internet.httpsUrl().toLowerCase().removeWhiteSpaces(),
+        enterpriseName: enterpriseName.toLowerCase().removeWhiteSpaces(),
+        firebaseId: enterpriseName.toLowerCase().removeWhiteSpaces(),
+        bsUser: BsUserModel.fromJson(bsLoginResponse),
+        firebaseSubEnterprises: enterprisesInBs
+            .map(
+              (e) => FirebaseSubEnterpriseViewModel(
+                id: enterpriseName.toLowerCase().removeWhiteSpaces(),
+                name: e.name,
+                personalizedCode: e.personalizedCode,
+                cnpj: e.cnpj,
+                enabled: false.toString(),
+              ),
+            )
+            .toList(),
+      );
+      final updatedEnterprises = [...oldEnterprises, newEnterprise];
 
       expectLater(
           sut.enterprisesStream,
           emitsInOrder([
             oldEnterprises,
-            newEnterprises,
+            updatedEnterprises,
           ]));
 
       await sut.getEnterprises();
@@ -378,9 +361,8 @@ void main() {
         doOnSucceeds: () {},
         bsUserName: bsUserName,
         bsPassword: bsPassword,
-        baseUrl: baseUrl,
-        enterpriseName: docRef.id,
-        docRef: docRef,
+        baseUrl: newEnterprise.baseUrl!,
+        enterpriseName: newEnterprise.enterpriseName!,
       );
     });
 
@@ -397,7 +379,6 @@ void main() {
         bsPassword: bsPassword,
         baseUrl: faker.internet.httpUrl(),
         enterpriseName: mockedFirebaseGet.docs.first.data()!["enterpriseName"]!,
-        docRef: docRef,
       );
     });
 
@@ -410,7 +391,6 @@ void main() {
         bsPassword: bsPassword,
         baseUrl: url,
         enterpriseName: mockedFirebaseGet.docs.first.data()!["enterpriseName"]!,
-        docRef: docRef,
       );
 
       verify(
@@ -442,7 +422,6 @@ void main() {
         doOnSucceeds: () {},
         baseUrl: faker.internet.httpUrl(),
         enterpriseName: faker.company.name(),
-        docRef: docRef,
         bsUserName: bsUserName,
         bsPassword: bsPassword,
       );
@@ -455,7 +434,6 @@ void main() {
         doOnSucceeds: () {},
         baseUrl: baseUrl,
         enterpriseName: enterpriseName,
-        docRef: docRef,
         bsUserName: bsUserName,
         bsPassword: bsPassword,
       );
@@ -475,14 +453,14 @@ void main() {
         doOnSucceeds: () {},
         baseUrl: baseUrl,
         enterpriseName: enterpriseName,
-        docRef: docRef,
         bsUserName: bsUserName,
         bsPassword: bsPassword,
       );
 
       verify(
         () => firebaseManager.put(
-          documentReference: docRef,
+          path:
+              "enterprises/${enterpriseName.toLowerCase().removeWhiteSpaces()}",
           data: {
             "baseUrl": baseUrl.toLowerCase().removeWhiteSpaces(),
             "enterpriseName": enterpriseName.toLowerCase().removeWhiteSpaces(),
@@ -512,13 +490,10 @@ void main() {
         ],
       );
       sut.goToEnterpriseDetails(enterprise);
-      await sut.changeEnterpriseIsEnabled(
-        subEnterpriseIndex: 0,
-        docRef: docRef,
-      );
+      await sut.changeEnterpriseIsEnabled(0);
 
       verify(() => firebaseManager.put(
-            documentReference: docRef,
+            path: "enterprises/${enterprise.firebaseId}",
             data: FirebaseEnterpriseModel.fromViewModel(
                 FirebaseEnterpriseViewModel(
               baseUrl: enterprise.baseUrl,

@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
@@ -49,13 +48,10 @@ class GetxAppAnalyticsService implements AppAnalyticsService {
         );
 
         final docId = DateFormat('yyyy-MM').format(DateTime.now());
-        final docRef = FirebaseFirestore.instance
-            .collection('monthly_analytics')
-            .doc(docId);
 
         // Send the data to Firebase, merging with existing data
         await firebaseManager.put(
-          documentReference: docRef,
+          path: "monthly_analytics$docId",
           data: monthlyModel.toJson(),
           merge: true,
         );

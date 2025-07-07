@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../helpers/helpers.dart';
@@ -26,9 +25,7 @@ abstract class HomePresenter implements Listenable {
   void goToSellersPage();
   void goToEnterprisesManagerPage();
 
-  Future<void> getBsEnterprises({
-    required DocumentReference<Map<String, dynamic>> docRef,
-  });
+  Future<void> getBsEnterprises();
 
   void updateSelectedEnterprise(EcEnterpriseViewModel? enterprise);
 
