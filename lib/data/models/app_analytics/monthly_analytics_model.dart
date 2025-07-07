@@ -43,4 +43,13 @@ class MonthlyAnalyticsModel extends MonthlyAnalyticsEntity {
         searchCounts: searchCounts,
         users: users,
       );
+
+  factory MonthlyAnalyticsModel.fromEntity(MonthlyAnalyticsEntity entity) {
+    return MonthlyAnalyticsModel(
+      searchCounts: entity.searchCounts
+          .map((e) => SearchCountModel.fromEntity(e))
+          .toList(),
+      users: entity.users.map((e) => ActiveUserModel.fromEntity(e)).toList(),
+    );
+  }
 }

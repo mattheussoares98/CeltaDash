@@ -20,4 +20,12 @@ class SearchCountModel extends SearchCountEntity {
         'reportPeriod': reportPeriod.name,
         'count': count,
       };
+
+  factory SearchCountModel.fromEntity(SearchCountEntity entity) {
+    return SearchCountModel(
+      reportType: entity.reportType,
+      reportPeriod: entity.reportPeriod,
+      count: entity.count,
+    );
+  }
 }

@@ -20,4 +20,12 @@ class ActiveUserModel extends ActiveUserEntity {
         'platform': platform,
         'lastActive': lastActive.toIso8601String(),
       };
+
+  factory ActiveUserModel.fromEntity(ActiveUserEntity entity) {
+    return ActiveUserModel(
+      userName: entity.userName,
+      platform: entity.platform,
+      lastActive: entity.lastActive,
+    );
+  }
 }
