@@ -1,5 +1,5 @@
 import '../../../domain/entities/entities.dart';
-import 'analytics.dart';
+import 'app_analytics.dart';
 
 class MonthlyAnalyticsModel extends MonthlyAnalyticsEntity {
   const MonthlyAnalyticsModel({
