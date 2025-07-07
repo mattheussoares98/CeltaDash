@@ -1,0 +1,1 @@
+export './getx_app_analytics_service_factory.dart';
