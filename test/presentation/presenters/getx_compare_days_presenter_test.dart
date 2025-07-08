@@ -86,6 +86,10 @@ void main() {
     }
   });
 
+  tearDown(() {
+    Get.reset();
+  });
+
   group("Load sales Statistics", () {
     test("Should emit correct values on success", () async {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));

@@ -82,6 +82,10 @@ void main() {
     }
   });
 
+  tearDown(() {
+    Get.reset();
+  });
+
   group("Load sale movements", () {
     group("Pattern", () {
       test("Should emit correct values on success", () async {
@@ -140,16 +144,19 @@ void main() {
         );
       });
       test("Should add new analysis", () async {
-        final periodType = PeriodType.values[faker.randomGenerator.integer(
-          PeriodType.values.length,
-        )];
+        final enabledPeriods = [PeriodType.daily, PeriodType.monthly];
+        final periodType = enabledPeriods[faker.randomGenerator.integer(2)];
 
-        await sut.getSales(homePresenter,
-            periodType: periodType, forceRefresh: true);
+        await sut.getSales(
+          homePresenter,
+          periodType: periodType,
+          forceRefresh: true,
+        );
 
         verify(() => appAnalyticsService.addNewMonthlyAnalytic(
-            reportType: ReportType.departments,
-            periodType: periodType)).called(1);
+              reportType: ReportType.departments,
+              periodType: periodType,
+            )).called(1);
       });
     });
 

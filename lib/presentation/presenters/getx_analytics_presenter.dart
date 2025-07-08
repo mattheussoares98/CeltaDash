@@ -25,7 +25,7 @@ class GetxAnalyticsPresenter extends GetxController
       final docId = DateFormat('yyyy-MM').format(DateTime.now());
 
       final data =
-          await firebaseManager.get(path: "analytics/monthly_analytics/$docId");
+          await firebaseManager.get(path: "analytics/$docId/informations");
 
       if (data != null && data.docs.isNotEmpty) {
         _analytics.value = (data.docs as List)

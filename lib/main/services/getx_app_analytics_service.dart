@@ -56,7 +56,7 @@ class GetxAppAnalyticsService implements AppAnalyticsService {
         // Send the data to Firebase, merging with existing data
         await firebaseManager.put(
           path:
-              "analytics/monthly_analytics/$docId/${EnterpriseBuilder.entity!.enterpriseName}",
+              "analytics/$docId/informations/${EnterpriseBuilder.entity!.enterpriseName}",
           data: {
             for (var count in monthlyModel.searchCounts)
               "${count.reportType.name}-${count.periodType.name}":

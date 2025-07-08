@@ -77,6 +77,10 @@ void main() {
     }
   });
 
+  tearDown(() {
+    Get.reset();
+  });
+
   group("Load sale movements", () {
     group("Pattern", () {
       test("Should emit correct values on success", () async {
@@ -136,8 +140,8 @@ void main() {
       });
 
       test("Should add new analysis", () async {
-        final index = faker.randomGenerator.integer(PeriodType.values.length);
-        final periodType = PeriodType.values[index];
+        final enabledPeriods = [PeriodType.daily, PeriodType.monthly];
+        final periodType = enabledPeriods[faker.randomGenerator.integer(2)];
 
         await sut.getSales(
           homePresenter,

@@ -81,6 +81,10 @@ void main() {
     }
   });
 
+  tearDown(() {
+    Get.reset();
+  });
+
   group("Get sales", () {
     group("Pattern", () {
       test("Should emit correct values on success", () async {
