@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../helpers/helpers.dart';
 import '../../mixins/mixins.dart';
@@ -43,7 +44,8 @@ class _AppAnalyticsPageState extends State<AppAnalyticsPage>
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(R.string.analytics),
+        title: Text(
+            "${R.string.analytics} ${DateFormat('yyyy/MM').format(DateTime.now())}"),
         actions: [
           IconButton(
             onPressed: presenter.loadAnalytics,
