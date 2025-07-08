@@ -58,7 +58,7 @@ class GetxAppAnalyticsService implements AppAnalyticsService {
               "analytics/${EnterpriseBuilder.entity!.enterpriseName}/monthly_analytics/$docId",
           data: {
             for (var count in monthlyModel.searchCounts)
-              "${count.reportType.name}.${count.periodType.name}":
+              "${count.reportType.name}-${count.periodType.name}":
                   FieldValue.increment(count.count),
             'users': [
               {

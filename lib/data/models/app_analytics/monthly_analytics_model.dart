@@ -1,48 +1,14 @@
+import 'package:flutter/material.dart';
+
 import '../../../domain/entities/entities.dart';
-import 'app_analytics.dart';
+import '../../../domain/helpers/helpers.dart';
+import 'app_analytics.dart'; // For the other models
 
 class MonthlyAnalyticsModel extends MonthlyAnalyticsEntity {
   const MonthlyAnalyticsModel({
     required super.searchCounts,
     required super.users,
   });
-
-  factory MonthlyAnalyticsModel.fromJson(Map<String, dynamic> json) {
-    final searchCountsList = (json['searchCounts'] as List)
-        .map((countJson) => SearchCountModel.fromJson(countJson))
-        .toList();
-
-    final usersList = (json['users'] as List)
-        .map((userJson) => ActiveUserModel.fromJson(userJson))
-        .toList();
-
-    return MonthlyAnalyticsModel(
-      searchCounts: searchCountsList,
-      users: usersList,
-    );
-  }
-
-  Map<String, dynamic> toJson() => {
-        'searchCounts': searchCounts
-            .map((searchCount) => SearchCountModel(
-                    reportType: searchCount.reportType,
-                    periodType: searchCount.periodType,
-                    count: searchCount.count)
-                .toJson())
-            .toList(),
-        'users': users
-            .map((user) => ActiveUserModel(
-                  userName: user.userName,
-                  platform: user.platform,
-                  lastActive: user.lastActive,
-                ).toJson())
-            .toList(),
-      };
-
-  MonthlyAnalyticsEntity toEntity() => MonthlyAnalyticsEntity(
-        searchCounts: searchCounts,
-        users: users,
-      );
 
   factory MonthlyAnalyticsModel.fromEntity(MonthlyAnalyticsEntity entity) {
     return MonthlyAnalyticsModel(
@@ -52,4 +18,77 @@ class MonthlyAnalyticsModel extends MonthlyAnalyticsEntity {
       users: entity.users.map((e) => ActiveUserModel.fromEntity(e)).toList(),
     );
   }
+
+  // --- THIS IS THE ONLY CHANGED SECTION ---
+  factory MonthlyAnalyticsModel.fromJson(Map<String, dynamic> json) {
+    final List<SearchCountEntity> searchCountsList = [];
+    final List<ActiveUserEntity> usersList = [];
+
+    // Iterate over all keys in the JSON from Firestore
+    json.forEach((key, value) {
+      if (key == 'users') {
+        // Handle the 'users' array separately
+        if (value is List) {
+          for (var userJson in value) {
+            usersList.add(ActiveUserModel.fromJson(userJson));
+          }
+        }
+      } else {
+        // This key is a dynamic search count, e.g., "sales.daily"
+        final parts = key.split('-');
+        if (parts.length == 2 && value is int) {
+          try {
+            // Convert the string parts back into enums
+            final reportType = ReportType.values.byName(parts[0]);
+            final periodType = PeriodType.values.byName(parts[1]);
+
+            searchCountsList.add(SearchCountEntity(
+              reportType: reportType,
+              periodType: periodType,
+              count: value,
+            ));
+          } catch (e) {
+            // Safely ignore keys that don't match our enum pattern
+            // This prevents crashes if the data format changes
+            debugPrint('Could not parse analytics key: $key');
+          }
+        }
+      }
+    });
+
+    return MonthlyAnalyticsModel(
+      searchCounts: searchCountsList,
+      users: usersList,
+    );
+  }
+  // --- END OF CHANGED SECTION ---
+
+  // toJson is no longer used for writing to Firestore, but it's useful
+  // for saving to local storage or for debugging.
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {};
+
+    // Create the dynamic key-value pairs for search counts
+    for (var searchCount in searchCounts) {
+      final key =
+          '${searchCount.reportType.name}-${searchCount.periodType.name}';
+      data[key] = searchCount.count;
+    }
+
+    // Add the users array, converting each user to a JSON map
+    data['users'] = users
+        .map((user) => ActiveUserModel(
+              userName: user.userName,
+              platform: user.platform,
+              lastActive: user.lastActive,
+            ).toJson())
+        .toList();
+
+    return data;
+  }
+
+  MonthlyAnalyticsEntity toEntity() => MonthlyAnalyticsEntity(
+        searchCounts: searchCounts,
+        users: users,
+      );
 }

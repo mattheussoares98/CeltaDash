@@ -180,9 +180,10 @@ void main() {
         ).called(1);
 
         ////////////////////CHANGING ENTERPRISE/////////////////////////////////
-        final newEnterprise =
-            EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
-                .toViewModel();
+        final newEnterprise = EnterpriseModel.fromEntity(
+                EntityFactory.makeEnterpriseEntity(
+                    id: faker.randomGenerator.integer(min: 100, 200)))
+            .toViewModel();
         homePresenter.selectedEnterpriseMock = newEnterprise;
         await sut.getSales(homePresenter, periodType: PeriodType.daily);
 
