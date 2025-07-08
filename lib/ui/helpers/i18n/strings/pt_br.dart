@@ -158,6 +158,7 @@ class PtBr implements Translation {
   String get until => "Até";
   String get url => "URL";
   String get user => "Usuário";
+  String get users => "Usuários";
   String get wait => "Aguarde...";
   String get week => "Semana";
   String get worstDayOfTheMonth => "Pior dia do mês";

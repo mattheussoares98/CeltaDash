@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../../domain/entities/entities.dart';
+import '../../../../../domain/helpers/helpers.dart';
 
 class SearchCountViewModel extends Equatable {
   final String title;
@@ -15,12 +15,12 @@ class SearchCountViewModel extends Equatable {
   factory SearchCountViewModel.fromEntity(SearchCountEntity entity) {
     String capitalize(String s) =>
         s.isNotEmpty ? s[0].toUpperCase() + s.substring(1) : '';
-    final type = capitalize(entity.reportType.name);
-    final period = capitalize(entity.periodType.name);
+    final type = capitalize(entity.reportType.description);
+    final period = capitalize(entity.periodType.description);
 
     return SearchCountViewModel(
       title: '$type ($period)',
-      countFormatted: NumberFormat.compact().format(entity.count),
+      countFormatted: entity.count.toString(),
     );
   }
 

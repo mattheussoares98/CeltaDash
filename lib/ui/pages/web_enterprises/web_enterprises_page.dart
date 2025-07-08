@@ -41,9 +41,8 @@ class _WebEnterprisesPageState extends State<WebEnterprisesPage>
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
-        Get.put<WebEnterprisesPresenter>(widget.webEnterprisesPresenter);
-
         await widget.webEnterprisesPresenter.getEnterprises();
+        await widget.analyticsPresenter.loadAnalytics();
       }
     });
   }

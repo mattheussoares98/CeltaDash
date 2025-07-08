@@ -149,6 +149,7 @@ abstract class Translation {
   String get until;
   String get url;
   String get user;
+  String get users;
   String get wait;
   String get week;
   String get worstDayOfTheMonth;
