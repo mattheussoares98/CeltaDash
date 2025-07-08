@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,13 +8,15 @@ import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 import '../../mixins/mixins.dart';
 import '../pages.dart';
-import 'components/components.dart';
-
-bool _showAnimation = true;
 
 class WebEnterprisesPage extends StatefulWidget {
-  final WebEnterprisesPresenter presenter;
-  const WebEnterprisesPage({super.key, required this.presenter});
+  final WebEnterprisesPresenter webEnterprisesPresenter;
+  final AnalyticsPresenter analyticsPresenter;
+  const WebEnterprisesPage({
+    super.key,
+    required this.webEnterprisesPresenter,
+    required this.analyticsPresenter,
+  });
 
   @override
   State<WebEnterprisesPage> createState() => _WebEnterprisesPageState();
@@ -26,16 +27,23 @@ class _WebEnterprisesPageState extends State<WebEnterprisesPage>
   StreamSubscription? loadingSubscription;
   StreamSubscription? mainErrorSubscription;
   final filterController = TextEditingController();
+  int currentIndex = 0;
+  final pageController = PageController();
 
   @override
   void initState() {
     super.initState();
 
+    loadingSubscription =
+        handleLoading(context, widget.webEnterprisesPresenter.isLoadingStream);
+    mainErrorSubscription = handleMainError(
+        context, widget.webEnterprisesPresenter.mainErrorStream);
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
-        Get.put<WebEnterprisesPresenter>(widget.presenter);
+        Get.put<WebEnterprisesPresenter>(widget.webEnterprisesPresenter);
 
-        await widget.presenter.getEnterprises();
+        await widget.webEnterprisesPresenter.getEnterprises();
       }
     });
   }
@@ -46,117 +54,48 @@ class _WebEnterprisesPageState extends State<WebEnterprisesPage>
     loadingSubscription?.cancel();
     mainErrorSubscription?.cancel();
     filterController.dispose();
-  }
-
-  void onTap(FirebaseEnterpriseViewModel enterprise) {
-    widget.presenter.goToEnterpriseDetails(enterprise);
+    pageController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    loadingSubscription?.cancel();
-    mainErrorSubscription?.cancel();
-    // FirebaseAuth.instance.signOut();
-
-    loadingSubscription =
-        handleLoading(context, widget.presenter.isLoadingStream);
-    mainErrorSubscription =
-        handleMainError(context, widget.presenter.mainErrorStream);
+    Get.put<AnalyticsPresenter>(widget.analyticsPresenter);
+    Get.put<WebEnterprisesPresenter>(widget.webEnterprisesPresenter);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(R.string.enterprises),
-        actions: [
-          AddEnterpriseButton(presenter: widget.presenter),
-          IconButton(
-            onPressed: widget.presenter.getEnterprises,
-            icon:
-                Icon(Icons.refresh, color: Theme.of(context).primaryColorDark),
+      body: PageView(
+        controller: pageController,
+        onPageChanged: (index) => setState(() => currentIndex = index),
+        children: [
+          WebEnterprisesListPage(filterController: filterController),
+          AnalyticsPage(),
+        ],
+      ),
+      bottomNavigationBar: BottomNavBar(
+        currentIndex: currentIndex,
+        onTap: (index) {
+          setState(() {
+            currentIndex = index;
+          });
+          pageController.animateToPage(
+            index,
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+          );
+        },
+        items: [
+          BottomNavItem(
+            materialIcon: Icon(Icons.home),
+            cupertinoIcon: Icon(CupertinoIcons.home),
+            label: R.string.enterprises,
+          ),
+          BottomNavItem(
+            materialIcon: Icon(Icons.auto_graph_outlined),
+            cupertinoIcon: Icon(CupertinoIcons.graph_square),
+            label: R.string.analytics,
           ),
         ],
       ),
-      body: StreamBuilder<List<FirebaseEnterpriseViewModel>?>(
-          stream: widget.presenter.enterprisesStream,
-          builder: (context, snapshot) {
-            if (snapshot.data == null) {
-              return Center(
-                child: Text(R.string.empty),
-              );
-            }
-            final enterprises = snapshot.data!
-                .where((e) =>
-                    e.enterpriseName
-                        ?.toLowerCase()
-                        .contains(filterController.text.toLowerCase()) ??
-                    false)
-                .toList();
-
-            return Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    controller: filterController,
-                    onChanged: (_) {
-                      setState(() {});
-                    },
-                    decoration: FormFieldDecoration.decoration(
-                      context: context,
-                      labelText: R.string.filter,
-                      suffixIcon: Icon(
-                        Platform.isIOS
-                            ? CupertinoIcons.search
-                            : Icons.search_rounded,
-                      ),
-                    ),
-                  ),
-                ),
-                ScrollableTableItem(
-                  columnsWidths: [150, 80, 60],
-                  showAnimation: _showAnimation,
-                  fixFirstColumn: true,
-                  hideShowAnimation: () {
-                    _showAnimation = false;
-                  },
-                  titles: [
-                    PersonalizedTableCell(
-                      value: R.string.enterprise,
-                      isTitle: true,
-                    ),
-                    PersonalizedTableCell(
-                      value: R.string.enabled,
-                      isTitle: true,
-                    ),
-                    PersonalizedTableCell(
-                      value: R.string.total,
-                      isTitle: true,
-                    ),
-                  ],
-                  rowValues: enterprises.map((enterprise) {
-                    final totalQuantity =
-                        enterprise.firebaseSubEnterprises?.length ?? 0;
-                    final enabledQuantity = enterprise.firebaseSubEnterprises
-                            ?.where((element) => element.enabled == "true")
-                            .length ??
-                        0;
-
-                    return [
-                      PersonalizedTableCell(
-                        value: enterprise.enterpriseName,
-                        onTap: () {
-                          onTap(enterprise);
-                        },
-                      ),
-                      PersonalizedTableCell(value: enabledQuantity),
-                      PersonalizedTableCell(
-                        value: totalQuantity,
-                      ),
-                    ];
-                  }).toList(),
-                ),
-              ],
-            );
-          }),
     );
   }
 }

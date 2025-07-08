@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../pages.dart';
+import '../../pages.dart';
 
 class AnalyticsPage extends StatefulWidget {
   final AnalyticsPresenter presenter;

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../domain/entities/entities.dart';
+import '../../../../../domain/entities/entities.dart';
 
 class SearchCountViewModel extends Equatable {
   final String title;

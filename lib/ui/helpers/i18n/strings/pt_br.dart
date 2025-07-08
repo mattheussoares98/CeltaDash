@@ -26,6 +26,7 @@ class PtBr implements Translation {
 
   String get add => "Adicionar";
   String get addNewEnterprise => "Adicionar nova empresa";
+  String get analytics => "Análise";
   String get anothersEnterprises => "Outras empresas";
   String get anothersProducts => "Outros produtos";
   String get all => "Todas";

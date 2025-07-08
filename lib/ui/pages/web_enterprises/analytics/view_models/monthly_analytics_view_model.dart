@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../domain/entities/entities.dart';
+import '../../../../../domain/entities/entities.dart';
 import 'view_models.dart';
 
 class MonthlyAnalyticsViewModel extends Equatable {

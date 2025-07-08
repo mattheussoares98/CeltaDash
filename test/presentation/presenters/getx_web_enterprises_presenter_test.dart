@@ -101,11 +101,6 @@ void main() {
     test("Should emit correct values on success", () async {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(sut.mainErrorStream, emits(null));
-      expectLater(
-          sut.enterprisesStream,
-          emits(firebaseEnterprises
-              .map((e) => FirebaseEnterpriseModel.fromEntity(e).toViewModel())
-              .toList()));
 
       await sut.getEnterprises();
     });
@@ -117,6 +112,16 @@ void main() {
       firebaseManager.mockGetError();
 
       await sut.getEnterprises();
+    });
+    test("Should update enterprises correctly", () async {
+      await sut.getEnterprises();
+
+      expect(
+        sut.enterprises,
+        firebaseEnterprises
+            .map((e) => FirebaseEnterpriseModel.fromEntity(e).toViewModel())
+            .toList(),
+      );
     });
     test("Should call firebaseManager get with correct values", () async {
       await sut.getEnterprises();
@@ -231,18 +236,12 @@ void main() {
       final enterprisesUpdateds = [...loadedEnterprises];
       enterprisesUpdateds[index] = enterpriseUpdated;
 
-      expectLater(
-        sut.enterprisesStream,
-        emitsInOrder([
-          loadedEnterprises,
-          enterprisesUpdateds,
-        ]),
-      );
-
       await sut.getEnterprises();
-      sut.goToEnterpriseDetails(selectedEnterprise);
+      expect(sut.enterprises, loadedEnterprises);
 
+      sut.goToEnterpriseDetails(selectedEnterprise);
       await sut.changeEnterpriseUrl(enterpriseUpdated.baseUrl!);
+      expect(sut.enterprises, enterprisesUpdateds);
     });
   });
 
@@ -349,14 +348,9 @@ void main() {
       );
       final updatedEnterprises = [...oldEnterprises, newEnterprise];
 
-      expectLater(
-          sut.enterprisesStream,
-          emitsInOrder([
-            oldEnterprises,
-            updatedEnterprises,
-          ]));
-
       await sut.getEnterprises();
+      expect(sut.enterprises, oldEnterprises);
+
       await sut.addNewEnterprise(
         doOnSucceeds: () {},
         bsUserName: bsUserName,
@@ -364,6 +358,7 @@ void main() {
         baseUrl: newEnterprise.baseUrl!,
         enterpriseName: newEnterprise.enterpriseName!,
       );
+      expect(sut.enterprises, updatedEnterprises);
     });
 
     test("Should emit error when already exists the enterprise", () async {

@@ -1,4 +1,4 @@
-import 'package:celta_dash/ui/pages/analytics/view_models/monthly_analytics_view_model.dart';
+import 'package:celta_dash/ui/pages/web_enterprises/analytics/view_models/monthly_analytics_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';

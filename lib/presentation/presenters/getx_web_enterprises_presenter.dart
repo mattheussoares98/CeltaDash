@@ -43,8 +43,7 @@ class GetxWebEnterprisesPresenter extends GetxController
 
   final _enterprises = Rx<List<FirebaseEnterpriseViewModel>?>(null);
   @override
-  Stream<List<FirebaseEnterpriseViewModel>?> get enterprisesStream =>
-      _enterprises.stream;
+  List<FirebaseEnterpriseViewModel>? get enterprises => _enterprises.value;
   set enterprises(List<FirebaseEnterpriseViewModel>? enterprises) =>
       _enterprises.value = enterprises;
 

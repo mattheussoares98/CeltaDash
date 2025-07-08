@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../domain/entities/entities.dart';
+import '../../../../../domain/entities/entities.dart';
 
 class ActiveUserViewModel extends Equatable {
   final String userName;

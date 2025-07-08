@@ -6,7 +6,7 @@ import '../pages.dart';
 abstract class WebEnterprisesPresenter implements Listenable {
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
-  Stream<List<FirebaseEnterpriseViewModel>?> get enterprisesStream;
+  List<FirebaseEnterpriseViewModel>? get enterprises;
   FirebaseEnterpriseViewModel? get selectedEnterprise;
 
   Future<void> getEnterprises();
