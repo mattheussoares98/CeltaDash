@@ -1,3 +1,4 @@
+import 'package:celta_dash/ui/pages/analytics/view_models/monthly_analytics_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -27,11 +28,11 @@ class GetxAnalyticsPresenter extends GetxController
       final data =
           await firebaseManager.get(path: "analytics/monthly_analytics/$docId");
 
-      List<MonthlyAnalyticsModel> analytics = [];
       if (data != null && data.docs.isNotEmpty) {
-        analytics = (data.docs as List)
-            .map((e) =>
-                MonthlyAnalyticsModel.fromJson(e.data(), enterpriseId: e.id))
+        _analytics.value = (data.docs as List)
+            .map((e) => MonthlyAnalyticsViewModel.fromEntity(
+                MonthlyAnalyticsModel.fromJson(e.data(), enterpriseId: e.id)
+                    .toEntity()))
             .toList();
       }
       // I didnt want add tests for this
@@ -42,4 +43,8 @@ class GetxAnalyticsPresenter extends GetxController
       isLoading = false;
     }
   }
+
+  final _analytics = Rx<List<MonthlyAnalyticsViewModel>?>(null);
+  @override
+  List<MonthlyAnalyticsViewModel>? get analytics => _analytics.value;
 }
