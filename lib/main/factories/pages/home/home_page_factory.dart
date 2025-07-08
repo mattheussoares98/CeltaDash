@@ -5,6 +5,7 @@ import '../../../../ui/services/services.dart';
 import '../../factories.dart';
 
 HomePage makeHomePage() {
+  Get.put<AppAnalyticsService>(makeGetxAppAnalyticsService());
   Get.replace<CanceledSalesPresenter>(makeGetxCanceledSalesPresenter());
   Get.replace<CompareDaysPresenter>(makeGetxCompareDaysPresenter());
   Get.replace<DepartmentsPresenter>(makeGetxDepartmentsPresenter());
@@ -16,7 +17,6 @@ HomePage makeHomePage() {
   Get.replace<SellersPresenter>(makeGetxSellersPresenter());
   Get.replace<OperatorsPresenter>(makeGetxOperatorsPresenter());
   Get.put<EnterprisesManagerPresenter>(makeGetxEnterprisesManagerPresenter());
-  Get.put<AppAnalyticsService>(makeGetxAppAnalyticsService());
 
   return HomePage();
 }
