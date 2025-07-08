@@ -101,7 +101,7 @@ class GetxCanceledSalesPresenter extends GetxController
         monthlySales = newSales;
       }
 
-      await appAnalyticsService.addNewMonthlyAnalytic(
+      appAnalyticsService.addNewMonthlyAnalytic(
         reportType: ReportType.canceledSales,
         periodType: selectedPeriod,
       );

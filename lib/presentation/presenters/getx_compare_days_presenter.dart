@@ -90,7 +90,7 @@ class GetxCompareDaysPresenter extends GetxController
 
       saleStatistics = firstDayMovements + secondDayMovements;
 
-      await appAnalyticsService.addNewMonthlyAnalytic(
+      appAnalyticsService.addNewMonthlyAnalytic(
         reportType: ReportType.compareDays,
         periodType: PeriodType.hourly,
       );
