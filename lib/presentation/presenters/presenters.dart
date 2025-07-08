@@ -1,3 +1,4 @@
+export 'getx_analytics_presenter.dart';
 export './getx_canceled_sales_presenter.dart';
 export './getx_compare_days_presenter.dart';
 export './getx_departments_presenter.dart';
@@ -13,4 +14,3 @@ export 'getx_sellers_presenter.dart';
 export './getx_splash_presenter.dart';
 export './getx_web_enterprises_presenter.dart';
 export './getx_web_login_presenter.dart';
-export './gex_web_analytics_presenter.dart';

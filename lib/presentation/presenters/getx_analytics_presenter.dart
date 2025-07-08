@@ -7,12 +7,12 @@ import '../../domain/usecases/usecases.dart';
 import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
-class GetxWebAnalyticsPresenter extends GetxController
+class GetxAnalyticsPresenter extends GetxController
     with ErrorHandling, LoadingManager, UIErrorManager
-    implements WebAnalyticsPresenter {
+    implements AnalyticsPresenter {
   final FirebaseManager firebaseManager;
 
-  GetxWebAnalyticsPresenter({
+  GetxAnalyticsPresenter({
     required this.firebaseManager,
   });
 

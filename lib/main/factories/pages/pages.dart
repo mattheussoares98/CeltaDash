@@ -1,3 +1,4 @@
+export 'analytics/analytics.dart';
 export './app_analytics/app_analytics.dart';
 export './canceled_sales/canceled_sales.dart';
 export './compare_days/compare_days.dart';
@@ -15,7 +16,6 @@ export './resume/resume.dart';
 export './sales/sales.dart';
 export 'sellers/sellers.dart';
 export './splash/splash.dart';
-export './web_analytics/web_analytics.dart';
 export './web_enterprise_details/web_enterprise_details.dart';
 export './web_enterprises/web_enterprises.dart';
 export './web_login/web_login.dart';

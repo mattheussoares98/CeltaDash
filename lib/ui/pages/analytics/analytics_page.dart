@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 import '../pages.dart';
 
-class WebAnalyticsPage extends StatefulWidget {
-  final WebAnalyticsPresenter presenter;
-  const WebAnalyticsPage({super.key, required this.presenter});
+class AnalyticsPage extends StatefulWidget {
+  final AnalyticsPresenter presenter;
+  const AnalyticsPage({super.key, required this.presenter});
 
   @override
-  State<WebAnalyticsPage> createState() => _WebAnalyticsPageState();
+  State<AnalyticsPage> createState() => _AnalyticsPageState();
 }
 
-class _WebAnalyticsPageState extends State<WebAnalyticsPage> {
+class _AnalyticsPageState extends State<AnalyticsPage> {
   @override
   void initState() {
     super.initState();
