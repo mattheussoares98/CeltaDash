@@ -59,6 +59,7 @@ void main() {
 
   Map<String, dynamic> createFakeLocalData({int totalCount = 1}) {
     final entity = MonthlyAnalyticsEntity(
+      enterprise: EnterpriseBuilder.entity?.firebaseId ?? '',
       searchCounts: [
         SearchCountEntity(
           reportType: ReportType.products,

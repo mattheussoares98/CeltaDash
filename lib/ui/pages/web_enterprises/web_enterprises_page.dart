@@ -69,9 +69,7 @@ class _WebEnterprisesPageState extends State<WebEnterprisesPage>
         actions: [
           AddEnterpriseButton(presenter: widget.presenter),
           IconButton(
-            onPressed: () async {
-              await widget.presenter.getEnterprises();
-            },
+            onPressed: widget.presenter.getEnterprises,
             icon:
                 Icon(Icons.refresh, color: Theme.of(context).primaryColorDark),
           ),

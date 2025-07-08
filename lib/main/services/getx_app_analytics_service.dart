@@ -48,6 +48,7 @@ class GetxAppAnalyticsService implements AppAnalyticsService {
         final monthlyModel = MonthlyAnalyticsModel(
           searchCounts: monthlyData.searchCounts,
           users: monthlyData.users,
+          enterprise: EnterpriseBuilder.entity?.firebaseId ?? '',
         );
 
         final docId = DateFormat('yyyy-MM').format(DateTime.now());
@@ -87,17 +88,30 @@ class GetxAppAnalyticsService implements AppAnalyticsService {
   Future<MonthlyAnalyticsEntity> _loadLocalMonthlyData() async {
     final localData = await localStorage.get(DatabaseKeys.monthlyAnalytics);
     if (localData != null && localData is Map<String, dynamic>) {
-      return MonthlyAnalyticsModel.fromJson(localData).toEntity();
+      return MonthlyAnalyticsModel.fromJson(
+        localData,
+        enterpriseId: EnterpriseBuilder.entity?.firebaseId ?? '',
+      ).toEntity();
     }
     // If no data exists, return an empty entity.
-    return const MonthlyAnalyticsEntity(searchCounts: [], users: []);
+    return const MonthlyAnalyticsEntity(
+      searchCounts: [],
+      users: [],
+      enterprise: '',
+    );
   }
 
   /// Helper to save the monthly analytics data to local storage.
   Future<void> _saveLocalMonthlyData(MonthlyAnalyticsEntity data) async {
     final model = MonthlyAnalyticsModel(
-        searchCounts: data.searchCounts, users: data.users);
-    await localStorage.put(DatabaseKeys.monthlyAnalytics, model.toJson());
+      searchCounts: data.searchCounts,
+      users: data.users,
+      enterprise: EnterpriseBuilder.entity?.firebaseId ?? '',
+    );
+    await localStorage.put(
+      DatabaseKeys.monthlyAnalytics,
+      model.toJson(),
+    );
   }
 
   MonthlyAnalyticsEntity _updateMonthlyData({
@@ -146,6 +160,10 @@ class GetxAppAnalyticsService implements AppAnalyticsService {
       ));
     }
 
-    return MonthlyAnalyticsEntity(searchCounts: searchCounts, users: users);
+    return MonthlyAnalyticsEntity(
+      searchCounts: searchCounts,
+      users: users,
+      enterprise: EnterpriseBuilder.entity?.firebaseId ?? '',
+    );
   }
 }

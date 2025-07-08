@@ -8,6 +8,7 @@ class MonthlyAnalyticsModel extends MonthlyAnalyticsEntity {
   const MonthlyAnalyticsModel({
     required super.searchCounts,
     required super.users,
+    required super.enterprise,
   });
 
   factory MonthlyAnalyticsModel.fromEntity(MonthlyAnalyticsEntity entity) {
@@ -16,11 +17,15 @@ class MonthlyAnalyticsModel extends MonthlyAnalyticsEntity {
           .map((e) => SearchCountModel.fromEntity(e))
           .toList(),
       users: entity.users.map((e) => ActiveUserModel.fromEntity(e)).toList(),
+      enterprise: entity.enterprise,
     );
   }
 
   // --- THIS IS THE ONLY CHANGED SECTION ---
-  factory MonthlyAnalyticsModel.fromJson(Map<String, dynamic> json) {
+  factory MonthlyAnalyticsModel.fromJson(
+    Map<String, dynamic> json, {
+    required String enterpriseId,
+  }) {
     final List<SearchCountEntity> searchCountsList = [];
     final List<ActiveUserEntity> usersList = [];
 
@@ -59,6 +64,7 @@ class MonthlyAnalyticsModel extends MonthlyAnalyticsEntity {
     return MonthlyAnalyticsModel(
       searchCounts: searchCountsList,
       users: usersList,
+      enterprise: enterpriseId,
     );
   }
   // --- END OF CHANGED SECTION ---
@@ -90,5 +96,6 @@ class MonthlyAnalyticsModel extends MonthlyAnalyticsEntity {
   MonthlyAnalyticsEntity toEntity() => MonthlyAnalyticsEntity(
         searchCounts: searchCounts,
         users: users,
+        enterprise: enterprise,
       );
 }
