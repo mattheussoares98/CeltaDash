@@ -4,6 +4,7 @@ import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:celta_dash/ui/services/services.dart';
 import 'package:faker/faker.dart';
 
 import 'package:get/get.dart';
@@ -14,11 +15,14 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../data/mocks/mocks.dart';
 import '../../domain/mocks/mocks.dart';
+import '../../services/services.dart';
 import '../mocks/mocks.dart';
 
 void main() {
   late GetxDepartmentsPresenter sut;
   late HomePresenterSpy homePresenter;
+
+  late AppAnalyticsServiceSpy appAnalyticsService;
 
   late LoadSaleStatisticsSpy loadSaleStatistics;
 
@@ -55,7 +59,13 @@ void main() {
     homePresenter.enterprisesMock = [homePresenter.selectedEnterpriseMock!];
   }
 
+  void initServices() {
+    appAnalyticsService = AppAnalyticsServiceSpy();
+    Get.put<AppAnalyticsService>(appAnalyticsService);
+  }
+
   setUp(() {
+    initServices();
     initUsecases();
     initPresenters();
     initEntities();
@@ -64,6 +74,12 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(EntityFactory.makeGetSalesParams());
+    for (var key in ReportType.values) {
+      registerFallbackValue(key);
+    }
+    for (var key in PeriodType.values) {
+      registerFallbackValue(key);
+    }
   });
 
   group("Load sale movements", () {
@@ -122,6 +138,18 @@ void main() {
               .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
               .toList(),
         );
+      });
+      test("Should add new analysis", () async {
+        final periodType = PeriodType.values[faker.randomGenerator.integer(
+          PeriodType.values.length,
+        )];
+
+        await sut.getSales(homePresenter,
+            periodType: periodType, forceRefresh: true);
+
+        verify(() => appAnalyticsService.addNewMonthlyAnalytic(
+            reportType: ReportType.departments,
+            periodType: periodType)).called(1);
       });
     });
 
