@@ -4,6 +4,7 @@ import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:celta_dash/ui/services/services.dart';
 import 'package:faker/faker.dart';
 
 import 'package:get/get.dart';
@@ -14,11 +15,14 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../data/mocks/mocks.dart';
 import '../../domain/mocks/mocks.dart';
+import '../../services/services.dart';
 import '../mocks/mocks.dart';
 
 void main() {
   late GetxSalesPresenter sut;
   late HomePresenterSpy homePresenter;
+
+  late AppAnalyticsServiceSpy appAnalyticsService;
 
   late LoadSaleStatisticsSpy loadSaleStatistics;
 
@@ -51,7 +55,13 @@ void main() {
     loadSaleStatistics.mockGet(saleStatisticsEntities);
   }
 
+  void initServices() {
+    appAnalyticsService = AppAnalyticsServiceSpy();
+    Get.put<AppAnalyticsService>(appAnalyticsService);
+  }
+
   setUp(() {
+    initServices();
     initUsecases();
     initPresenters();
     initEntities();
@@ -61,6 +71,13 @@ void main() {
   setUpAll(() {
     registerFallbackValue(EntityFactory.makeGetSalesParams());
     registerFallbackValue(HomePresenterSpy());
+    registerFallbackValue(EntityFactory.makeGetSalesParams());
+    for (var key in ReportType.values) {
+      registerFallbackValue(key);
+    }
+    for (var key in PeriodType.values) {
+      registerFallbackValue(key);
+    }
   });
 
   group("Get sales", () {
@@ -91,6 +108,22 @@ void main() {
 
         await sut.getSales(homePresenter, periodType: PeriodType.yearly);
         expect(sut.selectedPeriod, PeriodType.yearly);
+      });
+
+      test("Should add new analysis", () async {
+        final index = faker.randomGenerator.integer(PeriodType.values.length);
+        final periodType = PeriodType.values[index];
+
+        await sut.getSales(
+          homePresenter,
+          periodType: periodType,
+          forceRefresh: true,
+        );
+
+        verify(
+          () => appAnalyticsService.addNewMonthlyAnalytic(
+              reportType: ReportType.sales, periodType: periodType),
+        ).called(1);
       });
     });
     group("PeriodType.hourly", () {
