@@ -113,7 +113,7 @@ class GetxResumePresenter extends GetxController
 
       appAnalyticsService.addNewMonthlyAnalytic(
         reportType: ReportType.resume,
-        periodType: PeriodType.monthly,
+        periodType: selectedPeriod,
       );
     } catch (e) {
       mainError = getUIError(e);

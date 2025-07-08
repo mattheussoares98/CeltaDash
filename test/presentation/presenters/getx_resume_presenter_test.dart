@@ -735,23 +735,23 @@ void main() {
       });
     });
 
-    group("App analytics service", () {
-      test("Should call add new monthly analitics with correct values",
-          () async {
-        await sut.getSales(
-          now: now,
-          homePresenter,
-          periodType: PeriodType.monthly,
-          forceRefresh: true,
-        );
+    test("Should add new analysis", () async {
+      final index = faker.randomGenerator.integer(PeriodType.values.length);
+      final periodType = PeriodType.values[index];
 
-        verify(
-          () => appAnalyticsService.addNewMonthlyAnalytic(
-            reportType: ReportType.resume,
-            periodType: PeriodType.monthly,
-          ),
-        ).called(1);
-      });
+      await sut.getSales(
+        homePresenter,
+        periodType: periodType,
+        forceRefresh: true,
+        now: now,
+      );
+
+      verify(
+        () => appAnalyticsService.addNewMonthlyAnalytic(
+          reportType: ReportType.resume,
+          periodType: periodType,
+        ),
+      ).called(1);
     });
   });
 }
