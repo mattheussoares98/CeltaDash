@@ -59,9 +59,9 @@ class _AppAnalyticsPageState extends State<AppAnalyticsPage>
           );
         }
 
-        analytics.sort((a, b) => a.totalSearchesFormatted
+        analytics.sort((a, b) => b.totalSearchesFormatted
             .toInt()
-            .compareTo(b.totalSearchesFormatted.toInt()));
+            .compareTo(a.totalSearchesFormatted.toInt()));
 
         return RefreshIndicator(
           onRefresh: presenter.loadAnalytics,
