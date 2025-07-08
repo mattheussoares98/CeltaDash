@@ -1,14 +1,17 @@
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
+import '../../domain/entities/entities.dart';
 import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
 import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
+import '../../ui/services/services.dart';
 import '../mixins/mixins.dart';
 
 class GetxCanceledSalesPresenter extends GetxController
-    with ErrorHandling,
+    with
+        ErrorHandling,
         UIErrorManager,
         LoadingManager,
         SaleMovementManager,
@@ -22,6 +25,8 @@ class GetxCanceledSalesPresenter extends GetxController
     required this.loadSaleMovements,
     required this.navigateTo,
   });
+
+  final appAnalyticsService = Get.find<AppAnalyticsService>();
 
   @override
   Future<void> getSales(
@@ -95,6 +100,12 @@ class GetxCanceledSalesPresenter extends GetxController
         lastGetMonthlyParams = params;
         monthlySales = newSales;
       }
+
+      await appAnalyticsService.addNewMonthlyAnalytic(
+        reportType: ReportType.canceledSales,
+        periodType: selectedPeriod,
+      );
+      //TODO add test
     } catch (e) {
       mainError = getUIError(e);
     } finally {
@@ -104,8 +115,7 @@ class GetxCanceledSalesPresenter extends GetxController
 
   final _selectedSale = Rx<SaleMovementViewModel?>(null);
   @override
-  Stream<SaleMovementViewModel?> get selectedSaleStream =>
-      _selectedSale.stream;
+  Stream<SaleMovementViewModel?> get selectedSaleStream => _selectedSale.stream;
   set selectedSale(SaleMovementViewModel? value) {
     _selectedSale.value = null;
     _selectedSale.value = value;
