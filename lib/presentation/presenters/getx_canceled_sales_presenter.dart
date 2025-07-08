@@ -105,7 +105,6 @@ class GetxCanceledSalesPresenter extends GetxController
         reportType: ReportType.canceledSales,
         periodType: selectedPeriod,
       );
-      //TODO add test
     } catch (e) {
       mainError = getUIError(e);
     } finally {
