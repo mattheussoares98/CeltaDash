@@ -1,10 +1,12 @@
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
+import '../../domain/entities/entities.dart';
 import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
 import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
+import '../../ui/services/services.dart';
 import '../mixins/mixins.dart';
 
 class GetxResumePresenter extends GetxController
@@ -23,6 +25,8 @@ class GetxResumePresenter extends GetxController
     required this.navigateTo,
     required this.loadSaleStatistics,
   });
+
+  final appAnalyticsService = Get.find<AppAnalyticsService>();
 
   @override
   void goToSetGoalPage() {
@@ -106,6 +110,11 @@ class GetxResumePresenter extends GetxController
           .toList();
 
       lastParams = salesParams;
+
+      appAnalyticsService.addNewMonthlyAnalytic(
+        reportType: ReportType.resume,
+        periodType: PeriodType.monthly,
+      );
     } catch (e) {
       mainError = getUIError(e);
     } finally {

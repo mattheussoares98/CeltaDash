@@ -4,6 +4,7 @@ import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:celta_dash/ui/services/services.dart';
 import 'package:faker/faker.dart';
 
 import 'package:get/get.dart';
@@ -14,11 +15,14 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../data/mocks/mocks.dart';
 import '../../domain/mocks/mocks.dart';
+import '../../services/services.dart';
 import '../mocks/mocks.dart';
 
 void main() {
   late GetxResumePresenter sut;
   late HomePresenterSpy homePresenter;
+
+  late AppAnalyticsServiceSpy appAnalyticsService;
 
   late NavigateToSpy navigateTo;
   late LoadSaleStatisticsSpy loadSaleStatistics;
@@ -58,7 +62,13 @@ void main() {
             .toViewModel();
   }
 
+  void initServices() {
+    appAnalyticsService = AppAnalyticsServiceSpy();
+    Get.put<AppAnalyticsService>(appAnalyticsService);
+  }
+
   setUp(() {
+    initServices();
     initUsecases();
     initPresenters();
     initEntities();
@@ -67,6 +77,16 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(EntityFactory.makeGetSalesParams());
+    for (var key in ReportType.values) {
+      registerFallbackValue(key);
+    }
+    for (var key in PeriodType.values) {
+      registerFallbackValue(key);
+    }
+  });
+
+  tearDown(() {
+    Get.reset();
   });
 
   group("Navigate to", () {
@@ -704,7 +724,7 @@ void main() {
           forceRefresh: true,
         );
         expect(sut.selectedPeriod, PeriodType.daily);
-        
+
         await sut.getSales(
           now: now,
           homePresenter,
@@ -712,6 +732,25 @@ void main() {
           forceRefresh: true,
         );
         expect(sut.selectedPeriod, PeriodType.monthly);
+      });
+    });
+
+    group("App analytics service", () {
+      test("Should call add new monthly analitics with correct values",
+          () async {
+        await sut.getSales(
+          now: now,
+          homePresenter,
+          periodType: PeriodType.monthly,
+          forceRefresh: true,
+        );
+
+        verify(
+          () => appAnalyticsService.addNewMonthlyAnalytic(
+            reportType: ReportType.resume,
+            periodType: PeriodType.monthly,
+          ),
+        ).called(1);
       });
     });
   });

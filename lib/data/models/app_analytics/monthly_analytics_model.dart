@@ -26,7 +26,7 @@ class MonthlyAnalyticsModel extends MonthlyAnalyticsEntity {
         'searchCounts': searchCounts
             .map((searchCount) => SearchCountModel(
                     reportType: searchCount.reportType,
-                    reportPeriod: searchCount.reportPeriod,
+                    periodType: searchCount.periodType,
                     count: searchCount.count)
                 .toJson())
             .toList(),

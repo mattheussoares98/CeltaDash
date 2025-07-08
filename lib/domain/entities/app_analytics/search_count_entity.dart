@@ -1,18 +1,19 @@
 import 'package:equatable/equatable.dart';
 
+import '../../helpers/helpers.dart';
 import '../entities.dart';
 
 class SearchCountEntity extends Equatable {
   final ReportType reportType;
-  final ReportPeriod reportPeriod;
+  final PeriodType periodType;
   final int count;
 
   const SearchCountEntity({
     required this.reportType,
-    required this.reportPeriod,
+    required this.periodType,
     required this.count,
   });
 
   @override
-  List<Object?> get props => [reportType, reportPeriod, count];
+  List<Object?> get props => [reportType, periodType, count];
 }

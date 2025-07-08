@@ -5,4 +5,5 @@ import '../factories.dart';
 AppAnalyticsService makeGetxAppAnalyticsService() => GetxAppAnalyticsService(
       firebaseManager: makeRemoteFirebaseManager(),
       localStorage: makeHiveLocalStorage(),
+      getPlatform: makeLocalGetPlatform(),
     );

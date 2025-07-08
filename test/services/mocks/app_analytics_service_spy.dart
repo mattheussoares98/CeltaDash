@@ -9,9 +9,7 @@ class AppAnalyticsServiceSpy extends Mock implements AppAnalyticsService {
   When _mockAddNewMonthlyAnalyticCall() =>
       when(() => this.addNewMonthlyAnalytic(
             reportType: any(named: "reportType"),
-            reportPeriod: any(named: "reportPeriod"),
-            userName: any(named: "userName"),
-            platform: any(named: "platform"),
+            periodType: any(named: "periodType"),
           ));
 
   void mockAddNewMonthlyAnalytic() =>

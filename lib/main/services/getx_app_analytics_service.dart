@@ -3,36 +3,38 @@ import 'package:intl/intl.dart';
 
 import '../../data/models/models.dart';
 import '../../domain/entities/entities.dart';
+import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
 import '../../infra/helpers/helpers.dart';
 import '../../ui/services/services.dart';
+import '../builders/builders.dart';
 
 class GetxAppAnalyticsService implements AppAnalyticsService {
   final FirebaseManager firebaseManager;
   final LocalStorage localStorage;
+  final GetPlatformType getPlatform;
 
   GetxAppAnalyticsService({
     required this.firebaseManager,
     required this.localStorage,
+    required this.getPlatform,
   });
 
   @override
   Future<void> addNewMonthlyAnalytic({
     required ReportType reportType,
-    required ReportPeriod reportPeriod,
-    required String userName,
-    required String platform,
+    required PeriodType periodType,
   }) async {
     try {
       // 1. Load local monthly data and the update counter
       MonthlyAnalyticsEntity monthlyData = await _loadLocalMonthlyData();
 
       // 2. Update the data in memory with the new event information
+      final platform = getPlatform.get();
       monthlyData = _updateMonthlyData(
         data: monthlyData,
         reportType: reportType,
-        reportPeriod: reportPeriod,
-        userName: userName,
+        periodType: periodType,
         platform: platform,
       );
       int count = monthlyData.searchCounts.fold(0, (p, e) => p + e.count);
@@ -85,29 +87,30 @@ class GetxAppAnalyticsService implements AppAnalyticsService {
   MonthlyAnalyticsEntity _updateMonthlyData({
     required MonthlyAnalyticsEntity data,
     required ReportType reportType,
-    required ReportPeriod reportPeriod,
-    required String userName,
-    required String platform,
+    required PeriodType periodType,
+    required PlatformType platform,
   }) {
     // --- Update Search Counts ---
     final searchCounts = List<SearchCountEntity>.from(data.searchCounts);
     final searchIndex = searchCounts.indexWhere(
-        (sc) => sc.reportType == reportType && sc.reportPeriod == reportPeriod);
+        (sc) => sc.reportType == reportType && sc.periodType == periodType);
 
     if (searchIndex != -1) {
       final existing = searchCounts[searchIndex];
       searchCounts[searchIndex] = SearchCountEntity(
         reportType: existing.reportType,
-        reportPeriod: existing.reportPeriod,
+        periodType: existing.periodType,
         count: existing.count + 1,
       );
     } else {
       searchCounts.add(SearchCountEntity(
         reportType: reportType,
-        reportPeriod: reportPeriod,
+        periodType: periodType,
         count: 1,
       ));
     }
+
+    final userName = EnterpriseBuilder.entity?.bsUser?.name ?? '';
 
     // --- Update Users ---
     final users = List<ActiveUserEntity>.from(data.users);
@@ -116,13 +119,13 @@ class GetxAppAnalyticsService implements AppAnalyticsService {
     if (userIndex != -1) {
       users[userIndex] = ActiveUserEntity(
         userName: userName,
-        platform: platform,
+        platform: platform.name,
         lastActive: DateTime.now(),
       );
     } else {
       users.add(ActiveUserEntity(
         userName: userName,
-        platform: platform,
+        platform: platform.name,
         lastActive: DateTime.now(),
       ));
     }

@@ -17,7 +17,7 @@ class SearchCountViewModel extends Equatable {
     String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 
     final type = capitalize(entity.reportType.name);
-    final period = capitalize(entity.reportPeriod.name);
+    final period = capitalize(entity.periodType.name);
 
     return SearchCountViewModel(
       title: '$type ($period)',

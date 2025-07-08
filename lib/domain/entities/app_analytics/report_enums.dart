@@ -9,10 +9,3 @@ enum ReportType {
   sales,
   sellers,
 }
-
-enum ReportPeriod {
-  hourly,
-  daily,
-  monthly,
-  yearly,
-}

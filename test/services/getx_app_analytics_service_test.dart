@@ -1,5 +1,6 @@
 import 'package:celta_dash/data/models/models.dart';
 import 'package:celta_dash/domain/entities/entities.dart';
+import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/infra/helpers/helpers.dart';
 import 'package:celta_dash/main/services/services.dart';
 import 'package:faker/faker.dart';
@@ -9,41 +10,35 @@ import 'package:mocktail/mocktail.dart';
 import '../data/mocks/mocks.dart';
 
 void main() {
-  // --- Test Dependencies ---
   late GetxAppAnalyticsService sut;
   late FirebaseManagerSpy firebaseManager;
   late LocalStorageSpy localStorage;
   late MockedFirebaseGet mockedFirebaseGet;
+  late GetPlatformTypeSpy getPlatformType;
 
-  // --- Test Data ---
   late ReportType reportType;
-  late ReportPeriod reportPeriod;
-  late String userName;
-  late String platform;
+  late PeriodType periodType;
 
-  // --- Initialization Functions ---
   void initDependencies() {
-    // Spies must be initialized before the SUT (System Under Test)
     firebaseManager = FirebaseManagerSpy(mockedFirebaseGet: mockedFirebaseGet);
     localStorage = LocalStorageSpy();
+    getPlatformType = GetPlatformTypeSpy();
     sut = GetxAppAnalyticsService(
       firebaseManager: firebaseManager,
       localStorage: localStorage,
+      getPlatform: getPlatformType,
     );
   }
 
   void initMockSuccess() {
-    // Default mock behavior for successful operations is handled
-    // within the spy constructors. We can override here if needed.
     localStorage.mockGet(DatabaseKeys.monthlyAnalytics, null);
     firebaseManager.mockGet(mockedFirebaseGet);
+    getPlatformType.mockGet(PlatformType.android);
   }
 
   void initTestData() {
     reportType = ReportType.sales;
-    reportPeriod = ReportPeriod.daily;
-    userName = faker.person.name();
-    platform = 'android';
+    periodType = PeriodType.daily;
     mockedFirebaseGet = MockedFirebaseGet(dataToReturn: []);
   }
 
@@ -54,19 +49,17 @@ void main() {
   });
 
   setUpAll(() {
-    // Register fallback values for any() matchers
     for (var key in DatabaseKeys.values) {
       registerFallbackValue(key);
     }
   });
 
-  // Helper to create a valid JSON map for a MonthlyAnalyticsModel
   Map<String, dynamic> createFakeLocalData({int totalCount = 1}) {
     final entity = MonthlyAnalyticsEntity(
       searchCounts: [
         SearchCountEntity(
           reportType: ReportType.products,
-          reportPeriod: ReportPeriod.monthly,
+          periodType: PeriodType.monthly,
           count: totalCount,
         ),
       ],
@@ -82,6 +75,15 @@ void main() {
   }
 
   group('addNewMonthlyAnalytic', () {
+    test('Should load get local platform', () async {
+      await sut.addNewMonthlyAnalytic(
+        reportType: reportType,
+        periodType: periodType,
+      );
+
+      // Assert
+      verify(() => getPlatformType.get()).called(1);
+    });
     test('Should save the first event locally without syncing to Firebase',
         () async {
       // Arrange: Default setup mocks localStorage.get to return null
@@ -89,9 +91,7 @@ void main() {
       // Act
       await sut.addNewMonthlyAnalytic(
         reportType: reportType,
-        reportPeriod: reportPeriod,
-        userName: userName,
-        platform: platform,
+        periodType: periodType,
       );
 
       // Assert
@@ -115,9 +115,7 @@ void main() {
       // Act
       await sut.addNewMonthlyAnalytic(
         reportType: reportType,
-        reportPeriod: reportPeriod,
-        userName: userName,
-        platform: platform,
+        periodType: periodType,
       );
 
       // Assert
@@ -139,9 +137,7 @@ void main() {
       // Act
       await sut.addNewMonthlyAnalytic(
         reportType: reportType,
-        reportPeriod: reportPeriod,
-        userName: userName,
-        platform: platform,
+        periodType: periodType,
       );
 
       // Assert
@@ -164,9 +160,7 @@ void main() {
       // Act
       await sut.addNewMonthlyAnalytic(
         reportType: reportType,
-        reportPeriod: reportPeriod,
-        userName: userName,
-        platform: platform,
+        periodType: periodType,
       );
 
       // Assert
@@ -188,9 +182,7 @@ void main() {
       // Act
       await sut.addNewMonthlyAnalytic(
         reportType: reportType,
-        reportPeriod: reportPeriod,
-        userName: userName,
-        platform: platform,
+        periodType: periodType,
       );
 
       // Assert
@@ -210,17 +202,14 @@ void main() {
       // Act
       final future = sut.addNewMonthlyAnalytic(
         reportType: reportType,
-        reportPeriod: reportPeriod,
-        userName: userName,
-        platform: platform,
+        periodType: periodType,
       );
 
       // Assert
       await expectLater(future, completes);
       verifyNever(() => localStorage.put(any(), any()));
       verifyNever(() => firebaseManager.put(
-          path: any(named: 'path'),
-          data: any(named: 'data')));
+          path: any(named: 'path'), data: any(named: 'data')));
     });
   });
 }
