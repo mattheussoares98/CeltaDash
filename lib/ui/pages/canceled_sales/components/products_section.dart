@@ -94,7 +94,26 @@ class ProductsSection extends StatelessWidget {
                   ],
                 ),
               ),
-              if (index < sale.products!.length - 1) const Divider(height: 3),
+              const Divider(height: 3),
+              if (index == sale.products!.length - 1)
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(""),
+                    ),
+                    Text(
+                      sale.products!
+                          .fold(0.0,
+                              (p, e) => p + (e.TotalLiquid?.toDouble() ?? 0))
+                          .toString()
+                          .toBrazilianNumber()
+                          .addBrazilianCoin(),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                  ],
+                ),
             ],
           );
         },
