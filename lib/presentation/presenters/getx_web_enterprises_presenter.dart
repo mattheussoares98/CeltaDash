@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
@@ -216,6 +217,22 @@ class GetxWebEnterprisesPresenter extends GetxController
     } catch (e) {
       mainError = getUIError(e);
       return false;
+    } finally {
+      isLoading = false;
+    }
+  }
+
+  @override
+  Future<void> loadAnalytics() async {
+    try {
+      isLoading = true;
+      mainError = null;
+
+      final data = await firebaseManager.get(path: "analytics");
+      debugPrint(data);
+      //TODO create tests
+    } catch (e) {
+      mainError = getUIError(e);
     } finally {
       isLoading = false;
     }
