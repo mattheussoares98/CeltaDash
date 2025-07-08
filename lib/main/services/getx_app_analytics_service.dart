@@ -53,7 +53,7 @@ class GetxAppAnalyticsService implements AppAnalyticsService {
 
         // Send the data to Firebase, merging with existing data
         await firebaseManager.put(
-          path: "monthly_analytics$docId",
+          path: "monthly_analytics/$docId",
           data: monthlyModel.toJson(),
           merge: true,
         );
