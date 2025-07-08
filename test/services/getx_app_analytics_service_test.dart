@@ -2,12 +2,14 @@ import 'package:celta_dash/data/models/models.dart';
 import 'package:celta_dash/domain/entities/entities.dart';
 import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/infra/helpers/helpers.dart';
+import 'package:celta_dash/main/builders/builders.dart';
 import 'package:celta_dash/main/services/services.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../data/mocks/mocks.dart';
+import '../domain/mocks/mocks.dart';
 
 void main() {
   late GetxAppAnalyticsService sut;
@@ -40,6 +42,7 @@ void main() {
     reportType = ReportType.sales;
     periodType = PeriodType.daily;
     mockedFirebaseGet = MockedFirebaseGet(dataToReturn: []);
+    EnterpriseBuilder.entity = EntityFactory.makeFirebaseEnterpriseEntity();
   }
 
   setUp(() {

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
@@ -53,10 +54,25 @@ class GetxAppAnalyticsService implements AppAnalyticsService {
 
         // Send the data to Firebase, merging with existing data
         await firebaseManager.put(
-          path: "monthly_analytics/$docId",
-          data: monthlyModel.toJson(),
+          path:
+              "analytics/${EnterpriseBuilder.entity!.enterpriseName}/monthly_analytics/$docId",
+          data: {
+            for (var count in monthlyModel.searchCounts)
+              "${count.reportType.name}.${count.periodType.name}":
+                  FieldValue.increment(count.count),
+            'users': [
+              {
+                'userName': monthlyModel.users.first.userName,
+                'platform': monthlyModel.users.first.platform,
+                'lastActive':
+                    monthlyModel.users.first.lastActive.toIso8601String(),
+              }
+            ],
+          },
           merge: true,
         );
+
+        await localStorage.delete(DatabaseKeys.monthlyAnalytics);
 
         debugPrint(
             'Analytics batch successfully synced and update counter reset.');
