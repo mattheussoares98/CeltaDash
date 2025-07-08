@@ -1,14 +1,17 @@
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
+import '../../domain/entities/entities.dart';
 import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
 import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
+import '../../ui/services/services.dart';
 import '../mixins/mixins.dart';
 
 class GetxSellersPresenter extends GetxController
-    with ErrorHandling,
+    with
+        ErrorHandling,
         LoadingManager,
         UIErrorManager,
         SaleStatisticsManager,
@@ -18,6 +21,8 @@ class GetxSellersPresenter extends GetxController
   final LoadSaleStatistics loadSaleStatistics;
 
   GetxSellersPresenter({required this.loadSaleStatistics});
+
+  final appAnalyticsService = Get.find<AppAnalyticsService>();
 
   @override
   Future<void> getSales(
@@ -129,6 +134,11 @@ class GetxSellersPresenter extends GetxController
         yearlyStatistics = newSales;
         lastGetYearlyParams = getSalesParams;
       }
+
+      appAnalyticsService.addNewMonthlyAnalytic(
+        reportType: ReportType.sellers,
+        periodType: selectedPeriod,
+      );
     } catch (e) {
       mainError = getUIError(e);
     } finally {
