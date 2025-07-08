@@ -6,6 +6,7 @@ import 'package:celta_dash/infra/helpers/helpers.dart';
 import 'package:celta_dash/main/builders/builders.dart';
 import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:celta_dash/ui/services/services.dart';
 import 'package:faker/faker.dart';
 
 import 'package:get/get.dart';
@@ -16,12 +17,15 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../data/mocks/mocks.dart';
 import '../../domain/mocks/mocks.dart';
+import '../../services/services.dart';
 import '../mocks/mocks.dart';
 
 void main() {
   late GetxProductsPresenter sut;
 
   late HomePresenterSpy homePresenter;
+
+  late AppAnalyticsServiceSpy appAnalyticsService;
 
   late LoadSaleStatisticsSpy loadSaleStatistics;
   late LocalStorageSpy localStorage;
@@ -61,7 +65,13 @@ void main() {
     homePresenter.selectedDateMock = faker.date.dateTime();
   }
 
+  void initServices() {
+    appAnalyticsService = AppAnalyticsServiceSpy();
+    Get.put<AppAnalyticsService>(appAnalyticsService);
+  }
+
   setUp(() {
+    initServices();
     initEntities();
     initUsecases();
     initPresenters();
@@ -73,6 +83,12 @@ void main() {
       registerFallbackValue(key);
     }
     registerFallbackValue(EntityFactory.makeGetSalesParams());
+    for (var key in ReportType.values) {
+      registerFallbackValue(key);
+    }
+    for (var key in PeriodType.values) {
+      registerFallbackValue(key);
+    }
   });
 
   group("Load sale movements", () {
@@ -131,6 +147,22 @@ void main() {
               .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
               .toList(),
         );
+      });
+
+      test("Should add new analysis", () async {
+        final index = faker.randomGenerator.integer(PeriodType.values.length);
+        final periodType = PeriodType.values[index];
+
+        await sut.getSales(
+          homePresenter,
+          periodType: periodType,
+          forceRefresh: true,
+        );
+
+        verify(
+          () => appAnalyticsService.addNewMonthlyAnalytic(
+              reportType: ReportType.products, periodType: periodType),
+        ).called(1);
       });
     });
 

@@ -1,11 +1,13 @@
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
+import '../../domain/entities/entities.dart';
 import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
 import '../../presentation/mixins/mixins.dart';
 import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
+import '../../ui/services/services.dart';
 
 class GetxProductsPresenter extends GetxController
     with
@@ -22,6 +24,8 @@ class GetxProductsPresenter extends GetxController
     required this.loadSaleStatistics,
     required this.localStorage,
   });
+
+  final appAnalyticsService = Get.find<AppAnalyticsService>();
 
   @override
   Future<void> getSales(
@@ -100,6 +104,11 @@ class GetxProductsPresenter extends GetxController
         lastGetMonthlyParams = params;
         monthlyStatistics = newSales;
       }
+
+      appAnalyticsService.addNewMonthlyAnalytic(
+        reportType: ReportType.products,
+        periodType: selectedPeriod,
+      );
     } catch (e) {
       mainError = getUIError(e);
     } finally {
