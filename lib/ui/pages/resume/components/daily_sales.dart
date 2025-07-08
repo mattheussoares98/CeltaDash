@@ -119,22 +119,26 @@ class DailyStatistics extends StatelessWidget {
                       ),
                       value: selectedDayLiquidValue,
                     ),
-                    if (previousMonthLiquidValue > 0)
-                      PieParameter(
-                        title: Title(
-                          isCurrentDay: isCurrentDay,
-                          now: now,
-                          isPreviousMonth: true,
-                          statistics: previousMonthStatistics ?? [],
-                          color: Colors.orange,
-                        ),
-                        color: Colors.orange,
-                        subtitle: SubTitle(
-                          statistics: previousMonthStatistics ?? [],
-                        ),
-                        showSubtitleOnlyOnTap: true,
-                        value: previousMonthLiquidValue,
+                    // if (previousMonthLiquidValue > 0)
+                    PieParameter(
+                      title: Title(
+                        isCurrentDay: isCurrentDay,
+                        now: now,
+                        isPreviousMonth: true,
+                        statistics: previousMonthStatistics ?? [],
+                        color: previousMonthLiquidValue > 0
+                            ? Colors.orange
+                            : Colors.green,
                       ),
+                      color: previousMonthLiquidValue > 0
+                          ? Colors.orange
+                          : Colors.green,
+                      subtitle: SubTitle(
+                        statistics: previousMonthStatistics ?? [],
+                      ),
+                      showSubtitleOnlyOnTap: true,
+                      value: previousMonthLiquidValue,
+                    ),
                   ],
                 ),
               ],
