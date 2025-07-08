@@ -21,5 +21,4 @@ abstract class WebEnterprisesPresenter implements Listenable {
   });
   void goToLoginPage();
   Future<bool> changeEnterpriseIsEnabled(int subEnterpriseIndex);
-  Future<void> loadAnalytics();
 }
