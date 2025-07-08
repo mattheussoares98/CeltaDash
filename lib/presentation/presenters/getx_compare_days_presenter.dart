@@ -1,10 +1,12 @@
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
+import '../../domain/entities/entities.dart';
 import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
 import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
+import '../../ui/services/services.dart';
 import '../mixins/mixins.dart';
 
 class GetxCompareDaysPresenter extends GetxController
@@ -15,6 +17,8 @@ class GetxCompareDaysPresenter extends GetxController
   GetxCompareDaysPresenter({
     required this.loadSaleStatistics,
   });
+
+  final appAnalyticsService = Get.find<AppAnalyticsService>();
 
   @override
   Future<void> getSales({
@@ -85,6 +89,11 @@ class GetxCompareDaysPresenter extends GetxController
       }
 
       saleStatistics = firstDayMovements + secondDayMovements;
+
+      await appAnalyticsService.addNewMonthlyAnalytic(
+        reportType: ReportType.compareDays,
+        periodType: PeriodType.hourly,
+      );
     } catch (e) {
       mainError = getUIError(e);
     } finally {

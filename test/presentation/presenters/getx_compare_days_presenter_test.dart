@@ -1,8 +1,10 @@
 import 'package:celta_dash/data/models/models.dart';
 import 'package:celta_dash/domain/entities/entities.dart';
+import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:celta_dash/ui/services/services.dart';
 import 'package:faker/faker.dart';
 
 import 'package:get/get.dart';
@@ -13,12 +15,15 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../data/mocks/mocks.dart';
 import '../../domain/mocks/mocks.dart';
+import '../../services/services.dart';
 import '../mocks/mocks.dart';
 
 void main() {
   late GetxCompareDaysPresenter sut;
 
   late HomePresenterSpy homePresenter;
+
+  late AppAnalyticsServiceSpy appAnalyticsService;
 
   late LoadSaleStatisticsSpy loadSaleStatistics;
 
@@ -57,7 +62,13 @@ void main() {
             .toViewModel();
   }
 
+  void initServices() {
+    appAnalyticsService = AppAnalyticsServiceSpy();
+    Get.put<AppAnalyticsService>(appAnalyticsService);
+  }
+
   setUp(() {
+    initServices();
     initUsecases();
     initPresenters();
     initEntities();
@@ -66,6 +77,13 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(EntityFactory.makeGetSalesParams());
+    registerFallbackValue(EntityFactory.makeGetSaleMovementParams());
+    for (var key in ReportType.values) {
+      registerFallbackValue(key);
+    }
+    for (var key in PeriodType.values) {
+      registerFallbackValue(key);
+    }
   });
 
   group("Load sales Statistics", () {
@@ -294,6 +312,18 @@ void main() {
           ),
         ),
       ).called(2);
+    });
+    test("Should call appAnalyticsService add new analytics", () async {
+      await sut.getSales(
+        homePresenter: homePresenter,
+        firstDay: null,
+        secondDay: secondDay,
+      );
+
+      verify(() => appAnalyticsService.addNewMonthlyAnalytic(
+            reportType: ReportType.compareDays,
+            periodType: PeriodType.hourly,
+          )).called(1);
     });
   });
 }
