@@ -10,16 +10,10 @@ import '../mixins/mixins.dart';
 class GetxWebAnalyticsPresenter extends GetxController
     with ErrorHandling, LoadingManager, UIErrorManager
     implements WebAnalyticsPresenter {
-  final NavigateTo navigateTo;
   final FirebaseManager firebaseManager;
-  final BsLogin bsLogin;
-  final LoadEnterprises loadEnterprises;
 
   GetxWebAnalyticsPresenter({
-    required this.navigateTo,
     required this.firebaseManager,
-    required this.bsLogin,
-    required this.loadEnterprises,
   });
 
   @override

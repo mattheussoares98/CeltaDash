@@ -13,3 +13,4 @@ export 'getx_sellers_presenter.dart';
 export './getx_splash_presenter.dart';
 export './getx_web_enterprises_presenter.dart';
 export './getx_web_login_presenter.dart';
+export './gex_web_analytics_presenter.dart';
