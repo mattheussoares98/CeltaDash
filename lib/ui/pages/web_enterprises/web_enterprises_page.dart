@@ -11,7 +11,7 @@ import '../pages.dart';
 
 class WebEnterprisesPage extends StatefulWidget {
   final WebEnterprisesPresenter webEnterprisesPresenter;
-  final AnalyticsPresenter analyticsPresenter;
+  final AppAnalyticsPresenter analyticsPresenter;
   const WebEnterprisesPage({
     super.key,
     required this.webEnterprisesPresenter,
@@ -58,7 +58,7 @@ class _WebEnterprisesPageState extends State<WebEnterprisesPage>
 
   @override
   Widget build(BuildContext context) {
-    Get.put<AnalyticsPresenter>(widget.analyticsPresenter);
+    Get.put<AppAnalyticsPresenter>(widget.analyticsPresenter);
     Get.put<WebEnterprisesPresenter>(widget.webEnterprisesPresenter);
 
     return Scaffold(
@@ -67,7 +67,7 @@ class _WebEnterprisesPageState extends State<WebEnterprisesPage>
         onPageChanged: (index) => setState(() => currentIndex = index),
         children: [
           WebEnterprisesListPage(filterController: filterController),
-          AnalyticsPage(),
+          AppAnalyticsPage(),
         ],
       ),
       bottomNavigationBar: BottomNavBar(

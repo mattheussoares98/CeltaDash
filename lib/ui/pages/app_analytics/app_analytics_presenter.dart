@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 
-import '../../../helpers/helpers.dart';
+import '../../helpers/helpers.dart';
 import 'view_models/view_models.dart';
 
-abstract class AnalyticsPresenter implements Listenable {
+abstract class AppAnalyticsPresenter implements Listenable {
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
   List<MonthlyAnalyticsViewModel>? get analytics;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../helpers/helpers.dart';
+import '../../../helpers/helpers.dart';
 import '../view_models/view_models.dart';
 
 class SearchCounts extends StatelessWidget {

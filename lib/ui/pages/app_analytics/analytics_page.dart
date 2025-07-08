@@ -5,10 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../helpers/helpers.dart';
-import '../../../mixins/mixins.dart';
-import '../../pages.dart';
-import 'components/components.dart';
+import '../../helpers/helpers.dart';
+import '../../mixins/mixins.dart';
+import '../pages.dart';
 
 class AnalyticsPage extends StatefulWidget {
   const AnalyticsPage({super.key});
@@ -25,7 +24,7 @@ class _AnalyticsPageState extends State<AnalyticsPage>
   void initState() {
     super.initState();
 
-    final presenter = Get.find<AnalyticsPresenter>();
+    final presenter = Get.find<AppAnalyticsPresenter>();
 
     mainErrorSubscription = handleMainError(context, presenter.mainErrorStream);
     loadingSubscription = handleLoading(context, presenter.isLoadingStream);
@@ -40,7 +39,7 @@ class _AnalyticsPageState extends State<AnalyticsPage>
 
   @override
   Widget build(BuildContext context) {
-    final presenter = Get.find<AnalyticsPresenter>();
+    final presenter = Get.find<AppAnalyticsPresenter>();
 
     return Scaffold(
       appBar: AppBar(

@@ -1,4 +1,3 @@
-import 'package:celta_dash/ui/pages/web_enterprises/analytics/view_models/monthly_analytics_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -10,7 +9,7 @@ import '../mixins/mixins.dart';
 
 class GetxAnalyticsPresenter extends GetxController
     with ErrorHandling, LoadingManager, UIErrorManager
-    implements AnalyticsPresenter {
+    implements AppAnalyticsPresenter {
   final FirebaseManager firebaseManager;
 
   GetxAnalyticsPresenter({
