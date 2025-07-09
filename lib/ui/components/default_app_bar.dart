@@ -195,7 +195,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                         "${DateFormat('dd/MM/yyyy').format(homePresenter.selectedDate)}  ${DateFormat('EEEE', 'pt_BR').format(homePresenter.selectedDate)}",
                         maxLines: 1,
                       ),
-                      icon: Icon(Icons.date_range, color: Colors.white),
+                      icon: const Icon(Icons.date_range, color: Colors.white),
                     ),
                   ),
                   Padding(
@@ -204,7 +204,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                       onPressed:
                           widget.isLoading == true ? null : widget.onTapRefresh,
                       icon: widget.isLoading == true
-                          ? SizedBox(
+                          ? const SizedBox(
                               height: 25,
                               width: 25,
                               child: CircularProgressIndicator(

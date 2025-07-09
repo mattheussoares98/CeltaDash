@@ -75,7 +75,7 @@ class GetxDepartmentsPresenter extends GetxController
         homePresenter.selectedDate.year,
         homePresenter.selectedDate.month + 1,
         1,
-      ).subtract(Duration(days: 1));
+      ).subtract(const Duration(days: 1));
 
       final params = GetSaleStatisticsParams(
         startDate: startDate,

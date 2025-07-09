@@ -14,7 +14,7 @@ class ValidationBuilder {
   }
 
   ValidationBuilder required() {
-    validations.add(RequiredFieldValidation());
+    validations.add(const RequiredFieldValidation());
     return this;
   }
 

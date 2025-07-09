@@ -111,7 +111,7 @@ class GroupOfStores extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           ChartPieWidget(
-              paddingItems: EdgeInsets.all(0),
+              paddingItems: const EdgeInsets.all(0),
               pieParameters: getPieParameters(homePresenter, context)),
           DefaultButton(
             onTap: resumePresenter.goToGroupSummaryPage,

@@ -22,7 +22,7 @@ class ProductsProfitability extends StatelessWidget {
         : productsPresenter.monthlyStatistics;
 
     if (saleStatistics == null || saleStatistics.isEmpty) {
-      return EmptySales(isLoading: false);
+      return const EmptySales(isLoading: false);
     }
 
     return Column(

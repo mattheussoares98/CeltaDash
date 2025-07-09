@@ -15,7 +15,7 @@ class PaymentFinalizations extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (sale?.paymentFinalizations?.isEmpty == true) {
-      return SizedBox();
+      return const SizedBox();
     }
     double titleMinHeight = 30;
     double getFinalizationsHeight() {

@@ -1,3 +1,3 @@
 import '../../../../ui/pages/pages.dart';
 
-CanceledSalesPage makeCanceledSalesPage() => CanceledSalesPage();
+CanceledSalesPage makeCanceledSalesPage() => const CanceledSalesPage();

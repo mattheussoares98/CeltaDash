@@ -26,7 +26,7 @@ class MonthlyAnalysis extends StatelessWidget {
     int daysQuantity = sales.map((e) => e.Date?.day).toSet().length;
 
     if (daysQuantity <= 1) {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
 
     final datesAndValues = (sales
@@ -75,11 +75,11 @@ class MonthlyAnalysis extends StatelessWidget {
         ) /
         datesAndValues.length;
 
-    if (betterValue == null || worstValue == null) return SizedBox();
+    if (betterValue == null || worstValue == null) return const SizedBox();
 
     return Container(
       decoration: ContainerDecoration.defaultDecoration,
-      padding: EdgeInsets.fromLTRB(4, 8, 8, 8),
+      padding: const EdgeInsets.fromLTRB(4, 8, 8, 8),
       child: Column(
         children: [
           Text(

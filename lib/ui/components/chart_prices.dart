@@ -29,7 +29,7 @@ class ChartPrices extends StatelessWidget {
             child: AspectRatio(
               aspectRatio: dynamicAspectRatio,
               child: LineChart(
-                transformationConfig: FlTransformationConfig(
+                transformationConfig: const FlTransformationConfig(
                   scaleAxis: FlScaleAxis.horizontal,
                   minScale: 1.0,
                   maxScale: 10.0,

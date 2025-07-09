@@ -271,7 +271,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
           ),
         );
       } else {
-        sumRow.add(PersonalizedTableCell(value: '', isTitle: true));
+        sumRow.add(const PersonalizedTableCell(value: '', isTitle: true));
       }
     }
     return sumRow;
@@ -349,7 +349,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
   }
 
   BorderDirectional getBorderDecoration() {
-    return BorderDirectional(
+    return const BorderDirectional(
       end: BorderSide(
         width: 0.5,
         color: Colors.white,
@@ -407,7 +407,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
     }
 
     if (widget.titles.where((e) => e.isTitle != true).isNotEmpty) {
-      return Text("Some titles are not defined as title");
+      return const Text("Some titles are not defined as title");
     }
 
     return Expanded(
@@ -618,7 +618,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
                       bottom: 0,
                       top: 0,
                       left: widget.columnsWidths.first,
-                      child: HorizontalScrollableIndicator(),
+                      child: const HorizontalScrollableIndicator(),
                     );
                   }),
               ],

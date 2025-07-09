@@ -33,7 +33,7 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
         height: DropdownHeight.height,
         child: CupertinoButton(
           disabledColor: Theme.of(context).disabledColor.withAlpha(100),
-          padding: EdgeInsets.only(left: 0),
+          padding: const EdgeInsets.only(left: 0),
           color: IsDarkTheme.isDark
               ? Theme.of(context).disabledColor
               : Theme.of(context).disabledColor.withAlpha(40),

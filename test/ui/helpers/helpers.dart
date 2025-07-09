@@ -28,7 +28,7 @@ Widget makePage({
     ),
     GetPage(
       name: PageRoutes.enterprisesManager,
-      page: () => EnterprisesManagerPage(),
+      page: () => const EnterprisesManagerPage(),
     ),
     GetPage(
       name: PageRoutes.splash,

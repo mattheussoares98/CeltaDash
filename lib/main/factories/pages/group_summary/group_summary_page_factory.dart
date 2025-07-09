@@ -1,3 +1,3 @@
 import '../../../../ui/pages/pages.dart';
 
-GroupSummaryPage makeGroupSummaryPage() => GroupSummaryPage();
+GroupSummaryPage makeGroupSummaryPage() => const GroupSummaryPage();

@@ -25,7 +25,7 @@ class CompareTable extends StatelessWidget {
 
     if (compareDaysPresenter.selectedFirstDay == null ||
         compareDaysPresenter.selectedSecondDay == null) {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
 
     return TableItem(

@@ -157,7 +157,7 @@ void main() {
       DateTime endDate = DateTime(
         homePresenter.selectedDateMock.year,
         homePresenter.selectedDateMock.month + 1,
-      ).subtract(Duration(days: 1));
+      ).subtract(const Duration(days: 1));
 
       verify(() => loadSaleStatistics.get(
             GetSaleStatisticsParams(
@@ -187,7 +187,7 @@ void main() {
       DateTime endDate = DateTime(
         homePresenter.selectedDateMock.year,
         homePresenter.selectedDateMock.month + 1,
-      ).subtract(Duration(days: 1));
+      ).subtract(const Duration(days: 1));
 
       expect(
           sut.lastGetStatisticsParams,
@@ -218,7 +218,7 @@ void main() {
             endDate: DateTime(
               homePresenter.selectedDateMock.year,
               homePresenter.selectedDateMock.month + 1,
-            ).subtract(Duration(days: 1)),
+            ).subtract(const Duration(days: 1)),
             groupByDay: true,
             groupByEnterprise: true,
           ));
@@ -241,7 +241,7 @@ void main() {
                 homePresenter.selectedDateMock.year,
                 homePresenter.selectedDateMock.month + 1,
                 1,
-              ).subtract(Duration(days: 1)),
+              ).subtract(const Duration(days: 1)),
               groupByDay: true,
               groupByEnterprise: true,
             ),
@@ -261,7 +261,7 @@ void main() {
       DateTime endDate = DateTime(
         homePresenter.selectedDateMock.year,
         homePresenter.selectedDateMock.month + 1,
-      ).subtract(Duration(days: 1));
+      ).subtract(const Duration(days: 1));
 
       verify(() => loadSaleStatistics.get(
             GetSaleStatisticsParams(

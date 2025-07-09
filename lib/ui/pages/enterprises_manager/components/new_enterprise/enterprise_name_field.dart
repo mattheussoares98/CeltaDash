@@ -30,7 +30,7 @@ class EnterpriseNameField extends StatelessWidget {
       },
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (value) => ValidationComposite([
-        RequiredFieldValidation(),
+        const RequiredFieldValidation(),
       ]).validate(value)?.description,
     );
   }

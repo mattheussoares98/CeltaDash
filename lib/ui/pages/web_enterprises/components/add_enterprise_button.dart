@@ -88,12 +88,12 @@ class _AddEnterpriseButtonState extends State<AddEnterpriseButton> {
                             },
                             validator: (value) {
                               return ValidationComposite([
-                                RequiredFieldValidation(),
-                                MinLengthValidation(size: 2),
+                                const RequiredFieldValidation(),
+                                const MinLengthValidation(size: 2),
                               ]).validate(value)?.description;
                             },
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           TextFormField(
                             controller: baseUrlController,
                             focusNode: urlFocusNode,
@@ -107,13 +107,13 @@ class _AddEnterpriseButtonState extends State<AddEnterpriseButton> {
                             },
                             validator: (value) {
                               return ValidationComposite([
-                                RequiredFieldValidation(),
-                                MinLengthValidation(size: 2),
+                                const RequiredFieldValidation(),
+                                const MinLengthValidation(size: 2),
                                 UrlFieldValidation(),
                               ]).validate(value)?.description;
                             },
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           TextFormField(
                             controller: bsUserNameController,
                             focusNode: bsUserFocusNode,
@@ -127,11 +127,11 @@ class _AddEnterpriseButtonState extends State<AddEnterpriseButton> {
                             },
                             validator: (value) {
                               return ValidationComposite([
-                                RequiredFieldValidation(),
+                                const RequiredFieldValidation(),
                               ]).validate(value)?.description;
                             },
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           TextFormField(
                             controller: bsPasswordController,
                             focusNode: passwordFocusNode,
@@ -146,7 +146,7 @@ class _AddEnterpriseButtonState extends State<AddEnterpriseButton> {
                             ),
                             validator: (value) {
                               return ValidationComposite([
-                                RequiredFieldValidation(),
+                                const RequiredFieldValidation(),
                               ]).validate(value)?.description;
                             },
                           ),
@@ -165,7 +165,7 @@ class _AddEnterpriseButtonState extends State<AddEnterpriseButton> {
               bsPasswordController.clear();
             });
       },
-      icon: Icon(Icons.add),
+      icon: const Icon(Icons.add),
     );
   }
 }

@@ -29,15 +29,15 @@ class EnterpriseField extends StatelessWidget {
       },
       validator: (value) {
         return ValidationComposite([
-          RequiredFieldValidation(),
-          MinLengthValidation(size: 2),
+          const RequiredFieldValidation(),
+          const MinLengthValidation(size: 2),
         ]).validate(value)?.description;
       },
       decoration: FormFieldDecoration.decoration(
         context: context,
         hintText: R.string.enterprise,
         labelText: R.string.enterprise,
-        prefixIcon: Icon(Icons.business),
+        prefixIcon: const Icon(Icons.business),
       ),
     );
   }

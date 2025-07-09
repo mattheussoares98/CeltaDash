@@ -15,12 +15,12 @@ class ContainerDecoration {
         boxShadow: [
           BoxShadow(
             color: theme.primaryColorLight.withAlpha(50),
-            offset: Offset(2, 2),
+            offset: const Offset(2, 2),
             blurRadius: 4,
           ),
           BoxShadow(
             color: theme.primaryColorLight.withAlpha(50),
-            offset: Offset(-2, -2),
+            offset: const Offset(-2, -2),
             blurRadius: 4,
           ),
         ],
@@ -33,12 +33,12 @@ class ContainerDecoration {
         boxShadow: [
           BoxShadow(
             color: theme.colorScheme.error.withAlpha(50),
-            offset: Offset(2, 2),
+            offset: const Offset(2, 2),
             blurRadius: 4,
           ),
           BoxShadow(
             color: theme.colorScheme.error.withAlpha(50),
-            offset: Offset(-2, -2),
+            offset: const Offset(-2, -2),
             blurRadius: 4,
           ),
         ],
@@ -48,7 +48,7 @@ class ContainerDecoration {
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.green),
         boxShadow: [
-          BoxShadow(
+          const BoxShadow(
             color: Colors.green,
             offset: Offset(2, 2),
             blurRadius: 4,

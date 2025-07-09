@@ -1,3 +1,3 @@
 import '../../../../ui/pages/pages.dart';
 
-OperatorsPage makeOperatorsPage() => OperatorsPage();
+OperatorsPage makeOperatorsPage() => const OperatorsPage();

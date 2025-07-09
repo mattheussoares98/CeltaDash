@@ -1,3 +1,3 @@
 import '../../../../ui/pages/pages.dart';
 
-CompareDaysPage makeCompareDaysPage() => CompareDaysPage();
+CompareDaysPage makeCompareDaysPage() => const CompareDaysPage();

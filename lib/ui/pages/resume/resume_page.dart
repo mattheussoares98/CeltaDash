@@ -111,7 +111,7 @@ class _ResumePageState extends State<ResumePage>
                                   scrollController: scrollController,
                                   saleStatistics: salesByEnterprise,
                                 ),
-                                SizedBox(height: 8),
+                                const SizedBox(height: 8),
                                 MonthlyAnalysis(sales: salesByEnterprise),
                                 // const SizedBox(height: 8),
                                 // SalesInformations(
@@ -133,7 +133,7 @@ class _ResumePageState extends State<ResumePage>
                                 //   saleStatistics: saleStatistics,
                                 //   scrollController: scrollController,
                                 // ),
-                                SizedBox(height: 8),
+                                const SizedBox(height: 8),
                               ],
                             ),
                             if (sales
@@ -142,14 +142,14 @@ class _ResumePageState extends State<ResumePage>
                                     .length >
                                 1)
                               GroupOfStores(sales: sales),
-                            SizedBox(height: 15),
+                            const SizedBox(height: 15),
                           ],
                         );
                       }),
                     ),
                   ),
                   if (enterpriseIsEnabled == false)
-                    Positioned(
+                    const Positioned(
                       // Start after the status bar and the AppBar
                       top: 0,
                       left: 0,

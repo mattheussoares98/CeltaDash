@@ -33,7 +33,7 @@ class ProductsSection extends StatelessWidget {
                           if (index == 0)
                             Text(
                               R.string.product,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -47,7 +47,7 @@ class ProductsSection extends StatelessWidget {
                           if (index == 0)
                             Text(
                               R.string.price,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -63,7 +63,7 @@ class ProductsSection extends StatelessWidget {
                           if (index == 0)
                             Text(
                               R.string.quantityAbbreviated,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -81,7 +81,7 @@ class ProductsSection extends StatelessWidget {
                           if (index == 0)
                             Text(
                               R.string.total,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -98,7 +98,7 @@ class ProductsSection extends StatelessWidget {
               if (index == sale.products!.length - 1)
                 Row(
                   children: [
-                    Expanded(
+                    const Expanded(
                       child: Text(""),
                     ),
                     Text(

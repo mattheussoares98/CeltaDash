@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
                 height: double.infinity,
                 width: double.infinity,
                 color: Theme.of(context).scaffoldBackgroundColor,
-                child: Center(child: CircularProgressIndicator()),
+                child: const Center(child: CircularProgressIndicator()),
               ),
           ],
         ),
@@ -127,23 +127,23 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
                 },
           items: [
             BottomNavItem(
-              materialIcon: Icon(Icons.pie_chart),
-              cupertinoIcon: Icon(CupertinoIcons.chart_pie),
+              materialIcon: const Icon(Icons.pie_chart),
+              cupertinoIcon: const Icon(CupertinoIcons.chart_pie),
               label: R.string.resume,
             ),
             BottomNavItem(
-              materialIcon: Icon(Icons.monetization_on),
-              cupertinoIcon: Icon(CupertinoIcons.money_dollar),
+              materialIcon: const Icon(Icons.monetization_on),
+              cupertinoIcon: const Icon(CupertinoIcons.money_dollar),
               label: R.string.sales,
             ),
             BottomNavItem(
-              materialIcon: Icon(Icons.shopping_cart_rounded),
-              cupertinoIcon: Icon(CupertinoIcons.cart),
+              materialIcon: const Icon(Icons.shopping_cart_rounded),
+              cupertinoIcon: const Icon(CupertinoIcons.cart),
               label: R.string.products,
             ),
             BottomNavItem(
-              materialIcon: Icon(Icons.grid_view_rounded),
-              cupertinoIcon: Icon(CupertinoIcons.square_grid_2x2_fill),
+              materialIcon: const Icon(Icons.grid_view_rounded),
+              cupertinoIcon: const Icon(CupertinoIcons.square_grid_2x2_fill),
               label: R.string.more,
             ),
             // BottomNavItem(

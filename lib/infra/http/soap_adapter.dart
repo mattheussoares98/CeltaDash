@@ -47,7 +47,7 @@ class SoapAdapter implements SoapRequest {
             body: envelope,
             headers: soapHeaders,
           )
-          .timeout(Duration(seconds: 30));
+          .timeout(const Duration(seconds: 30));
 
       if (response.statusCode != 200) {
         throw DomainError.unexpected;

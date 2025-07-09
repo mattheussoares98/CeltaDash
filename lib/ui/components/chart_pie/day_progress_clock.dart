@@ -102,7 +102,7 @@ class DayProgressClockState extends State<DayProgressClock> {
       );
     }
 
-    final totalSeconds = 24 * 3600;
+    const totalSeconds = 24 * 3600;
     final passedSeconds = _isCurrentDay
         ? _displayTime!.hour * 3600 +
             _displayTime!.minute * 60 +

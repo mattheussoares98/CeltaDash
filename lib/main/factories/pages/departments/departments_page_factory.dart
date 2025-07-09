@@ -1,3 +1,3 @@
 import '../../../../ui/pages/pages.dart';
 
-DepartmentsPage makeDepartmentsPage() => DepartmentsPage();
+DepartmentsPage makeDepartmentsPage() => const DepartmentsPage();

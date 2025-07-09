@@ -64,7 +64,7 @@ class _AddNewEnterpriseState extends State<AddNewEnterprise> {
         clipBehavior: Clip.antiAlias,
         child: ExpansionTile(
           controller: _expansibleController,
-          childrenPadding: EdgeInsets.all(4),
+          childrenPadding: const EdgeInsets.all(4),
           title: Text(
             R.string.addNewEnterprise,
             style: Theme.of(context).textTheme.headlineSmall,

@@ -12,7 +12,7 @@ ThemeData makeAppTheme(BuildContext context) {
   const primaryColorDark = Color.fromARGB(255, 0, 100, 0); // DarkGreen
   const primaryColorLight = Color.fromARGB(255, 144, 238, 144); // LightGreen
   const secondaryColor = Color.fromARGB(255, 255, 193, 7); // Amber for contrast
-  final disabledColor = CupertinoColors.inactiveGray;
+  const disabledColor = CupertinoColors.inactiveGray;
   const dividerColor = CupertinoColors.separator;
   // const textColor = Colors.white;
   final scaffoldColor = IsDarkTheme.isDark
@@ -82,11 +82,11 @@ ThemeData makeAppTheme(BuildContext context) {
     fillColor: CupertinoColors.systemGrey6,
     disabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: BorderSide(width: 1, color: disabledColor),
+      borderSide: const BorderSide(width: 1, color: disabledColor),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: BorderSide(width: 1, color: CupertinoColors.systemGrey4),
+      borderSide: const BorderSide(width: 1, color: CupertinoColors.systemGrey4),
     ),
     focusedErrorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),

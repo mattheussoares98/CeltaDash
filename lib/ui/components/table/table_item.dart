@@ -176,7 +176,7 @@ class _TableItemState extends State<TableItem> {
           ),
         );
       } else {
-        sumRow.add(PersonalizedTableCell(value: '', isTitle: true));
+        sumRow.add(const PersonalizedTableCell(value: '', isTitle: true));
       }
     }
 
@@ -203,7 +203,7 @@ class _TableItemState extends State<TableItem> {
               child: Table(
                 border:
                     TableBorder.all(color: getTableBorderColor(), width: 0.06),
-                defaultColumnWidth: FlexColumnWidth(1),
+                defaultColumnWidth: const FlexColumnWidth(1),
                 columnWidths: widget
                     .tableColumnWidth /* ??
                     {0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.1)} */
@@ -250,7 +250,7 @@ class _TableItemState extends State<TableItem> {
                     color: getTableBorderColor(),
                     width: 0.06,
                   ),
-                  defaultColumnWidth: FlexColumnWidth(1),
+                  defaultColumnWidth: const FlexColumnWidth(1),
                   columnWidths: widget
                       .tableColumnWidth /* ??
                       {0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.1)} */
@@ -341,7 +341,7 @@ class _TableItemState extends State<TableItem> {
                 child: Table(
                   border: TableBorder.all(
                       color: getTableBorderColor(), width: 0.06),
-                  defaultColumnWidth: FlexColumnWidth(1),
+                  defaultColumnWidth: const FlexColumnWidth(1),
                   columnWidths: widget.tableColumnWidth,
                   children: [
                     TableRow(

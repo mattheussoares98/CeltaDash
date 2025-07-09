@@ -68,12 +68,12 @@ class DailyStatistics extends StatelessWidget {
 
     return Container(
       decoration: ContainerDecoration.defaultDecoration,
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       child: Column(
         children: [
           if (resumePresenter.compareDaysStatistics == null ||
               resumePresenter.compareDaysStatistics!.isEmpty)
-            EmptySales(isLoading: false),
+            const EmptySales(isLoading: false),
           if (resumePresenter.compareDaysStatistics != null &&
               resumePresenter.compareDaysStatistics!.isNotEmpty)
             Column(
@@ -98,7 +98,7 @@ class DailyStatistics extends StatelessWidget {
                   ),
                 ),
                 ChartPieWidget(
-                  paddingItems: EdgeInsets.all(1),
+                  paddingItems: const EdgeInsets.all(1),
                   showTotalAmount: false,
                   centerDate: resumePresenter.lastGetComparisonParams?.endDate,
                   centerPassedColor: Colors.grey[400]!,

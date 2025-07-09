@@ -45,7 +45,7 @@ class EnterprisesItems extends StatelessWidget {
             children: [
               Expanded(
                 child: Container(
-                  margin: EdgeInsets.only(bottom: 8),
+                  margin: const EdgeInsets.only(bottom: 8),
                   decoration: isSelected
                       ? ContainerDecoration.enabled
                       : ContainerDecoration.defaultDecoration,
@@ -73,7 +73,7 @@ class EnterprisesItems extends StatelessWidget {
                 ),
               ),
               isSelected
-                  ? SizedBox.shrink()
+                  ? const SizedBox.shrink()
                   : Padding(
                       padding: const EdgeInsets.only(left: 4),
                       child: IconButton(

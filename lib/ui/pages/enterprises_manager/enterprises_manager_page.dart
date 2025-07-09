@@ -35,7 +35,7 @@ class EnterprisesManagerPage extends StatefulWidget {
               minChildSize: 0.5,
               maxChildSize: 0.95,
               builder: (_, controller) {
-                return EnterprisesManagerPage();
+                return const EnterprisesManagerPage();
               },
             ),
           ],
@@ -106,7 +106,7 @@ class _EnterprisesManagerPageState extends State<EnterprisesManagerPage>
         padding: const EdgeInsets.all(8),
         child: Column(
           children: [
-            ConnectedEnterprises(),
+            const ConnectedEnterprises(),
             AddNewEnterprise(
               enterpriseNameController: enterpriseNameController,
               bsUserNameController: bsUserNameController,

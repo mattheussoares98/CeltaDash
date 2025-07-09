@@ -1,3 +1,3 @@
 import '../../../../ui/pages/pages.dart';
 
-AppAnalyticsPage makeAppAnalyticsPage() => AppAnalyticsPage();
+AppAnalyticsPage makeAppAnalyticsPage() => const AppAnalyticsPage();

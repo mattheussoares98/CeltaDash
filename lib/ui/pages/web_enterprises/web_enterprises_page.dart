@@ -67,7 +67,7 @@ class _WebEnterprisesPageState extends State<WebEnterprisesPage>
         onPageChanged: (index) => setState(() => currentIndex = index),
         children: [
           WebEnterprisesListPage(filterController: filterController),
-          AppAnalyticsPage(),
+          const AppAnalyticsPage(),
         ],
       ),
       bottomNavigationBar: BottomNavBar(
@@ -78,19 +78,19 @@ class _WebEnterprisesPageState extends State<WebEnterprisesPage>
           });
           pageController.animateToPage(
             index,
-            duration: Duration(milliseconds: 500),
+            duration: const Duration(milliseconds: 500),
             curve: Curves.easeInOut,
           );
         },
         items: [
           BottomNavItem(
-            materialIcon: Icon(Icons.home),
-            cupertinoIcon: Icon(CupertinoIcons.home),
+            materialIcon: const Icon(Icons.home),
+            cupertinoIcon: const Icon(CupertinoIcons.home),
             label: R.string.enterprises,
           ),
           BottomNavItem(
-            materialIcon: Icon(Icons.auto_graph_outlined),
-            cupertinoIcon: Icon(CupertinoIcons.graph_square),
+            materialIcon: const Icon(Icons.auto_graph_outlined),
+            cupertinoIcon: const Icon(CupertinoIcons.graph_square),
             label: R.string.analytics,
           ),
         ],

@@ -18,7 +18,7 @@ class Enterprise extends StatelessWidget {
         homePresenter.enterprises?.where((e) => e.id == sale.enterpriseId);
 
     if (enterprises?.isEmpty == true) {
-      return SizedBox();
+      return const SizedBox();
     }
 
     final enterprise = enterprises!.first;

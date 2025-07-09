@@ -32,7 +32,7 @@ class _SubEnterprisesState extends State<SubEnterprises> {
         ),
         ListView.builder(
           shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: webEnterprisesPresenter
                   .selectedEnterprise?.firebaseSubEnterprises?.length ??
               0,
@@ -42,8 +42,8 @@ class _SubEnterprisesState extends State<SubEnterprises> {
 
             return Container(
               decoration: ContainerDecoration.defaultDecoration,
-              padding: EdgeInsets.all(8),
-              margin: EdgeInsets.symmetric(vertical: 4),
+              padding: const EdgeInsets.all(8),
+              margin: const EdgeInsets.symmetric(vertical: 4),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

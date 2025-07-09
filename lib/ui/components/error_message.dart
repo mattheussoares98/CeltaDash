@@ -10,7 +10,7 @@ void showErrorMessage(BuildContext context, String error,
       content: Text(
         error,
         textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
       ),
       dismissDirection: DismissDirection.down,
       shape: RoundedRectangleBorder(

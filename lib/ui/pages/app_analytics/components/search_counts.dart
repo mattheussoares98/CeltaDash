@@ -66,7 +66,7 @@ class _SearchCountsState extends State<SearchCounts> {
     return Column(
       children: [
         ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemCount: widget.analytic.searchCounts.length,
           itemBuilder: (context, index) {
@@ -125,7 +125,7 @@ class _SearchCountsState extends State<SearchCounts> {
         ),
         Row(
           children: [
-            Expanded(child: Text("")),
+            const Expanded(child: Text("")),
             Text(
               widget.analytic.totalSearchesFormatted,
               style: theme.textTheme.titleLarge?.copyWith(

@@ -18,5 +18,5 @@ HomePage makeHomePage() {
   Get.replace<OperatorsPresenter>(makeGetxOperatorsPresenter());
   Get.put<EnterprisesManagerPresenter>(makeGetxEnterprisesManagerPresenter());
 
-  return HomePage();
+  return const HomePage();
 }

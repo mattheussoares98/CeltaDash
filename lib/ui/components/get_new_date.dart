@@ -26,14 +26,14 @@ class GetNewDate {
     if (Platform.isIOS) {
       selectedDate = await _showCupertinoDatePicker(
         initialDate: initialDate,
-        lastDate: lastDate ?? now.add(Duration(days: 1825)),
+        lastDate: lastDate ?? now.add(const Duration(days: 1825)),
       );
     } else {
       selectedDate = await showDatePicker(
         context: NavigatorKey.key.currentState!.context,
         firstDate: initialDate,
         initialDate: now,
-        lastDate: lastDate ?? now.add(Duration(days: 1825)),
+        lastDate: lastDate ?? now.add(const Duration(days: 1825)),
         locale: const Locale('pt', 'BR'),
       );
     }

@@ -31,14 +31,14 @@ class EmailField extends StatelessWidget {
         },
         validator: (value) {
           return ValidationComposite([
-            RequiredFieldValidation(),
+            const RequiredFieldValidation(),
           ]).validate(value)?.description;
         },
         decoration: FormFieldDecoration.decoration(
           context: context,
           hintText: R.string.user,
           labelText: R.string.user,
-          prefixIcon: Icon(
+          prefixIcon: const Icon(
             Icons.person,
           ),
         ),

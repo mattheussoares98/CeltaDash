@@ -21,7 +21,7 @@ class Products extends StatelessWidget {
             : productsPresenter.monthlyStatistics;
 
     if (saleStatistics == null || saleStatistics.isEmpty) {
-      return EmptySales(isLoading: false);
+      return const EmptySales(isLoading: false);
     }
 
     return Column(
@@ -59,15 +59,15 @@ class Products extends StatelessWidget {
             // debugPrint(entry.key);
 
             return [
-              PersonalizedTableCell(
+              const PersonalizedTableCell(
                 value: "sales.first.ProductDepartment",
                 // subtile: section,
                 // decoration: BoxDecoration(color: departmentColorMap[dept]),
               ),
-              PersonalizedTableCell(value: "liquidValue", isMoney: true),
-              PersonalizedTableCell(value: "cost", isMoney: true),
-              PersonalizedTableCell(value: "profit", isMoney: true),
-              PersonalizedTableCell(value: "percentage", isPercentage: true),
+              const PersonalizedTableCell(value: "liquidValue", isMoney: true),
+              const PersonalizedTableCell(value: "cost", isMoney: true),
+              const PersonalizedTableCell(value: "profit", isMoney: true),
+              const PersonalizedTableCell(value: "percentage", isPercentage: true),
             ];
           }).toList(),
         ),

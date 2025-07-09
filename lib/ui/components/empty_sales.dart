@@ -8,7 +8,7 @@ class EmptySales extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
         child: isLoading == true
-            ? SizedBox.shrink()
+            ? const SizedBox.shrink()
             : Image.asset("lib/ui/assets/images/empty_sales.png"));
   }
 }

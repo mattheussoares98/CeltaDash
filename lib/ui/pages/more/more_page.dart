@@ -70,7 +70,7 @@ class MorePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: homePresenter.enterprises == null ||
                     homePresenter.enterprises!.isEmpty
-                ? [EmptySales(isLoading: false)]
+                ? [const EmptySales(isLoading: false)]
                 : buttons,
           ),
         ));

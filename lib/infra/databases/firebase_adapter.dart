@@ -22,14 +22,17 @@ class FirebaseAdapter implements FirebaseStorage {
           return await collectionRef
               .where(fieldToSearch, isEqualTo: valueToSearch)
               .get()
-              .timeout(Duration(seconds: 30));
+              .timeout(const Duration(seconds: 30));
         } else {
-          return await collectionRef.get().timeout(Duration(seconds: 30));
+          return await collectionRef.get().timeout(const Duration(seconds: 30));
         }
       }
       // If path has an even number of segments, it's a document query
       else {
-        return await instance.doc(path).get().timeout(Duration(seconds: 30));
+        return await instance
+            .doc(path)
+            .get()
+            .timeout(const Duration(seconds: 30));
       }
     } on FirebaseException {
       throw DomainError.unexpected;
@@ -72,7 +75,7 @@ class FirebaseAdapter implements FirebaseStorage {
 
       await documentReference
           .set(json, SetOptions(merge: merge == true))
-          .timeout(Duration(seconds: 30));
+          .timeout(const Duration(seconds: 30));
     } on FirebaseException {
       throw DomainError.unexpected;
     } catch (e) {

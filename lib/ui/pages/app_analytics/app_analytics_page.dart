@@ -112,7 +112,7 @@ class _AppAnalyticsPageState extends State<AppAnalyticsPage>
                   itemBuilder: (context, index) {
                     final analytic = analytics[index];
                     return Card(
-                      margin: EdgeInsets.fromLTRB(4, 0, 4, 8),
+                      margin: const EdgeInsets.fromLTRB(4, 0, 4, 8),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
@@ -127,7 +127,7 @@ class _AppAnalyticsPageState extends State<AppAnalyticsPage>
                                   ),
                             ),
                             SearchCounts(analytic: analytic),
-                            Divider(),
+                            const Divider(),
                             UsersAndPlatform(analytic: analytic),
                           ],
                         ),

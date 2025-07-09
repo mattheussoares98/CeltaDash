@@ -47,17 +47,17 @@ class _HorizontalScrollableIndicatorState
       builder: (context, child) {
         return Transform.translate(
           offset: Offset(_handAnimation.value, 0),
-          child: Icon(
+          child: const Icon(
             Icons.swipe_rounded,
             shadows: [
               Shadow(
                 color: Colors.black,
-                offset: const Offset(0, 0),
+                offset: Offset(0, 0),
                 blurRadius: 1,
               ),
               Shadow(
                 color: Colors.black,
-                offset: const Offset(-1, -1),
+                offset: Offset(-1, -1),
                 blurRadius: 1,
               )
             ],

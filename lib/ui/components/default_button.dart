@@ -16,7 +16,7 @@ class DefaultButton extends StatelessWidget {
       child: ElevatedButton.icon(
         onPressed: onTap,
         label: FittedBox(child: Text(title)),
-        icon: Icon(Icons.arrow_outward_sharp, color: Colors.white),
+        icon: const Icon(Icons.arrow_outward_sharp, color: Colors.white),
         iconAlignment: IconAlignment.end,
       ),
     );

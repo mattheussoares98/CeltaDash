@@ -139,7 +139,7 @@ class GetxWebEnterprisesPresenter extends GetxController
               .map((e) => EnterpriseModel.fromEntity(e).toJson())
               .toList(),
         },
-      ).timeout(Duration(seconds: 30));
+      ).timeout(const Duration(seconds: 30));
 
       final oldEnterprises = [...?_enterprises.value];
       _enterprises.value = [

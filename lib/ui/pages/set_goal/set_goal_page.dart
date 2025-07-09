@@ -6,8 +6,8 @@ class SetGoalPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Set Goal")),
-      body: Center(child: Text("Set Goal")),
+      appBar: AppBar(title: const Text("Set Goal")),
+      body: const Center(child: Text("Set Goal")),
     );
   }
 }

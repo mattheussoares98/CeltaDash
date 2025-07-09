@@ -1,3 +1,3 @@
 import '../../../../ui/pages/pages.dart';
 
-MorePage makeMorePage() => MorePage();
+MorePage makeMorePage() => const MorePage();

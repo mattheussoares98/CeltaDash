@@ -47,7 +47,7 @@ class FirebaseAuthAdapter implements FirebaseAuthStorage {
         logged = true;
       }
     });
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 3));
     loginSubscription.cancel();
     return logged;
   }

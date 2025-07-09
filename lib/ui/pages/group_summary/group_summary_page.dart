@@ -103,7 +103,7 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
                         final saleStatistics = resumePresenter.saleStatistics;
                       
                         if (saleStatistics == null || saleStatistics.isEmpty) {
-                          return EmptySales(isLoading: false);
+                          return const EmptySales(isLoading: false);
                         }
                       
                         final groupSales = saleStatistics

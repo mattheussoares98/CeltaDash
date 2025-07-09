@@ -47,12 +47,12 @@ class BaseUrlField extends StatelessWidget {
               onPressed: () async {
                 await onPressed(webEnterprisesPresenter);
               },
-              icon: Icon(Icons.save),
+              icon: const Icon(Icons.save),
             ),
           ),
           validator: (value) {
             return ValidationComposite([
-              RequiredFieldValidation(),
+              const RequiredFieldValidation(),
               UrlFieldValidation(),
             ]).validate(value)?.description;
           },

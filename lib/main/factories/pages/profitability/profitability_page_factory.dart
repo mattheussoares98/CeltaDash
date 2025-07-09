@@ -1,3 +1,3 @@
 import '../../../../ui/pages/pages.dart';
 
-ProfitabilityPage makeProfitabilityPage() => ProfitabilityPage();
+ProfitabilityPage makeProfitabilityPage() => const ProfitabilityPage();

@@ -131,7 +131,7 @@ void main() {
           forceRefresh: false,
           lastParams: lastGetStatisticsParams,
           selectedDate:
-              lastGetStatisticsParams.startDate.add(Duration(days: 31)),
+              lastGetStatisticsParams.startDate.add(const Duration(days: 31)),
           periodType: PeriodType.monthly,
         );
 

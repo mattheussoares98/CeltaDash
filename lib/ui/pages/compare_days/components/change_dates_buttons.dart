@@ -127,8 +127,8 @@ class ChangeDatesButtons extends StatelessWidget {
                           );
                         },
                   icon: isLoading == true
-                      ? CircularProgressIndicator(strokeWidth: 2)
-                      : Icon(Icons.refresh),
+                      ? const CircularProgressIndicator(strokeWidth: 2)
+                      : const Icon(Icons.refresh),
                 ),
               ),
             ),

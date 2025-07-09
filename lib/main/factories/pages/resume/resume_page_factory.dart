@@ -1,3 +1,3 @@
 import '../../../../ui/pages/pages.dart';
 
-ResumePage makeResumePage() => ResumePage();
+ResumePage makeResumePage() => const ResumePage();

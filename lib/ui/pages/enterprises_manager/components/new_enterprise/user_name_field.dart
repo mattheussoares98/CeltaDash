@@ -32,8 +32,8 @@ class UserNameField extends StatelessWidget {
         },
         autovalidateMode: AutovalidateMode.onUserInteraction,
         validator: (value) => ValidationComposite([
-          RequiredFieldValidation(),
-          MinLengthValidation(size: 2),
+          const RequiredFieldValidation(),
+          const MinLengthValidation(size: 2),
         ]).validate(value)?.description,
       ),
     );

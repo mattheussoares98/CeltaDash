@@ -6,8 +6,8 @@ class GoalHistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Goal History")),
-      body: Center(child: Text("Goal History")),
+      appBar: AppBar(title: const Text("Goal History")),
+      body: const Center(child: Text("Goal History")),
     );
   }
 }

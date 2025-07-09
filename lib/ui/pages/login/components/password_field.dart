@@ -33,15 +33,15 @@ class _PasswordFieldState extends State<PasswordField> {
         onFieldSubmitted: (_) => widget.login(),
         validator: (value) {
           return ValidationComposite([
-            RequiredFieldValidation(),
-            MinLengthValidation(size: 3),
+            const RequiredFieldValidation(),
+            const MinLengthValidation(size: 3),
           ]).validate(value)?.description;
         },
         decoration: FormFieldDecoration.decoration(
           context: context,
           hintText: R.string.password,
           labelText: R.string.password,
-          prefixIcon: Icon(Icons.lock),
+          prefixIcon: const Icon(Icons.lock),
           suffixIcon: IconButton(
             icon: Icon(
               showPassword ? Icons.visibility_off : Icons.visibility,

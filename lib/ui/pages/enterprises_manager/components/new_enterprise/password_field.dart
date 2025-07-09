@@ -34,7 +34,7 @@ class _PasswordFieldState extends State<PasswordField> {
         obscureText: !showPassword,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         validator: (value) => ValidationComposite([
-          RequiredFieldValidation(),
+          const RequiredFieldValidation(),
         ]).validate(value)?.description,
         decoration: FormFieldDecoration.decoration(
           context: context,

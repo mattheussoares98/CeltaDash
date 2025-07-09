@@ -87,7 +87,7 @@ class _WebEnterpriseDetailsPageState extends State<WebEnterpriseDetailsPage>
                           });
                         },
                       ),
-                    SubEnterprises(),
+                    const SubEnterprises(),
                   ],
                 ),
               ),
