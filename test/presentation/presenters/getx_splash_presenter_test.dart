@@ -23,6 +23,9 @@ void main() {
   late NavigateToSpy navigateTo;
   late GetPlatformTypeSpy getPlatform;
   late LoadDeviceDataSpy loadDeviceData;
+  late FirebaseManagerSpy firebaseManager;
+
+  late MockedFirebaseGet mockedFirebaseGet;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
@@ -31,6 +34,7 @@ void main() {
     navigateTo = NavigateToSpy();
     getPlatform = GetPlatformTypeSpy();
     loadDeviceData = LoadDeviceDataSpy();
+    firebaseManager = FirebaseManagerSpy(mockedFirebaseGet: mockedFirebaseGet);
   }
 
   void initPresenters() {
@@ -38,12 +42,16 @@ void main() {
       navigateTo: navigateTo,
       getPlatform: getPlatform,
       loadDeviceData: loadDeviceData,
+      firebaseManager: firebaseManager,
     );
     enterprisesManagerPresenter = EnterprisesManagerPresenterSpy();
   }
 
   void initEntities() {
     EnterpriseBuilder.entity = EntityFactory.makeFirebaseEnterpriseEntity();
+    mockedFirebaseGet = MockedFirebaseGet(dataToReturn: [
+      FakeDoc({"version": "1.9.8"}, "id")
+    ]);
   }
 
   void initMockSuccess() {

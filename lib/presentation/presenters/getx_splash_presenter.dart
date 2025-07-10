@@ -10,11 +10,13 @@ class GetxSplashPresenter extends GetxController implements SplashPresenter {
   final NavigateTo navigateTo;
   final GetPlatformType getPlatform;
   final LoadDeviceData loadDeviceData;
+  final FirebaseManager firebaseManager;
 
   GetxSplashPresenter({
     required this.navigateTo,
     required this.getPlatform,
     required this.loadDeviceData,
+    required this.firebaseManager,
   });
 
   @override
