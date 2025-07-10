@@ -61,14 +61,12 @@ class GetxAppAnalyticsService implements AppAnalyticsService {
             for (var count in monthlyModel.searchCounts)
               "${count.reportType.name}-${count.periodType.name}":
                   FieldValue.increment(count.count),
-            'users': [
+            'users': FieldValue.arrayUnion([
               {
                 'userName': monthlyModel.users.first.userName,
                 'platform': monthlyModel.users.first.platform,
-                'lastActive':
-                    monthlyModel.users.first.lastActive.toIso8601String(),
               }
-            ],
+            ]),
           },
           merge: true,
         );
