@@ -221,6 +221,12 @@ class _ChangeItemByArrow<T> extends StatelessWidget {
     final bool hasNext =
         currentIndex != -1 && currentIndex < (items?.length ?? 0) - 1;
 
+    if (isPrevious && !hasPrevious) {
+      return const SizedBox(width: 8);
+    } else if (!isPrevious && !hasNext) {
+      return const SizedBox();
+    }
+
     return Visibility(
       visible: isPrevious ? hasPrevious : hasNext,
       maintainSize: true,
