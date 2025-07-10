@@ -15,6 +15,9 @@ class PtBr implements Translation {
   String get msgInvalidEmail => "E-mail inválido";
   String get msgInvalidField => "Campo inválido";
   String get msgInvalidUrl => "URL inválida";
+  String get msgNewAppRequiredVersion => "Nova atualização necessária";
+  String get msgNewUpdateDescription =>
+      "Por favor, atualize a versão do aplicativo para continuar usando. Obrigado!";
   String get msgNoSalesWereFound => "Nenhuma venda foi encontrada";
   String get msgReallyWantLogout => "Deseja realmente sair?";
   String get msgRequiredField => "Campo obrigatório";
@@ -157,6 +160,7 @@ class PtBr implements Translation {
   String get totalSalesGroup => "Total de vendas do grupo";
   String get trendSales => "Tendência de vendas";
   String get until => "Até";
+  String get update => "Atualizar";
   String get url => "URL";
   String get user => "Usuário";
   String get users => "Usuários";

@@ -7,6 +7,8 @@ abstract class Translation {
   String get msgInvalidEmail;
   String get msgInvalidField;
   String get msgInvalidUrl;
+  String get msgNewAppRequiredVersion;
+  String get msgNewUpdateDescription;
   String get msgNoSalesWereFound;
   String get msgReallyWantLogout;
   String get msgRequiredField;
@@ -148,6 +150,7 @@ abstract class Translation {
   String get totalSalesGroup;
   String get trendSales;
   String get until;
+  String get update;
   String get url;
   String get user;
   String get users;

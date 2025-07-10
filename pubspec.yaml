@@ -54,6 +54,7 @@ dependencies:
   icons_launcher: ^3.0.0 #dart run icons_launcher:create
   firebase_auth: ^5.6.2
   package_info_plus: ^8.3.0
+  url_launcher: ^6.3.1
 
 icons_launcher:
   image_path: "lib/ui/assets/dev_assets/CeltaDashIcon.png"
