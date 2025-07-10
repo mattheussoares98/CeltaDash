@@ -50,15 +50,17 @@ class GetxResumePresenter extends GetxController
     PeriodType? periodType,
     bool? forceRefresh,
   }) async {
-    if (isLoadingValue == true) {
-      isLoading = false;
-      isLoading = true;
-      return;
-    }
-
-    isLoading = true;
-    mainError = null;
     try {
+      if (isLoadingValue == true ||
+          homePresenter.selectedEnterprise?.id == null) {
+        isLoading = false;
+        isLoading = true;
+        return;
+      }
+
+      isLoading = true;
+      mainError = null;
+
       if (periodType != null) {
         selectedPeriod = periodType;
       }

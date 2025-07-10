@@ -31,11 +31,19 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
   }
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final products = Get.find<ProductsPresenter>();
+      final homePresenter = Get.find<HomePresenter>();
+      await products.getSales(homePresenter);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     ProductsPresenter productsPresenter = Get.find();
     HomePresenter homePresenter = Get.find();
-    ResumePresenter resumePresenter = Get.find();
-    SalesPresenter salesPresenter = Get.find();
 
     mainErrorSubscription =
         handleMainError(context, productsPresenter.mainErrorStream);
@@ -48,29 +56,13 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
               showEnterpriseManagerButton: true,
               isLoading: loadingSnap.data == true,
               onChangeEnterprise: (_) {
-                homePresenter.reloadSales(
-                  resumePresenter,
-                  salesPresenter,
-                  productsPresenter,
-                  now: DateTime.now(),
-                );
+                productsPresenter.getSales(homePresenter);
               },
               onChangeDate: (_) {
-                homePresenter.reloadSales(
-                  resumePresenter,
-                  salesPresenter,
-                  productsPresenter,
-                  now: DateTime.now(),
-                );
+                productsPresenter.getSales(homePresenter);
               },
               onTapRefresh: () {
-                homePresenter.reloadSales(
-                  resumePresenter,
-                  salesPresenter,
-                  productsPresenter,
-                  forceRefresh: true,
-                  now: DateTime.now(),
-                );
+                productsPresenter.getSales(homePresenter, forceRefresh: true);
               },
             ),
             body: Obx(() {

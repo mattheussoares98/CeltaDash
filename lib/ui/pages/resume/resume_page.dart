@@ -29,12 +29,20 @@ class _ResumePageState extends State<ResumePage>
     mainErrorSubscription?.cancel();
   }
 
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   WidgetsBinding.instance.addPostFrameCallback((_) async {
+  //     final resumePresenter = Get.find<ResumePresenter>();
+  //     final homePresenter = Get.find<HomePresenter>();
+  //     await resumePresenter.getSales(homePresenter, now: DateTime.now());
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
     ResumePresenter resumePresenter = Get.find();
-    SalesPresenter salesPresenter = Get.find();
-    ProductsPresenter productsPresenter = Get.find();
 
     // resumeLoadingSubscription = handleLoading(
     //   context,
@@ -56,28 +64,16 @@ class _ResumePageState extends State<ResumePage>
                 isLoading: loadingSnap.data == true,
                 showDatePicker: enterpriseIsEnabled,
                 onChangeEnterprise: (_) {
-                  homePresenter.reloadSales(
-                    resumePresenter,
-                    salesPresenter,
-                    productsPresenter,
-                    now: DateTime.now(),
-                  );
+                  resumePresenter.getSales(homePresenter, now: DateTime.now());
                 },
                 onChangeDate: (_) {
-                  homePresenter.reloadSales(
-                    resumePresenter,
-                    salesPresenter,
-                    productsPresenter,
-                    now: DateTime.now(),
-                  );
+                  resumePresenter.getSales(homePresenter, now: DateTime.now());
                 },
                 onTapRefresh: () {
-                  homePresenter.reloadSales(
-                    resumePresenter,
-                    salesPresenter,
-                    productsPresenter,
-                    forceRefresh: true,
+                  resumePresenter.getSales(
+                    homePresenter,
                     now: DateTime.now(),
+                    forceRefresh: true,
                   );
                 },
               ),

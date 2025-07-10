@@ -29,6 +29,16 @@ class _SalesPageState extends State<SalesPage>
     mainErrorSubscription?.cancel();
   }
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final salesPresenter = Get.find<SalesPresenter>();
+      final homePresenter = Get.find<HomePresenter>();
+      await salesPresenter.getSales(homePresenter);
+    });
+  }
+
   bool salesAreEmpty({
     required List<SaleStatisticViewModel>? hourlyStatistics,
     required List<SaleStatisticViewModel>? dailyStatistics,
@@ -52,12 +62,9 @@ class _SalesPageState extends State<SalesPage>
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
     SalesPresenter salesPresenter = Get.find();
-    ResumePresenter resumePresenter = Get.find();
-    ProductsPresenter productsPresenter = Get.find();
 
     // loadingSubscription?.cancel();
     mainErrorSubscription?.cancel();
-    // loadingSubscription =
     //     handleLoading(context, salesPresenter.isLoadingStream);
     mainErrorSubscription =
         handleMainError(context, salesPresenter.mainErrorStream);
@@ -70,29 +77,13 @@ class _SalesPageState extends State<SalesPage>
               showEnterpriseManagerButton: true,
               isLoading: loadingSnap.data == true,
               onChangeEnterprise: (_) {
-                homePresenter.reloadSales(
-                  resumePresenter,
-                  salesPresenter,
-                  productsPresenter,
-                  now: DateTime.now(),
-                );
+                salesPresenter.getSales(homePresenter);
               },
               onChangeDate: (_) {
-                homePresenter.reloadSales(
-                  resumePresenter,
-                  salesPresenter,
-                  productsPresenter,
-                  now: DateTime.now(),
-                );
+                salesPresenter.getSales(homePresenter);
               },
               onTapRefresh: () {
-                homePresenter.reloadSales(
-                  resumePresenter,
-                  salesPresenter,
-                  productsPresenter,
-                  forceRefresh: true,
-                  now: DateTime.now(),
-                );
+                salesPresenter.getSales(homePresenter, forceRefresh: true);
               },
             ),
             body: Column(
