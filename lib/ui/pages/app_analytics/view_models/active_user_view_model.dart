@@ -1,30 +1,29 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../domain/entities/entities.dart';
 
 class ActiveUserViewModel extends Equatable {
   final String userName;
-  final String lastActiveFormatted;
   final IconData platformIcon;
 
   const ActiveUserViewModel({
     required this.userName,
-    required this.lastActiveFormatted,
     required this.platformIcon,
   });
 
   factory ActiveUserViewModel.fromEntity(ActiveUserEntity entity) {
     return ActiveUserViewModel(
       userName: entity.userName,
-      lastActiveFormatted: DateFormat.yMd().add_jm().format(entity.lastActive),
       platformIcon: _getPlatformIcon(entity.platform),
     );
   }
 
   @override
-  List<Object?> get props => [userName, lastActiveFormatted, platformIcon];
+  List<Object?> get props => [
+        userName,
+        platformIcon,
+      ];
 }
 
 IconData _getPlatformIcon(String platformName) {

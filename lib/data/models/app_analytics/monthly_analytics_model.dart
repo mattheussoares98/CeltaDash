@@ -86,7 +86,6 @@ class MonthlyAnalyticsModel extends MonthlyAnalyticsEntity {
         .map((user) => ActiveUserModel(
               userName: user.userName,
               platform: user.platform,
-              lastActive: user.lastActive,
             ).toJson())
         .toList();
 

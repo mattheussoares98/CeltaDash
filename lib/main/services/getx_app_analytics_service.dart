@@ -148,13 +148,11 @@ class GetxAppAnalyticsService implements AppAnalyticsService {
       users[userIndex] = ActiveUserEntity(
         userName: userName,
         platform: platform.name,
-        lastActive: DateTime.now(),
       );
     } else {
       users.add(ActiveUserEntity(
         userName: userName,
         platform: platform.name,
-        lastActive: DateTime.now(),
       ));
     }
 

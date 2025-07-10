@@ -71,7 +71,6 @@ void main() {
         ActiveUserEntity(
           userName: faker.person.name(),
           platform: 'ios',
-          lastActive: DateTime.now(),
         ),
       ],
     );
