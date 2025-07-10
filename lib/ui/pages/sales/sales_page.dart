@@ -19,13 +19,12 @@ class SalesPage extends StatefulWidget {
 
 class _SalesPageState extends State<SalesPage>
     with LoadingManager, UIErrorManager {
-  // StreamSubscription? loadingSubscription;
+  bool _initialLoadFinished = false;
   StreamSubscription? mainErrorSubscription;
 
   @override
   void dispose() {
     super.dispose();
-    // loadingSubscription?.cancel();
     mainErrorSubscription?.cancel();
   }
 
@@ -33,9 +32,19 @@ class _SalesPageState extends State<SalesPage>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final salesPresenter = Get.find<SalesPresenter>();
-      final homePresenter = Get.find<HomePresenter>();
-      await salesPresenter.getSales(homePresenter);
+      if (mounted) {
+        final salesPresenter = Get.find<SalesPresenter>();
+        final homePresenter = Get.find<HomePresenter>();
+        salesPresenter.getSales(homePresenter);
+
+        setState(() {
+          _initialLoadFinished = true;
+        });
+
+        mainErrorSubscription?.cancel();
+        mainErrorSubscription =
+            handleMainError(context, salesPresenter.mainErrorStream);
+      }
     });
   }
 
@@ -63,12 +72,6 @@ class _SalesPageState extends State<SalesPage>
     HomePresenter homePresenter = Get.find();
     SalesPresenter salesPresenter = Get.find();
 
-    // loadingSubscription?.cancel();
-    mainErrorSubscription?.cancel();
-    //     handleLoading(context, salesPresenter.isLoadingStream);
-    mainErrorSubscription =
-        handleMainError(context, salesPresenter.mainErrorStream);
-
     return StreamBuilder(
         stream: salesPresenter.isLoadingStream,
         builder: (context, loadingSnap) {
@@ -86,103 +89,96 @@ class _SalesPageState extends State<SalesPage>
                 salesPresenter.getSales(homePresenter, forceRefresh: true);
               },
             ),
-            body: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (homePresenter.enterprises != null &&
-                          homePresenter.enterprises!.isNotEmpty)
-                        Flexible(
-                          child: SelectPeriodItems(
-                            isLoading: loadingSnap.data,
-                            selectedPeriodType: salesPresenter.selectedPeriod,
-                            onTapHourly: () {
-                              salesPresenter.getSales(
-                                homePresenter,
-                                periodType: PeriodType.hourly,
-                              );
-                            },
-                            onTapDaily: () {
-                              salesPresenter.getSales(
-                                homePresenter,
-                                periodType: PeriodType.daily,
-                              );
-                            },
-                            onTapMonthly: () {
-                              salesPresenter.getSales(
-                                homePresenter,
-                                periodType: PeriodType.monthly,
-                              );
-                            },
-                            onTapYearly: () {
-                              salesPresenter.getSales(
-                                homePresenter,
-                                periodType: PeriodType.yearly,
-                              );
-                            },
+            body: Obx(() {
+              final hourlyStatistics = salesPresenter.hourlyStatistics
+                  ?.filteredSales(
+                    enterprise: homePresenter.selectedEnterprise,
+                    filterDay: homePresenter.selectedDate.day,
+                    filterMonth: homePresenter.selectedDate.month,
+                    filterYear: homePresenter.selectedDate.year,
+                  )
+                  .map((e) => e.toViewModel())
+                  .toList();
+
+              final dailyStatistics = salesPresenter.dailyStatistics
+                  ?.filteredSales(
+                    enterprise: homePresenter.selectedEnterprise,
+                    filterMonth: homePresenter.selectedDate.month,
+                    filterYear: homePresenter.selectedDate.year,
+                  )
+                  .map((e) => e.toViewModel())
+                  .toList();
+
+              final monthlyStatistics = salesPresenter.monthlyStatistics
+                  ?.filteredSales(
+                    enterprise: homePresenter.selectedEnterprise,
+                    filterYear: homePresenter.selectedDate.year,
+                  )
+                  .map((e) => e.toViewModel())
+                  .toList();
+
+              final yearlyStatistics = salesPresenter.yearlyStatistics
+                  ?.filteredSales(
+                    enterprise: homePresenter.selectedEnterprise,
+                  )
+                  .map((e) => e.toViewModel())
+                  .toList();
+
+              if (!_initialLoadFinished) {
+                return const SizedBox.shrink();
+              } else if (salesAreEmpty(
+                hourlyStatistics: hourlyStatistics,
+                dailyStatistics: dailyStatistics,
+                monthlyStatistics: monthlyStatistics,
+                yearlyStatistics: yearlyStatistics,
+                salesPresenter: salesPresenter,
+              )) {
+                return EmptySales(isLoading: loadingSnap.data == true);
+              }
+
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (homePresenter.enterprises != null &&
+                            homePresenter.enterprises!.isNotEmpty)
+                          Flexible(
+                            child: SelectPeriodItems(
+                              isLoading: loadingSnap.data,
+                              selectedPeriodType: salesPresenter.selectedPeriod,
+                              onTapHourly: () {
+                                salesPresenter.getSales(
+                                  homePresenter,
+                                  periodType: PeriodType.hourly,
+                                );
+                              },
+                              onTapDaily: () {
+                                salesPresenter.getSales(
+                                  homePresenter,
+                                  periodType: PeriodType.daily,
+                                );
+                              },
+                              onTapMonthly: () {
+                                salesPresenter.getSales(
+                                  homePresenter,
+                                  periodType: PeriodType.monthly,
+                                );
+                              },
+                              onTapYearly: () {
+                                salesPresenter.getSales(
+                                  homePresenter,
+                                  periodType: PeriodType.yearly,
+                                );
+                              },
+                            ),
                           ),
-                        ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Obx(() {
-                  // final uniqueHours = resumeSaleMovements
-                  //     .uniqueHours(
-                  //       enterprise: homePresenter.selectedEnterprise,
-                  //       filterDay: homePresenter.selectedDate.day,
-                  //       filterMonth: homePresenter.selectedDate.month,
-                  //       filterYear: homePresenter.selectedDate.year,
-                  //     )
-                  //     .toList();
-
-                  final hourlyStatistics = salesPresenter.hourlyStatistics
-                      ?.filteredSales(
-                        enterprise: homePresenter.selectedEnterprise,
-                        filterDay: homePresenter.selectedDate.day,
-                        filterMonth: homePresenter.selectedDate.month,
-                        filterYear: homePresenter.selectedDate.year,
-                      )
-                      .map((e) => e.toViewModel())
-                      .toList();
-
-                  final dailyStatistics = salesPresenter.dailyStatistics
-                      ?.filteredSales(
-                        enterprise: homePresenter.selectedEnterprise,
-                        filterMonth: homePresenter.selectedDate.month,
-                        filterYear: homePresenter.selectedDate.year,
-                      )
-                      .map((e) => e.toViewModel())
-                      .toList();
-
-                  final monthlyStatistics = salesPresenter.monthlyStatistics
-                      ?.filteredSales(
-                        enterprise: homePresenter.selectedEnterprise,
-                        filterYear: homePresenter.selectedDate.year,
-                      )
-                      .map((e) => e.toViewModel())
-                      .toList();
-
-                  final yearlyStatistics = salesPresenter.yearlyStatistics
-                      ?.filteredSales(
-                        enterprise: homePresenter.selectedEnterprise,
-                      )
-                      .map((e) => e.toViewModel())
-                      .toList();
-
-                  if (salesAreEmpty(
-                    hourlyStatistics: hourlyStatistics,
-                    dailyStatistics: dailyStatistics,
-                    monthlyStatistics: monthlyStatistics,
-                    yearlyStatistics: yearlyStatistics,
-                    salesPresenter: salesPresenter,
-                  )) {
-                    return EmptySales(isLoading: loadingSnap.data == true);
-                  }
-
-                  return Expanded(
+                  Expanded(
                     child: Column(
                       children: [
                         Expanded(
@@ -213,10 +209,10 @@ class _SalesPageState extends State<SalesPage>
                         ),
                       ],
                     ),
-                  );
-                }),
-              ],
-            ),
+                  ),
+                ],
+              );
+            }),
           );
         });
   }

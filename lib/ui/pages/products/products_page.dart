@@ -22,6 +22,7 @@ class ProductsPage extends StatefulWidget {
 class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
   StreamSubscription? mainErrorSubscription;
   final filterProductController = TextEditingController();
+  bool _initialLoadFinished = false;
 
   @override
   void dispose() {
@@ -34,9 +35,17 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final products = Get.find<ProductsPresenter>();
-      final homePresenter = Get.find<HomePresenter>();
-      await products.getSales(homePresenter);
+      if (mounted) {
+        final productsPresenter = Get.find<ProductsPresenter>();
+        final homePresenter = Get.find<HomePresenter>();
+        productsPresenter.getSales(homePresenter);
+        setState(() {
+          _initialLoadFinished = true;
+        });
+
+        mainErrorSubscription =
+            handleMainError(context, productsPresenter.mainErrorStream);
+      }
     });
   }
 
@@ -44,9 +53,6 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
   Widget build(BuildContext context) {
     ProductsPresenter productsPresenter = Get.find();
     HomePresenter homePresenter = Get.find();
-
-    mainErrorSubscription =
-        handleMainError(context, productsPresenter.mainErrorStream);
 
     return StreamBuilder(
         stream: productsPresenter.isLoadingStream,
@@ -98,7 +104,9 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                     false;
               }).toList();
 
-              if (sales == null || sales.isEmpty) {
+              if (!_initialLoadFinished) {
+                return const SizedBox.shrink();
+              } else if (sales == null || sales.isEmpty) {
                 return EmptySales(isLoading: loadingSnap.data == true);
               }
 
