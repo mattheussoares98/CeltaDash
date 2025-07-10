@@ -17,6 +17,7 @@ export './sales/sales.dart';
 export 'sellers/sellers.dart';
 export './set_goal/set_goal.dart';
 export './splash/splash.dart';
+export './update_app_version/update_app_version.dart';
 export './web_enterprise_details/web_enterprise_details.dart';
 export './web_enterprises/web_enterprises.dart';
 export './web_login/web_login.dart';

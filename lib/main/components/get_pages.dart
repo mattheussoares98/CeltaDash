@@ -89,6 +89,11 @@ class GetPages {
       transition: transition,
     ),
     GetPage(
+      name: PageRoutes.updateAppVersion,
+      page: makeUpdateAppVersionPage,
+      transition: transition,
+    ),
+    GetPage(
       name: PageRoutes.webEnterpriseDetails,
       page: makeWebEnterpriseDetailsPage,
       transition: transition,

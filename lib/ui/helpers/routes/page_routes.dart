@@ -15,6 +15,7 @@ class PageRoutes {
   static const String sellers = "/sellers";
   static const String setGoal = "/set_goal";
   static const String splash = "/splash";
+  static const String updateAppVersion = "/update_app_version";
   static const String paymentsType = "/payments_type";
   static const String webEnterprises = "/web_enterprises";
   static const String webEnterpriseDetails = "/web_enterprises_details";
