@@ -22,6 +22,7 @@ void main() {
 
   late NavigateToSpy navigateTo;
   late GetPlatformTypeSpy getPlatform;
+  late LoadDeviceDataSpy loadDeviceData;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
@@ -29,12 +30,14 @@ void main() {
   void initUsecases() {
     navigateTo = NavigateToSpy();
     getPlatform = GetPlatformTypeSpy();
+    loadDeviceData = LoadDeviceDataSpy();
   }
 
   void initPresenters() {
     sut = GetxSplashPresenter(
       navigateTo: navigateTo,
       getPlatform: getPlatform,
+      loadDeviceData: loadDeviceData,
     );
     enterprisesManagerPresenter = EnterprisesManagerPresenterSpy();
   }

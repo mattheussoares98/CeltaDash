@@ -9,10 +9,12 @@ import '../../ui/pages/pages.dart';
 class GetxSplashPresenter extends GetxController implements SplashPresenter {
   final NavigateTo navigateTo;
   final GetPlatformType getPlatform;
+  final LoadDeviceData loadDeviceData;
 
   GetxSplashPresenter({
     required this.navigateTo,
     required this.getPlatform,
+    required this.loadDeviceData,
   });
 
   @override

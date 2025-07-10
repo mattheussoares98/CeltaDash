@@ -2,7 +2,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../../domain/usecases/usecases.dart';
 
-class LocalLoadimeiOrWindowsId implements LoadDeviceData {
+class LocalLoadDeviceData implements LoadDeviceData {
   @override
   Future<String> getAppVersion() async {
     try {
