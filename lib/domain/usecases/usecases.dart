@@ -1,3 +1,4 @@
+export './device/device.dart';
 export './enterprises/enterprises.dart';
 export './login/login.dart';
 export './navigation/navigation.dart';
