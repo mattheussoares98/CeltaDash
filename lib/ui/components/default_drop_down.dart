@@ -28,6 +28,14 @@ class DefaultDropDown<T> extends StatefulWidget {
 class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
   @override
   Widget build(BuildContext context) {
+    // Find the index of the currently selected item.
+    final currentIndex =
+        widget.items?.indexWhere((item) => item.value == widget.selectedItem) ??
+            -1;
+    final bool hasPrevious = currentIndex > 0;
+    final bool hasNext =
+        currentIndex != -1 && currentIndex < (widget.items?.length ?? 0) - 1;
+
     if (Platform.isIOS) {
       return SizedBox(
         height: DropdownHeight.height,
@@ -91,12 +99,14 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
             child: Row(
               children: [
                 // Left Arrow Button - only visible if there's a previous item
-                _ChangeItemByArrow(
-                  isPrevious: true,
-                  items: widget.items,
-                  selectedItem: widget.selectedItem,
-                  onChanged: widget.onChanged,
-                ),
+                if (hasPrevious)
+                  _ChangeItemByArrow(
+                    isPrevious: true,
+                    items: widget.items,
+                    selectedItem: widget.selectedItem,
+                    onChanged: widget.onChanged,
+                    index: currentIndex,
+                  ),
                 Expanded(
                   child: Text(
                     widget.label ?? R.string.select,
@@ -110,12 +120,14 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
                   ),
                 ),
                 // Right Arrow Button - only visible if there's a next item
-                _ChangeItemByArrow(
-                  isPrevious: false,
-                  items: widget.items,
-                  selectedItem: widget.selectedItem,
-                  onChanged: widget.onChanged,
-                ),
+                if (hasNext)
+                  _ChangeItemByArrow(
+                    isPrevious: false,
+                    items: widget.items,
+                    selectedItem: widget.selectedItem,
+                    onChanged: widget.onChanged,
+                    index: currentIndex,
+                  ),
               ],
             ),
           ),
@@ -133,12 +145,14 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
       ),
       child: Row(
         children: [
-          _ChangeItemByArrow(
-            isPrevious: true,
-            items: widget.items,
-            selectedItem: widget.selectedItem,
-            onChanged: widget.onChanged,
-          ),
+          if (hasPrevious)
+            _ChangeItemByArrow(
+              isPrevious: true,
+              items: widget.items,
+              selectedItem: widget.selectedItem,
+              onChanged: widget.onChanged,
+              index: currentIndex,
+            ),
           Expanded(
             child: DropdownButtonFormField<T>(
               value: widget.selectedItem,
@@ -170,9 +184,11 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
                     }).toList() ??
                     [];
               },
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 border: InputBorder.none,
-                contentPadding: EdgeInsets.zero,
+                contentPadding: !hasPrevious
+                    ? const EdgeInsets.only(left: 8)
+                    : EdgeInsets.zero,
                 fillColor: Colors.transparent,
                 enabledBorder: InputBorder.none,
               ),
@@ -187,12 +203,14 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
               ),
             ),
           ),
-          _ChangeItemByArrow(
-            isPrevious: false,
-            items: widget.items,
-            selectedItem: widget.selectedItem,
-            onChanged: widget.onChanged,
-          ),
+          if (hasNext)
+            _ChangeItemByArrow(
+              isPrevious: false,
+              items: widget.items,
+              selectedItem: widget.selectedItem,
+              onChanged: widget.onChanged,
+              index: currentIndex,
+            ),
         ],
       ),
     );
@@ -204,44 +222,33 @@ class _ChangeItemByArrow<T> extends StatelessWidget {
   final List<DropdownMenuItem<T>>? items;
   final T selectedItem;
   final void Function(T item)? onChanged;
+  final int index;
   const _ChangeItemByArrow({
     super.key,
     required this.isPrevious,
     required this.items,
     required this.selectedItem,
     required this.onChanged,
+    required this.index,
   });
 
   @override
   Widget build(BuildContext context) {
-    // Find the index of the currently selected item.
-    final currentIndex =
-        items?.indexWhere((item) => item.value == selectedItem) ?? -1;
-    final bool hasPrevious = currentIndex > 0;
-    final bool hasNext =
-        currentIndex != -1 && currentIndex < (items?.length ?? 0) - 1;
-
-    if (isPrevious && !hasPrevious) {
-      return const SizedBox(width: 8);
-    } else if (!isPrevious && !hasNext) {
-      return const SizedBox();
-    }
-
     return Visibility(
-      visible: isPrevious ? hasPrevious : hasNext,
+      visible: true,
       maintainSize: true,
       maintainAnimation: true,
       maintainState: true,
       child: IconButton(
         onPressed: () {
           if (onChanged != null && isPrevious) {
-            final previousItemValue = items![currentIndex - 1].value;
+            final previousItemValue = items![index - 1].value;
             if (previousItemValue != null) {
               onChanged!(previousItemValue);
             }
           } else {
             if (onChanged != null) {
-              final nextItemValue = items![currentIndex + 1].value;
+              final nextItemValue = items![index + 1].value;
               if (nextItemValue != null) {
                 onChanged!(nextItemValue);
               }
