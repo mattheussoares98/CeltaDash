@@ -98,6 +98,10 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                     false;
               }).toList();
 
+              if (sales == null || sales.isEmpty) {
+                return EmptySales(isLoading: loadingSnap.data == true);
+              }
+
               return Column(
                 children: [
                   Padding(
@@ -124,13 +128,12 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                               );
                             },
                           ),
-                        if (sales != null)
-                          Expanded(
-                            child: FilterProductField(
-                              filterProductController: filterProductController,
-                              setState: setState,
-                            ),
+                        Expanded(
+                          child: FilterProductField(
+                            filterProductController: filterProductController,
+                            setState: setState,
                           ),
+                        ),
                       ],
                     ),
                   ),

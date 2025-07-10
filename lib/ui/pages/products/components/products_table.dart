@@ -50,78 +50,72 @@ class ProductsTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(builder: (context) {
-      if (sales == null || sales!.isEmpty) {
-        return EmptySales(isLoading: isLoading);
-      }
+    return ScrollableTableItem(
+      showAnimation: showAnimation,
+      hideShowAnimation: hideShowAnimation,
+      animationSecondsDuration: 3,
+      titleMinHeight: 43,
+      columnsWidths: [130, 100, 70, 70, 90, 90, 60],
+      fixFirstColumn: true,
+      columnsIndexToSum: [1, 2, 4, 5],
+      columnIndexToCompareAndDetachBetterAndWorstValue: 5,
+      indexToSort: 5,
+      titles: [
+        PersonalizedTableCell(
+          value: R.string.product.toUpperCase(),
+          isTitle: true,
+          subtile: "Top 200",
+        ),
+        PersonalizedTableCell(
+            value: R.string.sales.toUpperCase(), isTitle: true),
+        PersonalizedTableCell(
+          value: R.string.quantityAbbreviated.toUpperCase(),
+          isTitle: true,
+        ),
+        PersonalizedTableCell(
+          value: R.string.averagePrice.toUpperCase(),
+          isTitle: true,
+        ),
+        PersonalizedTableCell(
+            value: R.string.cost.toUpperCase(), isTitle: true),
+        PersonalizedTableCell(
+            value: R.string.profit.toUpperCase(), isTitle: true),
+        PersonalizedTableCell(
+            value: R.string.margin.toUpperCase(), isTitle: true),
+      ],
+      rowValues: sales!.map((sale) {
+        final parts = sale.Product?.split('-');
+        final productName =
+            parts?.length != null && parts!.length > 2 ? parts[2] : '';
 
-      return ScrollableTableItem(
-        showAnimation: showAnimation,
-        hideShowAnimation: hideShowAnimation,
-        animationSecondsDuration: 3,
-        titleMinHeight: 43,
-        columnsWidths: [130, 100, 70, 70, 90, 90, 60],
-        fixFirstColumn: true,
-        columnsIndexToSum: [1, 2, 4, 5],
-        columnIndexToCompareAndDetachBetterAndWorstValue: 5,
-        indexToSort: 5,
-        titles: [
+        final ticketAverage = (sale.LiquidValue?.toDouble() ?? 0) /
+            (sale.QuantityOfProducts?.toDouble() ?? 1);
+
+        final profit = (sale.LiquidValue?.toDouble() ?? 0) -
+            (sale.TotalRepositionCost?.toDouble() ?? 0);
+
+        final profitPercent = profit == 0 || sale.LiquidValue?.toDouble() == 0
+            ? 0
+            : (profit / (sale.LiquidValue?.toDouble() ?? 0)) * 100;
+        return [
+          // PersonalizedTableCell(value: index + 1),
+          PersonalizedTableCell(value: productName),
           PersonalizedTableCell(
-            value: R.string.product.toUpperCase(),
-            isTitle: true,
-            subtile: "Top 200",
+            value: sale.LiquidValue?.toDouble() ?? 0,
+            isMoney: true,
           ),
           PersonalizedTableCell(
-              value: R.string.sales.toUpperCase(), isTitle: true),
-          PersonalizedTableCell(
-            value: R.string.quantityAbbreviated.toUpperCase(),
-            isTitle: true,
+            value: sale.QuantityOfProducts?.toDouble() ?? 0,
           ),
+          PersonalizedTableCell(value: ticketAverage, isMoney: true),
           PersonalizedTableCell(
-            value: R.string.averagePrice.toUpperCase(),
-            isTitle: true,
+            value: sale.TotalRepositionCost?.toDouble() ?? 0,
+            isMoney: true,
           ),
-          PersonalizedTableCell(
-              value: R.string.cost.toUpperCase(), isTitle: true),
-          PersonalizedTableCell(
-              value: R.string.profit.toUpperCase(), isTitle: true),
-          PersonalizedTableCell(
-              value: R.string.margin.toUpperCase(), isTitle: true),
-        ],
-        rowValues: sales!.map((sale) {
-          final parts = sale.Product?.split('-');
-          final productName =
-              parts?.length != null && parts!.length > 2 ? parts[2] : '';
-
-          final ticketAverage = (sale.LiquidValue?.toDouble() ?? 0) /
-              (sale.QuantityOfProducts?.toDouble() ?? 1);
-
-          final profit = (sale.LiquidValue?.toDouble() ?? 0) -
-              (sale.TotalRepositionCost?.toDouble() ?? 0);
-
-          final profitPercent = profit == 0 || sale.LiquidValue?.toDouble() == 0
-              ? 0
-              : (profit / (sale.LiquidValue?.toDouble() ?? 0)) * 100;
-          return [
-            // PersonalizedTableCell(value: index + 1),
-            PersonalizedTableCell(value: productName),
-            PersonalizedTableCell(
-              value: sale.LiquidValue?.toDouble() ?? 0,
-              isMoney: true,
-            ),
-            PersonalizedTableCell(
-              value: sale.QuantityOfProducts?.toDouble() ?? 0,
-            ),
-            PersonalizedTableCell(value: ticketAverage, isMoney: true),
-            PersonalizedTableCell(
-              value: sale.TotalRepositionCost?.toDouble() ?? 0,
-              isMoney: true,
-            ),
-            PersonalizedTableCell(value: profit, isMoney: true),
-            PersonalizedTableCell(value: profitPercent, isPercentage: true),
-          ];
-        }).toList(),
-      );
-    });
+          PersonalizedTableCell(value: profit, isMoney: true),
+          PersonalizedTableCell(value: profitPercent, isPercentage: true),
+        ];
+      }).toList(),
+    );
   }
 }
