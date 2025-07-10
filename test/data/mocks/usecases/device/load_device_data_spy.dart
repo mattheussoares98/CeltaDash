@@ -5,7 +5,7 @@ class LoadDeviceDataSpy extends Mock implements LoadDeviceData {
   When _mockGetAppVersionCall() => when(() => this.getAppVersion());
 
   void mockGetAppVersion(String version) {
-    this._mockGetAppVersionCall().thenAnswer((any) => version);
+    this._mockGetAppVersionCall().thenAnswer((any) async => version);
   }
 
   void mockGetAppVersionError() {

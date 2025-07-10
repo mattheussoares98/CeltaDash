@@ -27,6 +27,21 @@ class GetxSplashPresenter extends GetxController implements SplashPresenter {
     try {
       await Future.delayed(Duration(seconds: durationInSeconds));
 
+      final localVersion = await loadDeviceData.getAppVersion();
+      final remoteVersion =
+          await firebaseManager.get(path: "requiredVersion/version");
+
+      final String remoteVersionNumber = remoteVersion.data() != null
+          ? remoteVersion.data()["required"]
+          : "0.0";
+
+      if (localVersion.replaceAll(RegExp(r'\.'), '').toInt() <
+          remoteVersionNumber.replaceAll(RegExp(r'\.'), '').toInt()) {
+        navigateTo.navigate(
+            pageRoute: PageRoutes.updateAppVersion, clear: true);
+        return;
+      }
+
       final platform = getPlatform.get();
       if (platform == PlatformType.web) {
         navigateTo.navigate(pageRoute: PageRoutes.webLogin, clear: true);

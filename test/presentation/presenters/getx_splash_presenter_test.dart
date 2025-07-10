@@ -4,6 +4,7 @@ import 'package:celta_dash/infra/helpers/helpers.dart';
 import 'package:celta_dash/main/builders/builders.dart';
 import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:faker/faker.dart';
 
 import 'package:get/get.dart';
 
@@ -26,6 +27,7 @@ void main() {
   late FirebaseManagerSpy firebaseManager;
 
   late MockedFirebaseGet mockedFirebaseGet;
+  late String requiredAppVersion;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
@@ -49,13 +51,16 @@ void main() {
 
   void initEntities() {
     EnterpriseBuilder.entity = EntityFactory.makeFirebaseEnterpriseEntity();
+    requiredAppVersion =
+        "${faker.randomGenerator.integer(100)}.${faker.randomGenerator.integer(100)}.${faker.randomGenerator.integer(100)}";
     mockedFirebaseGet = MockedFirebaseGet(dataToReturn: [
-      FakeDoc({"version": "1.9.8"}, "id")
+      FakeDoc({"version": requiredAppVersion}, "id")
     ]);
   }
 
   void initMockSuccess() {
     getPlatform.mockGet(PlatformType.android);
+    loadDeviceData.mockGetAppVersion(requiredAppVersion);
   }
 
   setUp(() {
@@ -172,5 +177,67 @@ void main() {
     verify(
       () => navigateTo.navigate(pageRoute: PageRoutes.home, clear: true),
     ).called(1);
+  });
+
+  group("Go to update app version page", () {
+    test("Should verify app version", () async {
+      await sut.checkPageToGo(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
+      );
+
+      verify(() => loadDeviceData.getAppVersion()).called(1);
+    });
+    test("Should verify required firebase version", () async {
+      await sut.checkPageToGo(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
+      );
+
+      verify(() => firebaseManager.get(path: "requiredVersion/version"))
+          .called(1);
+    });
+
+    test("Should go to update version page if required is greater", () async {
+      final major = faker.randomGenerator.integer(100);
+      final minor = faker.randomGenerator.integer(100);
+      final patch = faker.randomGenerator.integer(100);
+
+      firebaseManager.mockGet(MockedFirebaseGet(dataToReturn: [
+        FakeDoc({"required": "$major.$minor.${patch + 1}"}, "version")
+      ]));
+      loadDeviceData.mockGetAppVersion("$major.$minor.$patch");
+
+      await sut.checkPageToGo(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
+      );
+
+      verify(
+        () => navigateTo.navigate(
+          pageRoute: PageRoutes.updateAppVersion,
+          clear: true,
+        ),
+      ).called(1);
+    });
+    test("Should NOT go to update version page if required is smaller",
+        () async {
+      final major = faker.randomGenerator.integer(100);
+      final minor = faker.randomGenerator.integer(100);
+      final patch = faker.randomGenerator.integer(100);
+
+      firebaseManager.mockGet(MockedFirebaseGet(dataToReturn: [
+        FakeDoc({"required": "$major.$minor.$patch"}, "version")
+      ]));
+      loadDeviceData.mockGetAppVersion("$major.$minor.${patch + 1}");
+
+      await sut.checkPageToGo(
+        enterprisesManagerPresenter: enterprisesManagerPresenter,
+      );
+
+      verifyNever(
+        () => navigateTo.navigate(
+          pageRoute: PageRoutes.updateAppVersion,
+          clear: true,
+        ),
+      );
+    });
   });
 }
