@@ -22,11 +22,18 @@ class _AppAnalyticsPageState extends State<AppAnalyticsPage>
   StreamSubscription? mainErrorSubscription;
   StreamSubscription? loadingSubscription;
   static final now = DateTime.now();
+
+  final currentMonth = DateTime(now.year, now.month);
+  final previousMonth = DateTime(now.year, now.month - 1);
+  final antiPreviousMonth = DateTime(now.year, now.month - 2);
+
   static final formatter = DateFormat('yyyy/MM');
-  final currentMonth = formatter.format(now);
-  final previousMonth = formatter.format(DateTime(now.year, now.month - 1));
-  final antiPreviousMonth = formatter.format(DateTime(now.year, now.month - 2));
-  String? selectedPeriod;
+
+  final currentMonthFormatted = formatter.format(now);
+  final previousMonthFormatted =
+      formatter.format(DateTime(now.year, now.month - 1));
+  final antiPreviousMonthFormatted =
+      formatter.format(DateTime(now.year, now.month - 2));
 
   @override
   void initState() {
@@ -36,8 +43,6 @@ class _AppAnalyticsPageState extends State<AppAnalyticsPage>
 
     mainErrorSubscription = handleMainError(context, presenter.mainErrorStream);
     loadingSubscription = handleLoading(context, presenter.isLoadingStream);
-
-    selectedPeriod = currentMonth;
   }
 
   @override
@@ -49,14 +54,14 @@ class _AppAnalyticsPageState extends State<AppAnalyticsPage>
 
   @override
   Widget build(BuildContext context) {
-    final presenter = Get.find<AppAnalyticsPresenter>();
+    final appAnalyticsPresenter = Get.find<AppAnalyticsPresenter>();
 
     return Scaffold(
       appBar: AppBar(
         title: Text("${R.string.analytics} ${formatter.format(now)}"),
         actions: [
           IconButton(
-            onPressed: presenter.loadAnalytics,
+            onPressed: appAnalyticsPresenter.loadAnalytics,
             icon: Icon(Platform.isIOS ? CupertinoIcons.refresh : Icons.refresh),
           ),
         ],
@@ -65,35 +70,35 @@ class _AppAnalyticsPageState extends State<AppAnalyticsPage>
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: CupertinoSlidingSegmentedControl<String>(
-              groupValue: selectedPeriod,
+            child: CupertinoSlidingSegmentedControl<DateTime>(
+              groupValue: appAnalyticsPresenter.selectedPeriod,
               thumbColor: Theme.of(context).primaryColor,
-              children: {
-                antiPreviousMonth: _Item(
-                  selectedPeriod: selectedPeriod,
-                  value: antiPreviousMonth,
-                ),
-                previousMonth: _Item(
-                  selectedPeriod: selectedPeriod,
-                  value: previousMonth,
-                ),
-                currentMonth: _Item(
-                  selectedPeriod: selectedPeriod,
-                  value: currentMonth,
-                ),
-              },
-              onValueChanged: (newValue) {
-                if (newValue != null) {
+              onValueChanged: (value) {
+                if (value != null) {
                   setState(() {
-                    selectedPeriod = newValue;
+                    appAnalyticsPresenter.changeSelectedPeriod(value);
                   });
                 }
+              },
+              children: {
+                antiPreviousMonth: _Item(
+                  period: antiPreviousMonth,
+                  periodFormatted: antiPreviousMonthFormatted,
+                ),
+                previousMonth: _Item(
+                  period: previousMonth,
+                  periodFormatted: previousMonthFormatted,
+                ),
+                currentMonth: _Item(
+                  period: currentMonth,
+                  periodFormatted: currentMonthFormatted,
+                ),
               },
             ),
           ),
           Expanded(
             child: Obx(() {
-              final analytics = presenter.analytics;
+              final analytics = appAnalyticsPresenter.analytics;
               if (analytics == null || analytics.isEmpty) {
                 return Center(
                   child: Text(R.string.empty),
@@ -105,7 +110,7 @@ class _AppAnalyticsPageState extends State<AppAnalyticsPage>
                   .compareTo(a.totalSearchesFormatted.toInt()));
 
               return RefreshIndicator(
-                onRefresh: presenter.loadAnalytics,
+                onRefresh: appAnalyticsPresenter.loadAnalytics,
                 child: ListView.builder(
                   itemCount: analytics.length,
                   itemBuilder: (context, index) {
@@ -144,18 +149,23 @@ class _AppAnalyticsPageState extends State<AppAnalyticsPage>
 }
 
 class _Item extends StatelessWidget {
-  final String value;
-  final String? selectedPeriod;
-  const _Item({required this.value, required this.selectedPeriod});
+  final String periodFormatted;
+  final DateTime? period;
+  const _Item({
+    required this.periodFormatted,
+    required this.period,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final selectedPeriod = Get.find<AppAnalyticsPresenter>().selectedPeriod;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Text(
-        value,
+        periodFormatted,
         style: TextStyle(
-          color: selectedPeriod == value ? Colors.white : null,
+          color: period == selectedPeriod ? Colors.white : null,
         ),
       ),
     );

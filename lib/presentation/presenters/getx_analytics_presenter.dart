@@ -21,8 +21,9 @@ class GetxAnalyticsPresenter extends GetxController
     try {
       isLoading = true;
       mainError = null;
+      _analytics.value = null;
 
-      final docId = DateFormat('yyyy-MM').format(DateTime.now());
+      final docId = DateFormat('yyyy-MM').format(selectedPeriod!);
 
       final data =
           await firebaseManager.get(path: "analytics/$docId/informations");
@@ -46,4 +47,15 @@ class GetxAnalyticsPresenter extends GetxController
   final _analytics = Rx<List<MonthlyAnalyticsViewModel>?>(null);
   @override
   List<MonthlyAnalyticsViewModel>? get analytics => _analytics.value;
+
+  @override
+  void changeSelectedPeriod(DateTime? date) {
+    _selectedPeriod.value = date;
+    loadAnalytics();
+  }
+
+  static final now = DateTime.now();
+  final _selectedPeriod = Rx<DateTime?>(DateTime(now.year, now.month));
+  @override
+  DateTime? get selectedPeriod => _selectedPeriod.value;
 }

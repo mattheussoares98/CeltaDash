@@ -8,5 +8,8 @@ abstract class AppAnalyticsPresenter implements Listenable {
   Stream<bool> get isLoadingStream;
   List<MonthlyAnalyticsViewModel>? get analytics;
 
+  DateTime? get selectedPeriod;
+
   Future<void> loadAnalytics();
+  void changeSelectedPeriod(DateTime? period);
 }
