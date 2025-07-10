@@ -35,6 +35,7 @@ class EnterprisesItems extends StatelessWidget {
 
       return ListView.builder(
         controller: scrollController,
+        shrinkWrap: true,
         itemCount: enterprisesManagerPresenter.allEnterprises?.length ?? 0,
         itemBuilder: (context, index) {
           final enterprise = enterprisesManagerPresenter.allEnterprises![index];

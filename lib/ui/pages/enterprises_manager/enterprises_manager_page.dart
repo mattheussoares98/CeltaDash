@@ -98,28 +98,29 @@ class _EnterprisesManagerPageState extends State<EnterprisesManagerPage>
     final theme = Theme.of(context);
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: Container(
-        decoration: BoxDecoration(
-          color: theme.colorScheme.surface,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-        ),
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          children: [
-            const ConnectedEnterprises(),
-            AddNewEnterprise(
-              enterpriseNameController: enterpriseNameController,
-              bsUserNameController: bsUserNameController,
-              bsPasswordController: bsPasswordController,
-              enterpriseNameFocusNode: enterpriseNameFocusNode,
-              bsUserNameFocusNode: bsUserNameFocusNode,
-              bsPasswordFocusNode: bsPasswordFocusNode,
-            ),
-            const Divider(),
-            Expanded(
-              child: EnterprisesItems(scrollController: scrollController),
-            ),
-          ],
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surface,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            children: [
+              const ConnectedEnterprises(),
+              AddNewEnterprise(
+                enterpriseNameController: enterpriseNameController,
+                bsUserNameController: bsUserNameController,
+                bsPasswordController: bsPasswordController,
+                enterpriseNameFocusNode: enterpriseNameFocusNode,
+                bsUserNameFocusNode: bsUserNameFocusNode,
+                bsPasswordFocusNode: bsPasswordFocusNode,
+              ),
+              const Divider(),
+              EnterprisesItems(scrollController: scrollController),
+            ],
+          ),
         ),
       ),
     );
