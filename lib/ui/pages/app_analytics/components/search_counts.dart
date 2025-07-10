@@ -48,18 +48,6 @@ class _SearchCountsState extends State<SearchCounts> {
     });
   }
 
-  IconData getIcon(bool ascending) {
-    if (ascending) {
-      return Platform.isIOS
-          ? CupertinoIcons.arrow_up_circle_fill
-          : Icons.sort_by_alpha;
-    } else {
-      return Platform.isIOS
-          ? CupertinoIcons.arrow_down_circle_fill
-          : Icons.sort_by_alpha;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -86,9 +74,8 @@ class _SearchCountsState extends State<SearchCounts> {
                             ),
                             IconButton(
                               onPressed: orderTypes,
-                              icon: Icon(
-                                getIcon(orderTypeAscending),
-                              ),
+                              icon:
+                                  OrdenationIcon(ascending: orderTypeAscending),
                             ),
                           ],
                         ),
@@ -97,8 +84,8 @@ class _SearchCountsState extends State<SearchCounts> {
                         children: [
                           IconButton(
                             onPressed: orderRequests,
-                            icon: Icon(
-                              getIcon(requestAscending),
+                            icon: OrdenationIcon(
+                              ascending: requestAscending,
                             ),
                           ),
                           Text(
@@ -136,5 +123,23 @@ class _SearchCountsState extends State<SearchCounts> {
         ),
       ],
     );
+  }
+}
+
+class OrdenationIcon extends StatelessWidget {
+  final bool ascending;
+  const OrdenationIcon({super.key, required this.ascending});
+
+  @override
+  Widget build(BuildContext context) {
+    if (ascending) {
+      return Icon(Platform.isIOS
+          ? CupertinoIcons.arrow_up_circle_fill
+          : Icons.arrow_upward_outlined);
+    } else {
+      return Icon(Platform.isIOS
+          ? CupertinoIcons.arrow_down_circle_fill
+          : Icons.arrow_downward_outlined);
+    }
   }
 }

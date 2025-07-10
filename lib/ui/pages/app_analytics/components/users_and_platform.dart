@@ -20,7 +20,7 @@ class UsersAndPlatform extends StatelessWidget {
                       ),
                 ),
                 Icon(user.platformIcon),
-                const SizedBox(width: 10),
+                const SizedBox(width: 20),
               ],
             ),
           )

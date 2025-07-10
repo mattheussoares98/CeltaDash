@@ -21,12 +21,12 @@ class _AppAnalyticsPageState extends State<AppAnalyticsPage>
     with LoadingManager, UIErrorManager {
   StreamSubscription? mainErrorSubscription;
   StreamSubscription? loadingSubscription;
-  String? selectedPeriod;
   static final now = DateTime.now();
   static final formatter = DateFormat('yyyy/MM');
-  final currentMonth = formatter.format(DateTime(now.year, now.month));
+  final currentMonth = formatter.format(now);
   final previousMonth = formatter.format(DateTime(now.year, now.month - 1));
   final antiPreviousMonth = formatter.format(DateTime(now.year, now.month - 2));
+  String? selectedPeriod;
 
   @override
   void initState() {
@@ -36,6 +36,8 @@ class _AppAnalyticsPageState extends State<AppAnalyticsPage>
 
     mainErrorSubscription = handleMainError(context, presenter.mainErrorStream);
     loadingSubscription = handleLoading(context, presenter.isLoadingStream);
+
+    selectedPeriod = currentMonth;
   }
 
   @override
@@ -43,18 +45,6 @@ class _AppAnalyticsPageState extends State<AppAnalyticsPage>
     super.dispose();
     mainErrorSubscription?.cancel();
     loadingSubscription?.cancel();
-  }
-
-  Widget getItem(String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: Text(
-        value,
-        style: TextStyle(
-          color: selectedPeriod == value ? Colors.white : null,
-        ),
-      ),
-    );
   }
 
   @override
@@ -79,9 +69,18 @@ class _AppAnalyticsPageState extends State<AppAnalyticsPage>
               groupValue: selectedPeriod,
               thumbColor: Theme.of(context).primaryColor,
               children: {
-                antiPreviousMonth: getItem(antiPreviousMonth),
-                previousMonth: getItem(previousMonth),
-                currentMonth: getItem(currentMonth),
+                antiPreviousMonth: _Item(
+                  selectedPeriod: selectedPeriod,
+                  value: antiPreviousMonth,
+                ),
+                previousMonth: _Item(
+                  selectedPeriod: selectedPeriod,
+                  value: previousMonth,
+                ),
+                currentMonth: _Item(
+                  selectedPeriod: selectedPeriod,
+                  value: currentMonth,
+                ),
               },
               onValueChanged: (newValue) {
                 if (newValue != null) {
@@ -139,6 +138,25 @@ class _AppAnalyticsPageState extends State<AppAnalyticsPage>
             }),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _Item extends StatelessWidget {
+  final String value;
+  final String? selectedPeriod;
+  const _Item({required this.value, required this.selectedPeriod});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Text(
+        value,
+        style: TextStyle(
+          color: selectedPeriod == value ? Colors.white : null,
+        ),
       ),
     );
   }
