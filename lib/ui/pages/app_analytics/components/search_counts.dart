@@ -65,35 +65,34 @@ class _SearchCountsState extends State<SearchCounts> {
                   Row(
                     children: [
                       Expanded(
-                        child: Row(
-                          children: [
-                            Text(
+                        flex: 35,
+                        child: TextButton.icon(
+                          onPressed: orderTypes,
+                          icon: OrdenationIcon(ascending: orderTypeAscending),
+                          label: FittedBox(
+                            child: Text(
                               R.string.type,
+                              textAlign: TextAlign.end,
                               style: theme.textTheme.titleLarge
                                   ?.copyWith(fontWeight: FontWeight.bold),
                             ),
-                            IconButton(
-                              onPressed: orderTypes,
-                              icon:
-                                  OrdenationIcon(ascending: orderTypeAscending),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                      Row(
-                        children: [
-                          IconButton(
-                            onPressed: orderRequests,
-                            icon: OrdenationIcon(
-                              ascending: requestAscending,
+                      Expanded(
+                        flex: 65,
+                        child: TextButton.icon(
+                          onPressed: orderRequests,
+                          icon: OrdenationIcon(ascending: requestAscending),
+                          label: FittedBox(
+                            child: Text(
+                              R.string.requests,
+                              textAlign: TextAlign.end,
+                              style: theme.textTheme.titleLarge
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                           ),
-                          Text(
-                            R.string.requests,
-                            style: theme.textTheme.titleLarge
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                        ],
+                        ),
                       ),
                     ],
                   ),
