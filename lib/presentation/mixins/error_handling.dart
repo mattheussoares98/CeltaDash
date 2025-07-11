@@ -22,6 +22,9 @@ mixin ErrorHandling {
           return UIError.updateCeltaBs;
       }
     } else if (error is ApiError) {
+      if (error.message.toString().toLowerCase() == '"invalid credentials"') {
+        return UIError.custom(R.string.msgInvalidCredentials);
+      }
       return UIError.custom(error.message);
     } else if (error is BsError) {
       return UIError.custom(error.message);

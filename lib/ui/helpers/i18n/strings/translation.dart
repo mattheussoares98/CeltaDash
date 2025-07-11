@@ -4,6 +4,7 @@ abstract class Translation {
   String get msgDisabledEnterprise;
   String get msgEnterpriseAlreadyExists;
   String get msgEnterpriseNotFound;
+  String get msgInvalidCredentials;
   String get msgInvalidEmail;
   String get msgInvalidField;
   String get msgInvalidUrl;
