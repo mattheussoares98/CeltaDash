@@ -11,14 +11,15 @@ class LocalGetPlatform implements GetPlatformType {
     try {
       if (kIsWeb) {
         return PlatformType.web;
+      } else if (Platform.isMacOS) {
+        return PlatformType.ios;
       } else if (Platform.isAndroid) {
         return PlatformType.android;
       } else if (Platform.isIOS) {
         return PlatformType.ios;
-      } /*  else if (Platform.isWindows) {
+      } else if (Platform.isWindows) {
         return PlatformType.windows;
-      } */
-      else {
+      } else {
         return PlatformType.windows;
       }
     } catch (e) {
