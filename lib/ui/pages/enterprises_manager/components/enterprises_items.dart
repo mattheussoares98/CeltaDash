@@ -9,11 +9,16 @@ import '../../../../ui/components/components.dart';
 import '../../../../ui/helpers/helpers.dart';
 import '../../pages.dart';
 
-class EnterprisesItems extends StatelessWidget {
+class EnterprisesItems extends StatefulWidget {
   final ScrollController scrollController;
 
   const EnterprisesItems({super.key, required this.scrollController});
 
+  @override
+  State<EnterprisesItems> createState() => _EnterprisesItemsState();
+}
+
+class _EnterprisesItemsState extends State<EnterprisesItems> {
   @override
   Widget build(BuildContext context) {
     final enterprisesManagerPresenter = Get.find<EnterprisesManagerPresenter>();
@@ -34,7 +39,7 @@ class EnterprisesItems extends StatelessWidget {
       });
 
       return ListView.builder(
-        controller: scrollController,
+        controller: widget.scrollController,
         shrinkWrap: true,
         itemCount: enterprisesManagerPresenter.allEnterprises?.length ?? 0,
         itemBuilder: (context, index) {
@@ -86,6 +91,7 @@ class EnterprisesItems extends StatelessWidget {
                             onPress: () async {
                               await enterprisesManagerPresenter
                                   .removeEnterprise(enterprise.enterpriseName);
+                              setState(() {});
                             },
                           );
                         },
