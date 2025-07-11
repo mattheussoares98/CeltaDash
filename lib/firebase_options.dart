@@ -25,10 +25,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         return windows;
       case TargetPlatform.linux:
@@ -45,12 +42,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyBx88abWs1sHkeWjpjbHC9ePyw8UYsFVEU',
-    appId: '1:525012960806:web:c5ad9213bf7cbf7c00c8e7',
+    appId: '1:525012960806:web:06084a1f82bd34fe00c8e7',
     messagingSenderId: '525012960806',
     projectId: 'celta-dash',
     authDomain: 'celta-dash.firebaseapp.com',
     storageBucket: 'celta-dash.firebasestorage.app',
-    measurementId: 'G-G7T5WNEPPV',
+    measurementId: 'G-T35LL6LH4F',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
@@ -63,12 +60,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions windows = FirebaseOptions(
     apiKey: 'AIzaSyBx88abWs1sHkeWjpjbHC9ePyw8UYsFVEU',
-    appId: '1:525012960806:web:06084a1f82bd34fe00c8e7',
+    appId: '1:525012960806:web:1d3ea4424997eac000c8e7',
     messagingSenderId: '525012960806',
     projectId: 'celta-dash',
     authDomain: 'celta-dash.firebaseapp.com',
     storageBucket: 'celta-dash.firebasestorage.app',
-    measurementId: 'G-T35LL6LH4F',
+    measurementId: 'G-SWTGFRC503',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -78,6 +75,15 @@ class DefaultFirebaseOptions {
     projectId: 'celta-dash',
     storageBucket: 'celta-dash.firebasestorage.app',
     iosBundleId: 'br.com.celtaware.dash',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyBVV-Sl1cWNochCU1DnbUVdaVQR0FqEKJk',
+    appId: '1:525012960806:ios:42684c8cc7c86aad00c8e7',
+    messagingSenderId: '525012960806',
+    projectId: 'celta-dash',
+    storageBucket: 'celta-dash.firebasestorage.app',
+    iosBundleId: 'br.com.celtaware.celtaDash',
   );
 
 }
