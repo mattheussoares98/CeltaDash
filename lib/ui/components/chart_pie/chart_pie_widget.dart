@@ -114,10 +114,11 @@ class _ChartPieWidgetState extends State<ChartPieWidget> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double chartWidth = screenWidth * 0.4;
-    double indicatorSize = screenWidth * 0.04;
-    double chartPadding = screenWidth * 0.01;
-    double centerSpaceRadius = screenWidth * 0.1;
+    final splitFor = screenWidth > 600 ? 2 : 1;
+    double chartWidth = screenWidth * 0.4 / splitFor;
+    double indicatorSize = screenWidth * 0.04 / splitFor;
+    double chartPadding = screenWidth * 0.01 / splitFor;
+    double centerSpaceRadius = screenWidth * 0.1 / splitFor;
 
     return Row(
       children: [
