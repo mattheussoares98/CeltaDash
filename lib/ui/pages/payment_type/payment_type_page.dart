@@ -71,6 +71,7 @@ class _PaymentTypePageState extends State<PaymentTypePage>
               },
             ),
             body: SafeArea(
+              left: false,
               child: DefaultTabController(
                 length: 2,
                 child: Column(

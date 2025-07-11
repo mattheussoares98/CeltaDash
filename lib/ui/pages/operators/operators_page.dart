@@ -65,14 +65,14 @@ class _OperatorsPageState extends State<OperatorsPage> {
               },
             ),
             body: SafeArea(
+              left: false,
               child: Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: SelectPeriodItems(
                       isLoading: loadingSnap.data,
-                      selectedPeriodType:
-                          operatorsPresenter.selectedPeriod,
+                      selectedPeriodType: operatorsPresenter.selectedPeriod,
                       onTapDaily: () {
                         operatorsPresenter.getSales(
                           homePresenter,
@@ -104,21 +104,23 @@ class _OperatorsPageState extends State<OperatorsPage> {
                           .map((e) => e.toViewModel())
                           .toList();
 
-                      final monthlyStatistics = operatorsPresenter.monthlyStatistics
-                          ?.filteredSales(
-                            enterprise: homePresenter.selectedEnterprise,
-                            filterMonth: homePresenter.selectedDate.month,
-                          )
-                          .map((e) => e.toViewModel())
-                          .toList();
+                      final monthlyStatistics =
+                          operatorsPresenter.monthlyStatistics
+                              ?.filteredSales(
+                                enterprise: homePresenter.selectedEnterprise,
+                                filterMonth: homePresenter.selectedDate.month,
+                              )
+                              .map((e) => e.toViewModel())
+                              .toList();
 
-                      final yearlyStatistics = operatorsPresenter.yearlyStatistics
-                          ?.filteredSales(
-                            enterprise: homePresenter.selectedEnterprise,
-                            filterYear: homePresenter.selectedDate.year,
-                          )
-                          .map((e) => e.toViewModel())
-                          .toList();
+                      final yearlyStatistics =
+                          operatorsPresenter.yearlyStatistics
+                              ?.filteredSales(
+                                enterprise: homePresenter.selectedEnterprise,
+                                filterYear: homePresenter.selectedDate.year,
+                              )
+                              .map((e) => e.toViewModel())
+                              .toList();
 
                       final sales = getSales(
                           dailyStatistics: dailyStatistics,
@@ -135,8 +137,7 @@ class _OperatorsPageState extends State<OperatorsPage> {
                           TableItem(
                             titleMinHeight: 43,
                             indexToSort: 1,
-                            columnIndexToCompareAndDetachBetterAndWorstValue:
-                                1,
+                            columnIndexToCompareAndDetachBetterAndWorstValue: 1,
                             columnsIndexToSum: [1, 2],
                             tableColumnWidth: {
                               0: FixedColumnWidth(
@@ -164,7 +165,7 @@ class _OperatorsPageState extends State<OperatorsPage> {
                                 .entries
                                 .map((e) {
                                   final operator = e.key;
-                      
+
                                   return [
                                     PersonalizedTableCell(value: operator),
                                     PersonalizedTableCell(

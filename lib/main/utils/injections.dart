@@ -27,7 +27,7 @@ Future<void> initApp() async {
   HttpOverrides.global = MyHttpOverrides();
   await _initFirebase();
   await _initHive();
-  await _makeOnlyPortraitMode();
+  await _enableLandscape();
 }
 
 Future<void> _initFirebase() async {
@@ -52,10 +52,11 @@ Future<void> _initFirebase() async {
   }
 }
 
-Future<void> _makeOnlyPortraitMode() async {
+Future<void> _enableLandscape() async {
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
+    DeviceOrientation.landscapeLeft,
   ]);
 }
 

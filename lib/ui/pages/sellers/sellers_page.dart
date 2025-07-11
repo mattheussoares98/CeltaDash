@@ -65,6 +65,7 @@ class _SellersPageState extends State<SellersPage> {
               },
             ),
             body: SafeArea(
+              left: false,
               child: Column(
                 children: [
                   Padding(
@@ -103,13 +104,14 @@ class _SellersPageState extends State<SellersPage> {
                           .map((e) => e.toViewModel())
                           .toList();
 
-                      final monthlyStatistics = sellersPresenter.monthlyStatistics
-                          ?.filteredSales(
-                            enterprise: homePresenter.selectedEnterprise,
-                            filterMonth: homePresenter.selectedDate.month,
-                          )
-                          .map((e) => e.toViewModel())
-                          .toList();
+                      final monthlyStatistics =
+                          sellersPresenter.monthlyStatistics
+                              ?.filteredSales(
+                                enterprise: homePresenter.selectedEnterprise,
+                                filterMonth: homePresenter.selectedDate.month,
+                              )
+                              .map((e) => e.toViewModel())
+                              .toList();
 
                       final yearlyStatistics = sellersPresenter.yearlyStatistics
                           ?.filteredSales(
@@ -150,8 +152,10 @@ class _SellersPageState extends State<SellersPage> {
                               ),
                             ],
                             rowValues: sales
-                                .fold<Map<String, List<SaleStatisticViewModel>>>(
-                                    {}, (map, e) {
+                                .fold<
+                                        Map<String,
+                                            List<SaleStatisticViewModel>>>({},
+                                    (map, e) {
                                   final seller = e.Seller ?? "Unknown";
                                   map.putIfAbsent(seller, () => []).add(e);
                                   return map;

@@ -71,6 +71,7 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
               showDatePicker: false,
             ),
             body: SafeArea(
+              left: false,
               child: Column(
                 children: [
                   ChangeDatesButtons(

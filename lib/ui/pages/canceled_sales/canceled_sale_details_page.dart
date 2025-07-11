@@ -32,35 +32,38 @@ class _CanceledSaleDetailsPageState extends State<CanceledSaleDetailsPage> {
       appBar: AppBar(
         title: Text(R.string.details),
       ),
-      body: StreamBuilder(
-          stream: presenter.isLoadingStream,
-          builder: (context, loadingSnap) {
-            return StreamBuilder(
-              stream: presenter.selectedSaleStream,
-              builder: (context, saleSnap) {
-                if (loadingSnap.data == true) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+      body: SafeArea(
+        left: false,
+        child: StreamBuilder(
+            stream: presenter.isLoadingStream,
+            builder: (context, loadingSnap) {
+              return StreamBuilder(
+                stream: presenter.selectedSaleStream,
+                builder: (context, saleSnap) {
+                  if (loadingSnap.data == true) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
-                if (!saleSnap.hasData || saleSnap.data == null) {
-                  return EmptySales(isLoading: loadingSnap.data == true);
-                }
+                  if (!saleSnap.hasData || saleSnap.data == null) {
+                    return EmptySales(isLoading: loadingSnap.data == true);
+                  }
 
-                final sale = saleSnap.data!;
+                  final sale = saleSnap.data!;
 
-                return SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      CancellationSection(sale: sale),
-                      SaleSection(sale: sale),
-                      ProductsSection(sale: sale),
-                    ],
-                  ),
-                );
-              },
-            );
-          }),
+                  return SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        CancellationSection(sale: sale),
+                        SaleSection(sale: sale),
+                        ProductsSection(sale: sale),
+                      ],
+                    ),
+                  );
+                },
+              );
+            }),
+      ),
     );
   }
 }

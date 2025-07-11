@@ -57,6 +57,7 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
             },
           ),
           body: SafeArea(
+            left: false,
             child: Column(
               children: [
                 Padding(
