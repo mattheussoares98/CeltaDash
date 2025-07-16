@@ -24,7 +24,7 @@ class YearSales extends StatelessWidget {
       columnsIndexToSum: [1, 2],
       indexToSort: 1,
       titles: [
-        PersonalizedTableCell(value: R.string.hour.toUpperCase()),
+        PersonalizedTableCell(value: R.string.year.toUpperCase()),
         PersonalizedTableCell(value: R.string.sales.toUpperCase()),
         PersonalizedTableCell(
             value: R.string.quantityAbbreviated.toUpperCase()),

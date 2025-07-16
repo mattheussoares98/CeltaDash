@@ -28,7 +28,7 @@ class MonthSales extends StatelessWidget {
       columnIndexToCompareAndDetachBetterAndWorstValue: 1,
       columnsIndexToSum: [1, 2],
       titles: [
-        PersonalizedTableCell(value: R.string.hour.toUpperCase()),
+        PersonalizedTableCell(value: R.string.month.toUpperCase()),
         PersonalizedTableCell(value: R.string.sales.toUpperCase()),
         PersonalizedTableCell(
             value: R.string.quantityAbbreviated.toUpperCase()),

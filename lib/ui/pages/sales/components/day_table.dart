@@ -30,7 +30,7 @@ class DayTable extends StatelessWidget {
       columnsIndexToSum: [1, 2],
       indexToSort: 0,
       titles: [
-        PersonalizedTableCell(value: R.string.hour.toUpperCase()),
+        PersonalizedTableCell(value: R.string.day.toUpperCase()),
         PersonalizedTableCell(value: R.string.sales.toUpperCase()),
         PersonalizedTableCell(
             value: R.string.quantityAbbreviated.toUpperCase()),
