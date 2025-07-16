@@ -6,6 +6,8 @@ import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
+bool _showAnimation = true;
+
 class CompareTable extends StatelessWidget {
   final DateTime firstDay;
   final DateTime secondDay;
@@ -19,38 +21,44 @@ class CompareTable extends StatelessWidget {
   Widget build(BuildContext context) {
     CompareDaysPresenter compareDaysPresenter = Get.find();
 
-    final hourWidth = MediaQuery.of(context).size.width * 0.2;
-    final dayWidth = MediaQuery.of(context).size.width * 0.3;
-    final compareDaysWidth = MediaQuery.of(context).size.width * 0.2;
-
     if (compareDaysPresenter.selectedFirstDay == null ||
         compareDaysPresenter.selectedSecondDay == null) {
       return const SizedBox.shrink();
     }
 
-    return TableItem(
+    return ScrollableTableItem(
       titles: [
-        PersonalizedTableCell(value: R.string.hour),
         PersonalizedTableCell(
-          value: DateFormat.yMd('pt_BR')
-              .format(compareDaysPresenter.selectedFirstDay!),
+          value: R.string.hour,
+          isTitle: true,
+        ),
+        PersonalizedTableCell(
+          value: DateFormat.yMd('pt_BR').format(
+            compareDaysPresenter.selectedFirstDay!,
+          ),
+          isTitle: true,
         ),
         PersonalizedTableCell(
           value: DateFormat.yMd('pt_BR')
               .format(compareDaysPresenter.selectedSecondDay!),
+          isTitle: true,
         ),
-        PersonalizedTableCell(value: R.string.difference),
+        PersonalizedTableCell(
+          value: R.string.difference,
+          isTitle: true,
+        ),
       ],
+      showAnimation: _showAnimation,
+      hideShowAnimation: () {
+        _showAnimation = false;
+      },
+      fixFirstColumn: true,
+      pdfFileName: R.string.compareDays,
       titleMinHeight: 40,
       indexToSort: 0,
       columnIndexToCompareAndDetachBetterAndWorstValue: 3,
       columnsIndexToSum: [1, 2],
-      tableColumnWidth: {
-        0: FixedColumnWidth(hourWidth),
-        1: FixedColumnWidth(dayWidth),
-        2: FixedColumnWidth(dayWidth),
-        3: FixedColumnWidth(compareDaysWidth),
-      },
+      columnsWidths: [80, 75, 75, 70],
       rowValues: compareDaysPresenter.saleStatistics!
           .uniqueHours()
           .toList()
