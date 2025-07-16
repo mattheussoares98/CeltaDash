@@ -6,6 +6,8 @@ import '../../helpers/helpers.dart';
 import '../../components/components.dart';
 import '../pages.dart';
 
+bool _showAnimation = true;
+
 class SellersPage extends StatefulWidget {
   const SellersPage({super.key});
 
@@ -133,23 +135,27 @@ class _SellersPageState extends State<SellersPage> {
 
                       return Column(
                         children: [
-                          TableItem(
+                          ScrollableTableItem(
                             titleMinHeight: 43,
                             indexToSort: 1,
                             columnIndexToCompareAndDetachBetterAndWorstValue: 1,
                             columnsIndexToSum: [1, 2],
-                            tableColumnWidth: {
-                              0: FixedColumnWidth(
-                                  MediaQuery.of(context).size.width * 0.5),
-                              2: FixedColumnWidth(
-                                  MediaQuery.of(context).size.width * 0.18),
+                            pdfFileName: R.string.sellers,
+                            showAnimation: _showAnimation,
+                            selectedPeriodType: sellersPresenter.selectedPeriod,
+                            fixFirstColumn: true,
+                            hideShowAnimation: () {
+                              _showAnimation = false;
                             },
+                            columnsWidths: [150, 120, 70],
                             titles: [
-                              PersonalizedTableCell(value: R.string.seller),
-                              PersonalizedTableCell(value: R.string.total),
                               PersonalizedTableCell(
-                                value: R.string.salesQuantityAbbreviated,
-                              ),
+                                  value: R.string.seller, isTitle: true),
+                              PersonalizedTableCell(
+                                  value: R.string.total, isTitle: true),
+                              PersonalizedTableCell(
+                                  value: R.string.salesQuantityAbbreviated,
+                                  isTitle: true),
                             ],
                             rowValues: sales
                                 .fold<
