@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
+
+bool _showAnimation = true;
 
 class YearSales extends StatelessWidget {
   final List<SaleStatisticViewModel> saleStatisticsByYear;
@@ -11,25 +14,28 @@ class YearSales extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final totalLiquidByYear = saleStatisticsByYear.sumLiquidValue();
+    final salesPresenter = Get.find<SalesPresenter>();
 
-    return TableItem(
+    return ScrollableTableItem(
       titleMinHeight: 45,
-      tableColumnWidth: {
-        0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.15),
-        2: FixedColumnWidth(MediaQuery.of(context).size.width * 0.19),
-        3: FixedColumnWidth(MediaQuery.of(context).size.width * 0.2),
-        4: FixedColumnWidth(MediaQuery.of(context).size.width * 0.16),
+      pdfFileName: R.string.yearlyAnalysis,
+      showAnimation: _showAnimation,
+      selectedPeriodType: salesPresenter.selectedPeriod,
+      fixFirstColumn: true,
+      hideShowAnimation: () {
+        _showAnimation = false;
       },
+      columnsWidths: [60, 110, 55, 60, 50],
       columnIndexToCompareAndDetachBetterAndWorstValue: 1,
       columnsIndexToSum: [1, 2],
       indexToSort: 1,
       titles: [
-        PersonalizedTableCell(value: R.string.year.toUpperCase()),
-        PersonalizedTableCell(value: R.string.sales.toUpperCase()),
+        PersonalizedTableCell(value: R.string.year, isTitle: true),
+        PersonalizedTableCell(value: R.string.sales, isTitle: true),
         PersonalizedTableCell(
-            value: R.string.quantityAbbreviated.toUpperCase()),
-        PersonalizedTableCell(value: R.string.average.toUpperCase()),
-        PersonalizedTableCell(value: R.string.share.toUpperCase()),
+            value: R.string.quantityAbbreviated, isTitle: true),
+        PersonalizedTableCell(value: R.string.average, isTitle: true),
+        PersonalizedTableCell(value: R.string.share, isTitle: true),
       ],
       rowValues:
           saleStatisticsByYear.map((e) => e.Year).toSet().toList().map((year) {

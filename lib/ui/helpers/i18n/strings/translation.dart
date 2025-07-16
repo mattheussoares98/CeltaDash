@@ -86,6 +86,7 @@ abstract class Translation {
   String get groupSummary;
   String get hour;
   String get hourly;
+  String get hourlyAnalysis;
   String get hours;
   String get indicators;
   String get insertGoal;
@@ -165,6 +166,7 @@ abstract class Translation {
   String get weekly;
   String get year;
   String get yearly;
+  String get yearlyAnalysis;
   String get years;
   String get yes;
 }

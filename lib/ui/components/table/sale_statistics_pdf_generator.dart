@@ -80,11 +80,11 @@ class SaleStatisticPdfGenerator {
             ),
             if (selectedPeriodType != null) ...[
               pw.Text(
-                ' - Data selecionada: ${formatter.format(selectedDate)}',
+                ' - Data selecionada: ${DateFormat('dd/MM/yyyy').format(selectedDate)} - ',
                 style: const pw.TextStyle(fontSize: 10),
               ),
               pw.Text(
-                ' - Período: ${selectedPeriodType!.description}',
+                'Período: ${selectedPeriodType!.description}',
                 style:
                     const pw.TextStyle(fontSize: 10, color: PdfColors.grey500),
               ),

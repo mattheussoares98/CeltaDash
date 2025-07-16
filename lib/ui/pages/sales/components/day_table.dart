@@ -6,6 +6,8 @@ import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
+bool _showAnimation = true;
+
 class DayTable extends StatelessWidget {
   final List<SaleStatisticViewModel> dailyStatistics;
   const DayTable({
@@ -16,26 +18,29 @@ class DayTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
+    final salesPresenter = Get.find<SalesPresenter>();
     final totalInMounth = dailyStatistics.sumLiquidValue();
 
-    return TableItem(
+    return ScrollableTableItem(
       titleMinHeight: 45,
-      tableColumnWidth: {
-        0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.15),
-        2: FixedColumnWidth(MediaQuery.of(context).size.width * 0.19),
-        3: FixedColumnWidth(MediaQuery.of(context).size.width * 0.2),
-        4: FixedColumnWidth(MediaQuery.of(context).size.width * 0.16),
+      pdfFileName: R.string.dailyAnalysis,
+      showAnimation: _showAnimation,
+      selectedPeriodType: salesPresenter.selectedPeriod,
+      fixFirstColumn: true,
+      hideShowAnimation: () {
+        _showAnimation = false;
       },
+      columnsWidths: [60, 90, 40, 60, 50],
       columnIndexToCompareAndDetachBetterAndWorstValue: 1,
       columnsIndexToSum: [1, 2],
       indexToSort: 0,
       titles: [
-        PersonalizedTableCell(value: R.string.day.toUpperCase()),
-        PersonalizedTableCell(value: R.string.sales.toUpperCase()),
+        PersonalizedTableCell(value: R.string.day, isTitle: true),
+        PersonalizedTableCell(value: R.string.sales, isTitle: true),
         PersonalizedTableCell(
-            value: R.string.quantityAbbreviated.toUpperCase()),
-        PersonalizedTableCell(value: R.string.average.toUpperCase()),
-        PersonalizedTableCell(value: R.string.share.toUpperCase()),
+            value: R.string.quantityAbbreviated, isTitle: true),
+        PersonalizedTableCell(value: R.string.average, isTitle: true),
+        PersonalizedTableCell(value: R.string.share, isTitle: true),
       ],
       rowValues:
           dailyStatistics.map((e) => e.Date?.day).toSet().toList().map((day) {

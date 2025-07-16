@@ -96,6 +96,7 @@ class PtBr implements Translation {
   String get groupSummary => "Resumo do grupo";
   String get hour => "Hora";
   String get hourly => "Por hora";
+  String get hourlyAnalysis => "Análise por horário";
   String get hours => "Horas";
   String get indicators => "Indicadores";
   String get insertGoal => "Inserir meta";
@@ -176,6 +177,7 @@ class PtBr implements Translation {
   String get worstHourOfTheDay => "Pior hora do dia";
   String get year => "Ano";
   String get yearly => "Anual";
+  String get yearlyAnalysis => "Análise anual";
   String get years => "Anos";
   String get yes => "Sim";
 }
