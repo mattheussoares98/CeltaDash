@@ -360,7 +360,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
     );
   }
 
-  Future<void> _exportToPdf() async {
+  Future<void> _openPdfPage() async {
     if (_sortedRows.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("There is no data to export.")),
@@ -387,14 +387,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
     // 3. Navigate to the new viewer page, passing the Future to it.
     // The FutureBuilder inside PdfViewerPage will handle waiting for the result.
     if (mounted) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => PdfViewerPage(
-            pdfBytes: bytes,
-            pdfFileName: widget.pdfFileName,
-          ),
-        ),
-      );
+      PdfViewer.openPdf(bytes, widget.pdfFileName);
     }
   }
 
@@ -542,7 +535,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
                     left: 0,
                     top: 0,
                     child: InkWell(
-                      onTap: _exportToPdf,
+                      onTap: _openPdfPage,
                       child: const Icon(Icons.picture_as_pdf_outlined),
                     ),
                   ),

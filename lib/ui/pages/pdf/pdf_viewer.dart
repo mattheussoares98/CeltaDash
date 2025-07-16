@@ -5,22 +5,38 @@ import 'package:flutter/services.dart';
 import 'package:pdfx/pdfx.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../../main/utils/utils.dart';
 import '../../components/components.dart';
 
-class PdfViewerPage extends StatefulWidget {
+class PdfViewer {
+  PdfViewer._();
+
+  static Future<void> openPdf(Uint8List pdfBytes, String pdfFileName) async {
+    await Navigator.push(
+      NavigatorKey.key.currentContext!,
+      MaterialPageRoute(
+        builder: (context) => _PdfViewerPage(
+          pdfBytes: pdfBytes,
+          pdfFileName: pdfFileName,
+        ),
+      ),
+    );
+  }
+}
+
+class _PdfViewerPage extends StatefulWidget {
   final Uint8List pdfBytes;
   final String pdfFileName;
-  const PdfViewerPage({
-    super.key,
+  const _PdfViewerPage({
     required this.pdfBytes,
     required this.pdfFileName,
   });
 
   @override
-  State<PdfViewerPage> createState() => _PdfViewerPageState();
+  State<_PdfViewerPage> createState() => _PdfViewerPageState();
 }
 
-class _PdfViewerPageState extends State<PdfViewerPage> {
+class _PdfViewerPageState extends State<_PdfViewerPage> {
   late final PdfControllerPinch _pdfPinchController;
   late final PdfController _pdfController;
 
