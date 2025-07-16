@@ -51,6 +51,7 @@ class ProductsTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScrollableTableItem(
+      pdfFileName: R.string.products,
       showAnimation: showAnimation,
       hideShowAnimation: hideShowAnimation,
       animationSecondsDuration: 3,

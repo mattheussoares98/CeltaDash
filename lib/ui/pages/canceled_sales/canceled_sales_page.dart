@@ -127,6 +127,7 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                     return Column(
                       children: [
                         ScrollableTableItem(
+                          pdfFileName: R.string.canceledSales,
                           titleMinHeight: 43,
                           columnsIndexToSum: [3],
                           fixFirstColumn: true,

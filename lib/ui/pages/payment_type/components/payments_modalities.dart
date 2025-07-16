@@ -25,6 +25,7 @@ class _PaymentsModalitiesState extends State<PaymentsModalities> {
     return Column(
       children: [
         ScrollableTableItem(
+          pdfFileName: R.string.paymentsType,
           columnsWidths: [100, 90, 50, 70, 70],
           columnIndexToCompareAndDetachBetterAndWorstValue: 1,
           showAnimation: _showAnimation,

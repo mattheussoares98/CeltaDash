@@ -12,7 +12,7 @@ class SaleStatisticPdfGenerator {
   final List<PersonalizedTableCell>? sumRow;
   final int? minValueRowIndex;
   final int? maxValueRowIndex;
-  final String reportTitle;
+  final String pdfFileName;
 
   SaleStatisticPdfGenerator({
     required this.titles,
@@ -21,7 +21,7 @@ class SaleStatisticPdfGenerator {
     required this.sumRow,
     required this.minValueRowIndex,
     required this.maxValueRowIndex,
-    this.reportTitle = 'Sales Statistics Report',
+    required this.pdfFileName,
   });
 
   /// Generates the PDF document and returns its data as a Uint8List.
@@ -62,7 +62,7 @@ class SaleStatisticPdfGenerator {
       child: pw.Column(
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
-          pw.Text(reportTitle,
+          pw.Text(pdfFileName,
               style:
                   pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 18)),
           // The text is now in Portuguese and uses the formatted date.

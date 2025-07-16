@@ -9,7 +9,12 @@ import '../../components/components.dart';
 
 class PdfViewerPage extends StatefulWidget {
   final Uint8List pdfBytes;
-  const PdfViewerPage({super.key, required this.pdfBytes});
+  final String pdfFileName;
+  const PdfViewerPage({
+    super.key,
+    required this.pdfBytes,
+    required this.pdfFileName,
+  });
 
   @override
   State<PdfViewerPage> createState() => _PdfViewerPageState();
@@ -50,6 +55,12 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
     _pdfPinchController.removeListener(_handleScroll);
     _pdfPinchController.dispose();
     _pdfController.dispose();
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+    ]);
 
     super.dispose();
   }
@@ -92,7 +103,7 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
 
       final pdfFile = XFile.fromData(
         widget.pdfBytes,
-        name: "pdfViewerProvider.fileName!", //TODO change
+        name: widget.pdfFileName,
         mimeType: 'application/pdf',
       );
 
@@ -102,10 +113,10 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
           files: [pdfFile],
           text: "Compartilhar PDF",
           downloadFallbackEnabled: true,
-          title: "pdfViewerProvider.fileName", //TODO change
+          title: widget.pdfFileName,
           previewThumbnail: pdfFile,
           mailToFallbackEnabled: true,
-          fileNameOverrides: ['name.pdf'], //TODO CHANGE
+          fileNameOverrides: ['${widget.pdfFileName}.pdf'],
         ),
       );
     } catch (e) {

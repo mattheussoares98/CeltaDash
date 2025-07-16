@@ -21,6 +21,7 @@ class Departments extends StatelessWidget {
     return Column(
       children: [
         ScrollableTableItem(
+          pdfFileName: R.string.departments,
           showAnimation: _showAnimation,
           hideShowAnimation: () {
             _showAnimation = false;

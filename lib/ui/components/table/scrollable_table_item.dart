@@ -21,6 +21,7 @@ class ScrollableTableItem extends StatefulWidget {
   final bool showAnimation;
   final void Function() hideShowAnimation;
   final int animationSecondsDuration;
+  final String pdfFileName;
 
   const ScrollableTableItem({
     super.key,
@@ -29,6 +30,7 @@ class ScrollableTableItem extends StatefulWidget {
     required this.columnsWidths,
     required this.showAnimation,
     required this.hideShowAnimation,
+    required this.pdfFileName,
     this.animationSecondsDuration = 2,
     this.columnIndexToCompareAndDetachBetterAndWorstValue,
     this.titleMinHeight = 40,
@@ -368,7 +370,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
 
     // 1. Instantiate the generator as before.
     final pdfGenerator = SaleStatisticPdfGenerator(
-      reportTitle: 'Relatório de Vendas', // Title in Portuguese
+      pdfFileName: widget.pdfFileName, // Title in Portuguese
       titles: widget.titles,
       sortedRows: _sortedRows,
       columnsWidths: widget.columnsWidths,
@@ -388,7 +390,8 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => PdfViewerPage(
-            pdfBytes: bytes, // Title in Portuguese
+            pdfBytes: bytes,
+            pdfFileName: widget.pdfFileName,
           ),
         ),
       );

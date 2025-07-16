@@ -41,6 +41,7 @@ class Sections extends StatelessWidget {
     return Column(
       children: [
         ScrollableTableItem(
+          pdfFileName: R.string.sections,
           showAnimation: false,
           hideShowAnimation: () {},
           animationSecondsDuration: 3,
