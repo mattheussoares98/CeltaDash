@@ -6,6 +6,8 @@ import '../../../ui/helpers/helpers.dart';
 import '../../components/components.dart';
 import '../pages.dart';
 
+bool _showAnimation = true;
+
 class GroupSummaryDetailsPage extends StatelessWidget {
   final double groupSalesTotalLiquid;
   final List<SaleStatisticViewModel> saleStatistics;
@@ -50,18 +52,19 @@ class GroupSummaryDetailsPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        TableItem(
+        ScrollableTableItem(
+          pdfFileName: R.string.groupSummary,
+          hideShowAnimation: () => _showAnimation = !_showAnimation,
           columnIndexToCompareAndDetachBetterAndWorstValue: 1,
           columnsIndexToSum: [1],
           indexToSort: 1,
-          tableColumnWidth: {
-            0: FixedColumnWidth(MediaQuery.of(context).size.width * 0.5),
-          },
+          columnsWidths: [180, 90, 80],
+          showAnimation: _showAnimation,
           titleMinHeight: 40,
           titles: [
-            PersonalizedTableCell(value: R.string.enterprise),
-            PersonalizedTableCell(value: R.string.sales),
-            PersonalizedTableCell(value: R.string.share),
+            PersonalizedTableCell(value: R.string.enterprise, isTitle: true),
+            PersonalizedTableCell(value: R.string.sales, isTitle: true),
+            PersonalizedTableCell(value: R.string.share, isTitle: true),
           ],
           rowValues: salesByEnterprise
               .map((e) => [
