@@ -280,11 +280,6 @@ class GetxHomePresenter extends GetxController
   }
 
   @override
-  void goToProfitabilityPage() {
-    navigateTo.navigate(pageRoute: PageRoutes.profitability);
-  }
-
-  @override
   void reloadSales(
     ResumePresenter resumePresenter,
     SalesPresenter salesPresenter,

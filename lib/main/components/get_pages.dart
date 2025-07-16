@@ -74,11 +74,6 @@ class GetPages {
       transition: transition,
     ),
     GetPage(
-      name: PageRoutes.profitability,
-      page: makeProfitabilityPage,
-      transition: transition,
-    ),
-    GetPage(
       name: PageRoutes.sellers,
       page: makeSellersPage,
       transition: transition,

@@ -19,7 +19,6 @@ class HomePresenterSpy extends Mock implements HomePresenter {
   ];
 
   HomePresenterSpy() {
-    when(() => this.goToProfitabilityPage()).thenAnswer((any) => any);
     when(() => this.goToCompareDays()).thenAnswer((any) => any);
     when(() => this.goToDepartmentsPage()).thenAnswer((any) => any);
     when(() => this.goToPaymentsTypePage()).thenAnswer((any) => any);

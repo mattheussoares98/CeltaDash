@@ -12,7 +12,6 @@ export 'operators/operators.dart';
 export './payment_type/payment_type.dart';
 export './pdf/pdf.dart';
 export './products/products.dart';
-export './profitability/profitability.dart';
 export './resume/resume.dart';
 export './sales/sales.dart';
 export 'sellers/sellers.dart';

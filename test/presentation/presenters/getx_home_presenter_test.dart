@@ -152,13 +152,7 @@ void main() {
         () => navigateTo.navigate(pageRoute: PageRoutes.sellers),
       ).called(1);
     });
-    test("Should go to profitability page", () {
-      sut.goToProfitabilityPage();
 
-      verify(
-        () => navigateTo.navigate(pageRoute: PageRoutes.profitability),
-      ).called(1);
-    });
     test("Should go to canceled sales page", () {
       sut.goToCanceledSalesPage();
 
@@ -167,13 +161,6 @@ void main() {
       ).called(1);
     });
 
-    test("Should navigate to profitability correctly", () async {
-      sut.goToProfitabilityPage();
-
-      verify(
-        () => navigateTo.navigate(pageRoute: PageRoutes.profitability),
-      ).called(1);
-    });
     test("Should navigate to daily analysis page correctly", () async {
       sut.goToCompareDays();
 

@@ -11,7 +11,6 @@ class PageRoutes {
   static const String login = "/login";
   static const String more = "/more";
   static const String operators = "/operators";
-  static const String profitability = "/profitability";
   static const String sellers = "/sellers";
   static const String setGoal = "/set_goal";
   static const String splash = "/splash";

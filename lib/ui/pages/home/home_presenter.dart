@@ -21,7 +21,6 @@ abstract class HomePresenter implements Listenable {
   void goToDepartmentsPage();
   void goToOperatorsPage();
   void goToPaymentsTypePage();
-  void goToProfitabilityPage();
   void goToSellersPage();
   void goToEnterprisesManagerPage();
 
