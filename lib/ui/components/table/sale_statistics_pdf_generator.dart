@@ -1,9 +1,13 @@
 import 'dart:typed_data';
 import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 // Assuming 'PersonalizedTableCell' is defined in your project.
+import '../../../domain/helpers/helpers.dart';
+import '../../pages/pages.dart';
 import 'table.dart'; // Make sure this import points to your PersonalizedTableCell definition.
 
 class SaleStatisticPdfGenerator {
@@ -14,6 +18,7 @@ class SaleStatisticPdfGenerator {
   final int? minValueRowIndex;
   final int? maxValueRowIndex;
   final String pdfFileName;
+  final PeriodType? selectedPeriodType;
 
   SaleStatisticPdfGenerator({
     required this.titles,
@@ -23,6 +28,7 @@ class SaleStatisticPdfGenerator {
     required this.minValueRowIndex,
     required this.maxValueRowIndex,
     required this.pdfFileName,
+    required this.selectedPeriodType,
   });
 
   /// Generates the PDF document and returns its data as a Uint8List.
@@ -54,8 +60,8 @@ class SaleStatisticPdfGenerator {
   pw.Widget _buildHeader() {
     // This formats the date and time to a common Brazilian format.
     final now = DateTime.now().toLocal();
-    final formattedDate =
-        '${now.day.toString().padLeft(2, '0')}/${now.month.toString().padLeft(2, '0')}/${now.year} às ${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}';
+    final formatter = DateFormat('dd/MM/yyyy HH:mm');
+    final selectedDate = Get.find<HomePresenter>().selectedDate;
 
     return pw.Container(
       alignment: pw.Alignment.centerLeft,
@@ -67,8 +73,23 @@ class SaleStatisticPdfGenerator {
               style:
                   pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 18)),
           // The text is now in Portuguese and uses the formatted date.
-          pw.Text('Gerado em: $formattedDate',
-              style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey)),
+          pw.Row(children: [
+            pw.Text(
+              'Gerado em: ${formatter.format(now)}',
+              style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey),
+            ),
+            if (selectedPeriodType != null) ...[
+              pw.Text(
+                ' - Data selecionada: ${formatter.format(selectedDate)}',
+                style: const pw.TextStyle(fontSize: 10),
+              ),
+              pw.Text(
+                ' - Período: ${selectedPeriodType!.description}',
+                style:
+                    const pw.TextStyle(fontSize: 10, color: PdfColors.grey500),
+              ),
+            ]
+          ]),
         ],
       ),
     );

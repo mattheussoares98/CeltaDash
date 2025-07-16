@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 
 import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
@@ -50,7 +51,10 @@ class ProductsTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final productsPresenter = Get.find<ProductsPresenter>();
+
     return ScrollableTableItem(
+      selectedPeriodType: productsPresenter.selectedPeriod,
       pdfFileName: R.string.products,
       showAnimation: showAnimation,
       hideShowAnimation: hideShowAnimation,

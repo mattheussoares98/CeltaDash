@@ -137,6 +137,8 @@ class _OperatorsPageState extends State<OperatorsPage> {
                       return Column(
                         children: [
                           ScrollableTableItem(
+                            selectedPeriodType:
+                                operatorsPresenter.selectedPeriod,
                             titleMinHeight: 43,
                             indexToSort: 1,
                             columnIndexToCompareAndDetachBetterAndWorstValue: 1,

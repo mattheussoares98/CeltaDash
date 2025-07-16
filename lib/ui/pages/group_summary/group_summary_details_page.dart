@@ -53,6 +53,7 @@ class GroupSummaryDetailsPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         ScrollableTableItem(
+          selectedPeriodType: resumePresenter.selectedPeriod,
           pdfFileName: R.string.groupSummary,
           hideShowAnimation: () => _showAnimation = !_showAnimation,
           columnIndexToCompareAndDetachBetterAndWorstValue: 1,

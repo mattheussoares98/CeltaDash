@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
@@ -22,6 +23,7 @@ class Sections extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final departmentsPresenter = Get.find<DepartmentsPresenter>();
     final totalStatisticsLiquid = saleStatistics.sumLiquidValue();
     final departmentColorMap = <String, Color>{};
 
@@ -41,6 +43,7 @@ class Sections extends StatelessWidget {
     return Column(
       children: [
         ScrollableTableItem(
+          selectedPeriodType: departmentsPresenter.selectedPeriod,
           pdfFileName: R.string.sections,
           showAnimation: false,
           hideShowAnimation: () {},

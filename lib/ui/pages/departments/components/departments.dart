@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
@@ -17,10 +18,12 @@ class Departments extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final totalDepartmentsLiquid = saleStatistics.sumLiquidValue();
+    final homePresenter = Get.find<DepartmentsPresenter>();
 
     return Column(
       children: [
         ScrollableTableItem(
+          selectedPeriodType: homePresenter.selectedPeriod,
           pdfFileName: R.string.departments,
           showAnimation: _showAnimation,
           hideShowAnimation: () {

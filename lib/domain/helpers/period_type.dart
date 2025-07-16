@@ -12,15 +12,15 @@ extension PeriodTypeExtension on PeriodType {
   String get description {
     switch (this) {
       case PeriodType.hourly:
-        return R.string.hour;
+        return R.string.hourly;
       case PeriodType.daily:
-        return R.string.day;
+        return R.string.daily;
       case PeriodType.weekly:
-        return R.string.week;
+        return R.string.weekly;
       case PeriodType.monthly:
-        return R.string.month;
+        return R.string.monthly;
       case PeriodType.yearly:
-        return R.string.year;
+        return R.string.yearly;
     }
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 // Assuming these are your custom imports.
 // You may need to adjust the paths if they are incorrect.
+import '../../../domain/helpers/helpers.dart';
 import '../../../ui/helpers/helpers.dart';
 import '../../pages/pages.dart';
 import 'table.dart';
@@ -22,6 +23,7 @@ class ScrollableTableItem extends StatefulWidget {
   final void Function() hideShowAnimation;
   final int animationSecondsDuration;
   final String pdfFileName;
+  final PeriodType? selectedPeriodType;
 
   const ScrollableTableItem({
     super.key,
@@ -31,6 +33,7 @@ class ScrollableTableItem extends StatefulWidget {
     required this.showAnimation,
     required this.hideShowAnimation,
     required this.pdfFileName,
+    this.selectedPeriodType,
     this.animationSecondsDuration = 2,
     this.columnIndexToCompareAndDetachBetterAndWorstValue,
     this.titleMinHeight = 40,
@@ -370,6 +373,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
 
     // 1. Instantiate the generator as before.
     final pdfGenerator = SaleStatisticPdfGenerator(
+      selectedPeriodType: widget.selectedPeriodType,
       pdfFileName: widget.pdfFileName, // Title in Portuguese
       titles: widget.titles,
       sortedRows: _sortedRows,

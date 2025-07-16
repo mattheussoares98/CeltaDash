@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
@@ -22,9 +23,11 @@ class PaymentsModalities extends StatefulWidget {
 class _PaymentsModalitiesState extends State<PaymentsModalities> {
   @override
   Widget build(BuildContext context) {
+    final paymentTypePresenter = Get.find<PaymentTypePresenter>();
     return Column(
       children: [
         ScrollableTableItem(
+          selectedPeriodType: paymentTypePresenter.selectedPeriod,
           pdfFileName: R.string.paymentsType,
           columnsWidths: [100, 90, 50, 70, 70],
           columnIndexToCompareAndDetachBetterAndWorstValue: 1,

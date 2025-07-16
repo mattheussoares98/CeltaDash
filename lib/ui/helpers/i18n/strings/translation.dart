@@ -53,6 +53,7 @@ abstract class Translation {
   String get customer;
   String get customerName;
   String get customers;
+  String get daily;
   String get dailyAnalysis;
   String get dailyAnalysisAverage;
   String get date;
@@ -84,6 +85,7 @@ abstract class Translation {
   String get groupOfStores;
   String get groupSummary;
   String get hour;
+  String get hourly;
   String get hours;
   String get indicators;
   String get insertGoal;
@@ -95,6 +97,7 @@ abstract class Translation {
   String get modalities;
   String get month;
   String get months;
+  String get monthly;
   String get monthlyAnalysis;
   String get more;
   String get moreDetails;
@@ -159,7 +162,9 @@ abstract class Translation {
   String get week;
   String get worstDayOfTheMonth;
   String get worstHourOfTheDay;
+  String get weekly;
   String get year;
+  String get yearly;
   String get years;
   String get yes;
 }

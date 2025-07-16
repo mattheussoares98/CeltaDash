@@ -127,6 +127,8 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                     return Column(
                       children: [
                         ScrollableTableItem(
+                          selectedPeriodType:
+                              canceledSalesPresenter.selectedPeriod,
                           pdfFileName: R.string.canceledSales,
                           titleMinHeight: 43,
                           columnsIndexToSum: [3],
