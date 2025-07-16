@@ -2,15 +2,10 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart';
 
 // Assuming 'PersonalizedTableCell' is defined in your project.
-// This is a placeholder based on the usage in your 'ScrollableTableItem'.
 import 'table.dart'; // Make sure this import points to your PersonalizedTableCell definition.
 
-/// A class responsible for generating a PDF from sale statistics data.
-/// It's designed to take the processed data from your `ScrollableTableItem`
-/// and format it into a PDF table that mirrors the UI.
 class SaleStatisticPdfGenerator {
   final List<PersonalizedTableCell> titles;
   final List<List<PersonalizedTableCell>> sortedRows;
@@ -30,27 +25,19 @@ class SaleStatisticPdfGenerator {
     this.reportTitle = 'Sales Statistics Report',
   });
 
-  /// Generates the PDF document and opens a print/save preview screen.
-  Future<void> generateAndPrintPdf() async {
-    // Generate the PDF document in memory.
-    final Uint8List pdfBytes = await _generatePdf();
-
-    // Use the `printing` package to display the PDF preview.
-    // This allows the user to print, save, or share the document.
-    await Printing.layoutPdf(
-      onLayout: (PdfPageFormat format) async => pdfBytes,
-    );
+  /// Generates the PDF document and returns its data as a Uint8List.
+  Future<Uint8List> generatePdfBytes() async {
+    return _generatePdf();
   }
 
   /// Core logic to create the PDF document using the `pdf` package.
   Future<Uint8List> _generatePdf() async {
     final pdf = pw.Document();
 
-    // Add a page to the document. We use `MultiPage` to allow the table
-    // to span across multiple pages if it's too long.
-    // The page format is set to landscape to better accommodate wide tables.
     pdf.addPage(
       pw.MultiPage(
+        // This reduces the blank space on all sides of the page.
+        margin: const pw.EdgeInsets.all(20),
         pageFormat: PdfPageFormat.a4.landscape,
         header: (pw.Context context) => _buildHeader(),
         footer: (pw.Context context) => _buildFooter(context),
@@ -60,12 +47,16 @@ class SaleStatisticPdfGenerator {
       ),
     );
 
-    // `pdf.save()` returns the document as a `Uint8List`.
     return pdf.save();
   }
 
   /// Builds the header for each page of the PDF.
   pw.Widget _buildHeader() {
+    // This formats the date and time to a common Brazilian format.
+    final now = DateTime.now().toLocal();
+    final formattedDate =
+        '${now.day.toString().padLeft(2, '0')}/${now.month.toString().padLeft(2, '0')}/${now.year} às ${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}';
+
     return pw.Container(
       alignment: pw.Alignment.centerLeft,
       margin: const pw.EdgeInsets.only(bottom: 16.0),
@@ -75,7 +66,8 @@ class SaleStatisticPdfGenerator {
           pw.Text(reportTitle,
               style:
                   pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 18)),
-          pw.Text('Generated on: ${DateTime.now().toLocal()}',
+          // The text is now in Portuguese and uses the formatted date.
+          pw.Text('Gerado em: $formattedDate',
               style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey)),
         ],
       ),
@@ -88,7 +80,8 @@ class SaleStatisticPdfGenerator {
       alignment: pw.Alignment.centerRight,
       margin: const pw.EdgeInsets.only(top: 16.0),
       child: pw.Text(
-        'Page ${context.pageNumber} of ${context.pagesCount}',
+        // The page information text is now in Portuguese.
+        'Página ${context.pageNumber} de ${context.pagesCount}',
         style: pw.Theme.of(context)
             .defaultTextStyle
             .copyWith(color: PdfColors.grey),
@@ -98,15 +91,16 @@ class SaleStatisticPdfGenerator {
 
   /// Constructs the main table widget for the PDF.
   pw.Widget _buildPdfTable() {
-    // 1. Define Table Headers
-    // The headers are styled to be bold and have a light grey background.
-    final headers =
-        titles.map((cell) => _buildCell(cell, isHeader: true)).toList();
+    // 1. Define the header row.
+    // By setting `repeat: true`, this specific TableRow will be drawn
+    // at the top of every page the table spans.
+    final headers = pw.TableRow(
+      repeat: true, // THIS IS THE CORRECT IMPLEMENTATION
+      decoration: const pw.BoxDecoration(color: PdfColors.grey300),
+      children: titles.map((cell) => _buildCell(cell, isHeader: true)).toList(),
+    );
 
-    // 2. Define Data Rows
-    // Each row from `sortedRows` is converted into a `pw.TableRow`.
-    // The row color is determined based on its index (for alternating colors)
-    // and whether it's a min/max value row.
+    // 2. Define the data rows.
     final List<pw.TableRow> rows = [];
     for (int i = 0; i < sortedRows.length; i++) {
       final rowData = sortedRows[i];
@@ -119,8 +113,7 @@ class SaleStatisticPdfGenerator {
       );
     }
 
-    // 3. Define Sum Row
-    // If a sum row exists, it's added at the end of the table with header styling.
+    // 3. Define the sum row, if it exists.
     final pw.TableRow? pdfSumRow = sumRow != null
         ? pw.TableRow(
             decoration: const pw.BoxDecoration(color: PdfColors.grey200),
@@ -131,21 +124,18 @@ class SaleStatisticPdfGenerator {
         : null;
 
     // 4. Define Column Widths
-    // The column widths from the Flutter widget are converted to relative widths
-    // for the PDF table, ensuring a similar layout.
     final Map<int, pw.TableColumnWidth> pdfColumnWidths = {
       for (int i = 0; i < columnsWidths.length; i++)
         i: pw.FlexColumnWidth(columnsWidths[i]),
     };
 
     // 5. Assemble the Table
-    // The final table is created with borders, column widths, and all the rows.
     return pw.Table(
       border: pw.TableBorder.all(color: PdfColors.grey600, width: 0.5),
       columnWidths: pdfColumnWidths,
-      // The children are the header, all data rows, and the optional sum row.
+      // The children list starts with the repeatable header row.
       children: [
-        pw.TableRow(children: headers),
+        headers,
         ...rows,
         if (pdfSumRow != null) pdfSumRow,
       ],
@@ -158,11 +148,9 @@ class SaleStatisticPdfGenerator {
       fontWeight: isHeader || cell.isTitle == true
           ? pw.FontWeight.bold
           : pw.FontWeight.normal,
-      fontSize: 8, // Using a smaller font size to fit more data
+      fontSize: 8,
     );
 
-    // Basic text formatting based on cell properties.
-    // This can be expanded to match your `toBrazilianNumber` logic.
     String value = cell.value.toString();
     if (cell.isMoney == true) {
       value = 'R\$ $value';
@@ -179,16 +167,15 @@ class SaleStatisticPdfGenerator {
   }
 
   /// Determines the background color for a given row index.
-  /// This logic mirrors the `getColor` method in your widget.
   PdfColor? _getPdfColor(int rowIndex) {
     if (rowIndex == maxValueRowIndex && sortedRows.length > 1) {
-      return PdfColors.green50; // Light green for best value
+      return PdfColors.green50;
     } else if (rowIndex == minValueRowIndex && sortedRows.length > 1) {
-      return PdfColors.red50; // Light red for worst value
+      return PdfColors.red50;
     } else if (rowIndex % 2 != 0) {
-      return PdfColors.grey100; // Light grey for alternating rows
+      return PdfColors.grey100;
     }
-    return PdfColors.white; // Default background
+    return PdfColors.white;
   }
 }
 

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 // Assuming these are your custom imports.
 // You may need to adjust the paths if they are incorrect.
 import '../../../ui/helpers/helpers.dart';
+import '../../pages/pages.dart';
 import 'table.dart';
 
 class ScrollableTableItem extends StatefulWidget {
@@ -357,6 +358,43 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
     );
   }
 
+  Future<void> _exportToPdf() async {
+    if (_sortedRows.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("There is no data to export.")),
+      );
+      return;
+    }
+
+    // 1. Instantiate the generator as before.
+    final pdfGenerator = SaleStatisticPdfGenerator(
+      reportTitle: 'Relatório de Vendas', // Title in Portuguese
+      titles: widget.titles,
+      sortedRows: _sortedRows,
+      columnsWidths: widget.columnsWidths,
+      sumRow: (widget.columnsIndexToSum?.isNotEmpty ?? false)
+          ? _buildSumRow()
+          : null,
+      minValueRowIndex: minValueRowIndex,
+      maxValueRowIndex: maxValueRowIndex,
+    );
+
+    // 2. Get the Future that will generate the PDF bytes, but DO NOT await it here.
+    final bytes = await pdfGenerator.generatePdfBytes();
+
+    // 3. Navigate to the new viewer page, passing the Future to it.
+    // The FutureBuilder inside PdfViewerPage will handle waiting for the result.
+    if (mounted) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => PdfViewerPage(
+            pdfBytes: bytes, // Title in Portuguese
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_sortedRows.isEmpty && widget.rowValues.isNotEmpty) {
@@ -413,6 +451,22 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
     return Expanded(
       child: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+            child: ElevatedButton.icon(
+              icon: const Icon(Icons.picture_as_pdf_outlined),
+              label: const Text('Generate PDF'),
+              onPressed: _exportToPdf, // It calls our new method.
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.secondary,
+                foregroundColor: Theme.of(context).colorScheme.onSecondary,
+                minimumSize: const Size(double.infinity, 44),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+            ),
+          ),
           // Header Row
           SizedBox(
             height: widget.titleMinHeight,
