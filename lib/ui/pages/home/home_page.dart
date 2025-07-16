@@ -89,6 +89,7 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
+    ResumePresenter resumePresenter = Get.find();
 
     mainErrorSubscription?.cancel();
     mainErrorSubscription =
@@ -112,7 +113,13 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
         bottomNavigationBar: BottomNavBar(
           currentIndex: currentIndex,
           onTap: homePresenter.selectedEnterpriseIsEnabled
-              ? homePresenter.updateSelectedIndex
+              ? (index) async {
+                  homePresenter.updateSelectedIndex(index);
+                  if (index == 0) {
+                    await resumePresenter.getSales(homePresenter,
+                        now: DateTime.now());
+                  }
+                }
               : (_) {
                   snackBarMessage(
                     context,
