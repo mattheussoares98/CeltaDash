@@ -454,99 +454,96 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
     return Expanded(
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            child: ElevatedButton.icon(
-              icon: const Icon(Icons.picture_as_pdf_outlined),
-              label: const Text('Generate PDF'),
-              onPressed: _exportToPdf, // It calls our new method.
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.secondary,
-                foregroundColor: Theme.of(context).colorScheme.onSecondary,
-                minimumSize: const Size(double.infinity, 44),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-            ),
-          ),
           // Header Row
           SizedBox(
             height: widget.titleMinHeight,
             child: DefaultTextStyle(
               style: CupertinoTheme.of(context).textTheme.textStyle,
-              child: Row(
+              child: Stack(
                 children: [
-                  if (widget.fixFirstColumn)
-                    Table(
-                      border: TableBorder.all(
-                          color: getTableBorderColor(), width: 0.06),
-                      defaultColumnWidth: const FlexColumnWidth(1),
-                      columnWidths: {
-                        0: FixedColumnWidth(
-                            widget.columnsWidths[0] + availableSize)
-                      },
-                      children: [
-                        TableRow(
+                  Row(
+                    children: [
+                      if (widget.fixFirstColumn)
+                        Table(
+                          border: TableBorder.all(
+                              color: getTableBorderColor(), width: 0.06),
+                          defaultColumnWidth: const FlexColumnWidth(1),
+                          columnWidths: {
+                            0: FixedColumnWidth(
+                                widget.columnsWidths[0] + availableSize)
+                          },
                           children: [
-                            IntrinsicHeight(
-                              child: InkWell(
-                                onTap: () => _handleHeaderTap(0),
-                                child: Container(
-                                  constraints: BoxConstraints(
-                                      minHeight: widget.titleMinHeight),
-                                  decoration: BoxDecoration(
-                                    border: getBorderDecoration(),
-                                    color: Theme.of(context)
-                                        .disabledColor
-                                        .withAlpha(70),
+                            TableRow(
+                              children: [
+                                IntrinsicHeight(
+                                  child: InkWell(
+                                    onTap: () => _handleHeaderTap(0),
+                                    child: Container(
+                                      constraints: BoxConstraints(
+                                          minHeight: widget.titleMinHeight),
+                                      decoration: BoxDecoration(
+                                        border: getBorderDecoration(),
+                                        color: Theme.of(context)
+                                            .disabledColor
+                                            .withAlpha(70),
+                                      ),
+                                      child: fixedTitles[0],
+                                    ),
                                   ),
-                                  child: fixedTitles[0],
                                 ),
-                              ),
+                              ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      controller: _headerHorizontalController,
-                      physics: const ClampingScrollPhysics(),
-                      child: Table(
-                        border: TableBorder.all(
-                            color: getTableBorderColor(), width: 0.06),
-                        defaultColumnWidth: const FlexColumnWidth(1),
-                        columnWidths: scrollableColumnWidthsMap,
-                        children: [
-                          TableRow(
-                            children:
-                                List.generate(scrollableTitles.length, (index) {
-                              final originalIndex =
-                                  widget.fixFirstColumn ? index + 1 : index;
-                              final tableCell = scrollableTitles[index];
-                              return IntrinsicHeight(
-                                child: InkWell(
-                                  onTap: () => _handleHeaderTap(originalIndex),
-                                  child: Container(
-                                    constraints: BoxConstraints(
-                                      minHeight: widget.titleMinHeight,
+                      Expanded(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          controller: _headerHorizontalController,
+                          physics: const ClampingScrollPhysics(),
+                          child: Table(
+                            border: TableBorder.all(
+                                color: getTableBorderColor(), width: 0.06),
+                            defaultColumnWidth: const FlexColumnWidth(1),
+                            columnWidths: scrollableColumnWidthsMap,
+                            children: [
+                              TableRow(
+                                children: List.generate(scrollableTitles.length,
+                                    (index) {
+                                  final originalIndex =
+                                      widget.fixFirstColumn ? index + 1 : index;
+                                  final tableCell = scrollableTitles[index];
+                                  return IntrinsicHeight(
+                                    child: InkWell(
+                                      onTap: () =>
+                                          _handleHeaderTap(originalIndex),
+                                      child: Container(
+                                        constraints: BoxConstraints(
+                                          minHeight: widget.titleMinHeight,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          border: getBorderDecoration(),
+                                          color: Theme.of(context)
+                                              .disabledColor
+                                              .withAlpha(70),
+                                        ),
+                                        child: tableCell,
+                                      ),
                                     ),
-                                    decoration: BoxDecoration(
-                                      border: getBorderDecoration(),
-                                      color: Theme.of(context)
-                                          .disabledColor
-                                          .withAlpha(70),
-                                    ),
-                                    child: tableCell,
-                                  ),
-                                ),
-                              );
-                            }),
+                                  );
+                                }),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
+                    ],
+                  ),
+                  Positioned(
+                    left: 0,
+                    top: 0,
+                    child: InkWell(
+                      onTap: _exportToPdf,
+                      child: const Icon(Icons.picture_as_pdf_outlined),
                     ),
                   ),
                 ],
