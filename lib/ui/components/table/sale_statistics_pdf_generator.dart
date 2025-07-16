@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
@@ -142,27 +141,91 @@ class SaleStatisticPdfGenerator {
     );
   }
 
-  /// Helper function to create a single styled cell (`pw.Widget`) for the table.
+  String _getFormattedValue(dynamic value) {
+    if (value is String) {
+      return value;
+    } else if (value is double) {
+      // Mimics the behavior of formatting a double.
+      // Replace with your `toBrazilianNumber()` if needed.
+      return value.toStringAsFixed(2).replaceAll('.', ',');
+    } else if (value is int) {
+      // Mimics formatting for an integer.
+      return value.toString();
+    } else if (value is num) {
+      // Fallback for other numbers (e.g., if it has no decimal part).
+      if (value % 1 == 0) {
+        return value.toInt().toString();
+      }
+      return value.toStringAsFixed(2).replaceAll('.', ',');
+    }
+    return 'error';
+  }
+
   pw.Widget _buildCell(PersonalizedTableCell cell, {bool isHeader = false}) {
-    final style = pw.TextStyle(
+    // Main style for the numerical value
+    final mainStyle = pw.TextStyle(
       fontWeight: isHeader || cell.isTitle == true
           ? pw.FontWeight.bold
           : pw.FontWeight.normal,
       fontSize: 8,
     );
 
-    String value = cell.value.toString();
-    if (cell.isMoney == true) {
-      value = 'R\$ $value';
-    }
-    if (cell.isPercentage == true) {
-      value = '$value%';
-    }
+    // A smaller, slightly lighter style for the currency and percentage symbols.
+    final symbolStyle = mainStyle.copyWith(
+      fontSize: 6,
+      color: PdfColors.grey600,
+    );
+
+    final formattedValue = _getFormattedValue(cell.value);
+
+    // The main content widget, which will be a RichText.
+    final content = pw.RichText(
+      textAlign: pw.TextAlign.center,
+      text: pw.TextSpan(
+        children: [
+          // Conditionally add the 'R$' prefix.
+          if (cell.isMoney == true)
+            pw.TextSpan(
+              text: 'R\$ ',
+              style: symbolStyle,
+            ),
+          // The main value.
+          pw.TextSpan(
+            text: isHeader || cell.isTitle == true
+                ? formattedValue.toUpperCase()
+                : formattedValue,
+            style: mainStyle,
+          ),
+          // Conditionally add the '%' suffix.
+          if (cell.isPercentage == true)
+            pw.TextSpan(
+              text: ' %',
+              style: symbolStyle,
+            ),
+        ],
+      ),
+    );
 
     return pw.Container(
       padding: const pw.EdgeInsets.all(4),
-      alignment: Alignment.center.toPdfAlignment(),
-      child: pw.Text(value, style: style, textAlign: pw.TextAlign.center),
+      alignment: pw.Alignment.center,
+      child: (cell.subtile != null && cell.subtile!.isNotEmpty)
+          // If a subtitle exists, wrap the content in a Column.
+          ? pw.Column(
+              mainAxisAlignment: pw.MainAxisAlignment.center,
+              children: [
+                content,
+                pw.SizedBox(height: 2),
+                pw.Text(
+                  isHeader || cell.isTitle == true
+                      ? cell.subtile!.toUpperCase()
+                      : cell.subtile!,
+                  style: mainStyle.copyWith(fontSize: 6),
+                ),
+              ],
+            )
+          // Otherwise, just return the content.
+          : content,
     );
   }
 
@@ -176,12 +239,5 @@ class SaleStatisticPdfGenerator {
       return PdfColors.grey100;
     }
     return PdfColors.white;
-  }
-}
-
-/// Extension to easily convert Flutter's Alignment to PDF's Alignment.
-extension AlignmentConverter on Alignment {
-  pw.Alignment toPdfAlignment() {
-    return pw.Alignment(x, y);
   }
 }
