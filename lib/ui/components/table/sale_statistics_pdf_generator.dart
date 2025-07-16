@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:celta_dash/ui/helpers/helpers.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
@@ -147,16 +148,16 @@ class SaleStatisticPdfGenerator {
     } else if (value is double) {
       // Mimics the behavior of formatting a double.
       // Replace with your `toBrazilianNumber()` if needed.
-      return value.toStringAsFixed(2).replaceAll('.', ',');
+      return value.toString().toBrazilianNumber(value % 1 == 0 ? 0 : 2);
     } else if (value is int) {
       // Mimics formatting for an integer.
-      return value.toString();
+      return value.toString().toBrazilianNumber();
     } else if (value is num) {
       // Fallback for other numbers (e.g., if it has no decimal part).
       if (value % 1 == 0) {
         return value.toInt().toString();
       }
-      return value.toStringAsFixed(2).replaceAll('.', ',');
+      return value.toString().toBrazilianNumber();
     }
     return 'error';
   }
@@ -232,11 +233,11 @@ class SaleStatisticPdfGenerator {
   /// Determines the background color for a given row index.
   PdfColor? _getPdfColor(int rowIndex) {
     if (rowIndex == maxValueRowIndex && sortedRows.length > 1) {
-      return PdfColors.green50;
+      return PdfColors.green200;
     } else if (rowIndex == minValueRowIndex && sortedRows.length > 1) {
-      return PdfColors.red50;
+      return PdfColors.red200;
     } else if (rowIndex % 2 != 0) {
-      return PdfColors.grey100;
+      return PdfColors.grey200;
     }
     return PdfColors.white;
   }
