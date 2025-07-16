@@ -6,6 +6,8 @@ import '../../helpers/helpers.dart';
 import '../../components/components.dart';
 import '../pages.dart';
 
+bool _showAnimation = true;
+
 class OperatorsPage extends StatefulWidget {
   const OperatorsPage({super.key});
 
@@ -134,21 +136,28 @@ class _OperatorsPageState extends State<OperatorsPage> {
 
                       return Column(
                         children: [
-                          TableItem(
+                          ScrollableTableItem(
                             titleMinHeight: 43,
                             indexToSort: 1,
                             columnIndexToCompareAndDetachBetterAndWorstValue: 1,
                             columnsIndexToSum: [1, 2],
-                            tableColumnWidth: {
-                              0: FixedColumnWidth(
-                                  MediaQuery.of(context).size.width * 0.5),
-                              2: FixedColumnWidth(
-                                  MediaQuery.of(context).size.width * 0.18),
+                            columnsWidths: [180, 90, 80],
+                            hideShowAnimation: () {
+                              _showAnimation = false;
                             },
+                            pdfFileName: R.string.operators,
+                            showAnimation: _showAnimation,
                             titles: [
-                              PersonalizedTableCell(value: R.string.operator),
-                              PersonalizedTableCell(value: R.string.total),
                               PersonalizedTableCell(
+                                isTitle: true,
+                                value: R.string.operator,
+                              ),
+                              PersonalizedTableCell(
+                                isTitle: true,
+                                value: R.string.total,
+                              ),
+                              PersonalizedTableCell(
+                                isTitle: true,
                                 value: R.string.salesQuantityAbbreviated,
                               ),
                             ],
