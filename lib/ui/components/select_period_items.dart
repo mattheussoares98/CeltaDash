@@ -1,6 +1,5 @@
 // ignore_for_file: library_private_types_in_public_api
 
-import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -92,76 +91,40 @@ class _PeriodItems extends State<SelectPeriodItems> {
           "Empty items. You must pass the functions for each item that wants enable");
     }
 
-    if (Platform.isIOS) {
-      return Padding(
-        padding: const EdgeInsets.all(8),
-        child: CupertinoSlidingSegmentedControl<String>(
-          children: {
-            for (var item in items)
-              item.title: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                child: Text(
-                  item.title,
-                  selectionColor: widget.isLoading == true
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: CupertinoSlidingSegmentedControl<String>(
+        children: {
+          for (var item in items)
+            item.title: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              child: Text(
+                item.title,
+                selectionColor: widget.isLoading == true
+                    ? CupertinoColors.inactiveGray
+                    : (selected == item.title
+                        ? CupertinoColors.white
+                        : Theme.of(context).primaryColorDark),
+                style: TextStyle(
+                  color: widget.isLoading == true && selected != item.title
                       ? CupertinoColors.inactiveGray
                       : (selected == item.title
                           ? CupertinoColors.white
-                          : Theme.of(context).primaryColorDark),
-                  style: TextStyle(
-                    color: widget.isLoading == true && selected != item.title
-                        ? CupertinoColors.inactiveGray
-                        : (selected == item.title
-                            ? CupertinoColors.white
-                            : Theme.of(context).primaryColor),
-                  ),
+                          : Theme.of(context).primaryColor),
                 ),
               ),
-          },
-          groupValue: selected,
-          thumbColor: widget.isLoading == true
-              ? CupertinoColors.systemGrey
-              : Theme.of(context).primaryColorDark,
-          backgroundColor: Theme.of(context).disabledColor.withAlpha(40),
-          onValueChanged: (newValue) {
-            if (newValue == null || widget.isLoading == true) return;
-            selected = newValue;
-            items.firstWhere((e) => e.title == newValue).onTap();
-          },
-        ),
-      );
-    }
-
-    return SegmentedButton<String>(
-      segments: List.generate(items.length, (i) {
-        return ButtonSegment(
-          value: items[i].title,
-          label: FittedBox(child: Text(items[i].title)),
-        );
-      }),
-      selected: {selected!},
-      showSelectedIcon: false,
-      onSelectionChanged: (newSelection) {
-        if (widget.isLoading == true) return;
-        setState(() {
-          selected = newSelection.first;
-        });
-        items.firstWhere((e) => e.title == selected).onTap();
-      },
-      style: ButtonStyle(
-        foregroundColor: WidgetStateProperty.resolveWith((states) {
-          if (widget.isLoading == true) return Colors.grey;
-          if (states.contains(WidgetState.selected)) {
-            return Colors.white;
-          }
-          return Theme.of(context).primaryColorDark;
-        }),
-        backgroundColor: WidgetStateProperty.resolveWith((states) {
-          if (states.contains(WidgetState.selected)) {
-            return Theme.of(context).primaryColorDark;
-          }
-          return Colors.white;
-        }),
+            ),
+        },
+        groupValue: selected,
+        thumbColor: widget.isLoading == true
+            ? CupertinoColors.systemGrey
+            : Theme.of(context).primaryColorDark,
+        backgroundColor: Theme.of(context).disabledColor.withAlpha(40),
+        onValueChanged: (newValue) {
+          if (newValue == null || widget.isLoading == true) return;
+          selected = newValue;
+          items.firstWhere((e) => e.title == newValue).onTap();
+        },
       ),
     );
   }
