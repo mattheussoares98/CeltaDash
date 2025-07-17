@@ -17,36 +17,42 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final orientation = MediaQuery.of(context).orientation;
+
     if (Platform.isIOS) {
       return CupertinoTabBar(
         currentIndex: currentIndex,
         onTap: onTap,
-        height: 50,
+        height: orientation == Orientation.portrait ? 50 : 30,
         items: items
             .map(
               (item) => BottomNavigationBarItem(
                 icon: item.cupertinoIcon,
-                label: item.label,
+                label: orientation == Orientation.portrait ? item.label : null,
               ),
             )
             .toList(),
       );
     }
 
-    return BottomNavigationBar(
-      currentIndex: currentIndex,
-      onTap: onTap,
-      type: BottomNavigationBarType.fixed,
-      unselectedFontSize: 10,
-      selectedFontSize: 12,
-      items: items
-          .map(
-            (item) => BottomNavigationBarItem(
-              icon: item.materialIcon,
-              label: item.label,
-            ),
-          )
-          .toList(),
+    return SizedBox(
+      height: orientation == Orientation.portrait ? 60 : 50,
+      child: BottomNavigationBar(
+        currentIndex: currentIndex,
+        onTap: onTap,
+        type: BottomNavigationBarType.fixed,
+        landscapeLayout: BottomNavigationBarLandscapeLayout.linear,
+        unselectedFontSize: 10,
+        selectedFontSize: 12,
+        items: items
+            .map(
+              (item) => BottomNavigationBarItem(
+                icon: item.materialIcon,
+                label: item.label,
+              ),
+            )
+            .toList(),
+      ),
     );
   }
 }
