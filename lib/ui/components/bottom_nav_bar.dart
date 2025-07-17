@@ -23,7 +23,7 @@ class BottomNavBar extends StatelessWidget {
       return CupertinoTabBar(
         currentIndex: currentIndex,
         onTap: onTap,
-        height: orientation == Orientation.portrait ? 50 : 30,
+        height: orientation == Orientation.portrait ? 60 : 30,
         items: items
             .map(
               (item) => BottomNavigationBarItem(
@@ -36,7 +36,7 @@ class BottomNavBar extends StatelessWidget {
     }
 
     return SizedBox(
-      height: orientation == Orientation.portrait ? 60 : 50,
+      height: orientation == Orientation.portrait ? 70 : 50,
       child: BottomNavigationBar(
         currentIndex: currentIndex,
         onTap: onTap,
