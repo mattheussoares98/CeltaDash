@@ -39,29 +39,31 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
   Widget build(BuildContext context) {
     final canceledSalesPresenter = Get.find<CanceledSalesPresenter>();
     final homePresenter = Get.find<HomePresenter>();
+    bool isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
 
     return StreamBuilder(
       stream: canceledSalesPresenter.isLoadingStream,
       builder: (context, loadingSnap) {
         return Scaffold(
-          appBar: DefaultAppBar(
-            isLoading: loadingSnap.data == true,
-            onChangeEnterprise: (_) async {
-              reloadSales();
-            },
-            onChangeDate: (_) async {
-              reloadSales();
-            },
-            onTapRefresh: () {
-              reloadSales(forceRefresh: true);
-            },
-          ),
           body: SafeArea(
             left: false,
             child: Column(
               children: [
+                DefaultAppBar(
+                  isLoading: loadingSnap.data == true,
+                  onChangeEnterprise: (_) async {
+                    reloadSales();
+                  },
+                  onChangeDate: (_) async {
+                    reloadSales();
+                  },
+                  onTapRefresh: () {
+                    reloadSales(forceRefresh: true);
+                  },
+                ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(isPortrait ? 8 : 0),
                   child: SelectPeriodItems(
                     isLoading: loadingSnap.data,
                     selectedPeriodType: canceledSalesPresenter.selectedPeriod,
@@ -127,10 +129,10 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                     return Column(
                       children: [
                         ScrollableTableItem(
+                          titleMinHeight: isPortrait ? 43 : 30,
                           selectedPeriodType:
                               canceledSalesPresenter.selectedPeriod,
                           pdfFileName: R.string.canceledSales,
-                          titleMinHeight: 43,
                           columnsIndexToSum: [3],
                           fixFirstColumn: true,
                           indexToSort: 2,
@@ -150,8 +152,9 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                               isTitle: true,
                             ),
                             PersonalizedTableCell(
-                              value: R.string.date,
-                              subtile: R.string.sale,
+                              value:
+                                  "${R.string.date}${isPortrait ? '' : ' (${R.string.sale})'}",
+                              subtile: isPortrait ? R.string.sale : null,
                               isTitle: true,
                             ),
                             PersonalizedTableCell(
