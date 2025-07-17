@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../main/builders/builders.dart';
+import '../../main/utils/utils.dart';
 import '../helpers/helpers.dart';
 import '../pages/pages.dart';
 import 'components.dart';
@@ -33,11 +34,19 @@ class DefaultAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.paddingPattern = 20,
   });
 
-  @override
-  Size get preferredSize => Size.fromHeight(
+  Size get portraitHeight => Size.fromHeight(
       this.showDatePicker == true && this.showEnterpriseDropdown == true
           ? DropdownHeight.height + datePickerHeight + paddingPattern
           : DropdownHeight.height + paddingPattern);
+
+  Size get landscapeHeight => const Size.fromHeight(DropdownHeight.height);
+
+  @override
+  Size get preferredSize =>
+      MediaQuery.of(NavigatorKey.key.currentState!.context).orientation ==
+              Orientation.landscape
+          ? landscapeHeight
+          : portraitHeight;
 
   @override
   State<DefaultAppBar> createState() => _DefaultAppBarState();
@@ -60,6 +69,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
     HomePresenter homePresenter = Get.find();
     EnterprisesManagerPresenter enterprisesManagerPresenter = Get.find();
     final isIOS = Platform.isIOS;
+    final orientation = MediaQuery.of(context).orientation;
 
     return AppBar(
       elevation: isIOS ? 0 : null,
@@ -108,6 +118,15 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
             if (widget.showEnterpriseDropdown == true)
               Row(
                 children: [
+                  if (widget.showDatePicker == true &&
+                      orientation == Orientation.landscape)
+                    Expanded(
+                      child: SelectDate(
+                        onChangeDate: widget.onChangeDate,
+                        isLoading: widget.isLoading,
+                        onTapRefresh: widget.onTapRefresh,
+                      ),
+                    ),
                   Expanded(
                     child: DefaultDropDown<EcEnterpriseViewModel?>(
                       onChanged: widget.isLoading == true
@@ -166,64 +185,92 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                     )
                 ],
               ),
-            if (widget.showDatePicker == true)
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      onPressed: widget.isLoading == true
-                          ? null
-                          : () async {
-                              final newDate = await GetNewDate.get(
-                                reduceDaysFromInitialDate: 1825,
-                                canInsertDateBeforeNow: true,
-                                insertHoursAndMinutes: false,
-                                lastDate: DateTime.now(),
-                              );
-
-                              if (newDate != null &&
-                                  newDate != homePresenter.selectedDate) {
-                                setState(() {
-                                  homePresenter.updateSelectedDate(newDate);
-                                });
-                                if (widget.onChangeDate != null) {
-                                  widget.onChangeDate!(newDate);
-                                }
-                              }
-                            },
-                      label: Text(
-                        "${DateFormat('dd/MM/yyyy').format(homePresenter.selectedDate)}  ${DateFormat('EEEE', 'pt_BR').format(homePresenter.selectedDate)}",
-                        maxLines: 1,
-                      ),
-                      icon: const Icon(Icons.date_range, color: Colors.white),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: IconButton(
-                      onPressed:
-                          widget.isLoading == true ? null : widget.onTapRefresh,
-                      icon: widget.isLoading == true
-                          ? const SizedBox(
-                              height: 25,
-                              width: 25,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                              ),
-                            )
-                          : Icon(
-                              isIOS ? CupertinoIcons.refresh : Icons.refresh,
-                              color: IsDarkTheme.isDark
-                                  ? Theme.of(context).primaryColorLight
-                                  : Theme.of(context).primaryColorDark,
-                            ),
-                    ),
-                  )
-                ],
+            if (widget.showDatePicker == true &&
+                orientation == Orientation.portrait)
+              SelectDate(
+                onChangeDate: widget.onChangeDate,
+                isLoading: widget.isLoading,
+                onTapRefresh: widget.onTapRefresh,
               ),
           ],
         );
       }),
+    );
+  }
+}
+
+class SelectDate extends StatefulWidget {
+  final void Function(DateTime newDate)? onChangeDate;
+  final bool? isLoading;
+  final VoidCallback? onTapRefresh;
+  const SelectDate({
+    super.key,
+    required this.onChangeDate,
+    required this.isLoading,
+    required this.onTapRefresh,
+  });
+
+  @override
+  State<SelectDate> createState() => _SelectDateState();
+}
+
+class _SelectDateState extends State<SelectDate> {
+  @override
+  Widget build(BuildContext context) {
+    final homePresenter = Get.find<HomePresenter>();
+
+    return Row(
+      children: [
+        Expanded(
+          child: ElevatedButton.icon(
+            onPressed: widget.isLoading == true
+                ? null
+                : () async {
+                    final newDate = await GetNewDate.get(
+                      reduceDaysFromInitialDate: 1825,
+                      canInsertDateBeforeNow: true,
+                      insertHoursAndMinutes: false,
+                      lastDate: DateTime.now(),
+                    );
+
+                    if (newDate != null &&
+                        newDate != homePresenter.selectedDate) {
+                      setState(() {
+                        homePresenter.updateSelectedDate(newDate);
+                      });
+                      if (widget.onChangeDate != null) {
+                        widget.onChangeDate!(newDate);
+                      }
+                    }
+                  },
+            label: Text(
+              "${DateFormat('dd/MM/yyyy').format(homePresenter.selectedDate)}  ${DateFormat('EEEE', 'pt_BR').format(homePresenter.selectedDate)}",
+              maxLines: 1,
+            ),
+            icon: const Icon(Icons.date_range, color: Colors.white),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 8),
+          child: IconButton(
+            onPressed: widget.isLoading == true ? null : widget.onTapRefresh,
+            icon: widget.isLoading == true
+                ? const SizedBox(
+                    height: 25,
+                    width: 25,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                    ),
+                  )
+                : Icon(
+                    Platform.isIOS ? CupertinoIcons.refresh : Icons.refresh,
+                    color: IsDarkTheme.isDark
+                        ? Theme.of(context).primaryColorLight
+                        : Theme.of(context).primaryColorDark,
+                  ),
+          ),
+        )
+      ],
     );
   }
 }
