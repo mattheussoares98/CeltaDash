@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../../main/factories/factories.dart';
@@ -51,6 +52,8 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
     mainErrorSubscription?.cancel();
     final routeObserver = Get.find<RouteObserver<PageRoute>>();
     routeObserver.unsubscribe(this);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
   }
 
   @override
@@ -95,20 +98,35 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
     mainErrorSubscription =
         handleMainError(context, homePresenter.mainErrorStream);
 
+    final orientation = MediaQuery.of(context).orientation;
+    if (orientation == Orientation.landscape) {
+      // Remove the top that shows status bar
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+          overlays: [SystemUiOverlay.bottom]);
+    } else {
+      // Add the top that shows status bar
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+          overlays: SystemUiOverlay.values);
+    }
+
     return Obx(() {
       final currentIndex = homePresenter.currentPageIndex;
       return Scaffold(
-        body: Stack(
-          children: [
-            pages[currentIndex],
-            if (!loadedEnterprises)
-              Container(
-                height: double.infinity,
-                width: double.infinity,
-                color: Theme.of(context).scaffoldBackgroundColor,
-                child: const Center(child: CircularProgressIndicator()),
-              ),
-          ],
+        body: Padding(
+          padding: EdgeInsets.only(
+              top: orientation == Orientation.landscape ? 8 : 0),
+          child: Stack(
+            children: [
+              pages[currentIndex],
+              if (!loadedEnterprises)
+                Container(
+                  height: double.infinity,
+                  width: double.infinity,
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  child: const Center(child: CircularProgressIndicator()),
+                ),
+            ],
+          ),
         ),
         bottomNavigationBar: BottomNavBar(
           currentIndex: currentIndex,
