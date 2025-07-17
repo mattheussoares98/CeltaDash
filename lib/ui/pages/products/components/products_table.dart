@@ -72,7 +72,7 @@ class ProductsTable extends StatelessWidget {
           value:
               "${R.string.product.toUpperCase()}${isPortrait ? '' : ' (200)'}",
           isTitle: true,
-          subtile: isPortrait ? "Top 200" : '',
+          subtile: isPortrait ? "Top 200" : null,
         ),
         PersonalizedTableCell(
             value: R.string.sales.toUpperCase(), isTitle: true),
