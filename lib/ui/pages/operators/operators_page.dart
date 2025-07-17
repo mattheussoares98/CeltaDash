@@ -46,32 +46,34 @@ class _OperatorsPageState extends State<OperatorsPage> {
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
     OperatorsPresenter operatorsPresenter = Get.find();
+    bool isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
 
     return StreamBuilder(
         stream: operatorsPresenter.isLoadingStream,
         builder: (context, loadingSnap) {
           return Scaffold(
-            appBar: DefaultAppBar(
-              isLoading: loadingSnap.data == true,
-              onChangeEnterprise: (_) {
-                operatorsPresenter.getSales(homePresenter);
-              },
-              onChangeDate: (_) {
-                operatorsPresenter.getSales(homePresenter);
-              },
-              onTapRefresh: () {
-                operatorsPresenter.getSales(
-                  homePresenter,
-                  forceRefresh: true,
-                );
-              },
-            ),
             body: SafeArea(
               left: false,
               child: Column(
                 children: [
+                  DefaultAppBar(
+                    isLoading: loadingSnap.data == true,
+                    onChangeEnterprise: (_) {
+                      operatorsPresenter.getSales(homePresenter);
+                    },
+                    onChangeDate: (_) {
+                      operatorsPresenter.getSales(homePresenter);
+                    },
+                    onTapRefresh: () {
+                      operatorsPresenter.getSales(
+                        homePresenter,
+                        forceRefresh: true,
+                      );
+                    },
+                  ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(isPortrait ? 8.0 : 0),
                     child: SelectPeriodItems(
                       isLoading: loadingSnap.data,
                       selectedPeriodType: operatorsPresenter.selectedPeriod,
@@ -139,7 +141,7 @@ class _OperatorsPageState extends State<OperatorsPage> {
                           ScrollableTableItem(
                             selectedPeriodType:
                                 operatorsPresenter.selectedPeriod,
-                            titleMinHeight: 43,
+                            titleMinHeight: isPortrait ? 43 : 25,
                             indexToSort: 1,
                             columnIndexToCompareAndDetachBetterAndWorstValue: 1,
                             columnsIndexToSum: [1, 2],

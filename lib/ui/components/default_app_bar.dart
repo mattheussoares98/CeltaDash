@@ -69,18 +69,21 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
     HomePresenter homePresenter = Get.find();
     EnterprisesManagerPresenter enterprisesManagerPresenter = Get.find();
     final isIOS = Platform.isIOS;
-    final orientation = MediaQuery.of(context).orientation;
+    bool isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
 
     return AppBar(
       elevation: isIOS ? 0 : null,
-      toolbarHeight:
-          widget.showDatePicker == true && widget.showEnterpriseDropdown == true
+      toolbarHeight: isPortrait
+          ? (widget.showDatePicker == true &&
+                  widget.showEnterpriseDropdown == true
               ? DropdownHeight.height +
                   widget.datePickerHeight +
                   widget.paddingPattern
               : DropdownHeight.height +
                   widget.paddingPattern +
-                  widget.paddingPattern,
+                  widget.paddingPattern)
+          : DropdownHeight.height + widget.paddingPattern,
       title: Obx(() {
         final enterprises = homePresenter.enterprises;
         final selectedEnterprise = homePresenter.selectedEnterprise;
@@ -118,8 +121,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
             if (widget.showEnterpriseDropdown == true)
               Row(
                 children: [
-                  if (widget.showDatePicker == true &&
-                      orientation == Orientation.landscape)
+                  if (widget.showDatePicker == true && !isPortrait)
                     Expanded(
                       child: SelectDate(
                         onChangeDate: widget.onChangeDate,
@@ -185,8 +187,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                     )
                 ],
               ),
-            if (widget.showDatePicker == true &&
-                orientation == Orientation.portrait)
+            if (widget.showDatePicker == true && isPortrait)
               SelectDate(
                 onChangeDate: widget.onChangeDate,
                 isLoading: widget.isLoading,
