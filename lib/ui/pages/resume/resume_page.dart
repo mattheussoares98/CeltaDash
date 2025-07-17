@@ -29,28 +29,21 @@ class _ResumePageState extends State<ResumePage>
     mainErrorSubscription?.cancel();
   }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   WidgetsBinding.instance.addPostFrameCallback((_) async {
-  //     final resumePresenter = Get.find<ResumePresenter>();
-  //     final homePresenter = Get.find<HomePresenter>();
-  //     await resumePresenter.getSales(homePresenter, now: DateTime.now());
-  //   });
-  // }
+  @override
+  void initState() {
+    super.initState();
+
+    final resumePresenter = Get.find<ResumePresenter>();
+    mainErrorSubscription =
+        handleMainError(context, resumePresenter.mainErrorStream);
+  }
 
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
     ResumePresenter resumePresenter = Get.find();
-
-    // resumeLoadingSubscription = handleLoading(
-    //   context,
-    //   resumePresenter.isLoadingStream,
-    // );
-    mainErrorSubscription?.cancel();
-    mainErrorSubscription =
-        handleMainError(context, resumePresenter.mainErrorStream);
+    bool isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
 
     return Obx(() {
       final enterpriseIsEnabled = homePresenter.selectedEnterpriseIsEnabled;
@@ -106,32 +99,33 @@ class _ResumePageState extends State<ResumePage>
                             children: [
                               Column(
                                 children: [
-                                  DailyStatistics(
-                                    scrollController: scrollController,
-                                    saleStatistics: salesByEnterprise,
-                                  ),
-                                  const SizedBox(height: 8),
-                                  MonthlyAnalysis(sales: salesByEnterprise),
-                                  // const SizedBox(height: 8),
-                                  // SalesInformations(
-                                  //   scrollController: scrollController,
-                                  //   totalSales: saleStatistics.sumLiquidValue(
-                                  //     enterprise: homePresenter.selectedEnterprise,
-                                  //     filterYear: homePresenter.selectedDate.year,
-                                  //     filterMonth: homePresenter.selectedDate.month,
-                                  //   ),
-                                  //   title: R.string.salesOfTheMonth,
-                                  // ),
-                                  // const SizedBox(height: 8),
-                                  // DefaultNavigateButton(
-                                  //   onTap: resumePresenter.goToProfitabillityPage,
-                                  //   title: R.string.profitability,
-                                  //
-                                  // const SizedBox(height: 8),
-                                  // DailyAnalysis(
-                                  //   saleStatistics: saleStatistics,
-                                  //   scrollController: scrollController,
-                                  // ),
+                                  if (!isPortrait)
+                                    IntrinsicHeight(
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: DailyStatistics(
+                                              scrollController:
+                                                  scrollController,
+                                              saleStatistics: salesByEnterprise,
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: MonthlyAnalysis(
+                                              sales: salesByEnterprise,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  if (isPortrait) ...[
+                                    DailyStatistics(
+                                      scrollController: scrollController,
+                                      saleStatistics: salesByEnterprise,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    MonthlyAnalysis(sales: salesByEnterprise),
+                                  ],
                                   const SizedBox(height: 8),
                                 ],
                               ),

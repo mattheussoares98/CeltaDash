@@ -12,10 +12,13 @@ class ChartPrices extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final leftReservedSize = MediaQuery.of(context).size.width * 0.08;
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
-    final desiredHeight = screenHeight * 0.33;
+    final mediaQuery = MediaQuery.of(context);
+    bool isPortrait = mediaQuery.orientation == Orientation.portrait;
+
+    final leftReservedSize = mediaQuery.size.width * 0.08;
+    final screenHeight = mediaQuery.size.height;
+    final screenWidth = mediaQuery.size.width;
+    final desiredHeight = screenHeight * (isPortrait ? 0.33 : 0.5);
     final dynamicAspectRatio = screenWidth / desiredHeight;
 
     return Padding(

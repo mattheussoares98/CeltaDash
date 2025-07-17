@@ -70,6 +70,7 @@ class DailyStatistics extends StatelessWidget {
       decoration: ContainerDecoration.defaultDecoration,
       padding: const EdgeInsets.all(8),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           if (resumePresenter.compareDaysStatistics == null ||
               resumePresenter.compareDaysStatistics!.isEmpty)
