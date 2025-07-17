@@ -26,7 +26,21 @@ class CompareTable extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
+    bool isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
+
     return ScrollableTableItem(
+      titleMinHeight: isPortrait ? 40 : 25,
+      fixFirstColumn: true,
+      pdfFileName: R.string.compareDays,
+      indexToSort: 0,
+      columnIndexToCompareAndDetachBetterAndWorstValue: 3,
+      columnsIndexToSum: [1, 2],
+      columnsWidths: [80, 75, 75, 70],
+      showAnimation: _showAnimation,
+      hideShowAnimation: () {
+        _showAnimation = false;
+      },
       titles: [
         PersonalizedTableCell(
           value: R.string.hour,
@@ -48,17 +62,6 @@ class CompareTable extends StatelessWidget {
           isTitle: true,
         ),
       ],
-      showAnimation: _showAnimation,
-      hideShowAnimation: () {
-        _showAnimation = false;
-      },
-      fixFirstColumn: true,
-      pdfFileName: R.string.compareDays,
-      titleMinHeight: 40,
-      indexToSort: 0,
-      columnIndexToCompareAndDetachBetterAndWorstValue: 3,
-      columnsIndexToSum: [1, 2],
-      columnsWidths: [80, 75, 75, 70],
       rowValues: compareDaysPresenter.saleStatistics!
           .uniqueHours()
           .toList()
@@ -69,6 +72,9 @@ class CompareTable extends StatelessWidget {
             .totalForHourOnDate(hour, secondDay);
         final diff =
             compareDaysPresenter.saleStatistics!.differenceForHour(t1, t2);
+        if (!isPortrait) {
+          hour = hour.replaceAll(RegExp(r'\n'), ' ~ ');
+        }
 
         return [
           PersonalizedTableCell(value: hour),
