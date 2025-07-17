@@ -112,6 +112,7 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
     return Obx(() {
       final currentIndex = homePresenter.currentPageIndex;
       return Scaffold(
+        resizeToAvoidBottomInset: false,
         body: Padding(
           padding: EdgeInsets.only(
               top: orientation == Orientation.landscape ? 8 : 0),
