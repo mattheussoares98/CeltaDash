@@ -92,7 +92,7 @@ class _PeriodItems extends State<SelectPeriodItems> {
     }
 
     return Padding(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(4),
       child: CupertinoSlidingSegmentedControl<String>(
         children: {
           for (var item in items)
