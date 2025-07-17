@@ -76,6 +76,7 @@ class _PdfViewerPageState extends State<_PdfViewerPage> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
       DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
     ]);
 
     super.dispose();
