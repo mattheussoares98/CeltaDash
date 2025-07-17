@@ -107,6 +107,7 @@ class _EnterprisesManagerPageState extends State<EnterprisesManagerPage>
           ),
           padding: const EdgeInsets.all(8),
           child: Column(
+            //TODO fix problem when is landscape and try to add a new enterprise
             children: [
               const ConnectedEnterprises(),
               AddNewEnterprise(

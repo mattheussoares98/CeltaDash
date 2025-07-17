@@ -43,6 +43,7 @@ class MorePage extends StatelessWidget {
 
     return SafeArea(
       left: false,
+      right: false,
       child: Scaffold(
           appBar: AppBar(
             title: Text(R.string.more),

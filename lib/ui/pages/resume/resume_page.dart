@@ -72,6 +72,7 @@ class _ResumePageState extends State<ResumePage>
               ),
               body: SafeArea(
                 left: false,
+                right: false,
                 child: Stack(
                   children: [
                     SingleChildScrollView(

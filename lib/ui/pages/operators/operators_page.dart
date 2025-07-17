@@ -55,6 +55,7 @@ class _OperatorsPageState extends State<OperatorsPage> {
           return Scaffold(
             body: SafeArea(
               left: false,
+              right: false,
               child: Column(
                 children: [
                   DefaultAppBar(

@@ -74,6 +74,7 @@ class _SalesPageState extends State<SalesPage>
 
     return SafeArea(
       left: false,
+      right: false,
       child: StreamBuilder(
           stream: salesPresenter.isLoadingStream,
           builder: (context, loadingSnap) {

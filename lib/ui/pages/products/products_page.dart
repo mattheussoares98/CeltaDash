@@ -55,9 +55,11 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
     HomePresenter homePresenter = Get.find();
     bool isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
+    //TODO fix error when try to filter the product in landscape mode
 
     return SafeArea(
       left: false,
+      right: false,
       child: StreamBuilder(
           stream: productsPresenter.isLoadingStream,
           builder: (context, loadingSnap) {

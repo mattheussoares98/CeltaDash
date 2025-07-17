@@ -72,6 +72,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
           ),
           body: SafeArea(
             left: false,
+            right: false,
             child: DefaultTabController(
               length: 2,
               child: Column(

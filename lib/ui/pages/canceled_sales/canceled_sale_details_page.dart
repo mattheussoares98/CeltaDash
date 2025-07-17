@@ -34,6 +34,7 @@ class _CanceledSaleDetailsPageState extends State<CanceledSaleDetailsPage> {
       ),
       body: SafeArea(
         left: false,
+        right: false,
         child: StreamBuilder(
             stream: presenter.isLoadingStream,
             builder: (context, loadingSnap) {

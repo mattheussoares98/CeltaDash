@@ -55,6 +55,7 @@ class _SellersPageState extends State<SellersPage> {
           return Scaffold(
             body: SafeArea(
               left: false,
+              right: false,
               child: Column(
                 children: [
                   DefaultAppBar(

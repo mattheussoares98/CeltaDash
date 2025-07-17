@@ -48,6 +48,7 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
         return Scaffold(
           body: SafeArea(
             left: false,
+            right: false,
             child: Column(
               children: [
                 DefaultAppBar(

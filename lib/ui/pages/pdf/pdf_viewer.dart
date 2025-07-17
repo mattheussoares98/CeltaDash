@@ -74,7 +74,6 @@ class _PdfViewerPageState extends State<_PdfViewerPage> {
 
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
