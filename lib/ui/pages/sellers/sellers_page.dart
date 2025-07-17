@@ -46,32 +46,34 @@ class _SellersPageState extends State<SellersPage> {
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
     SellersPresenter sellersPresenter = Get.find();
+    bool isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
 
     return StreamBuilder(
         stream: sellersPresenter.isLoadingStream,
         builder: (context, loadingSnap) {
           return Scaffold(
-            appBar: DefaultAppBar(
-              isLoading: loadingSnap.data == true,
-              onChangeEnterprise: (_) {
-                sellersPresenter.getSales(homePresenter);
-              },
-              onChangeDate: (_) {
-                sellersPresenter.getSales(homePresenter);
-              },
-              onTapRefresh: () {
-                sellersPresenter.getSales(
-                  homePresenter,
-                  forceRefresh: true,
-                );
-              },
-            ),
             body: SafeArea(
               left: false,
               child: Column(
                 children: [
+                  DefaultAppBar(
+                    isLoading: loadingSnap.data == true,
+                    onChangeEnterprise: (_) {
+                      sellersPresenter.getSales(homePresenter);
+                    },
+                    onChangeDate: (_) {
+                      sellersPresenter.getSales(homePresenter);
+                    },
+                    onTapRefresh: () {
+                      sellersPresenter.getSales(
+                        homePresenter,
+                        forceRefresh: true,
+                      );
+                    },
+                  ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(isPortrait ? 8 : 0),
                     child: SelectPeriodItems(
                       isLoading: loadingSnap.data,
                       selectedPeriodType: sellersPresenter.selectedPeriod,
@@ -136,7 +138,7 @@ class _SellersPageState extends State<SellersPage> {
                       return Column(
                         children: [
                           ScrollableTableItem(
-                            titleMinHeight: 43,
+                            titleMinHeight: isPortrait ? 43 : 30,
                             indexToSort: 1,
                             columnIndexToCompareAndDetachBetterAndWorstValue: 1,
                             columnsIndexToSum: [1, 2],
