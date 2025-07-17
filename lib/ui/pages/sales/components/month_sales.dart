@@ -19,9 +19,10 @@ class MonthSales extends StatelessWidget {
     final totalLiquidByYear = saleStatisticsByMonth.sumLiquidValue();
     final uniqueMonths =
         saleStatisticsByMonth.map((e) => e.Month).toSet().toList()..sort();
+    final orientation = MediaQuery.of(context).orientation;
 
     return ScrollableTableItem(
-      titleMinHeight: 45,
+      titleMinHeight: orientation == Orientation.portrait ? 45 : 25,
       pdfFileName: R.string.monthlyAnalysis,
       showAnimation: _showAnimation,
       selectedPeriodType: salesPresenter.selectedPeriod,

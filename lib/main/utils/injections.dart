@@ -57,6 +57,7 @@ Future<void> _enableLandscape() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
     DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeRight,
   ]);
 }
 

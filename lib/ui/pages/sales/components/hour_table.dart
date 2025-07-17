@@ -24,11 +24,11 @@ class HourTable extends StatelessWidget {
       filterMonth: homePresenter.selectedDate.month,
       filterYear: homePresenter.selectedDate.year,
     );
-
     final uniqueHours = hourlyStatistics.uniqueHours();
+    final orientation = MediaQuery.of(context).orientation;
 
     return ScrollableTableItem(
-      titleMinHeight: 45,
+      titleMinHeight: orientation == Orientation.portrait ? 45 : 25,
       pdfFileName: R.string.hourlyAnalysis,
       showAnimation: _showAnimation,
       selectedPeriodType: salesPresenter.selectedPeriod,
@@ -50,7 +50,9 @@ class HourTable extends StatelessWidget {
       ],
       rowValues: uniqueHours.map((hour) {
         final totalByHour = hourlyStatistics.totalForHourOnDate(
-            hour, homePresenter.selectedDate);
+          hour,
+          homePresenter.selectedDate,
+        );
 
         final salesByHour = hourlyStatistics
             .filteredSales(
@@ -63,6 +65,10 @@ class HourTable extends StatelessWidget {
             .where((e) => e.Hour == hour)
             .toList()
             .quantitySales();
+
+        if (orientation == Orientation.landscape) {
+          hour = hour.replaceAll(RegExp(r'\n'), ' ~ ');
+        }
 
         return [
           PersonalizedTableCell(value: hour),

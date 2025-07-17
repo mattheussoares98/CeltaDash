@@ -15,9 +15,10 @@ class YearSales extends StatelessWidget {
   Widget build(BuildContext context) {
     final totalLiquidByYear = saleStatisticsByYear.sumLiquidValue();
     final salesPresenter = Get.find<SalesPresenter>();
+    final orientation = MediaQuery.of(context).orientation;
 
     return ScrollableTableItem(
-      titleMinHeight: 45,
+      titleMinHeight: orientation == Orientation.portrait ? 45 : 25,
       pdfFileName: R.string.yearlyAnalysis,
       showAnimation: _showAnimation,
       selectedPeriodType: salesPresenter.selectedPeriod,

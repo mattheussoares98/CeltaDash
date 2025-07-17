@@ -141,7 +141,11 @@ class _SalesPageState extends State<SalesPage>
                 return Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(
+                          MediaQuery.of(context).orientation ==
+                                  Orientation.portrait
+                              ? 8.0
+                              : 0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

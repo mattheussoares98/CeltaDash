@@ -20,9 +20,10 @@ class DayTable extends StatelessWidget {
     HomePresenter homePresenter = Get.find();
     final salesPresenter = Get.find<SalesPresenter>();
     final totalInMounth = dailyStatistics.sumLiquidValue();
+    final orientation = MediaQuery.of(context).orientation;
 
     return ScrollableTableItem(
-      titleMinHeight: 45,
+      titleMinHeight: orientation == Orientation.portrait ? 45 : 25,
       pdfFileName: R.string.dailyAnalysis,
       showAnimation: _showAnimation,
       selectedPeriodType: salesPresenter.selectedPeriod,
@@ -57,13 +58,16 @@ class DayTable extends StatelessWidget {
           day ?? 0,
         );
 
+        final subtitle = DateFormat('EEEE', 'pt_BR')
+            .format(rowDay)
+            .substring(0, 3)
+            .toUpperCase();
+
         return [
           PersonalizedTableCell(
-            value: day?.toString(),
-            subtile: DateFormat('EEEE', 'pt_BR')
-                .format(rowDay)
-                .substring(0, 3)
-                .toUpperCase(),
+            value:
+                "$day ${orientation == Orientation.landscape ? subtitle : ''}",
+            subtile: orientation == Orientation.portrait ? subtitle : null,
           ),
           PersonalizedTableCell(value: totalByDay, isMoney: true),
           PersonalizedTableCell(value: quantitySales),
