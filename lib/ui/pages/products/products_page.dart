@@ -53,6 +53,8 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
   Widget build(BuildContext context) {
     ProductsPresenter productsPresenter = Get.find();
     HomePresenter homePresenter = Get.find();
+    bool isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
 
     return SafeArea(
       left: false,
@@ -115,7 +117,7 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                 return Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(isPortrait ? 8.0 : 4),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

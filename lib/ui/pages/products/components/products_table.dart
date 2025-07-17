@@ -52,14 +52,16 @@ class ProductsTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productsPresenter = Get.find<ProductsPresenter>();
+    bool isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
 
     return ScrollableTableItem(
+      titleMinHeight: isPortrait ? 43 : 32,
       selectedPeriodType: productsPresenter.selectedPeriod,
       pdfFileName: R.string.products,
       showAnimation: showAnimation,
       hideShowAnimation: hideShowAnimation,
       animationSecondsDuration: 3,
-      titleMinHeight: 43,
       columnsWidths: [130, 100, 70, 70, 90, 90, 60],
       fixFirstColumn: true,
       columnsIndexToSum: [1, 2, 4, 5],
@@ -67,9 +69,10 @@ class ProductsTable extends StatelessWidget {
       indexToSort: 5,
       titles: [
         PersonalizedTableCell(
-          value: R.string.product.toUpperCase(),
+          value:
+              "${R.string.product.toUpperCase()}${isPortrait ? '' : ' (200)'}",
           isTitle: true,
-          subtile: "Top 200",
+          subtile: isPortrait ? "Top 200" : '',
         ),
         PersonalizedTableCell(
             value: R.string.sales.toUpperCase(), isTitle: true),
