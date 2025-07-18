@@ -26,6 +26,16 @@ class DefaultDropDown<T> extends StatefulWidget {
 }
 
 class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
+  Color getColor(DropdownMenuItem<T> item, ThemeData theme) {
+    if (item.enabled == false) {
+      return Colors.red;
+    } else if (item.value == widget.selectedItem) {
+      return theme.primaryColorDark;
+    } else {
+      return theme.disabledColor;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // Find the index of the currently selected item.
@@ -35,16 +45,17 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
     final bool hasPrevious = currentIndex > 0;
     final bool hasNext =
         currentIndex != -1 && currentIndex < (widget.items?.length ?? 0) - 1;
+    final theme = Theme.of(context);
 
     if (Platform.isIOS) {
       return SizedBox(
         height: DropdownHeight.height,
         child: CupertinoButton(
-          disabledColor: Theme.of(context).disabledColor.withAlpha(100),
+          disabledColor: theme.disabledColor.withAlpha(100),
           padding: const EdgeInsets.only(left: 0),
           color: IsDarkTheme.isDark
-              ? Theme.of(context).disabledColor
-              : Theme.of(context).disabledColor.withAlpha(40),
+              ? theme.disabledColor
+              : theme.disabledColor.withAlpha(40),
           onPressed:
               widget.onChanged == null || (widget.items?.length ?? 0) <= 1
                   ? null
@@ -60,16 +71,6 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
                               text = textWidget.data ?? '';
                             }
 
-                            Color getColor() {
-                              if (item.enabled == false) {
-                                return Colors.red;
-                              } else if (item.value == widget.selectedItem) {
-                                return Theme.of(context).primaryColorDark;
-                              } else {
-                                return Theme.of(context).disabledColor;
-                              }
-                            }
-
                             return CupertinoActionSheetAction(
                               onPressed: () {
                                 Navigator.of(context).pop(item.value);
@@ -77,7 +78,7 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
                               child: Text(
                                 text,
                                 style: TextStyle(
-                                  color: getColor(),
+                                  color: getColor(item, theme),
                                 ),
                               ),
                             );
@@ -115,7 +116,7 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: StringSize.size,
-                      color: Theme.of(context).textTheme.titleMedium?.color,
+                      color: theme.textTheme.titleMedium?.color,
                     ),
                   ),
                 ),
@@ -139,8 +140,8 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
       height: DropdownHeight.height,
       decoration: BoxDecoration(
         color: IsDarkTheme.isDark
-            ? Theme.of(context).disabledColor
-            : Theme.of(context).disabledColor.withAlpha(40),
+            ? theme.disabledColor
+            : theme.disabledColor.withAlpha(40),
         borderRadius: BorderRadius.circular(8.0),
       ),
       child: Row(
@@ -176,8 +177,7 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: StringSize.size,
-                            color:
-                                Theme.of(context).textTheme.titleMedium?.color,
+                            color: theme.textTheme.titleMedium?.color,
                           ),
                         ),
                       );
@@ -195,11 +195,11 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
               // Hide the default dropdown arrow
               icon: const SizedBox.shrink(),
               dropdownColor: IsDarkTheme.isDark
-                  ? Theme.of(context).scaffoldBackgroundColor
+                  ? theme.scaffoldBackgroundColor
                   : Colors.white,
               style: TextStyle(
                 fontSize: StringSize.size,
-                color: Theme.of(context).textTheme.titleMedium?.color,
+                color: theme.textTheme.titleMedium?.color,
               ),
             ),
           ),
