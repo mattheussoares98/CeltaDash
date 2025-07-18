@@ -119,84 +119,102 @@ class _ChartPieWidgetState extends State<ChartPieWidget> {
     double indicatorSize = screenWidth * 0.04 / splitFor;
     double chartPadding = screenWidth * 0.01 / splitFor;
     double centerSpaceRadius = screenWidth * 0.1 / splitFor;
+    bool isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
 
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Column(
-          children: [
-            SizedBox(
-              width: chartWidth,
-              height: chartWidth,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  PieChart(
-                    PieChartData(
-                      pieTouchData: PieTouchData(
-                        touchCallback:
-                            (FlTouchEvent event, PieTouchResponse? resp) {
-                          // Only act once on tap up
-                          if (event is FlTapUpEvent) {
-                            final idx =
-                                resp?.touchedSection?.touchedSectionIndex;
-                            if (idx != null && idx >= 0) {
-                              changeSelectedIndex(idx);
-                            } else {
-                              changeSelectedIndex(null);
-                            }
-                          }
-                        },
-                      ),
-                      borderData: null,
-                      sectionsSpace: 3,
-                      centerSpaceRadius: centerSpaceRadius,
-                      centerSpaceColor: Colors.transparent,
-                      sections: getSections(chartWidth),
-                      startDegreeOffset: 180,
-                    ),
-                  ),
-                  if (widget.centerDate != null)
-                    DayProgressClock(
-                      date: widget.centerDate!,
-                      radius: centerSpaceRadius,
-                      passedColor: widget.centerPassedColor,
-                      remainingColor: widget.centerRemainingColor,
-                    ),
-                ],
-              ),
-            ),
-            if (widget.showTotalAmount == true)
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Column(
+        Flexible(
+          flex: !isPortrait ? 2 : 1,
+          child: Column(
+            children: [
+              SizedBox(
+                width: chartWidth,
+                height: chartWidth,
+                child: Stack(
+                  alignment: Alignment.center,
                   children: [
-                    Text(
-                      R.string.total,
-                      style: Theme.of(context).textTheme.titleMedium,
+                    PieChart(
+                      PieChartData(
+                        pieTouchData: PieTouchData(
+                          touchCallback:
+                              (FlTouchEvent event, PieTouchResponse? resp) {
+                            // Only act once on tap up
+                            if (event is FlTapUpEvent) {
+                              final idx =
+                                  resp?.touchedSection?.touchedSectionIndex;
+                              if (idx != null && idx >= 0) {
+                                changeSelectedIndex(idx);
+                              } else {
+                                changeSelectedIndex(null);
+                              }
+                            }
+                          },
+                        ),
+                        borderData: null,
+                        sectionsSpace: 3,
+                        centerSpaceRadius: centerSpaceRadius,
+                        centerSpaceColor: Colors.transparent,
+                        sections: getSections(chartWidth),
+                        startDegreeOffset: 180,
+                      ),
                     ),
-                    Text(
-                      widget.pieParameters
-                          .fold(0.0, (p, e) => p + e.value)
-                          .toString()
-                          .toBrazilianNumber()
-                          .addBrazilianCoin(),
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
+                    if (widget.centerDate != null)
+                      DayProgressClock(
+                        date: widget.centerDate!,
+                        radius: centerSpaceRadius,
+                        passedColor: widget.centerPassedColor,
+                        remainingColor: widget.centerRemainingColor,
+                      ),
                   ],
                 ),
               ),
-          ],
-        ),
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(left: chartPadding),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: getIndicators(indicatorSize),
-            ),
+              if (widget.showTotalAmount == true)
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Column(
+                    children: [
+                      Text(
+                        R.string.total,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      Text(
+                        widget.pieParameters
+                            .fold(0.0, (p, e) => p + e.value)
+                            .toString()
+                            .toBrazilianNumber()
+                            .addBrazilianCoin(),
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ],
+                  ),
+                ),
+            ],
           ),
         ),
+        if (isPortrait)
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.only(left: chartPadding),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: getIndicators(indicatorSize),
+              ),
+            ),
+          ),
+        if (!isPortrait)
+          Flexible(
+            child: Padding(
+              padding: EdgeInsets.only(left: chartPadding),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: getIndicators(indicatorSize),
+              ),
+            ),
+          ),
       ],
     );
   }
