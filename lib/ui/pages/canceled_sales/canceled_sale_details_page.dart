@@ -32,9 +32,7 @@ class _CanceledSaleDetailsPageState extends State<CanceledSaleDetailsPage> {
       appBar: AppBar(
         title: Text(R.string.details),
       ),
-      body: SafeArea(
-        left: false,
-        right: false,
+      body: DefaultSafeArea(
         child: StreamBuilder(
             stream: presenter.isLoadingStream,
             builder: (context, loadingSnap) {

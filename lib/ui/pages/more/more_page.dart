@@ -41,9 +41,7 @@ class MorePage extends StatelessWidget {
     ];
     buttons.sort((a, b) => a.title.compareTo(b.title));
 
-    return SafeArea(
-      left: false,
-      right: false,
+    return DefaultSafeArea(
       child: Scaffold(
           appBar: AppBar(
             title: Text(R.string.more),

@@ -58,7 +58,7 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
                 );
               },
             ),
-            body: SafeArea(
+            body: DefaultSafeArea(
               child: DefaultTabController(
                 length: 2,
                 child: Column(
@@ -101,11 +101,11 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
                     Expanded(
                       child: Obx(() {
                         final saleStatistics = resumePresenter.saleStatistics;
-                      
+
                         if (saleStatistics == null || saleStatistics.isEmpty) {
                           return const EmptySales(isLoading: false);
                         }
-                      
+
                         final groupSales = saleStatistics
                             .filteredSales(
                               filterDay: resumePresenter.selectedPeriod ==
@@ -115,10 +115,11 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
                             )
                             .map((e) => e.toViewModel())
                             .toList();
-                      
-                        final groupSalesTotalLiquid = groupSales.sumLiquidValue();
+
+                        final groupSalesTotalLiquid =
+                            groupSales.sumLiquidValue();
                         int groupSalesQuantity = groupSales.quantitySales();
-                      
+
                         return TabBarView(
                           children: [
                             GroupSummaryDetailsPage(

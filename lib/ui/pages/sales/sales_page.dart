@@ -72,9 +72,7 @@ class _SalesPageState extends State<SalesPage>
     HomePresenter homePresenter = Get.find();
     SalesPresenter salesPresenter = Get.find();
 
-    return SafeArea(
-      left: false,
-      right: false,
+    return DefaultSafeArea(
       child: StreamBuilder(
           stream: salesPresenter.isLoadingStream,
           builder: (context, loadingSnap) {

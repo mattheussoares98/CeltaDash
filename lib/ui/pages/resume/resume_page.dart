@@ -70,9 +70,7 @@ class _ResumePageState extends State<ResumePage>
                   );
                 },
               ),
-              body: SafeArea(
-                left: false,
-                right: false,
+              body: DefaultSafeArea(
                 child: Stack(
                   children: [
                     SingleChildScrollView(

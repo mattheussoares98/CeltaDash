@@ -56,9 +56,7 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
     bool isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
 
-    return SafeArea(
-      left: false,
-      right: false,
+    return DefaultSafeArea(
       child: StreamBuilder(
           stream: productsPresenter.isLoadingStream,
           builder: (context, loadingSnap) {

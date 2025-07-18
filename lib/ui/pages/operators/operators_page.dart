@@ -53,9 +53,7 @@ class _OperatorsPageState extends State<OperatorsPage> {
         stream: operatorsPresenter.isLoadingStream,
         builder: (context, loadingSnap) {
           return Scaffold(
-            body: SafeArea(
-              left: false,
-              right: false,
+            body: DefaultSafeArea(
               child: Column(
                 children: [
                   DefaultAppBar(

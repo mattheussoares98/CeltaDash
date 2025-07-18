@@ -53,9 +53,7 @@ class _SellersPageState extends State<SellersPage> {
         stream: sellersPresenter.isLoadingStream,
         builder: (context, loadingSnap) {
           return Scaffold(
-            body: SafeArea(
-              left: false,
-              right: false,
+            body: DefaultSafeArea(
               child: Column(
                 children: [
                   DefaultAppBar(

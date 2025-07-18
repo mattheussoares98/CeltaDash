@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 
 // A placeholder for your app's constants, like store URLs.
@@ -34,7 +35,7 @@ class UpdateAppVersionPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
-      body: SafeArea(
+      body: DefaultSafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Column(
