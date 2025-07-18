@@ -110,8 +110,6 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
 
                 if (!_initialLoadFinished) {
                   return const SizedBox.shrink();
-                } else if (sales == null || sales.isEmpty) {
-                  return EmptySales(isLoading: loadingSnap.data == true);
                 }
 
                 return Column(
@@ -149,14 +147,19 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                         ],
                       ),
                     ),
-                    ProductsTable(
-                      sales: sales,
-                      showAnimation: _showAnimation,
-                      isLoading: loadingSnap.data == true,
-                      hideShowAnimation: () {
-                        _showAnimation = false;
-                      },
-                    ),
+                    if (sales == null || sales.isEmpty)
+                      Expanded(
+                          child:
+                              EmptySales(isLoading: loadingSnap.data == true)),
+                    if (sales != null && sales.isNotEmpty)
+                      ProductsTable(
+                        sales: sales,
+                        showAnimation: _showAnimation,
+                        isLoading: loadingSnap.data == true,
+                        hideShowAnimation: () {
+                          _showAnimation = false;
+                        },
+                      ),
                   ],
                 );
               }),
