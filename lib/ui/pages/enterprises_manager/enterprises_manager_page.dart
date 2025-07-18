@@ -97,6 +97,7 @@ class _EnterprisesManagerPageState extends State<EnterprisesManagerPage>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
+      // resizeToAvoidBottomInset: false,
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
         child: Container(
@@ -106,21 +107,23 @@ class _EnterprisesManagerPageState extends State<EnterprisesManagerPage>
             borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
           ),
           padding: const EdgeInsets.all(8),
-          child: Column(
-            //TODO fix problem when is landscape and try to add a new enterprise
-            children: [
-              const ConnectedEnterprises(),
-              AddNewEnterprise(
-                enterpriseNameController: enterpriseNameController,
-                bsUserNameController: bsUserNameController,
-                bsPasswordController: bsPasswordController,
-                enterpriseNameFocusNode: enterpriseNameFocusNode,
-                bsUserNameFocusNode: bsUserNameFocusNode,
-                bsPasswordFocusNode: bsPasswordFocusNode,
-              ),
-              const Divider(),
-              EnterprisesItems(scrollController: scrollController),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const ConnectedEnterprises(),
+                AddNewEnterprise(
+                  enterpriseNameController: enterpriseNameController,
+                  bsUserNameController: bsUserNameController,
+                  bsPasswordController: bsPasswordController,
+                  enterpriseNameFocusNode: enterpriseNameFocusNode,
+                  bsUserNameFocusNode: bsUserNameFocusNode,
+                  bsPasswordFocusNode: bsPasswordFocusNode,
+                ),
+                SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
+                const Divider(),
+                EnterprisesItems(scrollController: scrollController),
+              ],
+            ),
           ),
         ),
       ),
