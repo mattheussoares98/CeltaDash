@@ -19,10 +19,13 @@ class Departments extends StatelessWidget {
   Widget build(BuildContext context) {
     final totalDepartmentsLiquid = saleStatistics.sumLiquidValue();
     final homePresenter = Get.find<DepartmentsPresenter>();
+    bool isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
 
     return Column(
       children: [
         ScrollableTableItem(
+          titleMinHeight: isPortrait ? 43 : 25,
           selectedPeriodType: homePresenter.selectedPeriod,
           pdfFileName: R.string.departments,
           showAnimation: _showAnimation,
@@ -30,7 +33,6 @@ class Departments extends StatelessWidget {
             _showAnimation = false;
           },
           animationSecondsDuration: 3,
-          titleMinHeight: 43,
           columnsWidths: [110, 85, 85, 85, 60, 55],
           fixFirstColumn: true,
           columnsIndexToSum: [1, 2, 3],
