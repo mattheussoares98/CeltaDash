@@ -24,9 +24,13 @@ class _PaymentsModalitiesState extends State<PaymentsModalities> {
   @override
   Widget build(BuildContext context) {
     final paymentTypePresenter = Get.find<PaymentTypePresenter>();
+    bool isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
+
     return Column(
       children: [
         ScrollableTableItem(
+          titleMinHeight: isPortrait ? 43 : 25,
           selectedPeriodType: paymentTypePresenter.selectedPeriod,
           pdfFileName: R.string.paymentsType,
           columnsWidths: [100, 90, 50, 70, 70],
