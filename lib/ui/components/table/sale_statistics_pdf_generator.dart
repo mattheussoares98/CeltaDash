@@ -58,10 +58,10 @@ class SaleStatisticPdfGenerator {
 
   /// Builds the header for each page of the PDF.
   pw.Widget _buildHeader() {
-    // This formats the date and time to a common Brazilian format.
+    final homePresenter = Get.find<HomePresenter>();
     final now = DateTime.now().toLocal();
     final formatter = DateFormat('dd/MM/yyyy HH:mm');
-    final selectedDate = Get.find<HomePresenter>().selectedDate;
+    final selectedDate = homePresenter.selectedDate;
 
     return pw.Container(
       alignment: pw.Alignment.centerLeft,
@@ -85,10 +85,16 @@ class SaleStatisticPdfGenerator {
               ),
               pw.Text(
                 'Período: ${selectedPeriodType!.description}',
-                style:
-                    const pw.TextStyle(fontSize: 10, color: PdfColors.grey500),
+                style: const pw.TextStyle(fontSize: 10),
               ),
-            ]
+            ],
+            if (homePresenter.selectedEnterprise?.personalizedCode != null &&
+                homePresenter.selectedEnterprise?.name != null)
+              pw.Text(
+                ' - ${homePresenter.selectedEnterprise!.personalizedCode} - ${homePresenter.selectedEnterprise!.name}',
+                style:
+                    const pw.TextStyle(fontSize: 10, color: PdfColors.green900),
+              ),
           ]),
         ],
       ),
