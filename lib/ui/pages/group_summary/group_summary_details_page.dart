@@ -49,10 +49,13 @@ class GroupSummaryDetailsPage extends StatelessWidget {
     final salesByEnterprise =
         getSalesByEnterprise(homePresenter, resumePresenter);
 
+    bool isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         ScrollableTableItem(
+          titleMinHeight: isPortrait ? 40 : 25,
           selectedPeriodType: resumePresenter.selectedPeriod,
           pdfFileName: R.string.groupSummary,
           hideShowAnimation: () => _showAnimation = !_showAnimation,
@@ -61,7 +64,6 @@ class GroupSummaryDetailsPage extends StatelessWidget {
           indexToSort: 1,
           columnsWidths: [180, 90, 80],
           showAnimation: _showAnimation,
-          titleMinHeight: 40,
           titles: [
             PersonalizedTableCell(value: R.string.enterprise, isTitle: true),
             PersonalizedTableCell(value: R.string.sales, isTitle: true),
