@@ -70,80 +70,74 @@ class DailyStatistics extends StatelessWidget {
       decoration: ContainerDecoration.defaultDecoration,
       padding: const EdgeInsets.all(8),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           if (resumePresenter.compareDaysStatistics == null ||
               resumePresenter.compareDaysStatistics!.isEmpty)
             const EmptySales(isLoading: false),
           if (resumePresenter.compareDaysStatistics != null &&
-              resumePresenter.compareDaysStatistics!.isNotEmpty)
-            Column(
-              children: [
-                RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                    children: [
-                      TextSpan(text: R.string.salesOfTheDay.toUpperCase()),
-                      TextSpan(
-                        text:
-                            " (${percentageResult.toString().toBrazilianNumber(0)}%)",
-                        style:
-                            Theme.of(context).textTheme.displayLarge?.copyWith(
-                                  color: percentageResult >= 0
-                                      ? Colors.green
-                                      : Colors.red,
-                                ),
-                      ),
-                    ],
-                    style: Theme.of(context).textTheme.displayLarge,
+              resumePresenter.compareDaysStatistics!.isNotEmpty) ...[
+            RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                children: [
+                  TextSpan(text: R.string.salesOfTheDay.toUpperCase()),
+                  TextSpan(
+                    text:
+                        " (${percentageResult.toString().toBrazilianNumber(0)}%)",
+                    style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                          color:
+                              percentageResult >= 0 ? Colors.green : Colors.red,
+                        ),
                   ),
+                ],
+                style: Theme.of(context).textTheme.displayLarge,
+              ),
+            ),
+            ChartPieWidget(
+              paddingItems: const EdgeInsets.all(1),
+              showTotalAmount: false,
+              centerDate: resumePresenter.lastGetComparisonParams?.endDate,
+              centerPassedColor: Colors.grey[400]!,
+              centerRemainingColor: Colors.white,
+              pieParameters: [
+                PieParameter(
+                  title: Title(
+                    isCurrentDay: isCurrentDay,
+                    now: now,
+                    isPreviousMonth: false,
+                    statistics: selectedDayStatistics ?? [],
+                    color: percentageResult >= 0 ? Colors.green : Colors.red,
+                  ),
+                  color: percentageResult >= 0 ? Colors.green : Colors.red,
+                  subtitle: SubTitle(
+                    statistics: selectedDayStatistics ?? [],
+                  ),
+                  value: selectedDayLiquidValue,
                 ),
-                ChartPieWidget(
-                  paddingItems: const EdgeInsets.all(1),
-                  showTotalAmount: false,
-                  centerDate: resumePresenter.lastGetComparisonParams?.endDate,
-                  centerPassedColor: Colors.grey[400]!,
-                  centerRemainingColor: Colors.white,
-                  pieParameters: [
-                    PieParameter(
-                      title: Title(
-                        isCurrentDay: isCurrentDay,
-                        now: now,
-                        isPreviousMonth: false,
-                        statistics: selectedDayStatistics ?? [],
-                        color:
-                            percentageResult >= 0 ? Colors.green : Colors.red,
-                      ),
-                      color: percentageResult >= 0 ? Colors.green : Colors.red,
-                      subtitle: SubTitle(
-                        statistics: selectedDayStatistics ?? [],
-                      ),
-                      value: selectedDayLiquidValue,
-                    ),
-                    // if (previousMonthLiquidValue > 0)
-                    PieParameter(
-                      title: Title(
-                        isCurrentDay: isCurrentDay,
-                        now: now,
-                        isPreviousMonth: true,
-                        statistics: previousMonthStatistics ?? [],
-                        color: previousMonthLiquidValue > 0
-                            ? Colors.orange
-                            : Colors.green,
-                      ),
-                      color: previousMonthLiquidValue > 0
-                          ? Colors.orange
-                          : Colors.green,
-                      subtitle: SubTitle(
-                        statistics: previousMonthStatistics ?? [],
-                      ),
-                      showSubtitleOnlyOnTap: true,
-                      value: previousMonthLiquidValue,
-                    ),
-                  ],
+                // if (previousMonthLiquidValue > 0)
+                PieParameter(
+                  title: Title(
+                    isCurrentDay: isCurrentDay,
+                    now: now,
+                    isPreviousMonth: true,
+                    statistics: previousMonthStatistics ?? [],
+                    color: previousMonthLiquidValue > 0
+                        ? Colors.orange
+                        : Colors.green,
+                  ),
+                  color: previousMonthLiquidValue > 0
+                      ? Colors.orange
+                      : Colors.green,
+                  subtitle: SubTitle(
+                    statistics: previousMonthStatistics ?? [],
+                  ),
+                  showSubtitleOnlyOnTap: true,
+                  value: previousMonthLiquidValue,
                 ),
               ],
-            ),
+            )
+          ],
           Row(
             children: [
               Expanded(
