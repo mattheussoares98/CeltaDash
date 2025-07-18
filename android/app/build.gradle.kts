@@ -1,5 +1,5 @@
-import java.util.Properties
 import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -19,9 +19,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
-    }
+    kotlinOptions { jvmTarget = JavaVersion.VERSION_11.toString() }
 
     defaultConfig {
         applicationId = "br.com.celtaware.dash"
@@ -34,9 +32,8 @@ android {
 
     signingConfigs {
         create("release") {
-            val keystoreProperties = Properties().apply {
-                load(FileInputStream(file("../key.properties")))
-            }
+            val keystoreProperties =
+                    Properties().apply { load(FileInputStream(file("../key.properties"))) }
             keyAlias = keystoreProperties["keyAlias"] as String
             keyPassword = keystoreProperties["keyPassword"] as String
             storeFile = file(keystoreProperties["storeFile"] as String)
@@ -53,9 +50,7 @@ android {
     }
 }
 
-flutter {
-    source = "../.."
-}
+flutter { source = "../.." }
 
 dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
