@@ -391,7 +391,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
     // 3. Navigate to the new viewer page, passing the Future to it.
     // The FutureBuilder inside PdfViewerPage will handle waiting for the result.
     if (mounted) {
-      PdfViewer.openPdf(bytes, widget.pdfFileName);
+      PdfViewerPage.openPdf(bytes, widget.pdfFileName);
     }
   }
 

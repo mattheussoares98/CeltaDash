@@ -6,8 +6,8 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import '../../../main/utils/utils.dart';
 import '../../components/components.dart';
 
-class PdfViewer {
-  PdfViewer._();
+class PdfViewerPage {
+  PdfViewerPage._();
 
   static Future<void> openPdf(Uint8List pdfBytes, String pdfFileName) async {
     await Navigator.push(
