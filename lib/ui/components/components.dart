@@ -7,6 +7,7 @@ export './circle_progress.dart';
 export './default_app_bar.dart';
 export './default_button.dart';
 export './default_drop_down.dart';
+export './default_safe_area.dart';
 export './default_tab_bar.dart';
 export './empty_sales.dart';
 export './error_message.dart';

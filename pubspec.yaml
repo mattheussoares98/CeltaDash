@@ -58,6 +58,7 @@ dependencies:
   pdf: ^3.11.3
   pdfx: ^2.9.2
   share_plus: ^11.0.0
+  native_device_orientation: ^2.0.3
 
 icons_launcher:
   image_path: "lib/ui/assets/dev_assets/CeltaDashIcon.png"
