@@ -55,26 +55,26 @@ class _DepartmentsPageState extends State<DepartmentsPage>
         final isLoading = loadingSnap.data == true;
 
         return Scaffold(
-          appBar: DefaultAppBar(
-            isLoading: isLoading,
-            onChangeEnterprise: (_) {
-              departmentsPresenter.getSales(homePresenter);
-            },
-            onChangeDate: (_) {
-              departmentsPresenter.getSales(homePresenter);
-            },
-            onTapRefresh: () {
-              departmentsPresenter.getSales(
-                homePresenter,
-                forceRefresh: true,
-              );
-            },
-          ),
           body: DefaultSafeArea(
             child: DefaultTabController(
               length: 2,
               child: Column(
                 children: [
+                  DefaultAppBar(
+                    isLoading: isLoading,
+                    onChangeEnterprise: (_) {
+                      departmentsPresenter.getSales(homePresenter);
+                    },
+                    onChangeDate: (_) {
+                      departmentsPresenter.getSales(homePresenter);
+                    },
+                    onTapRefresh: () {
+                      departmentsPresenter.getSales(
+                        homePresenter,
+                        forceRefresh: true,
+                      );
+                    },
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [

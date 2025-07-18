@@ -55,26 +55,26 @@ class _PaymentTypePageState extends State<PaymentTypePage>
         stream: paymentTypePresenter.isLoadingStream,
         builder: (context, loadingSnap) {
           return Scaffold(
-            appBar: DefaultAppBar(
-              isLoading: loadingSnap.data == true,
-              onChangeEnterprise: (_) {
-                paymentTypePresenter.getSales(homePresenter);
-              },
-              onChangeDate: (_) {
-                paymentTypePresenter.getSales(homePresenter);
-              },
-              onTapRefresh: () {
-                paymentTypePresenter.getSales(
-                  homePresenter,
-                  forceRefresh: true,
-                );
-              },
-            ),
             body: DefaultSafeArea(
               child: DefaultTabController(
                 length: 2,
                 child: Column(
                   children: [
+                    DefaultAppBar(
+                      isLoading: loadingSnap.data == true,
+                      onChangeEnterprise: (_) {
+                        paymentTypePresenter.getSales(homePresenter);
+                      },
+                      onChangeDate: (_) {
+                        paymentTypePresenter.getSales(homePresenter);
+                      },
+                      onTapRefresh: () {
+                        paymentTypePresenter.getSales(
+                          homePresenter,
+                          forceRefresh: true,
+                        );
+                      },
+                    ),
                     SelectPeriodItems(
                       isLoading: loadingSnap.data,
                       selectedPeriodType: paymentTypePresenter.selectedPeriod,
