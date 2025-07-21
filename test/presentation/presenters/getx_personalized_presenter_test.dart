@@ -1,6 +1,7 @@
 import 'package:celta_dash/data/models/models.dart';
 import 'package:celta_dash/domain/entities/entities.dart';
 import 'package:celta_dash/domain/helpers/helpers.dart';
+import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
 import 'package:celta_dash/ui/services/services.dart';
@@ -26,20 +27,7 @@ void main() {
   late List<SaleStatisticsEntity> saleStatisticsEntities;
   late DateTime startDate;
   late DateTime endDate;
-  late List<int>? enterpriseIds;
-  late bool? groupByEnterprise;
-  late bool? groupByYear;
-  late bool? groupByMonth;
-  late bool? groupByDay;
-  late bool? groupByHour;
-  late bool? groupByProduct;
-  late bool? groupByProductDepartment;
-  late bool? groupByProductSection;
-  late bool? groupByPaymentFinalization;
-  late bool? groupByPaymentModality;
-  late bool? groupByCashierOperator;
-  late bool? groupBySeller;
-  late int? topCount;
+  late List<int> enterpriseIds;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
@@ -63,23 +51,10 @@ void main() {
     startDate = faker.date.dateTime();
     endDate = faker.date.dateTime(minYear: startDate.year + 1);
     enterpriseIds = [
-      faker.randomGenerator.integer(10),
-      faker.randomGenerator.integer(10),
-      faker.randomGenerator.integer(10),
+      faker.randomGenerator.integer(100),
+      faker.randomGenerator.integer(100),
+      faker.randomGenerator.integer(100),
     ];
-    groupByEnterprise = faker.randomGenerator.boolean();
-    groupByYear = faker.randomGenerator.boolean();
-    groupByMonth = faker.randomGenerator.boolean();
-    groupByDay = faker.randomGenerator.boolean();
-    groupByHour = faker.randomGenerator.boolean();
-    groupByProduct = faker.randomGenerator.boolean();
-    groupByProductDepartment = faker.randomGenerator.boolean();
-    groupByProductSection = faker.randomGenerator.boolean();
-    groupByPaymentFinalization = faker.randomGenerator.boolean();
-    groupByPaymentModality = faker.randomGenerator.boolean();
-    groupByCashierOperator = faker.randomGenerator.boolean();
-    groupBySeller = faker.randomGenerator.boolean();
-    topCount = faker.randomGenerator.integer(200);
   }
 
   void initMockSuccess() {
@@ -118,24 +93,7 @@ void main() {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(sut.mainErrorStream, emits(null));
 
-      await sut.getSales(
-        startDate: startDate,
-        endDate: endDate,
-        enterpriseIds: enterpriseIds,
-        groupByEnterprise: groupByEnterprise,
-        groupByYear: groupByYear,
-        groupByMonth: groupByMonth,
-        groupByDay: groupByDay,
-        groupByHour: groupByHour,
-        groupByProduct: groupByProduct,
-        groupByProductDepartment: groupByProductDepartment,
-        groupByProductSection: groupByProductSection,
-        groupByPaymentFinalization: groupByPaymentFinalization,
-        groupByPaymentModality: groupByPaymentModality,
-        groupByCashierOperator: groupByCashierOperator,
-        groupBySeller: groupBySeller,
-        topCount: topCount,
-      );
+      await sut.getSales();
     });
     test("Should emit correct values on error", () async {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
@@ -146,50 +104,155 @@ void main() {
 
       loadSaleStatistics.mockGetError();
 
-      await sut.getSales(
-        startDate: startDate,
-        endDate: endDate,
-        enterpriseIds: enterpriseIds,
-        groupByEnterprise: groupByEnterprise,
-        groupByYear: groupByYear,
-        groupByMonth: groupByMonth,
-        groupByDay: groupByDay,
-        groupByHour: groupByHour,
-        groupByProduct: groupByProduct,
-        groupByProductDepartment: groupByProductDepartment,
-        groupByProductSection: groupByProductSection,
-        groupByPaymentFinalization: groupByPaymentFinalization,
-        groupByPaymentModality: groupByPaymentModality,
-        groupByCashierOperator: groupByCashierOperator,
-        groupBySeller: groupBySeller,
-        topCount: topCount,
-      );
+      await sut.getSales();
     });
     test("Should update sale statistics with correctly", () async {
-      await sut.getSales(
-        startDate: startDate,
-        endDate: endDate,
-        enterpriseIds: enterpriseIds,
-        groupByEnterprise: groupByEnterprise,
-        groupByYear: groupByYear,
-        groupByMonth: groupByMonth,
-        groupByDay: groupByDay,
-        groupByHour: groupByHour,
-        groupByProduct: groupByProduct,
-        groupByProductDepartment: groupByProductDepartment,
-        groupByProductSection: groupByProductSection,
-        groupByPaymentFinalization: groupByPaymentFinalization,
-        groupByPaymentModality: groupByPaymentModality,
-        groupByCashierOperator: groupByCashierOperator,
-        groupBySeller: groupBySeller,
-        topCount: topCount,
-      );
+      await sut.getSales();
 
       expect(
           sut.saleStatistics,
           saleStatisticsEntities
               .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
               .toList());
+    });
+
+    test("Should call loadSaleStatistics with correct period", () async {
+      sut.changeDateRange(startDate, endDate);
+
+      await sut.getSales();
+
+      verify(
+        () => loadSaleStatistics.get(
+          GetSaleStatisticsParams(
+            startDate: startDate,
+            endDate: endDate,
+            enterpriseIds: [],
+            groupByEnterprise: false,
+            groupByYear: false,
+            groupByMonth: false,
+            groupByDay: false,
+            groupByHour: false,
+            groupByProduct: false,
+            groupByProductDepartment: false,
+            groupByProductSection: false,
+            groupByPaymentFinalization: false,
+            groupByPaymentModality: false,
+            groupByCashierOperator: false,
+            groupBySeller: false,
+            // topCount: false,
+          ),
+        ),
+      ).called(1);
+    });
+    test("Should call loadSaleStatistics with correct enterprise ids",
+        () async {
+      sut.changeDateRange(startDate, endDate);
+      for (var id in enterpriseIds) {
+        sut.changeEnterpriseIds(id);
+      }
+      await sut.getSales();
+
+      verify(
+        () => loadSaleStatistics.get(
+          GetSaleStatisticsParams(
+            startDate: startDate,
+            endDate: endDate,
+            enterpriseIds: enterpriseIds,
+            groupByEnterprise: false,
+            groupByYear: false,
+            groupByMonth: false,
+            groupByDay: false,
+            groupByHour: false,
+            groupByProduct: false,
+            groupByProductDepartment: false,
+            groupByProductSection: false,
+            groupByPaymentFinalization: false,
+            groupByPaymentModality: false,
+            groupByCashierOperator: false,
+            groupBySeller: false,
+            // topCount: false,
+          ),
+        ),
+      ).called(1);
+    });
+    test("Should call loadSaleStatistics with correct non exclusive groupings",
+        () async {
+      sut.changeDateRange(startDate, endDate);
+
+      final nonExclusiveSelected = NonExclusiveGroupingType.values[faker
+          .randomGenerator
+          .integer(NonExclusiveGroupingType.values.length)];
+      sut.changeNonExclusiveGroupingType(nonExclusiveSelected);
+
+      await sut.getSales();
+
+      verify(
+        () => loadSaleStatistics.get(
+          GetSaleStatisticsParams(
+            startDate: startDate,
+            endDate: endDate,
+            enterpriseIds: [],
+            groupByEnterprise: sut.nonExclusiveGroupingTypes
+                .contains(NonExclusiveGroupingType.enterprise),
+            groupByYear: sut.nonExclusiveGroupingTypes
+                .contains(NonExclusiveGroupingType.year),
+            groupByMonth: sut.nonExclusiveGroupingTypes
+                .contains(NonExclusiveGroupingType.month),
+            groupByDay: sut.nonExclusiveGroupingTypes
+                .contains(NonExclusiveGroupingType.day),
+            groupByHour: sut.nonExclusiveGroupingTypes
+                .contains(NonExclusiveGroupingType.hour),
+            groupByProduct: false,
+            groupByProductDepartment: false,
+            groupByProductSection: false,
+            groupByPaymentFinalization: false,
+            groupByPaymentModality: false,
+            groupByCashierOperator: false,
+            groupBySeller: false,
+            // topCount: false,
+          ),
+        ),
+      ).called(1);
+    });
+    test("Should call loadSaleStatistics with correct exclusive groupings",
+        () async {
+      sut.changeDateRange(startDate, endDate);
+
+      final exclusiveSelected = ExclusiveGroupingType.values[
+          faker.randomGenerator.integer(ExclusiveGroupingType.values.length)];
+      sut.changeExclusiveGroupingType(exclusiveSelected);
+
+      await sut.getSales();
+
+      verify(
+        () => loadSaleStatistics.get(
+          GetSaleStatisticsParams(
+            startDate: startDate,
+            endDate: endDate,
+            enterpriseIds: [],
+            groupByEnterprise: false,
+            groupByYear: false,
+            groupByMonth: false,
+            groupByDay: false,
+            groupByHour: false,
+            groupByProduct:
+                sut.exclusiveGroupingType == ExclusiveGroupingType.product,
+            groupByProductDepartment: sut.exclusiveGroupingType ==
+                ExclusiveGroupingType.productDepartment,
+            groupByProductSection: sut.exclusiveGroupingType ==
+                ExclusiveGroupingType.productSection,
+            groupByPaymentFinalization: sut.exclusiveGroupingType ==
+                ExclusiveGroupingType.paymentFinalization,
+            groupByPaymentModality: sut.exclusiveGroupingType ==
+                ExclusiveGroupingType.paymentModality,
+            groupByCashierOperator: sut.exclusiveGroupingType ==
+                ExclusiveGroupingType.cashierOperator,
+            groupBySeller:
+                sut.exclusiveGroupingType == ExclusiveGroupingType.seller,
+            // topCount: false,
+          ),
+        ),
+      ).called(1);
     });
   });
 

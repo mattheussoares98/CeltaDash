@@ -14,6 +14,7 @@ abstract class Translation {
   String get msgReallyWantLogout;
   String get msgRequiredField;
   String get msgSameUrl;
+  String get msgSelectPeriod;
   String get msgUnexpectedError;
   String get msgUpdateCeltaBs;
   String get msgVeryShortField;

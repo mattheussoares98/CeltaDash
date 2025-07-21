@@ -16,6 +16,8 @@ mixin ErrorHandling {
           return UIError.sameDays;
         case DomainError.sameUrl:
           return UIError.sameUrl;
+        case DomainError.selectPeriod:
+          return UIError.selectPeriod;
         case DomainError.unexpected:
           return UIError.unexpected;
         case DomainError.updateCeltaBs:

@@ -1,8 +1,7 @@
-import 'package:celta_dash/domain/helpers/exclusive_grouping_type.dart';
-import 'package:celta_dash/domain/helpers/non_exclusive_grouping_type.dart';
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
+import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
 import '../../ui/pages/pages.dart';
 import '../../ui/services/services.dart';
@@ -20,45 +19,42 @@ class GetxPersonalizedPresenter extends GetxController
   final appAnalyticsService = Get.find<AppAnalyticsService>();
 
   @override
-  Future<void> getSales({
-    required DateTime startDate,
-    required DateTime endDate,
-    required List<int>? enterpriseIds,
-    required bool? groupByEnterprise,
-    required bool? groupByYear,
-    required bool? groupByMonth,
-    required bool? groupByDay,
-    required bool? groupByHour,
-    required bool? groupByProduct,
-    required bool? groupByProductDepartment,
-    required bool? groupByProductSection,
-    required bool? groupByPaymentFinalization,
-    required bool? groupByPaymentModality,
-    required bool? groupByCashierOperator,
-    required bool? groupBySeller,
-    required int? topCount,
-  }) async {
+  Future<void> getSales(/* TODO add topCount param */) async {
     isLoading = true;
     mainError = null;
     try {
+      if (startDate == null || endDate == null) {
+        throw DomainError.selectPeriod; //TODO test
+      }
       final sales = await loadSaleStatistics.get(
         GetSaleStatisticsParams(
-          startDate: startDate,
-          endDate: endDate,
-          enterpriseIds: enterpriseIds,
-          groupByEnterprise: groupByEnterprise,
-          groupByYear: groupByYear,
-          groupByMonth: groupByMonth,
-          groupByDay: groupByDay,
-          groupByHour: groupByHour,
-          groupByProduct: groupByProduct,
-          groupByProductDepartment: groupByProductDepartment,
-          groupByProductSection: groupByProductSection,
-          groupByPaymentFinalization: groupByPaymentFinalization,
-          groupByPaymentModality: groupByPaymentModality,
-          groupByCashierOperator: groupByCashierOperator,
-          groupBySeller: groupBySeller,
-          topCount: topCount,
+          startDate: startDate!,
+          endDate: endDate!,
+          enterpriseIds: _enterprisesIds,
+          groupByEnterprise: _nonExclusiveGroupingTypes
+              .contains(NonExclusiveGroupingType.enterprise),
+          groupByYear: _nonExclusiveGroupingTypes
+              .contains(NonExclusiveGroupingType.year),
+          groupByMonth: _nonExclusiveGroupingTypes
+              .contains(NonExclusiveGroupingType.month),
+          groupByDay:
+              _nonExclusiveGroupingTypes.contains(NonExclusiveGroupingType.day),
+          groupByHour: _nonExclusiveGroupingTypes
+              .contains(NonExclusiveGroupingType.hour),
+          groupByProduct:
+              _exclusiveGroupingType == ExclusiveGroupingType.product,
+          groupByProductDepartment:
+              _exclusiveGroupingType == ExclusiveGroupingType.productDepartment,
+          groupByProductSection:
+              _exclusiveGroupingType == ExclusiveGroupingType.productSection,
+          groupByPaymentFinalization: _exclusiveGroupingType ==
+              ExclusiveGroupingType.paymentFinalization,
+          groupByPaymentModality:
+              _exclusiveGroupingType == ExclusiveGroupingType.paymentModality,
+          groupByCashierOperator:
+              _exclusiveGroupingType == ExclusiveGroupingType.cashierOperator,
+          groupBySeller: _exclusiveGroupingType == ExclusiveGroupingType.seller,
+          // topCount: ,
         ),
       );
 

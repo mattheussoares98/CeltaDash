@@ -4,6 +4,7 @@ enum DomainError {
   cannotRemoveSelectedEnterprise,
   sameDays,
   sameUrl,
+  selectPeriod,
   unexpected,
   updateCeltaBs,
 }

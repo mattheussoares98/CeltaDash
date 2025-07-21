@@ -24,6 +24,7 @@ class PtBr implements Translation {
   String get msgReallyWantLogout => "Deseja realmente sair?";
   String get msgRequiredField => "Campo obrigatório";
   String get msgSameUrl => "As URLs devem ser diferentes";
+  String get msgSelectPeriod => "Selecione o período";
   String get msgUnexpectedError => "Ocorreu um erro não esperado";
   String get msgUpdateCeltaBs => "Atualize o CeltaBS!";
   String get msgVeryShortField => "Campo muito curto";

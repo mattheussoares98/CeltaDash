@@ -20,6 +20,7 @@ class UIError extends Equatable {
   static final enterpriseNotFound = UIError._(R.string.msgEnterpriseNotFound);
   static final sameDays = UIError._(R.string.msgCantCompareSameDays);
   static final sameUrl = UIError._(R.string.msgSameUrl);
+  static final selectPeriod = UIError._(R.string.msgSelectPeriod);
   static final unexpected = UIError._(R.string.msgUnexpectedError);
   static final updateCeltaBs = UIError._(R.string.msgUpdateCeltaBs);
 }

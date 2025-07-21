@@ -18,22 +18,5 @@ abstract class PersonalizedPresenter implements Listenable {
   void changeExclusiveGroupingType(ExclusiveGroupingType type);
   void changeNonExclusiveGroupingType(NonExclusiveGroupingType type);
 
-  Future<void> getSales({
-    required DateTime startDate,
-    required DateTime endDate,
-    required List<int>? enterpriseIds,
-    required bool? groupByEnterprise,
-    required bool? groupByYear,
-    required bool? groupByMonth,
-    required bool? groupByDay,
-    required bool? groupByHour,
-    required bool? groupByProduct,
-    required bool? groupByProductDepartment,
-    required bool? groupByProductSection,
-    required bool? groupByPaymentFinalization,
-    required bool? groupByPaymentModality,
-    required bool? groupByCashierOperator,
-    required bool? groupBySeller,
-    required int? topCount,
-  });
+  Future<void> getSales();
 }
