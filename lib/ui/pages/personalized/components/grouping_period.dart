@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../../domain/helpers/helpers.dart';
 import '../../../helpers/helpers.dart';
+import '../../pages.dart';
 import 'components.dart';
 
 class GroupPeriod extends StatelessWidget {
@@ -9,28 +11,20 @@ class GroupPeriod extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final personalizedPresenter = Get.find<PersonalizedPresenter>();
+
     return DefaultExpansionTile(
       title: R.string.groupPeriod,
-      children: [
-        CheckBoxItem(
-          title: PeriodType.hourly.name,
-          onTap: () {
-            //TODO implement
-          },
-        ),
-        CheckBoxItem(
-          title: PeriodType.daily.name,
-          onTap: () {},
-        ),
-        CheckBoxItem(
-          title: PeriodType.monthly.name,
-          onTap: () {},
-        ),
-        CheckBoxItem(
-          title: PeriodType.yearly.name,
-          onTap: () {},
-        ),
-      ],
+      children: NonExclusiveGroupingType.values
+          .map(
+            (e) => CheckBoxItem(
+              title: e.name,
+              onTap: () {
+                personalizedPresenter.changeNonExclusiveGroupingType(e);
+              },
+            ),
+          )
+          .toList(),
     );
   }
 }
