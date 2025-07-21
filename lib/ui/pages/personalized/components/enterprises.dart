@@ -20,7 +20,7 @@ class Enterprises extends StatelessWidget {
             (e) => CheckBoxItem(
               title: "${e.personalizedCode} - ${e.name}",
               onTap: () {
-                personzalized.changeEnterprise(e.id!.toInt());
+                personzalized.changeEnterpriseIds(e.id!.toInt());
               },
             ),
           )

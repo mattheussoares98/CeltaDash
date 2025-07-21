@@ -81,7 +81,7 @@ class GetxPersonalizedPresenter extends GetxController
   }
 
   @override
-  void changeEnterprise(int enterpriseId) {
+  void changeEnterpriseIds(int enterpriseId) {
     if (_enterprisesIds.contains(enterpriseId)) {
       _enterprisesIds.remove(enterpriseId);
     } else {

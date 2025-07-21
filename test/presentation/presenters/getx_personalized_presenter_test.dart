@@ -207,16 +207,16 @@ void main() {
       final enterpriseId1 = faker.randomGenerator.integer(100);
       final enterpriseId2 = faker.randomGenerator.integer(200, min: 101);
 
-      sut.changeEnterprise(enterpriseId1);
+      sut.changeEnterpriseIds(enterpriseId1);
       expect(sut.enterprisesIds, [enterpriseId1]);
 
-      sut.changeEnterprise(enterpriseId2);
+      sut.changeEnterpriseIds(enterpriseId2);
       expect(sut.enterprisesIds, [enterpriseId1, enterpriseId2]);
 
-      sut.changeEnterprise(enterpriseId2);
+      sut.changeEnterpriseIds(enterpriseId2);
       expect(sut.enterprisesIds, [enterpriseId1]);
 
-      sut.changeEnterprise(enterpriseId1);
+      sut.changeEnterpriseIds(enterpriseId1);
       expect(sut.enterprisesIds, []);
     });
   });
