@@ -29,7 +29,7 @@ extension PeriodTypeDescriptionExtension on PeriodType {
 }
 
 extension PeriodTypeNameExtension on PeriodType {
-  String get name {
+  String get descriptionName {
     switch (this) {
       case PeriodType.hourly:
         return R.string.hour;

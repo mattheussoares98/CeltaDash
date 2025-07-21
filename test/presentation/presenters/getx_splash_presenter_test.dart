@@ -61,6 +61,9 @@ void main() {
   void initMockSuccess() {
     getPlatform.mockGet(PlatformType.android);
     loadDeviceData.mockGetAppVersion(requiredAppVersion);
+    firebaseManager.mockGet(MockedFirebaseGet(dataToReturn: [
+      FakeDoc({"required": "1.2.3"}, "version")
+    ]));
   }
 
   setUp(() {
