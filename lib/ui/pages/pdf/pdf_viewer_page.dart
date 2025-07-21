@@ -66,7 +66,7 @@ class _PdfViewerPageState extends State<_PdfViewerPage> {
       await SharePlus.instance.share(
         ShareParams(
           files: [pdfFile],
-          text: "Compartilhar PDF",
+          // text: "Compartilhar PDF",
           downloadFallbackEnabled: true,
           title: widget.pdfFileName,
           previewThumbnail: pdfFile,
