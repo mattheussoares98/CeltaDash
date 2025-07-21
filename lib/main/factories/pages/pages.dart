@@ -10,6 +10,7 @@ export './home/home.dart';
 export './login/login.dart';
 export 'operators/operators.dart';
 export './payments_type/payments_type.dart';
+export './personalized/personalized.dart';
 export './products/products.dart';
 export './resume/resume.dart';
 export './sales/sales.dart';
