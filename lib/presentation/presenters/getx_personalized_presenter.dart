@@ -83,4 +83,17 @@ class GetxPersonalizedPresenter extends GetxController
   DateTime? _startDate;
   @override
   DateTime? get startDate => _startDate;
+
+  final List<int> _enterprisesIds = [];
+  @override
+  List<int> get enterprisesIds => _enterprisesIds;
+
+  @override
+  void changeSelectedEnterprise(int enterpriseId) {
+    if (_enterprisesIds.contains(enterpriseId)) {
+      _enterprisesIds.remove(enterpriseId);
+    } else {
+      _enterprisesIds.add(enterpriseId);
+    }
+  }
 }

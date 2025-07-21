@@ -201,4 +201,23 @@ void main() {
       expect(sut.endDate, endDate);
     });
   });
+
+  group("Change selected enterprise", () {
+    test("Should update correctly", () {
+      final enterpriseId1 = faker.randomGenerator.integer(100);
+      final enterpriseId2 = faker.randomGenerator.integer(200, min: 101);
+
+      sut.changeSelectedEnterprise(enterpriseId1);
+      expect(sut.enterprisesIds, [enterpriseId1]);
+
+      sut.changeSelectedEnterprise(enterpriseId2);
+      expect(sut.enterprisesIds, [enterpriseId1, enterpriseId2]);
+
+      sut.changeSelectedEnterprise(enterpriseId2);
+      expect(sut.enterprisesIds, [enterpriseId1]);
+
+      sut.changeSelectedEnterprise(enterpriseId1);
+      expect(sut.enterprisesIds, []);
+    });
+  });
 }

@@ -8,8 +8,10 @@ abstract class PersonalizedPresenter implements Listenable {
   Stream<bool> get isLoadingStream;
   DateTime? get startDate;
   DateTime? get endDate;
+  List<int> get enterprisesIds;
 
   void changeSelectedDateRange(DateTime start, DateTime end);
+  void changeSelectedEnterprise(int enterpriseId);
 
   Future<void> getSales({
     required DateTime startDate,
