@@ -11,10 +11,12 @@ abstract class PersonalizedPresenter implements Listenable {
   DateTime? get endDate;
   List<int> get enterprisesIds;
   ExclusiveGroupingType? get exclusiveGroupingType;
+  List<NonExclusiveGroupingType> get nonExclusiveGroupingTypes;
 
   void changeSelectedDateRange(DateTime start, DateTime end);
   void changeSelectedEnterprise(int enterpriseId);
   void changeSelectedExclusiveGroupingType(ExclusiveGroupingType type);
+  void changeSelectedNonExclusiveGroupingType(NonExclusiveGroupingType type);
 
   Future<void> getSales({
     required DateTime startDate,

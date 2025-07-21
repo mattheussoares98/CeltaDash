@@ -236,4 +236,23 @@ void main() {
       expect(sut.exclusiveGroupingType, null);
     });
   });
+
+  group("Change non exclusive grouping type", () {
+    test("Should update correctly", () {
+      const day = NonExclusiveGroupingType.day;
+      const enterprise = NonExclusiveGroupingType.enterprise;
+
+      sut.changeSelectedNonExclusiveGroupingType(day);
+      expect(sut.nonExclusiveGroupingTypes, [day]);
+
+      sut.changeSelectedNonExclusiveGroupingType(enterprise);
+      expect(sut.nonExclusiveGroupingTypes, [day, enterprise]);
+
+      sut.changeSelectedNonExclusiveGroupingType(enterprise);
+      expect(sut.nonExclusiveGroupingTypes, [day]);
+
+      sut.changeSelectedNonExclusiveGroupingType(day);
+      expect(sut.nonExclusiveGroupingTypes, []);
+    });
+  });
 }

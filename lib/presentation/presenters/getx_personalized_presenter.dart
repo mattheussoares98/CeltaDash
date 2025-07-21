@@ -1,4 +1,5 @@
 import 'package:celta_dash/domain/helpers/exclusive_grouping_type.dart';
+import 'package:celta_dash/domain/helpers/non_exclusive_grouping_type.dart';
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
@@ -97,6 +98,15 @@ class GetxPersonalizedPresenter extends GetxController
     }
   }
 
+  @override
+  void changeSelectedNonExclusiveGroupingType(NonExclusiveGroupingType type) {
+    if (_nonExclusiveGroupingTypes.contains(type)) {
+      _nonExclusiveGroupingTypes.remove(type);
+    } else {
+      _nonExclusiveGroupingTypes.add(type);
+    }
+  }
+
   DateTime? _endDate;
   @override
   DateTime? get endDate => _endDate;
@@ -112,4 +122,9 @@ class GetxPersonalizedPresenter extends GetxController
   ExclusiveGroupingType? _exclusiveGroupingType;
   @override
   ExclusiveGroupingType? get exclusiveGroupingType => _exclusiveGroupingType;
+
+  final List<NonExclusiveGroupingType> _nonExclusiveGroupingTypes = [];
+  @override
+  List<NonExclusiveGroupingType> get nonExclusiveGroupingTypes =>
+      _nonExclusiveGroupingTypes;
 }
