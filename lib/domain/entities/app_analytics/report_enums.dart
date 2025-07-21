@@ -6,6 +6,7 @@ enum ReportType {
   departments,
   operators,
   payments,
+  personalized,
   products,
   resume,
   sales,
@@ -25,6 +26,8 @@ extension ReportTypeExtension on ReportType {
         return R.string.operators;
       case ReportType.payments:
         return R.string.payments;
+      case ReportType.personalized:
+        return R.string.personalized;
       case ReportType.products:
         return R.string.products;
       case ReportType.resume:

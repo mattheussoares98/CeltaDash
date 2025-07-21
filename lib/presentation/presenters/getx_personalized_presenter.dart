@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
+import '../../domain/entities/entities.dart';
 import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
 import '../../ui/pages/pages.dart';
@@ -62,7 +63,10 @@ class GetxPersonalizedPresenter extends GetxController
           .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
           .toList();
 
-      //TODO add analytics
+      appAnalyticsService.addNewMonthlyAnalytic(
+        reportType: ReportType.personalized,
+        periodType: PeriodType.personalized,
+      );
     } catch (e) {
       mainError = getUIError(e);
     } finally {

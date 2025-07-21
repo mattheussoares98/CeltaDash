@@ -267,6 +267,19 @@ void main() {
         ),
       ).called(1);
     });
+
+    test("Should add new app monthly analytics", () async {
+      sut.changeDateRange(startDate, endDate);
+
+      await sut.getSales();
+
+      verify(
+        () => appAnalyticsService.addNewMonthlyAnalytic(
+          reportType: ReportType.personalized,
+          periodType: PeriodType.personalized,
+        ),
+      ).called(1);
+    });
   });
 
   group("Change selected date range", () {

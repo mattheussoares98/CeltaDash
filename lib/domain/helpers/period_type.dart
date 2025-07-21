@@ -5,6 +5,7 @@ enum PeriodType {
   daily,
   weekly,
   monthly,
+  personalized,
   yearly,
 }
 
@@ -19,6 +20,8 @@ extension PeriodTypeDescriptionExtension on PeriodType {
         return R.string.weekly;
       case PeriodType.monthly:
         return R.string.monthly;
+      case PeriodType.personalized:
+        return R.string.personalized;
       case PeriodType.yearly:
         return R.string.yearly;
     }
@@ -36,6 +39,8 @@ extension PeriodTypeNameExtension on PeriodType {
         return R.string.week;
       case PeriodType.monthly:
         return R.string.month;
+      case PeriodType.personalized:
+        return R.string.personalized;
       case PeriodType.yearly:
         return R.string.year;
     }

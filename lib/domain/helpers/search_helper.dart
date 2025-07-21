@@ -32,6 +32,8 @@ class SearchHelper {
         return _canSearchMonthly(lastParams, selectedDate);
       case PeriodType.yearly:
         return _canSearchYearly(lastParams, selectedDate);
+      case PeriodType.personalized:
+        return true;
     }
   }
 
