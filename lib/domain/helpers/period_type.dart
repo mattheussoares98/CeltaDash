@@ -8,7 +8,7 @@ enum PeriodType {
   yearly,
 }
 
-extension PeriodTypeExtension on PeriodType {
+extension PeriodTypeDescriptionExtension on PeriodType {
   String get description {
     switch (this) {
       case PeriodType.hourly:
@@ -21,6 +21,23 @@ extension PeriodTypeExtension on PeriodType {
         return R.string.monthly;
       case PeriodType.yearly:
         return R.string.yearly;
+    }
+  }
+}
+
+extension PeriodTypeNameExtension on PeriodType {
+  String get name {
+    switch (this) {
+      case PeriodType.hourly:
+        return R.string.hour;
+      case PeriodType.daily:
+        return R.string.day;
+      case PeriodType.weekly:
+        return R.string.week;
+      case PeriodType.monthly:
+        return R.string.month;
+      case PeriodType.yearly:
+        return R.string.year;
     }
   }
 }

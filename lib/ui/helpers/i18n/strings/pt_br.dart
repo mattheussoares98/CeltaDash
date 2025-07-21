@@ -85,12 +85,14 @@ class PtBr implements Translation {
   String get enterprise => "Empresa";
   String get enterpriseName => "Nome da empresa";
   String get enterprises => "Empresas";
+  String get exclusiveGrouping => "Agrupamento exclusivo";
   String get filter => "Filtrar";
   String get finalization => "Finalizadora";
   String get finalizations => "Finalizadoras";
   String get firstDaySales => "Vendas do primeiro dia";
   String get goalHistory => "Histórico de metas";
   String get grossMargin => "Margem bruta";
+  String get groupPeriod => "Agrupar por período";
   String get grossProfit => "Lucro bruto";
   String get groupOfStores => "Grupo de lojas";
   String get groupSummary => "Resumo do grupo";
@@ -118,10 +120,12 @@ class PtBr implements Translation {
   String get of => "De";
   String get operator => "Operador";
   String get operators => "Operadores";
+  String get parameters => "Parâmetros";
   String get password => "Senha";
   String get payments => "Pagamentos";
   String get paymentsType => "Tipos de pagamento";
   String get percentage => "Porcentagem";
+  String get period => "Período";
   String get personalized => "Personalizado";
   String get pdv => "Pdv";
   String get portions => "Parcelas";
