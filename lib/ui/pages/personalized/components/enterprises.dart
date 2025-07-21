@@ -11,6 +11,7 @@ class Enterprises extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final homePresenter = Get.find<HomePresenter>();
+    final personzalized = Get.find<PersonalizedPresenter>();
 
     return DefaultExpansionTile(
       title: R.string.enterprises,
@@ -19,7 +20,7 @@ class Enterprises extends StatelessWidget {
             (e) => CheckBoxItem(
               title: "${e.personalizedCode} - ${e.name}",
               onTap: () {
-                //TODO implement
+                personzalized.changeEnterprise(e.id!.toInt());
               },
             ),
           )
