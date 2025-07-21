@@ -195,7 +195,7 @@ void main() {
 
   group("Change selected date range", () {
     test("Should update selected date range", () async {
-      sut.changeSelectedDateRange(startDate, endDate);
+      sut.changeDateRange(startDate, endDate);
 
       expect(sut.startDate, startDate);
       expect(sut.endDate, endDate);
@@ -207,16 +207,16 @@ void main() {
       final enterpriseId1 = faker.randomGenerator.integer(100);
       final enterpriseId2 = faker.randomGenerator.integer(200, min: 101);
 
-      sut.changeSelectedEnterprise(enterpriseId1);
+      sut.changeEnterprise(enterpriseId1);
       expect(sut.enterprisesIds, [enterpriseId1]);
 
-      sut.changeSelectedEnterprise(enterpriseId2);
+      sut.changeEnterprise(enterpriseId2);
       expect(sut.enterprisesIds, [enterpriseId1, enterpriseId2]);
 
-      sut.changeSelectedEnterprise(enterpriseId2);
+      sut.changeEnterprise(enterpriseId2);
       expect(sut.enterprisesIds, [enterpriseId1]);
 
-      sut.changeSelectedEnterprise(enterpriseId1);
+      sut.changeEnterprise(enterpriseId1);
       expect(sut.enterprisesIds, []);
     });
   });
@@ -226,13 +226,13 @@ void main() {
       const operator = ExclusiveGroupingType.cashierOperator;
       const product = ExclusiveGroupingType.product;
 
-      sut.changeSelectedExclusiveGroupingType(operator);
+      sut.changeExclusiveGroupingType(operator);
       expect(sut.exclusiveGroupingType, operator);
 
-      sut.changeSelectedExclusiveGroupingType(product);
+      sut.changeExclusiveGroupingType(product);
       expect(sut.exclusiveGroupingType, product);
 
-      sut.changeSelectedExclusiveGroupingType(product);
+      sut.changeExclusiveGroupingType(product);
       expect(sut.exclusiveGroupingType, null);
     });
   });
@@ -242,16 +242,16 @@ void main() {
       const day = NonExclusiveGroupingType.day;
       const enterprise = NonExclusiveGroupingType.enterprise;
 
-      sut.changeSelectedNonExclusiveGroupingType(day);
+      sut.changeNonExclusiveGroupingType(day);
       expect(sut.nonExclusiveGroupingTypes, [day]);
 
-      sut.changeSelectedNonExclusiveGroupingType(enterprise);
+      sut.changeNonExclusiveGroupingType(enterprise);
       expect(sut.nonExclusiveGroupingTypes, [day, enterprise]);
 
-      sut.changeSelectedNonExclusiveGroupingType(enterprise);
+      sut.changeNonExclusiveGroupingType(enterprise);
       expect(sut.nonExclusiveGroupingTypes, [day]);
 
-      sut.changeSelectedNonExclusiveGroupingType(day);
+      sut.changeNonExclusiveGroupingType(day);
       expect(sut.nonExclusiveGroupingTypes, []);
     });
   });

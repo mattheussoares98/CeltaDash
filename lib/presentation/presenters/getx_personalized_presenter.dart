@@ -75,13 +75,13 @@ class GetxPersonalizedPresenter extends GetxController
   }
 
   @override
-  void changeSelectedDateRange(DateTime startDate, DateTime endDate) {
+  void changeDateRange(DateTime startDate, DateTime endDate) {
     _startDate = startDate;
     _endDate = endDate;
   }
 
   @override
-  void changeSelectedEnterprise(int enterpriseId) {
+  void changeEnterprise(int enterpriseId) {
     if (_enterprisesIds.contains(enterpriseId)) {
       _enterprisesIds.remove(enterpriseId);
     } else {
@@ -90,7 +90,7 @@ class GetxPersonalizedPresenter extends GetxController
   }
 
   @override
-  void changeSelectedExclusiveGroupingType(ExclusiveGroupingType type) {
+  void changeExclusiveGroupingType(ExclusiveGroupingType type) {
     if (_exclusiveGroupingType == type) {
       _exclusiveGroupingType = null;
     } else {
@@ -99,7 +99,7 @@ class GetxPersonalizedPresenter extends GetxController
   }
 
   @override
-  void changeSelectedNonExclusiveGroupingType(NonExclusiveGroupingType type) {
+  void changeNonExclusiveGroupingType(NonExclusiveGroupingType type) {
     if (_nonExclusiveGroupingTypes.contains(type)) {
       _nonExclusiveGroupingTypes.remove(type);
     } else {

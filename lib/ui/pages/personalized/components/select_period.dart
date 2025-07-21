@@ -49,7 +49,7 @@ class SelectPeriod extends StatelessWidget {
                 );
 
                 if (pickedRange != null) {
-                  personalizedPresenter.changeSelectedDateRange(
+                  personalizedPresenter.changeDateRange(
                     pickedRange.start,
                     pickedRange.end,
                   );
