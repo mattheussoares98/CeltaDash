@@ -35,14 +35,7 @@ class _PersonalizedPageState extends State<PersonalizedPage> {
                 ),
                 visualDensity: VisualDensity.compact,
                 children: [
-                  SelectPeriod(
-                    changeSelectedDateRange: (newDate) {
-                      setState(() {
-                        selectedDateRange = newDate;
-                      });
-                    },
-                    selectedDateRange: selectedDateRange,
-                  ),
+                  const SelectPeriod(),
                   const Enterprises(),
                   const GroupPeriod(),
                   const ExclusiveGrouping(),

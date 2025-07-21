@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../../helpers/helpers.dart';
+import '../../pages.dart';
 
 class SelectPeriod extends StatelessWidget {
-  final DateTimeRange? selectedDateRange;
-  final void Function(DateTimeRange) changeSelectedDateRange;
-  const SelectPeriod({
-    super.key,
-    required this.selectedDateRange,
-    required this.changeSelectedDateRange,
-  });
+  const SelectPeriod({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final personalizedPresenter = Get.find<PersonalizedPresenter>();
+
     final now = DateTime.now();
     final backgroundColor = Theme.of(context).primaryColor.withAlpha(50);
+    final selectedDateTimeRange = personalizedPresenter.startDate != null &&
+            personalizedPresenter.endDate != null
+        ? DateTimeRange(
+            start: personalizedPresenter.startDate!,
+            end: personalizedPresenter.endDate!)
+        : null;
 
     return Container(
       padding: const EdgeInsets.all(12),
@@ -41,14 +45,17 @@ class SelectPeriod extends StatelessWidget {
                   context: context,
                   firstDate: now.subtract(const Duration(days: 365 * 3)),
                   lastDate: now,
-                  initialDateRange: selectedDateRange,
+                  initialDateRange: selectedDateTimeRange,
                 );
 
-                if (pickedRange != null && pickedRange != selectedDateRange) {
-                  changeSelectedDateRange(pickedRange);
+                if (pickedRange != null) {
+                  personalizedPresenter.changeSelectedDateRange(
+                    pickedRange.start,
+                    pickedRange.end,
+                  );
                 }
               },
-              child: _ButtonText(selectedDateRange: selectedDateRange),
+              child: _ButtonText(selectedDateRange: selectedDateTimeRange),
             ),
           ),
         ],
