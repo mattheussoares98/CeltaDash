@@ -69,4 +69,18 @@ class GetxPersonalizedPresenter extends GetxController
       isLoading = false;
     }
   }
+
+  @override
+  void changeSelectedDateRange(DateTime startDate, DateTime endDate) {
+    _startDate = startDate;
+    _endDate = endDate;
+  }
+
+  DateTime? _endDate;
+  @override
+  DateTime? get endDate => _endDate;
+
+  DateTime? _startDate;
+  @override
+  DateTime? get startDate => _startDate;
 }

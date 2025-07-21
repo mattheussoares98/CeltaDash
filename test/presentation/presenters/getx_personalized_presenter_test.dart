@@ -192,4 +192,13 @@ void main() {
               .toList());
     });
   });
+
+  group("Change selected date range", () {
+    test("Should update selected date range", () async {
+      sut.changeSelectedDateRange(startDate, endDate);
+
+      expect(sut.startDate, startDate);
+      expect(sut.endDate, endDate);
+    });
+  });
 }
