@@ -11,6 +11,7 @@ export './login/login.dart';
 export 'operators/operators.dart';
 export './payment_type/payment_type.dart';
 export './pdf/pdf.dart';
+export './personalized/personalized.dart';
 export './products/products.dart';
 export './resume/resume.dart';
 export './sales/sales.dart';
