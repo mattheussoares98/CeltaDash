@@ -24,7 +24,7 @@ class GetxPersonalizedPresenter extends GetxController
     mainError = null;
     try {
       if (startDate == null || endDate == null) {
-        throw DomainError.selectPeriod; //TODO test
+        throw DomainError.selectPeriod;
       }
       final sales = await loadSaleStatistics.get(
         GetSaleStatisticsParams(

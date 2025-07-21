@@ -93,6 +93,8 @@ void main() {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(sut.mainErrorStream, emits(null));
 
+      sut.changeDateRange(startDate, endDate);
+
       await sut.getSales();
     });
     test("Should emit correct values on error", () async {
@@ -102,11 +104,22 @@ void main() {
         emitsInOrder([null, UIError.unexpected]),
       );
 
+      sut.changeDateRange(startDate, endDate);
       loadSaleStatistics.mockGetError();
 
       await sut.getSales();
     });
+    test("Should emit correct values when didnt date range", () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(
+        sut.mainErrorStream,
+        emitsInOrder([null, UIError.selectPeriod]),
+      );
+
+      await sut.getSales();
+    });
     test("Should update sale statistics with correctly", () async {
+      sut.changeDateRange(startDate, endDate);
       await sut.getSales();
 
       expect(
