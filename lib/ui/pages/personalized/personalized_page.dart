@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../helpers/helpers.dart';
 import 'components/components.dart';
@@ -17,6 +18,7 @@ class _PersonalizedPageState extends State<PersonalizedPage> {
 
   @override
   Widget build(BuildContext context) {
+    Get.put<PersonalizedPresenter>(widget.presenter);
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
