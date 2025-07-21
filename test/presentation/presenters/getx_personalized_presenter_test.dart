@@ -220,4 +220,20 @@ void main() {
       expect(sut.enterprisesIds, []);
     });
   });
+
+  group("Change selected grouping type", () {
+    test("Should update correctly", () {
+      const operator = ExclusiveGroupingType.cashierOperator;
+      const product = ExclusiveGroupingType.product;
+
+      sut.changeSelectedExclusiveGroupingType(operator);
+      expect(sut.exclusiveGroupingType, operator);
+
+      sut.changeSelectedExclusiveGroupingType(product);
+      expect(sut.exclusiveGroupingType, product);
+
+      sut.changeSelectedExclusiveGroupingType(product);
+      expect(sut.exclusiveGroupingType, null);
+    });
+  });
 }

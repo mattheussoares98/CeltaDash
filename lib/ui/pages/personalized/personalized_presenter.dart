@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../domain/helpers/helpers.dart';
 import '../../helpers/helpers.dart';
 import '../pages.dart';
 
@@ -9,9 +10,11 @@ abstract class PersonalizedPresenter implements Listenable {
   DateTime? get startDate;
   DateTime? get endDate;
   List<int> get enterprisesIds;
+  ExclusiveGroupingType? get exclusiveGroupingType;
 
   void changeSelectedDateRange(DateTime start, DateTime end);
   void changeSelectedEnterprise(int enterpriseId);
+  void changeSelectedExclusiveGroupingType(ExclusiveGroupingType type);
 
   Future<void> getSales({
     required DateTime startDate,

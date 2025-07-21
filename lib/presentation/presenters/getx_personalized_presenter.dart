@@ -1,3 +1,4 @@
+import 'package:celta_dash/domain/helpers/exclusive_grouping_type.dart';
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
@@ -63,6 +64,8 @@ class GetxPersonalizedPresenter extends GetxController
       saleStatistics = sales
           .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
           .toList();
+
+      //TODO add analytics
     } catch (e) {
       mainError = getUIError(e);
     } finally {
@@ -74,6 +77,24 @@ class GetxPersonalizedPresenter extends GetxController
   void changeSelectedDateRange(DateTime startDate, DateTime endDate) {
     _startDate = startDate;
     _endDate = endDate;
+  }
+
+  @override
+  void changeSelectedEnterprise(int enterpriseId) {
+    if (_enterprisesIds.contains(enterpriseId)) {
+      _enterprisesIds.remove(enterpriseId);
+    } else {
+      _enterprisesIds.add(enterpriseId);
+    }
+  }
+
+  @override
+  void changeSelectedExclusiveGroupingType(ExclusiveGroupingType type) {
+    if (_exclusiveGroupingType == type) {
+      _exclusiveGroupingType = null;
+    } else {
+      _exclusiveGroupingType = type;
+    }
   }
 
   DateTime? _endDate;
@@ -88,12 +109,7 @@ class GetxPersonalizedPresenter extends GetxController
   @override
   List<int> get enterprisesIds => _enterprisesIds;
 
+  ExclusiveGroupingType? _exclusiveGroupingType;
   @override
-  void changeSelectedEnterprise(int enterpriseId) {
-    if (_enterprisesIds.contains(enterpriseId)) {
-      _enterprisesIds.remove(enterpriseId);
-    } else {
-      _enterprisesIds.add(enterpriseId);
-    }
-  }
+  ExclusiveGroupingType? get exclusiveGroupingType => _exclusiveGroupingType;
 }
