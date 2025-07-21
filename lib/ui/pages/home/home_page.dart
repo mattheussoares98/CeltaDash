@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -30,9 +31,11 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
       if (mounted) {
         HomePresenter homePresenter = Get.find();
         ResumePresenter resumePresenter = Get.find();
-        // SalesPresenter salesPresenter = Get.find();
-        // ProductsPresenter productsPresenter = Get.find();
         EnterprisesManagerPresenter enterprisesManagerPresenter = Get.find();
+
+        mainErrorSubscription =
+            handleMainError(context, homePresenter.mainErrorStream);
+
         await enterprisesManagerPresenter.loadLocalEnterprises();
         homePresenter.updateSelectedIndex(0);
         await homePresenter.getBsEnterprises();
@@ -82,21 +85,15 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
 
   final pages = <Widget>[
     makeResumePage(),
-    // makeIndicatorsPage(),//Dont make sense use this pages because is similar salesPage
     makeSalesPage(),
     makeProductsPage(),
     makeMorePage(),
-    // makeTeamPage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
     ResumePresenter resumePresenter = Get.find();
-
-    mainErrorSubscription?.cancel();
-    mainErrorSubscription =
-        handleMainError(context, homePresenter.mainErrorStream);
 
     final orientation = MediaQuery.of(context).orientation;
     if (orientation == Orientation.landscape) {
@@ -162,6 +159,12 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
               cupertinoIcon: const Icon(CupertinoIcons.cart),
               label: R.string.products,
             ),
+            if (kDebugMode) //TODO remove this when finish implementation
+              BottomNavItem(
+                materialIcon: const Icon(Icons.assignment_ind),
+                cupertinoIcon: const Icon(CupertinoIcons.doc_person),
+                label: R.string.personalized,
+              ),
             BottomNavItem(
               materialIcon: const Icon(Icons.grid_view_rounded),
               cupertinoIcon: const Icon(CupertinoIcons.square_grid_2x2_fill),

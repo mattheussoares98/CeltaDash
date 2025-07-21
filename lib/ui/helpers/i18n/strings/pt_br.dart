@@ -122,6 +122,7 @@ class PtBr implements Translation {
   String get payments => "Pagamentos";
   String get paymentsType => "Tipos de pagamento";
   String get percentage => "Porcentagem";
+  String get personalized => "Personalizado";
   String get pdv => "Pdv";
   String get portions => "Parcelas";
   String get positionAbbreviated => "Pos";
