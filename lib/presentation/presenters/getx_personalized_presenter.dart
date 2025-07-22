@@ -111,8 +111,8 @@ class GetxPersonalizedPresenter extends GetxController
 
   @override
   void selectAllEnterprises() {
-    _enterprisesIds
-        .addAll(homePresenter.enterprises?.map((e) => e.id!.toInt()) ?? []);
+    _enterprisesIds =
+        homePresenter.enterprises?.map((e) => e.id!.toInt()).toList() ?? [];
   }
 
   DateTime? _endDate;
@@ -123,7 +123,7 @@ class GetxPersonalizedPresenter extends GetxController
   @override
   DateTime? get startDate => _startDate;
 
-  final List<int> _enterprisesIds = [];
+  List<int> _enterprisesIds = [];
   @override
   List<int> get enterprisesIds => _enterprisesIds;
 

@@ -354,6 +354,8 @@ void main() {
   group("Select all enterprises", () {
     test("Should select all enterprises", () {
       sut.selectAllEnterprises();
+      sut.selectAllEnterprises();
+      sut.selectAllEnterprises();
 
       expect(
         sut.enterprisesIds,
