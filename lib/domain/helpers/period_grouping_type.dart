@@ -1,7 +1,6 @@
 import '../../ui/helpers/helpers.dart';
 
 enum PeriodGroupingType {
-  enterprise,
   year,
   month,
   day,
@@ -11,8 +10,6 @@ enum PeriodGroupingType {
 extension PeriodGroupingTypeExtension on PeriodGroupingType {
   String get name {
     switch (this) {
-      case PeriodGroupingType.enterprise:
-        return R.string.enterprise;
       case PeriodGroupingType.year:
         return R.string.year;
       case PeriodGroupingType.month:

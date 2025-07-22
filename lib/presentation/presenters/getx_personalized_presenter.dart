@@ -34,8 +34,7 @@ class GetxPersonalizedPresenter extends GetxController
           startDate: startDate!,
           endDate: endDate!,
           enterpriseIds: _enterprisesIds,
-          groupByEnterprise:
-              _periodGroupingTypes.contains(PeriodGroupingType.enterprise),
+          groupByEnterprise: true, //TODO add new parameter
           groupByYear: _periodGroupingTypes.contains(PeriodGroupingType.year),
           groupByMonth: _periodGroupingTypes.contains(PeriodGroupingType.month),
           groupByDay: _periodGroupingTypes.contains(PeriodGroupingType.day),
