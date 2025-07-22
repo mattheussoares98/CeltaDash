@@ -23,8 +23,7 @@ class _PeriodGroupingState extends State<PeriodGrouping> {
       children: PeriodGroupingType.values
           .map((e) => CheckBoxItem(
                 title: e.name,
-                value: personalizedPresenter.periodGroupingTypes
-                    .any((x) => x == e),
+                value: personalizedPresenter.periodGroupingType == e,
                 onTap: () {
                   setState(() {
                     personalizedPresenter.changePeriodGroupingType(e);

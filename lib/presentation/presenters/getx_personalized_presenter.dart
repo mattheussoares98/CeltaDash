@@ -35,10 +35,10 @@ class GetxPersonalizedPresenter extends GetxController
           endDate: endDate!,
           enterpriseIds: _enterprisesIds,
           groupByEnterprise: true, //TODO add new parameter
-          groupByYear: _periodGroupingTypes.contains(PeriodGroupingType.year),
-          groupByMonth: _periodGroupingTypes.contains(PeriodGroupingType.month),
-          groupByDay: _periodGroupingTypes.contains(PeriodGroupingType.day),
-          groupByHour: _periodGroupingTypes.contains(PeriodGroupingType.hour),
+          groupByYear: _periodGroupingTypes == PeriodGroupingType.year,
+          groupByMonth: _periodGroupingTypes == PeriodGroupingType.month,
+          groupByDay: _periodGroupingTypes == PeriodGroupingType.day,
+          groupByHour: _periodGroupingTypes == PeriodGroupingType.hour,
           groupByProduct: _categoryGroupingType == CategoryGroupingType.product,
           groupByProductDepartment:
               _categoryGroupingType == CategoryGroupingType.productDepartment,
@@ -96,10 +96,10 @@ class GetxPersonalizedPresenter extends GetxController
 
   @override
   void changePeriodGroupingType(PeriodGroupingType type) {
-    if (_periodGroupingTypes.contains(type)) {
-      _periodGroupingTypes.remove(type);
+    if (_periodGroupingTypes == type) {
+      _periodGroupingTypes = null;
     } else {
-      _periodGroupingTypes.add(type);
+      _periodGroupingTypes = type;
     }
   }
 
@@ -125,7 +125,7 @@ class GetxPersonalizedPresenter extends GetxController
   @override
   CategoryGroupingType? get categoryGroupingType => _categoryGroupingType;
 
-  final List<PeriodGroupingType> _periodGroupingTypes = [];
+  PeriodGroupingType? _periodGroupingTypes;
   @override
-  List<PeriodGroupingType> get periodGroupingTypes => _periodGroupingTypes;
+  PeriodGroupingType? get periodGroupingType => _periodGroupingTypes;
 }

@@ -211,14 +211,10 @@ void main() {
             endDate: endDate,
             enterpriseIds: [],
             groupByEnterprise: true, //TODO fix test
-            groupByYear:
-                sut.periodGroupingTypes.contains(PeriodGroupingType.year),
-            groupByMonth:
-                sut.periodGroupingTypes.contains(PeriodGroupingType.month),
-            groupByDay:
-                sut.periodGroupingTypes.contains(PeriodGroupingType.day),
-            groupByHour:
-                sut.periodGroupingTypes.contains(PeriodGroupingType.hour),
+            groupByYear: sut.periodGroupingType == PeriodGroupingType.year,
+            groupByMonth: sut.periodGroupingType == PeriodGroupingType.month,
+            groupByDay: sut.periodGroupingType == PeriodGroupingType.day,
+            groupByHour: sut.periodGroupingType == PeriodGroupingType.hour,
             groupByProduct: false,
             groupByProductDepartment: false,
             groupByProductSection: false,
@@ -336,16 +332,16 @@ void main() {
       const month = PeriodGroupingType.month;
 
       sut.changePeriodGroupingType(day);
-      expect(sut.periodGroupingTypes, [day]);
+      expect(sut.periodGroupingType, [day]);
 
       sut.changePeriodGroupingType(month);
-      expect(sut.periodGroupingTypes, [day, month]);
+      expect(sut.periodGroupingType, [day, month]);
 
       sut.changePeriodGroupingType(month);
-      expect(sut.periodGroupingTypes, [day]);
+      expect(sut.periodGroupingType, [day]);
 
       sut.changePeriodGroupingType(day);
-      expect(sut.periodGroupingTypes, []);
+      expect(sut.periodGroupingType, []);
     });
   });
 
