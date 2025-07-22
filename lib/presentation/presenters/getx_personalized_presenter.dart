@@ -4,6 +4,7 @@ import '../../data/models/models.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
+import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
 import '../../ui/services/services.dart';
 import '../mixins/mixins.dart';
@@ -18,6 +19,7 @@ class GetxPersonalizedPresenter extends GetxController
   });
 
   final appAnalyticsService = Get.find<AppAnalyticsService>();
+  final homePresenter = Get.find<HomePresenter>();
 
   @override
   Future<void> getSales(/* TODO add topCount param */) async {
@@ -105,6 +107,12 @@ class GetxPersonalizedPresenter extends GetxController
     } else {
       _nonExclusiveGroupingTypes.add(type);
     }
+  }
+
+  @override
+  void selectAllEnterprises() {
+    _enterprisesIds
+        .addAll(homePresenter.enterprises?.map((e) => e.id!.toInt()) ?? []);
   }
 
   DateTime? _endDate;

@@ -4,6 +4,7 @@ import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:celta_dash/ui/pages/pages.dart';
 import 'package:celta_dash/ui/services/services.dart';
 import 'package:faker/faker.dart';
 
@@ -16,9 +17,11 @@ import 'package:mocktail/mocktail.dart';
 import '../../data/mocks/mocks.dart';
 import '../../domain/mocks/mocks.dart';
 import '../../services/services.dart';
+import '../mocks/mocks.dart';
 
 void main() {
   late GetxPersonalizedPresenter sut;
+  late HomePresenterSpy homePresenter;
 
   late AppAnalyticsServiceSpy appAnalyticsService;
 
@@ -37,6 +40,9 @@ void main() {
   }
 
   void initPresenters() {
+    homePresenter = HomePresenterSpy();
+    Get.put<HomePresenter>(homePresenter);
+
     sut = GetxPersonalizedPresenter(
       loadSaleStatistics: loadSaleStatistics,
     );
@@ -342,6 +348,17 @@ void main() {
 
       sut.changeNonExclusiveGroupingType(day);
       expect(sut.nonExclusiveGroupingTypes, []);
+    });
+  });
+
+  group("Select all enterprises", () {
+    test("Should select all enterprises", () {
+      sut.selectAllEnterprises();
+
+      expect(
+        sut.enterprisesIds,
+        homePresenter.enterprisesMock!.map((e) => e.id!.toInt()).toList(),
+      );
     });
   });
 }
