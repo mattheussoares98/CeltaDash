@@ -194,14 +194,13 @@ void main() {
         ),
       ).called(1);
     });
-    test("Should call loadSaleStatistics with correct non exclusive groupings",
+    test("Should call loadSaleStatistics with correct non category groupings",
         () async {
       sut.changeDateRange(startDate, endDate);
 
-      final nonExclusiveSelected = NonExclusiveGroupingType.values[faker
-          .randomGenerator
-          .integer(NonExclusiveGroupingType.values.length)];
-      sut.changeNonExclusiveGroupingType(nonExclusiveSelected);
+      final periodSelected = PeriodGroupingType.values[
+          faker.randomGenerator.integer(PeriodGroupingType.values.length)];
+      sut.changeNonExclusiveGroupingType(periodSelected);
 
       await sut.getSales();
 
@@ -211,16 +210,16 @@ void main() {
             startDate: startDate,
             endDate: endDate,
             enterpriseIds: [],
-            groupByEnterprise: sut.nonExclusiveGroupingTypes
-                .contains(NonExclusiveGroupingType.enterprise),
-            groupByYear: sut.nonExclusiveGroupingTypes
-                .contains(NonExclusiveGroupingType.year),
-            groupByMonth: sut.nonExclusiveGroupingTypes
-                .contains(NonExclusiveGroupingType.month),
-            groupByDay: sut.nonExclusiveGroupingTypes
-                .contains(NonExclusiveGroupingType.day),
-            groupByHour: sut.nonExclusiveGroupingTypes
-                .contains(NonExclusiveGroupingType.hour),
+            groupByEnterprise:
+                sut.periodGroupingTypes.contains(PeriodGroupingType.enterprise),
+            groupByYear:
+                sut.periodGroupingTypes.contains(PeriodGroupingType.year),
+            groupByMonth:
+                sut.periodGroupingTypes.contains(PeriodGroupingType.month),
+            groupByDay:
+                sut.periodGroupingTypes.contains(PeriodGroupingType.day),
+            groupByHour:
+                sut.periodGroupingTypes.contains(PeriodGroupingType.hour),
             groupByProduct: false,
             groupByProductDepartment: false,
             groupByProductSection: false,
@@ -233,13 +232,13 @@ void main() {
         ),
       ).called(1);
     });
-    test("Should call loadSaleStatistics with correct exclusive groupings",
+    test("Should call loadSaleStatistics with correct category groupings",
         () async {
       sut.changeDateRange(startDate, endDate);
 
-      final exclusiveSelected = ExclusiveGroupingType.values[
-          faker.randomGenerator.integer(ExclusiveGroupingType.values.length)];
-      sut.changeExclusiveGroupingType(exclusiveSelected);
+      final categorySelected = CategoryGroupingType.values[
+          faker.randomGenerator.integer(CategoryGroupingType.values.length)];
+      sut.changeExclusiveGroupingType(categorySelected);
 
       await sut.getSales();
 
@@ -255,19 +254,19 @@ void main() {
             groupByDay: false,
             groupByHour: false,
             groupByProduct:
-                sut.exclusiveGroupingType == ExclusiveGroupingType.product,
-            groupByProductDepartment: sut.exclusiveGroupingType ==
-                ExclusiveGroupingType.productDepartment,
-            groupByProductSection: sut.exclusiveGroupingType ==
-                ExclusiveGroupingType.productSection,
-            groupByPaymentFinalization: sut.exclusiveGroupingType ==
-                ExclusiveGroupingType.paymentFinalization,
-            groupByPaymentModality: sut.exclusiveGroupingType ==
-                ExclusiveGroupingType.paymentModality,
-            groupByCashierOperator: sut.exclusiveGroupingType ==
-                ExclusiveGroupingType.cashierOperator,
+                sut.categoryGroupingType == CategoryGroupingType.product,
+            groupByProductDepartment: sut.categoryGroupingType ==
+                CategoryGroupingType.productDepartment,
+            groupByProductSection:
+                sut.categoryGroupingType == CategoryGroupingType.productSection,
+            groupByPaymentFinalization: sut.categoryGroupingType ==
+                CategoryGroupingType.paymentFinalization,
+            groupByPaymentModality: sut.categoryGroupingType ==
+                CategoryGroupingType.paymentModality,
+            groupByCashierOperator: sut.categoryGroupingType ==
+                CategoryGroupingType.cashierOperator,
             groupBySeller:
-                sut.exclusiveGroupingType == ExclusiveGroupingType.seller,
+                sut.categoryGroupingType == CategoryGroupingType.seller,
             // topCount: false,
           ),
         ),
@@ -318,36 +317,36 @@ void main() {
 
   group("Change selected grouping type", () {
     test("Should update correctly", () {
-      const operator = ExclusiveGroupingType.cashierOperator;
-      const product = ExclusiveGroupingType.product;
+      const operator = CategoryGroupingType.cashierOperator;
+      const product = CategoryGroupingType.product;
 
       sut.changeExclusiveGroupingType(operator);
-      expect(sut.exclusiveGroupingType, operator);
+      expect(sut.categoryGroupingType, operator);
 
       sut.changeExclusiveGroupingType(product);
-      expect(sut.exclusiveGroupingType, product);
+      expect(sut.categoryGroupingType, product);
 
       sut.changeExclusiveGroupingType(product);
-      expect(sut.exclusiveGroupingType, null);
+      expect(sut.categoryGroupingType, null);
     });
   });
 
-  group("Change non exclusive grouping type", () {
+  group("Change non category grouping type", () {
     test("Should update correctly", () {
-      const day = NonExclusiveGroupingType.day;
-      const enterprise = NonExclusiveGroupingType.enterprise;
+      const day = PeriodGroupingType.day;
+      const enterprise = PeriodGroupingType.enterprise;
 
       sut.changeNonExclusiveGroupingType(day);
-      expect(sut.nonExclusiveGroupingTypes, [day]);
+      expect(sut.periodGroupingTypes, [day]);
 
       sut.changeNonExclusiveGroupingType(enterprise);
-      expect(sut.nonExclusiveGroupingTypes, [day, enterprise]);
+      expect(sut.periodGroupingTypes, [day, enterprise]);
 
       sut.changeNonExclusiveGroupingType(enterprise);
-      expect(sut.nonExclusiveGroupingTypes, [day]);
+      expect(sut.periodGroupingTypes, [day]);
 
       sut.changeNonExclusiveGroupingType(day);
-      expect(sut.nonExclusiveGroupingTypes, []);
+      expect(sut.periodGroupingTypes, []);
     });
   });
 

@@ -34,29 +34,24 @@ class GetxPersonalizedPresenter extends GetxController
           startDate: startDate!,
           endDate: endDate!,
           enterpriseIds: _enterprisesIds,
-          groupByEnterprise: _nonExclusiveGroupingTypes
-              .contains(NonExclusiveGroupingType.enterprise),
-          groupByYear: _nonExclusiveGroupingTypes
-              .contains(NonExclusiveGroupingType.year),
-          groupByMonth: _nonExclusiveGroupingTypes
-              .contains(NonExclusiveGroupingType.month),
-          groupByDay:
-              _nonExclusiveGroupingTypes.contains(NonExclusiveGroupingType.day),
-          groupByHour: _nonExclusiveGroupingTypes
-              .contains(NonExclusiveGroupingType.hour),
-          groupByProduct:
-              _exclusiveGroupingType == ExclusiveGroupingType.product,
+          groupByEnterprise:
+              _periodGroupingTypes.contains(PeriodGroupingType.enterprise),
+          groupByYear: _periodGroupingTypes.contains(PeriodGroupingType.year),
+          groupByMonth: _periodGroupingTypes.contains(PeriodGroupingType.month),
+          groupByDay: _periodGroupingTypes.contains(PeriodGroupingType.day),
+          groupByHour: _periodGroupingTypes.contains(PeriodGroupingType.hour),
+          groupByProduct: _categoryGroupingType == CategoryGroupingType.product,
           groupByProductDepartment:
-              _exclusiveGroupingType == ExclusiveGroupingType.productDepartment,
+              _categoryGroupingType == CategoryGroupingType.productDepartment,
           groupByProductSection:
-              _exclusiveGroupingType == ExclusiveGroupingType.productSection,
-          groupByPaymentFinalization: _exclusiveGroupingType ==
-              ExclusiveGroupingType.paymentFinalization,
+              _categoryGroupingType == CategoryGroupingType.productSection,
+          groupByPaymentFinalization:
+              _categoryGroupingType == CategoryGroupingType.paymentFinalization,
           groupByPaymentModality:
-              _exclusiveGroupingType == ExclusiveGroupingType.paymentModality,
+              _categoryGroupingType == CategoryGroupingType.paymentModality,
           groupByCashierOperator:
-              _exclusiveGroupingType == ExclusiveGroupingType.cashierOperator,
-          groupBySeller: _exclusiveGroupingType == ExclusiveGroupingType.seller,
+              _categoryGroupingType == CategoryGroupingType.cashierOperator,
+          groupBySeller: _categoryGroupingType == CategoryGroupingType.seller,
           // topCount: ,
         ),
       );
@@ -92,20 +87,20 @@ class GetxPersonalizedPresenter extends GetxController
   }
 
   @override
-  void changeExclusiveGroupingType(ExclusiveGroupingType type) {
-    if (_exclusiveGroupingType == type) {
-      _exclusiveGroupingType = null;
+  void changeExclusiveGroupingType(CategoryGroupingType type) {
+    if (_categoryGroupingType == type) {
+      _categoryGroupingType = null;
     } else {
-      _exclusiveGroupingType = type;
+      _categoryGroupingType = type;
     }
   }
 
   @override
-  void changeNonExclusiveGroupingType(NonExclusiveGroupingType type) {
-    if (_nonExclusiveGroupingTypes.contains(type)) {
-      _nonExclusiveGroupingTypes.remove(type);
+  void changeNonExclusiveGroupingType(PeriodGroupingType type) {
+    if (_periodGroupingTypes.contains(type)) {
+      _periodGroupingTypes.remove(type);
     } else {
-      _nonExclusiveGroupingTypes.add(type);
+      _periodGroupingTypes.add(type);
     }
   }
 
@@ -127,12 +122,11 @@ class GetxPersonalizedPresenter extends GetxController
   @override
   List<int> get enterprisesIds => _enterprisesIds;
 
-  ExclusiveGroupingType? _exclusiveGroupingType;
+  CategoryGroupingType? _categoryGroupingType;
   @override
-  ExclusiveGroupingType? get exclusiveGroupingType => _exclusiveGroupingType;
+  CategoryGroupingType? get categoryGroupingType => _categoryGroupingType;
 
-  final List<NonExclusiveGroupingType> _nonExclusiveGroupingTypes = [];
+  final List<PeriodGroupingType> _periodGroupingTypes = [];
   @override
-  List<NonExclusiveGroupingType> get nonExclusiveGroupingTypes =>
-      _nonExclusiveGroupingTypes;
+  List<PeriodGroupingType> get periodGroupingTypes => _periodGroupingTypes;
 }

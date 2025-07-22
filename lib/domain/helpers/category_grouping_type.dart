@@ -1,6 +1,6 @@
 import '../../ui/helpers/helpers.dart';
 
-enum ExclusiveGroupingType {
+enum CategoryGroupingType {
   product,
   productDepartment,
   productSection,
@@ -10,22 +10,22 @@ enum ExclusiveGroupingType {
   seller,
 }
 
-extension ExclusiveGroupingTypeExtension on ExclusiveGroupingType {
+extension CategoryGroupingTypeExtension on CategoryGroupingType {
   String get name {
     switch (this) {
-      case ExclusiveGroupingType.product:
+      case CategoryGroupingType.product:
         return R.string.product;
-      case ExclusiveGroupingType.productDepartment:
+      case CategoryGroupingType.productDepartment:
         return R.string.department;
-      case ExclusiveGroupingType.productSection:
+      case CategoryGroupingType.productSection:
         return R.string.section;
-      case ExclusiveGroupingType.paymentFinalization:
+      case CategoryGroupingType.paymentFinalization:
         return R.string.finalization;
-      case ExclusiveGroupingType.paymentModality:
+      case CategoryGroupingType.paymentModality:
         return R.string.paymentsType;
-      case ExclusiveGroupingType.cashierOperator:
+      case CategoryGroupingType.cashierOperator:
         return R.string.operator;
-      case ExclusiveGroupingType.seller:
+      case CategoryGroupingType.seller:
         return R.string.seller;
     }
   }

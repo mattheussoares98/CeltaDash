@@ -6,26 +6,25 @@ import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 import 'components.dart';
 
-class GroupPeriod extends StatefulWidget {
-  const GroupPeriod({super.key});
+class GroupPeriodWidget extends StatefulWidget {
+  const GroupPeriodWidget({super.key});
 
   @override
-  State<GroupPeriod> createState() => _GroupPeriodState();
+  State<GroupPeriodWidget> createState() => _GroupPeriodWidgetState();
 }
 
-class _GroupPeriodState extends State<GroupPeriod> {
+class _GroupPeriodWidgetState extends State<GroupPeriodWidget> {
   @override
   Widget build(BuildContext context) {
     final personalizedPresenter = Get.find<PersonalizedPresenter>();
 
     return DefaultExpansionTile(
       title: R.string.groupPeriod,
-      children: NonExclusiveGroupingType.values
+      children: PeriodGroupingType.values
           .map(
             (e) => CheckBoxItem(
               title: e.name,
-              value:
-                  personalizedPresenter.nonExclusiveGroupingTypes.contains(e),
+              value: personalizedPresenter.periodGroupingTypes.contains(e),
               onTap: () {
                 setState(() {
                   personalizedPresenter.changeNonExclusiveGroupingType(e);

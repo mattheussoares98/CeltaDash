@@ -39,8 +39,8 @@ class _PersonalizedPageState extends State<PersonalizedPage> {
                 children: [
                   const SelectPeriod(),
                   const Enterprises(),
-                  const GroupPeriod(),
-                  const ExclusiveGrouping(),
+                  const GroupPeriodWidget(),
+                  const CategoryGrouping(),
                 ],
               ),
             ),

@@ -6,24 +6,24 @@ import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 import 'components.dart';
 
-class ExclusiveGrouping extends StatefulWidget {
-  const ExclusiveGrouping({super.key});
+class CategoryGrouping extends StatefulWidget {
+  const CategoryGrouping({super.key});
 
   @override
-  State<ExclusiveGrouping> createState() => _ExclusiveGroupingState();
+  State<CategoryGrouping> createState() => _CategoryGroupingState();
 }
 
-class _ExclusiveGroupingState extends State<ExclusiveGrouping> {
+class _CategoryGroupingState extends State<CategoryGrouping> {
   @override
   Widget build(BuildContext context) {
     final personalizedPresenter = Get.find<PersonalizedPresenter>();
 
     return DefaultExpansionTile(
       title: R.string.exclusiveGrouping,
-      children: ExclusiveGroupingType.values
+      children: CategoryGroupingType.values
           .map((e) => CheckBoxItem(
                 title: e.name,
-                value: personalizedPresenter.exclusiveGroupingType == e,
+                value: personalizedPresenter.categoryGroupingType == e,
                 onTap: () {
                   setState(() {
                     personalizedPresenter.changeExclusiveGroupingType(e);
