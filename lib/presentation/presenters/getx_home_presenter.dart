@@ -209,7 +209,7 @@ class GetxHomePresenter extends GetxController
         baseUrl: newEnteprise.baseUrl ?? oldEnterprise?.baseUrl,
         enterpriseName:
             newEnteprise.enterpriseName ?? oldEnterprise?.enterpriseName,
-        bsUser: newEnteprise.bsUser ?? oldEnterprise?.bsUser,
+        bsUser: oldEnterprise?.bsUser,
         firebaseId: newEnteprise.firebaseId ?? oldEnterprise?.firebaseId,
         firebaseSubEnterprises: newSubEnterprises,
       );
