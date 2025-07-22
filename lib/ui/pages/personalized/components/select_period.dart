@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -5,20 +6,23 @@ import 'package:intl/intl.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
-class SelectPeriod extends StatelessWidget {
+class SelectPeriod extends StatefulWidget {
   const SelectPeriod({super.key});
 
   @override
+  State<SelectPeriod> createState() => _SelectPeriodState();
+}
+
+class _SelectPeriodState extends State<SelectPeriod> {
+  @override
   Widget build(BuildContext context) {
-    final personalizedPresenter = Get.find<PersonalizedPresenter>();
+    final presenter = Get.find<PersonalizedPresenter>();
 
     final now = DateTime.now();
     final backgroundColor = Theme.of(context).primaryColor.withAlpha(50);
-    final selectedDateTimeRange = personalizedPresenter.startDate != null &&
-            personalizedPresenter.endDate != null
-        ? DateTimeRange(
-            start: personalizedPresenter.startDate!,
-            end: personalizedPresenter.endDate!)
+    final selectedDateTimeRange = presenter.startDate != null &&
+            presenter.endDate != null
+        ? DateTimeRange(start: presenter.startDate!, end: presenter.endDate!)
         : null;
 
     return Container(
@@ -49,10 +53,12 @@ class SelectPeriod extends StatelessWidget {
                 );
 
                 if (pickedRange != null) {
-                  personalizedPresenter.changeDateRange(
-                    pickedRange.start,
-                    pickedRange.end,
-                  );
+                  setState(() {
+                    presenter.changeDateRange(
+                      pickedRange.start,
+                      pickedRange.end,
+                    );
+                  });
                 }
               },
               child: _ButtonText(selectedDateRange: selectedDateTimeRange),
