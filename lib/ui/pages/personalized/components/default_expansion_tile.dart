@@ -6,10 +6,14 @@ import 'components.dart';
 class DefaultExpansionTile extends StatelessWidget {
   final String title;
   final List<CheckBoxItem> children;
+  final Widget? itemAboveChildren;
+  final Widget? itemBelowChildren;
   const DefaultExpansionTile({
     super.key,
     required this.title,
     required this.children,
+    this.itemAboveChildren,
+    this.itemBelowChildren,
   });
 
   @override
@@ -24,7 +28,11 @@ class DefaultExpansionTile extends StatelessWidget {
         backgroundColor: backgroundColor,
         collapsedBackgroundColor: backgroundColor,
         title: Text(title),
-        children: children,
+        children: [
+          if (itemAboveChildren != null) itemAboveChildren!,
+          ...children,
+          if (itemBelowChildren != null) itemBelowChildren!,
+        ],
       ),
     );
   }
