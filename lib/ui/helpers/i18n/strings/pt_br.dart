@@ -160,6 +160,7 @@ class PtBr implements Translation {
   String get sections => "Seções";
   String get seeMore => "Ver mais";
   String get select => "Selecione";
+  String get selectAllEnterprises => "Selecionar todas empresas";
   String get selectOneEnterprise => "Selecione uma empresa";
   String get share => "Share";
   String get sold => "Vendeu";

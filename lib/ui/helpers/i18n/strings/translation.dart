@@ -149,6 +149,7 @@ abstract class Translation {
   String get section;
   String get sections;
   String get select;
+  String get selectAllEnterprises;
   String get selectOneEnterprise;
   String get share;
   String get sold;

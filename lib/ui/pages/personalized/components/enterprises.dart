@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -20,12 +23,32 @@ class _EnterprisesState extends State<Enterprises> {
 
     return DefaultExpansionTile(
       title: R.string.enterprises,
+      itemAboveChildren: (homePresenter.enterprises?.length ?? 0) > 2
+          ? Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: TextButton.icon(
+                icon: Icon(
+                    Platform.isIOS ? CupertinoIcons.check_mark : Icons.check),
+                onPressed: (homePresenter.enterprises?.length ?? 0) ==
+                        personzalizedPresenter.enterprisesIds.length
+                    ? null
+                    : () {
+                        setState(() {
+                          personzalizedPresenter.selectAllEnterprises();
+                        });
+                      },
+                label: Text(
+                  R.string.selectAllEnterprises,
+                ),
+              ),
+            )
+          : null,
       children: homePresenter.enterprises!
           .map(
             (e) => CheckBoxItem(
               title: "${e.personalizedCode} - ${e.name}",
-              value:
-                  personzalizedPresenter.enterprisesIds.contains(e.id!.toInt()),
+              value: personzalizedPresenter.enterprisesIds
+                  .any((x) => e.id!.toInt() == x),
               onTap: () {
                 setState(() {
                   personzalizedPresenter.changeEnterpriseIds(e.id!.toInt());
