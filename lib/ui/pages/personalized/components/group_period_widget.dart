@@ -27,7 +27,7 @@ class _GroupPeriodWidgetState extends State<GroupPeriodWidget> {
               value: personalizedPresenter.periodGroupingTypes.contains(e),
               onTap: () {
                 setState(() {
-                  personalizedPresenter.changeNonExclusiveGroupingType(e);
+                  personalizedPresenter.changePeriodGroupingType(e);
                 });
               },
             ),

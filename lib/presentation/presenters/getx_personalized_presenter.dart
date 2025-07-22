@@ -96,7 +96,7 @@ class GetxPersonalizedPresenter extends GetxController
   }
 
   @override
-  void changeNonExclusiveGroupingType(PeriodGroupingType type) {
+  void changePeriodGroupingType(PeriodGroupingType type) {
     if (_periodGroupingTypes.contains(type)) {
       _periodGroupingTypes.remove(type);
     } else {

@@ -16,7 +16,7 @@ abstract class PersonalizedPresenter implements Listenable {
   void changeDateRange(DateTime start, DateTime end);
   void changeEnterpriseIds(int enterpriseId);
   void changeExclusiveGroupingType(CategoryGroupingType type);
-  void changeNonExclusiveGroupingType(PeriodGroupingType type);
+  void changePeriodGroupingType(PeriodGroupingType type);
   void selectAllEnterprises();
 
   Future<void> getSales();

@@ -200,7 +200,7 @@ void main() {
 
       final periodSelected = PeriodGroupingType.values[
           faker.randomGenerator.integer(PeriodGroupingType.values.length)];
-      sut.changeNonExclusiveGroupingType(periodSelected);
+      sut.changePeriodGroupingType(periodSelected);
 
       await sut.getSales();
 
@@ -336,16 +336,16 @@ void main() {
       const day = PeriodGroupingType.day;
       const enterprise = PeriodGroupingType.enterprise;
 
-      sut.changeNonExclusiveGroupingType(day);
+      sut.changePeriodGroupingType(day);
       expect(sut.periodGroupingTypes, [day]);
 
-      sut.changeNonExclusiveGroupingType(enterprise);
+      sut.changePeriodGroupingType(enterprise);
       expect(sut.periodGroupingTypes, [day, enterprise]);
 
-      sut.changeNonExclusiveGroupingType(enterprise);
+      sut.changePeriodGroupingType(enterprise);
       expect(sut.periodGroupingTypes, [day]);
 
-      sut.changeNonExclusiveGroupingType(day);
+      sut.changePeriodGroupingType(day);
       expect(sut.periodGroupingTypes, []);
     });
   });
