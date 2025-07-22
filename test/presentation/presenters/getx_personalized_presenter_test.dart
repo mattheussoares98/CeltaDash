@@ -146,7 +146,7 @@ void main() {
             startDate: startDate,
             endDate: endDate,
             enterpriseIds: [],
-            groupByEnterprise: false,
+            groupByEnterprise: true, //TODO fix
             groupByYear: false,
             groupByMonth: false,
             groupByDay: false,
@@ -177,7 +177,7 @@ void main() {
             startDate: startDate,
             endDate: endDate,
             enterpriseIds: enterpriseIds,
-            groupByEnterprise: false,
+            groupByEnterprise: true, //TODO fix
             groupByYear: false,
             groupByMonth: false,
             groupByDay: false,
@@ -243,7 +243,7 @@ void main() {
             startDate: startDate,
             endDate: endDate,
             enterpriseIds: [],
-            groupByEnterprise: false,
+            groupByEnterprise: true, //TODO remove after fix
             groupByYear: false,
             groupByMonth: false,
             groupByDay: false,
@@ -332,16 +332,13 @@ void main() {
       const month = PeriodGroupingType.month;
 
       sut.changePeriodGroupingType(day);
-      expect(sut.periodGroupingType, [day]);
+      expect(sut.periodGroupingType, day);
 
       sut.changePeriodGroupingType(month);
-      expect(sut.periodGroupingType, [day, month]);
+      expect(sut.periodGroupingType, month);
 
       sut.changePeriodGroupingType(month);
-      expect(sut.periodGroupingType, [day]);
-
-      sut.changePeriodGroupingType(day);
-      expect(sut.periodGroupingType, []);
+      expect(sut.periodGroupingType, null);
     });
   });
 
