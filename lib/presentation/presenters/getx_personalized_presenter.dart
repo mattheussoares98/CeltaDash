@@ -86,7 +86,7 @@ class GetxPersonalizedPresenter extends GetxController
   }
 
   @override
-  void changeExclusiveGroupingType(CategoryGroupingType type) {
+  void changeCategoryGroupingType(CategoryGroupingType type) {
     if (_categoryGroupingType == type) {
       _categoryGroupingType = null;
     } else {

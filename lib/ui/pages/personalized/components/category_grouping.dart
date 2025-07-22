@@ -20,14 +20,13 @@ class _CategoryGroupingState extends State<CategoryGrouping> {
 
     return DefaultExpansionTile(
       title: R.string.exclusiveGrouping,
-      itemAboveChildren: const PeriodGroupsItems(),
       children: CategoryGroupingType.values
           .map((e) => CheckBoxItem(
                 title: e.name,
                 value: personalizedPresenter.categoryGroupingType == e,
                 onTap: () {
                   setState(() {
-                    personalizedPresenter.changeExclusiveGroupingType(e);
+                    personalizedPresenter.changeCategoryGroupingType(e);
                   });
                 },
               ))

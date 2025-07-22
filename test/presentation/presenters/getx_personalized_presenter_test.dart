@@ -237,7 +237,7 @@ void main() {
 
       final categorySelected = CategoryGroupingType.values[
           faker.randomGenerator.integer(CategoryGroupingType.values.length)];
-      sut.changeExclusiveGroupingType(categorySelected);
+      sut.changeCategoryGroupingType(categorySelected);
 
       await sut.getSales();
 
@@ -319,13 +319,13 @@ void main() {
       const operator = CategoryGroupingType.cashierOperator;
       const product = CategoryGroupingType.product;
 
-      sut.changeExclusiveGroupingType(operator);
+      sut.changeCategoryGroupingType(operator);
       expect(sut.categoryGroupingType, operator);
 
-      sut.changeExclusiveGroupingType(product);
+      sut.changeCategoryGroupingType(product);
       expect(sut.categoryGroupingType, product);
 
-      sut.changeExclusiveGroupingType(product);
+      sut.changeCategoryGroupingType(product);
       expect(sut.categoryGroupingType, null);
     });
   });
