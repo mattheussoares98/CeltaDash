@@ -5,13 +5,18 @@ import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 import 'components.dart';
 
-class Enterprises extends StatelessWidget {
+class Enterprises extends StatefulWidget {
   const Enterprises({super.key});
 
   @override
+  State<Enterprises> createState() => _EnterprisesState();
+}
+
+class _EnterprisesState extends State<Enterprises> {
+  @override
   Widget build(BuildContext context) {
     final homePresenter = Get.find<HomePresenter>();
-    final personzalized = Get.find<PersonalizedPresenter>();
+    final personzalizedPresenter = Get.find<PersonalizedPresenter>();
 
     return DefaultExpansionTile(
       title: R.string.enterprises,
@@ -19,8 +24,12 @@ class Enterprises extends StatelessWidget {
           .map(
             (e) => CheckBoxItem(
               title: "${e.personalizedCode} - ${e.name}",
+              value:
+                  personzalizedPresenter.enterprisesIds.contains(e.id!.toInt()),
               onTap: () {
-                personzalized.changeEnterpriseIds(e.id!.toInt());
+                setState(() {
+                  personzalizedPresenter.changeEnterpriseIds(e.id!.toInt());
+                });
               },
             ),
           )

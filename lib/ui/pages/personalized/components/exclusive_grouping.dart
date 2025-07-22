@@ -6,9 +6,14 @@ import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 import 'components.dart';
 
-class ExclusiveGrouping extends StatelessWidget {
+class ExclusiveGrouping extends StatefulWidget {
   const ExclusiveGrouping({super.key});
 
+  @override
+  State<ExclusiveGrouping> createState() => _ExclusiveGroupingState();
+}
+
+class _ExclusiveGroupingState extends State<ExclusiveGrouping> {
   @override
   Widget build(BuildContext context) {
     final personalizedPresenter = Get.find<PersonalizedPresenter>();
@@ -18,8 +23,11 @@ class ExclusiveGrouping extends StatelessWidget {
       children: ExclusiveGroupingType.values
           .map((e) => CheckBoxItem(
                 title: e.name,
+                value: personalizedPresenter.exclusiveGroupingType == e,
                 onTap: () {
-                  personalizedPresenter.changeExclusiveGroupingType(e);
+                  setState(() {
+                    personalizedPresenter.changeExclusiveGroupingType(e);
+                  });
                 },
               ))
           .toList(),

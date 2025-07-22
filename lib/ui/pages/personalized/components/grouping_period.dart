@@ -6,9 +6,14 @@ import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 import 'components.dart';
 
-class GroupPeriod extends StatelessWidget {
+class GroupPeriod extends StatefulWidget {
   const GroupPeriod({super.key});
 
+  @override
+  State<GroupPeriod> createState() => _GroupPeriodState();
+}
+
+class _GroupPeriodState extends State<GroupPeriod> {
   @override
   Widget build(BuildContext context) {
     final personalizedPresenter = Get.find<PersonalizedPresenter>();
@@ -19,8 +24,12 @@ class GroupPeriod extends StatelessWidget {
           .map(
             (e) => CheckBoxItem(
               title: e.name,
+              value:
+                  personalizedPresenter.nonExclusiveGroupingTypes.contains(e),
               onTap: () {
-                personalizedPresenter.changeNonExclusiveGroupingType(e);
+                setState(() {
+                  personalizedPresenter.changeNonExclusiveGroupingType(e);
+                });
               },
             ),
           )
