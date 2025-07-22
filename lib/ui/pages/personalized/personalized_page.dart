@@ -25,6 +25,7 @@ class _PersonalizedPageState extends State<PersonalizedPage> {
           children: [
             Card(
               child: ExpansionTile(
+                initiallyExpanded: true,
                 title: Text(
                   R.string.parameters,
                   style: Theme.of(context).textTheme.headlineMedium,
@@ -39,7 +40,6 @@ class _PersonalizedPageState extends State<PersonalizedPage> {
                 children: [
                   const SelectPeriod(),
                   const Enterprises(),
-                  const GroupPeriodWidget(),
                   const CategoryGrouping(),
                 ],
               ),

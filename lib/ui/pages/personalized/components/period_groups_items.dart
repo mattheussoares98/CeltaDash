@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../domain/helpers/helpers.dart';
-import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
 class PeriodGroupsItems extends StatefulWidget {
@@ -20,36 +19,19 @@ class _PeriodItems extends State<PeriodGroupsItems> {
   String? selected;
 
   List<_PeriodItem> get items => <_PeriodItem>[
-        _PeriodItem(
-          title: R.string.hour,
-          onTap: () => personalizedPresenter
-              .changePeriodGroupingType(PeriodGroupingType.hour),
-          periodGroupingType: PeriodGroupingType.hour,
-        ),
-        _PeriodItem(
-          title: R.string.day,
-          onTap: () => personalizedPresenter
-              .changePeriodGroupingType(PeriodGroupingType.day),
-          periodGroupingType: PeriodGroupingType.day,
-        ),
-        _PeriodItem(
-          title: R.string.month,
-          onTap: () => personalizedPresenter
-              .changePeriodGroupingType(PeriodGroupingType.month),
-          periodGroupingType: PeriodGroupingType.month,
-        ),
-        _PeriodItem(
-          title: R.string.year,
-          onTap: () => personalizedPresenter
-              .changePeriodGroupingType(PeriodGroupingType.year),
-          periodGroupingType: PeriodGroupingType.year,
+        ...PeriodGroupingType.values.map(
+          (e) => _PeriodItem(
+            title: e.name,
+            onTap: () => personalizedPresenter.changePeriodGroupingType(e),
+            periodGroupingType: e,
+          ),
         ),
       ];
 
   int get selectedItemIndex {
-    final index = items.indexWhere((e) =>
-        e.periodGroupingType ==
-        Get.find<PersonalizedPresenter>().periodGroupingTypes.first);
+    final index = items.indexWhere((e) => personalizedPresenter
+        .periodGroupingTypes
+        .contains(e.periodGroupingType));
     return index != -1 ? index : 0;
   }
 
@@ -90,7 +72,9 @@ class _PeriodItems extends State<PeriodGroupsItems> {
         onValueChanged: (newValue) {
           if (newValue == null) return;
           selected = newValue;
-          items.firstWhere((e) => e.title == newValue).onTap();
+          setState(() {
+            items.firstWhere((e) => e.title == newValue).onTap();
+          });
         },
       ),
     );
