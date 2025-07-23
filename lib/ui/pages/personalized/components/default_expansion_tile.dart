@@ -24,7 +24,7 @@ class DefaultExpansionTile extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 4),
       decoration: ContainerDecoration.defaultDecoration,
       child: ExpansionTile(
-        initiallyExpanded: true,
+        initiallyExpanded: false,
         childrenPadding: const EdgeInsets.all(4),
         backgroundColor: backgroundColor,
         collapsedBackgroundColor: backgroundColor,
