@@ -314,17 +314,50 @@ void main() {
 
   group("Change selected grouping type", () {
     test("Should update correctly", () {
-      const operator = CategoryGroupingType.cashierOperator;
+      const cashierOperator = CategoryGroupingType.cashierOperator;
+      const enterprise = CategoryGroupingType.enterprise;
+      const paymentFinalization = CategoryGroupingType.paymentFinalization;
+      const paymentModality = CategoryGroupingType.paymentModality;
       const product = CategoryGroupingType.product;
+      const productDepartment = CategoryGroupingType.productDepartment;
+      const productSection = CategoryGroupingType.productSection;
+      const seller = CategoryGroupingType.seller;
 
-      sut.changeCategoryGroupingType(operator);
-      expect(sut.categoryGroupingTypes, operator);
+      sut.changeCategoryGroupingType(enterprise);
+      expect(sut.categoryGroupingTypes, [enterprise]);
+
+      sut.changeCategoryGroupingType(productDepartment);
+      expect(sut.categoryGroupingTypes, [enterprise, productDepartment]);
+
+      sut.changeCategoryGroupingType(productSection);
+      expect(
+        sut.categoryGroupingTypes,
+        [enterprise, productDepartment, productSection],
+      );
+
+      sut.changeCategoryGroupingType(cashierOperator);
+      expect(sut.categoryGroupingTypes, [enterprise, cashierOperator]);
+
+      sut.changeCategoryGroupingType(paymentFinalization);
+      expect(sut.categoryGroupingTypes, [enterprise, paymentFinalization]);
+
+      sut.changeCategoryGroupingType(paymentModality);
+      expect(
+        sut.categoryGroupingTypes,
+        [enterprise, paymentFinalization, paymentModality],
+      );
 
       sut.changeCategoryGroupingType(product);
-      expect(sut.categoryGroupingTypes, product);
+      expect(sut.categoryGroupingTypes, [enterprise, product]);
 
-      sut.changeCategoryGroupingType(product);
-      expect(sut.categoryGroupingTypes, null);
+      sut.changeCategoryGroupingType(seller);
+      expect(sut.categoryGroupingTypes, [enterprise, seller]);
+
+      sut.changeCategoryGroupingType(enterprise);
+      expect(sut.categoryGroupingTypes, [seller]);
+
+      sut.changeCategoryGroupingType(seller);
+      expect(sut.categoryGroupingTypes, []);
     });
   });
 

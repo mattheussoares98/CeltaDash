@@ -89,12 +89,50 @@ class GetxPersonalizedPresenter extends GetxController
 
   @override
   void changeCategoryGroupingType(CategoryGroupingType type) {
-    if (type == CategoryGroupingType.enterprise) {
-      if (_categoryGroupingTypes.contains(type)) {
-        _categoryGroupingTypes.remove(type);
-      } else {
-        _categoryGroupingTypes.add(type);
-      }
+    const enterprise = CategoryGroupingType.enterprise;
+    const paymentFinalization = CategoryGroupingType.paymentFinalization;
+    const paymentModality = CategoryGroupingType.paymentModality;
+    const productDepartment = CategoryGroupingType.productDepartment;
+    const productSection = CategoryGroupingType.productSection;
+
+    switch (type) {
+      case enterprise:
+        if (_categoryGroupingTypes.contains(type)) {
+          _categoryGroupingTypes.remove(type);
+        } else {
+          _categoryGroupingTypes.add(type);
+        }
+
+        break;
+
+      case productDepartment || productSection:
+        if (_categoryGroupingTypes.contains(type)) {
+          _categoryGroupingTypes.remove(type);
+        } else {
+          _categoryGroupingTypes.add(type);
+        }
+        _categoryGroupingTypes.removeWhere((e) =>
+            e != enterprise && e != productDepartment && e != productSection);
+        break;
+
+      case paymentFinalization || paymentModality:
+        if (_categoryGroupingTypes.contains(type)) {
+          _categoryGroupingTypes.remove(type);
+        } else {
+          _categoryGroupingTypes.add(type);
+        }
+        _categoryGroupingTypes.removeWhere((e) =>
+            e != enterprise &&
+            e != paymentFinalization &&
+            e != paymentModality);
+        break;
+      default:
+        if (_categoryGroupingTypes.contains(type)) {
+          _categoryGroupingTypes.remove(type);
+        } else {
+          _categoryGroupingTypes.add(type);
+        }
+        _categoryGroupingTypes.removeWhere((e) => e != enterprise && e != type);
     }
   }
 
