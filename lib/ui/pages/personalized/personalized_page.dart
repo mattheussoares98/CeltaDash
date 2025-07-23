@@ -47,9 +47,9 @@ class _PersonalizedPageState extends State<PersonalizedPage>
     Get.put<PersonalizedPresenter>(widget.presenter);
 
     final selectedCategoryGroupingType =
-        _selectedCategoryGrouping(widget.presenter.saleStatistics ?? []);
+        _selectedCategoryGrouping(widget.presenter);
     final selectedPeriodGroupingType =
-        _selectedPeriodGrouping(widget.presenter.saleStatistics ?? []);
+        _selectedPeriodGrouping(widget.presenter);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -117,23 +117,26 @@ class _PersonalizedPageState extends State<PersonalizedPage>
 }
 
 CategoryGroupingType? _selectedCategoryGrouping(
-  List<SaleStatisticViewModel> sales,
+  PersonalizedPresenter presenter,
 ) {
-  if (sales.any((e) => e.CashierOperator != null)) {
+  if (presenter.lastGetStatisticsParams?.groupByCashierOperator == true) {
     return CategoryGroupingType.cashierOperator;
-  } else if (sales.any((e) => e.PaymentFinalization != null)) {
+  } else if (presenter.lastGetStatisticsParams?.groupByPaymentFinalization ==
+      true) {
     return CategoryGroupingType.paymentFinalization;
-  } else if (sales.any((e) => e.PaymentModality != null)) {
+  } else if (presenter.lastGetStatisticsParams?.groupByPaymentModality ==
+      true) {
     return CategoryGroupingType.paymentModality;
-  } else if (sales.any((e) => e.Product != null)) {
+  } else if (presenter.lastGetStatisticsParams?.groupByProduct == true) {
     return CategoryGroupingType.product;
-  } else if (sales.any((e) => e.ProductSection != null)) {
+  } else if (presenter.lastGetStatisticsParams?.groupByProductSection == true) {
     return CategoryGroupingType.productSection;
-  } else if (sales.any((e) => e.ProductDepartment != null)) {
+  } else if (presenter.lastGetStatisticsParams?.groupByProductDepartment ==
+      true) {
     return CategoryGroupingType.productDepartment;
-  } else if (sales.any((e) => e.Seller != null)) {
+  } else if (presenter.lastGetStatisticsParams?.groupBySeller == true) {
     return CategoryGroupingType.seller;
-  } else if (sales.any((e) => e.EnterpriseFantasyName != null)) {
+  } else if (presenter.lastGetStatisticsParams?.groupByEnterprise == true) {
     return CategoryGroupingType.enterprise;
   }
 
@@ -141,15 +144,15 @@ CategoryGroupingType? _selectedCategoryGrouping(
 }
 
 PeriodGroupingType? _selectedPeriodGrouping(
-  List<SaleStatisticViewModel> sales,
+  PersonalizedPresenter presenter,
 ) {
-  if (sales.any((e) => e.Hour != null)) {
+  if (presenter.lastGetStatisticsParams?.groupByHour == true) {
     return PeriodGroupingType.hour;
-  } else if (sales.any((e) => e.Date != null)) {
+  } else if (presenter.lastGetStatisticsParams?.groupByDay == true) {
     return PeriodGroupingType.day;
-  } else if (sales.any((e) => e.Month != null)) {
+  } else if (presenter.lastGetStatisticsParams?.groupByMonth == true) {
     return PeriodGroupingType.month;
-  } else if (sales.any((e) => e.Year != null)) {
+  } else if (presenter.lastGetStatisticsParams?.groupByYear == true) {
     return PeriodGroupingType.year;
   }
   return null;
