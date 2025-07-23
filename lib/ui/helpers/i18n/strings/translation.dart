@@ -81,6 +81,7 @@ abstract class Translation {
   String get finalization;
   String get finalizations;
   String get firstDaySales;
+  String get generate;
   String get goalHistory;
   String get grossMargin;
   String get groupOfStores;

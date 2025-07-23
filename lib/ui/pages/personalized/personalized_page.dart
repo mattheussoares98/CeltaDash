@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../helpers/helpers.dart';
+import '../../mixins/mixins.dart';
 import 'components/components.dart';
 import 'personalized.dart';
 
@@ -13,8 +16,29 @@ class PersonalizedPage extends StatefulWidget {
   State<PersonalizedPage> createState() => _PersonalizedPageState();
 }
 
-class _PersonalizedPageState extends State<PersonalizedPage> {
+class _PersonalizedPageState extends State<PersonalizedPage>
+    with UIErrorManager, LoadingManager {
+  StreamSubscription? mainErrorSubscription;
+  StreamSubscription? loadingSubscription;
   DateTimeRange? selectedDateRange;
+  final controller = ExpansibleController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    mainErrorSubscription?.cancel();
+    loadingSubscription?.cancel();
+    controller.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    mainErrorSubscription =
+        handleMainError(context, widget.presenter.mainErrorStream);
+    loadingSubscription =
+        handleLoading(context, widget.presenter.isLoadingStream);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +49,7 @@ class _PersonalizedPageState extends State<PersonalizedPage> {
           children: [
             Card(
               child: ExpansionTile(
+                controller: controller,
                 initiallyExpanded: true,
                 title: Text(
                   R.string.parameters,
@@ -42,6 +67,22 @@ class _PersonalizedPageState extends State<PersonalizedPage> {
                   const Enterprises(),
                   const PeriodGrouping(),
                   const CategoryGrouping(),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              await widget.presenter.getSales();
+                              controller.collapse();
+                            },
+                            child: Text(R.string.generate),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
