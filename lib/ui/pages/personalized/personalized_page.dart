@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../domain/helpers/helpers.dart';
 import '../../helpers/helpers.dart';
@@ -53,6 +54,7 @@ class _PersonalizedPageState extends State<PersonalizedPage>
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Card(
               child: ExpansionTile(
@@ -78,6 +80,31 @@ class _PersonalizedPageState extends State<PersonalizedPage>
                 ],
               ),
             ),
+            if (widget.presenter.startDate != null &&
+                widget.presenter.endDate != null)
+              Container(
+                decoration: ContainerDecoration.defaultDecoration,
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  children: [
+                    Builder(
+                      builder: (context) {
+                        final formatter = DateFormat.yMd("pt_BR");
+                        final startDate =
+                            formatter.format(widget.presenter.startDate!);
+                        final endDate =
+                            formatter.format(widget.presenter.endDate!);
+
+                        return Text("$startDate ~ $endDate");
+                      },
+                    ),
+                    if (selectedPeriodGroupingType != null)
+                      Text(selectedPeriodGroupingType.name),
+                    if (selectedCategoryGroupingType != null)
+                      Text(selectedCategoryGroupingType.name),
+                  ],
+                ),
+              ),
             PersonalizedPieChart(
               selectedCategoryGroupingType: selectedCategoryGroupingType,
               selectedPeriodGroupingType: selectedPeriodGroupingType,
