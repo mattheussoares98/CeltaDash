@@ -67,22 +67,7 @@ class _PersonalizedPageState extends State<PersonalizedPage>
                   const Enterprises(),
                   const PeriodGrouping(),
                   const CategoryGrouping(),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              await widget.presenter.getSales();
-                              controller.collapse();
-                            },
-                            child: Text(R.string.generate),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  GenerateButton(controller: controller),
                 ],
               ),
             ),
