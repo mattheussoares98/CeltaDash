@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 
 import '../../helpers/helpers.dart';
 import '../../mixins/mixins.dart';
+import '../pages.dart';
 import 'components/components.dart';
-import 'personalized.dart';
 
 class PersonalizedPage extends StatefulWidget {
   final PersonalizedPresenter presenter;
@@ -43,6 +43,7 @@ class _PersonalizedPageState extends State<PersonalizedPage>
   @override
   Widget build(BuildContext context) {
     Get.put<PersonalizedPresenter>(widget.presenter);
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -71,6 +72,7 @@ class _PersonalizedPageState extends State<PersonalizedPage>
                 ],
               ),
             ),
+            const PersonalizedPieChart()
           ],
         ),
       ),

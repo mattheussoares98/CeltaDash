@@ -23,6 +23,7 @@ abstract class Translation {
   String get add;
   String get addNewEnterprise;
   String get analytics;
+  String get anothers;
   String get anothersEnterprises;
   String get anothersGroupings;
   String get anothersProducts;
