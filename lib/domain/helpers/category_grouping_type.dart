@@ -1,8 +1,8 @@
 import '../../ui/helpers/helpers.dart';
 
 enum CategoryGroupingType {
-  cashierOperator,
   enterprise,
+  cashierOperator,
   paymentFinalization,
   paymentModality,
   product,
