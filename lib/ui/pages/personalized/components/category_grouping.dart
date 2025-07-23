@@ -19,7 +19,7 @@ class _CategoryGroupingState extends State<CategoryGrouping> {
     final personalizedPresenter = Get.find<PersonalizedPresenter>();
 
     return DefaultExpansionTile(
-      title: R.string.exclusiveGrouping,
+      title: R.string.anothersGroupings,
       children: CategoryGroupingType.values
           .map((e) => CheckBoxItem(
                 title: e.name,
