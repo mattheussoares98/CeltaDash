@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../domain/helpers/helpers.dart';
-import '../../../helpers/helpers.dart';
-import '../../pages.dart';
-import 'components.dart';
+import '../../../../../domain/helpers/helpers.dart';
+import '../../../../helpers/helpers.dart';
+import '../../../pages.dart';
+import '../components.dart';
 
 class CategoryGrouping extends StatefulWidget {
   const CategoryGrouping({super.key});

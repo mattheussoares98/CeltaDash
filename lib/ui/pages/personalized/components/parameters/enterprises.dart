@@ -4,9 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../helpers/helpers.dart';
-import '../../pages.dart';
-import 'components.dart';
+import '../../../../helpers/helpers.dart';
+import '../../../pages.dart';
+import '../components.dart';
 
 class Enterprises extends StatefulWidget {
   const Enterprises({super.key});

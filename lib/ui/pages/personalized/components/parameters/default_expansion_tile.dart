@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../helpers/helpers.dart';
-import 'components.dart';
+import '../../../../helpers/helpers.dart';
+import '../components.dart';
 
 class DefaultExpansionTile extends StatelessWidget {
   final String title;

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../../../helpers/helpers.dart';
-import '../../pages.dart';
+import '../../../../helpers/helpers.dart';
+import '../../../pages.dart';
 
 class SelectPeriod extends StatefulWidget {
   const SelectPeriod({super.key});
