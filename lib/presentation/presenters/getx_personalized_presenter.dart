@@ -29,39 +29,40 @@ class GetxPersonalizedPresenter extends GetxController
       if (startDate == null || endDate == null) {
         throw DomainError.selectPeriod;
       }
-      final sales = await loadSaleStatistics.get(
-        GetSaleStatisticsParams(
-          startDate: startDate!,
-          endDate: endDate!,
-          enterpriseIds: _enterprisesIds,
-          groupByYear: _periodGroupingTypes == PeriodGroupingType.year,
-          groupByMonth: _periodGroupingTypes == PeriodGroupingType.month,
-          groupByDay: _periodGroupingTypes == PeriodGroupingType.day,
-          groupByHour: _periodGroupingTypes == PeriodGroupingType.hour,
-          groupByProduct:
-              _categoryGroupingTypes.contains(CategoryGroupingType.product),
-          groupByEnterprise:
-              _categoryGroupingTypes.contains(CategoryGroupingType.enterprise),
-          groupByProductDepartment: _categoryGroupingTypes
-              .contains(CategoryGroupingType.productDepartment),
-          groupByProductSection: _categoryGroupingTypes
-              .contains(CategoryGroupingType.productSection),
-          groupByPaymentFinalization: _categoryGroupingTypes
-              .contains(CategoryGroupingType.paymentFinalization),
-          groupByPaymentModality: _categoryGroupingTypes
-              .contains(CategoryGroupingType.paymentModality),
-          groupByCashierOperator: _categoryGroupingTypes
-              .contains(CategoryGroupingType.cashierOperator),
-          groupBySeller:
-              _categoryGroupingTypes.contains(CategoryGroupingType.seller),
-          // topCount: ,
-        ),
+
+      final selectedParams = GetSaleStatisticsParams(
+        startDate: startDate!,
+        endDate: endDate!,
+        enterpriseIds: _enterprisesIds,
+        groupByYear: _periodGroupingTypes == PeriodGroupingType.year,
+        groupByMonth: _periodGroupingTypes == PeriodGroupingType.month,
+        groupByDay: _periodGroupingTypes == PeriodGroupingType.day,
+        groupByHour: _periodGroupingTypes == PeriodGroupingType.hour,
+        groupByProduct:
+            _categoryGroupingTypes.contains(CategoryGroupingType.product),
+        groupByEnterprise:
+            _categoryGroupingTypes.contains(CategoryGroupingType.enterprise),
+        groupByProductDepartment: _categoryGroupingTypes
+            .contains(CategoryGroupingType.productDepartment),
+        groupByProductSection: _categoryGroupingTypes
+            .contains(CategoryGroupingType.productSection),
+        groupByPaymentFinalization: _categoryGroupingTypes
+            .contains(CategoryGroupingType.paymentFinalization),
+        groupByPaymentModality: _categoryGroupingTypes
+            .contains(CategoryGroupingType.paymentModality),
+        groupByCashierOperator: _categoryGroupingTypes
+            .contains(CategoryGroupingType.cashierOperator),
+        groupBySeller:
+            _categoryGroupingTypes.contains(CategoryGroupingType.seller),
+        // topCount: ,
       );
+      final sales = await loadSaleStatistics.get(selectedParams);
 
       saleStatistics = sales
           .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
           .toList();
 
+      _lastGetStatisticsParams.value = selectedParams;
       appAnalyticsService.addNewMonthlyAnalytic(
         reportType: ReportType.personalized,
         periodType: PeriodType.personalized,
@@ -174,4 +175,9 @@ class GetxPersonalizedPresenter extends GetxController
   PeriodGroupingType? _periodGroupingTypes;
   @override
   PeriodGroupingType? get periodGroupingType => _periodGroupingTypes;
+
+  final _lastGetStatisticsParams = Rx<GetSaleStatisticsParams?>(null);
+  @override
+  GetSaleStatisticsParams? get lastGetStatisticsParams =>
+      _lastGetStatisticsParams.value;
 }

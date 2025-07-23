@@ -294,6 +294,51 @@ void main() {
 
       expect(value, false);
     });
+
+    test("Should update last get sale statistics params correctly", () async {
+      //select date
+      sut.changeDateRange(startDate, endDate);
+
+      //select category
+      sut.changeCategoryGroupingType(CategoryGroupingType.values[
+          faker.randomGenerator.integer(CategoryGroupingType.values.length)]);
+
+      //select period
+      sut.changePeriodGroupingType(PeriodGroupingType.values[
+          faker.randomGenerator.integer(PeriodGroupingType.values.length)]);
+
+      await sut.getSales();
+
+      expect(
+          sut.lastGetStatisticsParams,
+          GetSaleStatisticsParams(
+            startDate: startDate,
+            endDate: endDate,
+            enterpriseIds: [],
+
+            groupByYear: sut.periodGroupingType == PeriodGroupingType.year,
+            groupByMonth: sut.periodGroupingType == PeriodGroupingType.month,
+            groupByDay: sut.periodGroupingType == PeriodGroupingType.day,
+            groupByHour: sut.periodGroupingType == PeriodGroupingType.hour,
+            groupByEnterprise: sut.categoryGroupingTypes
+                .contains(CategoryGroupingType.enterprise),
+            groupByProduct: sut.categoryGroupingTypes
+                .contains(CategoryGroupingType.product),
+            groupByProductDepartment: sut.categoryGroupingTypes
+                .contains(CategoryGroupingType.productDepartment),
+            groupByProductSection: sut.categoryGroupingTypes
+                .contains(CategoryGroupingType.productSection),
+            groupByPaymentFinalization: sut.categoryGroupingTypes
+                .contains(CategoryGroupingType.paymentFinalization),
+            groupByPaymentModality: sut.categoryGroupingTypes
+                .contains(CategoryGroupingType.paymentModality),
+            groupByCashierOperator: sut.categoryGroupingTypes
+                .contains(CategoryGroupingType.cashierOperator),
+            groupBySeller:
+                sut.categoryGroupingTypes.contains(CategoryGroupingType.seller),
+            // topCount: false,
+          ));
+    });
   });
 
   group("Change selected date range", () {
