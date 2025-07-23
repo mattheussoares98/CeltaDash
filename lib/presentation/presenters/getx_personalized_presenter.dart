@@ -39,18 +39,20 @@ class GetxPersonalizedPresenter extends GetxController
           groupByMonth: _periodGroupingTypes == PeriodGroupingType.month,
           groupByDay: _periodGroupingTypes == PeriodGroupingType.day,
           groupByHour: _periodGroupingTypes == PeriodGroupingType.hour,
-          groupByProduct: _categoryGroupingType == CategoryGroupingType.product,
-          groupByProductDepartment:
-              _categoryGroupingType == CategoryGroupingType.productDepartment,
-          groupByProductSection:
-              _categoryGroupingType == CategoryGroupingType.productSection,
-          groupByPaymentFinalization:
-              _categoryGroupingType == CategoryGroupingType.paymentFinalization,
-          groupByPaymentModality:
-              _categoryGroupingType == CategoryGroupingType.paymentModality,
-          groupByCashierOperator:
-              _categoryGroupingType == CategoryGroupingType.cashierOperator,
-          groupBySeller: _categoryGroupingType == CategoryGroupingType.seller,
+          groupByProduct:
+              _categoryGroupingTypes.contains(CategoryGroupingType.product),
+          groupByProductDepartment: _categoryGroupingTypes
+              .contains(CategoryGroupingType.productDepartment),
+          groupByProductSection: _categoryGroupingTypes
+              .contains(CategoryGroupingType.productSection),
+          groupByPaymentFinalization: _categoryGroupingTypes
+              .contains(CategoryGroupingType.paymentFinalization),
+          groupByPaymentModality: _categoryGroupingTypes
+              .contains(CategoryGroupingType.paymentModality),
+          groupByCashierOperator: _categoryGroupingTypes
+              .contains(CategoryGroupingType.cashierOperator),
+          groupBySeller:
+              _categoryGroupingTypes.contains(CategoryGroupingType.seller),
           // topCount: ,
         ),
       );
@@ -87,10 +89,12 @@ class GetxPersonalizedPresenter extends GetxController
 
   @override
   void changeCategoryGroupingType(CategoryGroupingType type) {
-    if (_categoryGroupingType == type) {
-      _categoryGroupingType = null;
-    } else {
-      _categoryGroupingType = type;
+    if (type == CategoryGroupingType.enterprise) {
+      if (_categoryGroupingTypes.contains(type)) {
+        _categoryGroupingTypes.remove(type);
+      } else {
+        _categoryGroupingTypes.add(type);
+      }
     }
   }
 
@@ -121,9 +125,10 @@ class GetxPersonalizedPresenter extends GetxController
   @override
   List<int> get enterprisesIds => _enterprisesIds;
 
-  CategoryGroupingType? _categoryGroupingType;
+  final List<CategoryGroupingType> _categoryGroupingTypes = [];
   @override
-  CategoryGroupingType? get categoryGroupingType => _categoryGroupingType;
+  List<CategoryGroupingType> get categoryGroupingTypes =>
+      _categoryGroupingTypes;
 
   PeriodGroupingType? _periodGroupingTypes;
   @override

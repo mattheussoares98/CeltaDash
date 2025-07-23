@@ -146,7 +146,7 @@ void main() {
             startDate: startDate,
             endDate: endDate,
             enterpriseIds: [],
-            groupByEnterprise: true, //TODO fix
+            groupByEnterprise: false,
             groupByYear: false,
             groupByMonth: false,
             groupByDay: false,
@@ -177,7 +177,7 @@ void main() {
             startDate: startDate,
             endDate: endDate,
             enterpriseIds: enterpriseIds,
-            groupByEnterprise: true, //TODO fix
+            groupByEnterprise: false,
             groupByYear: false,
             groupByMonth: false,
             groupByDay: false,
@@ -210,7 +210,7 @@ void main() {
             startDate: startDate,
             endDate: endDate,
             enterpriseIds: [],
-            groupByEnterprise: true, //TODO fix test
+            groupByEnterprise: false,
             groupByYear: sut.periodGroupingType == PeriodGroupingType.year,
             groupByMonth: sut.periodGroupingType == PeriodGroupingType.month,
             groupByDay: sut.periodGroupingType == PeriodGroupingType.day,
@@ -243,25 +243,27 @@ void main() {
             startDate: startDate,
             endDate: endDate,
             enterpriseIds: [],
-            groupByEnterprise: true, //TODO remove after fix
+
             groupByYear: false,
             groupByMonth: false,
             groupByDay: false,
             groupByHour: false,
-            groupByProduct:
-                sut.categoryGroupingType == CategoryGroupingType.product,
-            groupByProductDepartment: sut.categoryGroupingType ==
-                CategoryGroupingType.productDepartment,
-            groupByProductSection:
-                sut.categoryGroupingType == CategoryGroupingType.productSection,
-            groupByPaymentFinalization: sut.categoryGroupingType ==
-                CategoryGroupingType.paymentFinalization,
-            groupByPaymentModality: sut.categoryGroupingType ==
-                CategoryGroupingType.paymentModality,
-            groupByCashierOperator: sut.categoryGroupingType ==
-                CategoryGroupingType.cashierOperator,
+            groupByEnterprise: sut.categoryGroupingTypes
+                .contains(CategoryGroupingType.enterprise),
+            groupByProduct: sut.categoryGroupingTypes
+                .contains(CategoryGroupingType.product),
+            groupByProductDepartment: sut.categoryGroupingTypes
+                .contains(CategoryGroupingType.productDepartment),
+            groupByProductSection: sut.categoryGroupingTypes
+                .contains(CategoryGroupingType.productSection),
+            groupByPaymentFinalization: sut.categoryGroupingTypes
+                .contains(CategoryGroupingType.paymentFinalization),
+            groupByPaymentModality: sut.categoryGroupingTypes
+                .contains(CategoryGroupingType.paymentModality),
+            groupByCashierOperator: sut.categoryGroupingTypes
+                .contains(CategoryGroupingType.cashierOperator),
             groupBySeller:
-                sut.categoryGroupingType == CategoryGroupingType.seller,
+                sut.categoryGroupingTypes.contains(CategoryGroupingType.seller),
             // topCount: false,
           ),
         ),
@@ -316,13 +318,13 @@ void main() {
       const product = CategoryGroupingType.product;
 
       sut.changeCategoryGroupingType(operator);
-      expect(sut.categoryGroupingType, operator);
+      expect(sut.categoryGroupingTypes, operator);
 
       sut.changeCategoryGroupingType(product);
-      expect(sut.categoryGroupingType, product);
+      expect(sut.categoryGroupingTypes, product);
 
       sut.changeCategoryGroupingType(product);
-      expect(sut.categoryGroupingType, null);
+      expect(sut.categoryGroupingTypes, null);
     });
   });
 

@@ -23,7 +23,7 @@ class _CategoryGroupingState extends State<CategoryGrouping> {
       children: CategoryGroupingType.values
           .map((e) => CheckBoxItem(
                 title: e.name,
-                value: personalizedPresenter.categoryGroupingType == e,
+                value: personalizedPresenter.categoryGroupingTypes.contains(e),
                 onTap: () {
                   setState(() {
                     personalizedPresenter.changeCategoryGroupingType(e);
