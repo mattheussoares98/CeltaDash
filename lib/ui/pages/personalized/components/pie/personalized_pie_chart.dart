@@ -8,7 +8,13 @@ import '../../../pages.dart';
 import 'pie.dart';
 
 class PersonalizedPieChart extends StatelessWidget {
-  const PersonalizedPieChart({super.key});
+  final CategoryGroupingType? selectedCategoryGroupingType;
+  final PeriodGroupingType? selectedPeriodGroupingType;
+  const PersonalizedPieChart({
+    super.key,
+    required this.selectedCategoryGroupingType,
+    required this.selectedPeriodGroupingType,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +26,6 @@ class PersonalizedPieChart extends StatelessWidget {
       if (sales == null || sales.isEmpty) {
         return const SizedBox.shrink();
       }
-
-      final selectedCategoryGroupingType = _selectedCategoryGrouping(sales);
-      final selectedPeriodGroupingType = _selectedPeriodGrouping(sales);
 
       sales.sort(
           (saleA, saleB) => saleB.LiquidValue!.compareTo(saleA.LiquidValue!));
@@ -68,43 +71,4 @@ class PersonalizedPieChart extends StatelessWidget {
       );
     });
   }
-}
-
-CategoryGroupingType? _selectedCategoryGrouping(
-  List<SaleStatisticViewModel> sales,
-) {
-  if (sales.any((e) => e.CashierOperator != null)) {
-    return CategoryGroupingType.cashierOperator;
-  } else if (sales.any((e) => e.PaymentFinalization != null)) {
-    return CategoryGroupingType.paymentFinalization;
-  } else if (sales.any((e) => e.PaymentModality != null)) {
-    return CategoryGroupingType.paymentModality;
-  } else if (sales.any((e) => e.Product != null)) {
-    return CategoryGroupingType.product;
-  } else if (sales.any((e) => e.ProductSection != null)) {
-    return CategoryGroupingType.productSection;
-  } else if (sales.any((e) => e.ProductDepartment != null)) {
-    return CategoryGroupingType.productDepartment;
-  } else if (sales.any((e) => e.Seller != null)) {
-    return CategoryGroupingType.seller;
-  } else if (sales.any((e) => e.EnterpriseFantasyName != null)) {
-    return CategoryGroupingType.enterprise;
-  }
-
-  return null;
-}
-
-PeriodGroupingType? _selectedPeriodGrouping(
-  List<SaleStatisticViewModel> sales,
-) {
-  if (sales.any((e) => e.Hour != null)) {
-    return PeriodGroupingType.hour;
-  } else if (sales.any((e) => e.Date != null)) {
-    return PeriodGroupingType.day;
-  } else if (sales.any((e) => e.Month != null)) {
-    return PeriodGroupingType.month;
-  } else if (sales.any((e) => e.Year != null)) {
-    return PeriodGroupingType.year;
-  }
-  return null;
 }

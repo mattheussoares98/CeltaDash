@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../domain/helpers/helpers.dart';
 import '../../helpers/helpers.dart';
 import '../../mixins/mixins.dart';
 import '../pages.dart';
@@ -44,6 +45,11 @@ class _PersonalizedPageState extends State<PersonalizedPage>
   Widget build(BuildContext context) {
     Get.put<PersonalizedPresenter>(widget.presenter);
 
+    final selectedCategoryGroupingType =
+        _selectedCategoryGrouping(widget.presenter.saleStatistics ?? []);
+    final selectedPeriodGroupingType =
+        _selectedPeriodGrouping(widget.presenter.saleStatistics ?? []);
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -72,10 +78,52 @@ class _PersonalizedPageState extends State<PersonalizedPage>
                 ],
               ),
             ),
-            const PersonalizedPieChart()
+            PersonalizedPieChart(
+              selectedCategoryGroupingType: selectedCategoryGroupingType,
+              selectedPeriodGroupingType: selectedPeriodGroupingType,
+            ),
           ],
         ),
       ),
     );
   }
+}
+
+CategoryGroupingType? _selectedCategoryGrouping(
+  List<SaleStatisticViewModel> sales,
+) {
+  if (sales.any((e) => e.CashierOperator != null)) {
+    return CategoryGroupingType.cashierOperator;
+  } else if (sales.any((e) => e.PaymentFinalization != null)) {
+    return CategoryGroupingType.paymentFinalization;
+  } else if (sales.any((e) => e.PaymentModality != null)) {
+    return CategoryGroupingType.paymentModality;
+  } else if (sales.any((e) => e.Product != null)) {
+    return CategoryGroupingType.product;
+  } else if (sales.any((e) => e.ProductSection != null)) {
+    return CategoryGroupingType.productSection;
+  } else if (sales.any((e) => e.ProductDepartment != null)) {
+    return CategoryGroupingType.productDepartment;
+  } else if (sales.any((e) => e.Seller != null)) {
+    return CategoryGroupingType.seller;
+  } else if (sales.any((e) => e.EnterpriseFantasyName != null)) {
+    return CategoryGroupingType.enterprise;
+  }
+
+  return null;
+}
+
+PeriodGroupingType? _selectedPeriodGrouping(
+  List<SaleStatisticViewModel> sales,
+) {
+  if (sales.any((e) => e.Hour != null)) {
+    return PeriodGroupingType.hour;
+  } else if (sales.any((e) => e.Date != null)) {
+    return PeriodGroupingType.day;
+  } else if (sales.any((e) => e.Month != null)) {
+    return PeriodGroupingType.month;
+  } else if (sales.any((e) => e.Year != null)) {
+    return PeriodGroupingType.year;
+  }
+  return null;
 }
