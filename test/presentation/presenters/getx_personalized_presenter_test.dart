@@ -58,8 +58,8 @@ void main() {
     endDate = faker.date.dateTime(minYear: startDate.year + 1);
     enterpriseIds = [
       faker.randomGenerator.integer(100),
-      faker.randomGenerator.integer(100),
-      faker.randomGenerator.integer(100),
+      faker.randomGenerator.integer(200, min: 100),
+      faker.randomGenerator.integer(300, min: 200),
     ];
   }
 
@@ -281,6 +281,18 @@ void main() {
           periodType: PeriodType.personalized,
         ),
       ).called(1);
+    });
+    test("Should return true on success", () async {
+      sut.changeDateRange(startDate, endDate);
+
+      final value = await sut.getSales();
+
+      expect(value, true);
+    });
+    test("Should return false on error", () async {
+      final value = await sut.getSales();
+
+      expect(value, false);
     });
   });
 

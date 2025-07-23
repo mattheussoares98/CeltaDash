@@ -22,7 +22,7 @@ class GetxPersonalizedPresenter extends GetxController
   final homePresenter = Get.find<HomePresenter>();
 
   @override
-  Future<void> getSales(/* TODO add topCount param */) async {
+  Future<bool> getSales(/* TODO add topCount param */) async {
     isLoading = true;
     mainError = null;
     try {
@@ -34,13 +34,14 @@ class GetxPersonalizedPresenter extends GetxController
           startDate: startDate!,
           endDate: endDate!,
           enterpriseIds: _enterprisesIds,
-          groupByEnterprise: true, //TODO add new parameter
           groupByYear: _periodGroupingTypes == PeriodGroupingType.year,
           groupByMonth: _periodGroupingTypes == PeriodGroupingType.month,
           groupByDay: _periodGroupingTypes == PeriodGroupingType.day,
           groupByHour: _periodGroupingTypes == PeriodGroupingType.hour,
           groupByProduct:
               _categoryGroupingTypes.contains(CategoryGroupingType.product),
+          groupByEnterprise:
+              _categoryGroupingTypes.contains(CategoryGroupingType.enterprise),
           groupByProductDepartment: _categoryGroupingTypes
               .contains(CategoryGroupingType.productDepartment),
           groupByProductSection: _categoryGroupingTypes
@@ -65,8 +66,10 @@ class GetxPersonalizedPresenter extends GetxController
         reportType: ReportType.personalized,
         periodType: PeriodType.personalized,
       );
+      return true;
     } catch (e) {
       mainError = getUIError(e);
+      return false;
     } finally {
       isLoading = false;
     }
