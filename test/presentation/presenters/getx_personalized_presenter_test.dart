@@ -394,18 +394,4 @@ void main() {
       expect(sut.currentSelectedParams?.groupByMonth, false);
     });
   });
-
-  group("Select all enterprises", () {
-    test("Should select all enterprises", () {
-      sut.changeDateRange(startDate, endDate);
-      sut.selectAllEnterprises();
-      sut.selectAllEnterprises();
-      sut.selectAllEnterprises();
-
-      expect(
-        sut.currentSelectedParams?.enterpriseIds,
-        homePresenter.enterprisesMock!.map((e) => e.id!.toInt()).toList(),
-      );
-    });
-  });
 }

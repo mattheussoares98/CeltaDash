@@ -4,7 +4,6 @@ import '../../data/models/models.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
-import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
 import '../../ui/services/services.dart';
 import '../mixins/mixins.dart';
@@ -157,18 +156,6 @@ class GetxPersonalizedPresenter extends GetxController
       groupByMonth: type == PeriodGroupingType.month && groupByMonth == false,
       groupByDay: type == PeriodGroupingType.day && groupByDay == false,
       groupByHour: type == PeriodGroupingType.hour && groupByHour == false,
-    );
-  }
-
-  @override
-  void selectAllEnterprises() {
-    if (_currentSelectedParams.value == null) {
-      return;
-    }
-
-    _currentSelectedParams.value = _currentSelectedParams.value?.copyWith(
-      enterpriseIds:
-          homePresenter.enterprises?.map((e) => e.id!.toInt()).toList() ?? [],
     );
   }
 
