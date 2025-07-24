@@ -13,28 +13,24 @@ class PeriodGrouping extends StatefulWidget {
 }
 
 class _PeriodGroupingState extends State<PeriodGrouping> {
-  PeriodGroupingType? getSelectedGroupingType() {
-    final personalizedPresenter = Get.find<PersonalizedPresenter>();
-    final params = personalizedPresenter.currentSelectedParams;
+  PeriodGroupingType? getSelectedPeriod() {
+    final params = Get.find<PersonalizedPresenter>().currentSelectedParams;
+    if (params == null) return null;
 
-    if (params?.groupByHour == true) {
-      return PeriodGroupingType.hour;
-    } else if (params?.groupByDay == true) {
-      return PeriodGroupingType.day;
-    } else if (params?.groupByMonth == true) {
-      return PeriodGroupingType.month;
-    } else if (params?.groupByYear == true) {
-      return PeriodGroupingType.year;
-    }
+    final selectedCategories = PeriodGroupingType.values
+        .where((type) => params.isPeriodSelected(type))
+        .toList();
 
-    return null;
+    if (selectedCategories.isEmpty) return null;
+
+    return selectedCategories.first;
   }
 
   @override
   Widget build(BuildContext context) {
     final personalizedPresenter = Get.find<PersonalizedPresenter>();
     final backgroundColor = Theme.of(context).primaryColor.withAlpha(50);
-    final selectedGrouping = getSelectedGroupingType();
+    final selectedPeriod = getSelectedPeriod();
 
     return Container(
       margin: const EdgeInsets.only(bottom: 4),
@@ -46,7 +42,7 @@ class _PeriodGroupingState extends State<PeriodGrouping> {
         backgroundColor: backgroundColor,
         collapsedBackgroundColor: backgroundColor,
         title: Text(
-            '${R.string.groupPeriod}${selectedGrouping == null ? '' : " (${selectedGrouping.name})"}'),
+            '${R.string.groupPeriod}${selectedPeriod == null ? '' : " (${selectedPeriod.name})"}'),
         children: PeriodGroupingType.values
             .map(
               (e) => Container(
@@ -55,7 +51,7 @@ class _PeriodGroupingState extends State<PeriodGrouping> {
                   value: e,
                   toggleable: true,
                   dense: true,
-                  groupValue: selectedGrouping,
+                  groupValue: selectedPeriod,
                   title: Text(e.name),
                   onChanged: (_) {
                     setState(() {

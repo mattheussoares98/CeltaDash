@@ -35,7 +35,7 @@ extension CategoryGroupingTypeExtension on CategoryGroupingType {
   }
 }
 
-extension SaleStatisticsParamsGrouping on GetSaleStatisticsParams {
+extension SaleStatisticsCategoryGrouping on GetSaleStatisticsParams {
   bool isCategoryGroupingSelected(CategoryGroupingType type) {
     switch (type) {
       case CategoryGroupingType.enterprise:

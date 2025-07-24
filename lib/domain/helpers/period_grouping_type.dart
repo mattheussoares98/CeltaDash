@@ -1,4 +1,5 @@
 import '../../ui/helpers/helpers.dart';
+import '../usecases/usecases.dart';
 
 enum PeriodGroupingType {
   year,
@@ -18,6 +19,21 @@ extension PeriodGroupingTypeExtension on PeriodGroupingType {
         return R.string.day;
       case PeriodGroupingType.hour:
         return R.string.hour;
+    }
+  }
+}
+
+extension SaleStatisticsPeriodGrouping on GetSaleStatisticsParams {
+  bool isPeriodSelected(PeriodGroupingType type) {
+    switch (type) {
+      case PeriodGroupingType.hour:
+        return groupByHour ?? false;
+      case PeriodGroupingType.day:
+        return groupByDay ?? false;
+      case PeriodGroupingType.month:
+        return groupByMonth ?? false;
+      case PeriodGroupingType.year:
+        return groupByYear ?? false;
     }
   }
 }
