@@ -145,20 +145,6 @@ void main() {
           GetSaleStatisticsParams(
             startDate: startDate,
             endDate: endDate,
-            enterpriseIds: [],
-            groupByEnterprise: false,
-            groupByYear: false,
-            groupByMonth: false,
-            groupByDay: false,
-            groupByHour: false,
-            groupByProduct: false,
-            groupByProductDepartment: false,
-            groupByProductSection: false,
-            groupByPaymentFinalization: false,
-            groupByPaymentModality: false,
-            groupByCashierOperator: false,
-            groupBySeller: false,
-            // topCount: false,
           ),
         ),
       ).called(1);
@@ -177,19 +163,6 @@ void main() {
             startDate: startDate,
             endDate: endDate,
             enterpriseIds: enterpriseIds,
-            groupByEnterprise: false,
-            groupByYear: false,
-            groupByMonth: false,
-            groupByDay: false,
-            groupByHour: false,
-            groupByProduct: false,
-            groupByProductDepartment: false,
-            groupByProductSection: false,
-            groupByPaymentFinalization: false,
-            groupByPaymentModality: false,
-            groupByCashierOperator: false,
-            groupBySeller: false,
-            // topCount: false,
           ),
         ),
       ).called(1);
@@ -209,20 +182,10 @@ void main() {
           GetSaleStatisticsParams(
             startDate: startDate,
             endDate: endDate,
-            enterpriseIds: [],
-            groupByEnterprise: false,
-            groupByYear: sut.periodGroupingType == PeriodGroupingType.year,
-            groupByMonth: sut.periodGroupingType == PeriodGroupingType.month,
-            groupByDay: sut.periodGroupingType == PeriodGroupingType.day,
-            groupByHour: sut.periodGroupingType == PeriodGroupingType.hour,
-            groupByProduct: false,
-            groupByProductDepartment: false,
-            groupByProductSection: false,
-            groupByPaymentFinalization: false,
-            groupByPaymentModality: false,
-            groupByCashierOperator: false,
-            groupBySeller: false,
-            // topCount: false,
+            groupByYear: periodSelected == PeriodGroupingType.year,
+            groupByMonth: periodSelected == PeriodGroupingType.month,
+            groupByDay: periodSelected == PeriodGroupingType.day,
+            groupByHour: periodSelected == PeriodGroupingType.hour,
           ),
         ),
       ).called(1);
@@ -242,28 +205,20 @@ void main() {
           GetSaleStatisticsParams(
             startDate: startDate,
             endDate: endDate,
-            enterpriseIds: [],
-
-            groupByYear: false,
-            groupByMonth: false,
-            groupByDay: false,
-            groupByHour: false,
-            groupByEnterprise: sut.categoryGroupingTypes
-                .contains(CategoryGroupingType.enterprise),
-            groupByProduct: sut.categoryGroupingTypes
-                .contains(CategoryGroupingType.product),
-            groupByProductDepartment: sut.categoryGroupingTypes
-                .contains(CategoryGroupingType.productDepartment),
-            groupByProductSection: sut.categoryGroupingTypes
-                .contains(CategoryGroupingType.productSection),
-            groupByPaymentFinalization: sut.categoryGroupingTypes
-                .contains(CategoryGroupingType.paymentFinalization),
-            groupByPaymentModality: sut.categoryGroupingTypes
-                .contains(CategoryGroupingType.paymentModality),
-            groupByCashierOperator: sut.categoryGroupingTypes
-                .contains(CategoryGroupingType.cashierOperator),
-            groupBySeller:
-                sut.categoryGroupingTypes.contains(CategoryGroupingType.seller),
+            groupByEnterprise:
+                categorySelected == CategoryGroupingType.enterprise,
+            groupByProduct: categorySelected == CategoryGroupingType.product,
+            groupByProductDepartment:
+                categorySelected == CategoryGroupingType.productDepartment,
+            groupByProductSection:
+                categorySelected == CategoryGroupingType.productSection,
+            groupByPaymentFinalization:
+                categorySelected == CategoryGroupingType.paymentFinalization,
+            groupByPaymentModality:
+                categorySelected == CategoryGroupingType.paymentModality,
+            groupByCashierOperator:
+                categorySelected == CategoryGroupingType.cashierOperator,
+            groupBySeller: categorySelected == CategoryGroupingType.seller,
             // topCount: false,
           ),
         ),
@@ -300,12 +255,14 @@ void main() {
       sut.changeDateRange(startDate, endDate);
 
       //select category
-      sut.changeCategoryGroupingType(CategoryGroupingType.values[
-          faker.randomGenerator.integer(CategoryGroupingType.values.length)]);
+      final selectedCategory = CategoryGroupingType.values[
+          faker.randomGenerator.integer(CategoryGroupingType.values.length)];
+      sut.changeCategoryGroupingType(selectedCategory);
 
       //select period
-      sut.changePeriodGroupingType(PeriodGroupingType.values[
-          faker.randomGenerator.integer(PeriodGroupingType.values.length)]);
+      final selectedPeriod = PeriodGroupingType.values[
+          faker.randomGenerator.integer(PeriodGroupingType.values.length)];
+      sut.changePeriodGroupingType(selectedPeriod);
 
       await sut.getSales();
 
@@ -314,26 +271,23 @@ void main() {
           GetSaleStatisticsParams(
             startDate: startDate,
             endDate: endDate,
-            enterpriseIds: [],
-
-            groupByYear: sut.periodGroupingType == PeriodGroupingType.year,
-            groupByMonth: sut.periodGroupingType == PeriodGroupingType.month,
-            groupByDay: sut.periodGroupingType == PeriodGroupingType.day,
-            groupByHour: sut.periodGroupingType == PeriodGroupingType.hour,
-            groupByEnterprise: sut.categoryGroupingTypes
-                .contains(CategoryGroupingType.enterprise),
-            groupByProduct: sut.categoryGroupingTypes
-                .contains(CategoryGroupingType.product),
-            groupByProductDepartment: sut.categoryGroupingTypes
-                .contains(CategoryGroupingType.productDepartment),
-            groupByProductSection: sut.categoryGroupingTypes
-                .contains(CategoryGroupingType.productSection),
-            groupByPaymentFinalization: sut.categoryGroupingTypes
-                .contains(CategoryGroupingType.paymentFinalization),
-            groupByPaymentModality: sut.categoryGroupingTypes
-                .contains(CategoryGroupingType.paymentModality),
-            groupByCashierOperator: sut.categoryGroupingTypes
-                .contains(CategoryGroupingType.cashierOperator),
+            groupByYear: selectedPeriod == PeriodGroupingType.year,
+            groupByMonth: selectedPeriod == PeriodGroupingType.month,
+            groupByDay: selectedPeriod == PeriodGroupingType.day,
+            groupByHour: selectedPeriod == PeriodGroupingType.hour,
+            groupByEnterprise:
+                selectedCategory == CategoryGroupingType.enterprise,
+            groupByProduct: selectedCategory == CategoryGroupingType.product,
+            groupByProductDepartment:
+                selectedCategory == CategoryGroupingType.productDepartment,
+            groupByProductSection:
+                selectedCategory == CategoryGroupingType.productSection,
+            groupByPaymentFinalization:
+                selectedCategory == CategoryGroupingType.paymentFinalization,
+            groupByPaymentModality:
+                selectedCategory == CategoryGroupingType.paymentModality,
+            groupByCashierOperator:
+                selectedCategory == CategoryGroupingType.cashierOperator,
             groupBySeller:
                 sut.categoryGroupingTypes.contains(CategoryGroupingType.seller),
             // topCount: false,
@@ -345,8 +299,10 @@ void main() {
     test("Should update selected date range", () async {
       sut.changeDateRange(startDate, endDate);
 
-      expect(sut.startDate, startDate);
-      expect(sut.endDate, endDate);
+      expect(
+        sut.currentSelectedParams,
+        GetSaleStatisticsParams(startDate: startDate, endDate: endDate),
+      );
     });
   });
 
@@ -355,17 +311,20 @@ void main() {
       final enterpriseId1 = faker.randomGenerator.integer(100);
       final enterpriseId2 = faker.randomGenerator.integer(200, min: 101);
 
-      sut.changeEnterpriseIds(enterpriseId1);
-      expect(sut.enterprisesIds, [enterpriseId1]);
-
-      sut.changeEnterpriseIds(enterpriseId2);
-      expect(sut.enterprisesIds, [enterpriseId1, enterpriseId2]);
-
-      sut.changeEnterpriseIds(enterpriseId2);
-      expect(sut.enterprisesIds, [enterpriseId1]);
+      sut.changeDateRange(startDate, endDate);
 
       sut.changeEnterpriseIds(enterpriseId1);
-      expect(sut.enterprisesIds, []);
+      expect(sut.currentSelectedParams?.enterpriseIds, [enterpriseId1]);
+
+      sut.changeEnterpriseIds(enterpriseId2);
+      expect(sut.currentSelectedParams?.enterpriseIds,
+          [enterpriseId1, enterpriseId2]);
+
+      sut.changeEnterpriseIds(enterpriseId2);
+      expect(sut.currentSelectedParams?.enterpriseIds, [enterpriseId1]);
+
+      sut.changeEnterpriseIds(enterpriseId1);
+      expect(sut.currentSelectedParams?.enterpriseIds, []);
     });
   });
 
@@ -380,41 +339,45 @@ void main() {
       const productSection = CategoryGroupingType.productSection;
       const seller = CategoryGroupingType.seller;
 
+      sut.changeDateRange(startDate, endDate);
+
       sut.changeCategoryGroupingType(enterprise);
-      expect(sut.categoryGroupingTypes, [enterprise]);
+      expect(sut.currentSelectedParams?.groupByEnterprise, true);
 
       sut.changeCategoryGroupingType(productDepartment);
-      expect(sut.categoryGroupingTypes, [enterprise, productDepartment]);
+      expect(sut.currentSelectedParams?.groupByEnterprise, true);
+      expect(sut.currentSelectedParams?.groupByProductDepartment, true);
 
       sut.changeCategoryGroupingType(productSection);
-      expect(
-        sut.categoryGroupingTypes,
-        [enterprise, productDepartment, productSection],
-      );
+      expect(sut.currentSelectedParams?.groupByEnterprise, true);
+      expect(sut.currentSelectedParams?.groupByProductSection, true);
 
       sut.changeCategoryGroupingType(cashierOperator);
-      expect(sut.categoryGroupingTypes, [enterprise, cashierOperator]);
+      expect(sut.currentSelectedParams?.groupByEnterprise, true);
+      expect(sut.currentSelectedParams?.groupByCashierOperator, true);
 
       sut.changeCategoryGroupingType(paymentFinalization);
-      expect(sut.categoryGroupingTypes, [enterprise, paymentFinalization]);
+      expect(sut.currentSelectedParams?.groupByEnterprise, true);
+      expect(sut.currentSelectedParams?.groupByPaymentFinalization, true);
 
       sut.changeCategoryGroupingType(paymentModality);
-      expect(
-        sut.categoryGroupingTypes,
-        [enterprise, paymentFinalization, paymentModality],
-      );
+      expect(sut.currentSelectedParams?.groupByEnterprise, true);
+      expect(sut.currentSelectedParams?.groupByPaymentModality, true);
 
       sut.changeCategoryGroupingType(product);
-      expect(sut.categoryGroupingTypes, [enterprise, product]);
+      expect(sut.currentSelectedParams?.groupByEnterprise, true);
+      expect(sut.currentSelectedParams?.groupByProduct, true);
 
       sut.changeCategoryGroupingType(seller);
-      expect(sut.categoryGroupingTypes, [enterprise, seller]);
+      expect(sut.currentSelectedParams?.groupByEnterprise, true);
+      expect(sut.currentSelectedParams?.groupBySeller, true);
 
       sut.changeCategoryGroupingType(enterprise);
-      expect(sut.categoryGroupingTypes, [seller]);
+      expect(sut.currentSelectedParams?.groupByEnterprise, false);
+      expect(sut.currentSelectedParams?.groupBySeller, true);
 
       sut.changeCategoryGroupingType(seller);
-      expect(sut.categoryGroupingTypes, []);
+      expect(sut.currentSelectedParams?.groupBySeller, false);
     });
   });
 
@@ -423,14 +386,16 @@ void main() {
       const day = PeriodGroupingType.day;
       const month = PeriodGroupingType.month;
 
+      sut.changeDateRange(startDate, endDate);
+
       sut.changePeriodGroupingType(day);
-      expect(sut.periodGroupingType, day);
+      expect(sut.currentSelectedParams?.groupByDay, true);
 
       sut.changePeriodGroupingType(month);
-      expect(sut.periodGroupingType, month);
+      expect(sut.currentSelectedParams?.groupByMonth, true);
 
       sut.changePeriodGroupingType(month);
-      expect(sut.periodGroupingType, null);
+      expect(sut.currentSelectedParams?.groupByMonth, false);
     });
   });
 

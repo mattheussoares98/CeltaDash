@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 
 import '../../entities/entities.dart';
@@ -66,4 +67,47 @@ class GetSaleStatisticsParams extends Equatable implements DateRangeParams {
         groupBySeller,
         topCount,
       ];
+
+  GetSaleStatisticsParams copyWith({
+    DateTime? startDate,
+    DateTime? endDate,
+    List<int>? enterpriseIds,
+    bool? groupByEnterprise,
+    bool? groupByYear,
+    bool? groupByMonth,
+    bool? groupByDay,
+    bool? groupByHour,
+    bool? groupByProduct,
+    bool? groupByProductDepartment,
+    bool? groupByProductSection,
+    bool? groupByPaymentFinalization,
+    bool? groupByPaymentModality,
+    bool? groupByCashierOperator,
+    bool? groupBySeller,
+    int? topCount,
+  }) {
+    return GetSaleStatisticsParams(
+      startDate: startDate ?? this.startDate,
+      endDate: endDate ?? this.endDate,
+      enterpriseIds: enterpriseIds ?? this.enterpriseIds,
+      groupByEnterprise: groupByEnterprise ?? this.groupByEnterprise,
+      groupByYear: groupByYear ?? this.groupByYear,
+      groupByMonth: groupByMonth ?? this.groupByMonth,
+      groupByDay: groupByDay ?? this.groupByDay,
+      groupByHour: groupByHour ?? this.groupByHour,
+      groupByProduct: groupByProduct ?? this.groupByProduct,
+      groupByProductDepartment:
+          groupByProductDepartment ?? this.groupByProductDepartment,
+      groupByProductSection:
+          groupByProductSection ?? this.groupByProductSection,
+      groupByPaymentFinalization:
+          groupByPaymentFinalization ?? this.groupByPaymentFinalization,
+      groupByPaymentModality:
+          groupByPaymentModality ?? this.groupByPaymentModality,
+      groupByCashierOperator:
+          groupByCashierOperator ?? this.groupByCashierOperator,
+      groupBySeller: groupBySeller ?? this.groupBySeller,
+      topCount: topCount ?? this.topCount,
+    );
+  }
 }

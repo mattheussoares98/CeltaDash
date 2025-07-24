@@ -26,43 +26,18 @@ class GetxPersonalizedPresenter extends GetxController
     isLoading = true;
     mainError = null;
     try {
-      if (startDate == null || endDate == null) {
+      if (_currentSelectedParams.value?.startDate == null ||
+          _currentSelectedParams.value?.endDate == null) {
         throw DomainError.selectPeriod;
       }
 
-      final selectedParams = GetSaleStatisticsParams(
-        startDate: startDate!,
-        endDate: endDate!,
-        enterpriseIds: _enterprisesIds,
-        groupByYear: _periodGroupingTypes == PeriodGroupingType.year,
-        groupByMonth: _periodGroupingTypes == PeriodGroupingType.month,
-        groupByDay: _periodGroupingTypes == PeriodGroupingType.day,
-        groupByHour: _periodGroupingTypes == PeriodGroupingType.hour,
-        groupByProduct:
-            _categoryGroupingTypes.contains(CategoryGroupingType.product),
-        groupByEnterprise:
-            _categoryGroupingTypes.contains(CategoryGroupingType.enterprise),
-        groupByProductDepartment: _categoryGroupingTypes
-            .contains(CategoryGroupingType.productDepartment),
-        groupByProductSection: _categoryGroupingTypes
-            .contains(CategoryGroupingType.productSection),
-        groupByPaymentFinalization: _categoryGroupingTypes
-            .contains(CategoryGroupingType.paymentFinalization),
-        groupByPaymentModality: _categoryGroupingTypes
-            .contains(CategoryGroupingType.paymentModality),
-        groupByCashierOperator: _categoryGroupingTypes
-            .contains(CategoryGroupingType.cashierOperator),
-        groupBySeller:
-            _categoryGroupingTypes.contains(CategoryGroupingType.seller),
-        // topCount: ,
-      );
-      final sales = await loadSaleStatistics.get(selectedParams);
+      final sales = await loadSaleStatistics.get(_currentSelectedParams.value!);
 
       saleStatistics = sales
           .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
           .toList();
 
-      _lastGetStatisticsParams.value = selectedParams;
+      _lastGetStatisticsParams.value = _currentSelectedParams.value;
       appAnalyticsService.addNewMonthlyAnalytic(
         reportType: ReportType.personalized,
         periodType: PeriodType.personalized,
@@ -78,75 +53,127 @@ class GetxPersonalizedPresenter extends GetxController
 
   @override
   void changeDateRange(DateTime startDate, DateTime endDate) {
-    _startDate = startDate;
-    _endDate = endDate;
+    _currentSelectedParams.value = _currentSelectedParams.value?.copyWith(
+          startDate: startDate,
+          endDate: endDate,
+        ) ??
+        GetSaleStatisticsParams(
+          startDate: startDate,
+          endDate: endDate,
+        );
   }
 
   @override
   void changeEnterpriseIds(int enterpriseId) {
-    if (_enterprisesIds.contains(enterpriseId)) {
-      _enterprisesIds.remove(enterpriseId);
+    if (_currentSelectedParams.value == null) return;
+
+    final oldEnterprises = _currentSelectedParams.value?.enterpriseIds ?? [];
+    if (oldEnterprises.any((e) => e == enterpriseId) == true) {
+      oldEnterprises.remove(enterpriseId);
     } else {
-      _enterprisesIds.add(enterpriseId);
+      oldEnterprises.add(enterpriseId);
     }
+
+    _currentSelectedParams.value = _currentSelectedParams.value?.copyWith(
+      enterpriseIds: oldEnterprises,
+    );
+  }
+
+  bool _isSelected({
+    required CategoryGroupingType type,
+    required CategoryGroupingType groupingValidating,
+    required bool selected,
+    CategoryGroupingType? doesntAffectCurrentValue,
+  }) {
+    // If the clicked button corresponds to the property being validated, toggle its value.
+    if (type == groupingValidating) {
+      return !selected;
+    }
+
+    // The 'enterprise' grouping acts like a checkbox, independent of others.
+    // We check if the property being updated is 'enterprise' OR if 'enterprise' was the one clicked.
+    final bool isEnterpriseInvolved =
+        groupingValidating == CategoryGroupingType.enterprise ||
+            type == CategoryGroupingType.enterprise;
+
+    // Preserve the current state if enterprise is involved or if it's a paired exclusion.
+    if (isEnterpriseInvolved || type == doesntAffectCurrentValue) {
+      return selected;
+    }
+
+    // For any other case, deselect the property (radio-button-like behavior).
+    return false;
   }
 
   @override
   void changeCategoryGroupingType(CategoryGroupingType type) {
-    const enterprise = CategoryGroupingType.enterprise;
-    const paymentFinalization = CategoryGroupingType.paymentFinalization;
-    const paymentModality = CategoryGroupingType.paymentModality;
-    const productDepartment = CategoryGroupingType.productDepartment;
-    const productSection = CategoryGroupingType.productSection;
+    if (_currentSelectedParams.value == null) return;
 
-    switch (type) {
-      case enterprise:
-        if (_categoryGroupingTypes.contains(type)) {
-          _categoryGroupingTypes.remove(type);
-        } else {
-          _categoryGroupingTypes.add(type);
-        }
+    final oldParams = _currentSelectedParams.value;
 
-        break;
-
-      case productDepartment || productSection:
-        if (_categoryGroupingTypes.contains(type)) {
-          _categoryGroupingTypes.remove(type);
-        } else {
-          _categoryGroupingTypes.add(type);
-        }
-        _categoryGroupingTypes.removeWhere((e) =>
-            e != enterprise && e != productDepartment && e != productSection);
-        break;
-
-      case paymentFinalization || paymentModality:
-        if (_categoryGroupingTypes.contains(type)) {
-          _categoryGroupingTypes.remove(type);
-        } else {
-          _categoryGroupingTypes.add(type);
-        }
-        _categoryGroupingTypes.removeWhere((e) =>
-            e != enterprise &&
-            e != paymentFinalization &&
-            e != paymentModality);
-        break;
-      default:
-        if (_categoryGroupingTypes.contains(type)) {
-          _categoryGroupingTypes.remove(type);
-        } else {
-          _categoryGroupingTypes.add(type);
-        }
-        _categoryGroupingTypes.removeWhere((e) => e != enterprise && e != type);
-    }
+    _currentSelectedParams.value = oldParams?.copyWith(
+      groupByEnterprise: _isSelected(
+        type: type,
+        groupingValidating: CategoryGroupingType.enterprise,
+        selected: oldParams.groupByEnterprise == true,
+      ),
+      groupByProduct: _isSelected(
+        type: type,
+        groupingValidating: CategoryGroupingType.product,
+        selected: oldParams.groupByProduct == true,
+      ),
+      groupByCashierOperator: _isSelected(
+        type: type,
+        groupingValidating: CategoryGroupingType.cashierOperator,
+        selected: oldParams.groupByCashierOperator == true,
+      ),
+      groupBySeller: _isSelected(
+        type: type,
+        groupingValidating: CategoryGroupingType.seller,
+        selected: oldParams.groupBySeller == true,
+      ),
+      groupByPaymentFinalization: _isSelected(
+        type: type,
+        groupingValidating: CategoryGroupingType.paymentFinalization,
+        selected: oldParams.groupByPaymentFinalization == true,
+        doesntAffectCurrentValue: CategoryGroupingType.paymentModality,
+      ),
+      groupByPaymentModality: _isSelected(
+        type: type,
+        groupingValidating: CategoryGroupingType.paymentModality,
+        selected: oldParams.groupByPaymentModality == true,
+        doesntAffectCurrentValue: CategoryGroupingType.paymentFinalization,
+      ),
+      groupByProductDepartment: _isSelected(
+        type: type,
+        groupingValidating: CategoryGroupingType.productDepartment,
+        selected: oldParams.groupByProductSection == true,
+        doesntAffectCurrentValue: CategoryGroupingType.productSection,
+      ),
+      groupByProductSection: _isSelected(
+        type: type,
+        groupingValidating: CategoryGroupingType.productSection,
+        selected: oldParams.groupByProductSection == true,
+        doesntAffectCurrentValue: CategoryGroupingType.productDepartment,
+      ),
+    );
   }
 
   @override
   void changePeriodGroupingType(PeriodGroupingType type) {
-    if (_periodGroupingTypes == type) {
-      _periodGroupingTypes = null;
-    } else {
-      _periodGroupingTypes = type;
-    }
+    if (_currentSelectedParams.value == null) return;
+
+    final groupByYear = _currentSelectedParams.value?.groupByYear == true;
+    final groupByMonth = _currentSelectedParams.value?.groupByMonth == true;
+    final groupByDay = _currentSelectedParams.value?.groupByDay == true;
+    final groupByHour = _currentSelectedParams.value?.groupByHour == true;
+
+    _currentSelectedParams.value = _currentSelectedParams.value?.copyWith(
+      groupByYear: type == PeriodGroupingType.year && groupByYear == false,
+      groupByMonth: type == PeriodGroupingType.month && groupByMonth == false,
+      groupByDay: type == PeriodGroupingType.day && groupByDay == false,
+      groupByHour: type == PeriodGroupingType.hour && groupByHour == false,
+    );
   }
 
   @override
@@ -180,4 +207,9 @@ class GetxPersonalizedPresenter extends GetxController
   @override
   GetSaleStatisticsParams? get lastGetStatisticsParams =>
       _lastGetStatisticsParams.value;
+
+  final _currentSelectedParams = Rx<GetSaleStatisticsParams?>(null);
+  @override
+  GetSaleStatisticsParams? get currentSelectedParams =>
+      _currentSelectedParams.value;
 }
