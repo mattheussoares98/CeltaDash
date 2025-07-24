@@ -205,8 +205,6 @@ void main() {
           GetSaleStatisticsParams(
             startDate: startDate,
             endDate: endDate,
-            groupByEnterprise:
-                categorySelected == CategoryGroupingType.enterprise,
             groupByProduct: categorySelected == CategoryGroupingType.product,
             groupByProductDepartment:
                 categorySelected == CategoryGroupingType.productDepartment,
@@ -275,8 +273,6 @@ void main() {
             groupByMonth: selectedPeriod == PeriodGroupingType.month,
             groupByDay: selectedPeriod == PeriodGroupingType.day,
             groupByHour: selectedPeriod == PeriodGroupingType.hour,
-            groupByEnterprise:
-                selectedCategory == CategoryGroupingType.enterprise,
             groupByProduct: selectedCategory == CategoryGroupingType.product,
             groupByProductDepartment:
                 selectedCategory == CategoryGroupingType.productDepartment,
@@ -330,7 +326,6 @@ void main() {
   group("Change selected grouping type", () {
     test("Should update correctly", () {
       const cashierOperator = CategoryGroupingType.cashierOperator;
-      const enterprise = CategoryGroupingType.enterprise;
       const paymentFinalization = CategoryGroupingType.paymentFinalization;
       const paymentModality = CategoryGroupingType.paymentModality;
       const product = CategoryGroupingType.product;
@@ -340,41 +335,43 @@ void main() {
 
       sut.changeDateRange(startDate, endDate);
 
-      sut.changeCategoryGroupingType(enterprise);
-      expect(sut.currentSelectedParams?.groupByEnterprise, true);
-
+      //departments and sections
       sut.changeCategoryGroupingType(productDepartment);
-      expect(sut.currentSelectedParams?.groupByEnterprise, true);
       expect(sut.currentSelectedParams?.groupByProductDepartment, true);
 
       sut.changeCategoryGroupingType(productSection);
-      expect(sut.currentSelectedParams?.groupByEnterprise, true);
+      expect(sut.currentSelectedParams?.groupByProductDepartment, true);
       expect(sut.currentSelectedParams?.groupByProductSection, true);
 
-      sut.changeCategoryGroupingType(cashierOperator);
-      expect(sut.currentSelectedParams?.groupByEnterprise, true);
-      expect(sut.currentSelectedParams?.groupByCashierOperator, true);
+      sut.changeCategoryGroupingType(productDepartment);
+      expect(sut.currentSelectedParams?.groupByProductDepartment, false);
+      expect(sut.currentSelectedParams?.groupByProductSection, true);
 
+      //finalizations
       sut.changeCategoryGroupingType(paymentFinalization);
-      expect(sut.currentSelectedParams?.groupByEnterprise, true);
       expect(sut.currentSelectedParams?.groupByPaymentFinalization, true);
 
       sut.changeCategoryGroupingType(paymentModality);
-      expect(sut.currentSelectedParams?.groupByEnterprise, true);
+      expect(sut.currentSelectedParams?.groupByPaymentFinalization, true);
       expect(sut.currentSelectedParams?.groupByPaymentModality, true);
 
+      sut.changeCategoryGroupingType(paymentFinalization);
+      expect(sut.currentSelectedParams?.groupByPaymentFinalization, false);
+      expect(sut.currentSelectedParams?.groupByPaymentModality, true);
+
+      //anothers
+      sut.changeCategoryGroupingType(cashierOperator);
+      expect(sut.currentSelectedParams?.groupByCashierOperator, true);
+      sut.changeCategoryGroupingType(cashierOperator);
+      expect(sut.currentSelectedParams?.groupByCashierOperator, false);
+
       sut.changeCategoryGroupingType(product);
-      expect(sut.currentSelectedParams?.groupByEnterprise, true);
       expect(sut.currentSelectedParams?.groupByProduct, true);
+      sut.changeCategoryGroupingType(product);
+      expect(sut.currentSelectedParams?.groupByProduct, false);
 
       sut.changeCategoryGroupingType(seller);
-      expect(sut.currentSelectedParams?.groupByEnterprise, true);
       expect(sut.currentSelectedParams?.groupBySeller, true);
-
-      sut.changeCategoryGroupingType(enterprise);
-      expect(sut.currentSelectedParams?.groupByEnterprise, false);
-      expect(sut.currentSelectedParams?.groupBySeller, true);
-
       sut.changeCategoryGroupingType(seller);
       expect(sut.currentSelectedParams?.groupBySeller, false);
     });

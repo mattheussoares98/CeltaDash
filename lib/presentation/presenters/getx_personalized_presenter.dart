@@ -85,23 +85,12 @@ class GetxPersonalizedPresenter extends GetxController
     required bool selected,
     CategoryGroupingType? doesntAffectCurrentValue,
   }) {
-    // If the clicked button corresponds to the property being validated, toggle its value.
     if (type == groupingValidating) {
       return !selected;
-    }
-
-    // The 'enterprise' grouping acts like a checkbox, independent of others.
-    // We check if the property being updated is 'enterprise' OR if 'enterprise' was the one clicked.
-    final bool isEnterpriseInvolved =
-        groupingValidating == CategoryGroupingType.enterprise ||
-            type == CategoryGroupingType.enterprise;
-
-    // Preserve the current state if enterprise is involved or if it's a paired exclusion.
-    if (isEnterpriseInvolved || type == doesntAffectCurrentValue) {
+    } else if (type == doesntAffectCurrentValue) {
       return selected;
     }
 
-    // For any other case, deselect the property (radio-button-like behavior).
     return false;
   }
 
@@ -112,11 +101,6 @@ class GetxPersonalizedPresenter extends GetxController
     final oldParams = _currentSelectedParams.value;
 
     _currentSelectedParams.value = oldParams?.copyWith(
-      groupByEnterprise: _isSelected(
-        type: type,
-        groupingValidating: CategoryGroupingType.enterprise,
-        selected: oldParams.groupByEnterprise == true,
-      ),
       groupByProduct: _isSelected(
         type: type,
         groupingValidating: CategoryGroupingType.product,
@@ -147,7 +131,7 @@ class GetxPersonalizedPresenter extends GetxController
       groupByProductDepartment: _isSelected(
         type: type,
         groupingValidating: CategoryGroupingType.productDepartment,
-        selected: oldParams.groupByProductSection == true,
+        selected: oldParams.groupByProductDepartment == true,
         doesntAffectCurrentValue: CategoryGroupingType.productSection,
       ),
       groupByProductSection: _isSelected(

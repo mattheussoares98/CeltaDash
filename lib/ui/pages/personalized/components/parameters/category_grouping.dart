@@ -18,8 +18,6 @@ class _CategoryGroupingState extends State<CategoryGrouping> {
     final personalizedPresenter = Get.find<PersonalizedPresenter>();
     final params = personalizedPresenter.currentSelectedParams;
     switch (type) {
-      case CategoryGroupingType.enterprise:
-        return params?.groupByEnterprise == true;
       case CategoryGroupingType.product:
         return params?.groupByProduct == true;
       case CategoryGroupingType.cashierOperator:

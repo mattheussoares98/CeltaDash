@@ -17,11 +17,6 @@ class PersonalizedPieTitle extends StatelessWidget {
     final params = presenter.lastGetStatisticsParams;
     for (var category in CategoryGroupingType.values) {
       switch (category) {
-        case CategoryGroupingType.enterprise:
-          if (params?.groupByEnterprise == true) {
-            selectedCategories.add(sale.EnterpriseFantasyName ?? "");
-          }
-          break;
         case CategoryGroupingType.product:
           if (params?.groupByProduct == true) {
             selectedCategories.add(sale.Product ?? "");

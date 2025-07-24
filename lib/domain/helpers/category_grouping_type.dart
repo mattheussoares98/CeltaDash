@@ -2,7 +2,6 @@ import '../../ui/helpers/helpers.dart';
 import '../usecases/usecases.dart';
 
 enum CategoryGroupingType {
-  enterprise,
   cashierOperator,
   paymentFinalization,
   paymentModality,
@@ -17,8 +16,6 @@ extension CategoryGroupingTypeExtension on CategoryGroupingType {
     switch (this) {
       case CategoryGroupingType.cashierOperator:
         return R.string.operator;
-      case CategoryGroupingType.enterprise:
-        return R.string.enterprise;
       case CategoryGroupingType.paymentFinalization:
         return R.string.finalization;
       case CategoryGroupingType.paymentModality:
@@ -38,8 +35,6 @@ extension CategoryGroupingTypeExtension on CategoryGroupingType {
 extension SaleStatisticsCategoryGrouping on GetSaleStatisticsParams {
   bool isCategoryGroupingSelected(CategoryGroupingType type) {
     switch (type) {
-      case CategoryGroupingType.enterprise:
-        return groupByEnterprise ?? false;
       case CategoryGroupingType.product:
         return groupByProduct ?? false;
       case CategoryGroupingType.productSection:
