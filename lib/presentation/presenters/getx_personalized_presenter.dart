@@ -178,26 +178,15 @@ class GetxPersonalizedPresenter extends GetxController
 
   @override
   void selectAllEnterprises() {
-    _enterprisesIds =
-        homePresenter.enterprises?.map((e) => e.id!.toInt()).toList() ?? [];
+    if (_currentSelectedParams.value == null) {
+      return;
+    } //TODO test this and anothers values that must add the date range first
+
+    _currentSelectedParams.value = _currentSelectedParams.value?.copyWith(
+      enterpriseIds:
+          homePresenter.enterprises?.map((e) => e.id!.toInt()).toList() ?? [],
+    );
   }
-
-  DateTime? _endDate;
-  @override
-  DateTime? get endDate => _endDate;
-
-  DateTime? _startDate;
-  @override
-  DateTime? get startDate => _startDate;
-
-  List<int> _enterprisesIds = [];
-  @override
-  List<int> get enterprisesIds => _enterprisesIds;
-
-  final List<CategoryGroupingType> _categoryGroupingTypes = [];
-  @override
-  List<CategoryGroupingType> get categoryGroupingTypes =>
-      _categoryGroupingTypes;
 
   PeriodGroupingType? _periodGroupingTypes;
   @override

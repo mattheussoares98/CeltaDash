@@ -288,8 +288,7 @@ void main() {
                 selectedCategory == CategoryGroupingType.paymentModality,
             groupByCashierOperator:
                 selectedCategory == CategoryGroupingType.cashierOperator,
-            groupBySeller:
-                sut.categoryGroupingTypes.contains(CategoryGroupingType.seller),
+            groupBySeller: selectedCategory == CategoryGroupingType.seller,
             // topCount: false,
           ));
     });
@@ -401,12 +400,13 @@ void main() {
 
   group("Select all enterprises", () {
     test("Should select all enterprises", () {
+      sut.changeDateRange(startDate, endDate);
       sut.selectAllEnterprises();
       sut.selectAllEnterprises();
       sut.selectAllEnterprises();
 
       expect(
-        sut.enterprisesIds,
+        sut.currentSelectedParams?.enterpriseIds,
         homePresenter.enterprisesMock!.map((e) => e.id!.toInt()).toList(),
       );
     });

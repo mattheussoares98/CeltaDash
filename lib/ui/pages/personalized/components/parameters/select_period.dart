@@ -20,9 +20,10 @@ class _SelectPeriodState extends State<SelectPeriod> {
 
     final now = DateTime.now();
     final backgroundColor = Theme.of(context).primaryColor.withAlpha(50);
-    final selectedDateTimeRange = presenter.startDate != null &&
-            presenter.endDate != null
-        ? DateTimeRange(start: presenter.startDate!, end: presenter.endDate!)
+    final startDate = presenter.currentSelectedParams?.startDate;
+    final endDate = presenter.currentSelectedParams?.endDate;
+    final selectedDateTimeRange = startDate != null && endDate != null
+        ? DateTimeRange(start: startDate, end: endDate)
         : null;
 
     return Container(

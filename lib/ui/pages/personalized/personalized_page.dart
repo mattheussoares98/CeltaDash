@@ -80,8 +80,8 @@ class _PersonalizedPageState extends State<PersonalizedPage>
                 ],
               ),
             ),
-            if (widget.presenter.startDate != null &&
-                widget.presenter.endDate != null)
+            if (widget.presenter.currentSelectedParams?.startDate != null &&
+                widget.presenter.currentSelectedParams?.endDate != null)
               Container(
                 decoration: ContainerDecoration.defaultDecoration,
                 padding: const EdgeInsets.all(8),
@@ -90,10 +90,10 @@ class _PersonalizedPageState extends State<PersonalizedPage>
                     Builder(
                       builder: (context) {
                         final formatter = DateFormat.yMd("pt_BR");
-                        final startDate =
-                            formatter.format(widget.presenter.startDate!);
-                        final endDate =
-                            formatter.format(widget.presenter.endDate!);
+                        final startDate = formatter.format(
+                            widget.presenter.currentSelectedParams!.startDate);
+                        final endDate = formatter.format(
+                            widget.presenter.currentSelectedParams!.endDate);
 
                         return Text("$startDate ~ $endDate");
                       },

@@ -30,7 +30,9 @@ class _EnterprisesState extends State<Enterprises> {
                 icon: Icon(
                     Platform.isIOS ? CupertinoIcons.check_mark : Icons.check),
                 onPressed: (homePresenter.enterprises?.length ?? 0) ==
-                        personzalizedPresenter.enterprisesIds.length
+                        (personzalizedPresenter
+                                .currentSelectedParams?.enterpriseIds?.length ??
+                            0)
                     ? null
                     : () {
                         setState(() {
@@ -47,8 +49,9 @@ class _EnterprisesState extends State<Enterprises> {
           .map(
             (e) => CheckBoxItem(
               title: "${e.personalizedCode} - ${e.name}",
-              value: personzalizedPresenter.enterprisesIds
-                  .any((x) => e.id!.toInt() == x),
+              value: personzalizedPresenter.currentSelectedParams?.enterpriseIds
+                      ?.any((x) => e.id!.toInt() == x) ??
+                  false,
               onTap: () {
                 setState(() {
                   personzalizedPresenter.changeEnterpriseIds(e.id!.toInt());
