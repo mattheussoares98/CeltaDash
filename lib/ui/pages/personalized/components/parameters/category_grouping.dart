@@ -37,12 +37,24 @@ class _CategoryGroupingState extends State<CategoryGrouping> {
     }
   }
 
+  String getSelectedsCategories() {
+    final params = Get.find<PersonalizedPresenter>().currentSelectedParams;
+    if (params == null) return "";
+
+    final selectedCategories = CategoryGroupingType.values
+        .where((type) => params.isCategoryGroupingSelected(type));
+
+    return selectedCategories.map((type) => type.name).join(", ");
+  }
+
   @override
   Widget build(BuildContext context) {
     final personalizedPresenter = Get.find<PersonalizedPresenter>();
+    final selecteds = getSelectedsCategories();
 
     return DefaultExpansionTile(
-      title: R.string.anothersGroupings,
+      title:
+          "${R.string.groupCategory} ${selecteds.isEmpty ? "" : '($selecteds)'}",
       children: CategoryGroupingType.values
           .map(
             (e) => CheckBoxItem(

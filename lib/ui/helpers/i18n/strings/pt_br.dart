@@ -98,7 +98,8 @@ class PtBr implements Translation {
   String get generate => "Gerar";
   String get goalHistory => "Histórico de metas";
   String get grossMargin => "Margem bruta";
-  String get groupPeriod => "Agrupar por período";
+  String get groupCategory => "Agrupar categoria";
+  String get groupPeriod => "Agrupar período";
   String get grossProfit => "Lucro bruto";
   String get groupOfStores => "Grupo de lojas";
   String get groupSummary => "Resumo do grupo";

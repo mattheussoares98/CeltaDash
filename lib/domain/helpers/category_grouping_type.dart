@@ -1,4 +1,5 @@
 import '../../ui/helpers/helpers.dart';
+import '../usecases/usecases.dart';
 
 enum CategoryGroupingType {
   enterprise,
@@ -30,6 +31,29 @@ extension CategoryGroupingTypeExtension on CategoryGroupingType {
         return R.string.section;
       case CategoryGroupingType.seller:
         return R.string.seller;
+    }
+  }
+}
+
+extension SaleStatisticsParamsGrouping on GetSaleStatisticsParams {
+  bool isCategoryGroupingSelected(CategoryGroupingType type) {
+    switch (type) {
+      case CategoryGroupingType.enterprise:
+        return groupByEnterprise ?? false;
+      case CategoryGroupingType.product:
+        return groupByProduct ?? false;
+      case CategoryGroupingType.productSection:
+        return groupByProductSection ?? false;
+      case CategoryGroupingType.paymentFinalization:
+        return groupByPaymentFinalization ?? false;
+      case CategoryGroupingType.paymentModality:
+        return groupByPaymentModality ?? false;
+      case CategoryGroupingType.cashierOperator:
+        return groupByCashierOperator ?? false;
+      case CategoryGroupingType.seller:
+        return groupBySeller ?? false;
+      case CategoryGroupingType.productDepartment:
+        return groupByProductDepartment ?? false;
     }
   }
 }
