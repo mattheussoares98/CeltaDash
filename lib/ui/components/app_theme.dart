@@ -86,7 +86,8 @@ ThemeData makeAppTheme(BuildContext context) {
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(width: 1, color: CupertinoColors.systemGrey4),
+      borderSide:
+          const BorderSide(width: 1, color: CupertinoColors.systemGrey4),
     ),
     focusedErrorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
@@ -173,5 +174,6 @@ ThemeData makeAppTheme(BuildContext context) {
                     IsDarkTheme.isDark ? primaryColorLight : primaryColorDark),
           ),
     useMaterial3: true,
+    iconTheme: const IconThemeData(color: primaryColorDark),
   );
 }
