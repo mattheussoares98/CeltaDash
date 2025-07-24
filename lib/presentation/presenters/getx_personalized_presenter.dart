@@ -180,7 +180,7 @@ class GetxPersonalizedPresenter extends GetxController
   void selectAllEnterprises() {
     if (_currentSelectedParams.value == null) {
       return;
-    } //TODO test this and anothers values that must add the date range first
+    }
 
     _currentSelectedParams.value = _currentSelectedParams.value?.copyWith(
       enterpriseIds:

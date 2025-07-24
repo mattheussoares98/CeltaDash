@@ -53,64 +53,63 @@ class _PersonalizedPageState extends State<PersonalizedPage>
 
     return Scaffold(
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Card(
-              child: ExpansionTile(
-                controller: controller,
-                initiallyExpanded: true,
-                title: Text(
-                  R.string.parameters,
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-                dense: true,
-                expansionAnimationStyle: AnimationStyle.lerp(
-                  const AnimationStyle(curve: Curves.linear),
-                  const AnimationStyle(curve: Curves.bounceInOut),
-                  2,
-                ),
-                visualDensity: VisualDensity.compact,
-                children: [
-                  const SelectPeriod(),
-                  const Enterprises(),
-                  const PeriodGrouping(),
-                  const CategoryGrouping(),
-                  GenerateButton(controller: controller),
-                ],
-              ),
-            ),
-            if (widget.presenter.currentSelectedParams?.startDate != null &&
-                widget.presenter.currentSelectedParams?.endDate != null)
-              Container(
-                decoration: ContainerDecoration.defaultDecoration,
-                padding: const EdgeInsets.all(8),
-                child: Column(
-                  children: [
-                    Builder(
-                      builder: (context) {
-                        final formatter = DateFormat.yMd("pt_BR");
-                        final startDate = formatter.format(
-                            widget.presenter.currentSelectedParams!.startDate);
-                        final endDate = formatter.format(
-                            widget.presenter.currentSelectedParams!.endDate);
+        child: Obx(() {
+          final startDate = widget.presenter.currentSelectedParams?.startDate;
+          final endDate = widget.presenter.currentSelectedParams?.endDate;
 
-                        return Text("$startDate ~ $endDate");
-                      },
-                    ),
-                    if (selectedPeriodGroupingType != null)
-                      Text(selectedPeriodGroupingType.name),
-                    if (selectedCategoryGroupingType != null)
-                      Text(selectedCategoryGroupingType.name),
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Card(
+                child: ExpansionTile(
+                  controller: controller,
+                  initiallyExpanded: true,
+                  title: Text(
+                    R.string.parameters,
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                  dense: true,
+                  expansionAnimationStyle: AnimationStyle.lerp(
+                    const AnimationStyle(curve: Curves.linear),
+                    const AnimationStyle(curve: Curves.bounceInOut),
+                    2,
+                  ),
+                  visualDensity: VisualDensity.compact,
+                  children: [
+                    const SelectPeriod(),
+                    if (startDate != null && endDate != null) ...[
+                      const Enterprises(),
+                      const PeriodGrouping(),
+                      const CategoryGrouping(),
+                      GenerateButton(controller: controller),
+                    ]
                   ],
                 ),
               ),
-            PersonalizedPieChart(
-              selectedCategoryGroupingType: selectedCategoryGroupingType,
-              selectedPeriodGroupingType: selectedPeriodGroupingType,
-            ),
-          ],
-        ),
+              if (startDate != null && endDate != null)
+                Container(
+                  decoration: ContainerDecoration.defaultDecoration,
+                  padding: const EdgeInsets.all(8),
+                  child: Column(
+                    children: [
+                      Builder(
+                        builder: (context) {
+                          final formatter = DateFormat.yMd("pt_BR");
+
+                          return Text(
+                              "${formatter.format(startDate)} ~ ${formatter.format(endDate)}");
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              PersonalizedPieChart(
+                selectedCategoryGroupingType: selectedCategoryGroupingType,
+                selectedPeriodGroupingType: selectedPeriodGroupingType,
+              ),
+            ],
+          );
+        }),
       ),
     );
   }
