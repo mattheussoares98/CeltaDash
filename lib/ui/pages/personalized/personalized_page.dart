@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../../../domain/helpers/helpers.dart';
 import '../../helpers/helpers.dart';
 import '../../mixins/mixins.dart';
 import '../pages.dart';
@@ -45,11 +44,6 @@ class _PersonalizedPageState extends State<PersonalizedPage>
   @override
   Widget build(BuildContext context) {
     Get.put<PersonalizedPresenter>(widget.presenter);
-
-    final selectedCategoryGroupingType =
-        _selectedCategoryGrouping(widget.presenter);
-    final selectedPeriodGroupingType =
-        _selectedPeriodGrouping(widget.presenter);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -103,56 +97,11 @@ class _PersonalizedPageState extends State<PersonalizedPage>
                     ],
                   ),
                 ),
-              PersonalizedPieChart(
-                selectedCategoryGroupingType: selectedCategoryGroupingType,
-                selectedPeriodGroupingType: selectedPeriodGroupingType,
-              ),
+              const PersonalizedPieChart(),
             ],
           );
         }),
       ),
     );
   }
-}
-
-CategoryGroupingType? _selectedCategoryGrouping(
-  PersonalizedPresenter presenter,
-) {
-  if (presenter.lastGetStatisticsParams?.groupByCashierOperator == true) {
-    return CategoryGroupingType.cashierOperator;
-  } else if (presenter.lastGetStatisticsParams?.groupByPaymentFinalization ==
-      true) {
-    return CategoryGroupingType.paymentFinalization;
-  } else if (presenter.lastGetStatisticsParams?.groupByPaymentModality ==
-      true) {
-    return CategoryGroupingType.paymentModality;
-  } else if (presenter.lastGetStatisticsParams?.groupByProduct == true) {
-    return CategoryGroupingType.product;
-  } else if (presenter.lastGetStatisticsParams?.groupByProductSection == true) {
-    return CategoryGroupingType.productSection;
-  } else if (presenter.lastGetStatisticsParams?.groupByProductDepartment ==
-      true) {
-    return CategoryGroupingType.productDepartment;
-  } else if (presenter.lastGetStatisticsParams?.groupBySeller == true) {
-    return CategoryGroupingType.seller;
-  } else if (presenter.lastGetStatisticsParams?.groupByEnterprise == true) {
-    return CategoryGroupingType.enterprise;
-  }
-
-  return null;
-}
-
-PeriodGroupingType? _selectedPeriodGrouping(
-  PersonalizedPresenter presenter,
-) {
-  if (presenter.lastGetStatisticsParams?.groupByHour == true) {
-    return PeriodGroupingType.hour;
-  } else if (presenter.lastGetStatisticsParams?.groupByDay == true) {
-    return PeriodGroupingType.day;
-  } else if (presenter.lastGetStatisticsParams?.groupByMonth == true) {
-    return PeriodGroupingType.month;
-  } else if (presenter.lastGetStatisticsParams?.groupByYear == true) {
-    return PeriodGroupingType.year;
-  }
-  return null;
 }

@@ -1,20 +1,13 @@
-import 'package:celta_dash/ui/helpers/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../../domain/helpers/helpers.dart';
+import '../../../../../ui/helpers/helpers.dart';
 import '../../../../components/components.dart';
 import '../../../pages.dart';
 import 'pie.dart';
 
 class PersonalizedPieChart extends StatelessWidget {
-  final CategoryGroupingType? selectedCategoryGroupingType;
-  final PeriodGroupingType? selectedPeriodGroupingType;
-  const PersonalizedPieChart({
-    super.key,
-    required this.selectedCategoryGroupingType,
-    required this.selectedPeriodGroupingType,
-  });
+  const PersonalizedPieChart({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,11 +36,7 @@ class PersonalizedPieChart extends StatelessWidget {
             ...topFour.map(
               (e) => PieParameter(
                 value: e.LiquidValue?.toDouble() ?? 0,
-                title: PersonalizedPieTitle(
-                  sale: e,
-                  selectedCategoryGroupingType: selectedCategoryGroupingType,
-                  selectedPeriodGroupingType: selectedPeriodGroupingType,
-                ),
+                title: PersonalizedPieTitle(sale: e),
                 subtitle: Text(e.LiquidValue?.toString()
                         .toBrazilianNumber()
                         .addBrazilianCoin() ??
