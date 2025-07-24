@@ -19,28 +19,42 @@ class _EnterprisesState extends State<Enterprises> {
   @override
   Widget build(BuildContext context) {
     final homePresenter = Get.find<HomePresenter>();
-    final personzalizedPresenter = Get.find<PersonalizedPresenter>();
+    final personalizedPresenter = Get.find<PersonalizedPresenter>();
+    final totalQuantity = homePresenter.enterprises?.length ?? 0;
+    int selectedsQuantity = (personalizedPresenter
+                    .currentSelectedParams?.enterpriseIds?.length ??
+                0) ==
+            0
+        ? totalQuantity
+        : personalizedPresenter.currentSelectedParams?.enterpriseIds?.length ??
+            0;
 
     return DefaultExpansionTile(
-      title: R.string.enterprises,
-      itemAboveChildren: (homePresenter.enterprises?.length ?? 0) > 2
+      title: "${R.string.enterprises} ($selectedsQuantity/$totalQuantity)",
+      itemAboveChildren: totalQuantity > 1
           ? Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: TextButton.icon(
-                icon: Icon(
-                    Platform.isIOS ? CupertinoIcons.check_mark : Icons.check),
-                onPressed: (homePresenter.enterprises?.length ?? 0) ==
-                        (personzalizedPresenter
-                                .currentSelectedParams?.enterpriseIds?.length ??
-                            0)
-                    ? null
-                    : () {
-                        setState(() {
-                          personzalizedPresenter.selectAllEnterprises();
-                        });
-                      },
-                label: Text(
-                  R.string.selectAllEnterprises,
+              padding: const EdgeInsets.only(bottom: 8, left: 24, right: 24),
+              child: RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  style: Theme.of(context).textTheme.bodySmall,
+                  children: [
+                    TextSpan(
+                      text: R
+                          .string.msgReturnAllEnterprisesWhenNoOneIsNotSelected,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    WidgetSpan(
+                      alignment: PlaceholderAlignment.middle,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 6),
+                        child: Icon(
+                          Platform.isIOS ? CupertinoIcons.info : Icons.info,
+                          size: 16,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             )
@@ -49,12 +63,12 @@ class _EnterprisesState extends State<Enterprises> {
           .map(
             (e) => CheckBoxItem(
               title: "${e.personalizedCode} - ${e.name}",
-              value: personzalizedPresenter.currentSelectedParams?.enterpriseIds
+              value: personalizedPresenter.currentSelectedParams?.enterpriseIds
                       ?.any((x) => e.id!.toInt() == x) ??
                   false,
               onTap: () {
                 setState(() {
-                  personzalizedPresenter.changeEnterpriseIds(e.id!.toInt());
+                  personalizedPresenter.changeEnterpriseIds(e.id!.toInt());
                 });
               },
             ),

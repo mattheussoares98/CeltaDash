@@ -23,6 +23,8 @@ class PtBr implements Translation {
   String get msgNoSalesWereFound => "Nenhuma venda foi encontrada";
   String get msgReallyWantLogout => "Deseja realmente sair?";
   String get msgRequiredField => "Campo obrigatório";
+  String get msgReturnAllEnterprisesWhenNoOneIsNotSelected =>
+      "Se não selecionar alguma, todas as empresas serão consideradas";
   String get msgSameUrl => "As URLs devem ser diferentes";
   String get msgSelectPeriod => "Selecione o período";
   String get msgUnexpectedError => "Ocorreu um erro não esperado";
