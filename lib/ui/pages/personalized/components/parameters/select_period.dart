@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -25,48 +27,38 @@ class _SelectPeriodState extends State<SelectPeriod> {
     final selectedDateTimeRange = startDate != null && endDate != null
         ? DateTimeRange(start: startDate, end: endDate)
         : null;
-    final theme = Theme.of(context);
 
-    return Container(
-      color: theme.disabledColor.withAlpha(70),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 20),
-              child: Text(
-                R.string.period,
-                style: theme.textTheme.bodyMedium,
-              ),
+    return Row(
+      children: [
+        Expanded(
+          child: ElevatedButton.icon(
+            icon: Icon(
+              Platform.isIOS ? Icons.calendar_today : Icons.date_range_outlined,
             ),
-            Expanded(
-              child: ElevatedButton(
-                onPressed: () async {
-                  final DateTimeRange? pickedRange = await showDateRangePicker(
-                    locale: const Locale('pt', 'BR'),
-                    context: context,
-                    firstDate: now.subtract(const Duration(days: 365 * 3)),
-                    lastDate: now,
-                    initialDateRange: selectedDateTimeRange,
+            iconAlignment: IconAlignment.end,
+            label: _ButtonText(selectedDateRange: selectedDateTimeRange),
+            onPressed: () async {
+              final DateTimeRange? pickedRange = await showDateRangePicker(
+                locale: const Locale('pt', 'BR'),
+                context: context,
+                firstDate: now.subtract(const Duration(days: 365 * 3)),
+                lastDate: now,
+                initialDateRange: selectedDateTimeRange,
+              );
+
+              if (pickedRange != null) {
+                setState(() {
+                  presenter.changeDateRange(
+                    pickedRange.start,
+                    pickedRange.end,
                   );
-
-                  if (pickedRange != null) {
-                    setState(() {
-                      presenter.changeDateRange(
-                        pickedRange.start,
-                        pickedRange.end,
-                      );
-                    });
-                    widget.enterprisesController.expand();
-                  }
-                },
-                child: _ButtonText(selectedDateRange: selectedDateTimeRange),
-              ),
-            ),
-          ],
+                });
+                widget.enterprisesController.expand();
+              }
+            },
+          ),
         ),
-      ),
+      ],
     );
   }
 }
@@ -81,9 +73,9 @@ class _ButtonText extends StatelessWidget {
       final formatter = DateFormat.yMd("pt_BR");
 
       return Text(
-          "${formatter.format(selectedDateRange!.start)} ~ ${formatter.format(selectedDateRange!.end)}");
+          "${R.string.period} ${formatter.format(selectedDateRange!.start)} ~ ${formatter.format(selectedDateRange!.end)}");
     }
 
-    return Text(R.string.select);
+    return Text(R.string.msgSelectPeriod);
   }
 }
