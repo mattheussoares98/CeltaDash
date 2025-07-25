@@ -4,6 +4,7 @@ import '../../data/models/models.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
+import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
 import '../../ui/services/services.dart';
 import '../mixins/mixins.dart';
@@ -25,12 +26,27 @@ class GetxPersonalizedPresenter extends GetxController
     isLoading = true;
     mainError = null;
     try {
-      if (_currentSelectedParams.value?.startDate == null ||
-          _currentSelectedParams.value?.endDate == null) {
+      final params = _currentSelectedParams.value;
+
+      if (params?.startDate == null || params?.endDate == null) {
         throw DomainError.selectPeriod;
-      } else if (_currentSelectedParams.value?.enterpriseIds == null ||
-          _currentSelectedParams.value!.enterpriseIds!.isEmpty) {
+      } else if (params?.enterpriseIds == null ||
+          params!.enterpriseIds!.isEmpty) {
         throw DomainError.selectEnterprise;
+      }
+
+      final difference = params.endDate.difference(params.startDate).inDays;
+
+      //short periods
+      if (params.groupByYear == true && difference < 366 ||
+          params.groupByMonth == true && difference < 32) {
+        mainError = UIError.custom(R.string.msgShortIntervalToGroupThisPeriod);
+        return false;
+      } //large periods
+      else if (params.groupByHour == true && difference > 3 ||
+          params.groupByDay == true && difference > 60) {
+        mainError = UIError.custom(R.string.msgLongIntervalToGroupThisPeriod);
+        return false;
       }
 
       final sales = await loadSaleStatistics.get(_currentSelectedParams.value!);
@@ -139,32 +155,15 @@ class GetxPersonalizedPresenter extends GetxController
   }
 
   @override
-  bool changePeriodGroupingType(PeriodGroupingType type) {
-    if (_currentSelectedParams.value == null) return false;
+  void changePeriodGroupingType(PeriodGroupingType type) {
+    if (_currentSelectedParams.value == null) return;
 
-    final start = _currentSelectedParams.value?.startDate;
-    final end = _currentSelectedParams.value?.endDate;
-    int difference =
-        start == null || end == null ? 0 : end.difference(start).inDays;
-
-    try {
-      mainError = null;
-      if (type == PeriodGroupingType.year && difference < 366 ||
-          type == PeriodGroupingType.month && difference < 32) {
-        throw DomainError.shortPeriodSelected;
-      }
-
-      _currentSelectedParams.value = _currentSelectedParams.value?.copyWith(
-        groupByYear: type == PeriodGroupingType.year,
-        groupByMonth: type == PeriodGroupingType.month,
-        groupByDay: type == PeriodGroupingType.day,
-        groupByHour: type == PeriodGroupingType.hour,
-      );
-      return true;
-    } catch (e) {
-      mainError = getUIError(e);
-      return false;
-    }
+    _currentSelectedParams.value = _currentSelectedParams.value?.copyWith(
+      groupByYear: type == PeriodGroupingType.year,
+      groupByMonth: type == PeriodGroupingType.month,
+      groupByDay: type == PeriodGroupingType.day,
+      groupByHour: type == PeriodGroupingType.hour,
+    );
   }
 
   PeriodGroupingType? _periodGroupingTypes;

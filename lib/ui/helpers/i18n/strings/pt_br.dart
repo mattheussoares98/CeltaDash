@@ -17,6 +17,8 @@ class PtBr implements Translation {
   String get msgInvalidEmail => "E-mail inválido";
   String get msgInvalidField => "Campo inválido";
   String get msgInvalidUrl => "URL inválida";
+  String get msgLongIntervalToGroupThisPeriod =>
+      "Invervalo muito longo para agrupar este período";
   String get msgNewAppRequiredVersion => "Nova atualização necessária";
   String get msgNewUpdateDescription =>
       "Por favor, atualize a versão do aplicativo para continuar usando. Obrigado!";
@@ -27,6 +29,8 @@ class PtBr implements Translation {
       "Se não selecionar alguma, todas as empresas serão consideradas";
   String get msgSameUrl => "As URLs devem ser diferentes";
   String get msgSelectPeriod => "Selecione o período";
+  String get msgShortIntervalToGroupThisPeriod =>
+      "Intervalo muito curto para agrupar este período";
   String get msgShortPeriodSelected => "Selecione um período maior";
   String get msgUnexpectedError => "Ocorreu um erro não esperado";
   String get msgUpdateCeltaBs => "Atualize o CeltaBS!";

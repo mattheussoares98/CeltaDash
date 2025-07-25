@@ -8,6 +8,7 @@ abstract class Translation {
   String get msgInvalidEmail;
   String get msgInvalidField;
   String get msgInvalidUrl;
+  String get msgLongIntervalToGroupThisPeriod;
   String get msgNewAppRequiredVersion;
   String get msgNewUpdateDescription;
   String get msgNoSalesWereFound;
@@ -16,6 +17,7 @@ abstract class Translation {
   String get msgReturnAllEnterprisesWhenNoOneIsNotSelected;
   String get msgSameUrl;
   String get msgSelectPeriod;
+  String get msgShortIntervalToGroupThisPeriod;
   String get msgShortPeriodSelected;
   String get msgUnexpectedError;
   String get msgUpdateCeltaBs;

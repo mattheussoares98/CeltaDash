@@ -57,11 +57,9 @@ class _PeriodGroupingState extends State<PeriodGrouping> {
               groupValue: selectedPeriod,
               title: Text(e.name),
               onChanged: (_) {
-                bool result = false;
                 setState(() {
-                  result = personalizedPresenter.changePeriodGroupingType(e);
+                  personalizedPresenter.changePeriodGroupingType(e);
                 });
-                if (result == false) return;
                 widget.collapseAll(false);
                 widget.categoriesController.expand();
               },

@@ -99,6 +99,67 @@ void main() {
 
       await sut.getSales();
     });
+    test("Should emit correct values on select LARGE interval to group by hour",
+        () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(
+          sut.mainErrorStream,
+          emitsInOrder(
+            [null, UIError.custom(R.string.msgLongIntervalToGroupThisPeriod)],
+          ));
+
+      sut.changeDateRange(startDate, startDate.add(const Duration(days: 4)));
+      sut.changeSelectedEnterprise(enterpriseId);
+      sut.changePeriodGroupingType(PeriodGroupingType.hour);
+
+      await sut.getSales();
+    });
+    test("Should emit correct values on select LARGE interval to group by day",
+        () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(
+          sut.mainErrorStream,
+          emitsInOrder(
+            [null, UIError.custom(R.string.msgLongIntervalToGroupThisPeriod)],
+          ));
+
+      sut.changeDateRange(startDate, startDate.add(const Duration(days: 61)));
+      sut.changeSelectedEnterprise(enterpriseId);
+      sut.changePeriodGroupingType(PeriodGroupingType.day);
+
+      await sut.getSales();
+    });
+    test("Should emit correct values on select SHORT interval to group by year",
+        () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(
+          sut.mainErrorStream,
+          emitsInOrder(
+            [null, UIError.custom(R.string.msgShortIntervalToGroupThisPeriod)],
+          ));
+
+      sut.changeDateRange(startDate, startDate.add(const Duration(days: 365)));
+      sut.changeSelectedEnterprise(enterpriseId);
+      sut.changePeriodGroupingType(PeriodGroupingType.year);
+
+      await sut.getSales();
+    });
+    test(
+        "Should emit correct values on select SHORT interval to group by month",
+        () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(
+          sut.mainErrorStream,
+          emitsInOrder(
+            [null, UIError.custom(R.string.msgShortIntervalToGroupThisPeriod)],
+          ));
+
+      sut.changeDateRange(startDate, startDate.add(const Duration(days: 31)));
+      sut.changeSelectedEnterprise(enterpriseId);
+      sut.changePeriodGroupingType(PeriodGroupingType.month);
+
+      await sut.getSales();
+    });
     test("Should emit correct values on error", () async {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(
@@ -396,46 +457,6 @@ void main() {
   });
 
   group("Change period grouping type", () {
-    group("Select year", () {
-      test("Should emit correct error when select <= 365 days", () {
-        sut.changeDateRange(
-            startDate, startDate.add(const Duration(days: 365)));
-
-        expectLater(
-          sut.mainErrorStream,
-          emitsInOrder([null, UIError.shortPeriodSelected]),
-        );
-
-        sut.changePeriodGroupingType(PeriodGroupingType.year);
-      });
-      test("Should emit correct values when select > 365 days", () {
-        sut.changeDateRange(
-            startDate, startDate.add(const Duration(days: 366)));
-
-        expectLater(sut.mainErrorStream, emits(null));
-
-        sut.changePeriodGroupingType(PeriodGroupingType.year);
-      });
-    });
-    group("Select month", () {
-      test("Should emit correct error when select <= 31 days", () {
-        sut.changeDateRange(startDate, startDate.add(const Duration(days: 31)));
-
-        expectLater(
-          sut.mainErrorStream,
-          emitsInOrder([null, UIError.shortPeriodSelected]),
-        );
-
-        sut.changePeriodGroupingType(PeriodGroupingType.month);
-      });
-      test("Should emit correct values when select > 32 days", () {
-        sut.changeDateRange(startDate, startDate.add(const Duration(days: 32)));
-
-        expectLater(sut.mainErrorStream, emits(null));
-
-        sut.changePeriodGroupingType(PeriodGroupingType.month);
-      });
-    });
     test("Should update correctly", () {
       sut.changeDateRange(startDate, endDate);
 
@@ -466,29 +487,6 @@ void main() {
       expect(sut.currentSelectedParams?.groupByMonth, false);
       expect(sut.currentSelectedParams?.groupByDay, false);
       expect(sut.currentSelectedParams?.groupByHour, false);
-    });
-    test("Should return correct value", () {
-      //hour
-      sut.changeDateRange(startDate, startDate.add(const Duration(hours: 1)));
-      expect(sut.changePeriodGroupingType(PeriodGroupingType.hour), true);
-
-      //day
-      sut.changeDateRange(startDate, startDate.add(const Duration(days: 0)));
-      expect(sut.changePeriodGroupingType(PeriodGroupingType.day), true);
-      sut.changeDateRange(startDate, startDate.add(const Duration(days: 1)));
-      expect(sut.changePeriodGroupingType(PeriodGroupingType.day), true);
-
-      //month
-      sut.changeDateRange(startDate, startDate.add(const Duration(days: 31)));
-      expect(sut.changePeriodGroupingType(PeriodGroupingType.month), false);
-      sut.changeDateRange(startDate, startDate.add(const Duration(days: 32)));
-      expect(sut.changePeriodGroupingType(PeriodGroupingType.month), true);
-
-      //year
-      sut.changeDateRange(startDate, startDate.add(const Duration(days: 365)));
-      expect(sut.changePeriodGroupingType(PeriodGroupingType.year), false);
-      sut.changeDateRange(startDate, startDate.add(const Duration(days: 366)));
-      expect(sut.changePeriodGroupingType(PeriodGroupingType.year), true);
     });
   });
 }
