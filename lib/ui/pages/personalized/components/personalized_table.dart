@@ -116,7 +116,7 @@ class PersonalizedTable extends StatelessWidget {
                   getValue: (s) => s.CashierOperator ?? ""
                 ),
                 R.string.seller: (
-                  width: 200, //TODO add grouping type
+                  width: 200,
                   check: (s) => s.Seller != null,
                   getValue: (s) => s.Seller ?? ""
                 ),
@@ -166,7 +166,9 @@ class PersonalizedTable extends StatelessWidget {
                   bool isMoney =
                       title == R.string.total || title == R.string.cost;
 
-                  if (double.tryParse(value) != null) {
+                  if (title == R.string.year) {
+                    value = value.toString();
+                  } else if (double.tryParse(value) != null) {
                     value = value.toString().toDouble();
                   }
 
