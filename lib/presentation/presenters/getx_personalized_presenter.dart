@@ -150,8 +150,7 @@ class GetxPersonalizedPresenter extends GetxController
     try {
       mainError = null;
       if (type == PeriodGroupingType.year && difference < 366 ||
-          type == PeriodGroupingType.month && difference < 32 ||
-          type == PeriodGroupingType.day && difference < 1) {
+          type == PeriodGroupingType.month && difference < 32) {
         throw DomainError.shortPeriodSelected;
       }
 

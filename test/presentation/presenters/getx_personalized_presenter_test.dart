@@ -474,7 +474,7 @@ void main() {
 
       //day
       sut.changeDateRange(startDate, startDate.add(const Duration(days: 0)));
-      expect(sut.changePeriodGroupingType(PeriodGroupingType.day), false);
+      expect(sut.changePeriodGroupingType(PeriodGroupingType.day), true);
       sut.changeDateRange(startDate, startDate.add(const Duration(days: 1)));
       expect(sut.changePeriodGroupingType(PeriodGroupingType.day), true);
 
