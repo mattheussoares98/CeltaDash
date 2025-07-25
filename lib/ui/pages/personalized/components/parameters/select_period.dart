@@ -7,7 +7,8 @@ import '../../../../helpers/helpers.dart';
 import '../../../pages.dart';
 
 class SelectPeriod extends StatefulWidget {
-  const SelectPeriod({super.key});
+  final ExpansibleController enterprisesController;
+  const SelectPeriod({super.key, required this.enterprisesController});
 
   @override
   State<SelectPeriod> createState() => _SelectPeriodState();
@@ -57,6 +58,7 @@ class _SelectPeriodState extends State<SelectPeriod> {
                         pickedRange.end,
                       );
                     });
+                    widget.enterprisesController.expand();
                   }
                 },
                 child: _ButtonText(selectedDateRange: selectedDateTimeRange),

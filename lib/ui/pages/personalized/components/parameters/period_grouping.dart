@@ -7,7 +7,15 @@ import '../../../pages.dart';
 import '../components.dart';
 
 class PeriodGrouping extends StatefulWidget {
-  const PeriodGrouping({super.key});
+  final ExpansibleController periodsController;
+  final ExpansibleController categoriesController;
+  final void Function(bool collapseParameters) collapseAll;
+  const PeriodGrouping({
+    super.key,
+    required this.periodsController,
+    required this.categoriesController,
+    required this.collapseAll,
+  });
 
   @override
   State<PeriodGrouping> createState() => _PeriodGroupingState();
@@ -33,6 +41,7 @@ class _PeriodGroupingState extends State<PeriodGrouping> {
     final selectedPeriod = getSelectedPeriod();
 
     return DefaultExpansionTile(
+      controller: widget.periodsController,
       title: Text(
         '${R.string.groupPeriod}${selectedPeriod == null ? '' : " (${selectedPeriod.name})"}',
         maxLines: 1,
@@ -51,6 +60,8 @@ class _PeriodGroupingState extends State<PeriodGrouping> {
                 setState(() {
                   personalizedPresenter.changePeriodGroupingType(e);
                 });
+                widget.collapseAll(false);
+                widget.categoriesController.expand();
               },
             ),
           )

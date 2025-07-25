@@ -5,8 +5,8 @@ import '../../../../helpers/helpers.dart';
 import '../../../pages.dart';
 
 class GenerateButton extends StatelessWidget {
-  final ExpansibleController controller;
-  const GenerateButton({super.key, required this.controller});
+  final void Function(bool collapseParameters) collapseAll;
+  const GenerateButton({super.key, required this.collapseAll});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class GenerateButton extends StatelessWidget {
               onPressed: () async {
                 final succeeds = await personalizedPresenter.getSales();
                 if (succeeds) {
-                  controller.collapse();
+                  collapseAll(true);
                 }
               },
               child: Text(R.string.generate),

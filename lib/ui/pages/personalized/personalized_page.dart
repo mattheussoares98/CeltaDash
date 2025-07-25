@@ -21,14 +21,20 @@ class _PersonalizedPageState extends State<PersonalizedPage>
   StreamSubscription? mainErrorSubscription;
   StreamSubscription? loadingSubscription;
   DateTimeRange? selectedDateRange;
-  final controller = ExpansibleController();
+  final parametersController = ExpansibleController();
+  final enterprisesController = ExpansibleController();
+  final periodsController = ExpansibleController();
+  final categoriesController = ExpansibleController();
 
   @override
   void dispose() {
     super.dispose();
     mainErrorSubscription?.cancel();
     loadingSubscription?.cancel();
-    controller.dispose();
+    parametersController.dispose();
+    enterprisesController.dispose();
+    periodsController.dispose();
+    categoriesController.dispose();
   }
 
   @override
@@ -38,6 +44,15 @@ class _PersonalizedPageState extends State<PersonalizedPage>
         handleMainError(context, widget.presenter.mainErrorStream);
     loadingSubscription =
         handleLoading(context, widget.presenter.isLoadingStream);
+  }
+
+  void collapseAll(bool collapseParameters) {
+    enterprisesController.collapse();
+    periodsController.collapse();
+    categoriesController.collapse();
+    if (collapseParameters) {
+      parametersController.collapse();
+    }
   }
 
   @override
@@ -60,7 +75,7 @@ class _PersonalizedPageState extends State<PersonalizedPage>
                     elevation: 10,
                     margin: const EdgeInsets.fromLTRB(4, 8, 8, 20),
                     child: ExpansionTile(
-                      controller: controller,
+                      controller: parametersController,
                       initiallyExpanded: true,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -73,16 +88,29 @@ class _PersonalizedPageState extends State<PersonalizedPage>
                       childrenPadding:
                           const EdgeInsets.symmetric(horizontal: 4),
                       children: [
-                        const SelectPeriod(),
+                        SelectPeriod(
+                          enterprisesController: enterprisesController,
+                        ),
                         const SizedBox(height: 4),
                         if (startDate != null && endDate != null) ...[
-                          const Enterprises(),
+                          Enterprises(
+                            enterprisesController: enterprisesController,
+                            periodsController: periodsController,
+                            collapseAll: collapseAll,
+                          ),
                           const SizedBox(height: 4),
-                          const PeriodGrouping(),
+                          PeriodGrouping(
+                            periodsController: periodsController,
+                            categoriesController: categoriesController,
+                            collapseAll: collapseAll,
+                          ),
                           const SizedBox(height: 4),
-                          const CategoryGrouping(),
+                          CategoryGrouping(
+                            categoriesController: categoriesController,
+                            collapseAll: collapseAll,
+                          ),
                           const SizedBox(height: 4),
-                          GenerateButton(controller: controller),
+                          GenerateButton(collapseAll: collapseAll),
                         ]
                       ],
                     ),

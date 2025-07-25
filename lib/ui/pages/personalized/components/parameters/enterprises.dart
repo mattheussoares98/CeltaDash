@@ -6,7 +6,15 @@ import '../../../pages.dart';
 import '../components.dart';
 
 class Enterprises extends StatefulWidget {
-  const Enterprises({super.key});
+  final ExpansibleController enterprisesController;
+  final ExpansibleController periodsController;
+  final void Function(bool collapseParameters) collapseAll;
+  const Enterprises({
+    super.key,
+    required this.enterprisesController,
+    required this.periodsController,
+    required this.collapseAll,
+  });
 
   @override
   State<Enterprises> createState() => _EnterprisesState();
@@ -26,6 +34,7 @@ class _EnterprisesState extends State<Enterprises> {
         : allEnterprises?.firstWhere((e) => e.id?.toInt() == selectedId);
 
     return DefaultExpansionTile(
+      controller: widget.enterprisesController,
       title: RichText(
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
@@ -63,6 +72,8 @@ class _EnterprisesState extends State<Enterprises> {
                       personalizedPresenter
                           .changeSelectedEnterprise(e.id!.toInt());
                     });
+                    widget.collapseAll(false);
+                    widget.periodsController.expand();
                   },
                 ),
               )

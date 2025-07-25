@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class DefaultExpansionTile extends StatelessWidget {
   final Widget title;
   final List<Widget> children;
+  final ExpansibleController controller;
   const DefaultExpansionTile({
     super.key,
     required this.title,
     required this.children,
+    required this.controller,
   });
 
   @override
@@ -15,6 +17,7 @@ class DefaultExpansionTile extends StatelessWidget {
     final color = theme.disabledColor.withAlpha(70);
 
     return ExpansionTile(
+      controller: controller,
       initiallyExpanded: false,
       dense: true,
       childrenPadding: const EdgeInsets.all(4),

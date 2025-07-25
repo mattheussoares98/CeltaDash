@@ -7,7 +7,13 @@ import '../../../pages.dart';
 import '../components.dart';
 
 class CategoryGrouping extends StatefulWidget {
-  const CategoryGrouping({super.key});
+  final ExpansibleController categoriesController;
+  final void Function(bool collapseParameters) collapseAll;
+  const CategoryGrouping({
+    super.key,
+    required this.categoriesController,
+    required this.collapseAll,
+  });
 
   @override
   State<CategoryGrouping> createState() => _CategoryGroupingState();
@@ -51,6 +57,7 @@ class _CategoryGroupingState extends State<CategoryGrouping> {
     final selecteds = getSelectedsCategories();
 
     return DefaultExpansionTile(
+      controller: widget.categoriesController,
       title: Text(
         "${R.string.groupCategory} ${selecteds.isEmpty ? "" : '($selecteds)'}",
         maxLines: 1,
@@ -77,6 +84,7 @@ class _CategoryGroupingState extends State<CategoryGrouping> {
                         setState(() {
                           personalizedPresenter.changeCategoryGroupingType(e);
                         });
+                        widget.collapseAll(false);
                       },
                     ),
                   ],
