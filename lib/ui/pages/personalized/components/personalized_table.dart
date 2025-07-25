@@ -67,7 +67,12 @@ class PersonalizedTable extends StatelessWidget {
                 ),
                 R.string.product: (
                   check: (s) => s.Product != null,
-                  getValue: (s) => s.Product ?? ""
+                  getValue: (s) {
+                    final parts = s.Product?.split('-');
+                    return parts?.length != null && parts!.length > 2
+                        ? parts[2]
+                        : '';
+                  }
                 ),
                 R.string.departmentAbbreviated: (
                   check: (s) => s.ProductDepartment != null,
