@@ -191,6 +191,8 @@ class PersonalizedTable extends StatelessWidget {
                   .indexWhere((e) => e == R.string.quantityAbbreviated);
               final productsQuantityAbbreviatedIndex = activeTitles
                   .indexWhere((e) => e == R.string.productsQuantityAbbreviated);
+              final salesQuantityAbbreviated = activeTitles
+                  .indexWhere((e) => e == R.string.salesQuantityAbbreviated);
 
               final columnsToSum = [
                 if (totalIndex != -1) totalIndex,
@@ -198,6 +200,7 @@ class PersonalizedTable extends StatelessWidget {
                 if (quantityAbbreviatedIndex != -1) quantityAbbreviatedIndex,
                 if (productsQuantityAbbreviatedIndex != -1)
                   productsQuantityAbbreviatedIndex,
+                if (salesQuantityAbbreviated != -1) salesQuantityAbbreviated,
               ];
 
               return ConstrainedBox(
