@@ -62,6 +62,7 @@ class _EnterprisesState extends State<Enterprises> {
                   dense: true,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 4),
                   groupValue: selectedId,
+                  toggleable: true,
                   title: Text(
                     "${e.personalizedCode} - ${e.name}",
                     maxLines: 1,
