@@ -26,7 +26,7 @@ class GetxPersonalizedPresenter extends GetxController
     isLoading = true;
     mainError = null;
     try {
-      final params = _currentSelectedParams.value;
+      GetSaleStatisticsParams? params = _currentSelectedParams.value;
 
       if (params?.startDate == null || params?.endDate == null) {
         throw DomainError.selectPeriod;
@@ -49,13 +49,24 @@ class GetxPersonalizedPresenter extends GetxController
         return false;
       }
 
-      final sales = await loadSaleStatistics.get(_currentSelectedParams.value!);
+      //products
+      if (params.groupByProduct == true) {
+        params = params.copyWith(
+          groupByHour: false,
+          groupByDay: false,
+          groupByMonth: false,
+          groupByYear: false,
+          topCount: 300,
+        );
+      }
+
+      final sales = await loadSaleStatistics.get(params);
 
       saleStatistics = sales
           .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
           .toList();
 
-      _lastGetStatisticsParams.value = _currentSelectedParams.value;
+      _lastGetStatisticsParams.value = params;
       appAnalyticsService.addNewMonthlyAnalytic(
         reportType: ReportType.personalized,
         periodType: PeriodType.personalized,

@@ -7,6 +7,8 @@ class PtBr implements Translation {
       "Não é permitido remover a empresa selecionada. Selecione outra antes de remover";
   String get msgCantCompareSameDays =>
       "Não é permitido comparar os mesmos dias";
+  String get msgCantGroupProductAndPeriodTogether =>
+      "Não é permitido agrupar produto e período juntos";
   String get msgDisabledEnterprise =>
       "A empresa não está habilitada. Entre em contato com o setor administrativo para habilitar";
   String get msgEnterpriseAlreadyExists =>

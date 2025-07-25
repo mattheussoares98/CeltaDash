@@ -368,6 +368,42 @@ void main() {
             // topCount: false,
           ));
     });
+    test("Should not group by period when select product and return top 300",
+        () async {
+      //select date
+      sut.changeDateRange(startDate, endDate);
+      sut.changeSelectedEnterprise(enterpriseId);
+
+      //select product
+      sut.changeCategoryGroupingType(CategoryGroupingType.product);
+
+      //select period
+      final selectedPeriod = PeriodGroupingType.values[
+          faker.randomGenerator.integer(PeriodGroupingType.values.length)];
+      sut.changePeriodGroupingType(selectedPeriod);
+
+      await sut.getSales();
+
+      expect(
+          sut.lastGetStatisticsParams,
+          GetSaleStatisticsParams(
+            startDate: startDate,
+            endDate: endDate,
+            enterpriseIds: [enterpriseId],
+            groupByYear: false,
+            groupByMonth: false,
+            groupByDay: false,
+            groupByHour: false,
+            groupByProduct: true,
+            groupByProductDepartment: false,
+            groupByProductSection: false,
+            groupByPaymentFinalization: false,
+            groupByPaymentModality: false,
+            groupByCashierOperator: false,
+            groupBySeller: false,
+            topCount: 300,
+          ));
+    });
   });
 
   group("Change selected date range", () {
