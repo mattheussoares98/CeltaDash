@@ -37,17 +37,21 @@ class PersonalizedTable extends StatelessWidget {
               final columnDefinitions = <String,
                   ({
                 bool Function(SaleStatisticViewModel) check,
-                String Function(SaleStatisticViewModel) getValue
+                String Function(SaleStatisticViewModel) getValue,
+                double width,
               })>{
                 R.string.enterprise: (
+                  width: 100,
                   check: (s) => s.EnterpriseFantasyName != null,
-                  getValue: (s) => s.EnterpriseFantasyName ?? ""
+                  getValue: (s) => s.EnterpriseFantasyName ?? "",
                 ),
                 R.string.year: (
+                  width: 70,
                   check: (s) => s.Year != null,
-                  getValue: (s) => s.Year ?? ""
+                  getValue: (s) => s.Year ?? "",
                 ),
                 R.string.month: (
+                  width: 70,
                   check: (s) => s.Month != null,
                   getValue: (s) {
                     final date = DateTime(0, s.Month!.toInt());
@@ -58,6 +62,7 @@ class PersonalizedTable extends StatelessWidget {
                   },
                 ),
                 R.string.hour: (
+                  width: 70,
                   check: (s) => s.Hour != null,
                   getValue: (s) {
                     final formatter = DateFormat("y/MM/dd", "pt_BR");
@@ -66,6 +71,7 @@ class PersonalizedTable extends StatelessWidget {
                   }
                 ),
                 R.string.product: (
+                  width: 200,
                   check: (s) => s.Product != null,
                   getValue: (s) {
                     final parts = s.Product?.split('-');
@@ -74,43 +80,58 @@ class PersonalizedTable extends StatelessWidget {
                         : '';
                   }
                 ),
+                R.string.productsQuantityAbbreviated: (
+                  width: 80,
+                  check: (s) => s.QuantityOfProducts != null,
+                  getValue: (s) => s.QuantityOfProducts ?? ""
+                ),
                 R.string.departmentAbbreviated: (
+                  width: 150,
                   check: (s) => s.ProductDepartment != null,
                   getValue: (s) => s.ProductDepartment ?? ""
                 ),
                 R.string.section: (
+                  width: 170,
                   check: (s) => s.ProductSection != null,
                   getValue: (s) => s.ProductSection ?? ""
                 ),
                 R.string.finalization: (
+                  width: 170,
                   check: (s) => s.PaymentFinalization != null,
                   getValue: (s) => s.PaymentFinalization ?? ""
                 ),
                 R.string.paymentsType: (
+                  width: 120,
                   check: (s) => s.PaymentModality != null,
                   getValue: (s) => s.PaymentModality ?? ""
                 ),
                 R.string.salesQuantityAbbreviated: (
+                  width: 60,
                   check: (s) => s.QuantitySales != null,
                   getValue: (s) => s.QuantitySales ?? ""
                 ),
                 R.string.operator: (
+                  width: 200,
                   check: (s) => s.CashierOperator != null,
                   getValue: (s) => s.CashierOperator ?? ""
                 ),
                 R.string.seller: (
+                  width: 200, //TODO add grouping type
                   check: (s) => s.Seller != null,
                   getValue: (s) => s.Seller ?? ""
                 ),
                 R.string.cost: (
+                  width: 100,
                   check: (s) => s.TotalRepositionCost != null,
                   getValue: (s) => s.TotalRepositionCost ?? ""
                 ),
-                R.string.products: (
+                R.string.quantityAbbreviated: (
+                  width: 100,
                   check: (s) => s.QuantityOfProducts != null,
                   getValue: (s) => s.QuantityOfProducts ?? ""
                 ),
                 R.string.total: (
+                  width: 120,
                   check: (s) => s.LiquidValue != null,
                   getValue: (s) => s.LiquidValue ?? "",
                 ),
@@ -141,13 +162,41 @@ class PersonalizedTable extends StatelessWidget {
                 // For each sale, create a row.
                 return activeTitles.map((title) {
                   // For each active title, get the corresponding value from the sale.
-                  final value = columnDefinitions[title]!.getValue(sale);
+                  dynamic value = columnDefinitions[title]!.getValue(sale);
+                  bool isMoney =
+                      title == R.string.total || title == R.string.cost;
+
+                  if (double.tryParse(value) != null) {
+                    value = value.toString().toDouble();
+                  }
+
                   return PersonalizedTableCell(
                     value: value,
-                    isMoney: title == R.string.total || title == R.string.cost,
+                    isMoney: isMoney,
                   );
                 }).toList();
               }).toList();
+
+              final columnWidths = activeTitles
+                  .map((title) => columnDefinitions[title]!.width)
+                  .toList();
+
+              final totalIndex =
+                  activeTitles.indexWhere((e) => e == R.string.total);
+              final costIndex =
+                  activeTitles.indexWhere((e) => e == R.string.cost);
+              final quantityAbbreviatedIndex = activeTitles
+                  .indexWhere((e) => e == R.string.quantityAbbreviated);
+              final productsQuantityAbbreviatedIndex = activeTitles
+                  .indexWhere((e) => e == R.string.productsQuantityAbbreviated);
+
+              final columnsToSum = [
+                if (totalIndex != -1) totalIndex,
+                if (costIndex != -1) costIndex,
+                if (quantityAbbreviatedIndex != -1) quantityAbbreviatedIndex,
+                if (productsQuantityAbbreviatedIndex != -1)
+                  productsQuantityAbbreviatedIndex,
+              ];
 
               return ConstrainedBox(
                 constraints: const BoxConstraints(minHeight: 600),
@@ -159,18 +208,13 @@ class PersonalizedTable extends StatelessWidget {
                       indexToSort: activeTitles.length - 1,
                       titleMinHeight: 43,
                       fixFirstColumn: true,
-                      columnsIndexToSum: [
-                        activeTitles.length - 1,
-                        activeTitles.indexWhere(
-                            (e) => e == R.string.salesQuantityAbbreviated),
-                      ],
+                      columnsIndexToSum: columnsToSum,
                       titles: activeTitles
                           .map((title) => PersonalizedTableCell(
                               value: title, isTitle: true))
                           .toList(),
                       rowValues: tableRows,
-                      columnsWidths: List.generate(
-                          activeTitles.length, (index) => 70), // Dynamic widths
+                      columnsWidths: columnWidths, // Dynamic widths
                       showAnimation: _showAnimation,
                       hideShowAnimation: () {
                         _showAnimation = false;

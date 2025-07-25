@@ -148,6 +148,7 @@ class PtBr implements Translation {
   String get product => "Produto";
   String get products => "Produtos";
   String get productsBySale => "Produtos por venda";
+  String get productsQuantityAbbreviated => "Qtd produtos";
   String get productivity => "Produtividade";
   String get profit => "Lucro";
   String get profitability => "Rentabilidade";

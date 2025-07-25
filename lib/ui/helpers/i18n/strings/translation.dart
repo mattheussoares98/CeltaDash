@@ -134,6 +134,7 @@ abstract class Translation {
   String get product;
   String get products;
   String get productsBySale;
+  String get productsQuantityAbbreviated;
   String get productivity;
   String get profit;
   String get profitability;
