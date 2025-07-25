@@ -30,7 +30,7 @@ void main() {
   late List<SaleStatisticsEntity> saleStatisticsEntities;
   late DateTime startDate;
   late DateTime endDate;
-  late List<int> enterpriseIds;
+  late int enterpriseId;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
@@ -56,11 +56,7 @@ void main() {
     ];
     startDate = faker.date.dateTime();
     endDate = faker.date.dateTime(minYear: startDate.year + 1);
-    enterpriseIds = [
-      faker.randomGenerator.integer(100),
-      faker.randomGenerator.integer(200, min: 100),
-      faker.randomGenerator.integer(300, min: 200),
-    ];
+    enterpriseId = faker.randomGenerator.integer(100);
   }
 
   void initMockSuccess() {
@@ -111,7 +107,21 @@ void main() {
       );
 
       sut.changeDateRange(startDate, endDate);
+      sut.changeSelectedEnterprise(enterpriseId);
       loadSaleStatistics.mockGetError();
+
+      await sut.getSales();
+    });
+    test(
+        "Should emit correct values when doesnt select at least one enterprise",
+        () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(
+        sut.mainErrorStream,
+        emitsInOrder([null, UIError.selectEnterprise]),
+      );
+
+      sut.changeDateRange(startDate, endDate);
 
       await sut.getSales();
     });
@@ -126,6 +136,7 @@ void main() {
     });
     test("Should update sale statistics with correctly", () async {
       sut.changeDateRange(startDate, endDate);
+      sut.changeSelectedEnterprise(enterpriseId);
       await sut.getSales();
 
       expect(
@@ -137,6 +148,7 @@ void main() {
 
     test("Should call loadSaleStatistics with correct period", () async {
       sut.changeDateRange(startDate, endDate);
+      sut.changeSelectedEnterprise(enterpriseId);
 
       await sut.getSales();
 
@@ -145,6 +157,7 @@ void main() {
           GetSaleStatisticsParams(
             startDate: startDate,
             endDate: endDate,
+            enterpriseIds: [enterpriseId],
           ),
         ),
       ).called(1);
@@ -152,9 +165,7 @@ void main() {
     test("Should call loadSaleStatistics with correct enterprise ids",
         () async {
       sut.changeDateRange(startDate, endDate);
-      for (var id in enterpriseIds) {
-        sut.changeEnterpriseIds(id);
-      }
+      sut.changeSelectedEnterprise(enterpriseId);
       await sut.getSales();
 
       verify(
@@ -162,7 +173,7 @@ void main() {
           GetSaleStatisticsParams(
             startDate: startDate,
             endDate: endDate,
-            enterpriseIds: enterpriseIds,
+            enterpriseIds: [enterpriseId],
           ),
         ),
       ).called(1);
@@ -170,6 +181,7 @@ void main() {
     test("Should call loadSaleStatistics with correct non category groupings",
         () async {
       sut.changeDateRange(startDate, endDate);
+      sut.changeSelectedEnterprise(enterpriseId);
 
       final periodSelected = PeriodGroupingType.values[
           faker.randomGenerator.integer(PeriodGroupingType.values.length)];
@@ -186,6 +198,7 @@ void main() {
             groupByMonth: periodSelected == PeriodGroupingType.month,
             groupByDay: periodSelected == PeriodGroupingType.day,
             groupByHour: periodSelected == PeriodGroupingType.hour,
+            enterpriseIds: [enterpriseId],
           ),
         ),
       ).called(1);
@@ -193,6 +206,7 @@ void main() {
     test("Should call loadSaleStatistics with correct category groupings",
         () async {
       sut.changeDateRange(startDate, endDate);
+      sut.changeSelectedEnterprise(enterpriseId);
 
       final categorySelected = CategoryGroupingType.values[
           faker.randomGenerator.integer(CategoryGroupingType.values.length)];
@@ -205,6 +219,7 @@ void main() {
           GetSaleStatisticsParams(
             startDate: startDate,
             endDate: endDate,
+            enterpriseIds: [enterpriseId],
             groupByProduct: categorySelected == CategoryGroupingType.product,
             groupByProductDepartment:
                 categorySelected == CategoryGroupingType.productDepartment,
@@ -225,6 +240,7 @@ void main() {
 
     test("Should add new app monthly analytics", () async {
       sut.changeDateRange(startDate, endDate);
+      sut.changeSelectedEnterprise(enterpriseId);
 
       await sut.getSales();
 
@@ -237,6 +253,7 @@ void main() {
     });
     test("Should return true on success", () async {
       sut.changeDateRange(startDate, endDate);
+      sut.changeSelectedEnterprise(enterpriseId);
 
       final value = await sut.getSales();
 
@@ -251,6 +268,7 @@ void main() {
     test("Should update last get sale statistics params correctly", () async {
       //select date
       sut.changeDateRange(startDate, endDate);
+      sut.changeSelectedEnterprise(enterpriseId);
 
       //select category
       final selectedCategory = CategoryGroupingType.values[
@@ -269,6 +287,7 @@ void main() {
           GetSaleStatisticsParams(
             startDate: startDate,
             endDate: endDate,
+            enterpriseIds: [enterpriseId],
             groupByYear: selectedPeriod == PeriodGroupingType.year,
             groupByMonth: selectedPeriod == PeriodGroupingType.month,
             groupByDay: selectedPeriod == PeriodGroupingType.day,
@@ -308,16 +327,16 @@ void main() {
 
       sut.changeDateRange(startDate, endDate);
 
-      sut.changeEnterpriseIds(enterpriseId1);
+      sut.changeSelectedEnterprise(enterpriseId1);
       expect(sut.currentSelectedParams?.enterpriseIds, [enterpriseId1]);
 
-      sut.changeEnterpriseIds(enterpriseId2);
+      sut.changeSelectedEnterprise(enterpriseId2);
       expect(sut.currentSelectedParams?.enterpriseIds, [enterpriseId2]);
 
-      sut.changeEnterpriseIds(enterpriseId2);
+      sut.changeSelectedEnterprise(enterpriseId2);
       expect(sut.currentSelectedParams?.enterpriseIds, [enterpriseId2]);
 
-      sut.changeEnterpriseIds(enterpriseId1);
+      sut.changeSelectedEnterprise(enterpriseId1);
       expect(sut.currentSelectedParams?.enterpriseIds, [enterpriseId1]);
     });
   });

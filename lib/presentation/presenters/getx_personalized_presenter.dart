@@ -28,6 +28,9 @@ class GetxPersonalizedPresenter extends GetxController
       if (_currentSelectedParams.value?.startDate == null ||
           _currentSelectedParams.value?.endDate == null) {
         throw DomainError.selectPeriod;
+      } else if (_currentSelectedParams.value?.enterpriseIds == null ||
+          _currentSelectedParams.value!.enterpriseIds!.isEmpty) {
+        throw DomainError.selectEnterprise;
       }
 
       final sales = await loadSaleStatistics.get(_currentSelectedParams.value!);
@@ -63,7 +66,7 @@ class GetxPersonalizedPresenter extends GetxController
   }
 
   @override
-  void changeEnterpriseIds(int enterpriseId) {
+  void changeSelectedEnterprise(int enterpriseId) {
     if (_currentSelectedParams.value == null) return;
 
     _currentSelectedParams.value = _currentSelectedParams.value?.copyWith(

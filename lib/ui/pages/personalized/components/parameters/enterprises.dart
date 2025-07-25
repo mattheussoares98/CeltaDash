@@ -68,7 +68,7 @@ class _EnterprisesState extends State<Enterprises> {
                   false,
               onTap: () {
                 setState(() {
-                  personalizedPresenter.changeEnterpriseIds(e.id!.toInt());
+                  personalizedPresenter.changeSelectedEnterprise(e.id!.toInt());
                 });
               },
             ),
