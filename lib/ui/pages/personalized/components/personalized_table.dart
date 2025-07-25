@@ -49,7 +49,13 @@ class PersonalizedTable extends StatelessWidget {
                 ),
                 R.string.month: (
                   check: (s) => s.Month != null,
-                  getValue: (s) => s.Month ?? ""
+                  getValue: (s) {
+                    final date = DateTime(0, s.Month!.toInt());
+                    return DateFormat.MMM("pt_BR")
+                        .format(date)
+                        .toUpperCase()
+                        .replaceAll(RegExp(r'\.'), '');
+                  },
                 ),
                 R.string.hour: (
                   check: (s) => s.Hour != null,
