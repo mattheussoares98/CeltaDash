@@ -303,6 +303,7 @@ void main() {
 
   group("Change selected enterprise", () {
     test("Should update correctly", () {
+      //TODO should select only one enterprise
       final enterpriseId1 = faker.randomGenerator.integer(100);
       final enterpriseId2 = faker.randomGenerator.integer(200, min: 101);
 
