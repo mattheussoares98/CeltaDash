@@ -440,11 +440,13 @@ void main() {
       sut.changeDateRange(startDate, endDate);
 
       sut.changePeriodGroupingType(PeriodGroupingType.hour);
+      sut.changePeriodGroupingType(PeriodGroupingType.hour);
       expect(sut.currentSelectedParams?.groupByYear, false);
       expect(sut.currentSelectedParams?.groupByMonth, false);
       expect(sut.currentSelectedParams?.groupByDay, false);
       expect(sut.currentSelectedParams?.groupByHour, true);
 
+      sut.changePeriodGroupingType(PeriodGroupingType.day);
       sut.changePeriodGroupingType(PeriodGroupingType.day);
       expect(sut.currentSelectedParams?.groupByYear, false);
       expect(sut.currentSelectedParams?.groupByMonth, false);
@@ -452,11 +454,13 @@ void main() {
       expect(sut.currentSelectedParams?.groupByHour, false);
 
       sut.changePeriodGroupingType(PeriodGroupingType.month);
+      sut.changePeriodGroupingType(PeriodGroupingType.month);
       expect(sut.currentSelectedParams?.groupByYear, false);
       expect(sut.currentSelectedParams?.groupByMonth, true);
       expect(sut.currentSelectedParams?.groupByDay, false);
       expect(sut.currentSelectedParams?.groupByHour, false);
 
+      sut.changePeriodGroupingType(PeriodGroupingType.year);
       sut.changePeriodGroupingType(PeriodGroupingType.year);
       expect(sut.currentSelectedParams?.groupByYear, true);
       expect(sut.currentSelectedParams?.groupByMonth, false);

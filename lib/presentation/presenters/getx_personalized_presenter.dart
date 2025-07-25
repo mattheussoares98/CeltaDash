@@ -155,16 +155,11 @@ class GetxPersonalizedPresenter extends GetxController
         throw DomainError.shortPeriodSelected;
       }
 
-      final groupByYear = _currentSelectedParams.value?.groupByYear == true;
-      final groupByMonth = _currentSelectedParams.value?.groupByMonth == true;
-      final groupByDay = _currentSelectedParams.value?.groupByDay == true;
-      final groupByHour = _currentSelectedParams.value?.groupByHour == true;
-
       _currentSelectedParams.value = _currentSelectedParams.value?.copyWith(
-        groupByYear: type == PeriodGroupingType.year && groupByYear == false,
-        groupByMonth: type == PeriodGroupingType.month && groupByMonth == false,
-        groupByDay: type == PeriodGroupingType.day && groupByDay == false,
-        groupByHour: type == PeriodGroupingType.hour && groupByHour == false,
+        groupByYear: type == PeriodGroupingType.year,
+        groupByMonth: type == PeriodGroupingType.month,
+        groupByDay: type == PeriodGroupingType.day,
+        groupByHour: type == PeriodGroupingType.hour,
       );
       return true;
     } catch (e) {
