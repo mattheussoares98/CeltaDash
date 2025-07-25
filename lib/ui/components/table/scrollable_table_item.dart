@@ -140,6 +140,12 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
       if (aNum != null && bNum != null) {
         return _isAscending ? aNum.compareTo(bNum) : bNum.compareTo(aNum);
       }
+
+      final aInt = int.tryParse(aValue.split(':').first);
+      final bInt = int.tryParse(bValue.split(':').first);
+      if (aInt != null && bInt != null) {
+        return _isAscending ? aInt.compareTo(bInt) : bInt.compareTo(aInt);
+      }
       try {
         final aTime = _parseTime(aValue);
         final bTime = _parseTime(bValue);
