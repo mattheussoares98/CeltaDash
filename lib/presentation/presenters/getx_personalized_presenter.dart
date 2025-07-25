@@ -37,13 +37,8 @@ class GetxPersonalizedPresenter extends GetxController
 
       final difference = params.endDate.difference(params.startDate).inDays;
 
-      //short periods
-      if (params.groupByYear == true && difference < 366 ||
-          params.groupByMonth == true && difference < 32) {
-        mainError = UIError.custom(R.string.msgShortIntervalToGroupThisPeriod);
-        return false;
-      } //large periods
-      else if (params.groupByHour == true && difference > 3 ||
+      //large periods
+      if (params.groupByHour == true && difference > 3 ||
           params.groupByDay == true && difference > 60) {
         mainError = UIError.custom(R.string.msgLongIntervalToGroupThisPeriod);
         return false;

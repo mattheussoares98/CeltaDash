@@ -129,37 +129,7 @@ void main() {
 
       await sut.getSales();
     });
-    test("Should emit correct values on select SHORT interval to group by year",
-        () async {
-      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
-      expectLater(
-          sut.mainErrorStream,
-          emitsInOrder(
-            [null, UIError.custom(R.string.msgShortIntervalToGroupThisPeriod)],
-          ));
 
-      sut.changeDateRange(startDate, startDate.add(const Duration(days: 365)));
-      sut.changeSelectedEnterprise(enterpriseId);
-      sut.changePeriodGroupingType(PeriodGroupingType.year);
-
-      await sut.getSales();
-    });
-    test(
-        "Should emit correct values on select SHORT interval to group by month",
-        () async {
-      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
-      expectLater(
-          sut.mainErrorStream,
-          emitsInOrder(
-            [null, UIError.custom(R.string.msgShortIntervalToGroupThisPeriod)],
-          ));
-
-      sut.changeDateRange(startDate, startDate.add(const Duration(days: 31)));
-      sut.changeSelectedEnterprise(enterpriseId);
-      sut.changePeriodGroupingType(PeriodGroupingType.month);
-
-      await sut.getSales();
-    });
     test("Should emit correct values on error", () async {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(
