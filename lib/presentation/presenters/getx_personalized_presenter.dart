@@ -66,15 +66,8 @@ class GetxPersonalizedPresenter extends GetxController
   void changeEnterpriseIds(int enterpriseId) {
     if (_currentSelectedParams.value == null) return;
 
-    final oldEnterprises = _currentSelectedParams.value?.enterpriseIds ?? [];
-    if (oldEnterprises.any((e) => e == enterpriseId) == true) {
-      oldEnterprises.remove(enterpriseId);
-    } else {
-      oldEnterprises.add(enterpriseId);
-    }
-
     _currentSelectedParams.value = _currentSelectedParams.value?.copyWith(
-      enterpriseIds: oldEnterprises,
+      enterpriseIds: [enterpriseId],
     );
   }
 

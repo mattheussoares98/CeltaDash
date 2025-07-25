@@ -303,7 +303,6 @@ void main() {
 
   group("Change selected enterprise", () {
     test("Should update correctly", () {
-      //TODO should select only one enterprise
       final enterpriseId1 = faker.randomGenerator.integer(100);
       final enterpriseId2 = faker.randomGenerator.integer(200, min: 101);
 
@@ -313,14 +312,13 @@ void main() {
       expect(sut.currentSelectedParams?.enterpriseIds, [enterpriseId1]);
 
       sut.changeEnterpriseIds(enterpriseId2);
-      expect(sut.currentSelectedParams?.enterpriseIds,
-          [enterpriseId1, enterpriseId2]);
+      expect(sut.currentSelectedParams?.enterpriseIds, [enterpriseId2]);
 
       sut.changeEnterpriseIds(enterpriseId2);
-      expect(sut.currentSelectedParams?.enterpriseIds, [enterpriseId1]);
+      expect(sut.currentSelectedParams?.enterpriseIds, [enterpriseId2]);
 
       sut.changeEnterpriseIds(enterpriseId1);
-      expect(sut.currentSelectedParams?.enterpriseIds, []);
+      expect(sut.currentSelectedParams?.enterpriseIds, [enterpriseId1]);
     });
   });
 
