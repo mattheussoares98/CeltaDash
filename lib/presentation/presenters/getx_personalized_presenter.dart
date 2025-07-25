@@ -139,20 +139,38 @@ class GetxPersonalizedPresenter extends GetxController
   }
 
   @override
-  void changePeriodGroupingType(PeriodGroupingType type) {
-    if (_currentSelectedParams.value == null) return;
+  bool changePeriodGroupingType(PeriodGroupingType type) {
+    if (_currentSelectedParams.value == null) return false;
 
-    final groupByYear = _currentSelectedParams.value?.groupByYear == true;
-    final groupByMonth = _currentSelectedParams.value?.groupByMonth == true;
-    final groupByDay = _currentSelectedParams.value?.groupByDay == true;
-    final groupByHour = _currentSelectedParams.value?.groupByHour == true;
+    final start = _currentSelectedParams.value?.startDate;
+    final end = _currentSelectedParams.value?.endDate;
+    int difference =
+        start == null || end == null ? 0 : end.difference(start).inDays;
 
-    _currentSelectedParams.value = _currentSelectedParams.value?.copyWith(
-      groupByYear: type == PeriodGroupingType.year && groupByYear == false,
-      groupByMonth: type == PeriodGroupingType.month && groupByMonth == false,
-      groupByDay: type == PeriodGroupingType.day && groupByDay == false,
-      groupByHour: type == PeriodGroupingType.hour && groupByHour == false,
-    );
+    try {
+      mainError = null;
+      if (type == PeriodGroupingType.year && difference < 366 ||
+          type == PeriodGroupingType.month && difference < 32 ||
+          type == PeriodGroupingType.day && difference < 1) {
+        throw DomainError.shortPeriodSelected;
+      }
+
+      final groupByYear = _currentSelectedParams.value?.groupByYear == true;
+      final groupByMonth = _currentSelectedParams.value?.groupByMonth == true;
+      final groupByDay = _currentSelectedParams.value?.groupByDay == true;
+      final groupByHour = _currentSelectedParams.value?.groupByHour == true;
+
+      _currentSelectedParams.value = _currentSelectedParams.value?.copyWith(
+        groupByYear: type == PeriodGroupingType.year && groupByYear == false,
+        groupByMonth: type == PeriodGroupingType.month && groupByMonth == false,
+        groupByDay: type == PeriodGroupingType.day && groupByDay == false,
+        groupByHour: type == PeriodGroupingType.hour && groupByHour == false,
+      );
+      return true;
+    } catch (e) {
+      mainError = getUIError(e);
+      return false;
+    }
   }
 
   PeriodGroupingType? _periodGroupingTypes;

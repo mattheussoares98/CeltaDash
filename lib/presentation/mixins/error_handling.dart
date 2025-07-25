@@ -20,6 +20,8 @@ mixin ErrorHandling {
           return UIError.selectEnterprise;
         case DomainError.selectPeriod:
           return UIError.selectPeriod;
+        case DomainError.shortPeriodSelected:
+          return UIError.shortPeriodSelected;
         case DomainError.unexpected:
           return UIError.unexpected;
         case DomainError.updateCeltaBs:

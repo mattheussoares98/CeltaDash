@@ -22,6 +22,7 @@ class UIError extends Equatable {
   static final sameUrl = UIError._(R.string.msgSameUrl);
   static final selectEnterprise = UIError._(R.string.selectOneEnterprise);
   static final selectPeriod = UIError._(R.string.msgSelectPeriod);
+  static final shortPeriodSelected = UIError._(R.string.msgShortPeriodSelected);
   static final unexpected = UIError._(R.string.msgUnexpectedError);
   static final updateCeltaBs = UIError._(R.string.msgUpdateCeltaBs);
 }

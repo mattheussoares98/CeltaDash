@@ -395,21 +395,96 @@ void main() {
     });
   });
 
-  group("Change non category grouping type", () {
-    test("Should update correctly", () {
-      const day = PeriodGroupingType.day;
-      const month = PeriodGroupingType.month;
+  group("Change period grouping type", () {
+    group("Select year", () {
+      test("Should emit correct error when select <= 365 days", () {
+        sut.changeDateRange(
+            startDate, startDate.add(const Duration(days: 365)));
 
+        expectLater(
+          sut.mainErrorStream,
+          emitsInOrder([null, UIError.shortPeriodSelected]),
+        );
+
+        sut.changePeriodGroupingType(PeriodGroupingType.year);
+      });
+      test("Should emit correct values when select > 365 days", () {
+        sut.changeDateRange(
+            startDate, startDate.add(const Duration(days: 366)));
+
+        expectLater(sut.mainErrorStream, emits(null));
+
+        sut.changePeriodGroupingType(PeriodGroupingType.year);
+      });
+    });
+    group("Select month", () {
+      test("Should emit correct error when select <= 31 days", () {
+        sut.changeDateRange(startDate, startDate.add(const Duration(days: 31)));
+
+        expectLater(
+          sut.mainErrorStream,
+          emitsInOrder([null, UIError.shortPeriodSelected]),
+        );
+
+        sut.changePeriodGroupingType(PeriodGroupingType.month);
+      });
+      test("Should emit correct values when select > 32 days", () {
+        sut.changeDateRange(startDate, startDate.add(const Duration(days: 32)));
+
+        expectLater(sut.mainErrorStream, emits(null));
+
+        sut.changePeriodGroupingType(PeriodGroupingType.month);
+      });
+    });
+    test("Should update correctly", () {
       sut.changeDateRange(startDate, endDate);
 
-      sut.changePeriodGroupingType(day);
-      expect(sut.currentSelectedParams?.groupByDay, true);
-
-      sut.changePeriodGroupingType(month);
-      expect(sut.currentSelectedParams?.groupByMonth, true);
-
-      sut.changePeriodGroupingType(month);
+      sut.changePeriodGroupingType(PeriodGroupingType.hour);
+      expect(sut.currentSelectedParams?.groupByYear, false);
       expect(sut.currentSelectedParams?.groupByMonth, false);
+      expect(sut.currentSelectedParams?.groupByDay, false);
+      expect(sut.currentSelectedParams?.groupByHour, true);
+
+      sut.changePeriodGroupingType(PeriodGroupingType.day);
+      expect(sut.currentSelectedParams?.groupByYear, false);
+      expect(sut.currentSelectedParams?.groupByMonth, false);
+      expect(sut.currentSelectedParams?.groupByDay, true);
+      expect(sut.currentSelectedParams?.groupByHour, false);
+
+      sut.changePeriodGroupingType(PeriodGroupingType.month);
+      expect(sut.currentSelectedParams?.groupByYear, false);
+      expect(sut.currentSelectedParams?.groupByMonth, true);
+      expect(sut.currentSelectedParams?.groupByDay, false);
+      expect(sut.currentSelectedParams?.groupByHour, false);
+
+      sut.changePeriodGroupingType(PeriodGroupingType.year);
+      expect(sut.currentSelectedParams?.groupByYear, true);
+      expect(sut.currentSelectedParams?.groupByMonth, false);
+      expect(sut.currentSelectedParams?.groupByDay, false);
+      expect(sut.currentSelectedParams?.groupByHour, false);
+    });
+    test("Should return correct value", () {
+      //hour
+      sut.changeDateRange(startDate, startDate.add(const Duration(hours: 1)));
+      expect(sut.changePeriodGroupingType(PeriodGroupingType.hour), true);
+
+      //day
+      sut.changeDateRange(startDate, startDate.add(const Duration(days: 0)));
+      expect(sut.changePeriodGroupingType(PeriodGroupingType.day), false);
+      sut.changeDateRange(startDate, startDate.add(const Duration(days: 1)));
+      expect(sut.changePeriodGroupingType(PeriodGroupingType.day), true);
+
+      //month
+      sut.changeDateRange(startDate, startDate.add(const Duration(days: 31)));
+      expect(sut.changePeriodGroupingType(PeriodGroupingType.month), false);
+      sut.changeDateRange(startDate, startDate.add(const Duration(days: 32)));
+      expect(sut.changePeriodGroupingType(PeriodGroupingType.month), true);
+
+      //year
+      sut.changeDateRange(startDate, startDate.add(const Duration(days: 365)));
+      expect(sut.changePeriodGroupingType(PeriodGroupingType.year), false);
+      sut.changeDateRange(startDate, startDate.add(const Duration(days: 366)));
+      expect(sut.changePeriodGroupingType(PeriodGroupingType.year), true);
     });
   });
 }

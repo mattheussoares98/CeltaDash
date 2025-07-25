@@ -6,6 +6,7 @@ enum DomainError {
   sameUrl,
   selectEnterprise,
   selectPeriod,
+  shortPeriodSelected,
   unexpected,
   updateCeltaBs,
 }
