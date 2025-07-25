@@ -51,18 +51,37 @@ class _CategoryGroupingState extends State<CategoryGrouping> {
     final selecteds = getSelectedsCategories();
 
     return DefaultExpansionTile(
-      title:
-          "${R.string.groupCategory} ${selecteds.isEmpty ? "" : '($selecteds)'}",
+      title: Text(
+        "${R.string.groupCategory} ${selecteds.isEmpty ? "" : '($selecteds)'}",
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
       children: CategoryGroupingType.values
           .map(
-            (e) => CheckBoxItem(
-              title: e.name,
-              value: isEnabled(e),
+            (e) => InkWell(
               onTap: () {
                 setState(() {
                   personalizedPresenter.changeCategoryGroupingType(e);
                 });
               },
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(e.name),
+                    ),
+                    Checkbox(
+                      value: isEnabled(e),
+                      onChanged: (_) {
+                        setState(() {
+                          personalizedPresenter.changeCategoryGroupingType(e);
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
             ),
           )
           .toList(),

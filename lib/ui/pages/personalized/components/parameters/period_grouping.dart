@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../../../../domain/helpers/helpers.dart';
 import '../../../../helpers/helpers.dart';
 import '../../../pages.dart';
+import '../components.dart';
 
 class PeriodGrouping extends StatefulWidget {
   const PeriodGrouping({super.key});
@@ -29,40 +30,31 @@ class _PeriodGroupingState extends State<PeriodGrouping> {
   @override
   Widget build(BuildContext context) {
     final personalizedPresenter = Get.find<PersonalizedPresenter>();
-    final backgroundColor = Theme.of(context).primaryColor.withAlpha(50);
     final selectedPeriod = getSelectedPeriod();
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 4),
-      decoration: ContainerDecoration.defaultDecoration,
-      child: ExpansionTile(
-        initiallyExpanded: false,
-        dense: true,
-        childrenPadding: const EdgeInsets.all(4),
-        backgroundColor: backgroundColor,
-        collapsedBackgroundColor: backgroundColor,
-        title: Text(
-            '${R.string.groupPeriod}${selectedPeriod == null ? '' : " (${selectedPeriod.name})"}'),
-        children: PeriodGroupingType.values
-            .map(
-              (e) => Container(
-                decoration: ContainerDecoration.defaultDecoration,
-                child: RadioListTile(
-                  value: e,
-                  toggleable: true,
-                  dense: true,
-                  groupValue: selectedPeriod,
-                  title: Text(e.name),
-                  onChanged: (_) {
-                    setState(() {
-                      personalizedPresenter.changePeriodGroupingType(e);
-                    });
-                  },
-                ),
-              ),
-            )
-            .toList(),
+    return DefaultExpansionTile(
+      title: Text(
+        '${R.string.groupPeriod}${selectedPeriod == null ? '' : " (${selectedPeriod.name})"}',
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
+      children: PeriodGroupingType.values
+          .map(
+            (e) => RadioListTile(
+              contentPadding: const EdgeInsets.all(0),
+              value: e,
+              toggleable: true,
+              dense: true,
+              groupValue: selectedPeriod,
+              title: Text(e.name),
+              onChanged: (_) {
+                setState(() {
+                  personalizedPresenter.changePeriodGroupingType(e);
+                });
+              },
+            ),
+          )
+          .toList(),
     );
   }
 }

@@ -19,53 +19,51 @@ class _SelectPeriodState extends State<SelectPeriod> {
     final presenter = Get.find<PersonalizedPresenter>();
 
     final now = DateTime.now();
-    final backgroundColor = Theme.of(context).primaryColor.withAlpha(50);
     final startDate = presenter.currentSelectedParams?.startDate;
     final endDate = presenter.currentSelectedParams?.endDate;
     final selectedDateTimeRange = startDate != null && endDate != null
         ? DateTimeRange(start: startDate, end: endDate)
         : null;
+    final theme = Theme.of(context);
 
     return Container(
-      padding: const EdgeInsets.all(12),
-      margin: const EdgeInsets.only(bottom: 4),
-      decoration: ContainerDecoration.defaultDecoration.copyWith(
-        color: backgroundColor,
-        boxShadow: [],
-      ),
-      child: Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: Text(
-              R.string.period,
-              style: Theme.of(context).textTheme.bodyLarge,
+      color: theme.disabledColor.withAlpha(70),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 20),
+              child: Text(
+                R.string.period,
+                style: theme.textTheme.bodyMedium,
+              ),
             ),
-          ),
-          Expanded(
-            child: ElevatedButton(
-              onPressed: () async {
-                final DateTimeRange? pickedRange = await showDateRangePicker(
-                  locale: const Locale('pt', 'BR'),
-                  context: context,
-                  firstDate: now.subtract(const Duration(days: 365 * 3)),
-                  lastDate: now,
-                  initialDateRange: selectedDateTimeRange,
-                );
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () async {
+                  final DateTimeRange? pickedRange = await showDateRangePicker(
+                    locale: const Locale('pt', 'BR'),
+                    context: context,
+                    firstDate: now.subtract(const Duration(days: 365 * 3)),
+                    lastDate: now,
+                    initialDateRange: selectedDateTimeRange,
+                  );
 
-                if (pickedRange != null) {
-                  setState(() {
-                    presenter.changeDateRange(
-                      pickedRange.start,
-                      pickedRange.end,
-                    );
-                  });
-                }
-              },
-              child: _ButtonText(selectedDateRange: selectedDateTimeRange),
+                  if (pickedRange != null) {
+                    setState(() {
+                      presenter.changeDateRange(
+                        pickedRange.start,
+                        pickedRange.end,
+                      );
+                    });
+                  }
+                },
+                child: _ButtonText(selectedDateRange: selectedDateTimeRange),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

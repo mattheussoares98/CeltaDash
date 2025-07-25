@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../../helpers/helpers.dart';
 import '../../../pages.dart';
+import '../components.dart';
 
 class Enterprises extends StatefulWidget {
   const Enterprises({super.key});
@@ -24,56 +25,49 @@ class _EnterprisesState extends State<Enterprises> {
         ? null
         : allEnterprises?.firstWhere((e) => e.id?.toInt() == selectedId);
 
-    return Card(
-      elevation: 10,
-      margin: const EdgeInsets.all(4),
-      child: ExpansionTile(
-        initiallyExpanded: false,
-        dense: true,
-        childrenPadding: const EdgeInsets.all(4),
-        // backgroundColor: backgroundColor,
-        // collapsedBackgroundColor: backgroundColor,
-        title: RichText(
-          text: TextSpan(
-            style: const TextStyle(
-              color: Colors.black,
-            ),
-            children: [
-              TextSpan(text: R.string.enterprise),
-              if (selectedEnterprise != null)
-                TextSpan(
-                  text:
-                      " ${selectedEnterprise.personalizedCode} - ${selectedEnterprise.name}",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-            ],
+    return DefaultExpansionTile(
+      title: RichText(
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        text: TextSpan(
+          style: const TextStyle(
+            color: Colors.black,
           ),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+          children: [
+            TextSpan(text: R.string.enterprise),
+            if (selectedEnterprise != null)
+              TextSpan(
+                text:
+                    " ${selectedEnterprise.personalizedCode} - ${selectedEnterprise.name}",
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+          ],
         ),
-        children: allEnterprises
-                ?.map(
-                  (e) => Container(
-                    decoration: ContainerDecoration.defaultDecoration,
-                    child: RadioListTile(
-                      value: e.id?.toInt(),
-                      dense: true,
-                      groupValue: selectedId,
-                      title: Text(e.name ?? ''),
-                      onChanged: (_) {
-                        setState(() {
-                          personalizedPresenter
-                              .changeSelectedEnterprise(e.id!.toInt());
-                        });
-                      },
-                    ),
-                  ),
-                )
-                .toList() ??
-            [],
       ),
+      children: allEnterprises
+              ?.map(
+                (e) => RadioListTile(
+                  value: e.id?.toInt(),
+                  dense: true,
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 4),
+                  groupValue: selectedId,
+                  title: Text(
+                    "${e.personalizedCode} - ${e.name}",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  onChanged: (_) {
+                    setState(() {
+                      personalizedPresenter
+                          .changeSelectedEnterprise(e.id!.toInt());
+                    });
+                  },
+                ),
+              )
+              .toList() ??
+          [],
     );
   }
 }

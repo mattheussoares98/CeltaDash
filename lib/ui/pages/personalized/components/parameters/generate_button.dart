@@ -16,7 +16,7 @@ class GenerateButton extends StatelessWidget {
       children: [
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(bottom: 8),
             child: ElevatedButton(
               onPressed: () async {
                 final succeeds = await personalizedPresenter.getSales();

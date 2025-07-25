@@ -57,26 +57,31 @@ class _PersonalizedPageState extends State<PersonalizedPage>
                 // crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Card(
+                    elevation: 10,
+                    margin: const EdgeInsets.fromLTRB(4, 8, 8, 20),
                     child: ExpansionTile(
                       controller: controller,
                       initiallyExpanded: true,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      dense: true,
                       title: Text(
                         R.string.parameters,
                         style: Theme.of(context).textTheme.headlineMedium,
                       ),
-                      dense: true,
-                      expansionAnimationStyle: AnimationStyle.lerp(
-                        const AnimationStyle(curve: Curves.linear),
-                        const AnimationStyle(curve: Curves.bounceInOut),
-                        2,
-                      ),
-                      visualDensity: VisualDensity.compact,
+                      childrenPadding:
+                          const EdgeInsets.symmetric(horizontal: 4),
                       children: [
                         const SelectPeriod(),
+                        const SizedBox(height: 4),
                         if (startDate != null && endDate != null) ...[
                           const Enterprises(),
+                          const SizedBox(height: 4),
                           const PeriodGrouping(),
+                          const SizedBox(height: 4),
                           const CategoryGrouping(),
+                          const SizedBox(height: 4),
                           GenerateButton(controller: controller),
                         ]
                       ],
