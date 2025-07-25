@@ -62,7 +62,7 @@ class PersonalizedTable extends StatelessWidget {
                   },
                 ),
                 R.string.hour: (
-                  width: 70,
+                  width: 100,
                   check: (s) => s.Hour != null,
                   getValue: (s) {
                     final formatter = DateFormat("y/MM/dd", "pt_BR");
