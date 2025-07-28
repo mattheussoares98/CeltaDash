@@ -308,6 +308,74 @@ void main() {
             topCount: 300,
           ));
     });
+    test("Should not group by period when select product section", () async {
+      //select date
+      sut.changeDateRange(startDate, startDate);
+      sut.changeSelectedEnterprise(enterpriseId);
+
+      //select productSection
+      sut.changeCategoryGroupingType(CategoryGroupingType.productSection);
+
+      //select period
+      final selectedPeriod = PeriodGroupingType.values[
+          faker.randomGenerator.integer(PeriodGroupingType.values.length)];
+      sut.changePeriodGroupingType(selectedPeriod);
+
+      await sut.getSales();
+
+      expect(
+          sut.lastGetStatisticsParams,
+          GetSaleStatisticsParams(
+            startDate: startDate,
+            endDate: startDate,
+            enterpriseIds: [enterpriseId],
+            groupByYear: false,
+            groupByMonth: false,
+            groupByDay: false,
+            groupByHour: false,
+            groupByProduct: false,
+            groupByProductDepartment: false,
+            groupByProductSection: true,
+            groupByPaymentFinalization: false,
+            groupByPaymentModality: false,
+            groupByCashierOperator: false,
+            groupBySeller: false,
+          ));
+    });
+    test("Should not group by period when select product department", () async {
+      //select date
+      sut.changeDateRange(startDate, startDate);
+      sut.changeSelectedEnterprise(enterpriseId);
+
+      //select productDepartment
+      sut.changeCategoryGroupingType(CategoryGroupingType.productDepartment);
+
+      //select period
+      final selectedPeriod = PeriodGroupingType.values[
+          faker.randomGenerator.integer(PeriodGroupingType.values.length)];
+      sut.changePeriodGroupingType(selectedPeriod);
+
+      await sut.getSales();
+
+      expect(
+          sut.lastGetStatisticsParams,
+          GetSaleStatisticsParams(
+            startDate: startDate,
+            endDate: startDate,
+            enterpriseIds: [enterpriseId],
+            groupByYear: false,
+            groupByMonth: false,
+            groupByDay: false,
+            groupByHour: false,
+            groupByProduct: false,
+            groupByProductDepartment: true,
+            groupByProductSection: false,
+            groupByPaymentFinalization: false,
+            groupByPaymentModality: false,
+            groupByCashierOperator: false,
+            groupBySeller: false,
+          ));
+    });
   });
 
   group("Change selected date range", () {
