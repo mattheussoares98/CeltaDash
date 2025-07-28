@@ -44,6 +44,21 @@ class GetxPersonalizedPresenter extends GetxController
         return false;
       }
 
+      final start = DateTime(
+        _startDate!.year,
+        _startDate!.month,
+        _startDate!.day,
+      );
+      final end = DateTime(
+        _endDate!.year,
+        _endDate!.month,
+        _endDate!.day,
+      );
+      if (end.isBefore(start)) {
+        mainError = UIError.custom(R.string.msgEndDateBeforeStartDate);
+        return false;
+      }
+
       //products, departments or section cant group by period
       if (params.groupByProduct == true ||
           params.groupByProductDepartment == true ||

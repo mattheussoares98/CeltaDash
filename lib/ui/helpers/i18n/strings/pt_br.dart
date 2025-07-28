@@ -11,6 +11,8 @@ class PtBr implements Translation {
       "Não é permitido agrupar produto e período juntos";
   String get msgDisabledEnterprise =>
       "A empresa não está habilitada. Entre em contato com o setor administrativo para habilitar";
+  String get msgEndDateBeforeStartDate =>
+      'A data final deve ser igual ou posterior a data inicial';
   String get msgEnterpriseAlreadyExists =>
       "Já existe uma empresa cadastrada com esse nome";
   String get msgEnterpriseNotFound => "A empresa não foi encontrada";

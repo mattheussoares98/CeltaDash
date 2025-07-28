@@ -3,6 +3,7 @@ abstract class Translation {
   String get msgCantCompareSameDays;
   String get msgCantGroupProductAndPeriodTogether;
   String get msgDisabledEnterprise;
+  String get msgEndDateBeforeStartDate;
   String get msgEnterpriseAlreadyExists;
   String get msgEnterpriseNotFound;
   String get msgInvalidCredentials;

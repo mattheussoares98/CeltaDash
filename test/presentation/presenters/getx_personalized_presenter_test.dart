@@ -129,6 +129,23 @@ void main() {
 
       await sut.getSales();
     });
+    test(
+        "Should emit error and return false when end date is before start date",
+        () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(
+          sut.mainErrorStream,
+          emitsInOrder(
+            [null, UIError.custom(R.string.msgEndDateBeforeStartDate)],
+          ));
+
+      sut.changeDateRange(
+          startDate, startDate.subtract(const Duration(days: 1)));
+      sut.changeSelectedEnterprise(enterpriseId);
+      sut.changePeriodGroupingType(PeriodGroupingType.day);
+
+      expect(await sut.getSales(), false);
+    });
 
     test("Should emit correct values on error", () async {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
