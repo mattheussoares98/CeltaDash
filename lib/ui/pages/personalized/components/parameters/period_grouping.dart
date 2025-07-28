@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../../domain/helpers/helpers.dart';
+import '../../../../../domain/usecases/usecases.dart';
 import '../../../../helpers/helpers.dart';
 import '../../../pages.dart';
 import '../components.dart';
@@ -22,28 +23,17 @@ class PeriodGrouping extends StatefulWidget {
 }
 
 class _PeriodGroupingState extends State<PeriodGrouping> {
-  PeriodGroupingType? getSelectedPeriod() {
-    final params = Get.find<PersonalizedPresenter>().currentSelectedParams;
-    if (params == null) return null;
-
-    final selectedCategories = PeriodGroupingType.values
-        .where((type) => params.isPeriodSelected(type))
-        .toList();
-
-    if (selectedCategories.isEmpty) return null;
-
-    return selectedCategories.first;
-  }
-
   @override
   Widget build(BuildContext context) {
     final personalizedPresenter = Get.find<PersonalizedPresenter>();
-    final selectedPeriod = getSelectedPeriod();
+
+    final selectedPeriod =
+        personalizedPresenter.currentSelectedParams?.selectedPeriod;
 
     return DefaultExpansionTile(
       controller: widget.periodsController,
       title: Text(
-        '${R.string.groupPeriod}${selectedPeriod == null ? '' : " (${selectedPeriod.name})"}',
+        '${R.string.groupPeriod} (${selectedPeriod?.name})',
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),

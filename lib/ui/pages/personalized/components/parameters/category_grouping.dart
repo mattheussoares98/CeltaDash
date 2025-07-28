@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../../domain/helpers/helpers.dart';
+import '../../../../../domain/usecases/usecases.dart';
 import '../../../../helpers/helpers.dart';
 import '../../../pages.dart';
 import '../components.dart';
@@ -20,46 +21,16 @@ class CategoryGrouping extends StatefulWidget {
 }
 
 class _CategoryGroupingState extends State<CategoryGrouping> {
-  bool isEnabled(CategoryGroupingType type) {
-    final personalizedPresenter = Get.find<PersonalizedPresenter>();
-    final params = personalizedPresenter.currentSelectedParams;
-    switch (type) {
-      case CategoryGroupingType.product:
-        return params?.groupByProduct == true;
-      case CategoryGroupingType.cashierOperator:
-        return params?.groupByCashierOperator == true;
-      case CategoryGroupingType.seller:
-        return params?.groupBySeller == true;
-      case CategoryGroupingType.paymentFinalization:
-        return params?.groupByPaymentFinalization == true;
-      case CategoryGroupingType.paymentModality:
-        return params?.groupByPaymentModality == true;
-      case CategoryGroupingType.productSection:
-        return params?.groupByProductSection == true;
-      case CategoryGroupingType.productDepartment:
-        return params?.groupByProductDepartment == true;
-    }
-  }
-
-  String getSelectedsCategories() {
-    final params = Get.find<PersonalizedPresenter>().currentSelectedParams;
-    if (params == null) return "";
-
-    final selectedCategories = CategoryGroupingType.values
-        .where((type) => params.isCategoryGroupingSelected(type));
-
-    return selectedCategories.map((type) => type.name).join(", ");
-  }
-
   @override
   Widget build(BuildContext context) {
     final personalizedPresenter = Get.find<PersonalizedPresenter>();
-    final selecteds = getSelectedsCategories();
+    final selecteds =
+        personalizedPresenter.currentSelectedParams?.selectedsCategories;
 
     return DefaultExpansionTile(
       controller: widget.categoriesController,
       title: Text(
-        "${R.string.groupCategory} ${selecteds.isEmpty ? "" : '($selecteds)'}",
+        "${R.string.groupCategory} ${selecteds?.isEmpty == true ? "" : '(${selecteds?.map((e) => e.name).join(', ')})'}",
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
@@ -79,7 +50,7 @@ class _CategoryGroupingState extends State<CategoryGrouping> {
                       child: Text(e.name),
                     ),
                     Checkbox(
-                      value: isEnabled(e),
+                      value: selecteds?.contains(e),
                       onChanged: (_) {
                         setState(() {
                           personalizedPresenter.changeCategoryGroupingType(e);

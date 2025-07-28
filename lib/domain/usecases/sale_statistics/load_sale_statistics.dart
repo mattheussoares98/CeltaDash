@@ -135,11 +135,10 @@ extension GetSaleStatisticsParamsEnterprise on GetSaleStatisticsParams {
         ?.where((e) => selectedIds?.contains(e.id?.toInt()) == true)
         .toList();
 
-    return selectedsEnterprises; //TODO use in PersonalizedPage
+    return selectedsEnterprises;
   }
 }
 
-//TODO use this extension in PersonalizedPage
 extension GetSaleStatisticsParamsCategoryGroupingsType
     on GetSaleStatisticsParams {
   List<CategoryGroupingType> get selectedsCategories {
