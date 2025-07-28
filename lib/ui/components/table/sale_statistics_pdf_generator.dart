@@ -5,7 +5,6 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 // Assuming 'PersonalizedTableCell' is defined in your project.
-import '../../../domain/helpers/helpers.dart';
 import '../../../domain/usecases/usecases.dart';
 import 'table.dart'; // Make sure this import points to your PersonalizedTableCell definition.
 
@@ -17,7 +16,6 @@ class SaleStatisticPdfGenerator {
   final int? minValueRowIndex;
   final int? maxValueRowIndex;
   final String pdfFileName;
-  final PeriodType? selectedPeriodType;
   final GetSaleStatisticsParams? getSalesStatisticsParams;
 
   SaleStatisticPdfGenerator({
@@ -28,7 +26,6 @@ class SaleStatisticPdfGenerator {
     required this.minValueRowIndex,
     required this.maxValueRowIndex,
     required this.pdfFileName,
-    required this.selectedPeriodType,
     required this.getSalesStatisticsParams,
   });
 

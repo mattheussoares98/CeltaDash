@@ -382,7 +382,6 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
 
     // 1. Instantiate the generator as before.
     final pdfGenerator = SaleStatisticPdfGenerator(
-      selectedPeriodType: widget.selectedPeriodType,
       pdfFileName: widget.pdfFileName, // Title in Portuguese
       titles: widget.titles,
       sortedRows: _sortedRows,
