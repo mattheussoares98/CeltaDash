@@ -22,7 +22,7 @@ class GetxPersonalizedPresenter extends GetxController
   final homePresenter = Get.find<HomePresenter>();
 
   @override
-  Future<bool> getSales(/* TODO add topCount param */) async {
+  Future<bool> getSales() async {
     isLoading = true;
     mainError = null;
     try {
