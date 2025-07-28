@@ -237,7 +237,7 @@ class PersonalizedTable extends StatelessWidget {
                       hideShowAnimation: () {
                         _showAnimation = false;
                       },
-                      pdfFileName: "Relatório Personalizado",
+                      pdfFileName: "Personalizado",
                     ),
                   ],
                 ),
