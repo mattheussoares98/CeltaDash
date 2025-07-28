@@ -39,7 +39,8 @@ class GetxPersonalizedPresenter extends GetxController
 
       //large periods
       if (params.groupByHour == true && difference > 3 ||
-          params.groupByDay == true && difference > 60) {
+          params.groupByDay == true && difference > 60 ||
+          params.groupByMonth == true && difference > 365) {
         mainError = UIError.custom(R.string.msgLongIntervalToGroupThisPeriod);
         return false;
       }

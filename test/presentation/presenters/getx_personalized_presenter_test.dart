@@ -130,6 +130,22 @@ void main() {
       await sut.getSales();
     });
     test(
+        "Should emit correct values on select LARGE interval to group by month",
+        () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(
+          sut.mainErrorStream,
+          emitsInOrder(
+            [null, UIError.custom(R.string.msgLongIntervalToGroupThisPeriod)],
+          ));
+
+      sut.changeDateRange(startDate, startDate.add(const Duration(days: 366)));
+      sut.changeSelectedEnterprise(enterpriseId);
+      sut.changePeriodGroupingType(PeriodGroupingType.month);
+
+      expect(await sut.getSales(), false);
+    });
+    test(
         "Should emit error and return false when end date is before start date",
         () async {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
