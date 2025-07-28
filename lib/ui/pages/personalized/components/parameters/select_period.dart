@@ -38,6 +38,9 @@ class _SelectPeriodState extends State<SelectPeriod> {
               setState(() {
                 presenter.changeDateRange(start, null);
               });
+              if (presenter.startDate != null && presenter.endDate != null) {
+                widget.enterprisesController.expand();
+              }
             },
             label: _ButtonText(isStartDate: true, date: presenter.startDate),
             icon: Icon(
@@ -58,6 +61,9 @@ class _SelectPeriodState extends State<SelectPeriod> {
               setState(() {
                 presenter.changeDateRange(null, end);
               });
+              if (presenter.startDate != null && presenter.endDate != null) {
+                widget.enterprisesController.expand();
+              }
             },
             label: _ButtonText(isStartDate: false, date: presenter.endDate),
             icon: Icon(
