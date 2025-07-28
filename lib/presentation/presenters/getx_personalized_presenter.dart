@@ -102,14 +102,14 @@ class GetxPersonalizedPresenter extends GetxController
       _endDate = endDate;
     }
 
-    if (startDate != null && endDate != null) {
+    if (_startDate != null && _endDate != null) {
       _currentSelectedParams.value = _currentSelectedParams.value?.copyWith(
-            startDate: startDate,
-            endDate: endDate,
+            startDate: _startDate,
+            endDate: _endDate,
           ) ??
           GetSaleStatisticsParams(
-            startDate: startDate,
-            endDate: endDate,
+            startDate: _startDate!,
+            endDate: _endDate!,
           );
     }
   }
