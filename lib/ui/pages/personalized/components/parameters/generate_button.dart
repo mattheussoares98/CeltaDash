@@ -6,7 +6,12 @@ import '../../../pages.dart';
 
 class GenerateButton extends StatelessWidget {
   final void Function(bool collapseParameters) collapseAll;
-  const GenerateButton({super.key, required this.collapseAll});
+  final bool? isLoading;
+  const GenerateButton({
+    super.key,
+    required this.collapseAll,
+    required this.isLoading,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,13 +23,23 @@ class GenerateButton extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(bottom: 8),
             child: ElevatedButton(
-              onPressed: () async {
-                final succeeds = await personalizedPresenter.getSales();
-                if (succeeds) {
-                  collapseAll(true);
-                }
-              },
-              child: Text(R.string.generate),
+              onPressed: isLoading == true
+                  ? null
+                  : () async {
+                      final succeeds = await personalizedPresenter.getSales();
+                      if (succeeds) {
+                        collapseAll(true);
+                      }
+                    },
+              child: isLoading == true
+                  ? const SizedBox(
+                      height: 15,
+                      width: 15,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 0.5,
+                      ),
+                    )
+                  : Text(R.string.generate),
             ),
           ),
         ),
