@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../components/components.dart';
 import '../../../../helpers/helpers.dart';
 import '../../../pages.dart';
 
@@ -22,40 +23,46 @@ class _SelectPeriodState extends State<SelectPeriod> {
     final presenter = Get.find<PersonalizedPresenter>();
 
     final now = DateTime.now();
-    final startDate = presenter.currentSelectedParams?.startDate;
-    final endDate = presenter.currentSelectedParams?.endDate;
-    final selectedDateTimeRange = startDate != null && endDate != null
-        ? DateTimeRange(start: startDate, end: endDate)
-        : null;
 
     return Row(
       children: [
         Expanded(
           child: ElevatedButton.icon(
+            onPressed: () async {
+              final start = await GetNewDate.get(
+                canInsertDateBeforeNow: true,
+                insertHoursAndMinutes: false,
+                lastDate: now,
+                reduceDaysFromInitialDate: 1100,
+              );
+              setState(() {
+                presenter.changeDateRange(start, null);
+              });
+            },
+            label: _ButtonText(isStartDate: true, date: presenter.startDate),
             icon: Icon(
               Platform.isIOS ? Icons.calendar_today : Icons.date_range_outlined,
             ),
-            iconAlignment: IconAlignment.end,
-            label: _ButtonText(selectedDateRange: selectedDateTimeRange),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: ElevatedButton.icon(
             onPressed: () async {
-              final DateTimeRange? pickedRange = await showDateRangePicker(
-                locale: const Locale('pt', 'BR'),
-                context: context,
-                firstDate: now.subtract(const Duration(days: 365 * 3)),
+              final end = await GetNewDate.get(
+                canInsertDateBeforeNow: true,
+                insertHoursAndMinutes: false,
                 lastDate: now,
-                initialDateRange: selectedDateTimeRange,
+                reduceDaysFromInitialDate: 1100,
               );
-
-              if (pickedRange != null) {
-                setState(() {
-                  presenter.changeDateRange(
-                    pickedRange.start,
-                    pickedRange.end,
-                  );
-                });
-                widget.enterprisesController.expand();
-              }
+              setState(() {
+                presenter.changeDateRange(null, end);
+              });
             },
+            label: _ButtonText(isStartDate: false, date: presenter.endDate),
+            icon: Icon(
+              Platform.isIOS ? Icons.calendar_today : Icons.date_range_outlined,
+            ),
           ),
         ),
       ],
@@ -64,18 +71,18 @@ class _SelectPeriodState extends State<SelectPeriod> {
 }
 
 class _ButtonText extends StatelessWidget {
-  final DateTimeRange? selectedDateRange;
-  const _ButtonText({required this.selectedDateRange});
+  final DateTime? date;
+  final bool isStartDate;
+  const _ButtonText({required this.isStartDate, required this.date});
 
   @override
   Widget build(BuildContext context) {
-    if (selectedDateRange?.start != null && selectedDateRange?.end != null) {
+    if (date != null) {
       final formatter = DateFormat.yMd("pt_BR");
 
-      return Text(
-          "${R.string.period} ${formatter.format(selectedDateRange!.start)} ~ ${formatter.format(selectedDateRange!.end)}");
+      return Text(formatter.format(date!), maxLines: 1);
     }
 
-    return Text(R.string.msgSelectPeriod);
+    return Text(isStartDate ? R.string.start : R.string.end);
   }
 }

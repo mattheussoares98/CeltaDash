@@ -93,6 +93,8 @@ class PtBr implements Translation {
   String get empty => "Vazio";
   String get emptySubEnterprises => "Não há sub-empresas";
   String get enabled => "Habilitado";
+  String get end => "Final";
+  String get endDate => "Data final";
   String get enter => "Entrar";
   String get enterprise => "Empresa";
   String get enterpriseName => "Nome da empresa";
@@ -178,6 +180,8 @@ class PtBr implements Translation {
   String get selectOneEnterprise => "Selecione uma empresa";
   String get share => "Share";
   String get sold => "Vendeu";
+  String get start => "Início";
+  String get startDate => "Data inicial";
   String get subEnterprises => "Subempresas";
   String get ticketAverage => "Ticket médio";
   String get type => "Tipo";

@@ -79,6 +79,8 @@ abstract class Translation {
   String get empty;
   String get emptySubEnterprises;
   String get enabled;
+  String get end;
+  String get endDate;
   String get enter;
   String get enterprise;
   String get enterpriseName;
@@ -163,6 +165,8 @@ abstract class Translation {
   String get selectOneEnterprise;
   String get share;
   String get sold;
+  String get start;
+  String get startDate;
   String get subEnterprises;
   String get ticketAverage;
   String get type;
