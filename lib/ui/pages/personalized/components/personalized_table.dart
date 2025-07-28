@@ -135,6 +135,13 @@ class PersonalizedTable extends StatelessWidget {
                   check: (s) => s.LiquidValue != null,
                   getValue: (s) => s.LiquidValue ?? "",
                 ),
+                R.string.profit: (
+                  width: 120,
+                  check: (s) =>
+                      s.LiquidValue != null && s.TotalRepositionCost != null,
+                  getValue: (s) =>
+                      '${(s.LiquidValue?.toDouble() ?? 0) - (s.TotalRepositionCost?.toDouble() ?? 0)}',
+                ),
               };
 
               // 2. Determine which columns are active in a single pass.
@@ -163,8 +170,9 @@ class PersonalizedTable extends StatelessWidget {
                 return activeTitles.map((title) {
                   // For each active title, get the corresponding value from the sale.
                   dynamic value = columnDefinitions[title]!.getValue(sale);
-                  bool isMoney =
-                      title == R.string.total || title == R.string.cost;
+                  bool isMoney = title == R.string.total ||
+                      title == R.string.cost ||
+                      title == R.string.profit;
 
                   if (title == R.string.year) {
                     value = value.toString();
@@ -193,6 +201,8 @@ class PersonalizedTable extends StatelessWidget {
                   .indexWhere((e) => e == R.string.productsQuantityAbbreviated);
               final salesQuantityAbbreviated = activeTitles
                   .indexWhere((e) => e == R.string.salesQuantityAbbreviated);
+              final profit =
+                  activeTitles.indexWhere((e) => e == R.string.profit);
 
               final columnsToSum = [
                 if (totalIndex != -1) totalIndex,
@@ -201,6 +211,7 @@ class PersonalizedTable extends StatelessWidget {
                 if (productsQuantityAbbreviatedIndex != -1)
                   productsQuantityAbbreviatedIndex,
                 if (salesQuantityAbbreviated != -1) salesQuantityAbbreviated,
+                if (profit != -1) profit,
               ];
 
               return ConstrainedBox(
