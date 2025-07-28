@@ -137,8 +137,10 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
     _sortedRows.sort((a, b) {
       final aValue = a[columnIndex].value.toString();
       final bValue = b[columnIndex].value.toString();
-      final aNum = double.tryParse(aValue);
-      final bNum = double.tryParse(bValue);
+      final aSplit = aValue.toString().split(' ').first.padLeft(2, "0");
+      final bSplit = bValue.toString().split(' ').first.padLeft(2, "0");
+      final aNum = double.tryParse(aSplit);
+      final bNum = double.tryParse(bSplit);
 
       if (aNum != null && bNum != null) {
         return _isAscending ? aNum.compareTo(bNum) : bNum.compareTo(aNum);
