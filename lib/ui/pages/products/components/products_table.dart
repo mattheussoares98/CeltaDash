@@ -56,6 +56,7 @@ class ProductsTable extends StatelessWidget {
         MediaQuery.of(context).orientation == Orientation.portrait;
 
     return ScrollableTableItem(
+      getSalesStatisticsParams: null, //TODO add here
       titleMinHeight: isPortrait ? 43 : 32,
       selectedPeriodType: productsPresenter.selectedPeriod,
       pdfFileName: R.string.products,

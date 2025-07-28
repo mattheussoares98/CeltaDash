@@ -22,6 +22,7 @@ class MonthSales extends StatelessWidget {
     final orientation = MediaQuery.of(context).orientation;
 
     return ScrollableTableItem(
+      getSalesStatisticsParams: null, //TODO add here
       titleMinHeight: orientation == Orientation.portrait ? 45 : 25,
       pdfFileName: R.string.monthlyAnalysis,
       showAnimation: _showAnimation,

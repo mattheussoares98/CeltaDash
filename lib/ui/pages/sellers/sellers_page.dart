@@ -137,6 +137,7 @@ class _SellersPageState extends State<SellersPage> {
                       return Column(
                         children: [
                           ScrollableTableItem(
+                            getSalesStatisticsParams: null, //TODO add here
                             titleMinHeight: isPortrait ? 43 : 30,
                             indexToSort: 1,
                             columnIndexToCompareAndDetachBetterAndWorstValue: 1,

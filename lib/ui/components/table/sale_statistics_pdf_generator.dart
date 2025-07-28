@@ -1,13 +1,12 @@
 import 'dart:typed_data';
 import 'package:celta_dash/ui/helpers/helpers.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 // Assuming 'PersonalizedTableCell' is defined in your project.
 import '../../../domain/helpers/helpers.dart';
-import '../../pages/pages.dart';
+import '../../../domain/usecases/usecases.dart';
 import 'table.dart'; // Make sure this import points to your PersonalizedTableCell definition.
 
 class SaleStatisticPdfGenerator {
@@ -19,6 +18,7 @@ class SaleStatisticPdfGenerator {
   final int? maxValueRowIndex;
   final String pdfFileName;
   final PeriodType? selectedPeriodType;
+  final GetSaleStatisticsParams? getSalesStatisticsParams;
 
   SaleStatisticPdfGenerator({
     required this.titles,
@@ -29,6 +29,7 @@ class SaleStatisticPdfGenerator {
     required this.maxValueRowIndex,
     required this.pdfFileName,
     required this.selectedPeriodType,
+    required this.getSalesStatisticsParams,
   });
 
   /// Generates the PDF document and returns its data as a Uint8List.
@@ -43,7 +44,7 @@ class SaleStatisticPdfGenerator {
     pdf.addPage(
       pw.MultiPage(
         // This reduces the blank space on all sides of the page.
-        margin: const pw.EdgeInsets.all(20),
+        margin: const pw.EdgeInsets.all(8),
         pageFormat: PdfPageFormat.a4.landscape,
         header: (pw.Context context) => _buildHeader(),
         footer: (pw.Context context) => _buildFooter(context),
@@ -58,14 +59,17 @@ class SaleStatisticPdfGenerator {
 
   /// Builds the header for each page of the PDF.
   pw.Widget _buildHeader() {
-    final homePresenter = Get.find<HomePresenter>();
     final now = DateTime.now().toLocal();
     final formatter = DateFormat('dd/MM/yyyy HH:mm');
-    final selectedDate = homePresenter.selectedDate;
+    final startDate = getSalesStatisticsParams?.startDate;
+    final endDate = getSalesStatisticsParams?.endDate;
+    // final selectedPeriodType = getSalesStatisticsParams?.selectedPeriod;
+    // final selectedCategories = getSalesStatisticsParams?.selectedsCategories;
+    final selectedsEnterprises = getSalesStatisticsParams?.selectedsEnterprises;
 
     return pw.Container(
       alignment: pw.Alignment.centerLeft,
-      margin: const pw.EdgeInsets.only(bottom: 16.0),
+      margin: const pw.EdgeInsets.only(bottom: 8),
       child: pw.Column(
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
@@ -78,24 +82,35 @@ class SaleStatisticPdfGenerator {
               'Gerado em: ${formatter.format(now)}',
               style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey),
             ),
-            if (selectedPeriodType != null) ...[
+            if (startDate != null && endDate != null)
               pw.Text(
-                ' - Data selecionada: ${DateFormat('dd/MM/yyyy').format(selectedDate)} - ',
+                ' - Período: ${DateFormat.yMd('pt_BR').format(startDate)} ~ ${DateFormat.yMd('pt_BR').format(endDate)}',
                 style: const pw.TextStyle(fontSize: 10),
               ),
-              pw.Text(
-                'Período: ${selectedPeriodType!.description}',
-                style: const pw.TextStyle(fontSize: 10),
-              ),
-            ],
-            if (homePresenter.selectedEnterprise?.personalizedCode != null &&
-                homePresenter.selectedEnterprise?.name != null)
-              pw.Text(
-                ' - ${homePresenter.selectedEnterprise!.personalizedCode} - ${homePresenter.selectedEnterprise!.name}',
-                style:
-                    const pw.TextStyle(fontSize: 10, color: PdfColors.green900),
-              ),
+            // if (selectedPeriodType != null)
+            //   pw.Text(
+            //     ' - Período: $selectedPeriodType}',
+            //     style: const pw.TextStyle(fontSize: 10),
+            //   ),
+            // if (selectedCategories != null) ...[
+            //   pw.Text(
+            //     selectedCategories.map((e) => e.name).toList().join(", "),
+            //     style: const pw.TextStyle(fontSize: 10),
+            //   ),
+            // ],
           ]),
+          if (selectedsEnterprises != null) ...[
+            pw.Text(
+              selectedsEnterprises.map((e) => e.name!).toList().join(", "),
+              style: const pw.TextStyle(fontSize: 10),
+            ),
+            // for (var enterprise in selectedsEnterprises) ...[
+            //   pw.Text(
+            //     '(${enterprise.personalizedCode}) ${enterprise.name}',
+            //     style: const pw.TextStyle(fontSize: 10),
+            //   ),
+            // ],
+          ],
         ],
       ),
     );

@@ -30,6 +30,7 @@ class _PaymentsModalitiesState extends State<PaymentsModalities> {
     return Column(
       children: [
         ScrollableTableItem(
+          getSalesStatisticsParams: null, //TODO add here
           titleMinHeight: isPortrait ? 43 : 25,
           selectedPeriodType: paymentTypePresenter.selectedPeriod,
           pdfFileName: R.string.paymentsType,

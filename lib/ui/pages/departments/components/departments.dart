@@ -25,6 +25,7 @@ class Departments extends StatelessWidget {
     return Column(
       children: [
         ScrollableTableItem(
+          getSalesStatisticsParams: null, //TODO add here
           titleMinHeight: isPortrait ? 43 : 25,
           selectedPeriodType: homePresenter.selectedPeriod,
           pdfFileName: R.string.departments,

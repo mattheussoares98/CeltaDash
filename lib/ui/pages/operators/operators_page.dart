@@ -138,6 +138,7 @@ class _OperatorsPageState extends State<OperatorsPage> {
                       return Column(
                         children: [
                           ScrollableTableItem(
+                            getSalesStatisticsParams: null, //TODO add here
                             selectedPeriodType:
                                 operatorsPresenter.selectedPeriod,
                             titleMinHeight: isPortrait ? 43 : 25,

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 // Assuming these are your custom imports.
 // You may need to adjust the paths if they are incorrect.
 import '../../../domain/helpers/helpers.dart';
+import '../../../domain/usecases/usecases.dart';
 import '../../../ui/helpers/helpers.dart';
 import '../../pages/pages.dart';
 import 'table.dart';
@@ -24,6 +25,7 @@ class ScrollableTableItem extends StatefulWidget {
   final int animationSecondsDuration;
   final String pdfFileName;
   final PeriodType? selectedPeriodType;
+  final GetSaleStatisticsParams? getSalesStatisticsParams;
 
   const ScrollableTableItem({
     super.key,
@@ -33,6 +35,7 @@ class ScrollableTableItem extends StatefulWidget {
     required this.showAnimation,
     required this.hideShowAnimation,
     required this.pdfFileName,
+    this.getSalesStatisticsParams,
     this.selectedPeriodType,
     this.animationSecondsDuration = 2,
     this.columnIndexToCompareAndDetachBetterAndWorstValue,
@@ -389,6 +392,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
           : null,
       minValueRowIndex: minValueRowIndex,
       maxValueRowIndex: maxValueRowIndex,
+      getSalesStatisticsParams: widget.getSalesStatisticsParams,
     );
 
     // 2. Get the Future that will generate the PDF bytes, but DO NOT await it here.

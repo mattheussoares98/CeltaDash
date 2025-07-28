@@ -219,6 +219,8 @@ class PersonalizedTable extends StatelessWidget {
                 child: Column(
                   children: [
                     ScrollableTableItem(
+                      getSalesStatisticsParams:
+                          presenter.lastGetStatisticsParams,
                       columnIndexToCompareAndDetachBetterAndWorstValue:
                           activeTitles.length - 1,
                       indexToSort: activeTitles.length - 1,

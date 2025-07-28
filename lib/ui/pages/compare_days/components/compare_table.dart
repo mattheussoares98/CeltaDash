@@ -30,6 +30,7 @@ class CompareTable extends StatelessWidget {
         MediaQuery.of(context).orientation == Orientation.portrait;
 
     return ScrollableTableItem(
+      getSalesStatisticsParams: null, //TODO add here
       titleMinHeight: isPortrait ? 40 : 25,
       fixFirstColumn: true,
       pdfFileName: R.string.compareDays,
