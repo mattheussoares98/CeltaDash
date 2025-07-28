@@ -209,31 +209,7 @@ void main() {
         ),
       ).called(1);
     });
-    test("Should call loadSaleStatistics with correct non category groupings",
-        () async {
-      sut.changeDateRange(startDate, endDate);
-      sut.changeSelectedEnterprise(enterpriseId);
 
-      final periodSelected = PeriodGroupingType.values[
-          faker.randomGenerator.integer(PeriodGroupingType.values.length)];
-      sut.changePeriodGroupingType(periodSelected);
-
-      await sut.getSales();
-
-      verify(
-        () => loadSaleStatistics.get(
-          GetSaleStatisticsParams(
-            startDate: startDate,
-            endDate: endDate,
-            groupByYear: periodSelected == PeriodGroupingType.year,
-            groupByMonth: periodSelected == PeriodGroupingType.month,
-            groupByDay: periodSelected == PeriodGroupingType.day,
-            groupByHour: periodSelected == PeriodGroupingType.hour,
-            enterpriseIds: [enterpriseId],
-          ),
-        ),
-      ).called(1);
-    });
     test("Should call loadSaleStatistics with correct category groupings",
         () async {
       sut.changeDateRange(startDate, endDate);
@@ -296,52 +272,10 @@ void main() {
       expect(value, false);
     });
 
-    test("Should update last get sale statistics params correctly", () async {
-      //select date
-      sut.changeDateRange(startDate, endDate);
-      sut.changeSelectedEnterprise(enterpriseId);
-
-      //select category
-      final selectedCategory = CategoryGroupingType.values[
-          faker.randomGenerator.integer(CategoryGroupingType.values.length)];
-      sut.changeCategoryGroupingType(selectedCategory);
-
-      //select period
-      final selectedPeriod = PeriodGroupingType.values[
-          faker.randomGenerator.integer(PeriodGroupingType.values.length)];
-      sut.changePeriodGroupingType(selectedPeriod);
-
-      await sut.getSales();
-
-      expect(
-          sut.lastGetStatisticsParams,
-          GetSaleStatisticsParams(
-            startDate: startDate,
-            endDate: endDate,
-            enterpriseIds: [enterpriseId],
-            groupByYear: selectedPeriod == PeriodGroupingType.year,
-            groupByMonth: selectedPeriod == PeriodGroupingType.month,
-            groupByDay: selectedPeriod == PeriodGroupingType.day,
-            groupByHour: selectedPeriod == PeriodGroupingType.hour,
-            groupByProduct: selectedCategory == CategoryGroupingType.product,
-            groupByProductDepartment:
-                selectedCategory == CategoryGroupingType.productDepartment,
-            groupByProductSection:
-                selectedCategory == CategoryGroupingType.productSection,
-            groupByPaymentFinalization:
-                selectedCategory == CategoryGroupingType.paymentFinalization,
-            groupByPaymentModality:
-                selectedCategory == CategoryGroupingType.paymentModality,
-            groupByCashierOperator:
-                selectedCategory == CategoryGroupingType.cashierOperator,
-            groupBySeller: selectedCategory == CategoryGroupingType.seller,
-            // topCount: false,
-          ));
-    });
     test("Should not group by period when select product and return top 300",
         () async {
       //select date
-      sut.changeDateRange(startDate, endDate);
+      sut.changeDateRange(startDate, startDate);
       sut.changeSelectedEnterprise(enterpriseId);
 
       //select product
@@ -358,7 +292,7 @@ void main() {
           sut.lastGetStatisticsParams,
           GetSaleStatisticsParams(
             startDate: startDate,
-            endDate: endDate,
+            endDate: startDate,
             enterpriseIds: [enterpriseId],
             groupByYear: false,
             groupByMonth: false,

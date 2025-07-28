@@ -44,14 +44,16 @@ class GetxPersonalizedPresenter extends GetxController
         return false;
       }
 
-      //products
-      if (params.groupByProduct == true) {
+      //products, departments or section cant group by period
+      if (params.groupByProduct == true ||
+          params.groupByProductDepartment == true ||
+          params.groupByProductSection == true) {
         params = params.copyWith(
           groupByHour: false,
           groupByDay: false,
           groupByMonth: false,
           groupByYear: false,
-          topCount: 300,
+          topCount: params.groupByProduct == true ? 300 : null,
         );
       }
 
