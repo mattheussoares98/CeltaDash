@@ -33,7 +33,7 @@ class _PeriodGroupingState extends State<PeriodGrouping> {
     return DefaultExpansionTile(
       controller: widget.periodsController,
       title: Text(
-        '${R.string.groupPeriod} (${selectedPeriod?.name})',
+        '${R.string.groupPeriod}${selectedPeriod == null ? "" : " (${selectedPeriod.name})"}',
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),

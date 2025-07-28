@@ -35,7 +35,7 @@ class DayTable extends StatelessWidget {
       columnsWidths: [60, 90, 40, 60, 50],
       columnIndexToCompareAndDetachBetterAndWorstValue: 1,
       columnsIndexToSum: [1, 2],
-      indexToSort: 0, //TODO fix this sort
+      indexToSort: 0,
       titles: [
         PersonalizedTableCell(value: R.string.day, isTitle: true),
         PersonalizedTableCell(value: R.string.sales, isTitle: true),
