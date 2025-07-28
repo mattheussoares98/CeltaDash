@@ -11,8 +11,10 @@ abstract class PersonalizedPresenter implements Listenable {
   PeriodGroupingType? get periodGroupingType;
   GetSaleStatisticsParams? get lastGetStatisticsParams;
   GetSaleStatisticsParams? get currentSelectedParams;
+  DateTime? get startDate;
+  DateTime? get endDate;
 
-  void changeDateRange(DateTime start, DateTime end);
+  void changeDateRange(DateTime? start, DateTime? end);
   void changeSelectedEnterprise(int enterpriseId);
   void changeCategoryGroupingType(CategoryGroupingType type);
   void changePeriodGroupingType(PeriodGroupingType type);

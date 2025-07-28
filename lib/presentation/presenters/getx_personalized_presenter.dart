@@ -78,15 +78,25 @@ class GetxPersonalizedPresenter extends GetxController
   }
 
   @override
-  void changeDateRange(DateTime startDate, DateTime endDate) {
-    _currentSelectedParams.value = _currentSelectedParams.value?.copyWith(
-          startDate: startDate,
-          endDate: endDate,
-        ) ??
-        GetSaleStatisticsParams(
-          startDate: startDate,
-          endDate: endDate,
-        );
+  void changeDateRange(DateTime? startDate, DateTime? endDate) {
+    if (startDate != null) {
+      _startDate = startDate;
+    }
+
+    if (endDate != null) {
+      _endDate = endDate;
+    }
+
+    if (startDate != null && endDate != null) {
+      _currentSelectedParams.value = _currentSelectedParams.value?.copyWith(
+            startDate: startDate,
+            endDate: endDate,
+          ) ??
+          GetSaleStatisticsParams(
+            startDate: startDate,
+            endDate: endDate,
+          );
+    }
   }
 
   @override
@@ -187,4 +197,12 @@ class GetxPersonalizedPresenter extends GetxController
   @override
   GetSaleStatisticsParams? get currentSelectedParams =>
       _currentSelectedParams.value;
+
+  DateTime? _endDate;
+  @override
+  DateTime? get endDate => _endDate;
+
+  DateTime? _startDate;
+  @override
+  DateTime? get startDate => _startDate;
 }

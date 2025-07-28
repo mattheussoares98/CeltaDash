@@ -379,13 +379,24 @@ void main() {
   });
 
   group("Change selected date range", () {
-    test("Should update selected date range", () async {
+    test('Should update correctly if pass non null values', () {
+      expect(sut.startDate, isNull);
+      expect(sut.endDate, isNull);
+
       sut.changeDateRange(startDate, endDate);
 
+      expect(sut.startDate, isNotNull);
+      expect(sut.endDate, isNotNull);
       expect(
         sut.currentSelectedParams,
         GetSaleStatisticsParams(startDate: startDate, endDate: endDate),
       );
+    });
+    test('Should NOT update start date and end date if pass null values', () {
+      sut.changeDateRange(null, null);
+
+      expect(sut.startDate, isNull);
+      expect(sut.endDate, isNull);
     });
   });
 
