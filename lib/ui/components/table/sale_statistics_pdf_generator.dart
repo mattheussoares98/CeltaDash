@@ -1,11 +1,13 @@
 import 'dart:typed_data';
 import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 // Assuming 'PersonalizedTableCell' is defined in your project.
 import '../../../domain/usecases/usecases.dart';
+import '../../pages/pages.dart';
 import 'table.dart'; // Make sure this import points to your PersonalizedTableCell definition.
 
 class SaleStatisticPdfGenerator {
@@ -56,12 +58,14 @@ class SaleStatisticPdfGenerator {
 
   /// Builds the header for each page of the PDF.
   pw.Widget _buildHeader() {
-    final now = DateTime.now().toLocal();
+    final homePresenter = Get.find<HomePresenter>();
+    final selectedDate = homePresenter.selectedDate.toLocal();
     final formatter = DateFormat('dd/MM/yyyy HH:mm');
     final startDate = getSalesStatisticsParams?.startDate;
-    final endDate = getSalesStatisticsParams?.endDate.isAfter(now) == true
-        ? now
-        : getSalesStatisticsParams?.endDate;
+    final endDate =
+        getSalesStatisticsParams?.endDate.isAfter(selectedDate) == true
+            ? selectedDate
+            : getSalesStatisticsParams?.endDate;
     // final selectedPeriodType = getSalesStatisticsParams?.selectedPeriod;
     // final selectedCategories = getSalesStatisticsParams?.selectedsCategories;
     final selectedsEnterprises = getSalesStatisticsParams?.selectedsEnterprises;
@@ -78,7 +82,7 @@ class SaleStatisticPdfGenerator {
           // The text is now in Portuguese and uses the formatted date.
           pw.Row(children: [
             pw.Text(
-              'Gerado em: ${formatter.format(now)}',
+              'Gerado em: ${formatter.format(selectedDate)}',
               style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey),
             ),
             if (startDate != null && endDate != null)

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../domain/helpers/helpers.dart';
 import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
@@ -30,7 +31,10 @@ class _PaymentsModalitiesState extends State<PaymentsModalities> {
     return Column(
       children: [
         ScrollableTableItem(
-          getSalesStatisticsParams: null, //TODO add here
+          getSalesStatisticsParams:
+              paymentTypePresenter.selectedPeriod == PeriodType.daily
+                  ? paymentTypePresenter.lastGetDailyParams
+                  : paymentTypePresenter.lastGetMonthlyParams,
           titleMinHeight: isPortrait ? 43 : 25,
           selectedPeriodType: paymentTypePresenter.selectedPeriod,
           pdfFileName: R.string.paymentsType,

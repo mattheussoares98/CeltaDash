@@ -55,7 +55,6 @@ class GroupSummaryDetailsPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         ScrollableTableItem(
-          getSalesStatisticsParams: null, //TODO add here
           titleMinHeight: isPortrait ? 40 : 25,
           selectedPeriodType: resumePresenter.selectedPeriod,
           pdfFileName: R.string.groupSummary,

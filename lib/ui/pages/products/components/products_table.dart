@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
+import '../../../../domain/helpers/helpers.dart';
 import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
@@ -56,7 +57,10 @@ class ProductsTable extends StatelessWidget {
         MediaQuery.of(context).orientation == Orientation.portrait;
 
     return ScrollableTableItem(
-      getSalesStatisticsParams: null, //TODO add here
+      getSalesStatisticsParams:
+          productsPresenter.selectedPeriod == PeriodType.daily
+              ? productsPresenter.lastGetDailyParams
+              : productsPresenter.lastGetMonthlyParams,
       titleMinHeight: isPortrait ? 43 : 32,
       selectedPeriodType: productsPresenter.selectedPeriod,
       pdfFileName: R.string.products,

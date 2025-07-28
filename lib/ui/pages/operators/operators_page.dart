@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../domain/helpers/helpers.dart';
+import '../../../domain/usecases/usecases.dart';
 import '../../helpers/helpers.dart';
 import '../../components/components.dart';
 import '../pages.dart';
@@ -135,10 +136,24 @@ class _OperatorsPageState extends State<OperatorsPage> {
                         return EmptySales(isLoading: loadingSnap.data == true);
                       }
 
+                      GetSaleStatisticsParams? lastGetParams() {
+                        if (operatorsPresenter.selectedPeriod ==
+                            PeriodType.daily) {
+                          return operatorsPresenter.lastGetDailyParams;
+                        } else if (operatorsPresenter.selectedPeriod ==
+                            PeriodType.monthly) {
+                          return operatorsPresenter.lastGetMonthlyParams;
+                        } else if (operatorsPresenter.selectedPeriod ==
+                            PeriodType.yearly) {
+                          return operatorsPresenter.lastGetYearlyParams;
+                        }
+                        return null;
+                      }
+
                       return Column(
                         children: [
                           ScrollableTableItem(
-                            getSalesStatisticsParams: null, //TODO add here
+                            getSalesStatisticsParams: lastGetParams(),
                             selectedPeriodType:
                                 operatorsPresenter.selectedPeriod,
                             titleMinHeight: isPortrait ? 43 : 25,

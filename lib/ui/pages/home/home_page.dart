@@ -160,12 +160,11 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
               cupertinoIcon: const Icon(CupertinoIcons.cart),
               label: R.string.products,
             ),
-            if (kDebugMode) //TODO remove this when finish implementation
-              BottomNavItem(
-                materialIcon: const Icon(Icons.assignment_ind),
-                cupertinoIcon: const Icon(CupertinoIcons.doc_person),
-                label: R.string.personalized,
-              ),
+            BottomNavItem(
+              materialIcon: const Icon(Icons.assignment_ind),
+              cupertinoIcon: const Icon(CupertinoIcons.doc_person),
+              label: R.string.personalized,
+            ),
             BottomNavItem(
               materialIcon: const Icon(Icons.grid_view_rounded),
               cupertinoIcon: const Icon(CupertinoIcons.square_grid_2x2_fill),

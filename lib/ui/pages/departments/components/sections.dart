@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../domain/helpers/helpers.dart';
 import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
@@ -46,7 +47,10 @@ class Sections extends StatelessWidget {
     return Column(
       children: [
         ScrollableTableItem(
-          getSalesStatisticsParams: null, //TODO add here
+          getSalesStatisticsParams:
+              departmentsPresenter.selectedPeriod == PeriodType.daily
+                  ? departmentsPresenter.lastGetDailyParams
+                  : departmentsPresenter.lastGetMonthlyParams,
           titleMinHeight: isPortrait ? 50 : 35,
           selectedPeriodType: departmentsPresenter.selectedPeriod,
           pdfFileName: R.string.sections,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../domain/helpers/helpers.dart';
+import '../../../domain/usecases/usecases.dart';
 import '../../helpers/helpers.dart';
 import '../../components/components.dart';
 import '../pages.dart';
@@ -134,10 +135,24 @@ class _SellersPageState extends State<SellersPage> {
                         return EmptySales(isLoading: loadingSnap.data == true);
                       }
 
+                      GetSaleStatisticsParams? lastGetParams() {
+                        if (sellersPresenter.selectedPeriod ==
+                            PeriodType.daily) {
+                          return sellersPresenter.lastGetDailyParams;
+                        } else if (sellersPresenter.selectedPeriod ==
+                            PeriodType.monthly) {
+                          return sellersPresenter.lastGetMonthlyParams;
+                        } else if (sellersPresenter.selectedPeriod ==
+                            PeriodType.yearly) {
+                          return sellersPresenter.lastGetYearlyParams;
+                        }
+                        return null;
+                      }
+
                       return Column(
                         children: [
                           ScrollableTableItem(
-                            getSalesStatisticsParams: null, //TODO add here
+                            getSalesStatisticsParams: lastGetParams(),
                             titleMinHeight: isPortrait ? 43 : 30,
                             indexToSort: 1,
                             columnIndexToCompareAndDetachBetterAndWorstValue: 1,

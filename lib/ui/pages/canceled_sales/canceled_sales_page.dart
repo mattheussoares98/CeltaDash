@@ -128,7 +128,6 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                     return Column(
                       children: [
                         ScrollableTableItem(
-                          //TODO add salesParams as well
                           titleMinHeight: isPortrait ? 43 : 30,
                           selectedPeriodType:
                               canceledSalesPresenter.selectedPeriod,

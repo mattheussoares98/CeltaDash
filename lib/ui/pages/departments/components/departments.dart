@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../domain/helpers/helpers.dart';
 import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
@@ -18,16 +19,19 @@ class Departments extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final totalDepartmentsLiquid = saleStatistics.sumLiquidValue();
-    final homePresenter = Get.find<DepartmentsPresenter>();
+    final departmentsPresenter = Get.find<DepartmentsPresenter>();
     bool isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
 
     return Column(
       children: [
         ScrollableTableItem(
-          getSalesStatisticsParams: null, //TODO add here
+          getSalesStatisticsParams:
+              departmentsPresenter.selectedPeriod == PeriodType.daily
+                  ? departmentsPresenter.lastGetDailyParams
+                  : departmentsPresenter.lastGetMonthlyParams,
           titleMinHeight: isPortrait ? 43 : 25,
-          selectedPeriodType: homePresenter.selectedPeriod,
+          selectedPeriodType: departmentsPresenter.selectedPeriod,
           pdfFileName: R.string.departments,
           showAnimation: _showAnimation,
           hideShowAnimation: () {

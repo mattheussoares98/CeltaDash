@@ -23,7 +23,7 @@ class DayTable extends StatelessWidget {
     final orientation = MediaQuery.of(context).orientation;
 
     return ScrollableTableItem(
-      getSalesStatisticsParams: null, //TODO add here
+      getSalesStatisticsParams: salesPresenter.lastGetDailyParams,
       titleMinHeight: orientation == Orientation.portrait ? 45 : 25,
       pdfFileName: R.string.dailyAnalysis,
       showAnimation: _showAnimation,
@@ -35,7 +35,7 @@ class DayTable extends StatelessWidget {
       columnsWidths: [60, 90, 40, 60, 50],
       columnIndexToCompareAndDetachBetterAndWorstValue: 1,
       columnsIndexToSum: [1, 2],
-      indexToSort: 0,
+      indexToSort: 0, //TODO fix this sort
       titles: [
         PersonalizedTableCell(value: R.string.day, isTitle: true),
         PersonalizedTableCell(value: R.string.sales, isTitle: true),
