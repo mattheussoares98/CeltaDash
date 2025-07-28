@@ -200,10 +200,6 @@ class GetxPersonalizedPresenter extends GetxController
     );
   }
 
-  PeriodGroupingType? _periodGroupingTypes;
-  @override
-  PeriodGroupingType? get periodGroupingType => _periodGroupingTypes;
-
   final _lastGetStatisticsParams = Rx<GetSaleStatisticsParams?>(null);
   @override
   GetSaleStatisticsParams? get lastGetStatisticsParams =>

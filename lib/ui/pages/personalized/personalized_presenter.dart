@@ -8,7 +8,6 @@ abstract class PersonalizedPresenter implements Listenable {
   List<SaleStatisticViewModel>? get saleStatistics;
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
-  PeriodGroupingType? get periodGroupingType;
   GetSaleStatisticsParams? get lastGetStatisticsParams;
   GetSaleStatisticsParams? get currentSelectedParams;
   DateTime? get startDate;
