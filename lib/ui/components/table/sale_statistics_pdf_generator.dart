@@ -59,7 +59,9 @@ class SaleStatisticPdfGenerator {
     final now = DateTime.now().toLocal();
     final formatter = DateFormat('dd/MM/yyyy HH:mm');
     final startDate = getSalesStatisticsParams?.startDate;
-    final endDate = getSalesStatisticsParams?.endDate;
+    final endDate = getSalesStatisticsParams?.endDate.isAfter(now) == true
+        ? now
+        : getSalesStatisticsParams?.endDate;
     // final selectedPeriodType = getSalesStatisticsParams?.selectedPeriod;
     // final selectedCategories = getSalesStatisticsParams?.selectedsCategories;
     final selectedsEnterprises = getSalesStatisticsParams?.selectedsEnterprises;
@@ -81,7 +83,7 @@ class SaleStatisticPdfGenerator {
             ),
             if (startDate != null && endDate != null)
               pw.Text(
-                ' - Período: ${DateFormat.yMd('pt_BR').format(startDate)} ~ ${DateFormat.yMd('pt_BR').format(endDate)}',
+                ' - Período: ${DateFormat.yMd('pt_BR').format(startDate)} até ${DateFormat.yMd('pt_BR').format(endDate)}',
                 style: const pw.TextStyle(fontSize: 10),
               ),
             // if (selectedPeriodType != null)
