@@ -144,36 +144,31 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
                   );
                 },
           items: [
-            BottomNavItem(
-              materialIcon: const Icon(Icons.pie_chart),
-              cupertinoIcon: const Icon(CupertinoIcons.chart_pie),
-              label: R.string.resume,
+            const BottomNavItem(
+              materialIcon: Icon(Icons.pie_chart),
+              cupertinoIcon: Icon(CupertinoIcons.chart_pie),
+              label: '',
             ),
-            BottomNavItem(
-              materialIcon: const Icon(Icons.monetization_on),
-              cupertinoIcon: const Icon(CupertinoIcons.money_dollar),
-              label: R.string.sales,
+            const BottomNavItem(
+              materialIcon: Icon(Icons.monetization_on),
+              cupertinoIcon: Icon(CupertinoIcons.money_dollar),
+              label: '',
             ),
-            BottomNavItem(
-              materialIcon: const Icon(Icons.shopping_cart_rounded),
-              cupertinoIcon: const Icon(CupertinoIcons.cart),
-              label: R.string.products,
+            const BottomNavItem(
+              materialIcon: Icon(Icons.shopping_cart_rounded),
+              cupertinoIcon: Icon(CupertinoIcons.cart),
+              label: '',
             ),
-            BottomNavItem(
-              materialIcon: const Icon(Icons.assignment_ind),
-              cupertinoIcon: const Icon(CupertinoIcons.doc_person),
-              label: R.string.personalized,
+            const BottomNavItem(
+              materialIcon: Icon(Icons.assignment_ind),
+              cupertinoIcon: Icon(CupertinoIcons.doc_person),
+              label: '',
             ),
-            BottomNavItem(
-              materialIcon: const Icon(Icons.grid_view_rounded),
-              cupertinoIcon: const Icon(CupertinoIcons.square_grid_2x2_fill),
-              label: R.string.more,
+            const BottomNavItem(
+              materialIcon: Icon(Icons.grid_view_rounded),
+              cupertinoIcon: Icon(CupertinoIcons.square_grid_2x2_fill),
+              label: '',
             ),
-            // BottomNavItem(
-            //   materialIcon: Icon(Icons.person_pin_sharp),
-            //   cupertinoIcon: Icon(CupertinoIcons.person_2),
-            //   label: R.string.team,
-            // ),
           ],
         ),
       );

@@ -35,24 +35,23 @@ class BottomNavBar extends StatelessWidget {
       );
     }
 
-    return SizedBox(
-      height: orientation == Orientation.portrait ? 70 : 50,
-      child: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: onTap,
-        type: BottomNavigationBarType.fixed,
-        landscapeLayout: BottomNavigationBarLandscapeLayout.linear,
-        unselectedFontSize: 10,
-        selectedFontSize: 12,
-        items: items
-            .map(
-              (item) => BottomNavigationBarItem(
-                icon: item.materialIcon,
-                label: item.label,
-              ),
-            )
-            .toList(),
+    return BottomNavigationBar(
+      currentIndex: currentIndex,
+      onTap: onTap,
+      landscapeLayout: BottomNavigationBarLandscapeLayout.linear,
+      unselectedFontSize: 10,
+      selectedFontSize: 12,
+      selectedIconTheme: const IconThemeData(
+        size: 30,
       ),
+      items: items
+          .map(
+            (item) => BottomNavigationBarItem(
+              icon: item.materialIcon,
+              label: item.label,
+            ),
+          )
+          .toList(),
     );
   }
 }
@@ -60,11 +59,11 @@ class BottomNavBar extends StatelessWidget {
 class BottomNavItem {
   final Icon materialIcon;
   final Icon cupertinoIcon;
-  final String? label;
+  final String label;
 
   const BottomNavItem({
     required this.materialIcon,
     required this.cupertinoIcon,
-    this.label,
+    required this.label,
   });
 }
