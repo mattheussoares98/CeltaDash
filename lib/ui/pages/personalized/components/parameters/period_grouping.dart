@@ -32,10 +32,24 @@ class _PeriodGroupingState extends State<PeriodGrouping> {
 
     return DefaultExpansionTile(
       controller: widget.periodsController,
-      title: Text(
-        '${R.string.groupPeriod}${selectedPeriod == null ? "" : " (${selectedPeriod.name})"}',
+      title: RichText(
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
+        text: TextSpan(
+          style: const TextStyle(
+            color: Colors.black,
+          ),
+          children: [
+            TextSpan(text: R.string.groupPeriod),
+            if (selectedPeriod != null)
+              TextSpan(
+                text: " (${selectedPeriod.name})",
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+          ],
+        ),
       ),
       children: PeriodGroupingType.values
           .map(

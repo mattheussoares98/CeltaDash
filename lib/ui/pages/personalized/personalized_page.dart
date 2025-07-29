@@ -56,94 +56,98 @@ class _PersonalizedPageState extends State<PersonalizedPage>
     Get.put<PersonalizedPresenter>(widget.presenter);
 
     return Scaffold(
-      body: StreamBuilder(
-          stream: widget.presenter.isLoadingStream,
-          builder: (context, loadingSnap) {
-            return Stack(
-              children: [
-                CustomScrollView(
-                  slivers: [
-                    SliverToBoxAdapter(
-                      child: Obx(() {
-                        final startDate =
-                            widget.presenter.currentSelectedParams?.startDate;
-                        final endDate =
-                            widget.presenter.currentSelectedParams?.endDate;
+      body: Padding(
+        padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+        child: StreamBuilder(
+            stream: widget.presenter.isLoadingStream,
+            builder: (context, loadingSnap) {
+              return Stack(
+                children: [
+                  CustomScrollView(
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: Obx(() {
+                          final startDate =
+                              widget.presenter.currentSelectedParams?.startDate;
+                          final endDate =
+                              widget.presenter.currentSelectedParams?.endDate;
 
-                        return Column(
-                          // crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Card(
-                              elevation: 10,
-                              margin: const EdgeInsets.fromLTRB(4, 8, 8, 20),
-                              child: ExpansionTile(
-                                controller: parametersController,
-                                initiallyExpanded: true,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                dense: true,
-                                title: Text(
-                                  R.string.parameters,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineMedium,
-                                ),
-                                childrenPadding:
-                                    const EdgeInsets.symmetric(horizontal: 4),
-                                children: [
-                                  SelectPeriod(
-                                    enterprisesController:
-                                        enterprisesController,
-                                    isLoading: loadingSnap.data,
+                          return Column(
+                            // crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Card(
+                                elevation: 10,
+                                margin: const EdgeInsets.fromLTRB(4, 8, 8, 20),
+                                child: ExpansionTile(
+                                  controller: parametersController,
+                                  initiallyExpanded: true,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
-                                  const SizedBox(height: 4),
-                                  if (startDate != null && endDate != null) ...[
-                                    Enterprises(
+                                  dense: true,
+                                  title: Text(
+                                    R.string.parameters,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineMedium,
+                                  ),
+                                  childrenPadding:
+                                      const EdgeInsets.symmetric(horizontal: 4),
+                                  children: [
+                                    SelectPeriod(
                                       enterprisesController:
                                           enterprisesController,
-                                      periodsController: periodsController,
-                                      collapseAll: collapseAll,
-                                    ),
-                                    const SizedBox(height: 4),
-                                    PeriodGrouping(
-                                      periodsController: periodsController,
-                                      categoriesController:
-                                          categoriesController,
-                                      collapseAll: collapseAll,
-                                    ),
-                                    const SizedBox(height: 4),
-                                    CategoryGrouping(
-                                      categoriesController:
-                                          categoriesController,
-                                      collapseAll: collapseAll,
-                                    ),
-                                    const SizedBox(height: 4),
-                                    GenerateButton(
-                                      collapseAll: collapseAll,
                                       isLoading: loadingSnap.data,
                                     ),
-                                  ]
-                                ],
+                                    const SizedBox(height: 4),
+                                    if (startDate != null &&
+                                        endDate != null) ...[
+                                      Enterprises(
+                                        enterprisesController:
+                                            enterprisesController,
+                                        periodsController: periodsController,
+                                        collapseAll: collapseAll,
+                                      ),
+                                      const SizedBox(height: 4),
+                                      PeriodGrouping(
+                                        periodsController: periodsController,
+                                        categoriesController:
+                                            categoriesController,
+                                        collapseAll: collapseAll,
+                                      ),
+                                      const SizedBox(height: 4),
+                                      CategoryGrouping(
+                                        categoriesController:
+                                            categoriesController,
+                                        collapseAll: collapseAll,
+                                      ),
+                                      const SizedBox(height: 4),
+                                      GenerateButton(
+                                        collapseAll: collapseAll,
+                                        isLoading: loadingSnap.data,
+                                      ),
+                                    ]
+                                  ],
+                                ),
                               ),
-                            ),
-                            // const PersonalizedPieChart(),
-                          ],
-                        );
-                      }),
-                    ),
-                    const PersonalizedTable(),
-                  ],
-                ),
-                if (loadingSnap.data == true)
-                  Positioned.fill(
-                    child: Container(
-                      color: Colors.black.withAlpha(0),
-                    ),
+                              // const PersonalizedPieChart(),
+                            ],
+                          );
+                        }),
+                      ),
+                      const PersonalizedTable(),
+                    ],
                   ),
-              ],
-            );
-          }),
+                  if (loadingSnap.data == true)
+                    Positioned.fill(
+                      child: Container(
+                        color: Colors.black.withAlpha(0),
+                      ),
+                    ),
+                ],
+              );
+            }),
+      ),
     );
   }
 }

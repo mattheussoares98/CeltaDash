@@ -29,10 +29,24 @@ class _CategoryGroupingState extends State<CategoryGrouping> {
 
     return DefaultExpansionTile(
       controller: widget.categoriesController,
-      title: Text(
-        "${R.string.groupCategory} ${selecteds?.isEmpty == true ? "" : '(${selecteds?.map((e) => e.name).join(', ')})'}",
+      title: RichText(
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
+        text: TextSpan(
+          style: const TextStyle(
+            color: Colors.black,
+          ),
+          children: [
+            TextSpan(text: R.string.groupCategory),
+            if (selecteds != null && selecteds.isNotEmpty)
+              TextSpan(
+                text: " (${selecteds.map((e) => e.name).join(', ')})",
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+          ],
+        ),
       ),
       children: CategoryGroupingType.values
           .map(
