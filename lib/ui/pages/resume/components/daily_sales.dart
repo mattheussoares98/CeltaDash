@@ -138,23 +138,24 @@ class DailyStatistics extends StatelessWidget {
               ],
             )
           ],
-          Row(
-            children: [
-              Expanded(
-                child: DefaultButton(
-                  onTap: homePresenter.goToPaymentsTypePage,
-                  title: R.string.payments,
+          if (saleStatistics.isNotEmpty)
+            Row(
+              children: [
+                Expanded(
+                  child: DefaultButton(
+                    onTap: homePresenter.goToPaymentsTypePage,
+                    title: R.string.payments,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: DefaultButton(
-                  onTap: homePresenter.goToDepartmentsPage,
-                  title: R.string.departments,
+                const SizedBox(width: 8),
+                Expanded(
+                  child: DefaultButton(
+                    onTap: homePresenter.goToDepartmentsPage,
+                    title: R.string.departments,
+                  ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
         ],
       ),
     );
