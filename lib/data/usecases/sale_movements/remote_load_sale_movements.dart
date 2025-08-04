@@ -32,6 +32,7 @@ class RemoteLoadSaleMovements with ErrorHandling implements LoadSaleMovements {
           },
           "DocumentNumbers": params.documentNumbers,
           "onlyCancelled": params.onlyCancelled ?? false,
+          "OnlyNotCancelled": params.onlyNotCancelled ?? false,
           "MountFiscalNoteType": params.mountFiscalNoteType ?? false,
           "MountCustomer": params.mountCustomer ?? false,
           "MountSeller": params.mountSeller ?? false,

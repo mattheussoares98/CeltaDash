@@ -211,5 +211,6 @@ class EntityFactory {
         mountProducts: faker.randomGenerator.boolean(),
         mountSeller: faker.randomGenerator.boolean(),
         onlyCancelled: faker.randomGenerator.boolean(),
+        onlyNotCancelled: faker.randomGenerator.boolean(),
       );
 }

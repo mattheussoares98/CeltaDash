@@ -83,6 +83,7 @@ void main() {
           },
           "DocumentNumbers": params.documentNumbers,
           "onlyCancelled": params.onlyCancelled,
+          "OnlyNotCancelled": params.onlyNotCancelled,
           "MountFiscalNoteType": params.mountFiscalNoteType,
           "MountCustomer": params.mountCustomer,
           "MountSeller": params.mountSeller,

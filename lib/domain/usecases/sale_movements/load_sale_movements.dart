@@ -16,6 +16,7 @@ class GetSaleMovementParams extends Equatable implements DateRangeParams {
   final DateTime endDate;
   final List<String>? documentNumbers;
   final bool? onlyCancelled;
+  final bool? onlyNotCancelled;
   final bool? mountFiscalNoteType;
   final bool? mountCustomer;
   final bool? mountSeller;
@@ -30,6 +31,7 @@ class GetSaleMovementParams extends Equatable implements DateRangeParams {
     required this.endDate,
     this.documentNumbers,
     this.onlyCancelled,
+    this.onlyNotCancelled,
     this.mountFiscalNoteType,
     this.mountCustomer,
     this.mountSeller,
@@ -46,6 +48,7 @@ class GetSaleMovementParams extends Equatable implements DateRangeParams {
         endDate,
         documentNumbers,
         onlyCancelled,
+        onlyNotCancelled,
         mountFiscalNoteType,
         mountCustomer,
         mountSeller,
