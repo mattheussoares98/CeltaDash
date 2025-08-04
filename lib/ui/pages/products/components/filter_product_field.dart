@@ -8,10 +8,12 @@ import '../../../helpers/helpers.dart';
 class FilterProductField extends StatelessWidget {
   final TextEditingController filterProductController;
   final StateSetter setState;
+  final bool isLoading;
   const FilterProductField({
     super.key,
     required this.filterProductController,
     required this.setState,
+    required this.isLoading,
   });
 
   @override
@@ -21,6 +23,7 @@ class FilterProductField extends StatelessWidget {
       child: SizedBox(
         height: 40,
         child: TextFormField(
+          enabled: !isLoading,
           controller: filterProductController,
           onChanged: (_) {
             setState(() {});

@@ -142,6 +142,7 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                             child: FilterProductField(
                               filterProductController: filterProductController,
                               setState: setState,
+                              isLoading: loadingSnap.data == true,
                             ),
                           ),
                         ],
