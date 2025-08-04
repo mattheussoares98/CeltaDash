@@ -6,27 +6,26 @@ import '../../helpers/helpers.dart';
 import '../pages.dart';
 import 'components/components.dart';
 
-class CanceledSaleDetailsPage extends StatefulWidget {
-  const CanceledSaleDetailsPage({super.key});
+class BsSaleDetailsPage extends StatefulWidget {
+  const BsSaleDetailsPage({super.key});
 
   @override
-  State<CanceledSaleDetailsPage> createState() =>
-      _CanceledSaleDetailsPageState();
+  State<BsSaleDetailsPage> createState() => _BsSaleDetailsPageState();
 }
 
-class _CanceledSaleDetailsPageState extends State<CanceledSaleDetailsPage> {
+class _BsSaleDetailsPageState extends State<BsSaleDetailsPage> {
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.find<CanceledSalesPresenter>().getSelectedSaleDetails();
+      Get.find<BsSalesPresenter>().getSelectedSaleDetails();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final presenter = Get.find<CanceledSalesPresenter>();
+    final presenter = Get.find<BsSalesPresenter>();
 
     return Scaffold(
       appBar: AppBar(

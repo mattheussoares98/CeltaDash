@@ -16,7 +16,7 @@ abstract class HomePresenter implements Listenable {
   void initFirebaseStream();
   void updateSelectedIndex(int index);
   void updateSelectedDate(DateTime date);
-  void goToCanceledSalesPage();
+  void goToBsSalesPage();
   void goToCompareDays();
   void goToDepartmentsPage();
   void goToOperatorsPage();

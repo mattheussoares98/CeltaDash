@@ -19,7 +19,7 @@ import '../../services/services.dart';
 import '../mocks/mocks.dart';
 
 void main() {
-  late GetxCanceledSalesPresenter sut;
+  late GetxBsSalesPresenter sut;
 
   late HomePresenterSpy homePresenter;
 
@@ -39,7 +39,7 @@ void main() {
   }
 
   void initPresenters() {
-    sut = GetxCanceledSalesPresenter(
+    sut = GetxBsSalesPresenter(
       loadSaleMovements: loadSaleMovements,
       navigateTo: navigateTo,
     );
@@ -483,15 +483,14 @@ void main() {
       sut.updateSelectedSaleMovement(newSaleMovement);
     });
 
-    test("Should go to canceled sale details page", () {
+    test("Should go to bs sale details page", () {
       final newSaleMovement = SaleMovementModel.fromEntity(
         EntityFactory.makeSaleMovementEntity(),
       ).toViewModel();
 
       sut.updateSelectedSaleMovement(newSaleMovement);
 
-      verify(() =>
-              navigateTo.navigate(pageRoute: PageRoutes.canceledSaleDetails))
+      verify(() => navigateTo.navigate(pageRoute: PageRoutes.bsSaleDetails))
           .called(1);
     });
   });

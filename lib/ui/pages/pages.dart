@@ -1,5 +1,5 @@
 export './app_analytics/app_analytics.dart';
-export './canceled_sales/canceled_sales.dart';
+export 'bs_sales/bs_sales.dart';
 export './compare_days/compare_days.dart';
 export 'more/more.dart';
 export './departments/departments.dart';

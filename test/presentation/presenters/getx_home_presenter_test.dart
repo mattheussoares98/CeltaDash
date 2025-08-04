@@ -153,11 +153,11 @@ void main() {
       ).called(1);
     });
 
-    test("Should go to canceled sales page", () {
-      sut.goToCanceledSalesPage();
+    test("Should go to bs sales page", () {
+      sut.goToBsSalesPage();
 
       verify(
-        () => navigateTo.navigate(pageRoute: PageRoutes.canceledSales),
+        () => navigateTo.navigate(pageRoute: PageRoutes.bsSales),
       ).called(1);
     });
 

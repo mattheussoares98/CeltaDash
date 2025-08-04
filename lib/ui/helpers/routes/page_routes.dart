@@ -1,7 +1,7 @@
 class PageRoutes {
   static const String appAnalytics = "/app_analytics";
-  static const String canceledSaleDetails = "/canceled_sale_details";
-  static const String canceledSales = "/canceled_sales";
+  static const String bsSaleDetails = "/bs_sale_details";
+  static const String bsSales = "/bs_sales";
   static const String compareDays = "/daily_analysis";
   static const String departments = "/departments";
   static const String enterprisesManager = "/enterprises_manager";

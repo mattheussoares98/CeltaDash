@@ -5,7 +5,7 @@ import '../../../domain/usecases/usecases.dart';
 import '../../helpers/helpers.dart';
 import '../pages.dart';
 
-abstract class CanceledSalesPresenter implements Listenable {
+abstract class BsSalesPresenter implements Listenable {
   List<SaleMovementViewModel>? get dailySales;
   List<SaleMovementViewModel>? get monthlySales;
   Stream<UIError?> get mainErrorStream;

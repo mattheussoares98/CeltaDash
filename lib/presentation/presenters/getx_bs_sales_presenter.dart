@@ -9,7 +9,7 @@ import '../../ui/pages/pages.dart';
 import '../../ui/services/services.dart';
 import '../mixins/mixins.dart';
 
-class GetxCanceledSalesPresenter extends GetxController
+class GetxBsSalesPresenter extends GetxController
     with
         ErrorHandling,
         UIErrorManager,
@@ -17,11 +17,11 @@ class GetxCanceledSalesPresenter extends GetxController
         SaleMovementManager,
         PeriodTypeManager,
         LastGetSaleMovementParamsManager
-    implements CanceledSalesPresenter {
+    implements BsSalesPresenter {
   final LoadSaleMovements loadSaleMovements;
   final NavigateTo navigateTo;
 
-  GetxCanceledSalesPresenter({
+  GetxBsSalesPresenter({
     required this.loadSaleMovements,
     required this.navigateTo,
   });
@@ -124,7 +124,7 @@ class GetxCanceledSalesPresenter extends GetxController
   void updateSelectedSaleMovement(SaleMovementViewModel sale) {
     selectedSale = sale;
 
-    navigateTo.navigate(pageRoute: PageRoutes.canceledSaleDetails);
+    navigateTo.navigate(pageRoute: PageRoutes.bsSaleDetails);
   }
 
   @override

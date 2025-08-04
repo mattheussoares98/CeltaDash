@@ -293,8 +293,8 @@ class GetxHomePresenter extends GetxController
   }
 
   @override
-  void goToCanceledSalesPage() {
-    navigateTo.navigate(pageRoute: PageRoutes.canceledSales);
+  void goToBsSalesPage() {
+    navigateTo.navigate(pageRoute: PageRoutes.bsSales);
   }
 
   @override

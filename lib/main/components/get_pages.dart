@@ -19,13 +19,13 @@ class GetPages {
       transition: transition,
     ),
     GetPage(
-      name: PageRoutes.canceledSaleDetails,
-      page: makeCanceledSaleDetailsPage,
+      name: PageRoutes.bsSaleDetails,
+      page: makeBsSaleDetailsPage,
       transition: transition,
     ),
     GetPage(
-      name: PageRoutes.canceledSales,
-      page: makeCanceledSalesPage,
+      name: PageRoutes.bsSales,
+      page: makeBsSalesPage,
       transition: transition,
     ),
     GetPage(

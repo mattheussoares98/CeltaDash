@@ -10,14 +10,14 @@ import '../pages.dart';
 
 bool _showAnimation = true;
 
-class CanceledSalesPage extends StatefulWidget {
-  const CanceledSalesPage({super.key});
+class BsSalesPage extends StatefulWidget {
+  const BsSalesPage({super.key});
 
   @override
-  State<CanceledSalesPage> createState() => _CanceledSalesPageState();
+  State<BsSalesPage> createState() => _BsSalesPageState();
 }
 
-class _CanceledSalesPageState extends State<CanceledSalesPage> {
+class _BsSalesPageState extends State<BsSalesPage> {
   @override
   void initState() {
     super.initState();
@@ -30,20 +30,20 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
   }
 
   void reloadSales({bool? forceRefresh}) {
-    final canceledSalesPresenter = Get.find<CanceledSalesPresenter>();
+    final bsSalesPresenter = Get.find<BsSalesPresenter>();
     final homePresenter = Get.find<HomePresenter>();
-    canceledSalesPresenter.getSales(homePresenter, forceRefresh: forceRefresh);
+    bsSalesPresenter.getSales(homePresenter, forceRefresh: forceRefresh);
   }
 
   @override
   Widget build(BuildContext context) {
-    final canceledSalesPresenter = Get.find<CanceledSalesPresenter>();
+    final bsSalesPresenter = Get.find<BsSalesPresenter>();
     final homePresenter = Get.find<HomePresenter>();
     bool isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
 
     return StreamBuilder(
-      stream: canceledSalesPresenter.isLoadingStream,
+      stream: bsSalesPresenter.isLoadingStream,
       builder: (context, loadingSnap) {
         return Scaffold(
           body: DefaultSafeArea(
@@ -65,15 +65,15 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                   padding: EdgeInsets.all(isPortrait ? 8 : 0),
                   child: SelectPeriodItems(
                     isLoading: loadingSnap.data,
-                    selectedPeriodType: canceledSalesPresenter.selectedPeriod,
+                    selectedPeriodType: bsSalesPresenter.selectedPeriod,
                     onTapDaily: () {
-                      canceledSalesPresenter.getSales(
+                      bsSalesPresenter.getSales(
                         homePresenter,
                         periodType: PeriodType.daily,
                       );
                     },
                     onTapMonthly: () {
-                      canceledSalesPresenter.getSales(
+                      bsSalesPresenter.getSales(
                         homePresenter,
                         periodType: PeriodType.monthly,
                       );
@@ -82,7 +82,7 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                 ),
                 Expanded(
                   child: Obx(() {
-                    final dailySales = canceledSalesPresenter.dailySales
+                    final dailySales = bsSalesPresenter.dailySales
                         ?.map((e) => SaleMovementModel.fromViewModel(e))
                         .where((e) {
                           return e.dateHourOfBilling?.year ==
@@ -96,7 +96,7 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                         .map((e) => e.toViewModel())
                         .toList();
 
-                    final monthlySales = canceledSalesPresenter.monthlySales
+                    final monthlySales = bsSalesPresenter.monthlySales
                         ?.map((e) => SaleMovementModel.fromViewModel(e))
                         .where((e) {
                           return e.dateHourOfBilling?.year ==
@@ -108,17 +108,17 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                         .map((e) => e.toViewModel())
                         .toList();
 
-                    final sales = canceledSalesPresenter.selectedPeriod ==
-                            PeriodType.daily
-                        ? dailySales
-                        : monthlySales;
+                    final sales =
+                        bsSalesPresenter.selectedPeriod == PeriodType.daily
+                            ? dailySales
+                            : monthlySales;
 
                     if (sales == null) {
                       return EmptySales(isLoading: loadingSnap.data == true);
                     } else if (sales.isEmpty) {
                       return Center(
                         child: Image.asset(
-                          "lib/ui/assets/images/no_canceled_sales.png",
+                          "lib/ui/assets/images/no_bs_sales.png",
                           width: MediaQuery.of(context).size.width * 0.6,
                           height: MediaQuery.of(context).size.height * 0.6,
                         ),
@@ -129,8 +129,7 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                       children: [
                         ScrollableTableItem(
                           titleMinHeight: isPortrait ? 43 : 30,
-                          selectedPeriodType:
-                              canceledSalesPresenter.selectedPeriod,
+                          selectedPeriodType: bsSalesPresenter.selectedPeriod,
                           pdfFileName: R.string.canceledSales,
                           columnsIndexToSum: [3],
                           fixFirstColumn: true,
@@ -182,7 +181,7 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                                 value: e.totalLiquid?.toDouble(),
                                 isMoney: true,
                                 onTap: () {
-                                  canceledSalesPresenter
+                                  bsSalesPresenter
                                       .updateSelectedSaleMovement(e);
                                 },
                               ),
