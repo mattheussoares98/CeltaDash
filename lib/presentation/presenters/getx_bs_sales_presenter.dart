@@ -112,14 +112,6 @@ class GetxBsSalesPresenter extends GetxController
     }
   }
 
-  final _selectedSale = Rx<SaleMovementViewModel?>(null); //TODO delete this
-  @override
-  Stream<SaleMovementViewModel?> get selectedSaleStream => _selectedSale.stream;
-  set selectedSale(SaleMovementViewModel? value) {
-    _selectedSale.value = null;
-    _selectedSale.value = value;
-  }
-
   @override
   void updateSelectedSaleMovement(SaleMovementViewModel sale) {
     selectedSale = sale;
@@ -210,6 +202,14 @@ class GetxBsSalesPresenter extends GetxController
     } finally {
       isLoading = false;
     }
+  }
+
+  final _selectedSale = Rx<SaleMovementViewModel?>(null);
+  @override
+  Stream<SaleMovementViewModel?> get selectedSaleStream => _selectedSale.stream;
+  set selectedSale(SaleMovementViewModel? value) {
+    _selectedSale.value = null;
+    _selectedSale.value = value;
   }
 
   final _dailyCanceledSales = Rx<List<SaleMovementViewModel>?>(null);
