@@ -160,7 +160,7 @@ class GetxBsSalesPresenter extends GetxController
   }
 
   @override
-  Future<void> getNotCanceledSales() async {
+  Future<void> getNotCanceledSales([int? actualPage]) async {
     if (isLoadingValue == true) {
       isLoading = false;
       isLoading = true;
@@ -183,6 +183,7 @@ class GetxBsSalesPresenter extends GetxController
         startDate: startDate,
         endDate: startDate,
         onlyNotCancelled: true,
+        actualPage: actualPage ?? 1,
       );
       final response = await loadSaleMovements.get(params);
       lastParams = params;
@@ -195,6 +196,26 @@ class GetxBsSalesPresenter extends GetxController
         reportType: ReportType.notCanceledSales,
         periodType: PeriodType.daily,
       );
+    } catch (e) {
+      mainError = getUIError(e);
+    } finally {
+      isLoading = false;
+    }
+  }
+
+  @override
+  Future<void> changeSalesPage(bool isAdvancing) async {
+    isLoading = true;
+    mainError = null;
+    try {
+      final oldIndex = _notCanceledSales.value?.actualPage ?? 1;
+      int newIndex = isAdvancing ? oldIndex + 1 : oldIndex - 1;
+
+      final maxIndex = _notCanceledSales.value?.totalPages ?? 1;
+
+      if (newIndex < 1 || newIndex > maxIndex) return;
+
+      await getNotCanceledSales(newIndex);
     } catch (e) {
       mainError = getUIError(e);
     } finally {
