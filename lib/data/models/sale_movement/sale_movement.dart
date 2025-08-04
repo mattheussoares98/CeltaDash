@@ -3,6 +3,7 @@ export 'sale_movement_collection_item_model.dart';
 export 'sale_movement_finalization_model.dart';
 export 'sale_movement_finalization_finalization_model.dart';
 export 'sale_movement_fiscal_note_model.dart';
+export './sale_movement_model.dart';
 export 'sale_movement_product_model.dart';
 export 'sale_movement_product_product_model.dart';
 export 'sale_movement_seller_model.dart';
