@@ -6,6 +6,7 @@ import '../../../data/models/models.dart';
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 import '../pages.dart';
+import 'components/components.dart';
 
 bool _showAnimation = true;
 
@@ -90,6 +91,7 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage> {
 
                     return Column(
                       children: [
+                        const PagesSalesInformations(),
                         ScrollableTableItem(
                           titleMinHeight: isPortrait ? 43 : 30,
                           selectedPeriodType: bsSalesPresenter.selectedPeriod,

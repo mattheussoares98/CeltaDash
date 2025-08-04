@@ -26,6 +26,7 @@ abstract class Translation {
   String get msgVeryShortField;
   String get msgWriteSomething;
 
+  String get actualPage;
   String get add;
   String get addNewEnterprise;
   String get analytics;
@@ -118,12 +119,14 @@ abstract class Translation {
   String get more;
   String get moreDetails;
   String get newEnterprise;
+  String get next;
   String get no;
   String get noData;
   String get notCanceledSales;
   String get of;
   String get operator;
   String get operators;
+  String get page;
   String get parameters;
   String get password;
   String get payments;
@@ -134,6 +137,7 @@ abstract class Translation {
   String get pdv;
   String get portions;
   String get positionAbbreviated;
+  String get previous;
   String get price;
   String get product;
   String get products;
