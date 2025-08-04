@@ -61,8 +61,9 @@ class DailyStatistics extends StatelessWidget {
     final previousMonthLiquidValue =
         previousMonthStatistics?.sumLiquidValue() ?? 0;
 
-    final percentageResult =
-        selectedDayLiquidValue == 0.0 || previousMonthLiquidValue == 0.0
+    final percentageResult = selectedDayLiquidValue == 0.0
+        ? 0
+        : previousMonthLiquidValue == 0.0
             ? 100
             : (selectedDayLiquidValue / previousMonthLiquidValue * 100 - 100);
 
@@ -72,28 +73,27 @@ class DailyStatistics extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              children: [
+                TextSpan(text: R.string.salesOfTheDay.toUpperCase()),
+                TextSpan(
+                  text:
+                      " (${percentageResult.toString().toBrazilianNumber(0)}%)",
+                  style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                        color: percentageResult > 0 ? Colors.green : Colors.red,
+                      ),
+                ),
+              ],
+              style: Theme.of(context).textTheme.displayLarge,
+            ),
+          ),
           if (resumePresenter.compareDaysStatistics == null ||
               resumePresenter.compareDaysStatistics!.isEmpty)
             const EmptySales(isLoading: false),
           if (resumePresenter.compareDaysStatistics != null &&
               resumePresenter.compareDaysStatistics!.isNotEmpty) ...[
-            RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                children: [
-                  TextSpan(text: R.string.salesOfTheDay.toUpperCase()),
-                  TextSpan(
-                    text:
-                        " (${percentageResult.toString().toBrazilianNumber(0)}%)",
-                    style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                          color:
-                              percentageResult >= 0 ? Colors.green : Colors.red,
-                        ),
-                  ),
-                ],
-                style: Theme.of(context).textTheme.displayLarge,
-              ),
-            ),
             ChartPieWidget(
               paddingItems: const EdgeInsets.all(1),
               showTotalAmount: false,
