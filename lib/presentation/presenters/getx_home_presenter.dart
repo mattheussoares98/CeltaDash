@@ -293,8 +293,8 @@ class GetxHomePresenter extends GetxController
   }
 
   @override
-  void goToBsSalesPage() {
-    navigateTo.navigate(pageRoute: PageRoutes.bsSales);
+  void goToCanceledSalesPage() {
+    navigateTo.navigate(pageRoute: PageRoutes.canceledSales);
   }
 
   @override
@@ -315,6 +315,11 @@ class GetxHomePresenter extends GetxController
   @override
   void goToEnterprisesManagerPage() {
     navigateTo.navigate(pageRoute: PageRoutes.enterprisesManager);
+  }
+
+  @override
+  void goToNotCanceledSalesPage() {
+    navigateTo.navigate(pageRoute: PageRoutes.notCanceledSales);
   }
 
   final _selectedEnterpriseIsEnabled = false.obs;

@@ -154,10 +154,10 @@ void main() {
     });
 
     test("Should go to bs sales page", () {
-      sut.goToBsSalesPage();
+      sut.goToCanceledSalesPage();
 
       verify(
-        () => navigateTo.navigate(pageRoute: PageRoutes.bsSales),
+        () => navigateTo.navigate(pageRoute: PageRoutes.canceledSales),
       ).called(1);
     });
 
@@ -181,6 +181,12 @@ void main() {
       verify(
         () => navigateTo.navigate(pageRoute: PageRoutes.enterprisesManager),
       ).called(1);
+    });
+    test("Should navigate to not canceled sales page correctly", () async {
+      sut.goToNotCanceledSalesPage();
+
+      verify(() => navigateTo.navigate(pageRoute: PageRoutes.notCanceledSales))
+          .called(1);
     });
   });
 
