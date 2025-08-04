@@ -142,8 +142,9 @@ abstract class Translation {
   String get productivity;
   String get profit;
   String get profitability;
-  String get quantityAbbreviated;
   String get removeEnterprise;
+  String get quantityAbbreviated;
+  String get quantityOfPortions;
   String get requests;
   String get resume;
   String get revenue;
@@ -177,6 +178,7 @@ abstract class Translation {
   String get totalSales;
   String get totalSalesGroup;
   String get trendSales;
+  String get undefinedName;
   String get until;
   String get update;
   String get url;

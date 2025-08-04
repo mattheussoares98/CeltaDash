@@ -55,6 +55,7 @@ class _BsSaleDetailsPageState extends State<BsSaleDetailsPage> {
                         CancellationSection(sale: sale),
                         SaleSection(sale: sale),
                         ProductsSection(sale: sale),
+                        FinalizationSection(sale: sale),
                       ],
                     ),
                   );

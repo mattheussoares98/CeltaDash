@@ -158,6 +158,7 @@ class PtBr implements Translation {
   String get profit => "Lucro";
   String get profitability => "Rentabilidade";
   String get quantityAbbreviated => "Qtd";
+  String get quantityOfPortions => "Qtd parcelas";
   String get removeEnterprise => "Remover empresa";
   String get requests => "Requisições";
   String get resume => "Resumo";
@@ -193,6 +194,7 @@ class PtBr implements Translation {
   String get totalSales => "Total de vendas";
   String get totalSalesGroup => "Total de vendas do grupo";
   String get trendSales => "Tendência de vendas";
+  String get undefinedName => "Nome indefinido";
   String get until => "Até";
   String get update => "Atualizar";
   String get url => "URL";

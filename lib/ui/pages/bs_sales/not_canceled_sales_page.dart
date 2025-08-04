@@ -32,7 +32,8 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage> {
   void reloadSales() {
     final bsSalesPresenter = Get.find<BsSalesPresenter>();
 
-    bsSalesPresenter.getNotCanceledSales(selectedDate);
+    bsSalesPresenter
+        .getNotCanceledSales(selectedDate); //TODO remove this parameter
   }
 
   @override
@@ -58,9 +59,7 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage> {
                   onChangeDate: (_) async {
                     reloadSales();
                   },
-                  onTapRefresh: () {
-                    reloadSales();
-                  },
+                  onTapRefresh: reloadSales,
                 ),
                 Expanded(
                   child: Obx(() {
