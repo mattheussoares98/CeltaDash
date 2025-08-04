@@ -145,7 +145,6 @@ class GetxBsSalesPresenter extends GetxController
 
       final loadedSale = await loadSaleMovements.get(
         GetSaleMovementParams(
-          onlyCancelled: true,
           documentNumbers: [sale.documentNumber!],
           enterpriseIds: [sale.enterpriseId!],
           startDate: date,
@@ -154,6 +153,7 @@ class GetxBsSalesPresenter extends GetxController
           mountFiscalNoteType: true,
           mountProducts: true,
           mountSeller: true,
+          mountPaymentFinalizations: true,
         ),
       );
 

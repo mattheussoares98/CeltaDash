@@ -559,7 +559,6 @@ void main() {
 
       verify(() => loadSaleMovements.get(
             GetSaleMovementParams(
-              onlyCancelled: true,
               documentNumbers: [sale.documentNumber!],
               enterpriseIds: [sale.enterpriseId!],
               startDate: date,
@@ -568,6 +567,7 @@ void main() {
               mountFiscalNoteType: true,
               mountProducts: true,
               mountSeller: true,
+              mountPaymentFinalizations: true,
             ),
           )).called(1);
     });
