@@ -25,7 +25,7 @@ class GetPages {
     ),
     GetPage(
       name: PageRoutes.canceledSales,
-      page: makeBsSalesPage,
+      page: makeCanceledSalesPage,
       transition: transition,
     ),
     GetPage(
