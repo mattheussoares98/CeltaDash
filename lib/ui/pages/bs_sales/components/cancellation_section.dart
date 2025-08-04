@@ -10,6 +10,9 @@ class CancellationSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (sale.dateHourOfCancellation == null) {
+      return const SizedBox.shrink();
+    }
     return SectionCard(
       title: R.string.cancellation,
       children: [
