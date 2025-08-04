@@ -191,6 +191,7 @@ class GetxBsSalesPresenter extends GetxController
             : [homePresenter.selectedEnterprise!.id!.toInt()],
         startDate: startDate,
         endDate: startDate,
+        onlyNotCancelled: true,
       );
       final response = await loadSaleMovements.get(params);
       lastParams = params;

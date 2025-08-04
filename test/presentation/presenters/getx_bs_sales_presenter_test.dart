@@ -651,6 +651,7 @@ void main() {
               ],
               startDate: date,
               endDate: date,
+              onlyNotCancelled: true,
             ),
           )).called(1);
     });
