@@ -5,7 +5,7 @@ import '../../pages.dart';
 import 'components.dart';
 
 class CancellationSection extends StatelessWidget {
-  final SaleMovementViewModel sale;
+  final SaleMovementCollectionItemViewModel sale;
   const CancellationSection({super.key, required this.sale});
 
   @override

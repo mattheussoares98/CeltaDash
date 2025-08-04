@@ -5,7 +5,7 @@ import '../../pages.dart';
 import 'components.dart';
 
 class SaleSection extends StatelessWidget {
-  final SaleMovementViewModel sale;
+  final SaleMovementCollectionItemViewModel sale;
 
   const SaleSection({super.key, required this.sale});
 

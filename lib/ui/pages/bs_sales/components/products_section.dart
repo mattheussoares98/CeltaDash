@@ -5,7 +5,7 @@ import '../../pages.dart';
 import 'components.dart';
 
 class ProductsSection extends StatelessWidget {
-  final SaleMovementViewModel sale;
+  final SaleMovementCollectionItemViewModel sale;
   const ProductsSection({super.key, required this.sale});
 
   @override

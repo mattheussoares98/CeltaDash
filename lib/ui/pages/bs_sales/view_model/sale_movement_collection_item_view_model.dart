@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../pages.dart';
 
-class SaleMovementViewModel extends Equatable {
+class SaleMovementCollectionItemViewModel extends Equatable {
   final String? Id;
   final String? enterpriseId;
   final String? fiscalNoteTypeId;
@@ -21,7 +21,7 @@ class SaleMovementViewModel extends Equatable {
   final List<SaleMovementProductViewModel>? products;
   final List<SaleMovementFinalizationViewModel>? paymentFinalizations;
 
-  const SaleMovementViewModel({
+  const SaleMovementCollectionItemViewModel({
     required this.Id,
     required this.enterpriseId,
     required this.fiscalNoteTypeId,

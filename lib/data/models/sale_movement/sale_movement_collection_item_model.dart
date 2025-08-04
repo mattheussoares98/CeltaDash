@@ -10,7 +10,7 @@ import 'sale_movement_seller_model.dart';
 import 'sale_movement_product_model.dart';
 import 'sale_movement_finalization_model.dart';
 
-class SaleMovementModel extends Equatable {
+class SaleMovementCollectionItemModel extends Equatable {
   final int? Id;
   final int? enterpriseId;
   final int? fiscalNoteTypeId;
@@ -29,7 +29,7 @@ class SaleMovementModel extends Equatable {
   final List<SaleMovementProductModel>? products;
   final List<SaleMovementFinalizationModel>? paymentFinalizations;
 
-  const SaleMovementModel({
+  const SaleMovementCollectionItemModel({
     required this.Id,
     required this.enterpriseId,
     required this.fiscalNoteTypeId,
@@ -70,7 +70,8 @@ class SaleMovementModel extends Equatable {
         motiveCancellation,
       ];
 
-  factory SaleMovementModel.fromJson(Map json) => SaleMovementModel(
+  factory SaleMovementCollectionItemModel.fromJson(Map json) =>
+      SaleMovementCollectionItemModel(
         Id: json['id'],
         enterpriseId: json['enterpriseId'],
         fiscalNoteTypeId: json['fiscalNoteTypeId'],
@@ -109,8 +110,9 @@ class SaleMovementModel extends Equatable {
             : null,
       );
 
-  factory SaleMovementModel.fromEntity(SaleMovementEntity? entity) =>
-      SaleMovementModel(
+  factory SaleMovementCollectionItemModel.fromEntity(
+          SaleMovementCollectionItemEntity? entity) =>
+      SaleMovementCollectionItemModel(
         Id: entity?.id,
         enterpriseId: entity?.enterpriseId,
         fiscalNoteTypeId: entity?.fiscalNoteTypeId,
@@ -161,7 +163,8 @@ class SaleMovementModel extends Equatable {
             paymentFinalizations?.map((e) => e.toJson()).toList(),
       };
 
-  SaleMovementEntity toEntity() => SaleMovementEntity(
+  SaleMovementCollectionItemEntity toEntity() =>
+      SaleMovementCollectionItemEntity(
         id: Id,
         enterpriseId: enterpriseId,
         fiscalNoteTypeId: fiscalNoteTypeId,
@@ -182,9 +185,9 @@ class SaleMovementModel extends Equatable {
             paymentFinalizations?.map((e) => e.toEntity()).toList(),
       );
 
-  SaleMovementViewModel toViewModel() {
+  SaleMovementCollectionItemViewModel toViewModel() {
     final df = DateFormat('dd/MM/yyyy HH:mm:ss');
-    return SaleMovementViewModel(
+    return SaleMovementCollectionItemViewModel(
       Id: Id?.toString(),
       enterpriseId: enterpriseId?.toString(),
       fiscalNoteTypeId: fiscalNoteTypeId?.toString(),
@@ -209,9 +212,10 @@ class SaleMovementModel extends Equatable {
     );
   }
 
-  factory SaleMovementModel.fromViewModel(SaleMovementViewModel viewModel) {
+  factory SaleMovementCollectionItemModel.fromViewModel(
+      SaleMovementCollectionItemViewModel viewModel) {
     final df = DateFormat('dd/MM/yyyy HH:mm:ss');
-    return SaleMovementModel(
+    return SaleMovementCollectionItemModel(
       Id: viewModel.Id?.toInt(),
       enterpriseId: viewModel.enterpriseId?.toInt(),
       fiscalNoteTypeId: viewModel.fiscalNoteTypeId?.toInt(),

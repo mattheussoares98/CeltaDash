@@ -120,70 +120,72 @@ class EntityFactory {
         topCount: faker.randomGenerator.integer(100),
       );
 
-  static SaleMovementEntity makeSaleMovementEntity() => SaleMovementEntity(
-        id: faker.randomGenerator.integer(100),
-        enterpriseId: faker.randomGenerator.integer(100),
-        fiscalNoteTypeId: faker.randomGenerator.integer(100),
-        sellerId: faker.randomGenerator.integer(100),
-        documentNumber: faker.randomGenerator.string(50),
-        cashierNumber: faker.randomGenerator.string(50),
-        motiveCancellation: faker.randomGenerator.string(50),
-        dateHourOfBilling: faker.date.dateTime(),
-        dateHourOfCancellation: faker.date.dateTime(),
-        totalLiquid: faker.randomGenerator.decimal(),
-        isCancelled: faker.randomGenerator.boolean(),
-        fiscalNoteType: SaleMovementFiscalNoteEntity(
-          Id: faker.randomGenerator.integer(50),
-          Name: faker.randomGenerator.string(10),
-        ),
-        customer: SaleMovementCustomerEntity(
-          SaleMovementId: faker.randomGenerator.integer(100),
-          Id: faker.randomGenerator.integer(100),
-          Name: faker.person.name(),
-          CpfCnpj: faker.guid.guid(),
-        ),
-        seller: SaleMovementSellerEntity(
-          Id: faker.randomGenerator.integer(99),
-          Name: faker.person.name(),
-          PersonalizedCode: faker.randomGenerator.integer(99).toString(),
-        ),
-        userCancellation: faker.person.name(),
-        products: [
-          SaleMovementProductEntity(
-            Quantity: faker.randomGenerator.decimal(),
-            UnitValue: faker.randomGenerator.decimal(),
-            UnitValueLiquid: faker.randomGenerator.decimal(),
-            RepositionCost: faker.randomGenerator.decimal(),
-            LiquidCost: faker.randomGenerator.decimal(),
-            TotalBrute: faker.randomGenerator.decimal(),
-            TotalLiquid: faker.randomGenerator.decimal(),
-            TotalDiscounts: faker.randomGenerator.decimal(),
-            ProductPackingId: faker.randomGenerator.integer(99),
-            Id: faker.randomGenerator.integer(99),
-            IsCancelled: faker.randomGenerator.boolean(),
-            Product: SaleMovementProductProductEntity(
-              Id: faker.randomGenerator.integer(99),
-              Plu: faker.guid.guid(),
-              Name: faker.food.dish(),
-              PackingAbbreviation:
-                  faker.randomGenerator.string(2).toUpperCase(),
-              PackingQuantity: faker.randomGenerator.decimal(),
+  static SaleMovementCollectionItemEntity
+      makeSaleMovementCollectionItemEntity() =>
+          SaleMovementCollectionItemEntity(
+            id: faker.randomGenerator.integer(100),
+            enterpriseId: faker.randomGenerator.integer(100),
+            fiscalNoteTypeId: faker.randomGenerator.integer(100),
+            sellerId: faker.randomGenerator.integer(100),
+            documentNumber: faker.randomGenerator.string(50),
+            cashierNumber: faker.randomGenerator.string(50),
+            motiveCancellation: faker.randomGenerator.string(50),
+            dateHourOfBilling: faker.date.dateTime(),
+            dateHourOfCancellation: faker.date.dateTime(),
+            totalLiquid: faker.randomGenerator.decimal(),
+            isCancelled: faker.randomGenerator.boolean(),
+            fiscalNoteType: SaleMovementFiscalNoteEntity(
+              Id: faker.randomGenerator.integer(50),
+              Name: faker.randomGenerator.string(10),
             ),
-          ),
-        ],
-        paymentFinalizations: [
-          SaleMovementFinalizationEntity(
-            Value: faker.randomGenerator.decimal(),
-            QuantityOfPortions: faker.randomGenerator.integer(12),
-            DateOfExpiration: faker.date.dateTime(),
-            Id: faker.randomGenerator.integer(99),
-            Finalization: SaleMovementFinalizationFinalizationEntity(
-              Id: faker.randomGenerator.integer(99),
-              Name: faker.randomGenerator.string(99),
+            customer: SaleMovementCustomerEntity(
+              SaleMovementId: faker.randomGenerator.integer(100),
+              Id: faker.randomGenerator.integer(100),
+              Name: faker.person.name(),
+              CpfCnpj: faker.guid.guid(),
             ),
-          ),
-        ],
-      );
+            seller: SaleMovementSellerEntity(
+              Id: faker.randomGenerator.integer(99),
+              Name: faker.person.name(),
+              PersonalizedCode: faker.randomGenerator.integer(99).toString(),
+            ),
+            userCancellation: faker.person.name(),
+            products: [
+              SaleMovementProductEntity(
+                Quantity: faker.randomGenerator.decimal(),
+                UnitValue: faker.randomGenerator.decimal(),
+                UnitValueLiquid: faker.randomGenerator.decimal(),
+                RepositionCost: faker.randomGenerator.decimal(),
+                LiquidCost: faker.randomGenerator.decimal(),
+                TotalBrute: faker.randomGenerator.decimal(),
+                TotalLiquid: faker.randomGenerator.decimal(),
+                TotalDiscounts: faker.randomGenerator.decimal(),
+                ProductPackingId: faker.randomGenerator.integer(99),
+                Id: faker.randomGenerator.integer(99),
+                IsCancelled: faker.randomGenerator.boolean(),
+                Product: SaleMovementProductProductEntity(
+                  Id: faker.randomGenerator.integer(99),
+                  Plu: faker.guid.guid(),
+                  Name: faker.food.dish(),
+                  PackingAbbreviation:
+                      faker.randomGenerator.string(2).toUpperCase(),
+                  PackingQuantity: faker.randomGenerator.decimal(),
+                ),
+              ),
+            ],
+            paymentFinalizations: [
+              SaleMovementFinalizationEntity(
+                Value: faker.randomGenerator.decimal(),
+                QuantityOfPortions: faker.randomGenerator.integer(12),
+                DateOfExpiration: faker.date.dateTime(),
+                Id: faker.randomGenerator.integer(99),
+                Finalization: SaleMovementFinalizationFinalizationEntity(
+                  Id: faker.randomGenerator.integer(99),
+                  Name: faker.randomGenerator.string(99),
+                ),
+              ),
+            ],
+          );
 
   static GetSaleMovementParams makeGetSaleMovementParams({
     DateTime? startDate,

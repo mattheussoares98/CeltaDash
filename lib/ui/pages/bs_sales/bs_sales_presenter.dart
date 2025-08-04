@@ -6,12 +6,12 @@ import '../../helpers/helpers.dart';
 import '../pages.dart';
 
 abstract class BsSalesPresenter implements Listenable {
-  List<SaleMovementViewModel>? get dailyCanceledSales;
-  List<SaleMovementViewModel>? get monthlyCanceledSales;
-  List<SaleMovementViewModel>? get notCanceledSales;
+  List<SaleMovementCollectionItemViewModel>? get dailyCanceledSales;
+  List<SaleMovementCollectionItemViewModel>? get monthlyCanceledSales;
+  List<SaleMovementCollectionItemViewModel>? get notCanceledSales;
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
-  Stream<SaleMovementViewModel?> get selectedSaleStream;
+  Stream<SaleMovementCollectionItemViewModel?> get selectedSaleStream;
   PeriodType get selectedPeriod;
   GetSaleMovementParams? get lastGetDailyParams;
   GetSaleMovementParams? get lastGetMonthlyParams;
@@ -24,6 +24,6 @@ abstract class BsSalesPresenter implements Listenable {
 
   Future<void> getNotCanceledSales();
 
-  void updateSelectedSaleMovement(SaleMovementViewModel sale);
+  void updateSelectedSaleMovement(SaleMovementCollectionItemViewModel sale);
   Future<void> getSelectedSaleDetails();
 }

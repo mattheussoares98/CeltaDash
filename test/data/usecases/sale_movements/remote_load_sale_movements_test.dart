@@ -18,7 +18,7 @@ void main() {
   late HttpClientSpy httpClient;
 
   late GetSaleMovementParams params;
-  late List<SaleMovementEntity> saleMovementEntities;
+  late List<SaleMovementCollectionItemEntity> saleMovementEntities;
 
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -33,9 +33,9 @@ void main() {
   void initEntities() {
     EnterpriseBuilder.entity = EntityFactory.makeFirebaseEnterpriseEntity();
     saleMovementEntities = [
-      EntityFactory.makeSaleMovementEntity(),
-      EntityFactory.makeSaleMovementEntity(),
-      EntityFactory.makeSaleMovementEntity(),
+      EntityFactory.makeSaleMovementCollectionItemEntity(),
+      EntityFactory.makeSaleMovementCollectionItemEntity(),
+      EntityFactory.makeSaleMovementCollectionItemEntity(),
     ];
     params = EntityFactory.makeGetSaleMovementParams();
   }
@@ -43,7 +43,7 @@ void main() {
   void initMockSuccess() {
     httpClient.mockRequest({
       "collection": saleMovementEntities
-          .map((e) => SaleMovementModel.fromEntity(e).toJson())
+          .map((e) => SaleMovementCollectionItemModel.fromEntity(e).toJson())
           .toList(),
       "totalRecords": 1,
       "recordsByPage": 100,

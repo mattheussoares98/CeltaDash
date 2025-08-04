@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import 'sale_movement.dart';
 
-class SaleMovementEntity extends Equatable {
+class SaleMovementCollectionItemEntity extends Equatable {
   final int? id;
   final int? enterpriseId;
   final int? fiscalNoteTypeId;
@@ -21,7 +21,7 @@ class SaleMovementEntity extends Equatable {
   final List<SaleMovementProductEntity>? products;
   final List<SaleMovementFinalizationEntity>? paymentFinalizations;
 
-  const SaleMovementEntity({
+  const SaleMovementCollectionItemEntity({
     required this.id,
     required this.enterpriseId,
     required this.fiscalNoteTypeId,

@@ -29,7 +29,7 @@ void main() {
   late LoadSaleMovementsSpy loadSaleMovements;
   late NavigateToSpy navigateTo;
 
-  late List<SaleMovementEntity> saleMovementEntities;
+  late List<SaleMovementCollectionItemEntity> saleMovementEntities;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
@@ -48,9 +48,9 @@ void main() {
 
   void initEntities() {
     saleMovementEntities = [
-      EntityFactory.makeSaleMovementEntity(),
-      EntityFactory.makeSaleMovementEntity(),
-      EntityFactory.makeSaleMovementEntity(),
+      EntityFactory.makeSaleMovementCollectionItemEntity(),
+      EntityFactory.makeSaleMovementCollectionItemEntity(),
+      EntityFactory.makeSaleMovementCollectionItemEntity(),
     ];
   }
 
@@ -131,7 +131,8 @@ void main() {
         expect(
           sut.dailyCanceledSales,
           saleMovementEntities
-              .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+              .map((e) =>
+                  SaleMovementCollectionItemModel.fromEntity(e).toViewModel())
               .toList(),
         );
 
@@ -141,7 +142,8 @@ void main() {
         expect(
           sut.monthlyCanceledSales,
           saleMovementEntities
-              .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+              .map((e) =>
+                  SaleMovementCollectionItemModel.fromEntity(e).toViewModel())
               .toList(),
         );
       });
@@ -264,7 +266,8 @@ void main() {
         expect(
           sut.dailyCanceledSales,
           saleMovementEntities
-              .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+              .map((e) =>
+                  SaleMovementCollectionItemModel.fromEntity(e).toViewModel())
               .toList(),
         );
       });
@@ -420,7 +423,8 @@ void main() {
         expect(
           sut.monthlyCanceledSales,
           saleMovementEntities
-              .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+              .map((e) =>
+                  SaleMovementCollectionItemModel.fromEntity(e).toViewModel())
               .toList(),
         );
       });
@@ -482,8 +486,8 @@ void main() {
 
   group("Update selected sale movement", () {
     test("Should update selected sale movement correctly", () {
-      final newSaleMovement = SaleMovementModel.fromEntity(
-        EntityFactory.makeSaleMovementEntity(),
+      final newSaleMovement = SaleMovementCollectionItemModel.fromEntity(
+        EntityFactory.makeSaleMovementCollectionItemEntity(),
       ).toViewModel();
 
       expectLater(
@@ -495,8 +499,8 @@ void main() {
     });
 
     test("Should go to bs sale details page", () {
-      final newSaleMovement = SaleMovementModel.fromEntity(
-        EntityFactory.makeSaleMovementEntity(),
+      final newSaleMovement = SaleMovementCollectionItemModel.fromEntity(
+        EntityFactory.makeSaleMovementCollectionItemEntity(),
       ).toViewModel();
 
       sut.updateSelectedSaleMovement(newSaleMovement);
@@ -508,12 +512,14 @@ void main() {
 
   group("Get selected sale movement details", () {
     test("Should emit correct values on success", () async {
-      final selected = SaleMovementModel.fromEntity(
+      final selected = SaleMovementCollectionItemModel.fromEntity(
         saleMovementEntities.first,
       ).toViewModel();
 
-      final newSaleMovement = EntityFactory.makeSaleMovementEntity();
-      final newSaleMovementViewModel = SaleMovementModel.fromEntity(
+      final newSaleMovement =
+          EntityFactory.makeSaleMovementCollectionItemEntity();
+      final newSaleMovementViewModel =
+          SaleMovementCollectionItemModel.fromEntity(
         newSaleMovement,
       ).toViewModel();
 
@@ -541,7 +547,7 @@ void main() {
       await sut.getSelectedSaleDetails();
     });
     test("Should call load sales with correct values", () async {
-      final firstSale = SaleMovementModel.fromEntity(
+      final firstSale = SaleMovementCollectionItemModel.fromEntity(
         saleMovementEntities.first,
       ).toViewModel();
 
@@ -549,7 +555,8 @@ void main() {
 
       await sut.getSelectedSaleDetails();
 
-      final sale = SaleMovementModel.fromEntity(saleMovementEntities.first);
+      final sale = SaleMovementCollectionItemModel.fromEntity(
+          saleMovementEntities.first);
 
       final date = DateTime(
         sale.dateHourOfBilling!.year,
@@ -572,8 +579,8 @@ void main() {
           )).called(1);
     });
     test("Should update selected sale correctly", () async {
-      final newSale = SaleMovementModel.fromEntity(
-        SaleMovementEntity(
+      final newSale = SaleMovementCollectionItemModel.fromEntity(
+        SaleMovementCollectionItemEntity(
           id: faker.randomGenerator.integer(100),
           enterpriseId: faker.randomGenerator.integer(100),
           fiscalNoteTypeId: faker.randomGenerator.integer(100),
@@ -596,8 +603,9 @@ void main() {
       sut.updateSelectedSaleMovement(newSale);
       //change the selected enterprise, but...
 
-      final sale = SaleMovementModel.fromEntity(saleMovementEntities.first)
-          .toViewModel();
+      final sale =
+          SaleMovementCollectionItemModel.fromEntity(saleMovementEntities.first)
+              .toViewModel();
       expectLater(sut.selectedSaleStream, emitsInOrder([null, sale]));
 
       await sut.getSelectedSaleDetails();
@@ -629,7 +637,8 @@ void main() {
       expect(
         sut.notCanceledSales,
         saleMovementEntities
-            .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+            .map((e) =>
+                SaleMovementCollectionItemModel.fromEntity(e).toViewModel())
             .toList(),
       );
     });
