@@ -135,6 +135,7 @@ class PtBr implements Translation {
   String get newEnterprise => "Nova empresa";
   String get no => "Não";
   String get noData => "Não há dados";
+  String get notCanceledSales => "Vendas não canceladas";
   String get of => "De";
   String get operator => "Operador";
   String get operators => "Operadores";

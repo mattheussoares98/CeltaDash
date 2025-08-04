@@ -120,6 +120,7 @@ abstract class Translation {
   String get newEnterprise;
   String get no;
   String get noData;
+  String get notCanceledSales;
   String get of;
   String get operator;
   String get operators;

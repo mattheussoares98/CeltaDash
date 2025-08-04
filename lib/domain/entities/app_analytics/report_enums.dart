@@ -4,6 +4,7 @@ enum ReportType {
   canceledSales,
   compareDays,
   departments,
+  notCanceledSales,
   operators,
   payments,
   personalized,
@@ -22,6 +23,8 @@ extension ReportTypeExtension on ReportType {
         return R.string.compareDays;
       case ReportType.departments:
         return R.string.departments;
+      case ReportType.notCanceledSales:
+        return R.string.notCanceledSales;
       case ReportType.operators:
         return R.string.operators;
       case ReportType.payments:

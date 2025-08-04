@@ -4,6 +4,7 @@ import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:celta_dash/ui/pages/pages.dart';
 import 'package:celta_dash/ui/services/services.dart';
 import 'package:faker/faker.dart';
 
@@ -43,7 +44,6 @@ void main() {
       loadSaleMovements: loadSaleMovements,
       navigateTo: navigateTo,
     );
-    homePresenter = HomePresenterSpy();
   }
 
   void initEntities() {
@@ -60,7 +60,9 @@ void main() {
 
   void initServices() {
     appAnalyticsService = AppAnalyticsServiceSpy();
+    homePresenter = HomePresenterSpy();
     Get.put<AppAnalyticsService>(appAnalyticsService);
+    Get.put<HomePresenter>(homePresenter);
   }
 
   setUp(() {
@@ -85,7 +87,7 @@ void main() {
     Get.reset();
   });
 
-  group("Load sale movements", () {
+  group("Load CANCELED sales", () {
     group("Pattern", () {
       test("Should emit correct values on success", () async {
         expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
@@ -600,6 +602,65 @@ void main() {
 
       await sut.getSelectedSaleDetails();
       //always will update the selectedSaleMovement again, using the first returned value in the usecase
+    });
+  });
+
+  group("Load NOT canceled sales", () {
+    test("Should emit correct values on success", () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(sut.mainErrorStream, emits(null));
+
+      await sut.getNotCanceledSales(faker.date.dateTime());
+    });
+    test("Should emit correct values on error", () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(
+        sut.mainErrorStream,
+        emitsInOrder([null, UIError.unexpected]),
+      );
+
+      loadSaleMovements.mockGetError();
+
+      await sut.getNotCanceledSales(faker.date.dateTime());
+    });
+    test("Should update daily sales correctly", () async {
+      await sut.getNotCanceledSales(faker.date.dateTime());
+
+      expect(
+        sut.dailySales,
+        saleMovementEntities
+            .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+            .toList(),
+      );
+    });
+    test(
+        "Should get sales with correct values when doesnt pass a date as parameter",
+        () async {
+      await sut.getNotCanceledSales(null);
+
+      final date = DateTime(
+        homePresenter.selectedDate.year,
+        homePresenter.selectedDate.month,
+        homePresenter.selectedDate.day,
+      );
+
+      verify(() => loadSaleMovements.get(
+            GetSaleMovementParams(
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
+              startDate: date,
+              endDate: date,
+            ),
+          )).called(1);
+    });
+    test("Should add correct app analytics", () async {
+      await sut.getNotCanceledSales(null);
+
+      verify(() => appAnalyticsService.addNewMonthlyAnalytic(
+            reportType: ReportType.notCanceledSales,
+            periodType: PeriodType.daily,
+          )).called(1);
     });
   });
 }

@@ -27,6 +27,7 @@ class GetxBsSalesPresenter extends GetxController
   });
 
   final appAnalyticsService = Get.find<AppAnalyticsService>();
+  final homePresenter = Get.find<HomePresenter>();
 
   @override
   Future<void> getCanceledSales(
@@ -112,7 +113,7 @@ class GetxBsSalesPresenter extends GetxController
     }
   }
 
-  final _selectedSale = Rx<SaleMovementViewModel?>(null);
+  final _selectedSale = Rx<SaleMovementViewModel?>(null); //TODO delete this
   @override
   Stream<SaleMovementViewModel?> get selectedSaleStream => _selectedSale.stream;
   set selectedSale(SaleMovementViewModel? value) {
@@ -160,6 +161,51 @@ class GetxBsSalesPresenter extends GetxController
         selectedSale =
             SaleMovementModel.fromEntity(loadedSale[0]).toViewModel();
       }
+    } catch (e) {
+      mainError = getUIError(e);
+    } finally {
+      isLoading = false;
+    }
+  }
+
+  @override
+  Future<void> getNotCanceledSales(DateTime? selectedDate) async {
+    if (isLoadingValue == true) {
+      isLoading = false;
+      isLoading = true;
+      return;
+    }
+
+    isLoading = true;
+    mainError = null;
+    try {
+      final startDate = selectedDate ??
+          DateTime(
+            homePresenter.selectedDate.year,
+            homePresenter.selectedDate.month,
+            homePresenter.selectedDate.day,
+          );
+
+      final params = GetSaleMovementParams(
+        enterpriseIds: homePresenter.selectedEnterprise?.id == null
+            ? []
+            : [homePresenter.selectedEnterprise!.id!.toInt()],
+        startDate: startDate,
+        endDate: startDate,
+      );
+      final response = await loadSaleMovements.get(params);
+      lastParams = params;
+
+      final newSales = (response as List)
+          .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
+          .toList();
+
+      dailySales = newSales;
+
+      appAnalyticsService.addNewMonthlyAnalytic(
+        reportType: ReportType.notCanceledSales,
+        periodType: PeriodType.daily,
+      );
     } catch (e) {
       mainError = getUIError(e);
     } finally {
