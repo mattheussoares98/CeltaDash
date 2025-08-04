@@ -10,14 +10,14 @@ import '../pages.dart';
 
 bool _showAnimation = true;
 
-class BsCanceledSalesPage extends StatefulWidget {
-  const BsCanceledSalesPage({super.key});
+class CanceledSalesPage extends StatefulWidget {
+  const CanceledSalesPage({super.key});
 
   @override
-  State<BsCanceledSalesPage> createState() => _BsCanceledSalesPageState();
+  State<CanceledSalesPage> createState() => _CanceledSalesPageState();
 }
 
-class _BsCanceledSalesPageState extends State<BsCanceledSalesPage> {
+class _CanceledSalesPageState extends State<CanceledSalesPage> {
   @override
   void initState() {
     super.initState();
