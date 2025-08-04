@@ -8,8 +8,8 @@ class LoadSaleMovementsSpy extends Mock implements LoadSaleMovements {
         () => this.get(any()),
       );
 
-  void mockGet(List<SaleMovementCollectionItemEntity> saleMovements) {
-    this._mockGetCall().thenAnswer((any) async => saleMovements);
+  void mockGet(SaleMovementEntity saleMovement) {
+    this._mockGetCall().thenAnswer((any) async => saleMovement);
   }
 
   void mockGetError() {

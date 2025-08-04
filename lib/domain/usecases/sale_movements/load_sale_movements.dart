@@ -4,8 +4,9 @@ import '../../entities/entities.dart';
 import '../../helpers/helpers.dart';
 
 abstract class LoadSaleMovements {
-  Future<List<SaleMovementCollectionItemEntity>> get(
-      GetSaleMovementParams params);
+  Future<SaleMovementEntity> get(
+    GetSaleMovementParams params,
+  );
 }
 
 class GetSaleMovementParams extends Equatable implements DateRangeParams {

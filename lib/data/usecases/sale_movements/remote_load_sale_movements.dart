@@ -11,7 +11,7 @@ class RemoteLoadSaleMovements with ErrorHandling implements LoadSaleMovements {
   const RemoteLoadSaleMovements(this.httpAdapter);
 
   @override
-  Future<List<SaleMovementCollectionItemEntity>> get(
+  Future<SaleMovementEntity> get(
     GetSaleMovementParams params,
   ) async {
     final url = EnterpriseBuilder.entity?.baseUrl;
@@ -44,9 +44,7 @@ class RemoteLoadSaleMovements with ErrorHandling implements LoadSaleMovements {
         },
       );
 
-      return (response['collection'] as List)
-          .map((e) => SaleMovementCollectionItemModel.fromJson(e).toEntity())
-          .toList();
+      return SaleMovementModel.fromJson(response).toEntity();
     } catch (e) {
       treatError(e);
     }

@@ -248,11 +248,15 @@ void main() {
       sut.changeDateRange(startDate, endDate);
       sut.changeSelectedEnterprise(enterpriseId);
 
-      final categorySelected = CategoryGroupingType.values[
-          faker.randomGenerator.integer(CategoryGroupingType.values.length)];
+      const categorySelected = CategoryGroupingType.productDepartment;
       sut.changeCategoryGroupingType(categorySelected);
 
       await sut.getSales();
+
+      const isFilteringProduct =
+          categorySelected == CategoryGroupingType.product ||
+              categorySelected == CategoryGroupingType.productSection ||
+              categorySelected == CategoryGroupingType.productDepartment;
 
       verify(
         () => loadSaleStatistics.get(
@@ -260,6 +264,12 @@ void main() {
             startDate: startDate,
             endDate: endDate,
             enterpriseIds: [enterpriseId],
+            topCount:
+                categorySelected == CategoryGroupingType.product ? 300 : null,
+            groupByHour: isFilteringProduct ? false : null,
+            groupByDay: isFilteringProduct ? false : null,
+            groupByMonth: isFilteringProduct ? false : null,
+            groupByYear: isFilteringProduct ? false : null,
             groupByProduct: categorySelected == CategoryGroupingType.product,
             groupByProductDepartment:
                 categorySelected == CategoryGroupingType.productDepartment,

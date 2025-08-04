@@ -6,9 +6,9 @@ import '../../helpers/helpers.dart';
 import '../pages.dart';
 
 abstract class BsSalesPresenter implements Listenable {
-  List<SaleMovementCollectionItemViewModel>? get dailyCanceledSales;
-  List<SaleMovementCollectionItemViewModel>? get monthlyCanceledSales;
-  List<SaleMovementCollectionItemViewModel>? get notCanceledSales;
+  SaleMovementViewModel? get dailyCanceledSales;
+  SaleMovementViewModel? get monthlyCanceledSales;
+  SaleMovementViewModel? get notCanceledSales;
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
   Stream<SaleMovementCollectionItemViewModel?> get selectedSaleStream;

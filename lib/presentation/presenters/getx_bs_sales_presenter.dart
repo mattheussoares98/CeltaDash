@@ -90,10 +90,7 @@ class GetxBsSalesPresenter extends GetxController
       final response = await loadSaleMovements.get(params);
       lastParams = params;
 
-      final newSales = (response as List)
-          .map((e) =>
-              SaleMovementCollectionItemModel.fromEntity(e).toViewModel())
-          .toList();
+      final newSales = SaleMovementModel.fromEntity(response).toViewModel();
       if (selectedPeriod == PeriodType.daily) {
         lastGetDailyParams = params;
         _dailyCanceledSales.value = newSales;
@@ -150,9 +147,10 @@ class GetxBsSalesPresenter extends GetxController
         ),
       );
 
-      if (loadedSale.isNotEmpty) {
-        selectedSale = SaleMovementCollectionItemModel.fromEntity(loadedSale[0])
-            .toViewModel();
+      if (loadedSale.collection.isNotEmpty) {
+        selectedSale =
+            SaleMovementCollectionItemModel.fromEntity(loadedSale.collection[0])
+                .toViewModel();
       }
     } catch (e) {
       mainError = getUIError(e);
@@ -189,10 +187,7 @@ class GetxBsSalesPresenter extends GetxController
       final response = await loadSaleMovements.get(params);
       lastParams = params;
 
-      final newSales = (response as List)
-          .map((e) =>
-              SaleMovementCollectionItemModel.fromEntity(e).toViewModel())
-          .toList();
+      final newSales = SaleMovementModel.fromEntity(response).toViewModel();
 
       _notCanceledSales.value = newSales;
 
@@ -216,21 +211,16 @@ class GetxBsSalesPresenter extends GetxController
     _selectedSale.value = value;
   }
 
-  final _dailyCanceledSales =
-      Rx<List<SaleMovementCollectionItemViewModel>?>(null);
+  final _dailyCanceledSales = Rx<SaleMovementViewModel?>(null);
   @override
-  List<SaleMovementCollectionItemViewModel>? get dailyCanceledSales =>
-      _dailyCanceledSales.value;
+  SaleMovementViewModel? get dailyCanceledSales => _dailyCanceledSales.value;
 
-  final _monthlyCanceledSales =
-      Rx<List<SaleMovementCollectionItemViewModel>?>(null);
+  final _monthlyCanceledSales = Rx<SaleMovementViewModel?>(null);
   @override
-  List<SaleMovementCollectionItemViewModel>? get monthlyCanceledSales =>
+  SaleMovementViewModel? get monthlyCanceledSales =>
       _monthlyCanceledSales.value;
 
-  final _notCanceledSales =
-      Rx<List<SaleMovementCollectionItemViewModel>?>(null);
+  final _notCanceledSales = Rx<SaleMovementViewModel?>(null);
   @override
-  List<SaleMovementCollectionItemViewModel>? get notCanceledSales =>
-      _notCanceledSales.value;
+  SaleMovementViewModel? get notCanceledSales => _notCanceledSales.value;
 }

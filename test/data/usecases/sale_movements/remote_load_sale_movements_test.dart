@@ -18,7 +18,7 @@ void main() {
   late HttpClientSpy httpClient;
 
   late GetSaleMovementParams params;
-  late List<SaleMovementCollectionItemEntity> saleMovementEntities;
+  late SaleMovementEntity saleMovementEntity;
 
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -32,25 +32,13 @@ void main() {
 
   void initEntities() {
     EnterpriseBuilder.entity = EntityFactory.makeFirebaseEnterpriseEntity();
-    saleMovementEntities = [
-      EntityFactory.makeSaleMovementCollectionItemEntity(),
-      EntityFactory.makeSaleMovementCollectionItemEntity(),
-      EntityFactory.makeSaleMovementCollectionItemEntity(),
-    ];
+    saleMovementEntity = EntityFactory.makeSaleMovementEntity();
     params = EntityFactory.makeGetSaleMovementParams();
   }
 
   void initMockSuccess() {
-    httpClient.mockRequest({
-      "collection": saleMovementEntities
-          .map((e) => SaleMovementCollectionItemModel.fromEntity(e).toJson())
-          .toList(),
-      "totalRecords": 1,
-      "recordsByPage": 100,
-      "recordsOnThisPage": 1,
-      "totalPages": 1,
-      "actualPage": 1,
-    });
+    httpClient
+        .mockRequest(SaleMovementModel.fromEntity(saleMovementEntity).toJson());
   }
 
   setUp(() {
@@ -142,7 +130,7 @@ void main() {
     () async {
       final list = await sut.get(params);
 
-      expect(list, saleMovementEntities);
+      expect(list, saleMovementEntity);
     },
   );
 }

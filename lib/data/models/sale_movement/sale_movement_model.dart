@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../domain/entities/entities.dart';
+import '../../../ui/pages/pages.dart';
 import '../models.dart';
 
 class SaleMovementModel extends Equatable {
@@ -47,6 +49,48 @@ class SaleMovementModel extends Equatable {
         "recordsOnThisPage": recordsOnThisPage,
         "totalPages": totalPages,
         "actualPage": actualPage,
-        "collection": List<dynamic>.from(collection.map((x) => x.toJson)),
+        "collection": collection.map((e) => e.toJson()).toList(),
       };
+
+  SaleMovementEntity toEntity() => SaleMovementEntity(
+        totalRecords: totalRecords,
+        recordsByPage: recordsByPage,
+        recordsOnThisPage: recordsOnThisPage,
+        totalPages: totalPages,
+        actualPage: actualPage,
+        collection: collection.map((e) => e.toEntity()).toList(),
+      );
+
+  factory SaleMovementModel.fromEntity(SaleMovementEntity entity) =>
+      SaleMovementModel(
+        totalRecords: entity.totalRecords,
+        recordsByPage: entity.recordsByPage,
+        recordsOnThisPage: entity.recordsOnThisPage,
+        totalPages: entity.totalPages,
+        actualPage: entity.actualPage,
+        collection: entity.collection
+            .map((e) => SaleMovementCollectionItemModel.fromEntity(e))
+            .toList(),
+      );
+
+  SaleMovementViewModel toViewModel() => SaleMovementViewModel(
+        totalRecords: totalRecords,
+        recordsByPage: recordsByPage,
+        recordsOnThisPage: recordsOnThisPage,
+        totalPages: totalPages,
+        actualPage: actualPage,
+        collection: collection.map((e) => e.toViewModel()).toList(),
+      );
+
+  factory SaleMovementModel.fromViewModel(SaleMovementViewModel viewModel) =>
+      SaleMovementModel(
+        totalRecords: viewModel.totalRecords,
+        recordsByPage: viewModel.recordsByPage,
+        recordsOnThisPage: viewModel.recordsOnThisPage,
+        totalPages: viewModel.totalPages,
+        actualPage: viewModel.actualPage,
+        collection: viewModel.collection
+            .map((e) => SaleMovementCollectionItemModel.fromViewModel(e))
+            .toList(),
+      );
 }
