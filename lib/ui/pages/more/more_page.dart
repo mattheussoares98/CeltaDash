@@ -47,38 +47,43 @@ class MorePage extends StatelessWidget {
 
     return DefaultSafeArea(
       child: Scaffold(
-          appBar: AppBar(
-            title: Text(R.string.more),
-            actions: [
-              IconButton(
-                onPressed: () {
-                  notificationDialog(
-                    context: context,
-                    titleMessage: R.string.msgReallyWantLogout,
-                    content: null,
-                    onPress: () async {
-                      await homePresenter.doLogout();
-                    },
-                  );
-                },
-                icon: Icon(
-                  Platform.isIOS
-                      ? CupertinoIcons.arrow_right_square
-                      : Icons.exit_to_app,
-                ),
-              )
-            ],
-          ),
-          body: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: homePresenter.enterprises == null ||
-                      homePresenter.enterprises!.isEmpty
-                  ? [const EmptySales(isLoading: false)]
-                  : buttons,
-            ),
-          )),
+        appBar: AppBar(
+          title: Text(R.string.more),
+          actions: [
+            IconButton(
+              onPressed: () {
+                notificationDialog(
+                  context: context,
+                  titleMessage: R.string.msgReallyWantLogout,
+                  content: null,
+                  onPress: () async {
+                    await homePresenter.doLogout();
+                  },
+                );
+              },
+              icon: Icon(
+                Platform.isIOS
+                    ? CupertinoIcons.arrow_right_square
+                    : Icons.exit_to_app,
+              ),
+            )
+          ],
+        ),
+        body: Obx(
+          () {
+            final enterprises = homePresenter.enterprises;
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: enterprises == null || enterprises.isEmpty
+                    ? [const EmptySales(isLoading: false)]
+                    : buttons,
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 }
