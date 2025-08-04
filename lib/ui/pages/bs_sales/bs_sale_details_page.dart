@@ -19,7 +19,9 @@ class _BsSaleDetailsPageState extends State<BsSaleDetailsPage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.find<BsSalesPresenter>().getSelectedSaleDetails();
+      if (mounted) {
+        Get.find<BsSalesPresenter>().getSelectedSaleDetails();
+      }
     });
   }
 

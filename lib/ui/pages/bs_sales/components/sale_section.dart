@@ -46,6 +46,13 @@ class SaleSection extends StatelessWidget {
             title: R.string.seller,
             value: "${sale.seller?.PersonalizedCode} - ${sale.seller?.Name}",
           ),
+        DetailRow(
+          title: R.string.total,
+          value: sale.totalLiquid
+              .toString()
+              .toBrazilianNumber()
+              .addBrazilianCoin(),
+        ),
       ],
     );
   }

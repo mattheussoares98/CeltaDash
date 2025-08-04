@@ -18,28 +18,21 @@ class FinalizationSection extends StatelessWidget {
 
     return SectionCard(
       title: R.string.finalizations,
-      children: sale.paymentFinalizations!
-          .map((e) => Column(
-                children: [
-                  DetailRow(
-                    title: R.string.finalization,
-                    value: e.Finalization?.Name,
-                  ),
-                  if (e.QuantityOfPortions != null)
-                    DetailRow(
-                      title: R.string.quantityOfPortions,
-                      value:
-                          e.QuantityOfPortions.toString().toBrazilianNumber(),
-                    ),
-                  DetailRow(
-                    title: R.string.total,
-                    value: e.Value.toString()
-                        .toBrazilianNumber()
-                        .addBrazilianCoin(),
-                  ),
-                ],
-              ))
-          .toList(),
+      children: sale.paymentFinalizations!.map((e) {
+        final portions = (e.QuantityOfPortions?.toString().toInt() ?? 0) <= 1
+            ? ""
+            : e.QuantityOfPortions!.toString().toBrazilianNumber(0);
+
+        return Column(
+          children: [
+            DetailRow(
+              title:
+                  "${e.Finalization?.Name} ${portions.isEmpty ? "" : " (${portions}x)"}",
+              value: e.Value.toString().toBrazilianNumber().addBrazilianCoin(),
+            ),
+          ],
+        );
+      }).toList(),
     );
   }
 }
