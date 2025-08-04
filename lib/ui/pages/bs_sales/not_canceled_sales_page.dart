@@ -61,7 +61,7 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage> {
                 ),
                 Expanded(
                   child: Obx(() {
-                    final sales = bsSalesPresenter.dailySales
+                    final sales = bsSalesPresenter.notCanceledSales
                         ?.map((e) => SaleMovementModel.fromViewModel(e))
                         .where((e) {
                           return e.dateHourOfBilling?.year ==

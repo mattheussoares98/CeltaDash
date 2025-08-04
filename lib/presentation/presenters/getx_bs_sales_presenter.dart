@@ -14,7 +14,6 @@ class GetxBsSalesPresenter extends GetxController
         ErrorHandling,
         UIErrorManager,
         LoadingManager,
-        SaleMovementManager,
         PeriodTypeManager,
         LastGetSaleMovementParamsManager
     implements BsSalesPresenter {
@@ -96,10 +95,10 @@ class GetxBsSalesPresenter extends GetxController
           .toList();
       if (selectedPeriod == PeriodType.daily) {
         lastGetDailyParams = params;
-        dailySales = newSales;
+        _dailyCanceledSales.value = newSales;
       } else {
         lastGetMonthlyParams = params;
-        monthlySales = newSales;
+        _monthlyCanceledSales.value = newSales;
       }
 
       appAnalyticsService.addNewMonthlyAnalytic(
@@ -200,7 +199,7 @@ class GetxBsSalesPresenter extends GetxController
           .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
           .toList();
 
-      dailySales = newSales;
+      _notCanceledSales.value = newSales;
 
       appAnalyticsService.addNewMonthlyAnalytic(
         reportType: ReportType.notCanceledSales,
@@ -212,4 +211,18 @@ class GetxBsSalesPresenter extends GetxController
       isLoading = false;
     }
   }
+
+  final _dailyCanceledSales = Rx<List<SaleMovementViewModel>?>(null);
+  @override
+  List<SaleMovementViewModel>? get dailyCanceledSales =>
+      _dailyCanceledSales.value;
+
+  final _monthlyCanceledSales = Rx<List<SaleMovementViewModel>?>(null);
+  @override
+  List<SaleMovementViewModel>? get monthlyCanceledSales =>
+      _monthlyCanceledSales.value;
+
+  final _notCanceledSales = Rx<List<SaleMovementViewModel>?>(null);
+  @override
+  List<SaleMovementViewModel>? get notCanceledSales => _notCanceledSales.value;
 }

@@ -129,7 +129,7 @@ void main() {
         await sut.getCanceledSales(homePresenter);
 
         expect(
-          sut.dailySales,
+          sut.dailyCanceledSales,
           saleMovementEntities
               .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
               .toList(),
@@ -139,7 +139,7 @@ void main() {
             periodType: PeriodType.monthly);
 
         expect(
-          sut.monthlySales,
+          sut.monthlyCanceledSales,
           saleMovementEntities
               .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
               .toList(),
@@ -262,7 +262,7 @@ void main() {
         await sut.getCanceledSales(homePresenter, periodType: PeriodType.daily);
 
         expect(
-          sut.dailySales,
+          sut.dailyCanceledSales,
           saleMovementEntities
               .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
               .toList(),
@@ -418,7 +418,7 @@ void main() {
             periodType: PeriodType.monthly);
 
         expect(
-          sut.monthlySales,
+          sut.monthlyCanceledSales,
           saleMovementEntities
               .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
               .toList(),
@@ -627,7 +627,7 @@ void main() {
       await sut.getNotCanceledSales();
 
       expect(
-        sut.dailySales,
+        sut.notCanceledSales,
         saleMovementEntities
             .map((e) => SaleMovementModel.fromEntity(e).toViewModel())
             .toList(),

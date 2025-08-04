@@ -83,7 +83,7 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                 ),
                 Expanded(
                   child: Obx(() {
-                    final dailySales = bsSalesPresenter.dailySales
+                    final dailySales = bsSalesPresenter.dailyCanceledSales
                         ?.map((e) => SaleMovementModel.fromViewModel(e))
                         .where((e) {
                           return e.dateHourOfBilling?.year ==
@@ -97,7 +97,7 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                         .map((e) => e.toViewModel())
                         .toList();
 
-                    final monthlySales = bsSalesPresenter.monthlySales
+                    final monthlySales = bsSalesPresenter.monthlyCanceledSales
                         ?.map((e) => SaleMovementModel.fromViewModel(e))
                         .where((e) {
                           return e.dateHourOfBilling?.year ==
