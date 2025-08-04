@@ -17,7 +17,6 @@ class NotCanceledSalesPage extends StatefulWidget {
 }
 
 class _NotCanceledSalesPageState extends State<NotCanceledSalesPage> {
-  DateTime? selectedDate;
   @override
   void initState() {
     super.initState();
@@ -32,8 +31,7 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage> {
   void reloadSales() {
     final bsSalesPresenter = Get.find<BsSalesPresenter>();
 
-    bsSalesPresenter
-        .getNotCanceledSales(selectedDate); //TODO remove this parameter
+    bsSalesPresenter.getNotCanceledSales();
   }
 
   @override

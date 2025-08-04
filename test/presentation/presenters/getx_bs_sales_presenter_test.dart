@@ -610,7 +610,7 @@ void main() {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(sut.mainErrorStream, emits(null));
 
-      await sut.getNotCanceledSales(faker.date.dateTime());
+      await sut.getNotCanceledSales();
     });
     test("Should emit correct values on error", () async {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
@@ -621,10 +621,10 @@ void main() {
 
       loadSaleMovements.mockGetError();
 
-      await sut.getNotCanceledSales(faker.date.dateTime());
+      await sut.getNotCanceledSales();
     });
     test("Should update daily sales correctly", () async {
-      await sut.getNotCanceledSales(faker.date.dateTime());
+      await sut.getNotCanceledSales();
 
       expect(
         sut.dailySales,
@@ -636,7 +636,7 @@ void main() {
     test(
         "Should get sales with correct values when doesnt pass a date as parameter",
         () async {
-      await sut.getNotCanceledSales(null);
+      await sut.getNotCanceledSales();
 
       final date = DateTime(
         homePresenter.selectedDate.year,
@@ -655,7 +655,7 @@ void main() {
           )).called(1);
     });
     test("Should add correct app analytics", () async {
-      await sut.getNotCanceledSales(null);
+      await sut.getNotCanceledSales();
 
       verify(() => appAnalyticsService.addNewMonthlyAnalytic(
             reportType: ReportType.notCanceledSales,

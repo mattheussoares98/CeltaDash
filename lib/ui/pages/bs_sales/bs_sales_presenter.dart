@@ -21,7 +21,7 @@ abstract class BsSalesPresenter implements Listenable {
     bool? forceRefresh,
   });
 
-  Future<void> getNotCanceledSales(DateTime? date);
+  Future<void> getNotCanceledSales();
 
   void updateSelectedSaleMovement(SaleMovementViewModel sale);
   Future<void> getSelectedSaleDetails();

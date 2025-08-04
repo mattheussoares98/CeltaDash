@@ -169,7 +169,7 @@ class GetxBsSalesPresenter extends GetxController
   }
 
   @override
-  Future<void> getNotCanceledSales(DateTime? selectedDate) async {
+  Future<void> getNotCanceledSales() async {
     if (isLoadingValue == true) {
       isLoading = false;
       isLoading = true;
@@ -179,12 +179,11 @@ class GetxBsSalesPresenter extends GetxController
     isLoading = true;
     mainError = null;
     try {
-      final startDate = selectedDate ??
-          DateTime(
-            homePresenter.selectedDate.year,
-            homePresenter.selectedDate.month,
-            homePresenter.selectedDate.day,
-          );
+      final startDate = DateTime(
+        homePresenter.selectedDate.year,
+        homePresenter.selectedDate.month,
+        homePresenter.selectedDate.day,
+      );
 
       final params = GetSaleMovementParams(
         enterpriseIds: homePresenter.selectedEnterprise?.id == null
