@@ -14,12 +14,11 @@ class MonthSales extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    HomePresenter homePresenter = Get.find();
     final salesPresenter = Get.find<SalesPresenter>();
     final totalLiquidByYear = saleStatisticsByMonth.sumLiquidValue();
-    final uniqueMonths =
-        saleStatisticsByMonth.map((e) => e.Month).toSet().toList()..sort();
     final orientation = MediaQuery.of(context).orientation;
+
+    saleStatisticsByMonth.sort((a, b) => a.Month!.compareTo(b.Month!));
 
     return ScrollableTableItem(
       getSalesStatisticsParams: salesPresenter.lastGetMonthlyParams,
@@ -42,42 +41,38 @@ class MonthSales extends StatelessWidget {
         PersonalizedTableCell(value: R.string.average, isTitle: true),
         PersonalizedTableCell(value: R.string.share, isTitle: true),
       ],
-      rowValues: List.generate(uniqueMonths.length, (index) {
-        final salesOfCurrentMonth = saleStatisticsByMonth
-            .filteredSales(
-              enterprise: homePresenter.selectedEnterprise,
-              filterMonth: uniqueMonths[index].toString().toInt(),
-            )
-            .map((e) => e.toViewModel())
-            .toList();
+      rowValues: saleStatisticsByMonth
+          .map((e) {
+            final monthAbbreviation = DateFormat.MMM("pt_BR")
+                .format(DateTime(e.Year!.toInt(), e.Month!.toInt()))
+                .toString()
+                .toUpperCase()
+                .substring(0, 3);
 
-        final monthAbbreviation = DateFormat.MMM("pt_BR")
-            .format(DateTime(homePresenter.selectedDate.year, index + 1))
-            .toString()
-            .toUpperCase()
-            .substring(0, 3);
+            final totalLiquidByMonth = e.LiquidValue?.toDouble() ?? 0;
+            final totalQuantityByMonth = e.QuantitySales?.toDouble() ?? 0;
 
-        final totalLiquidByMonth = salesOfCurrentMonth.sumLiquidValue();
-        final totalQuantityByMonth = salesOfCurrentMonth.quantitySales();
-
-        return [
-          PersonalizedTableCell(value: monthAbbreviation),
-          PersonalizedTableCell(
-            value: totalLiquidByMonth,
-            isMoney: true,
-          ),
-          PersonalizedTableCell(value: totalQuantityByMonth),
-          PersonalizedTableCell(
-            value: totalLiquidByMonth /
-                (totalQuantityByMonth == 0 ? 1 : totalQuantityByMonth),
-            isMoney: true,
-          ),
-          PersonalizedTableCell(
-            value: (totalLiquidByMonth / totalLiquidByYear) * 100,
-            isPercentage: true,
-          ),
-        ];
-      }).reversed.toList(),
+            return [
+              PersonalizedTableCell(value: monthAbbreviation),
+              PersonalizedTableCell(
+                value: totalLiquidByMonth,
+                isMoney: true,
+              ),
+              PersonalizedTableCell(value: totalQuantityByMonth),
+              PersonalizedTableCell(
+                value: totalLiquidByMonth /
+                    (totalQuantityByMonth == 0 ? 1 : totalQuantityByMonth),
+                isMoney: true,
+              ),
+              PersonalizedTableCell(
+                value: (totalLiquidByMonth / totalLiquidByYear) * 100,
+                isPercentage: true,
+              ),
+            ];
+          })
+          .toList()
+          .reversed
+          .toList(),
     );
   }
 }

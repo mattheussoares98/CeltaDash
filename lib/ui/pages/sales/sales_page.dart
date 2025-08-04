@@ -136,90 +136,87 @@ class _SalesPageState extends State<SalesPage>
                       ],
                     ),
                   ),
-                  Expanded(
-                    child: Obx(() {
-                      final hourlyStatistics = salesPresenter.hourlyStatistics
-                          ?.filteredSales(
-                            enterprise: homePresenter.selectedEnterprise,
-                            filterDay: homePresenter.selectedDate.day,
-                            filterMonth: homePresenter.selectedDate.month,
-                            filterYear: homePresenter.selectedDate.year,
-                          )
-                          .map((e) => e.toViewModel())
-                          .toList();
+                  Obx(() {
+                    final hourlyStatistics = salesPresenter.hourlyStatistics
+                        ?.filteredSales(
+                          enterprise: homePresenter.selectedEnterprise,
+                          filterDay: homePresenter.selectedDate.day,
+                          filterMonth: homePresenter.selectedDate.month,
+                          filterYear: homePresenter.selectedDate.year,
+                        )
+                        .map((e) => e.toViewModel())
+                        .toList();
 
-                      final dailyStatistics = salesPresenter.dailyStatistics
-                          ?.filteredSales(
-                            enterprise: homePresenter.selectedEnterprise,
-                            filterMonth: homePresenter.selectedDate.month,
-                            filterYear: homePresenter.selectedDate.year,
-                          )
-                          .map((e) => e.toViewModel())
-                          .toList();
+                    final dailyStatistics = salesPresenter.dailyStatistics
+                        ?.filteredSales(
+                          enterprise: homePresenter.selectedEnterprise,
+                          filterMonth: homePresenter.selectedDate.month,
+                          filterYear: homePresenter.selectedDate.year,
+                        )
+                        .map((e) => e.toViewModel())
+                        .toList();
 
-                      final monthlyStatistics = salesPresenter.monthlyStatistics
-                          ?.filteredSales(
-                            enterprise: homePresenter.selectedEnterprise,
-                            filterYear: homePresenter.selectedDate.year,
-                          )
-                          .map((e) => e.toViewModel())
-                          .toList();
+                    final monthlyStatistics = salesPresenter.monthlyStatistics
+                        ?.filteredSales(
+                          enterprise: homePresenter.selectedEnterprise,
+                          filterYear: homePresenter.selectedDate.year,
+                        )
+                        .map((e) => e.toViewModel())
+                        .toList();
 
-                      final yearlyStatistics = salesPresenter.yearlyStatistics
-                          ?.filteredSales(
-                            enterprise: homePresenter.selectedEnterprise,
-                          )
-                          .map((e) => e.toViewModel())
-                          .toList();
+                    final yearlyStatistics = salesPresenter.yearlyStatistics
+                        ?.filteredSales(
+                          enterprise: homePresenter.selectedEnterprise,
+                        )
+                        .map((e) => e.toViewModel())
+                        .toList();
 
-                      if (!_initialLoadFinished) {
-                        return const SizedBox.shrink();
-                      } else if (salesAreEmpty(
-                        hourlyStatistics: hourlyStatistics,
-                        dailyStatistics: dailyStatistics,
-                        monthlyStatistics: monthlyStatistics,
-                        yearlyStatistics: yearlyStatistics,
-                        salesPresenter: salesPresenter,
-                      )) {
-                        return EmptySales(isLoading: loadingSnap.data == true);
-                      }
+                    if (!_initialLoadFinished) {
+                      return const SizedBox.shrink();
+                    } else if (salesAreEmpty(
+                      hourlyStatistics: hourlyStatistics,
+                      dailyStatistics: dailyStatistics,
+                      monthlyStatistics: monthlyStatistics,
+                      yearlyStatistics: yearlyStatistics,
+                      salesPresenter: salesPresenter,
+                    )) {
+                      return EmptySales(isLoading: loadingSnap.data == true);
+                    }
 
-                      return Expanded(
-                        child: Column(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                children: [
-                                  if (salesPresenter.selectedPeriod ==
-                                          PeriodType.hourly &&
-                                      hourlyStatistics?.isNotEmpty == true)
-                                    HourTable(
-                                        hourlyStatistics: hourlyStatistics!),
-                                  if (salesPresenter.selectedPeriod ==
-                                          PeriodType.daily &&
-                                      dailyStatistics?.isNotEmpty == true)
-                                    DayTable(dailyStatistics: dailyStatistics!),
-                                  if (salesPresenter.selectedPeriod ==
-                                          PeriodType.monthly &&
-                                      monthlyStatistics != null &&
-                                      monthlyStatistics.isNotEmpty)
-                                    MonthSales(
-                                        saleStatisticsByMonth:
-                                            monthlyStatistics),
-                                  if (salesPresenter.selectedPeriod ==
-                                          PeriodType.yearly &&
-                                      yearlyStatistics != null &&
-                                      yearlyStatistics.isNotEmpty)
-                                    YearSales(
-                                        saleStatisticsByYear: yearlyStatistics),
-                                ],
-                              ),
+                    return Expanded(
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              children: [
+                                if (salesPresenter.selectedPeriod ==
+                                        PeriodType.hourly &&
+                                    hourlyStatistics?.isNotEmpty == true)
+                                  HourTable(
+                                      hourlyStatistics: hourlyStatistics!),
+                                if (salesPresenter.selectedPeriod ==
+                                        PeriodType.daily &&
+                                    dailyStatistics?.isNotEmpty == true)
+                                  DayTable(dailyStatistics: dailyStatistics!),
+                                if (salesPresenter.selectedPeriod ==
+                                        PeriodType.monthly &&
+                                    monthlyStatistics != null &&
+                                    monthlyStatistics.isNotEmpty)
+                                  MonthSales(
+                                      saleStatisticsByMonth: monthlyStatistics),
+                                if (salesPresenter.selectedPeriod ==
+                                        PeriodType.yearly &&
+                                    yearlyStatistics != null &&
+                                    yearlyStatistics.isNotEmpty)
+                                  YearSales(
+                                      saleStatisticsByYear: yearlyStatistics),
+                              ],
                             ),
-                          ],
-                        ),
-                      );
-                    }),
-                  ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
                 ],
               ),
             );
