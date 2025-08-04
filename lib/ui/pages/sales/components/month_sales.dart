@@ -46,7 +46,7 @@ class MonthSales extends StatelessWidget {
         final salesOfCurrentMonth = saleStatisticsByMonth
             .filteredSales(
               enterprise: homePresenter.selectedEnterprise,
-              filterMonth: index + 1,
+              filterMonth: uniqueMonths[index].toString().toInt(),
             )
             .map((e) => e.toViewModel())
             .toList();
@@ -68,7 +68,8 @@ class MonthSales extends StatelessWidget {
           ),
           PersonalizedTableCell(value: totalQuantityByMonth),
           PersonalizedTableCell(
-            value: totalLiquidByMonth / totalQuantityByMonth,
+            value: totalLiquidByMonth /
+                (totalQuantityByMonth == 0 ? 1 : totalQuantityByMonth),
             isMoney: true,
           ),
           PersonalizedTableCell(
