@@ -6,10 +6,10 @@ import '../../factories.dart';
 
 HomePage makeHomePage() {
   Get.put<AppAnalyticsService>(makeGetxAppAnalyticsService());
+  Get.replace<HomePresenter>(makeGetxHomePresenter());
   Get.replace<BsSalesPresenter>(makeGetxBsSalesPresenter());
   Get.replace<CompareDaysPresenter>(makeGetxCompareDaysPresenter());
   Get.replace<DepartmentsPresenter>(makeGetxDepartmentsPresenter());
-  Get.replace<HomePresenter>(makeGetxHomePresenter());
   Get.replace<PaymentTypePresenter>(makeGetxPaymentTypePresenter());
   Get.replace<ProductsPresenter>(makeGetxProductsPresenter());
   Get.replace<ResumePresenter>(makeGetxResumePresenter());

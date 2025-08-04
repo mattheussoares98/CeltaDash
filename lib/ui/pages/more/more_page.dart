@@ -31,6 +31,10 @@ class MorePage extends StatelessWidget {
         title: R.string.canceledSales,
       ),
       DefaultButton(
+        onTap: homePresenter.goToNotCanceledSalesPage,
+        title: R.string.notCanceledSales,
+      ),
+      DefaultButton(
         onTap: homePresenter.goToSellersPage,
         title: R.string.sellers,
       ),

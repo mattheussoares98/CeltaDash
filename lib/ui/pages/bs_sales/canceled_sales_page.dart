@@ -119,7 +119,7 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                     } else if (sales.isEmpty) {
                       return Center(
                         child: Image.asset(
-                          "lib/ui/assets/images/no_bs_sales.png",
+                          "lib/ui/assets/images/no_canceled_sales.png",
                           width: MediaQuery.of(context).size.width * 0.6,
                           height: MediaQuery.of(context).size.height * 0.6,
                         ),

@@ -51,7 +51,7 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage> {
               children: [
                 DefaultAppBar(
                   isLoading: loadingSnap.data == true,
-                  showDatePicker: false,
+                  // showDatePicker: false,
                   onChangeEnterprise: (_) async {
                     reloadSales();
                   },
@@ -83,7 +83,7 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage> {
                     } else if (sales.isEmpty) {
                       return Center(
                         child: Image.asset(
-                          "lib/ui/assets/images/no_bs_sales.png",
+                          "lib/ui/assets/images/empty_sales.png",
                           width: MediaQuery.of(context).size.width * 0.6,
                           height: MediaQuery.of(context).size.height * 0.6,
                         ),
@@ -99,7 +99,7 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage> {
                           columnsIndexToSum: [3],
                           fixFirstColumn: true,
                           indexToSort: 2,
-                          columnsWidths: [65, 35, 80, 90, 80, 150],
+                          columnsWidths: [65, 35, 80, 90],
                           showAnimation: _showAnimation,
                           hideShowAnimation: () {
                             _showAnimation = false;
@@ -124,10 +124,6 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage> {
                               value: R.string.total,
                               isTitle: true,
                             ),
-                            PersonalizedTableCell(
-                              value: R.string.cancelledBy,
-                              isTitle: true,
-                            ),
                           ],
                           rowValues: sales.map((e) {
                             final dateTime = DateFormat("dd/MM/yyyy HH:mm:ss")
@@ -145,9 +141,6 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage> {
                                   bsSalesPresenter
                                       .updateSelectedSaleMovement(e);
                                 },
-                              ),
-                              PersonalizedTableCell(
-                                value: e.userCancellation ?? "indefinido",
                               ),
                             ];
                           }).toList(),

@@ -44,13 +44,18 @@ class GetPages {
       transition: transition,
     ),
     GetPage(
+      name: PageRoutes.groupSummary,
+      page: makeGroupSummaryPage,
+      transition: transition,
+    ),
+    GetPage(
       name: PageRoutes.more,
       page: makeMorePage,
       transition: transition,
     ),
     GetPage(
-      name: PageRoutes.groupSummary,
-      page: makeGroupSummaryPage,
+      name: PageRoutes.notCanceledSales,
+      page: makeNotCanceledSalesPage,
       transition: transition,
     ),
     GetPage(
