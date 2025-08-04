@@ -1,3 +1,3 @@
 import '../../../../ui/pages/pages.dart';
 
-BsSalesPage makeBsSalesPage() => const BsSalesPage();
+BsCanceledSalesPage makeBsSalesPage() => const BsCanceledSalesPage();

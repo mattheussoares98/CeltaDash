@@ -29,7 +29,7 @@ class GetxBsSalesPresenter extends GetxController
   final appAnalyticsService = Get.find<AppAnalyticsService>();
 
   @override
-  Future<void> getSales(
+  Future<void> getCanceledSales(
     HomePresenter homePresenter, {
     PeriodType? periodType,
     bool? forceRefresh,

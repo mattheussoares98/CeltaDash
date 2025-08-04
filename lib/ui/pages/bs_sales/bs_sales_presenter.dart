@@ -15,7 +15,7 @@ abstract class BsSalesPresenter implements Listenable {
   GetSaleMovementParams? get lastGetDailyParams;
   GetSaleMovementParams? get lastGetMonthlyParams;
 
-  Future<void> getSales(
+  Future<void> getCanceledSales(
     HomePresenter homePresenter, {
     PeriodType? periodType,
     bool? forceRefresh,

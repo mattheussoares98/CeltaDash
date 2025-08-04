@@ -10,14 +10,14 @@ import '../pages.dart';
 
 bool _showAnimation = true;
 
-class BsSalesPage extends StatefulWidget {
-  const BsSalesPage({super.key});
+class BsCanceledSalesPage extends StatefulWidget {
+  const BsCanceledSalesPage({super.key});
 
   @override
-  State<BsSalesPage> createState() => _BsSalesPageState();
+  State<BsCanceledSalesPage> createState() => _BsCanceledSalesPageState();
 }
 
-class _BsSalesPageState extends State<BsSalesPage> {
+class _BsCanceledSalesPageState extends State<BsCanceledSalesPage> {
   @override
   void initState() {
     super.initState();
@@ -32,7 +32,8 @@ class _BsSalesPageState extends State<BsSalesPage> {
   void reloadSales({bool? forceRefresh}) {
     final bsSalesPresenter = Get.find<BsSalesPresenter>();
     final homePresenter = Get.find<HomePresenter>();
-    bsSalesPresenter.getSales(homePresenter, forceRefresh: forceRefresh);
+    bsSalesPresenter.getCanceledSales(homePresenter,
+        forceRefresh: forceRefresh);
   }
 
   @override
@@ -67,13 +68,13 @@ class _BsSalesPageState extends State<BsSalesPage> {
                     isLoading: loadingSnap.data,
                     selectedPeriodType: bsSalesPresenter.selectedPeriod,
                     onTapDaily: () {
-                      bsSalesPresenter.getSales(
+                      bsSalesPresenter.getCanceledSales(
                         homePresenter,
                         periodType: PeriodType.daily,
                       );
                     },
                     onTapMonthly: () {
-                      bsSalesPresenter.getSales(
+                      bsSalesPresenter.getCanceledSales(
                         homePresenter,
                         periodType: PeriodType.monthly,
                       );
