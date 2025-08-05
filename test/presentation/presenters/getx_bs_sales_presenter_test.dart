@@ -651,6 +651,27 @@ void main() {
             ),
           )).called(1);
     });
+    test(
+        "Should not pass the document number parameter if has only empty values",
+        () async {
+      await sut.getNotCanceledSales(
+        documentNumbers: [""],
+        date: selectedDate,
+      );
+
+      verify(() => loadSaleMovements.get(
+            GetSaleMovementParams(
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
+              startDate: selectedDate,
+              endDate: selectedDate,
+              onlyNotCancelled: true,
+              actualPage: 1,
+              documentNumbers: null,
+            ),
+          )).called(1);
+    });
     test("Should add correct app analytics", () async {
       await sut.getNotCanceledSales(date: selectedDate);
 

@@ -182,7 +182,10 @@ class GetxBsSalesPresenter extends GetxController
         endDate: date,
         onlyNotCancelled: true,
         actualPage: actualPage ?? 1,
-        documentNumbers: documentNumbers,
+        documentNumbers:
+            documentNumbers?.length == 1 && documentNumbers![0].isEmpty
+                ? null
+                : documentNumbers,
       );
       final response = await loadSaleMovements.get(params);
       lastParams = params;
