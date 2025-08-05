@@ -18,6 +18,7 @@ class NotCanceledSalesPage extends StatefulWidget {
 }
 
 class _NotCanceledSalesPageState extends State<NotCanceledSalesPage> {
+  bool alreadySearched = false;
   @override
   Widget build(BuildContext context) {
     final bsSalesPresenter = Get.find<BsSalesPresenter>();
@@ -40,7 +41,15 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage> {
                   onChangeDate: (_) async {},
                   onTapRefresh: () {},
                 ),
-                const FilterNotCanceledSales(),
+                FilterNotCanceledSales(
+                  isLoading: loadingSnap.data == true,
+                  alreadySearched: alreadySearched,
+                  onSearch: () {
+                    setState(() {
+                      alreadySearched = true;
+                    });
+                  },
+                ),
                 Expanded(
                   child: Obx(() {
                     final sales = bsSalesPresenter.notCanceledSales?.collection
@@ -61,7 +70,9 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage> {
                         .map((e) => e.toViewModel())
                         .toList();
 
-                    if (sales == null || sales.isEmpty) {
+                    if (!alreadySearched && loadingSnap.data == null) {
+                      return const SizedBox.shrink();
+                    } else if (sales == null || sales.isEmpty) {
                       return EmptySales(isLoading: loadingSnap.data == true);
                     }
 

@@ -16,7 +16,7 @@ class EmptySales extends StatelessWidget {
 
     return Center(
       child: isLoading == true
-          ? const SizedBox.shrink()
+          ? const CircularProgressIndicator()
           : Image.asset(
               "lib/ui/assets/images/empty_sales.png",
               width: imageSize,

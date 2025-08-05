@@ -11,7 +11,15 @@ import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
 class FilterNotCanceledSales extends StatefulWidget {
-  const FilterNotCanceledSales({super.key});
+  final bool isLoading;
+  final bool alreadySearched;
+  final VoidCallback onSearch;
+  const FilterNotCanceledSales({
+    super.key,
+    required this.isLoading,
+    required this.alreadySearched,
+    required this.onSearch,
+  });
 
   @override
   State<FilterNotCanceledSales> createState() => _FilterNotCanceledSalesState();
@@ -38,12 +46,15 @@ class _FilterNotCanceledSalesState extends State<FilterNotCanceledSales> {
         R.string.msgSelectDate,
         Colors.red,
       );
+      return;
     }
 
     await presenter.getNotCanceledSales(
       documentNumbers: [documentNumberController.text],
       date: selectedDate!,
     );
+
+    widget.onSearch.call();
   }
 
   @override
@@ -57,20 +68,22 @@ class _FilterNotCanceledSalesState extends State<FilterNotCanceledSales> {
       child: Row(
         children: [
           TextButton(
-            onPressed: () async {
-              final date = await GetNewDate.get(
-                canInsertDateBeforeNow: true,
-                insertHoursAndMinutes: false,
-                lastDate: now,
-                reduceDaysFromInitialDate: 365 * 3,
-              );
+            onPressed: widget.isLoading
+                ? null
+                : () async {
+                    final date = await GetNewDate.get(
+                      canInsertDateBeforeNow: true,
+                      insertHoursAndMinutes: false,
+                      lastDate: now,
+                      reduceDaysFromInitialDate: 365 * 3,
+                    );
 
-              if (date != null) {
-                setState(() {
-                  selectedDate = date;
-                });
-              }
-            },
+                    if (date != null) {
+                      setState(() {
+                        selectedDate = date;
+                      });
+                    }
+                  },
             child: FittedBox(
               child: Text(
                 selectedDate == null
@@ -85,13 +98,14 @@ class _FilterNotCanceledSalesState extends State<FilterNotCanceledSales> {
               child: TextFormField(
                 controller: documentNumberController,
                 maxLength: 10,
+                enabled: widget.isLoading == false,
                 keyboardType:
                     const TextInputType.numberWithOptions(decimal: false),
                 onFieldSubmitted: (_) {
                   _submit(bsSalesPresenter);
                 },
                 validator: (value) => ValidationComposite([
-                  const RequiredFieldValidation(),
+                  const NumberFieldValidation(onlyInt: true),
                 ]).validate(value)?.description,
                 decoration: FormFieldDecoration.decoration(
                   context: context,
@@ -104,9 +118,11 @@ class _FilterNotCanceledSalesState extends State<FilterNotCanceledSales> {
           ),
           FittedBox(
             child: IconButton(
-              onPressed: () async {
-                await _submit(bsSalesPresenter);
-              },
+              onPressed: widget.isLoading
+                  ? null
+                  : () async {
+                      await _submit(bsSalesPresenter);
+                    },
               icon: Icon(
                 theme.platform == TargetPlatform.iOS
                     ? CupertinoIcons.search
