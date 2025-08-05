@@ -144,11 +144,13 @@ class GetxAppAnalyticsService implements AppAnalyticsService {
       ));
     }
 
-    final userName = EnterpriseBuilder.entity?.bsUser?.name ?? '';
+    final userName =
+        EnterpriseBuilder.entity?.bsUser?.name?.toLowerCase() ?? '';
 
     // --- Update Users ---
     final users = List<ActiveUserEntity>.from(data.users);
-    final userIndex = users.indexWhere((u) => u.userName == userName);
+    final userIndex = users
+        .indexWhere((u) => u.userName.toLowerCase() == userName.toLowerCase());
 
     if (userIndex != -1) {
       users[userIndex] = ActiveUserEntity(
