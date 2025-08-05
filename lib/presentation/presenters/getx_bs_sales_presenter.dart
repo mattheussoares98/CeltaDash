@@ -205,8 +205,6 @@ class GetxBsSalesPresenter extends GetxController
 
   @override
   Future<void> changeSalesPage(bool isAdvancing) async {
-    isLoading = true;
-    mainError = null;
     try {
       final oldIndex = _notCanceledSales.value?.actualPage ?? 1;
       int newIndex = isAdvancing ? oldIndex + 1 : oldIndex - 1;
@@ -217,9 +215,7 @@ class GetxBsSalesPresenter extends GetxController
 
       await getNotCanceledSales(newIndex);
     } catch (e) {
-      mainError = getUIError(e);
-    } finally {
-      isLoading = false;
+      //the error is already treated in getNotCanceledSales
     }
   }
 
