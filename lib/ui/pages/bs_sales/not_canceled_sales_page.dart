@@ -63,6 +63,9 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage> {
                 Expanded(
                   child: Obx(() {
                     final sales = bsSalesPresenter.notCanceledSales?.collection
+                        .where((e) =>
+                            e.enterpriseId ==
+                            homePresenter.selectedEnterprise?.id)
                         .map((e) =>
                             SaleMovementCollectionItemModel.fromViewModel(e))
                         .where((e) {
@@ -77,16 +80,8 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage> {
                         .map((e) => e.toViewModel())
                         .toList();
 
-                    if (sales == null) {
+                    if (sales == null || sales.isEmpty) {
                       return EmptySales(isLoading: loadingSnap.data == true);
-                    } else if (sales.isEmpty) {
-                      return Center(
-                        child: Image.asset(
-                          "lib/ui/assets/images/empty_sales.png",
-                          width: MediaQuery.of(context).size.width * 0.6,
-                          height: MediaQuery.of(context).size.height * 0.6,
-                        ),
-                      );
                     }
 
                     return Column(
