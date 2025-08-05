@@ -23,6 +23,7 @@ abstract class BsSalesPresenter implements Listenable {
   });
 
   Future<void> getNotCanceledSales({
+    required DateTime date,
     List<String>? documentNumbers,
     int? actualPage,
   });

@@ -161,6 +161,7 @@ class GetxBsSalesPresenter extends GetxController
 
   @override
   Future<void> getNotCanceledSales({
+    required DateTime date,
     List<String>? documentNumbers,
     int? actualPage,
   }) async {
@@ -173,18 +174,12 @@ class GetxBsSalesPresenter extends GetxController
     isLoading = true;
     mainError = null;
     try {
-      final startDate = DateTime(
-        homePresenter.selectedDate.year,
-        homePresenter.selectedDate.month,
-        homePresenter.selectedDate.day,
-      );
-
       final params = GetSaleMovementParams(
         enterpriseIds: homePresenter.selectedEnterprise?.id == null
             ? []
             : [homePresenter.selectedEnterprise!.id!.toInt()],
-        startDate: startDate,
-        endDate: startDate,
+        startDate: date,
+        endDate: date,
         onlyNotCancelled: true,
         actualPage: actualPage ?? 1,
         documentNumbers: documentNumbers,
@@ -217,7 +212,9 @@ class GetxBsSalesPresenter extends GetxController
 
       if (newIndex < 1 || newIndex > maxIndex) return;
 
-      await getNotCanceledSales(actualPage: newIndex);
+      final date = lastGetSaleMovementParams!.startDate;
+
+      await getNotCanceledSales(date: date, actualPage: newIndex);
     } catch (e) {
       //the error is already treated in getNotCanceledSales
     }

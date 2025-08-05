@@ -18,6 +18,7 @@ abstract class Translation {
   String get msgRequiredField;
   String get msgReturnAllEnterprisesWhenNoOneIsNotSelected;
   String get msgSameUrl;
+  String get msgSelectDate;
   String get msgSelectPeriod;
   String get msgShortIntervalToGroupThisPeriod;
   String get msgShortPeriodSelected;

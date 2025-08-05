@@ -18,12 +18,6 @@ class NotCanceledSalesPage extends StatefulWidget {
 }
 
 class _NotCanceledSalesPageState extends State<NotCanceledSalesPage> {
-  void reloadSales([int? actualPage]) {
-    final bsSalesPresenter = Get.find<BsSalesPresenter>();
-
-    bsSalesPresenter.getNotCanceledSales(actualPage: actualPage);
-  }
-
   @override
   Widget build(BuildContext context) {
     final bsSalesPresenter = Get.find<BsSalesPresenter>();
@@ -42,15 +36,9 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage> {
                   isLoading: loadingSnap.data == true,
                   showDatePicker: false,
                   paddingPattern: 8,
-                  onChangeEnterprise: (_) async {
-                    reloadSales();
-                  },
-                  onChangeDate: (_) async {
-                    reloadSales();
-                  },
-                  onTapRefresh: () {
-                    reloadSales(bsSalesPresenter.notCanceledSales?.actualPage);
-                  },
+                  onChangeEnterprise: (_) async {},
+                  onChangeDate: (_) async {},
+                  onTapRefresh: () {},
                 ),
                 const FilterNotCanceledSales(),
                 Expanded(

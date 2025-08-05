@@ -32,10 +32,17 @@ class _FilterNotCanceledSalesState extends State<FilterNotCanceledSales> {
     if (formKey.currentState?.validate() != true) {
       return;
     }
+    if (selectedDate == null) {
+      snackBarMessage(
+        context,
+        R.string.msgSelectDate,
+        Colors.red,
+      );
+    }
 
     await presenter.getNotCanceledSales(
       documentNumbers: [documentNumberController.text],
-      //TODO add the date as required
+      date: selectedDate!,
     );
   }
 

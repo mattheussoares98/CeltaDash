@@ -31,6 +31,7 @@ void main() {
 
   late SaleMovementEntity saleMovementEntity;
   late List<String> documentNumbers;
+  late DateTime selectedDate;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
@@ -54,6 +55,7 @@ void main() {
       saleMovementEntity.collection[1].documentNumber!,
       saleMovementEntity.collection[2].documentNumber!,
     ];
+    selectedDate = faker.date.dateTime();
   }
 
   void initMockSuccess() {
@@ -607,7 +609,7 @@ void main() {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(sut.mainErrorStream, emits(null));
 
-      await sut.getNotCanceledSales();
+      await sut.getNotCanceledSales(date: selectedDate);
     });
     test("Should emit correct values on error", () async {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
@@ -618,10 +620,10 @@ void main() {
 
       loadSaleMovements.mockGetError();
 
-      await sut.getNotCanceledSales();
+      await sut.getNotCanceledSales(date: selectedDate);
     });
     test("Should update daily sales correctly", () async {
-      await sut.getNotCanceledSales();
+      await sut.getNotCanceledSales(date: selectedDate);
 
       expect(
         sut.notCanceledSales,
@@ -631,25 +633,26 @@ void main() {
     test(
         "Should get sales with correct values when doesnt pass a date as parameter",
         () async {
-      await sut.getNotCanceledSales(documentNumbers: documentNumbers);
-
-      final date = DateTime(
-        homePresenter.selectedDateMock.year,
-        homePresenter.selectedDateMock.month,
-        homePresenter.selectedDateMock.day,
+      await sut.getNotCanceledSales(
+        documentNumbers: documentNumbers,
+        date: selectedDate,
       );
 
-      verify(() => loadSaleMovements.get(GetSaleMovementParams(
-            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
-            startDate: date,
-            endDate: date,
-            onlyNotCancelled: true,
-            actualPage: 1,
-            documentNumbers: documentNumbers,
-          ))).called(1);
+      verify(() => loadSaleMovements.get(
+            GetSaleMovementParams(
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
+              startDate: selectedDate,
+              endDate: selectedDate,
+              onlyNotCancelled: true,
+              actualPage: 1,
+              documentNumbers: documentNumbers,
+            ),
+          )).called(1);
     });
     test("Should add correct app analytics", () async {
-      await sut.getNotCanceledSales();
+      await sut.getNotCanceledSales(date: selectedDate);
 
       verify(() => appAnalyticsService.addNewMonthlyAnalytic(
             reportType: ReportType.notCanceledSales,
