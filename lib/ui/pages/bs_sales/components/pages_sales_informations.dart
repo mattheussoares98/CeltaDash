@@ -18,6 +18,15 @@ class _PagesSalesInformationsState extends State<PagesSalesInformations> {
   Widget build(BuildContext context) {
     final bsSalesPresenter = Get.find<BsSalesPresenter>();
     final resultSales = bsSalesPresenter.notCanceledSales;
+    final recordInThisPage = resultSales?.recordsOnThisPage ?? 1;
+    final totalRecords = resultSales?.totalRecords ?? 0;
+    final actualPage = resultSales?.actualPage ?? 1;
+    final skippedRecords = (actualPage - 1) * 100 /* max sales number */;
+    final firstSaleNumber = totalRecords - (totalRecords - skippedRecords) + 1;
+    final lastSaleNumber = actualPage == resultSales?.totalPages
+        ? totalRecords
+        : recordInThisPage * actualPage;
+
     final theme = Theme.of(context);
 
     if (resultSales?.totalPages == 1) {
@@ -73,9 +82,14 @@ class _PagesSalesInformationsState extends State<PagesSalesInformations> {
                 ),
               ),
               Expanded(
-                child: Text(
-                  " ${R.string.sales} ${resultSales?.recordsOnThisPage}/${resultSales?.totalRecords}",
-                  textAlign: TextAlign.end,
+                child: Column(
+                  children: [
+                    Text(R.string.sales),
+                    Text(
+                      "$firstSaleNumber-$lastSaleNumber/$totalRecords",
+                      textAlign: TextAlign.end,
+                    ),
+                  ],
                 ),
               )
             ],
