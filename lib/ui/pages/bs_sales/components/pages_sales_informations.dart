@@ -25,16 +25,29 @@ class PagesSalesInformations extends StatelessWidget {
                 child: Row(
                   children: [
                     IconButton(
-                      onPressed: () {},
-                      icon: Icon(theme.platform == TargetPlatform.iOS
-                          ? CupertinoIcons.arrow_left
-                          : Icons.arrow_back_ios_new_outlined),
+                      onPressed:
+                          bsSalesPresenter.notCanceledSales?.actualPage == 1
+                              ? null
+                              : () {
+                                  bsSalesPresenter.changeSalesPage(false);
+                                },
+                      icon: Icon(
+                        theme.platform == TargetPlatform.iOS
+                            ? CupertinoIcons.arrow_left
+                            : Icons.arrow_back_ios_new_outlined,
+                      ),
                     ),
                     Text(
                       "${R.string.page} ${resultSales?.actualPage}/${resultSales?.totalPages}",
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed:
+                          bsSalesPresenter.notCanceledSales?.actualPage ==
+                                  bsSalesPresenter.notCanceledSales?.totalPages
+                              ? null
+                              : () {
+                                  bsSalesPresenter.changeSalesPage(true);
+                                },
                       icon: Icon(
                         theme.platform == TargetPlatform.iOS
                             ? CupertinoIcons.arrow_right
