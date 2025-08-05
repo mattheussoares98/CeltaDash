@@ -160,7 +160,10 @@ class GetxBsSalesPresenter extends GetxController
   }
 
   @override
-  Future<void> getNotCanceledSales([int? actualPage]) async {
+  Future<void> getNotCanceledSales({
+    List<String>? documentNumbers,
+    int? actualPage,
+  }) async {
     if (isLoadingValue == true) {
       isLoading = false;
       isLoading = true;
@@ -184,6 +187,7 @@ class GetxBsSalesPresenter extends GetxController
         endDate: startDate,
         onlyNotCancelled: true,
         actualPage: actualPage ?? 1,
+        documentNumbers: documentNumbers,
       );
       final response = await loadSaleMovements.get(params);
       lastParams = params;
@@ -213,7 +217,7 @@ class GetxBsSalesPresenter extends GetxController
 
       if (newIndex < 1 || newIndex > maxIndex) return;
 
-      await getNotCanceledSales(newIndex);
+      await getNotCanceledSales(actualPage: newIndex);
     } catch (e) {
       //the error is already treated in getNotCanceledSales
     }

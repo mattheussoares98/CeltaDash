@@ -30,6 +30,7 @@ void main() {
   late NavigateToSpy navigateTo;
 
   late SaleMovementEntity saleMovementEntity;
+  late List<String> documentNumbers;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
@@ -48,6 +49,11 @@ void main() {
 
   void initEntities() {
     saleMovementEntity = EntityFactory.makeSaleMovementEntity();
+    documentNumbers = [
+      saleMovementEntity.collection[0].documentNumber!,
+      saleMovementEntity.collection[1].documentNumber!,
+      saleMovementEntity.collection[2].documentNumber!,
+    ];
   }
 
   void initMockSuccess() {
@@ -625,24 +631,22 @@ void main() {
     test(
         "Should get sales with correct values when doesnt pass a date as parameter",
         () async {
-      await sut.getNotCanceledSales();
+      await sut.getNotCanceledSales(documentNumbers: documentNumbers);
 
       final date = DateTime(
-        homePresenter.selectedDate.year,
-        homePresenter.selectedDate.month,
-        homePresenter.selectedDate.day,
+        homePresenter.selectedDateMock.year,
+        homePresenter.selectedDateMock.month,
+        homePresenter.selectedDateMock.day,
       );
 
-      verify(() => loadSaleMovements.get(
-            GetSaleMovementParams(
-              enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
-              ],
-              startDate: date,
-              endDate: date,
-              onlyNotCancelled: true,
-            ),
-          )).called(1);
+      verify(() => loadSaleMovements.get(GetSaleMovementParams(
+            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+            startDate: date,
+            endDate: date,
+            onlyNotCancelled: true,
+            actualPage: 1,
+            documentNumbers: documentNumbers,
+          ))).called(1);
     });
     test("Should add correct app analytics", () async {
       await sut.getNotCanceledSales();

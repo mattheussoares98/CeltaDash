@@ -32,7 +32,7 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage> {
   void reloadSales([int? actualPage]) {
     final bsSalesPresenter = Get.find<BsSalesPresenter>();
 
-    bsSalesPresenter.getNotCanceledSales(actualPage);
+    bsSalesPresenter.getNotCanceledSales(actualPage: actualPage);
   }
 
   @override
