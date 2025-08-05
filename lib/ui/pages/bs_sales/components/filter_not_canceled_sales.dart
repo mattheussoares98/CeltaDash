@@ -60,6 +60,7 @@ class _FilterNotCanceledSalesState extends State<FilterNotCanceledSales> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final mediaQuery = MediaQuery.of(context);
     final now = DateTime.now();
     final bsSalesPresenter = Get.find<BsSalesPresenter>();
 
@@ -112,6 +113,17 @@ class _FilterNotCanceledSalesState extends State<FilterNotCanceledSales> {
                   labelText:
                       "${R.string.coupon} (${R.string.optional.toLowerCase()})",
                   hintText: R.string.coupon,
+                  suffixIcon: mediaQuery.size.width < 300
+                      ? null
+                      : IconButton(
+                          onPressed: documentNumberController.clear,
+                          icon: Icon(
+                            theme.platform == TargetPlatform.iOS
+                                ? CupertinoIcons.clear
+                                : Icons.clear,
+                            color: Colors.red,
+                          ),
+                        ),
                 ),
               ),
             ),
@@ -123,11 +135,19 @@ class _FilterNotCanceledSalesState extends State<FilterNotCanceledSales> {
                   : () async {
                       await _submit(bsSalesPresenter);
                     },
-              icon: Icon(
-                theme.platform == TargetPlatform.iOS
-                    ? CupertinoIcons.search
-                    : Icons.search,
-              ),
+              icon: widget.isLoading
+                  ? const SizedBox(
+                      height: 24,
+                      width: 24,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 1,
+                      ),
+                    )
+                  : Icon(
+                      theme.platform == TargetPlatform.iOS
+                          ? CupertinoIcons.search
+                          : Icons.search,
+                    ),
             ),
           )
         ],
