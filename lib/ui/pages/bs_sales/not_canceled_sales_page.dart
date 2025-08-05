@@ -29,10 +29,10 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage> {
     });
   }
 
-  void reloadSales() {
+  void reloadSales([int? actualPage]) {
     final bsSalesPresenter = Get.find<BsSalesPresenter>();
 
-    bsSalesPresenter.getNotCanceledSales();
+    bsSalesPresenter.getNotCanceledSales(actualPage);
   }
 
   @override
@@ -58,7 +58,9 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage> {
                   onChangeDate: (_) async {
                     reloadSales();
                   },
-                  onTapRefresh: reloadSales,
+                  onTapRefresh: () {
+                    reloadSales(bsSalesPresenter.notCanceledSales?.actualPage);
+                  },
                 ),
                 Expanded(
                   child: Obx(() {
@@ -86,7 +88,9 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage> {
 
                     return Column(
                       children: [
-                        const PagesSalesInformations(),
+                        PagesSalesInformations(
+                          isLoading: loadingSnap.data == true,
+                        ),
                         ScrollableTableItem(
                           titleMinHeight: isPortrait ? 43 : 30,
                           selectedPeriodType: bsSalesPresenter.selectedPeriod,
