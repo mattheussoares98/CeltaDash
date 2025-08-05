@@ -7,6 +7,7 @@ abstract class Validation {
 enum ValidationError {
   invalidEmail,
   invalidField,
+  invalidNumber,
   invalidUrl,
   requiredField,
   shortField,
@@ -21,6 +22,8 @@ extension ValidationErrorExtension on ValidationError {
         return R.string.msgInvalidField;
       case ValidationError.invalidUrl:
         return R.string.msgInvalidUrl;
+      case ValidationError.invalidNumber:
+        return R.string.msgInvalidNumber;
       case ValidationError.requiredField:
         return R.string.msgRequiredField;
       case ValidationError.shortField:

@@ -20,6 +20,7 @@ class PtBr implements Translation {
       "Credenciais inválidas. Faça o login novamente!";
   String get msgInvalidEmail => "E-mail inválido";
   String get msgInvalidField => "Campo inválido";
+  String get msgInvalidNumber => "Número inválido";
   String get msgInvalidUrl => "URL inválida";
   String get msgLongIntervalToGroupThisPeriod =>
       "Invervalo muito longo para agrupar este período";

@@ -9,6 +9,7 @@ abstract class Translation {
   String get msgInvalidCredentials;
   String get msgInvalidEmail;
   String get msgInvalidField;
+  String get msgInvalidNumber;
   String get msgInvalidUrl;
   String get msgLongIntervalToGroupThisPeriod;
   String get msgNewAppRequiredVersion;
