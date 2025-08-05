@@ -73,6 +73,7 @@ class PtBr implements Translation {
   String get connectedEnterprises => "Empresas conectadas";
   String get cost => "Custo";
   String get coupon => "Cupom";
+  String get couponNumber => "Número do cupom";
   String get couponNumberAbbreviated => "Cup";
   String get cpfCnpj => "CpfCNPJ";
   String get customer => "Cliente";
@@ -141,6 +142,7 @@ class PtBr implements Translation {
   String get of => "De";
   String get operator => "Operador";
   String get operators => "Operadores";
+  String get optional => "Opcional";
   String get page => "Página";
   String get parameters => "Parâmetros";
   String get password => "Senha";

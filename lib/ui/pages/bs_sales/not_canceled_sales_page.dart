@@ -18,17 +18,6 @@ class NotCanceledSalesPage extends StatefulWidget {
 }
 
 class _NotCanceledSalesPageState extends State<NotCanceledSalesPage> {
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (mounted) {
-        reloadSales();
-      }
-    });
-  }
-
   void reloadSales([int? actualPage]) {
     final bsSalesPresenter = Get.find<BsSalesPresenter>();
 
@@ -51,7 +40,8 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage> {
               children: [
                 DefaultAppBar(
                   isLoading: loadingSnap.data == true,
-                  // showDatePicker: false,
+                  showDatePicker: false,
+                  paddingPattern: 8,
                   onChangeEnterprise: (_) async {
                     reloadSales();
                   },
@@ -62,6 +52,7 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage> {
                     reloadSales(bsSalesPresenter.notCanceledSales?.actualPage);
                   },
                 ),
+                const FilterNotCanceledSales(),
                 Expanded(
                   child: Obx(() {
                     final sales = bsSalesPresenter.notCanceledSales?.collection
@@ -94,7 +85,7 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage> {
                         ScrollableTableItem(
                           titleMinHeight: isPortrait ? 43 : 30,
                           selectedPeriodType: bsSalesPresenter.selectedPeriod,
-                          pdfFileName: R.string.canceledSales,
+                          pdfFileName: R.string.notCanceledSales,
                           columnsIndexToSum: [3],
                           fixFirstColumn: true,
                           indexToSort: 2,

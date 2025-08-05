@@ -20,6 +20,10 @@ class _PagesSalesInformationsState extends State<PagesSalesInformations> {
     final resultSales = bsSalesPresenter.notCanceledSales;
     final theme = Theme.of(context);
 
+    if (resultSales?.totalPages == 1) {
+      return const SizedBox.shrink();
+    }
+
     return Padding(
       padding: const EdgeInsets.only(right: 8),
       child: Column(

@@ -58,6 +58,7 @@ abstract class Translation {
   String get connectedEnterprises;
   String get cost;
   String get coupon;
+  String get couponNumber;
   String get couponNumberAbbreviated;
   String get cpfCnpj;
   String get customer;
@@ -126,6 +127,7 @@ abstract class Translation {
   String get of;
   String get operator;
   String get operators;
+  String get optional;
   String get page;
   String get parameters;
   String get password;
