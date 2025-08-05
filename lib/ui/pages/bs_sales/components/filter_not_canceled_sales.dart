@@ -14,11 +14,15 @@ class FilterNotCanceledSales extends StatefulWidget {
   final bool isLoading;
   final bool alreadySearched;
   final VoidCallback onSearch;
+  final DateTime? selectedDate;
+  final void Function(DateTime date) onChangeDate;
   const FilterNotCanceledSales({
     super.key,
     required this.isLoading,
     required this.alreadySearched,
     required this.onSearch,
+    required this.selectedDate,
+    required this.onChangeDate,
   });
 
   @override
@@ -26,7 +30,6 @@ class FilterNotCanceledSales extends StatefulWidget {
 }
 
 class _FilterNotCanceledSalesState extends State<FilterNotCanceledSales> {
-  DateTime? selectedDate;
   final documentNumberController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
@@ -40,7 +43,7 @@ class _FilterNotCanceledSalesState extends State<FilterNotCanceledSales> {
     if (formKey.currentState?.validate() != true) {
       return;
     }
-    if (selectedDate == null) {
+    if (widget.selectedDate == null) {
       snackBarMessage(
         context,
         R.string.msgSelectDate,
@@ -51,7 +54,7 @@ class _FilterNotCanceledSalesState extends State<FilterNotCanceledSales> {
 
     await presenter.getNotCanceledSales(
       documentNumbers: [documentNumberController.text],
-      date: selectedDate!,
+      date: widget.selectedDate!,
     );
 
     widget.onSearch.call();
@@ -80,16 +83,15 @@ class _FilterNotCanceledSalesState extends State<FilterNotCanceledSales> {
                     );
 
                     if (date != null) {
-                      setState(() {
-                        selectedDate = date;
-                      });
+                      widget.onChangeDate(date);
+                      await _submit(bsSalesPresenter);
                     }
                   },
             child: FittedBox(
               child: Text(
-                selectedDate == null
+                widget.selectedDate == null
                     ? R.string.date
-                    : DateFormat.yMd('pt_BR').format(selectedDate!),
+                    : DateFormat.yMd('pt_BR').format(widget.selectedDate!),
               ),
             ),
           ),

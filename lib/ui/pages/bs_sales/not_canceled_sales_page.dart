@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -5,6 +7,7 @@ import 'package:intl/intl.dart';
 import '../../../data/models/models.dart';
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
+import '../../mixins/mixins.dart';
 import '../pages.dart';
 import 'components/components.dart';
 
@@ -17,8 +20,19 @@ class NotCanceledSalesPage extends StatefulWidget {
   State<NotCanceledSalesPage> createState() => _NotCanceledSalesPageState();
 }
 
-class _NotCanceledSalesPageState extends State<NotCanceledSalesPage> {
+class _NotCanceledSalesPageState extends State<NotCanceledSalesPage>
+    with UIErrorManager {
   bool alreadySearched = false;
+  StreamSubscription? mainErrorSubscription;
+  DateTime? selectedDate;
+
+  @override
+  void initState() {
+    super.initState();
+    mainErrorSubscription =
+        handleMainError(context, Get.find<BsSalesPresenter>().mainErrorStream);
+  }
+
   @override
   Widget build(BuildContext context) {
     final bsSalesPresenter = Get.find<BsSalesPresenter>();
@@ -37,13 +51,25 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage> {
                   isLoading: loadingSnap.data == true,
                   showDatePicker: false,
                   paddingPattern: 8,
-                  onChangeEnterprise: (_) async {},
+                  onChangeEnterprise: (_) async {
+                    if (selectedDate != null) {
+                      await bsSalesPresenter.getNotCanceledSales(
+                        date: selectedDate!,
+                      );
+                    }
+                  },
                   onChangeDate: (_) async {},
                   onTapRefresh: () {},
                 ),
                 FilterNotCanceledSales(
                   isLoading: loadingSnap.data == true,
                   alreadySearched: alreadySearched,
+                  selectedDate: selectedDate,
+                  onChangeDate: (date) {
+                    setState(() {
+                      selectedDate = date;
+                    });
+                  },
                   onSearch: () {
                     setState(() {
                       alreadySearched = true;
@@ -60,11 +86,10 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage> {
                             SaleMovementCollectionItemModel.fromViewModel(e))
                         .where((e) {
                           return e.dateHourOfBilling?.year ==
-                                  homePresenter.selectedDate.year &&
+                                  selectedDate?.year &&
                               e.dateHourOfBilling?.month ==
-                                  homePresenter.selectedDate.month &&
-                              e.dateHourOfBilling?.day ==
-                                  homePresenter.selectedDate.day;
+                                  selectedDate?.month &&
+                              e.dateHourOfBilling?.day == selectedDate?.day;
                         })
                         .toList()
                         .map((e) => e.toViewModel())
