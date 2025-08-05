@@ -83,8 +83,12 @@ class _FilterNotCanceledSalesState extends State<FilterNotCanceledSales> {
                     );
 
                     if (date != null) {
-                      widget.onChangeDate(date);
-                      await _submit(bsSalesPresenter);
+                      setState(() {
+                        widget.onChangeDate(date);
+                      });
+                      Future.delayed(const Duration(milliseconds: 100), () {
+                        _submit(bsSalesPresenter);
+                      });
                     }
                   },
             child: FittedBox(
