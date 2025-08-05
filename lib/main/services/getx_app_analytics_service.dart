@@ -1,5 +1,7 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
 import '../../data/models/models.dart';
@@ -27,6 +29,10 @@ class GetxAppAnalyticsService implements AppAnalyticsService {
     required PeriodType periodType,
   }) async {
     try {
+      if (kDebugMode && !Platform.environment.containsKey('FLUTTER_TEST')) {
+        //dont need to add if is on debug mode
+        return;
+      }
       // 1. Load local monthly data and the update counter
       MonthlyAnalyticsEntity monthlyData = await _loadLocalMonthlyData();
 
