@@ -83,6 +83,7 @@ class _WebEnterprisesListPageState extends State<WebEnterprisesListPage> {
               pdfFileName: R.string.enterprises,
               columnsWidths: [150, 80, 60],
               showAnimation: _showAnimation,
+              columnsIndexToSum: [1, 2],
               fixFirstColumn: true,
               hideShowAnimation: () {
                 _showAnimation = false;
