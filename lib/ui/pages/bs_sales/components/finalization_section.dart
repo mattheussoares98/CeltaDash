@@ -29,6 +29,8 @@ class FinalizationSection extends StatelessWidget {
               title:
                   "${e.Finalization?.Name} ${portions.isEmpty ? "" : " (${portions}x)"}",
               value: e.Value.toString().toBrazilianNumber().addBrazilianCoin(),
+              titleFlex: 3,
+              valueFlex: 1,
             ),
           ],
         );
