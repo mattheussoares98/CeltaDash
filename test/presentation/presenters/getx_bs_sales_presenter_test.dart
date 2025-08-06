@@ -611,7 +611,7 @@ void main() {
 
       await sut.getNotCanceledSales(date: selectedDate);
     });
-    test("Should emit correct values on error", () async {
+    test("Should emit correct values on error and return false", () async {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(
         sut.mainErrorStream,
@@ -620,7 +620,9 @@ void main() {
 
       loadSaleMovements.mockGetError();
 
-      await sut.getNotCanceledSales(date: selectedDate);
+      final value = await sut.getNotCanceledSales(date: selectedDate);
+
+      expect(value, false);
     });
     test("Should update daily sales correctly", () async {
       await sut.getNotCanceledSales(date: selectedDate);
@@ -679,6 +681,21 @@ void main() {
             reportType: ReportType.notCanceledSales,
             periodType: PeriodType.daily,
           )).called(1);
+    });
+
+    test("Should return false on success with empty collection", () async {
+      loadSaleMovements.mockGet(
+        EntityFactory.makeSaleMovementEntity(collection: []),
+      );
+
+      final success = await sut.getNotCanceledSales(date: selectedDate);
+
+      expect(success, false);
+    });
+    test("Should return true on success", () async {
+      final success = await sut.getNotCanceledSales(date: selectedDate);
+
+      expect(success, true);
     });
   });
 }

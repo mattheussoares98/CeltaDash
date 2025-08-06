@@ -52,10 +52,14 @@ class _FilterNotCanceledSalesState extends State<FilterNotCanceledSales> {
       return;
     }
 
-    await presenter.getNotCanceledSales(
+    bool succeeds = await presenter.getNotCanceledSales(
       documentNumbers: [documentNumberController.text],
       date: widget.selectedDate!,
     );
+
+    if (succeeds) {
+      documentNumberController.clear();
+    }
 
     widget.onSearch.call();
   }

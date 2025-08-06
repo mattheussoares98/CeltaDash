@@ -120,17 +120,20 @@ class EntityFactory {
         topCount: faker.randomGenerator.integer(100),
       );
 
-  static SaleMovementEntity makeSaleMovementEntity() => SaleMovementEntity(
+  static SaleMovementEntity makeSaleMovementEntity(
+          {List<SaleMovementCollectionItemEntity>? collection}) =>
+      SaleMovementEntity(
         totalRecords: faker.randomGenerator.integer(100),
         recordsByPage: faker.randomGenerator.integer(100),
         recordsOnThisPage: faker.randomGenerator.integer(100),
         totalPages: faker.randomGenerator.integer(100, min: 2),
         actualPage: faker.randomGenerator.integer(100),
-        collection: [
-          makeSaleMovementCollectionItemEntity(),
-          makeSaleMovementCollectionItemEntity(),
-          makeSaleMovementCollectionItemEntity(),
-        ],
+        collection: collection ??
+            [
+              makeSaleMovementCollectionItemEntity(),
+              makeSaleMovementCollectionItemEntity(),
+              makeSaleMovementCollectionItemEntity(),
+            ],
       );
 
   static SaleMovementCollectionItemEntity

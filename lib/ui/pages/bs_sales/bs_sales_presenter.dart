@@ -22,7 +22,7 @@ abstract class BsSalesPresenter implements Listenable {
     bool? forceRefresh,
   });
 
-  Future<void> getNotCanceledSales({
+  Future<bool> getNotCanceledSales({
     required DateTime date,
     List<String>? documentNumbers,
     int? actualPage,

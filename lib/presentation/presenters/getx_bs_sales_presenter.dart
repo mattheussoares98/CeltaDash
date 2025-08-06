@@ -160,7 +160,7 @@ class GetxBsSalesPresenter extends GetxController
   }
 
   @override
-  Future<void> getNotCanceledSales({
+  Future<bool> getNotCanceledSales({
     required DateTime date,
     List<String>? documentNumbers,
     int? actualPage,
@@ -168,7 +168,7 @@ class GetxBsSalesPresenter extends GetxController
     if (isLoadingValue == true) {
       isLoading = false;
       isLoading = true;
-      return;
+      return false;
     }
 
     isLoading = true;
@@ -198,8 +198,10 @@ class GetxBsSalesPresenter extends GetxController
         reportType: ReportType.notCanceledSales,
         periodType: PeriodType.daily,
       );
+      return newSales.collection.isNotEmpty;
     } catch (e) {
       mainError = getUIError(e);
+      return false;
     } finally {
       isLoading = false;
     }
