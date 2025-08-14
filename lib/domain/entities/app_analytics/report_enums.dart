@@ -3,6 +3,7 @@ import '../../../ui/helpers/helpers.dart';
 enum ReportType {
   canceledSales,
   compareDays,
+  compareMonths,
   departments,
   notCanceledSales,
   operators,
@@ -21,6 +22,8 @@ extension ReportTypeExtension on ReportType {
         return R.string.canceledSales;
       case ReportType.compareDays:
         return R.string.compareDays;
+      case ReportType.compareMonths:
+        return R.string.compareMonths;
       case ReportType.departments:
         return R.string.departments;
       case ReportType.notCanceledSales:

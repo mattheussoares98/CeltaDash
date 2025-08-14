@@ -55,6 +55,7 @@ abstract class Translation {
   String get close;
   String get cnpj;
   String get compareDays;
+  String get compareMonths;
   String get comparedToDay;
   String get configurations;
   String get connectedEnterprises;

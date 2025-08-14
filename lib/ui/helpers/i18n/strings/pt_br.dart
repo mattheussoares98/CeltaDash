@@ -70,6 +70,7 @@ class PtBr implements Translation {
   String get close => "Fechar";
   String get cnpj => "CNPJ";
   String get compareDays => "Comparar dias";
+  String get compareMonths => "Comparar meses";
   String get comparedToDay => "Em comparação ao dia";
   String get configurations => "Configurações";
   String get connectedEnterprises => "Empresas conectadas";
