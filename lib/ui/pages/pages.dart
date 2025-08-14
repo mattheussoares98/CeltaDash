@@ -1,6 +1,7 @@
 export './app_analytics/app_analytics.dart';
 export 'bs_sales/bs_sales.dart';
 export './compare_days/compare_days.dart';
+export './compare_months/compare_months.dart';
 export 'more/more.dart';
 export './departments/departments.dart';
 export './enterprises_manager/enterprises_manager.dart';
