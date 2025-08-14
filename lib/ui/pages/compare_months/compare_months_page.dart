@@ -59,6 +59,16 @@ class _CompareMonthsPageState extends State<CompareMonthsPage>
             body: Obx(() {
               final sales = compareMonthsPresenter.mergedSales;
 
+              bool hasSelectedMonth =
+                  sales.containsKey(CompareMonthsPeriod.selectedMonth) &&
+                      sales[CompareMonthsPeriod.selectedMonth]!.isNotEmpty;
+              bool hasPreviousMonth =
+                  sales.containsKey(CompareMonthsPeriod.previousMonth) &&
+                      sales[CompareMonthsPeriod.previousMonth]!.isNotEmpty;
+              bool hasPreviousYear =
+                  sales.containsKey(CompareMonthsPeriod.previousYear) &&
+                      sales[CompareMonthsPeriod.previousYear]!.isNotEmpty;
+
               if (sales.isEmpty || loadingSnap.data == true) {
                 return EmptySales(isLoading: loadingSnap.data == true);
               }
@@ -71,7 +81,12 @@ class _CompareMonthsPageState extends State<CompareMonthsPage>
                     pdfFileName: R.string.compareMonths,
                     indexToSort: 0,
                     columnsIndexToSum: [1, 2, 3],
-                    columnsWidths: [60, 80, 80, 80],
+                    columnsWidths: [
+                      60,
+                      if (hasSelectedMonth) 80,
+                      if (hasPreviousMonth) 80,
+                      if (hasPreviousYear) 80,
+                    ],
                     showAnimation: _showAnimation,
                     hideShowAnimation: () {
                       _showAnimation = false;
@@ -81,16 +96,17 @@ class _CompareMonthsPageState extends State<CompareMonthsPage>
                         value: "DAY",
                         isTitle: true,
                       ),
-                      const PersonalizedTableCell(
-                        value: "current month",
-                        isTitle: true,
-                      ),
-                      if (sales.containsKey(CompareMonthsPeriod.previousMonth))
+                      if (hasSelectedMonth)
+                        const PersonalizedTableCell(
+                          value: "current month",
+                          isTitle: true,
+                        ),
+                      if (hasPreviousMonth)
                         const PersonalizedTableCell(
                           value: "previous month",
                           isTitle: true,
                         ),
-                      if (sales.containsKey(CompareMonthsPeriod.previousYear))
+                      if (hasPreviousYear)
                         const PersonalizedTableCell(
                           value: "previous year",
                           isTitle: true,
@@ -98,15 +114,11 @@ class _CompareMonthsPageState extends State<CompareMonthsPage>
                     ],
                     //TODO insert the correct length
                     rowValues: List.generate(DateTime.now().day, (index) {
-                      bool hasPreviousMonth =
-                          sales.containsKey(CompareMonthsPeriod.previousMonth);
-                      bool hasPreviousYear =
-                          sales.containsKey(CompareMonthsPeriod.previousYear);
-
-                      final selectedMonth =
-                          sales[CompareMonthsPeriod.selectedMonth]!
+                      final selectedMonth = hasSelectedMonth
+                          ? sales[CompareMonthsPeriod.selectedMonth]!
                               .where((e) => e.Date?.day == index + 1)
-                              .toList();
+                              .toList()
+                          : null;
                       final previousMonth = hasPreviousMonth
                           ? sales[CompareMonthsPeriod.previousMonth]!
                               .where((e) => e.Date?.day == index + 1)
@@ -119,19 +131,22 @@ class _CompareMonthsPageState extends State<CompareMonthsPage>
                           : null;
 
                       return [
-                        PersonalizedTableCell(
-                          value: index + 1,
-                        ),
+                        if (hasSelectedMonth)
+                          PersonalizedTableCell(
+                            value: index + 1,
+                          ),
                         //TODO test in a customer that doesnt has sales in the current month
-                        PersonalizedTableCell(
-                          value: selectedMonth.sumLiquidValue(),
-                          isMoney: true,
-                        ),
+                        if (hasPreviousMonth)
+                          PersonalizedTableCell(
+                            value: selectedMonth!.sumLiquidValue(),
+                            isMoney: true,
+                          ),
                         //TODO test in a customer that doesnt has sales in the previous month
-                        PersonalizedTableCell(
-                          value: previousMonth?.sumLiquidValue(),
-                          isMoney: true,
-                        ),
+                        if (hasPreviousYear)
+                          PersonalizedTableCell(
+                            value: previousMonth?.sumLiquidValue(),
+                            isMoney: true,
+                          ),
                         //TODO test in a customer that doesnt has sales in the previous year
                         PersonalizedTableCell(
                           value: previousYear?.sumLiquidValue(),
