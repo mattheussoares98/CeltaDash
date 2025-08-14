@@ -34,6 +34,11 @@ class GetPages {
       transition: transition,
     ),
     GetPage(
+      name: PageRoutes.compareMonths,
+      page: makeCompareMonthsPage,
+      transition: transition,
+    ),
+    GetPage(
       name: PageRoutes.departments,
       page: makeDepartmentsPage,
       transition: transition,
