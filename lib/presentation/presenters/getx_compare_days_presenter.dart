@@ -31,6 +31,7 @@ class GetxCompareDaysPresenter extends GetxController
     mainError = null;
 
     try {
+      //TODO if change the enterprise, search again
       if (firstDay != null && firstDay == secondDay) {
         throw DomainError.sameDays;
       } else if (forceRefresh != true &&
