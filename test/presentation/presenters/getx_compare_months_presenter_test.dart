@@ -1,8 +1,10 @@
+import 'package:celta_dash/data/models/models.dart';
 import 'package:celta_dash/domain/entities/entities.dart';
 import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:celta_dash/ui/pages/pages.dart';
 import 'package:celta_dash/ui/services/services.dart';
 import 'package:faker/faker.dart';
 
@@ -15,9 +17,12 @@ import 'package:mocktail/mocktail.dart';
 import '../../data/mocks/mocks.dart';
 import '../../domain/mocks/mocks.dart';
 import '../../services/services.dart';
+import '../mocks/mocks.dart';
 
 void main() {
   late GetxCompareMonthsPresenter sut;
+
+  late HomePresenterSpy homePresenter;
 
   late AppAnalyticsServiceSpy appAnalyticsService;
 
@@ -56,6 +61,8 @@ void main() {
   void initServices() {
     appAnalyticsService = AppAnalyticsServiceSpy();
     Get.put<AppAnalyticsService>(appAnalyticsService);
+    homePresenter = HomePresenterSpy();
+    Get.put<HomePresenter>(homePresenter);
   }
 
   setUp(() {
@@ -107,6 +114,9 @@ void main() {
       //selected month
       verify(() => loadSaleStatistics.get(
             GetSaleStatisticsParams(
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
               startDate: DateTime(
                 now.year,
                 now.month,
@@ -125,6 +135,9 @@ void main() {
       //previous month
       verify(() => loadSaleStatistics.get(
             GetSaleStatisticsParams(
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
               startDate: DateTime(
                 now.year,
                 now.month - 1,
@@ -143,6 +156,9 @@ void main() {
       //previous year
       verify(() => loadSaleStatistics.get(
             GetSaleStatisticsParams(
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
               startDate: DateTime(
                 now.year - 1,
                 now.month,
@@ -165,6 +181,9 @@ void main() {
       //selected month
       verify(() => loadSaleStatistics.get(
             GetSaleStatisticsParams(
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
               startDate: DateTime(
                 selectedDate!.year,
                 selectedDate!.month,
@@ -183,6 +202,9 @@ void main() {
       //previous month
       verify(() => loadSaleStatistics.get(
             GetSaleStatisticsParams(
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
               startDate: DateTime(
                 selectedDate!.year,
                 selectedDate!.month - 1,
@@ -201,6 +223,9 @@ void main() {
       //previous year
       verify(() => loadSaleStatistics.get(
             GetSaleStatisticsParams(
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
               startDate: DateTime(
                 selectedDate!.year - 1,
                 selectedDate!.month,
@@ -223,6 +248,9 @@ void main() {
       //selected month
       verify(() => loadSaleStatistics.get(
             GetSaleStatisticsParams(
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
               startDate: DateTime(
                 selectedDate!.year,
                 selectedDate!.month,
@@ -245,6 +273,9 @@ void main() {
       //selected month
       verify(() => loadSaleStatistics.get(
             GetSaleStatisticsParams(
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
               startDate: DateTime(
                 now.year,
                 now.month,
@@ -267,6 +298,76 @@ void main() {
       verify(() => appAnalyticsService.addNewMonthlyAnalytic(
             reportType: ReportType.compareMonths,
             periodType: PeriodType.monthly,
+          )).called(1);
+    });
+    test("Should update merged sales correctly", () async {
+      await sut.getSales(now: now);
+
+      final sales = saleStatisticsEntities
+          .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
+          .toList();
+      expect(sut.mergedSales, {
+        CompareMonthsPeriod.selectedMonth: sales,
+        CompareMonthsPeriod.previousMonth: sales,
+        CompareMonthsPeriod.previousYear: sales,
+      });
+    });
+    test("Should update last params", () async {
+      expect(sut.lastParams, isNull);
+
+      await sut.getSales(now: now);
+
+      expect(sut.lastParams, isNotNull);
+    });
+
+    test("Should call again if change the selected enterprise", () async {
+      await sut.getSales(now: now);
+
+      verify(() => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
+              startDate: DateTime(
+                now.year,
+                now.month,
+                1,
+                now.hour,
+              ),
+              endDate: DateTime(
+                now.year,
+                now.month + 1,
+                0,
+                now.hour,
+              ),
+            ),
+          )).called(1);
+
+      //!Changing enterprise
+      homePresenter.selectedEnterpriseMock = EnterpriseModel.fromEntity(
+        EntityFactory.makeEnterpriseEntity(
+            id: faker.randomGenerator.integer(999, min: 101)),
+      ).toViewModel();
+
+      await sut.getSales(now: now);
+      verify(() => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
+              startDate: DateTime(
+                now.year,
+                now.month,
+                1,
+                now.hour,
+              ),
+              endDate: DateTime(
+                now.year,
+                now.month + 1,
+                0,
+                now.hour,
+              ),
+            ),
           )).called(1);
     });
   });

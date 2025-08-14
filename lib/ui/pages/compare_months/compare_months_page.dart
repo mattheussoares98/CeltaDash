@@ -43,8 +43,6 @@ class _CompareMonthsPageState extends State<CompareMonthsPage>
         MediaQuery.of(context).orientation == Orientation.portrait;
     final compareMonthsPresenter = Get.find<CompareMonthsPresenter>();
 
-    bool hasPreviousYearSales = compareMonthsPresenter.previousYear != null;
-
     return Scaffold(
       appBar: DefaultAppBar(
         showDatePicker: false,
@@ -67,11 +65,14 @@ class _CompareMonthsPageState extends State<CompareMonthsPage>
             value: "current month",
             isTitle: true,
           ),
-          const PersonalizedTableCell(
-            value: "previous month",
-            isTitle: true,
-          ),
-          if (hasPreviousYearSales)
+          if (compareMonthsPresenter.mergedSales
+              .containsKey(CompareMonthsPeriod.previousMonth))
+            const PersonalizedTableCell(
+              value: "previous month",
+              isTitle: true,
+            ),
+          if (compareMonthsPresenter.mergedSales
+              .containsKey(CompareMonthsPeriod.previousYear))
             const PersonalizedTableCell(
               value: "previous year",
               isTitle: true,
