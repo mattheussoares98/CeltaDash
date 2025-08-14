@@ -51,6 +51,7 @@ class GetxCompareMonthsPresenter extends GetxController
       final dateToUse = selectedDate ?? now;
 
       final selectedMonthParams = GetSaleStatisticsParams(
+        groupByDay: true,
         enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
         startDate: DateTime(
           dateToUse.year,
@@ -69,40 +70,43 @@ class GetxCompareMonthsPresenter extends GetxController
       final selectedMonthRemote =
           await loadSaleStatistics.get(selectedMonthParams);
 
-      final previousMonthRemote = await loadSaleStatistics.get(
-        GetSaleStatisticsParams(
-          enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
-          startDate: DateTime(
-            dateToUse.year,
-            dateToUse.month - 1,
-            1,
-            selectedDateIsToday ? now.hour : 0,
-          ),
-          endDate: DateTime(
-            dateToUse.year,
-            dateToUse.month - 1,
-            0,
-            selectedDateIsToday ? now.hour : 0,
-          ),
+      final previousMonthParams = GetSaleStatisticsParams(
+        groupByDay: true,
+        enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+        startDate: DateTime(
+          dateToUse.year,
+          dateToUse.month - 1,
+          1,
+          selectedDateIsToday ? now.hour : 0,
+        ),
+        endDate: DateTime(
+          dateToUse.year,
+          dateToUse.month,
+          0,
+          selectedDateIsToday ? now.hour : 0,
         ),
       );
+      final previousMonthRemote =
+          await loadSaleStatistics.get(previousMonthParams);
 
-      final previousYearRemote = await loadSaleStatistics.get(
-        GetSaleStatisticsParams(
-          enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
-          startDate: DateTime(
-            dateToUse.year - 1,
-            dateToUse.month,
-            1,
-            selectedDateIsToday ? now.hour : 0,
-          ),
-          endDate: DateTime(
-            dateToUse.year - 1,
-            dateToUse.month - 1,
-            0,
-            selectedDateIsToday ? now.hour : 0,
-          ),
+      final previousYearParams = GetSaleStatisticsParams(
+        groupByDay: true,
+        enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+        startDate: DateTime(
+          dateToUse.year - 1,
+          dateToUse.month,
+          1,
+          selectedDateIsToday ? now.hour : 0,
         ),
+        endDate: DateTime(
+          dateToUse.year - 1,
+          dateToUse.month + 1,
+          0,
+          selectedDateIsToday ? now.hour : 0,
+        ),
+      );
+      final previousYearRemote = await loadSaleStatistics.get(
+        previousYearParams,
       );
 
       final selectedMonth = selectedMonthRemote
