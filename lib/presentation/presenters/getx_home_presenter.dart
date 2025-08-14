@@ -303,6 +303,11 @@ class GetxHomePresenter extends GetxController
   }
 
   @override
+  void goToCompareMonths() {
+    navigateTo.navigate(pageRoute: PageRoutes.compareMonths);
+  }
+
+  @override
   void goToDepartmentsPage() {
     navigateTo.navigate(pageRoute: PageRoutes.departments);
   }

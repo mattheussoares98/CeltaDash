@@ -161,11 +161,18 @@ void main() {
       ).called(1);
     });
 
-    test("Should navigate to daily analysis page correctly", () async {
+    test("Should navigate to compare days page correctly", () async {
       sut.goToCompareDays();
 
       verify(
         () => navigateTo.navigate(pageRoute: PageRoutes.compareDays),
+      ).called(1);
+    });
+    test("Should navigate to compare months page correctly", () async {
+      sut.goToCompareMonths();
+
+      verify(
+        () => navigateTo.navigate(pageRoute: PageRoutes.compareMonths),
       ).called(1);
     });
     test("Should navigate to sections page correctly", () async {

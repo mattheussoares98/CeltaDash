@@ -18,6 +18,7 @@ abstract class HomePresenter implements Listenable {
   void updateSelectedDate(DateTime date);
   void goToCanceledSalesPage();
   void goToCompareDays();
+  void goToCompareMonths();
   void goToDepartmentsPage();
   void goToOperatorsPage();
   void goToPaymentsTypePage();
