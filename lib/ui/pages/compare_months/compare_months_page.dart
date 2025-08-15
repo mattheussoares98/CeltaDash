@@ -50,12 +50,22 @@ class _CompareMonthsPageState extends State<CompareMonthsPage>
     final firstPeriodSales = presenter.firstMonthSales;
     final secondPeriodSales = presenter.secondMonthSales;
 
-    final firstPeriodDaysQuantities =
-        firstPeriodSales.map((sale) => sale.Date?.day).toSet().length;
-    final secondPeriodDaysQuantities =
-        secondPeriodSales.map((sale) => sale.Date?.day).toSet().length;
+    final firstPeriodDays = firstPeriodSales
+        .where((e) => (e.LiquidValue?.toDouble() ?? 0) > 0)
+        .map((sale) => sale.Date?.day ?? 0)
+        .toList();
 
-    return max(firstPeriodDaysQuantities, secondPeriodDaysQuantities);
+    final seconfPeriodDays = secondPeriodSales
+        .where((e) => (e.LiquidValue?.toDouble() ?? 0) > 0)
+        .map((sale) => sale.Date?.day ?? 0)
+        .toList();
+
+    final greaterFirstDay =
+        firstPeriodDays.isEmpty ? 0 : firstPeriodDays.reduce(max);
+    final greaterSecondDay =
+        seconfPeriodDays.isEmpty ? 0 : seconfPeriodDays.reduce(max);
+
+    return max(greaterFirstDay, greaterSecondDay);
   }
 
   @override
