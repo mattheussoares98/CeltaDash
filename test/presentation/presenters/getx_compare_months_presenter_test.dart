@@ -117,7 +117,7 @@ void main() {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(sut.mainErrorStream, emits(null));
 
-      await sut.getSales();
+      await sut.getSales(true);
     });
     test("Should emit correct values on error", () async {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
@@ -128,7 +128,7 @@ void main() {
 
       loadSaleStatistics.mockGetError();
 
-      await sut.getSales();
+      await sut.getSales(true);
     });
     test(
         "Should call first month with correct parameters and change first sales month",
@@ -136,7 +136,7 @@ void main() {
       sut.changeFirstSelectedYear(firstSelectedYear);
       sut.changeFirstSelectedMonth(firstSelectedMonth);
 
-      await sut.getSales();
+      await sut.getSales(true);
 
       verify(() => loadSaleStatistics.get(
             GetSaleStatisticsParams(
@@ -161,7 +161,7 @@ void main() {
       sut.changeSecondSelectedYear(secondSelectedYear);
       sut.changeSecondSelectedMonth(secondSelectedMonth);
 
-      await sut.getSales();
+      await sut.getSales(true);
 
       verify(() => loadSaleStatistics.get(
             GetSaleStatisticsParams(
@@ -194,7 +194,7 @@ void main() {
         emitsInOrder([null, UIError.custom(R.string.msgSamePeriod)]),
       );
 
-      await sut.getSales();
+      await sut.getSales(true);
     });
 
     test("Should change last params correctly", () async {
@@ -203,7 +203,7 @@ void main() {
       sut.changeSecondSelectedMonth(secondSelectedMonth);
       sut.changeSecondSelectedYear(secondSelectedYear);
 
-      await sut.getSales();
+      await sut.getSales(true);
 
       expect(
           sut.firstMonthParams,
@@ -243,7 +243,7 @@ void main() {
     test("Should not change last params if throw", () async {
       loadSaleStatistics.mockGetError();
 
-      await sut.getSales();
+      await sut.getSales(true);
 
       expect(sut.firstMonthParams, isNull);
       expect(sut.secondMonthParams, isNull);
@@ -258,7 +258,7 @@ void main() {
         emitsInOrder([null, UIError.custom(R.string.msgFutureMonth)]),
       );
 
-      await sut.getSales();
+      await sut.getSales(true);
     });
     test("Should emit error if second period is future", () async {
       sut.changeSecondSelectedMonth(now.month + 1);
@@ -269,7 +269,38 @@ void main() {
         emitsInOrder([null, UIError.custom(R.string.msgFutureMonth)]),
       );
 
-      await sut.getSales();
+      await sut.getSales(true);
+    });
+
+    test("Should not load again if is not forcing refresh", () async {
+      await sut.getSales(false);
+      await sut.getSales(false);
+
+      verify(
+        () => loadSaleStatistics.get(
+          GetSaleStatisticsParams(
+            groupByDay: true,
+            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+            startDate: DateTime(now.year, now.month, 1),
+            endDate: DateTime(now.year, now.month + 1, 0),
+          ),
+        ),
+      ).called(1);
+    });
+    test("Should load again if is forcing refresh", () async {
+      await sut.getSales(true);
+      await sut.getSales(true);
+
+      verify(
+        () => loadSaleStatistics.get(
+          GetSaleStatisticsParams(
+            groupByDay: true,
+            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+            startDate: DateTime(now.year, now.month, 1),
+            endDate: DateTime(now.year, now.month + 1, 0),
+          ),
+        ),
+      ).called(2);
     });
   });
 }

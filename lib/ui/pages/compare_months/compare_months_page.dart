@@ -32,7 +32,7 @@ class _CompareMonthsPageState extends State<CompareMonthsPage>
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
         final presenter = Get.find<CompareMonthsPresenter>();
-        presenter.getSales();
+        presenter.getSales(false);
         mainErrorSubscription = handleMainError(
             NavigatorKey.key.currentState!.context, presenter.mainErrorStream);
       }
@@ -72,7 +72,7 @@ class _CompareMonthsPageState extends State<CompareMonthsPage>
             appBar: DefaultAppBar(
               showDatePicker: false,
               onChangeEnterprise: (_) {
-                compareMonthsPresenter.getSales();
+                compareMonthsPresenter.getSales(true);
               },
               isLoading: loadingSnap.data,
             ),
@@ -128,7 +128,11 @@ class _CompareMonthsPageState extends State<CompareMonthsPage>
                           ),
                         ),
                         IconButton(
-                          onPressed: compareMonthsPresenter.getSales,
+                          onPressed: loadingSnap.data == true
+                              ? null
+                              : () {
+                                  compareMonthsPresenter.getSales(true);
+                                },
                           icon: loadingSnap.data == true
                               ? const SizedBox(
                                   height: 15,

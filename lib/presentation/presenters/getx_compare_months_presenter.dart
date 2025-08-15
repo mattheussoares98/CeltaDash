@@ -21,11 +21,17 @@ class GetxCompareMonthsPresenter extends GetxController
   final now = DateTime.now();
 
   @override
-  Future<void> getSales() async {
+  Future<void> getSales(bool forceRefresh) async {
     mainError = null;
     isLoading = true;
 
     try {
+      if (!forceRefresh &&
+          _firstMonthSales.isNotEmpty &&
+          _secondMonthSales.isNotEmpty) {
+        return;
+      }
+
       if (_firstSelectedMonth == _secondSelectedMonth &&
           _firstSelectedYear == _secondSelectedYear) {
         mainError = UIError.custom(R.string.msgSamePeriod);

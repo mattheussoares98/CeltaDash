@@ -24,5 +24,5 @@ abstract class CompareMonthsPresenter implements Listenable {
   void changeSecondSelectedMonth(int month);
   void changeSecondSelectedYear(int year);
 
-  Future<void> getSales();
+  Future<void> getSales(bool forceRefresh);
 }
