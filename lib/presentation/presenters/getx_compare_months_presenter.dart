@@ -25,6 +25,11 @@ class GetxCompareMonthsPresenter extends GetxController
     isLoading = true;
 
     try {
+      if (_firstSelectedMonth == _secondSelectedMonth &&
+          _firstSelectedYear == _secondSelectedYear) {
+        mainError = UIError.custom(R.string.msgSamePeriod);
+        return;
+      }
       final firstMonthSalesRemote = await loadSaleStatistics.get(
         GetSaleStatisticsParams(
           groupByDay: true,

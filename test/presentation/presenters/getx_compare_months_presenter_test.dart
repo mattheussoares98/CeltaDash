@@ -178,5 +178,21 @@ void main() {
               .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
               .toList());
     });
+
+    test("Should emit error if try to compare the same period", () async {
+      final year = faker.randomGenerator.integer(2025, min: 2000);
+      final month = faker.randomGenerator.integer(12, min: 1);
+      sut.changeFirstSelectedMonth(month);
+      sut.changeFirstSelectedYear(year);
+      sut.changeSecondSelectedMonth(month);
+      sut.changeSecondSelectedYear(year);
+
+      expectLater(
+        sut.mainErrorStream,
+        emitsInOrder([null, UIError.custom(R.string.msgSamePeriod)]),
+      );
+
+      await sut.getSales();
+    });
   });
 }

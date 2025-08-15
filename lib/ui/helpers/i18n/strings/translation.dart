@@ -18,6 +18,7 @@ abstract class Translation {
   String get msgReallyWantLogout;
   String get msgRequiredField;
   String get msgReturnAllEnterprisesWhenNoOneIsNotSelected;
+  String get msgSamePeriod;
   String get msgSameUrl;
   String get msgSelectDate;
   String get msgSelectPeriod;

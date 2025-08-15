@@ -32,6 +32,7 @@ class PtBr implements Translation {
   String get msgRequiredField => "Campo obrigatório";
   String get msgReturnAllEnterprisesWhenNoOneIsNotSelected =>
       "Se não selecionar alguma, todas as empresas serão consideradas";
+  String get msgSamePeriod => "Não é permitido comparar o mesmo período";
   String get msgSameUrl => "As URLs devem ser diferentes";
   String get msgSelectDate => "Selecione uma data";
   String get msgSelectPeriod => "Selecione o período";
