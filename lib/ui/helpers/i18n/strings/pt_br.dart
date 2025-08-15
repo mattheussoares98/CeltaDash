@@ -111,6 +111,7 @@ class PtBr implements Translation {
   String get finalization => "Finalizadora";
   String get finalizations => "Finalizadoras";
   String get firstDaySales => "Vendas do primeiro dia";
+  String get firstPeriod => "Primeiro período";
   String get generate => "Gerar";
   String get goalHistory => "Histórico de metas";
   String get grossMargin => "Margem bruta";
@@ -185,6 +186,7 @@ class PtBr implements Translation {
   String get save => "Salvar";
   String get searchAgain => "Pesquisar novamente";
   String get secondDaySales => "Vendas do segundo dia";
+  String get secondPeriod => "Segundo período";
   String get section => "Seção";
   String get sections => "Seções";
   String get seeMore => "Ver mais";

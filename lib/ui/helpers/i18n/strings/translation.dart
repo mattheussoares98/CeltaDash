@@ -96,6 +96,7 @@ abstract class Translation {
   String get finalization;
   String get finalizations;
   String get firstDaySales;
+  String get firstPeriod;
   String get generate;
   String get goalHistory;
   String get grossMargin;
@@ -170,6 +171,7 @@ abstract class Translation {
   String get save;
   String get searchAgain;
   String get secondDaySales;
+  String get secondPeriod;
   String get section;
   String get sections;
   String get select;
