@@ -48,6 +48,7 @@ class GetxCompareDaysPresenter extends GetxController
         final saleStatistics = await loadSaleStatistics.get(
           GetSaleStatisticsParams(
             startDate: firstDay,
+            groupByEnterprise: true,
             // groupByYear: true,
             // groupByMonth: true,
             // groupByDay: true,
@@ -70,6 +71,7 @@ class GetxCompareDaysPresenter extends GetxController
         final saleStatistics = await loadSaleStatistics.get(
           GetSaleStatisticsParams(
             startDate: secondDay,
+            groupByEnterprise: true,
             // groupByYear: true,
             // groupByMonth: true,
             // groupByDay: true,

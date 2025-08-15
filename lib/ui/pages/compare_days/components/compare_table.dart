@@ -20,6 +20,7 @@ class CompareTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CompareDaysPresenter compareDaysPresenter = Get.find();
+    HomePresenter homePresenter = Get.find();
 
     if (compareDaysPresenter.selectedFirstDay == null ||
         compareDaysPresenter.selectedSecondDay == null) {
@@ -63,6 +64,8 @@ class CompareTable extends StatelessWidget {
         ),
       ],
       rowValues: compareDaysPresenter.saleStatistics!
+          .where((e) => e.EnterpriseId == homePresenter.selectedEnterprise?.id)
+          .toList()
           .uniqueHours()
           .toList()
           .map((hour) {

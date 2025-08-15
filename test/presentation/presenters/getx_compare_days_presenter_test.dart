@@ -189,6 +189,7 @@ void main() {
             groupByMonth: true,
             groupByDay: true,
             groupByHour: true,
+            groupByEnterprise: true,
             enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
             startDate: firstDay,
             endDate: DateTime(
@@ -214,6 +215,7 @@ void main() {
             groupByMonth: true,
             groupByDay: true,
             groupByHour: true,
+            groupByEnterprise: true,
             enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
             startDate: secondDay,
             endDate: DateTime(
@@ -244,6 +246,7 @@ void main() {
             groupByMonth: true,
             groupByDay: true,
             groupByHour: true,
+            groupByEnterprise: true,
             enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
             startDate: secondDay,
             endDate: DateTime(
@@ -274,6 +277,7 @@ void main() {
             groupByMonth: true,
             groupByDay: true,
             groupByHour: true,
+            groupByEnterprise: true,
             enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
             startDate: firstDay,
             endDate: DateTime(
@@ -306,6 +310,7 @@ void main() {
             groupByMonth: true,
             groupByDay: true,
             groupByHour: true,
+            groupByEnterprise: true,
             enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
             startDate: secondDay,
             endDate: DateTime(
