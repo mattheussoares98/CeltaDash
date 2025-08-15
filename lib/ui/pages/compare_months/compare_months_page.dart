@@ -70,7 +70,9 @@ class _CompareMonthsPageState extends State<CompareMonthsPage>
           return Scaffold(
             appBar: DefaultAppBar(
               showDatePicker: false,
-              onChangeEnterprise: (_) {},
+              onChangeEnterprise: (_) {
+                compareMonthsPresenter.getSales();
+              },
               isLoading: loadingSnap.data,
             ),
             body: DefaultSafeArea(
