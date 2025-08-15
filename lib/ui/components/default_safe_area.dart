@@ -16,7 +16,7 @@ class _DefaultSafeAreaState extends State<DefaultSafeArea> {
 
   @override
   Widget build(BuildContext context) {
-    bool isIos = Platform.isIOS;
+    bool isIos = Platform.isIOS; //TODO remove this Platform from all app
     final nativeOrientation = NativeDeviceOrientationCommunicator();
 
     if (isIos) {
