@@ -48,6 +48,7 @@ class GetxCompareMonthsPresenter extends GetxController
 
       final firstParams = GetSaleStatisticsParams(
         groupByDay: true,
+        groupByEnterprise: true,
         enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
         startDate: DateTime(
           firstSelectedYear,
@@ -64,6 +65,7 @@ class GetxCompareMonthsPresenter extends GetxController
 
       final secondParams = GetSaleStatisticsParams(
         groupByDay: true,
+        groupByEnterprise: true,
         enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
         startDate: DateTime(
           secondSelectedYear,

@@ -141,6 +141,7 @@ void main() {
       verify(() => loadSaleStatistics.get(
             GetSaleStatisticsParams(
               groupByDay: true,
+              groupByEnterprise: true,
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
               ],
@@ -166,6 +167,7 @@ void main() {
       verify(() => loadSaleStatistics.get(
             GetSaleStatisticsParams(
               groupByDay: true,
+              groupByEnterprise: true,
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
               ],
@@ -209,6 +211,7 @@ void main() {
           sut.firstMonthParams,
           GetSaleStatisticsParams(
             groupByDay: true,
+            groupByEnterprise: true,
             enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
             startDate: DateTime(
               firstSelectedYear,
@@ -226,6 +229,7 @@ void main() {
           sut.secondMonthParams,
           GetSaleStatisticsParams(
             groupByDay: true,
+            groupByEnterprise: true,
             enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
             startDate: DateTime(
               secondSelectedYear,
@@ -280,6 +284,7 @@ void main() {
         () => loadSaleStatistics.get(
           GetSaleStatisticsParams(
             groupByDay: true,
+            groupByEnterprise: true,
             enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
             startDate: DateTime(now.year, now.month, 1),
             endDate: DateTime(now.year, now.month + 1, 0),
@@ -295,6 +300,7 @@ void main() {
         () => loadSaleStatistics.get(
           GetSaleStatisticsParams(
             groupByDay: true,
+            groupByEnterprise: true,
             enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
             startDate: DateTime(now.year, now.month, 1),
             endDate: DateTime(now.year, now.month + 1, 0),

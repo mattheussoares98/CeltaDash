@@ -73,6 +73,7 @@ class _CompareMonthsPageState extends State<CompareMonthsPage>
     final isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
     final compareMonthsPresenter = Get.find<CompareMonthsPresenter>();
+    final homePresenter = Get.find<HomePresenter>();
     final theme = Theme.of(context);
 
     return StreamBuilder(
@@ -163,10 +164,18 @@ class _CompareMonthsPageState extends State<CompareMonthsPage>
                   const SizedBox(height: 10),
                   Expanded(
                     child: Obx(() {
-                      final firstMonthSales =
-                          compareMonthsPresenter.firstMonthSales;
-                      final secondMonthSales =
-                          compareMonthsPresenter.secondMonthSales;
+                      final firstMonthSales = compareMonthsPresenter
+                          .firstMonthSales
+                          .where((e) =>
+                              e.EnterpriseId ==
+                              homePresenter.selectedEnterprise?.id)
+                          .toList();
+                      final secondMonthSales = compareMonthsPresenter
+                          .secondMonthSales
+                          .where((e) =>
+                              e.EnterpriseId ==
+                              homePresenter.selectedEnterprise?.id)
+                          .toList();
 
                       if (firstMonthSales.isEmpty && secondMonthSales.isEmpty) {
                         return EmptySales(isLoading: loadingSnap.data == true);
