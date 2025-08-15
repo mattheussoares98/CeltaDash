@@ -66,6 +66,7 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
                   secondDay:
                       compareDaysPresenter.selectedSecondDay ?? secondDay,
                   homePresenter: homePresenter,
+                  forceRefresh: true,
                 );
               },
               showDatePicker: false,
