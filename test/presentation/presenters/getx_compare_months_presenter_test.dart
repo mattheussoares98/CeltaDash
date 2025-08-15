@@ -29,6 +29,12 @@ void main() {
   late LoadSaleStatisticsSpy loadSaleStatistics;
   late List<SaleStatisticsEntity> saleStatisticsEntities;
 
+  late int firstSelectedMonth;
+  late int firstSelectedYear;
+  late int secondSelectedMonth;
+  late int secondSelectedYear;
+  late DateTime now;
+
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
 
@@ -48,6 +54,11 @@ void main() {
       EntityFactory.makeSaleStatisticEntity(),
       EntityFactory.makeSaleStatisticEntity(),
     ];
+    now = DateTime.now();
+    firstSelectedMonth = faker.randomGenerator.integer(12, min: 1);
+    firstSelectedYear = faker.randomGenerator.integer(now.year, min: 1);
+    secondSelectedMonth = faker.randomGenerator.integer(12, min: 1);
+    secondSelectedYear = faker.randomGenerator.integer(now.year, min: 1);
   }
 
   void initMockSuccess() {
@@ -85,16 +96,11 @@ void main() {
   });
 
   test("Should change the years and months correctly", () {
-    final now = DateTime.now();
     expect(sut.firstSelectedMonth, now.month - 1);
     expect(sut.firstSelectedYear, now.year);
     expect(sut.secondSelectedMonth, now.month);
     expect(sut.secondSelectedYear, now.year);
 
-    final firstSelectedMonth = faker.randomGenerator.integer(12, min: 1);
-    final firstSelectedYear = faker.randomGenerator.integer(2025, min: 2000);
-    final secondSelectedMonth = faker.randomGenerator.integer(12, min: 1);
-    final secondSelectedYear = faker.randomGenerator.integer(2025, min: 2000);
     sut.changeFirstSelectedMonth(firstSelectedMonth);
     sut.changeFirstSelectedYear(firstSelectedYear);
     sut.changeSecondSelectedMonth(secondSelectedMonth);
@@ -127,10 +133,8 @@ void main() {
     test(
         "Should call first month with correct parameters and change first sales month",
         () async {
-      final firstYear = faker.randomGenerator.integer(2025, min: 2000);
-      final firstMonth = faker.randomGenerator.integer(12, min: 1);
-      sut.changeFirstSelectedYear(firstYear);
-      sut.changeFirstSelectedMonth(firstMonth);
+      sut.changeFirstSelectedYear(firstSelectedYear);
+      sut.changeFirstSelectedMonth(firstSelectedMonth);
 
       await sut.getSales();
 
@@ -140,8 +144,8 @@ void main() {
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
               ],
-              startDate: DateTime(firstYear, firstMonth, 1),
-              endDate: DateTime(firstYear, firstMonth + 1, 0),
+              startDate: DateTime(firstSelectedYear, firstSelectedMonth, 1),
+              endDate: DateTime(firstSelectedYear, firstSelectedMonth + 1, 0),
             ),
           )).called(1);
 
@@ -154,10 +158,8 @@ void main() {
     test(
         "Should call second month with correct parameters and change second sales month",
         () async {
-      final secondYear = faker.randomGenerator.integer(2025, min: 2000);
-      final secondMonth = faker.randomGenerator.integer(12, min: 1);
-      sut.changeSecondSelectedYear(secondYear);
-      sut.changeSecondSelectedMonth(secondMonth);
+      sut.changeSecondSelectedYear(secondSelectedYear);
+      sut.changeSecondSelectedMonth(secondSelectedMonth);
 
       await sut.getSales();
 
@@ -167,8 +169,8 @@ void main() {
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
               ],
-              startDate: DateTime(secondYear, secondMonth, 1),
-              endDate: DateTime(secondYear, secondMonth + 1, 0),
+              startDate: DateTime(secondSelectedYear, secondSelectedMonth, 1),
+              endDate: DateTime(secondSelectedYear, secondSelectedMonth + 1, 0),
             ),
           )).called(1);
 
@@ -196,10 +198,6 @@ void main() {
     });
 
     test("Should change last params correctly", () async {
-      final firstSelectedMonth = faker.randomGenerator.integer(12, min: 1);
-      final firstSelectedYear = faker.randomGenerator.integer(2025, min: 2000);
-      final secondSelectedMonth = faker.randomGenerator.integer(12, min: 1);
-      final secondSelectedYear = faker.randomGenerator.integer(2025, min: 2000);
       sut.changeFirstSelectedMonth(firstSelectedMonth);
       sut.changeFirstSelectedYear(firstSelectedYear);
       sut.changeSecondSelectedMonth(secondSelectedMonth);
@@ -249,6 +247,29 @@ void main() {
 
       expect(sut.firstMonthParams, isNull);
       expect(sut.secondMonthParams, isNull);
+    });
+
+    test("Should emit error if first period is future", () async {
+      sut.changeFirstSelectedMonth(now.month + 1);
+      sut.changeFirstSelectedYear(now.year);
+
+      expectLater(
+        sut.mainErrorStream,
+        emitsInOrder([null, UIError.custom(R.string.msgFutureMonth)]),
+      );
+
+      await sut.getSales();
+    });
+    test("Should emit error if second period is future", () async {
+      sut.changeSecondSelectedMonth(now.month + 1);
+      sut.changeSecondSelectedYear(now.year);
+
+      expectLater(
+        sut.mainErrorStream,
+        emitsInOrder([null, UIError.custom(R.string.msgFutureMonth)]),
+      );
+
+      await sut.getSales();
     });
   });
 }

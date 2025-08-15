@@ -16,6 +16,7 @@ class PtBr implements Translation {
   String get msgEnterpriseAlreadyExists =>
       "Já existe uma empresa cadastrada com esse nome";
   String get msgEnterpriseNotFound => "A empresa não foi encontrada";
+  String get msgFutureMonth => "Não é permitido selecionar meses futuros";
   String get msgInvalidCredentials =>
       "Credenciais inválidas. Faça o login novamente!";
   String get msgInvalidEmail => "E-mail inválido";

@@ -18,6 +18,7 @@ class GetxCompareMonthsPresenter extends GetxController
 
   final appAnalyticsService = Get.find<AppAnalyticsService>();
   final homePresenter = Get.find<HomePresenter>();
+  final now = DateTime.now();
 
   @override
   Future<void> getSales() async {
@@ -28,6 +29,14 @@ class GetxCompareMonthsPresenter extends GetxController
       if (_firstSelectedMonth == _secondSelectedMonth &&
           _firstSelectedYear == _secondSelectedYear) {
         mainError = UIError.custom(R.string.msgSamePeriod);
+        return;
+      } else if (DateTime(_firstSelectedYear, _firstSelectedMonth, 1)
+          .isAfter(DateTime(now.year, now.month, 1))) {
+        mainError = UIError.custom(R.string.msgFutureMonth);
+        return;
+      } else if (DateTime(_secondSelectedYear, _secondSelectedMonth, 1)
+          .isAfter(DateTime(now.year, now.month, 1))) {
+        mainError = UIError.custom(R.string.msgFutureMonth);
         return;
       }
 
