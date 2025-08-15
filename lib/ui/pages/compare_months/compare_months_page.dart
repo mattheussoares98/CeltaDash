@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../main/utils/utils.dart';
 import '../../components/components.dart';
@@ -40,6 +42,19 @@ class _CompareMonthsPageState extends State<CompareMonthsPage>
   void dispose() {
     mainErrorSubscription?.cancel();
     super.dispose();
+  }
+
+  int getDaysQuantity() {
+    final presenter = Get.find<CompareMonthsPresenter>();
+    final firstPeriodSales = presenter.firstMonthSales;
+    final secondPeriodSales = presenter.secondMonthSales;
+
+    final firstPeriodDaysQuantities =
+        firstPeriodSales.map((sale) => sale.Date?.day).toSet().length;
+    final secondPeriodDaysQuantities =
+        secondPeriodSales.map((sale) => sale.Date?.day).toSet().length;
+
+    return max(firstPeriodDaysQuantities, secondPeriodDaysQuantities);
   }
 
   @override
@@ -154,34 +169,57 @@ class _CompareMonthsPageState extends State<CompareMonthsPage>
                               _showAnimation = false;
                             },
                             titles: [
-                              const PersonalizedTableCell(
-                                value: "DAY",
+                              PersonalizedTableCell(
+                                value: R.string.day,
                                 isTitle: true,
                               ),
-                              const PersonalizedTableCell(
-                                value: "First month",
+                              PersonalizedTableCell(
+                                value: DateFormat.yMMM('pt_BR').format(
+                                  DateTime(
+                                    compareMonthsPresenter
+                                        .firstMonthParams!.startDate.year,
+                                    compareMonthsPresenter
+                                        .firstMonthParams!.startDate.month,
+                                  ),
+                                ),
                                 isTitle: true,
                               ),
-                              const PersonalizedTableCell(
-                                value: "Second month",
+                              PersonalizedTableCell(
+                                value: DateFormat.yMMM('pt_BR').format(
+                                  DateTime(
+                                    compareMonthsPresenter
+                                        .secondMonthParams!.startDate.year,
+                                    compareMonthsPresenter
+                                        .secondMonthParams!.startDate.month,
+                                  ),
+                                ),
                                 isTitle: true,
                               ),
                             ],
-                            //TODO insert the correct length
                             rowValues:
-                                List.generate(DateTime.now().day, (index) {
+                                List.generate(getDaysQuantity(), (index) {
+                              final firstPeriodDaySales = firstMonthSales
+                                  .filteredSales(filterDay: index + 1)
+                                  .map((e) => e.toViewModel())
+                                  .toList()
+                                  .sumLiquidValue();
+
+                              final secondPeriodDaySales = secondMonthSales
+                                  .filteredSales(filterDay: index + 1)
+                                  .map((e) => e.toViewModel())
+                                  .toList()
+                                  .sumLiquidValue();
+
                               return [
                                 PersonalizedTableCell(
                                   value: index + 1,
                                 ),
-                                //TODO test in a customer that doesnt has sales in the current month
-                                const PersonalizedTableCell(
-                                  value: 0,
+                                PersonalizedTableCell(
+                                  value: firstPeriodDaySales,
                                   isMoney: true,
                                 ),
-                                //TODO test in a customer that doesnt has sales in the previous year
-                                const PersonalizedTableCell(
-                                  value: 0,
+                                PersonalizedTableCell(
+                                  value: secondPeriodDaySales,
                                   isMoney: true,
                                 ),
                               ];
