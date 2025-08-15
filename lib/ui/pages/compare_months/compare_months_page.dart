@@ -179,7 +179,7 @@ class _CompareMonthsPageState extends State<CompareMonthsPage>
                             fixFirstColumn: true,
                             pdfFileName: R.string.compareMonths,
                             indexToSort: 0,
-                            columnsIndexToSum: [1, 2, 3],
+                            columnsIndexToSum: [1, 2],
                             columnsWidths: [60, 80, 80, 80],
                             showAnimation: _showAnimation,
                             hideShowAnimation: () {
@@ -263,10 +263,10 @@ class _CompareMonthsPageState extends State<CompareMonthsPage>
                                   isPercentage: true,
                                   decoration: BoxDecoration(
                                     color: difference > 0
-                                        ? Colors.green.withOpacity(0.2)
+                                        ? Colors.green.withAlpha(50)
                                         : difference < 0
-                                            ? Colors.red.withOpacity(0.2)
-                                            : Colors.grey.withOpacity(0.2),
+                                            ? Colors.red.withAlpha(50)
+                                            : Colors.grey.withAlpha(50),
                                   ),
                                 ),
                               ];
