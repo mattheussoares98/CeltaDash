@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+import '../../../domain/usecases/usecases.dart';
 import '../../helpers/helpers.dart';
 import '../pages.dart';
 
@@ -9,6 +10,9 @@ abstract class CompareMonthsPresenter implements Listenable {
 
   List<SaleStatisticViewModel> get firstMonthSales;
   List<SaleStatisticViewModel> get secondMonthSales;
+
+  GetSaleStatisticsParams? get firstMonthParams;
+  GetSaleStatisticsParams? get secondMonthParams;
 
   int get firstSelectedMonth;
   int get firstSelectedYear;

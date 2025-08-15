@@ -30,40 +30,41 @@ class GetxCompareMonthsPresenter extends GetxController
         mainError = UIError.custom(R.string.msgSamePeriod);
         return;
       }
-      final firstMonthSalesRemote = await loadSaleStatistics.get(
-        GetSaleStatisticsParams(
-          groupByDay: true,
-          enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
-          startDate: DateTime(
-            firstSelectedYear,
-            firstSelectedMonth,
-            1,
-          ),
-          endDate: DateTime(
-            firstSelectedYear,
-            firstSelectedMonth + 1,
-            0,
-          ),
+
+      final firstParams = GetSaleStatisticsParams(
+        groupByDay: true,
+        enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+        startDate: DateTime(
+          firstSelectedYear,
+          firstSelectedMonth,
+          1,
+        ),
+        endDate: DateTime(
+          firstSelectedYear,
+          firstSelectedMonth + 1,
+          0,
         ),
       );
+      final firstMonthSalesRemote = await loadSaleStatistics.get(firstParams);
 
-      final secondMonthSalesRemote = await loadSaleStatistics.get(
-        GetSaleStatisticsParams(
-          groupByDay: true,
-          enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
-          startDate: DateTime(
-            secondSelectedYear,
-            secondSelectedMonth,
-            1,
-          ),
-          endDate: DateTime(
-            secondSelectedYear,
-            secondSelectedMonth + 1,
-            0,
-          ),
+      final secondParams = GetSaleStatisticsParams(
+        groupByDay: true,
+        enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+        startDate: DateTime(
+          secondSelectedYear,
+          secondSelectedMonth,
+          1,
+        ),
+        endDate: DateTime(
+          secondSelectedYear,
+          secondSelectedMonth + 1,
+          0,
         ),
       );
+      final secondMonthSalesRemote = await loadSaleStatistics.get(secondParams);
 
+      _firstMonthParams.value = firstParams;
+      _secondMonthParams.value = secondParams;
       _firstMonthSales.assignAll(firstMonthSalesRemote.map(
         (e) => SaleStatisticsModel.fromEntity(e).toViewModel(),
       ));
@@ -122,4 +123,12 @@ class GetxCompareMonthsPresenter extends GetxController
   int _secondSelectedYear = _now.year;
   @override
   int get secondSelectedYear => _secondSelectedYear;
+
+  final _firstMonthParams = Rx<GetSaleStatisticsParams?>(null);
+  @override
+  GetSaleStatisticsParams? get firstMonthParams => _firstMonthParams.value;
+
+  final _secondMonthParams = Rx<GetSaleStatisticsParams?>(null);
+  @override
+  GetSaleStatisticsParams? get secondMonthParams => _secondMonthParams.value;
 }

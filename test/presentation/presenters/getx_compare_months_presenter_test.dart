@@ -194,5 +194,61 @@ void main() {
 
       await sut.getSales();
     });
+
+    test("Should change last params correctly", () async {
+      final firstSelectedMonth = faker.randomGenerator.integer(12, min: 1);
+      final firstSelectedYear = faker.randomGenerator.integer(2025, min: 2000);
+      final secondSelectedMonth = faker.randomGenerator.integer(12, min: 1);
+      final secondSelectedYear = faker.randomGenerator.integer(2025, min: 2000);
+      sut.changeFirstSelectedMonth(firstSelectedMonth);
+      sut.changeFirstSelectedYear(firstSelectedYear);
+      sut.changeSecondSelectedMonth(secondSelectedMonth);
+      sut.changeSecondSelectedYear(secondSelectedYear);
+
+      await sut.getSales();
+
+      expect(
+          sut.firstMonthParams,
+          GetSaleStatisticsParams(
+            groupByDay: true,
+            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+            startDate: DateTime(
+              firstSelectedYear,
+              firstSelectedMonth,
+              1,
+            ),
+            endDate: DateTime(
+              firstSelectedYear,
+              firstSelectedMonth + 1,
+              0,
+            ),
+          ));
+
+      expect(
+          sut.secondMonthParams,
+          GetSaleStatisticsParams(
+            groupByDay: true,
+            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+            startDate: DateTime(
+              secondSelectedYear,
+              secondSelectedMonth,
+              1,
+            ),
+            endDate: DateTime(
+              secondSelectedYear,
+              secondSelectedMonth + 1,
+              0,
+            ),
+          ));
+    });
+
+    test("Should not change last params if throw", () async {
+      loadSaleStatistics.mockGetError();
+
+      await sut.getSales();
+
+      expect(sut.firstMonthParams, isNull);
+      expect(sut.secondMonthParams, isNull);
+    });
   });
 }
