@@ -32,6 +32,7 @@ class _CompareMonthsPageState extends State<CompareMonthsPage>
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
         final presenter = Get.find<CompareMonthsPresenter>();
+        presenter.getSales();
         mainErrorSubscription = handleMainError(
             NavigatorKey.key.currentState!.context, presenter.mainErrorStream);
       }
@@ -164,8 +165,8 @@ class _CompareMonthsPageState extends State<CompareMonthsPage>
                             fixFirstColumn: true,
                             pdfFileName: R.string.compareMonths,
                             indexToSort: 0,
-                            columnsIndexToSum: [1, 2],
-                            columnsWidths: [60, 80, 80],
+                            columnsIndexToSum: [1, 2, 3],
+                            columnsWidths: [60, 80, 80, 80],
                             showAnimation: _showAnimation,
                             hideShowAnimation: () {
                               _showAnimation = false;
@@ -197,6 +198,10 @@ class _CompareMonthsPageState extends State<CompareMonthsPage>
                                 ),
                                 isTitle: true,
                               ),
+                              PersonalizedTableCell(
+                                value: R.string.difference,
+                                isTitle: true,
+                              ),
                             ],
                             rowValues:
                                 List.generate(getDaysQuantity(), (index) {
@@ -212,6 +217,21 @@ class _CompareMonthsPageState extends State<CompareMonthsPage>
                                   .toList()
                                   .sumLiquidValue();
 
+                              double calculateDifference() {
+                                if (secondPeriodDaySales == 0) {
+                                  return firstPeriodDaySales > 0 ? 100.0 : 0.0;
+                                } else if (firstPeriodDaySales == 0) {
+                                  return -100.0;
+                                }
+
+                                return ((firstPeriodDaySales -
+                                            secondPeriodDaySales) /
+                                        secondPeriodDaySales) *
+                                    100;
+                              }
+
+                              final difference = calculateDifference();
+
                               return [
                                 PersonalizedTableCell(
                                   value: index + 1,
@@ -223,6 +243,17 @@ class _CompareMonthsPageState extends State<CompareMonthsPage>
                                 PersonalizedTableCell(
                                   value: secondPeriodDaySales,
                                   isMoney: true,
+                                ),
+                                PersonalizedTableCell(
+                                  value: difference,
+                                  isPercentage: true,
+                                  decoration: BoxDecoration(
+                                    color: difference > 0
+                                        ? Colors.green.withOpacity(0.2)
+                                        : difference < 0
+                                            ? Colors.red.withOpacity(0.2)
+                                            : Colors.grey.withOpacity(0.2),
+                                  ),
                                 ),
                               ];
                             }),
