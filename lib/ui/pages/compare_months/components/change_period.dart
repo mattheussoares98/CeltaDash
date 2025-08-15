@@ -7,6 +7,7 @@ class ChangePeriod extends StatelessWidget {
   final void Function(int?)? onMonthChanged;
   final void Function(int?)? onYearChanged;
   final String title;
+  final bool isLoading;
   const ChangePeriod({
     super.key,
     required this.month,
@@ -14,6 +15,7 @@ class ChangePeriod extends StatelessWidget {
     required this.onMonthChanged,
     required this.onYearChanged,
     required this.title,
+    required this.isLoading,
   });
 
   @override
@@ -39,8 +41,13 @@ class ChangePeriod extends StatelessWidget {
                       .toString()),
                 );
               }),
-              hint: Text(DateFormat.MMMM('pt_BR').format(DateTime(0, month))),
-              onChanged: onMonthChanged,
+              hint: Text(
+                DateFormat.MMMM('pt_BR').format(DateTime(0, month)),
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  color: isLoading ? Colors.grey : null,
+                ),
+              ),
+              onChanged: isLoading ? null : onMonthChanged,
             ),
             DropdownButton(
               items: List.generate(5, (index) {
@@ -51,8 +58,13 @@ class ChangePeriod extends StatelessWidget {
                 );
               }),
               value: year,
-              hint: Text(year.toString()),
-              onChanged: onYearChanged,
+              hint: Text(
+                year.toString(),
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  color: isLoading ? Colors.grey : null,
+                ),
+              ),
+              onChanged: isLoading ? null : onYearChanged,
             ),
           ],
         ),

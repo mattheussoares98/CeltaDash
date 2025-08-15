@@ -61,57 +61,72 @@ class _CompareMonthsPageState extends State<CompareMonthsPage>
             body: DefaultSafeArea(
               child: Column(
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: ChangePeriod(
-                          title: R.string.firstPeriod,
-                          month: compareMonthsPresenter.firstSelectedMonth,
-                          year: compareMonthsPresenter.firstSelectedYear,
-                          onMonthChanged: (month) {
-                            setState(() {
-                              compareMonthsPresenter
-                                  .changeFirstSelectedMonth(month!);
-                            });
-                          },
-                          onYearChanged: (year) {
-                            setState(() {
-                              compareMonthsPresenter
-                                  .changeFirstSelectedYear(year!);
-                            });
-                          },
+                  IntrinsicHeight(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: ChangePeriod(
+                            isLoading: loadingSnap.data == true,
+                            title: R.string.firstPeriod,
+                            month: compareMonthsPresenter.firstSelectedMonth,
+                            year: compareMonthsPresenter.firstSelectedYear,
+                            onMonthChanged: (month) {
+                              setState(() {
+                                compareMonthsPresenter
+                                    .changeFirstSelectedMonth(month!);
+                              });
+                            },
+                            onYearChanged: (year) {
+                              setState(() {
+                                compareMonthsPresenter
+                                    .changeFirstSelectedYear(year!);
+                              });
+                            },
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        child: ChangePeriod(
-                          title: R.string.secondPeriod,
-                          month: compareMonthsPresenter.secondSelectedMonth,
-                          year: compareMonthsPresenter.secondSelectedYear,
-                          onMonthChanged: (month) {
-                            setState(() {
-                              compareMonthsPresenter
-                                  .changeSecondSelectedMonth(month!);
-                            });
-                          },
-                          onYearChanged: (year) {
-                            setState(() {
-                              compareMonthsPresenter
-                                  .changeSecondSelectedYear(year!);
-                            });
-                          },
+                        const VerticalDivider(
+                          thickness: 0.3,
+                          width: 0.3,
+                          color: Colors.grey,
                         ),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          compareMonthsPresenter.getSales();
-                        },
-                        icon: Icon(
-                          theme.platform == TargetPlatform.iOS
-                              ? CupertinoIcons.refresh
-                              : Icons.refresh_outlined,
+                        Expanded(
+                          child: ChangePeriod(
+                            isLoading: loadingSnap.data == true,
+                            title: R.string.secondPeriod,
+                            month: compareMonthsPresenter.secondSelectedMonth,
+                            year: compareMonthsPresenter.secondSelectedYear,
+                            onMonthChanged: (month) {
+                              setState(() {
+                                compareMonthsPresenter
+                                    .changeSecondSelectedMonth(month!);
+                              });
+                            },
+                            onYearChanged: (year) {
+                              setState(() {
+                                compareMonthsPresenter
+                                    .changeSecondSelectedYear(year!);
+                              });
+                            },
+                          ),
                         ),
-                      ),
-                    ],
+                        IconButton(
+                          onPressed: compareMonthsPresenter.getSales,
+                          icon: loadingSnap.data == true
+                              ? const SizedBox(
+                                  height: 15,
+                                  width: 15,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : Icon(
+                                  theme.platform == TargetPlatform.iOS
+                                      ? CupertinoIcons.refresh
+                                      : Icons.refresh_outlined,
+                                ),
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 10),
                   Expanded(
