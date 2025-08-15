@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 
-import '../../../domain/usecases/usecases.dart';
 import '../../helpers/helpers.dart';
 import '../pages.dart';
 
@@ -8,14 +7,18 @@ abstract class CompareMonthsPresenter implements Listenable {
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
 
-  Map<CompareMonthsPeriod, List<SaleStatisticViewModel>> get mergedSales;
-  //the key is the month and year like 082025
+  List<SaleStatisticViewModel> get firstMonthSales;
+  List<SaleStatisticViewModel> get secondMonthSales;
 
-  GetSaleStatisticsParams? get lastParams;
+  int get selectedFirstMonth;
+  int get selectedFirstYear;
+  int get selectedSecondMonth;
+  int get selectedSecondYear;
 
-  Future<void> getSales({
-    required DateTime now,
-    DateTime selectedDate,
-    bool? forceRefresh,
-  });
+  void changeSelectedFirstMonth(int? month);
+  void changeSelectedFirstYear(int? year);
+  void changeSelectedSecondMonth(int? month);
+  void changeSelectedSecondYear(int? year);
+
+  Future<void> getSales();
 }
