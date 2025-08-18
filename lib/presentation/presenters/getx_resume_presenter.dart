@@ -187,8 +187,8 @@ class GetxResumePresenter extends GetxController
     HomePresenter homePresenter,
     DateTime now,
   ) async {
-    final isCurrentMonth = homePresenter.selectedDate.month == now.month &&
-        homePresenter.selectedDate.year == now.year;
+    // final isCurrentMonth = homePresenter.selectedDate.month == now.month &&
+    //     homePresenter.selectedDate.year == now.year;
 
     final selectedMonthParams = GetSaleStatisticsParams(
       startDate: DateTime(
@@ -196,7 +196,7 @@ class GetxResumePresenter extends GetxController
         homePresenter.selectedDate.month,
         1,
       ),
-      endDate: isCurrentMonth
+      endDate: /* isCurrentMonth
           ? DateTime(
               now.year,
               now.month,
@@ -204,11 +204,12 @@ class GetxResumePresenter extends GetxController
               isCurrentMonth ? now.hour : 23,
               isCurrentMonth ? now.minute : 59,
             )
-          : DateTime(
-              homePresenter.selectedDate.year,
-              homePresenter.selectedDate.month + 1,
-              0,
-            ),
+          : */
+          DateTime(
+        homePresenter.selectedDate.year,
+        homePresenter.selectedDate.month + 1,
+        0,
+      ),
       groupByEnterprise: true,
       groupByMonth: true,
       groupByYear: true,
@@ -223,7 +224,7 @@ class GetxResumePresenter extends GetxController
         homePresenter.selectedDate.month,
         1,
       ),
-      endDate: isCurrentMonth
+      endDate: /* isCurrentMonth
           ? DateTime(
               now.year - 1,
               now.month,
@@ -231,11 +232,12 @@ class GetxResumePresenter extends GetxController
               isCurrentMonth ? now.hour : 23,
               isCurrentMonth ? now.minute : 59,
             )
-          : DateTime(
-              homePresenter.selectedDate.year - 1,
-              homePresenter.selectedDate.month + 1,
-              0,
-            ),
+          : */
+          DateTime(
+        homePresenter.selectedDate.year - 1,
+        homePresenter.selectedDate.month + 1,
+        0,
+      ),
       groupByEnterprise: true,
       groupByYear: true,
       groupByMonth: true,
