@@ -211,6 +211,7 @@ class GetxResumePresenter extends GetxController
             ),
       groupByEnterprise: true,
       groupByMonth: true,
+      groupByYear: true,
       enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
     );
     final selectedMonthSaleStatistics =
@@ -236,6 +237,7 @@ class GetxResumePresenter extends GetxController
               0,
             ),
       groupByEnterprise: true,
+      groupByYear: true,
       groupByMonth: true,
       enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
     );

@@ -757,6 +757,7 @@ void main() {
               ),
               groupByMonth: true,
               groupByEnterprise: true,
+              groupByYear: true,
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
               ],
@@ -784,6 +785,7 @@ void main() {
               ),
               groupByMonth: true,
               groupByEnterprise: true,
+              groupByYear: true,
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
               ],
