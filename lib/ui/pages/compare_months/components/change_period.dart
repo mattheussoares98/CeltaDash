@@ -29,44 +29,46 @@ class ChangePeriod extends StatelessWidget {
             fontStyle: FontStyle.italic,
           ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            DropdownButton<int>(
-              items: List.generate(12, (index) {
-                return DropdownMenuItem<int>(
-                  value: index + 1,
-                  child: Text(DateFormat.MMMM('pt_BR')
-                      .format(DateTime(0, index + 1))
-                      .toString()),
-                );
-              }),
-              hint: Text(
-                DateFormat.MMMM('pt_BR').format(DateTime(0, month)),
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  color: isLoading ? Colors.grey : null,
+        FittedBox(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              DropdownButton<int>(
+                items: List.generate(12, (index) {
+                  return DropdownMenuItem<int>(
+                    value: index + 1,
+                    child: Text(DateFormat.MMMM('pt_BR')
+                        .format(DateTime(0, index + 1))
+                        .toString()),
+                  );
+                }),
+                hint: Text(
+                  "  ${DateFormat.MMMM('pt_BR').format(DateTime(0, month))}",
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    color: isLoading ? Colors.grey : null,
+                  ),
                 ),
+                onChanged: isLoading ? null : onMonthChanged,
               ),
-              onChanged: isLoading ? null : onMonthChanged,
-            ),
-            DropdownButton(
-              items: List.generate(5, (index) {
-                final year = DateTime.now().year - index;
-                return DropdownMenuItem<int>(
-                  value: year,
-                  child: Text(year.toString()),
-                );
-              }),
-              value: year,
-              hint: Text(
-                year.toString(),
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  color: isLoading ? Colors.grey : null,
+              DropdownButton(
+                items: List.generate(5, (index) {
+                  final year = DateTime.now().year - index;
+                  return DropdownMenuItem<int>(
+                    value: year,
+                    child: Text(year.toString()),
+                  );
+                }),
+                value: year,
+                hint: Text(
+                  year.toString(),
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    color: isLoading ? Colors.grey : null,
+                  ),
                 ),
+                onChanged: isLoading ? null : onYearChanged,
               ),
-              onChanged: isLoading ? null : onYearChanged,
-            ),
-          ],
+            ],
+          ),
         ),
       ],
     );
