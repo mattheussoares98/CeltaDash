@@ -73,71 +73,81 @@ class _ResumePageState extends State<ResumePage>
               body: DefaultSafeArea(
                 child: Stack(
                   children: [
-                    SingleChildScrollView(
-                      controller: scrollController,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
-                        child: Obx(() {
-                          final sales = resumePresenter.saleStatistics;
-                          final salesByEnterprise = resumePresenter
-                              .saleStatistics
-                              ?.filteredSales(
-                                enterprise: homePresenter.selectedEnterprise,
-                              )
-                              .map((e) => e.toViewModel())
-                              .toList();
+                    RefreshIndicator(
+                      onRefresh: () async {
+                        resumePresenter.getSales(
+                          homePresenter,
+                          now: DateTime.now(),
+                          forceRefresh: true,
+                        );
+                      },
+                      child: SingleChildScrollView(
+                        controller: scrollController,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
+                          child: Obx(() {
+                            final sales = resumePresenter.saleStatistics;
+                            final salesByEnterprise = resumePresenter
+                                .saleStatistics
+                                ?.filteredSales(
+                                  enterprise: homePresenter.selectedEnterprise,
+                                )
+                                .map((e) => e.toViewModel())
+                                .toList();
 
-                          if (sales == null ||
-                              sales.isEmpty ||
-                              salesByEnterprise == null) {
-                            return EmptySales(
-                                isLoading: loadingSnap.data == true);
-                          }
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Column(
-                                children: [
-                                  if (!isPortrait)
-                                    IntrinsicHeight(
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            child: DailyStatistics(
-                                              scrollController:
-                                                  scrollController,
-                                              saleStatistics: salesByEnterprise,
+                            if (sales == null ||
+                                sales.isEmpty ||
+                                salesByEnterprise == null) {
+                              return EmptySales(
+                                  isLoading: loadingSnap.data == true);
+                            }
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Column(
+                                  children: [
+                                    if (!isPortrait)
+                                      IntrinsicHeight(
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: DailyStatistics(
+                                                scrollController:
+                                                    scrollController,
+                                                saleStatistics:
+                                                    salesByEnterprise,
+                                              ),
                                             ),
-                                          ),
-                                          Expanded(
-                                            child: MonthlyAnalysis(
-                                              sales: salesByEnterprise,
+                                            Expanded(
+                                              child: MonthlyAnalysis(
+                                                sales: salesByEnterprise,
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  if (isPortrait) ...[
-                                    DailyStatistics(
-                                      scrollController: scrollController,
-                                      saleStatistics: salesByEnterprise,
-                                    ),
+                                    if (isPortrait) ...[
+                                      DailyStatistics(
+                                        scrollController: scrollController,
+                                        saleStatistics: salesByEnterprise,
+                                      ),
+                                      const SizedBox(height: 8),
+                                      MonthlyAnalysis(sales: salesByEnterprise),
+                                    ],
                                     const SizedBox(height: 8),
-                                    MonthlyAnalysis(sales: salesByEnterprise),
                                   ],
-                                  const SizedBox(height: 8),
-                                ],
-                              ),
-                              if (sales
-                                      .map((e) => e.EnterpriseId)
-                                      .toSet()
-                                      .length >
-                                  1)
-                                GroupOfStores(sales: sales),
-                              const SizedBox(height: 15),
-                            ],
-                          );
-                        }),
+                                ),
+                                if (sales
+                                        .map((e) => e.EnterpriseId)
+                                        .toSet()
+                                        .length >
+                                    1)
+                                  GroupOfStores(sales: sales),
+                                const SizedBox(height: 15),
+                              ],
+                            );
+                          }),
+                        ),
                       ),
                     ),
                     if (enterpriseIsEnabled == false)
