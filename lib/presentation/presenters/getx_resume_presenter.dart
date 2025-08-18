@@ -83,6 +83,8 @@ class GetxResumePresenter extends GetxController
           homePresenter.selectedDate.day !=
               lastGetComparisonParams?.startDate.day) {
         await _getCompareDaysStatistics(homePresenter, now);
+        await _getCompareCurrentMonthAndPreviousYearMonthStatistics(
+            homePresenter, now);
       }
       if (!canSearchAgain) {
         return;
@@ -181,10 +183,87 @@ class GetxResumePresenter extends GetxController
     ];
   }
 
+  Future<void> _getCompareCurrentMonthAndPreviousYearMonthStatistics(
+    HomePresenter homePresenter,
+    DateTime now,
+  ) async {
+    final isCurrentMonth = homePresenter.selectedDate.month == now.month &&
+        homePresenter.selectedDate.year == now.year;
+
+    final selectedMonthParams = GetSaleStatisticsParams(
+      startDate: DateTime(
+        homePresenter.selectedDate.year,
+        homePresenter.selectedDate.month,
+        1,
+      ),
+      endDate: isCurrentMonth
+          ? DateTime(
+              now.year,
+              now.month,
+              now.day,
+              isCurrentMonth ? now.hour : 23,
+              isCurrentMonth ? now.minute : 59,
+            )
+          : DateTime(
+              homePresenter.selectedDate.year,
+              homePresenter.selectedDate.month + 1,
+              0,
+            ),
+      groupByEnterprise: true,
+      groupByMonth: true,
+      enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+    );
+    final selectedMonthSaleStatistics =
+        await loadSaleStatistics.get(selectedMonthParams);
+
+    final previousYearMonthParams = GetSaleStatisticsParams(
+      startDate: DateTime(
+        homePresenter.selectedDate.year - 1,
+        homePresenter.selectedDate.month,
+        1,
+      ),
+      endDate: isCurrentMonth
+          ? DateTime(
+              now.year - 1,
+              now.month,
+              now.day,
+              isCurrentMonth ? now.hour : 23,
+              isCurrentMonth ? now.minute : 59,
+            )
+          : DateTime(
+              homePresenter.selectedDate.year - 1,
+              homePresenter.selectedDate.month + 1,
+              0,
+            ),
+      groupByEnterprise: true,
+      groupByMonth: true,
+      enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+    );
+    final previousYearMonthSaleStatistics =
+        await loadSaleStatistics.get(previousYearMonthParams);
+
+    _compareCurrentAndPreviousYearMonthStatistics.value = [
+      ...selectedMonthSaleStatistics
+          .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel()),
+      ...previousYearMonthSaleStatistics
+          .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
+    ];
+  }
+
   final _compareDaysStatistics = Rx<List<SaleStatisticViewModel>?>(null);
   @override
   List<SaleStatisticViewModel>? get compareDaysStatistics =>
       _compareDaysStatistics.value;
   set compareDaysStatistics(List<SaleStatisticViewModel>? value) =>
       _compareDaysStatistics.value = value;
+
+  final _compareCurrentAndPreviousYearMonthStatistics =
+      Rx<List<SaleStatisticViewModel>?>(null);
+  @override
+  List<SaleStatisticViewModel>?
+      get compareCurrentAndPreviousYearMonthStatistics =>
+          _compareCurrentAndPreviousYearMonthStatistics.value;
+  set compareCurrentAndPreviousYearMonthStatistics(
+          List<SaleStatisticViewModel>? value) =>
+      _compareCurrentAndPreviousYearMonthStatistics.value = value;
 }

@@ -8,6 +8,8 @@ import '../pages.dart';
 abstract class ResumePresenter implements Listenable {
   List<SaleStatisticViewModel>? get saleStatistics;
   List<SaleStatisticViewModel>? get compareDaysStatistics;
+  List<SaleStatisticViewModel>?
+      get compareCurrentAndPreviousYearMonthStatistics;
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
   PeriodType get selectedPeriod;
