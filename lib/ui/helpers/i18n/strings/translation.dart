@@ -100,6 +100,7 @@ abstract class Translation {
   String get firstDaySales;
   String get firstPeriod;
   String get generate;
+  String get goal;
   String get goalHistory;
   String get grossMargin;
   String get groupCategory;

@@ -115,6 +115,7 @@ class PtBr implements Translation {
   String get firstDaySales => "Vendas do primeiro dia";
   String get firstPeriod => "Primeiro período";
   String get generate => "Gerar";
+  String get goal => "Meta";
   String get goalHistory => "Histórico de metas";
   String get grossMargin => "Margem bruta";
   String get groupCategory => "Agrupar categoria";

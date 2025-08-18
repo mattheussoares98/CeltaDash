@@ -107,6 +107,8 @@ class _ResumePageState extends State<ResumePage>
                                 Column(
                                   children: [
                                     if (!isPortrait)
+                                      //TODO add here as well
+                                      // MonthGoalComparison
                                       IntrinsicHeight(
                                         child: Row(
                                           children: [
@@ -131,6 +133,8 @@ class _ResumePageState extends State<ResumePage>
                                         scrollController: scrollController,
                                         saleStatistics: salesByEnterprise,
                                       ),
+                                      const SizedBox(height: 8),
+                                      const MonthGoalComparison(),
                                       const SizedBox(height: 8),
                                       MonthlyAnalysis(sales: salesByEnterprise),
                                     ],
