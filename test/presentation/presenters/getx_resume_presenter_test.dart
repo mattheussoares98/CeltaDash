@@ -735,6 +735,74 @@ void main() {
       });
     });
 
+    group("Get compare month statistics", () {
+      test("Should search with correct params when is current month", () async {
+        homePresenter.selectedDateMock = now;
+        await sut.getSales(now: now, homePresenter);
+
+        verify(
+          () => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
+              startDate: DateTime(
+                homePresenter.selectedDateMock.year,
+                homePresenter.selectedDateMock.month,
+                1,
+              ),
+              endDate: DateTime(
+                now.year,
+                now.month,
+                now.day,
+                now.hour,
+                now.minute,
+              ),
+              groupByMonth: true,
+              groupByEnterprise: true,
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
+            ),
+          ),
+        ).called(1);
+      });
+      test("Should search with correct params when is not the current month",
+          () async {
+        homePresenter.selectedDateMock = faker.date.dateTime();
+        await sut.getSales(now: now, homePresenter);
+
+        verify(
+          () => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
+              startDate: DateTime(
+                homePresenter.selectedDateMock.year - 1,
+                homePresenter.selectedDateMock.month,
+                1,
+              ),
+              endDate: DateTime(
+                homePresenter.selectedDateMock.year - 1,
+                homePresenter.selectedDateMock.month + 1,
+                0,
+              ),
+              groupByMonth: true,
+              groupByEnterprise: true,
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
+            ),
+          ),
+        ).called(1);
+      });
+      test("Should add sales correctly", () async {
+        homePresenter.selectedDateMock = faker.date.dateTime();
+        await sut.getSales(now: now, homePresenter);
+
+        expect(sut.compareCurrentAndPreviousYearMonthStatistics, [
+          ...saleStatisticsEntities
+              .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel()),
+          ...saleStatisticsEntities
+              .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel()),
+        ]);
+      });
+    });
     test("Should add new analysis", () async {
       final index = faker.randomGenerator.integer(PeriodType.values.length);
       final periodType = PeriodType.values[index];
