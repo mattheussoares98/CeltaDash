@@ -34,25 +34,32 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
     return Obx(() {
       final sales = resumePresenter.monthlyComparison;
 
-      final selectedYearSales = sales
+      final currentMonthSales = sales
           ?.filteredSales(
             enterprise: homePresenter.selectedEnterprise,
             filterYear: homePresenter.selectedDate.year,
           )
           .map((e) => e.toViewModel())
           .toList();
-      final previousYearSales = sales
+
+      final comparisonParams = resumePresenter.lastGetMonthlyComparisonParams;
+      final comparisonSales = sales
           ?.filteredSales(
             enterprise: homePresenter.selectedEnterprise,
-            filterYear: homePresenter.selectedDate.year - 1,
+            filterYear: comparisonParams?.endDate.year,
+            filterMonth: comparisonParams?.endDate.month,
           )
           .map((e) => e.toViewModel())
           .toList();
+      final comparisonEndDate =
+          resumePresenter.lastGetMonthlyComparisonParams?.endDate;
 
-      final previousYearLiquidValue = previousYearSales?.sumLiquidValue();
+      final comparisonLiquidValue = comparisonSales?.sumLiquidValue() ?? 0;
+      final currentMonthLiquidValue = currentMonthSales?.sumLiquidValue() ?? 0;
+      final goalLiquidValue = comparisonLiquidValue * 1.05;
 
-      if (selectedYearSales == null || previousYearSales == null) {
-        return EmptySales(isLoading: widget.isLoading);
+      if (sales == null || sales.isEmpty) {
+        return const SizedBox.shrink();
       }
 
       return Container(
@@ -61,19 +68,40 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              R.string.monthlyGoal.toUpperCase(),
-              style: theme.textTheme.headlineMedium,
-              textAlign: TextAlign.center,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Text(
+                    R.string.monthlyGoal.toUpperCase(),
+                    style: theme.textTheme.headlineMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: Tooltip(
+                    message:
+                        '''Meta = vendas de (${DateFormat.yM("pt_BR").format(DateTime(comparisonEndDate!.year, comparisonEndDate.month))}) + 5% 
+'${comparisonLiquidValue.toString().toBrazilianNumber().addBrazilianCoin()}' + 5%''',
+                    child: Icon(
+                      theme.platform == TargetPlatform.iOS
+                          ? CupertinoIcons.info
+                          : Icons.info_outline_rounded,
+                      size: 15,
+                    ),
+                  ),
+                ),
+              ],
             ),
             Row(
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 8, 8, 0),
                   child: AnimatedCircleProgress(
-                    key: ValueKey(sales?.sumLiquidValue()),
-                    value: selectedYearSales.sumLiquidValue(),
-                    maximum: previousYearLiquidValue ?? 0,
+                    key: ValueKey(sales.sumLiquidValue()),
+                    value: currentMonthLiquidValue,
+                    maximum: goalLiquidValue,
                     height: mediaQuery.size.width *
                         (mediaQuery.orientation == Orientation.portrait
                             ? 0.4
@@ -87,54 +115,27 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
                 ),
                 Expanded(
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       RichText(
                         text: TextSpan(
                           style: theme.textTheme.bodyMedium?.copyWith(
-                            color: Colors.orange,
+                            color: Colors.black,
                           ),
-                          text:
-                              "Base (${DateFormat.yM("pt_BR").format(DateTime(homePresenter.selectedDate.year - 1, homePresenter.selectedDate.month))}):",
+                          text: "Meta",
                           children: [
                             TextSpan(
-                              text: "\nR\$ ",
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                fontSize: 11,
-                                color: Colors.orange,
-                              ),
-                            ),
-                            TextSpan(
-                                text: previousYearLiquidValue
-                                    .toString()
-                                    .toBrazilianNumber(),
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.orange,
-                                )),
-                          ],
-                        ),
-                      ),
-                      RichText(
-                        text: TextSpan(
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: Colors.green,
-                          ),
-                          text:
-                              "Meta (base + 5%):", //TODO add option to change the goal and save in firebase
-                          children: [
-                            TextSpan(
-                              text: "\nR\$ ",
+                              text: " R\$",
                               style: theme.textTheme.bodySmall
-                                  ?.copyWith(fontSize: 11, color: Colors.green),
+                                  ?.copyWith(fontSize: 11),
                             ),
                             TextSpan(
-                              text: ((previousYearLiquidValue ?? 0) *
-                                      1.05) //TODO use the goal here
-                                  .toString()
-                                  .toBrazilianNumber(),
+                              text:
+                                  goalLiquidValue //TODO load goal from presenter
+                                      .toString()
+                                      .toBrazilianNumber(),
                               style: theme.textTheme.bodyMedium?.copyWith(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.green,
                               ),
                             ),
                           ],

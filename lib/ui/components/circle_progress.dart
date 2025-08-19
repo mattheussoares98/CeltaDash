@@ -103,7 +103,9 @@ class _AnimatedCircleProgressState extends State<AnimatedCircleProgress>
                           : Theme.of(
                               context,
                             ).primaryColorLight.withAlpha(100),
-                      progressColor: Theme.of(context).primaryColor,
+                      progressColor: widget.value >= widget.maximum
+                          ? Theme.of(context).primaryColor
+                          : Colors.red,
                     ),
                   ),
                   SizedBox(
@@ -118,14 +120,26 @@ class _AnimatedCircleProgressState extends State<AnimatedCircleProgress>
                                 .toString()
                                 .toBrazilianNumber()
                                 .addBrazilianCoin(),
-                            style: Theme.of(context).textTheme.headlineMedium,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineMedium
+                                ?.copyWith(
+                                    color: widget.value >= widget.maximum
+                                        ? Theme.of(context).primaryColor
+                                        : Colors.red),
                           ),
                         ),
                         if (widget.value > 0 && widget.maximum > 0)
                           FittedBox(
                             child: Text(
                               "${(widget.value / widget.maximum * 100).toString().toBrazilianNumber()}%",
-                              style: Theme.of(context).textTheme.labelSmall,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelSmall
+                                  ?.copyWith(
+                                      color: widget.value >= widget.maximum
+                                          ? Theme.of(context).primaryColor
+                                          : Colors.red),
                             ),
                           ),
                       ],
