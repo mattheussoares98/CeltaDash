@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -17,10 +18,15 @@ class MonthGoalComparison extends StatefulWidget {
 
 class _MonthGoalComparisonState extends State<MonthGoalComparison> {
   final scrollController = ScrollController();
+  bool showEditGoal = false;
+  final goalController = TextEditingController();
+  final goalFocusNode = FocusNode();
 
   @override
   void dispose() {
     scrollController.dispose();
+    goalController.dispose();
+    goalFocusNode.dispose();
     super.dispose();
   }
 
@@ -142,17 +148,73 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      TextButton.icon(
-                        onPressed: () {
-                          //TODO implement
-                        },
-                        icon: Icon(
-                          theme.platform == TargetPlatform.iOS
-                              ? CupertinoIcons.pencil
-                              : Icons.edit,
+                      if (!showEditGoal)
+                        TextButton.icon(
+                          onPressed: () {
+                            setState(() {
+                              showEditGoal = !showEditGoal;
+                            });
+                            Future.delayed(Duration.zero, () {
+                              goalFocusNode.requestFocus();
+                            });
+                          },
+                          icon: Icon(
+                            theme.platform == TargetPlatform.iOS
+                                ? CupertinoIcons.pencil
+                                : Icons.edit,
+                          ),
+                          label: const Text("Editar meta"),
+                        )
+                      else
+                        Column(
+                          children: [
+                            TextFormField(
+                              focusNode: goalFocusNode,
+                              controller: goalController,
+                              decoration: FormFieldDecoration.decoration(
+                                context: context,
+                                labelText: R.string.goal.addBrazilianCoin(),
+                              ),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                                BrazilianRealInputFormatter(),
+                              ],
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      decimal: true),
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      showEditGoal = !showEditGoal;
+                                    });
+                                  },
+                                  child: Icon(
+                                    theme.platform == TargetPlatform.iOS
+                                        ? CupertinoIcons.xmark
+                                        : Icons.cancel,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    //TODO call presenter to change remotelly
+                                  },
+                                  child: Icon(
+                                    theme.platform == TargetPlatform.iOS
+                                        ? CupertinoIcons.check_mark
+                                        : Icons.save,
+                                    color: Colors.green,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                        label: const Text("Editar meta"),
-                      ),
                       const SizedBox(height: 8),
                       DefaultButton(
                         onTap: () {
