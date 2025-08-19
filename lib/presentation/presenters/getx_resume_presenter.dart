@@ -211,7 +211,7 @@ class GetxResumePresenter extends GetxController
     final selectedMonthSaleStatistics =
         await loadSaleStatistics.get(selectedMonthParams);
 
-    final previousYearMonthParams = defaultParams.copyWith(
+    var comparisonParams = defaultParams.copyWith(
       startDate: DateTime(
         homePresenter.selectedDate.year - 1,
         homePresenter.selectedDate.month,
@@ -223,11 +223,11 @@ class GetxResumePresenter extends GetxController
         0,
       ),
     );
-    var baseComparison = await loadSaleStatistics.get(previousYearMonthParams);
+    var baseComparison = await loadSaleStatistics.get(comparisonParams);
 
     if (baseComparison.isEmpty) {
       //if doesnt exists sales from the previous year, load the previous month
-      final previousMonthParams = defaultParams.copyWith(
+      comparisonParams = defaultParams.copyWith(
         startDate: DateTime(
           homePresenter.selectedDate.year,
           homePresenter.selectedDate.month - 1,
@@ -235,13 +235,15 @@ class GetxResumePresenter extends GetxController
         ),
         endDate: DateTime(
           homePresenter.selectedDate.year,
-          homePresenter.selectedDate.month - 1,
+          homePresenter.selectedDate.month,
           0,
         ),
       );
 
-      baseComparison = await loadSaleStatistics.get(previousMonthParams);
+      baseComparison = await loadSaleStatistics.get(comparisonParams);
     }
+
+    lastGetMonthlyComparisonParams = comparisonParams;
 
     _monthlyComparison.value = [
       ...selectedMonthSaleStatistics

@@ -736,62 +736,132 @@ void main() {
     });
 
     group("Get compare month statistics", () {
-      test("Should search with correct params when is current month", () async {
+      test("Should behave correctly when has previous year sales", () async {
         homePresenter.selectedDateMock = now;
+
+        final defaultComparisonParams = GetSaleStatisticsParams(
+          startDate: DateTime(0),
+          endDate: DateTime(0),
+          groupByMonth: true,
+          groupByEnterprise: true,
+          groupByYear: true,
+          enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+        );
+
+        final currentMonthComparisonParams = defaultComparisonParams.copyWith(
+          startDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month,
+            1,
+          ),
+          endDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month + 1,
+            0,
+          ),
+        );
+
+        final previousYearComparisonParams = defaultComparisonParams.copyWith(
+          startDate: DateTime(
+            homePresenter.selectedDateMock.year - 1,
+            homePresenter.selectedDateMock.month,
+            1,
+          ),
+          endDate: DateTime(
+            homePresenter.selectedDateMock.year - 1,
+            homePresenter.selectedDateMock.month + 1,
+            0,
+          ),
+        );
+
+        final previousMonthComparisonParams = defaultComparisonParams.copyWith(
+          startDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month - 1,
+            1,
+          ),
+          endDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month,
+            0,
+          ),
+        );
+
         await sut.getSales(now: now, homePresenter);
 
-        verify(
-          () => loadSaleStatistics.get(
-            GetSaleStatisticsParams(
-              startDate: DateTime(
-                homePresenter.selectedDateMock.year,
-                homePresenter.selectedDateMock.month,
-                1,
-              ),
-              endDate: DateTime(
-                now.year,
-                now.month,
-                now.day,
-                now.hour,
-                now.minute,
-              ),
-              groupByMonth: true,
-              groupByEnterprise: true,
-              groupByYear: true,
-              enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
-              ],
-            ),
-          ),
-        ).called(1);
+        verify(() => loadSaleStatistics.get(currentMonthComparisonParams))
+            .called(1);
+        verify(() => loadSaleStatistics.get(previousYearComparisonParams))
+            .called(1);
+        verifyNever(
+            () => loadSaleStatistics.get(previousMonthComparisonParams));
+
+        expect(
+            sut.lastGetMonthlyComparisonParams, previousYearComparisonParams);
       });
-      test("Should search with correct params when is not the current month",
+      test("Should behave correctly when DOESNT has previous year sales",
           () async {
-        homePresenter.selectedDateMock = faker.date.dateTime();
+        homePresenter.selectedDateMock = now;
+        loadSaleStatistics.mockGet([]);
+        final defaultComparisonParams = GetSaleStatisticsParams(
+          startDate: DateTime(0),
+          endDate: DateTime(0),
+          groupByMonth: true,
+          groupByEnterprise: true,
+          groupByYear: true,
+          enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+        );
+
+        final currentMonthComparisonParams = defaultComparisonParams.copyWith(
+          startDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month,
+            1,
+          ),
+          endDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month + 1,
+            0,
+          ),
+        );
+
+        final previousYearComparisonParams = defaultComparisonParams.copyWith(
+          startDate: DateTime(
+            homePresenter.selectedDateMock.year - 1,
+            homePresenter.selectedDateMock.month,
+            1,
+          ),
+          endDate: DateTime(
+            homePresenter.selectedDateMock.year - 1,
+            homePresenter.selectedDateMock.month + 1,
+            0,
+          ),
+        );
+
+        final previousMonthComparisonParams = defaultComparisonParams.copyWith(
+          startDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month - 1,
+            1,
+          ),
+          endDate: DateTime(
+            homePresenter.selectedDateMock.year,
+            homePresenter.selectedDateMock.month,
+            0,
+          ),
+        );
+
         await sut.getSales(now: now, homePresenter);
 
-        verify(
-          () => loadSaleStatistics.get(
-            GetSaleStatisticsParams(
-              startDate: DateTime(
-                homePresenter.selectedDateMock.year - 1,
-                homePresenter.selectedDateMock.month,
-                1,
-              ),
-              endDate: DateTime(
-                homePresenter.selectedDateMock.year - 1,
-                homePresenter.selectedDateMock.month + 1,
-                0,
-              ),
-              groupByMonth: true,
-              groupByEnterprise: true,
-              groupByYear: true,
-              enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
-              ],
-            ),
-          ),
-        ).called(1);
+        verify(() => loadSaleStatistics.get(currentMonthComparisonParams))
+            .called(1);
+        verify(() => loadSaleStatistics.get(previousYearComparisonParams))
+            .called(1);
+        verify(() => loadSaleStatistics.get(previousMonthComparisonParams))
+            .called(1);
+
+        expect(
+            sut.lastGetMonthlyComparisonParams, previousMonthComparisonParams);
       });
       test("Should add sales correctly", () async {
         homePresenter.selectedDateMock = faker.date.dateTime();
