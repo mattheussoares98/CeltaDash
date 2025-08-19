@@ -279,7 +279,7 @@ void main() {
         await sut.getSales(now: now, homePresenter);
 
         expect(
-            sut.lastGetComparisonParams,
+            sut.lastGetDailyComparisonParams,
             GetSaleStatisticsParams(
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,

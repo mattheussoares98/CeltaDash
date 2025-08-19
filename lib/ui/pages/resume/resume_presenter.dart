@@ -14,7 +14,7 @@ abstract class ResumePresenter implements Listenable {
   Stream<bool> get isLoadingStream;
   PeriodType get selectedPeriod;
   GetSaleStatisticsParams? get lastGetStatisticsParams;
-  GetSaleStatisticsParams? get lastGetComparisonParams;
+  GetSaleStatisticsParams? get lastGetDailyComparisonParams;
 
   void goToSetGoalPage();
   void goToGoalHistoryPage();

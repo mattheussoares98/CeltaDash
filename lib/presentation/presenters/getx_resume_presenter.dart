@@ -75,13 +75,13 @@ class GetxResumePresenter extends GetxController
       final changedEnterprise = SearchHelper.changedTheEnterprise(
         selectedPeriodType: selectedPeriod,
         selectedEnterprise: homePresenter.selectedEnterprise,
-        lastGetStatisticsParams: lastGetComparisonParams,
+        lastGetStatisticsParams: lastGetDailyComparisonParams,
       );
 
       if (changedEnterprise ||
           canSearchAgain ||
           homePresenter.selectedDate.day !=
-              lastGetComparisonParams?.startDate.day) {
+              lastGetDailyComparisonParams?.startDate.day) {
         await _getCompareDaysStatistics(homePresenter, now);
         await _getCompareCurrentMonthAndPreviousYearMonthStatistics(
             homePresenter, now);
@@ -173,7 +173,7 @@ class GetxResumePresenter extends GetxController
       ),
     );
 
-    lastGetComparisonParams = todayParams;
+    lastGetDailyComparisonParams = todayParams;
 
     _compareDaysStatistics.value = [
       ...todaySaleStatistics
