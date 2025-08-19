@@ -34,4 +34,10 @@ mixin LastGetSalesStatisticsParamsManager on GetxController {
       _lastGetDailyComparisonParams;
   set lastGetDailyComparisonParams(GetSaleStatisticsParams? value) =>
       _lastGetDailyComparisonParams = value;
+
+  GetSaleStatisticsParams? _lastGetMonthlyComparisonParams;
+  GetSaleStatisticsParams? get lastGetMonthlyComparisonParams =>
+      _lastGetMonthlyComparisonParams;
+  set lastGetMonthlyComparisonParams(GetSaleStatisticsParams? value) =>
+      _lastGetMonthlyComparisonParams = value;
 }
