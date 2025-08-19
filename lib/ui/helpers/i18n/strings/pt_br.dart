@@ -139,6 +139,7 @@ class PtBr implements Translation {
   String get months => "Meses";
   String get monthly => "Mensal";
   String get monthlyAnalysis => "Análise mensal";
+  String get monthlyGoal => "Meta mensal";
   String get more => "Mais";
   String get moreDetails => "Mais detalhes";
   String get newEnterprise => "Nova empresa";

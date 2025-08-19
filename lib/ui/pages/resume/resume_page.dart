@@ -109,6 +109,7 @@ class _ResumePageState extends State<ResumePage>
                                     if (!isPortrait)
                                       //TODO add here as well
                                       // MonthGoalComparison
+                                      ...[
                                       IntrinsicHeight(
                                         child: Row(
                                           children: [
@@ -121,33 +122,55 @@ class _ResumePageState extends State<ResumePage>
                                               ),
                                             ),
                                             Expanded(
-                                              child: MonthlyAnalysis(
-                                                sales: salesByEnterprise,
-                                              ),
+                                              child: MonthGoalComparison(
+                                                  isLoading:
+                                                      loadingSnap.data == true),
                                             ),
                                           ],
                                         ),
                                       ),
+                                      //TODO new below, group and month analysis
+                                      IntrinsicHeight(
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: MonthlyAnalysis(
+                                                sales: salesByEnterprise,
+                                              ),
+                                            ),
+                                            if (sales
+                                                    .map((e) => e.EnterpriseId)
+                                                    .toSet()
+                                                    .length >
+                                                1)
+                                              Expanded(
+                                                  child: GroupOfStores(
+                                                      sales: sales)),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                     if (isPortrait) ...[
                                       DailyStatistics(
                                         scrollController: scrollController,
                                         saleStatistics: salesByEnterprise,
                                       ),
                                       const SizedBox(height: 8),
-                                      const MonthGoalComparison(),
+                                      MonthGoalComparison(
+                                          isLoading: loadingSnap.data == true),
                                       const SizedBox(height: 8),
                                       MonthlyAnalysis(sales: salesByEnterprise),
+                                      const SizedBox(height: 8),
+                                      if (sales
+                                              .map((e) => e.EnterpriseId)
+                                              .toSet()
+                                              .length >
+                                          1)
+                                        GroupOfStores(sales: sales),
+                                      const SizedBox(height: 15),
                                     ],
-                                    const SizedBox(height: 8),
                                   ],
                                 ),
-                                if (sales
-                                        .map((e) => e.EnterpriseId)
-                                        .toSet()
-                                        .length >
-                                    1)
-                                  GroupOfStores(sales: sales),
-                                const SizedBox(height: 15),
                               ],
                             );
                           }),

@@ -107,16 +107,28 @@ class _AnimatedCircleProgressState extends State<AnimatedCircleProgress>
                     ),
                   ),
                   SizedBox(
-                    width: constraints.maxWidth * 0.7,
-                    height: constraints.maxHeight * 0.7,
-                    child: FittedBox(
-                      child: Text(
-                        widget.value
-                            .toString()
-                            .toBrazilianNumber()
-                            .addBrazilianCoin(),
-                        style: Theme.of(context).textTheme.headlineMedium,
-                      ),
+                    width: constraints.maxWidth * 0.8,
+                    height: constraints.maxHeight * 0.8,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        FittedBox(
+                          child: Text(
+                            widget.value
+                                .toString()
+                                .toBrazilianNumber()
+                                .addBrazilianCoin(),
+                            style: Theme.of(context).textTheme.headlineMedium,
+                          ),
+                        ),
+                        if (widget.value > 0 && widget.maximum > 0)
+                          FittedBox(
+                            child: Text(
+                              "${(widget.value / widget.maximum * 100).toString().toBrazilianNumber()}%",
+                              style: Theme.of(context).textTheme.labelSmall,
+                            ),
+                          ),
+                      ],
                     ),
                   ),
                 ],

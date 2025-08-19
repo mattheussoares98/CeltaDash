@@ -124,6 +124,7 @@ abstract class Translation {
   String get months;
   String get monthly;
   String get monthlyAnalysis;
+  String get monthlyGoal;
   String get more;
   String get moreDetails;
   String get newEnterprise;
