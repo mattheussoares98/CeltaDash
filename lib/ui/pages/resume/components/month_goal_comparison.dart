@@ -141,6 +141,7 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
                           ],
                         ),
                       ),
+                      const SizedBox(height: 8),
                       TextButton.icon(
                         onPressed: () {
                           //TODO implement
@@ -152,6 +153,7 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
                         ),
                         label: const Text("Editar meta"),
                       ),
+                      const SizedBox(height: 8),
                       DefaultButton(
                         onTap: () {
                           //TODO implement
