@@ -5,4 +5,5 @@ import '../../factories.dart';
 ResumePresenter makeGetxResumePresenter() => GetxResumePresenter(
       navigateTo: makeGetxNavigateTo(),
       loadSaleStatistics: makeRemoteLoadSaleStatistics(),
+      firebaseManager: makeRemoteFirebaseManager(),
     );

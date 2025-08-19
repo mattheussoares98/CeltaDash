@@ -20,10 +20,12 @@ class GetxResumePresenter extends GetxController
     implements ResumePresenter {
   final NavigateTo navigateTo;
   final LoadSaleStatistics loadSaleStatistics;
+  final FirebaseManager firebaseManager;
 
   GetxResumePresenter({
     required this.navigateTo,
     required this.loadSaleStatistics,
+    required this.firebaseManager,
   });
 
   final appAnalyticsService = Get.find<AppAnalyticsService>();

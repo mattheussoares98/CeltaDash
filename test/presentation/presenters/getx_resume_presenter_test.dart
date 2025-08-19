@@ -26,6 +26,8 @@ void main() {
 
   late NavigateToSpy navigateTo;
   late LoadSaleStatisticsSpy loadSaleStatistics;
+  late FirebaseManagerSpy firebaseManager;
+  late MockedFirebaseGet mockedFirebaseGet;
 
   late List<SaleStatisticsEntity> saleStatisticsEntities;
   late DateTime now;
@@ -36,12 +38,16 @@ void main() {
   void initUsecases() {
     navigateTo = NavigateToSpy();
     loadSaleStatistics = LoadSaleStatisticsSpy();
+    firebaseManager = FirebaseManagerSpy(
+      mockedFirebaseGet: mockedFirebaseGet,
+    );
   }
 
   void initPresenters() {
     sut = GetxResumePresenter(
       navigateTo: navigateTo,
       loadSaleStatistics: loadSaleStatistics,
+      firebaseManager: firebaseManager,
     );
     homePresenter = HomePresenterSpy();
   }
@@ -52,6 +58,9 @@ void main() {
       EntityFactory.makeSaleStatisticEntity(),
       EntityFactory.makeSaleStatisticEntity(),
     ];
+    mockedFirebaseGet = MockedFirebaseGet(
+      dataToReturn: [FakeDoc({}, faker.guid.guid())],
+    );
     now = DateTime.now();
   }
 
