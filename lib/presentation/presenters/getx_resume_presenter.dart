@@ -187,69 +187,66 @@ class GetxResumePresenter extends GetxController
     HomePresenter homePresenter,
     DateTime now,
   ) async {
-    // final isCurrentMonth = homePresenter.selectedDate.month == now.month &&
-    //     homePresenter.selectedDate.year == now.year;
+    final defaultParams = GetSaleStatisticsParams(
+      startDate: DateTime(0),
+      endDate: DateTime(0),
+      groupByEnterprise: true,
+      groupByYear: true,
+      groupByMonth: true,
+      enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+    );
 
-    final selectedMonthParams = GetSaleStatisticsParams(
+    final selectedMonthParams = defaultParams.copyWith(
       startDate: DateTime(
         homePresenter.selectedDate.year,
         homePresenter.selectedDate.month,
         1,
       ),
-      endDate: /* isCurrentMonth
-          ? DateTime(
-              now.year,
-              now.month,
-              now.day,
-              isCurrentMonth ? now.hour : 23,
-              isCurrentMonth ? now.minute : 59,
-            )
-          : */
-          DateTime(
+      endDate: DateTime(
         homePresenter.selectedDate.year,
         homePresenter.selectedDate.month + 1,
         0,
       ),
-      groupByEnterprise: true,
-      groupByMonth: true,
-      groupByYear: true,
-      enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
     );
     final selectedMonthSaleStatistics =
         await loadSaleStatistics.get(selectedMonthParams);
 
-    final previousYearMonthParams = GetSaleStatisticsParams(
+    final previousYearMonthParams = defaultParams.copyWith(
       startDate: DateTime(
         homePresenter.selectedDate.year - 1,
         homePresenter.selectedDate.month,
         1,
       ),
-      endDate: /* isCurrentMonth
-          ? DateTime(
-              now.year - 1,
-              now.month,
-              now.day,
-              isCurrentMonth ? now.hour : 23,
-              isCurrentMonth ? now.minute : 59,
-            )
-          : */
-          DateTime(
+      endDate: DateTime(
         homePresenter.selectedDate.year - 1,
         homePresenter.selectedDate.month + 1,
         0,
       ),
-      groupByEnterprise: true,
-      groupByYear: true,
-      groupByMonth: true,
-      enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
     );
-    final previousYearMonthSaleStatistics =
-        await loadSaleStatistics.get(previousYearMonthParams);
+    var baseComparison = await loadSaleStatistics.get(previousYearMonthParams);
 
-    _compareCurrentAndPreviousYearMonthStatistics.value = [
+    if (baseComparison.isEmpty) {
+      //if doesnt exists sales from the previous year, load the previous month
+      final previousMonthParams = defaultParams.copyWith(
+        startDate: DateTime(
+          homePresenter.selectedDate.year,
+          homePresenter.selectedDate.month - 1,
+          1,
+        ),
+        endDate: DateTime(
+          homePresenter.selectedDate.year,
+          homePresenter.selectedDate.month - 1,
+          0,
+        ),
+      );
+
+      baseComparison = await loadSaleStatistics.get(previousMonthParams);
+    }
+
+    _monthlyComparison.value = [
       ...selectedMonthSaleStatistics
           .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel()),
-      ...previousYearMonthSaleStatistics
+      ...baseComparison
           .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
     ];
   }
@@ -261,13 +258,10 @@ class GetxResumePresenter extends GetxController
   set compareDaysStatistics(List<SaleStatisticViewModel>? value) =>
       _compareDaysStatistics.value = value;
 
-  final _compareCurrentAndPreviousYearMonthStatistics =
-      Rx<List<SaleStatisticViewModel>?>(null);
+  final _monthlyComparison = Rx<List<SaleStatisticViewModel>?>(null);
   @override
-  List<SaleStatisticViewModel>?
-      get compareCurrentAndPreviousYearMonthStatistics =>
-          _compareCurrentAndPreviousYearMonthStatistics.value;
-  set compareCurrentAndPreviousYearMonthStatistics(
-          List<SaleStatisticViewModel>? value) =>
-      _compareCurrentAndPreviousYearMonthStatistics.value = value;
+  List<SaleStatisticViewModel>? get monthlyComparison =>
+      _monthlyComparison.value;
+  set monthlyComparison(List<SaleStatisticViewModel>? value) =>
+      _monthlyComparison.value = value;
 }

@@ -32,8 +32,7 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
     final theme = Theme.of(context);
 
     return Obx(() {
-      final sales =
-          resumePresenter.compareCurrentAndPreviousYearMonthStatistics;
+      final sales = resumePresenter.monthlyComparison;
 
       final selectedYearSales = sales
           ?.filteredSales(

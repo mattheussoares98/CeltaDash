@@ -797,7 +797,7 @@ void main() {
         homePresenter.selectedDateMock = faker.date.dateTime();
         await sut.getSales(now: now, homePresenter);
 
-        expect(sut.compareCurrentAndPreviousYearMonthStatistics, [
+        expect(sut.monthlyComparison, [
           ...saleStatisticsEntities
               .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel()),
           ...saleStatisticsEntities
