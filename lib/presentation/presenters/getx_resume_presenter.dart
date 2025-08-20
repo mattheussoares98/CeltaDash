@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../data/models/models.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
+import '../../main/builders/builders.dart';
 import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
 import '../../ui/services/services.dart';
@@ -29,6 +31,7 @@ class GetxResumePresenter extends GetxController
   });
 
   final appAnalyticsService = Get.find<AppAnalyticsService>();
+  final homePresenter = Get.find<HomePresenter>();
 
   @override
   void goToSetGoalPage() {
@@ -47,6 +50,7 @@ class GetxResumePresenter extends GetxController
 
   @override
   Future<void> getSales(
+    //TODO remove from all presenters as parameter
     HomePresenter homePresenter, {
     required DateTime now,
     PeriodType? periodType,
@@ -253,6 +257,26 @@ class GetxResumePresenter extends GetxController
       ...baseComparison
           .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
     ];
+  }
+
+  @override
+  Future<void> setGoal(double value) async {
+    isLoading = true;
+    mainError = null;
+    try {
+      //TODO create tests
+      final docId =
+          "${homePresenter.selectedEnterprise?.id}-${DateFormat('yyyy-MM').format(homePresenter.selectedDate)}";
+
+      await firebaseManager.put(
+        path: "enterprises/${EnterpriseBuilder.entity!.firebaseId}/goals/all",
+        data: {docId: value},
+      );
+    } catch (e) {
+      mainError = getUIError(e);
+    } finally {
+      isLoading = false;
+    }
   }
 
   final _compareDaysStatistics = Rx<List<SaleStatisticViewModel>?>(null);

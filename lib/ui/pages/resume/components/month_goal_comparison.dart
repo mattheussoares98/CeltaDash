@@ -1,9 +1,12 @@
+import 'package:celta_dash/presentation/protocols/protocols.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../main/composites/composites.dart';
+import '../../../../validation/validators/validators.dart';
 import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
@@ -179,6 +182,9 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
                                 FilteringTextInputFormatter.digitsOnly,
                                 BrazilianRealInputFormatter(),
                               ],
+                              validator: (value) => ValidationComposite([
+                                const RequiredFieldValidation(),
+                              ]).validate(value)?.description,
                               keyboardType:
                                   const TextInputType.numberWithOptions(
                                       decimal: true),
@@ -202,7 +208,8 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    //TODO call presenter to change remotelly
+                                    resumePresenter.setGoal(
+                                        goalController.text.toDouble());
                                   },
                                   child: Icon(
                                     theme.platform == TargetPlatform.iOS

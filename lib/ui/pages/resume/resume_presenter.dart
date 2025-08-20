@@ -26,4 +26,6 @@ abstract class ResumePresenter implements Listenable {
     PeriodType? periodType,
     bool? forceRefresh,
   });
+
+  Future<void> setGoal(double value);
 }
