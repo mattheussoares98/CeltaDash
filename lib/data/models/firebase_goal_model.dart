@@ -1,4 +1,5 @@
 import '../../domain/entities/entities.dart';
+import '../../ui/pages/pages.dart';
 
 class FirebaseGoalModel extends FirebaseGoalEntity {
   const FirebaseGoalModel({
@@ -33,4 +34,6 @@ class FirebaseGoalModel extends FirebaseGoalEntity {
       value: value,
     );
   }
+
+  FirebaseGoalViewModel toViewModel() => FirebaseGoalViewModel(this);
 }

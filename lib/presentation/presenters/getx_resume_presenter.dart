@@ -288,8 +288,8 @@ class GetxResumePresenter extends GetxController
 
     final goalsMap = doc.data()! as Map<String, dynamic>;
 
-    final List<FirebaseGoalModel> remoteGoals = goalsMap.entries.map((entry) {
-      return FirebaseGoalModel.fromMapEntry(entry);
+    final remoteGoals = goalsMap.entries.map((entry) {
+      return FirebaseGoalModel.fromMapEntry(entry).toViewModel();
     }).toList();
 
     _goals.value = remoteGoals;
@@ -317,7 +317,7 @@ class GetxResumePresenter extends GetxController
   set monthlyComparison(List<SaleStatisticViewModel>? value) =>
       _monthlyComparison.value = value;
 
-  final _goals = Rx<List<FirebaseGoalEntity>>([]); //TODO use view model
+  final _goals = Rx<List<FirebaseGoalViewModel>>([]); //TODO use view model
   @override
-  List<FirebaseGoalEntity> get goals => _goals.value;
+  List<FirebaseGoalViewModel> get goals => _goals.value;
 }
