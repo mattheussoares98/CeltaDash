@@ -7,6 +7,7 @@ class FirebaseGoalModel extends FirebaseGoalEntity {
     required super.year,
     required super.month,
     required super.value,
+    required super.goalId,
   });
 
   factory FirebaseGoalModel.fromMapEntry(MapEntry<String, dynamic> entry) {
@@ -32,6 +33,7 @@ class FirebaseGoalModel extends FirebaseGoalEntity {
       year: year,
       month: month,
       value: value,
+      goalId: key,
     );
   }
 

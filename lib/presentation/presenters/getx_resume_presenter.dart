@@ -270,6 +270,33 @@ class GetxResumePresenter extends GetxController
         path: goalPath,
         data: {goalId: value},
       );
+
+      final enterpriseId = homePresenter.selectedEnterprise?.id;
+      final selectedDate = homePresenter.selectedDate;
+      _goals.value.add(
+        GoalViewModel(
+          FirebaseGoalEntity(
+            enterpriseId: enterpriseId!.toInt(),
+            year: selectedDate.year,
+            month: selectedDate.month,
+            value: value,
+            goalId: goalId,
+          ),
+        ),
+      );
+
+      for (var x = 0; x < _goals.value.length; x++) {
+        final goal = _goals.value[x];
+
+        if (goal.enterpriseId == enterpriseId &&
+            goal.goalEntity?.goalId == goalId) {
+          _goals.value[x] = GoalViewModel(
+            _goals.value[x].goalEntity!.copyWith(value: value),
+          );
+
+          break;
+        }
+      }
     } catch (e) {
       mainError = getUIError(e);
     } finally {
@@ -298,9 +325,8 @@ class GetxResumePresenter extends GetxController
   @override
   GoalViewModel? get firebaseEnterpriseGoal {
     //TODO create tests
-    final index = _goals.value.indexWhere(
-      (e) => e.enterpriseId == homePresenter.selectedEnterprise?.id,
-    );
+    final index =
+        _goals.value.indexWhere((e) => e.goalEntity?.goalId == goalId);
 
     if (index == -1) {
       return null;
