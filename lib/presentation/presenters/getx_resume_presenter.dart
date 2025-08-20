@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -89,6 +90,10 @@ class GetxResumePresenter extends GetxController
       }
       if (!canSearchAgain) {
         return;
+      }
+
+      if (_goals.value.isEmpty) {
+        await _getGoals();
       }
 
       final startDate = DateTime(
@@ -262,7 +267,7 @@ class GetxResumePresenter extends GetxController
       //TODO create tests
 
       await firebaseManager.put(
-        path: "enterprises/${EnterpriseBuilder.entity!.firebaseId}/goals/all",
+        path: goalPath,
         data: {goalId: value},
       );
     } catch (e) {
@@ -272,8 +277,30 @@ class GetxResumePresenter extends GetxController
     }
   }
 
+  Future<void> _getGoals() async {
+    //TODO create tests
+    final DocumentSnapshot doc = await firebaseManager.get(path: goalPath);
+
+    if (!doc.exists || doc.data() == null) {
+      _goals.value = [];
+      return;
+    }
+
+    final goalsMap = doc.data()! as Map<String, dynamic>;
+
+    final List<FirebaseGoalModel> remoteGoals = goalsMap.entries.map((entry) {
+      return FirebaseGoalModel.fromMapEntry(entry);
+    }).toList();
+
+    _goals.value = remoteGoals;
+  }
+
   String get goalId {
     return "${homePresenter.selectedEnterprise?.id}-${DateFormat('yyyy-MM').format(homePresenter.selectedDate)}";
+  }
+
+  String get goalPath {
+    return "enterprises/${EnterpriseBuilder.entity!.firebaseId}/goals/all";
   }
 
   final _compareDaysStatistics = Rx<List<SaleStatisticViewModel>?>(null);
@@ -289,4 +316,8 @@ class GetxResumePresenter extends GetxController
       _monthlyComparison.value;
   set monthlyComparison(List<SaleStatisticViewModel>? value) =>
       _monthlyComparison.value = value;
+
+  final _goals = Rx<List<FirebaseGoalEntity>>([]); //TODO use view model
+  @override
+  List<FirebaseGoalEntity> get goals => _goals.value;
 }

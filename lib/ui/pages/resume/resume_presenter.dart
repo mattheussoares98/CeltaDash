@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+import '../../../domain/entities/entities.dart';
 import '../../../domain/helpers/helpers.dart';
 import '../../../domain/usecases/usecases.dart';
 import '../../helpers/helpers.dart';
@@ -15,6 +16,7 @@ abstract class ResumePresenter implements Listenable {
   GetSaleStatisticsParams? get lastGetStatisticsParams;
   GetSaleStatisticsParams? get lastGetDailyComparisonParams;
   GetSaleStatisticsParams? get lastGetMonthlyComparisonParams;
+  List<FirebaseGoalEntity> get goals;
 
   void goToGoalHistoryPage();
   void goToGroupSummaryPage();
