@@ -295,6 +295,20 @@ class GetxResumePresenter extends GetxController
     _goals.value = remoteGoals;
   }
 
+  @override
+  GoalViewModel? get firebaseEnterpriseGoal {
+    //TODO create tests
+    final index = _goals.value.indexWhere(
+      (e) => e.enterpriseId == homePresenter.selectedEnterprise?.id,
+    );
+
+    if (index == -1) {
+      return null;
+    } else {
+      return _goals.value[index];
+    }
+  }
+
   String get goalId {
     return "${homePresenter.selectedEnterprise?.id}-${DateFormat('yyyy-MM').format(homePresenter.selectedDate)}";
   }
@@ -317,7 +331,7 @@ class GetxResumePresenter extends GetxController
   set monthlyComparison(List<SaleStatisticViewModel>? value) =>
       _monthlyComparison.value = value;
 
-  final _goals = Rx<List<GoalViewModel>>([]); //TODO use view model
+  final _goals = Rx<List<GoalViewModel>>([]);
   @override
   List<GoalViewModel> get goals => _goals.value;
 }
