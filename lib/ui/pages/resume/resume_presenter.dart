@@ -16,7 +16,6 @@ abstract class ResumePresenter implements Listenable {
   GetSaleStatisticsParams? get lastGetDailyComparisonParams;
   GetSaleStatisticsParams? get lastGetMonthlyComparisonParams;
 
-  void goToSetGoalPage();
   void goToGoalHistoryPage();
   void goToGroupSummaryPage();
 

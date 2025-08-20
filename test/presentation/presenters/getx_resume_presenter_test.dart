@@ -99,14 +99,6 @@ void main() {
   });
 
   group("Navigate to", () {
-    test("Should navigate to set goal page correctly", () async {
-      sut.goToSetGoalPage();
-
-      verify(
-        () => navigateTo.navigate(pageRoute: PageRoutes.setGoal),
-      ).called(1);
-    });
-
     test("Should navigate to group summary correctly", () async {
       sut.goToGroupSummaryPage();
 

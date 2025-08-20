@@ -34,11 +34,6 @@ class GetxResumePresenter extends GetxController
   final homePresenter = Get.find<HomePresenter>();
 
   @override
-  void goToSetGoalPage() {
-    navigateTo.navigate(pageRoute: PageRoutes.setGoal);
-  }
-
-  @override
   void goToGoalHistoryPage() {
     navigateTo.navigate(pageRoute: PageRoutes.goalHistory);
   }
