@@ -77,6 +77,7 @@ abstract class Translation {
   String get dateNotUpdated;
   String get day;
   String get days;
+  String get daysInMonth;
   String get department;
   String get departmentAbbreviated;
   String get departments;
@@ -111,6 +112,7 @@ abstract class Translation {
   String get groupPeriod;
   String get grossProfit;
   String get groupSummary;
+  String get historic;
   String get hour;
   String get hourly;
   String get hourlyAnalysis;
@@ -121,6 +123,7 @@ abstract class Translation {
   String get loadEnterprises;
   String get login;
   String get logout;
+  String get manualInsertedGoal;
   String get margin;
   String get modalities;
   String get month;
@@ -167,6 +170,7 @@ abstract class Translation {
   String get revenue;
   String get sale;
   String get sales;
+  String get salesFrom;
   String get salesOfTheDay;
   String get salesOfTheMonth;
   String get salesQuantity;

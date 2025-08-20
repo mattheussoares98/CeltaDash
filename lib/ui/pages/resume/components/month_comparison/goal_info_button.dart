@@ -131,12 +131,12 @@ class _MonthlyInfo extends StatelessWidget {
           const SizedBox(height: 8),
           if (resumePresenter.firebaseEnterpriseGoal == null) ...[
             _RowSpan(
-              title: "Meta = ",
-              value: "vendas de ($formattedDate) + 5%",
+              title: "${R.string.goal} = ",
+              value: "${R.string.salesFrom} ($formattedDate) + 5%",
               showCoin: false,
             ),
             _RowSpan(
-              title: "Vendas de ($formattedDate) =",
+              title: "${R.string.salesFrom} ($formattedDate) =",
               showCoin: true,
               value: comparisonLiquidValue.toString().toBrazilianNumber(),
             ),
@@ -147,13 +147,13 @@ class _MonthlyInfo extends StatelessWidget {
                   (comparisonLiquidValue * 0.05).toString().toBrazilianNumber(),
             ),
             _RowSpan(
-              title: "Total = ",
+              title: "${R.string.total} = ",
               showCoin: true,
               value: goalLiquidValue.toString().toBrazilianNumber(),
             ),
           ] else ...[
             _RowSpan(
-              title: "Meta inserida manualmente = ",
+              title: "${R.string.manualInsertedGoal} = ",
               showCoin: true,
               value: goalLiquidValue.toString().toBrazilianNumber(),
             ),
@@ -189,18 +189,19 @@ class _DailyInfo extends StatelessWidget {
             style: theme.textTheme.headlineMedium,
           ),
           const SizedBox(height: 8),
-          const _RowSpan(
-            title: "Meta = ",
-            value: "Meta mensal / dias no mês",
+          _RowSpan(
+            title: "${R.string.goal} = ",
+            value:
+                "${R.string.monthlyGoal} / ${(R.string.daysInMonth).toLowerCase()}",
             showCoin: false,
           ),
           _RowSpan(
-            title: "Meta mensal = ",
+            title: "${R.string.monthlyGoal} = ",
             value: goalLiquidValue.toString().toBrazilianNumber(),
             showCoin: true,
           ),
           _RowSpan(
-            title: "Dias no mês = ",
+            title: "${R.string.daysInMonth} = ",
             value: DateTime(
               comparisonEndDate.year,
               comparisonEndDate.month + 1,
@@ -209,7 +210,7 @@ class _DailyInfo extends StatelessWidget {
             showCoin: false,
           ),
           _RowSpan(
-            title: "Total = ",
+            title: "${R.string.total} = ",
             showCoin: true,
             value: (goalLiquidValue /
                     DateTime(

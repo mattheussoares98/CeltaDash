@@ -164,7 +164,7 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
                         onTap: () {
                           //TODO implement
                         },
-                        title: "Histórico",
+                        title: R.string.historic,
                       ),
                     ),
                   ],

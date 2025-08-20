@@ -92,6 +92,7 @@ class PtBr implements Translation {
   String get dateNotUpdated => "Data não atualizada";
   String get day => "Dia";
   String get days => "Dias";
+  String get daysInMonth => "Dias no mês";
   String get department => "Departamento";
   String get departmentAbbreviated => "Dept";
   String get departments => "Departamentos";
@@ -126,6 +127,7 @@ class PtBr implements Translation {
   String get grossProfit => "Lucro bruto";
   String get groupOfStores => "Grupo de lojas";
   String get groupSummary => "Resumo do grupo";
+  String get historic => "Histórico";
   String get hour => "Hora";
   String get hourly => "Por hora";
   String get hourlyAnalysis => "Análise por horário";
@@ -136,6 +138,7 @@ class PtBr implements Translation {
   String get loadEnterprises => "Carregar empresas";
   String get login => "Login";
   String get logout => "Sair";
+  String get manualInsertedGoal => "Meta inserida manualmente";
   String get margin => "Margem";
   String get modalities => "Modalidades";
   String get month => "Mês";
@@ -182,6 +185,7 @@ class PtBr implements Translation {
   String get revenue => "Faturamento";
   String get sale => "Venda";
   String get sales => "Vendas";
+  String get salesFrom => "Vendas de";
   String get salesOfTheDay => "Vendas do dia";
   String get salesOfTheMonth => "Vendas do mês";
   String get salesQuantity => "Quantidade de vendas";
