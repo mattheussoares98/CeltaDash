@@ -4,6 +4,7 @@ export './getx_compare_days_presenter.dart';
 export './getx_compare_months_presenter.dart';
 export './getx_departments_presenter.dart';
 export './getx_enterprises_manager_presenter.dart';
+export './getx_historic_goal_presenter.dart';
 export './getx_home_presenter.dart';
 export 'getx_operators_presenter.dart';
 export './getx_login_presenter.dart';

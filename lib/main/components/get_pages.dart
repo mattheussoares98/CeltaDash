@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:celta_dash/main/factories/pages/goal_historic/goal_historic_page_factory.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
