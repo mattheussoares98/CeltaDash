@@ -59,7 +59,10 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
 
       final comparisonLiquidValue = comparisonSales?.sumLiquidValue() ?? 0;
       final currentMonthLiquidValue = currentMonthSales?.sumLiquidValue() ?? 0;
-      final goalLiquidValue = comparisonLiquidValue * 1.05;
+      final goalLiquidValue =
+          resumePresenter.firebaseEnterpriseGoal?.value == null
+              ? comparisonLiquidValue * 1.05
+              : resumePresenter.firebaseEnterpriseGoal!.value!.toDouble();
 
       if (sales == null || sales.isEmpty) {
         return const SizedBox.shrink();
