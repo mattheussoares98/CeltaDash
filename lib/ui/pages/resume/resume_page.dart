@@ -18,14 +18,14 @@ class ResumePage extends StatefulWidget {
 
 class _ResumePageState extends State<ResumePage>
     with UIErrorManager, LoadingManager {
-  final scrollController = ScrollController();
+  final monthComparisonScrollController = ScrollController();
   StreamSubscription? mainErrorSubscription;
 
   @override
   void dispose() {
     super.dispose();
 
-    scrollController.dispose();
+    monthComparisonScrollController.dispose();
     mainErrorSubscription?.cancel();
   }
 
@@ -82,7 +82,7 @@ class _ResumePageState extends State<ResumePage>
                         );
                       },
                       child: SingleChildScrollView(
-                        controller: scrollController,
+                        controller: monthComparisonScrollController,
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
                           child: Obx(() {
@@ -106,30 +106,27 @@ class _ResumePageState extends State<ResumePage>
                               children: [
                                 Column(
                                   children: [
-                                    if (!isPortrait)
-                                      //TODO add here as well
-                                      // MonthGoalComparison
-                                      ...[
+                                    if (!isPortrait) ...[
                                       IntrinsicHeight(
                                         child: Row(
                                           children: [
                                             Expanded(
                                               child: DailyStatistics(
-                                                scrollController:
-                                                    scrollController,
                                                 saleStatistics:
                                                     salesByEnterprise,
                                               ),
                                             ),
                                             Expanded(
                                               child: MonthGoalComparison(
-                                                  isLoading:
-                                                      loadingSnap.data == true),
+                                                isLoading:
+                                                    loadingSnap.data == true,
+                                                scrollController:
+                                                    monthComparisonScrollController,
+                                              ),
                                             ),
                                           ],
                                         ),
                                       ),
-                                      //TODO new below, group and month analysis
                                       IntrinsicHeight(
                                         child: Row(
                                           children: [
@@ -152,12 +149,14 @@ class _ResumePageState extends State<ResumePage>
                                     ],
                                     if (isPortrait) ...[
                                       DailyStatistics(
-                                        scrollController: scrollController,
                                         saleStatistics: salesByEnterprise,
                                       ),
                                       const SizedBox(height: 8),
                                       MonthGoalComparison(
-                                          isLoading: loadingSnap.data == true),
+                                        isLoading: loadingSnap.data == true,
+                                        scrollController:
+                                            monthComparisonScrollController,
+                                      ),
                                       const SizedBox(height: 8),
                                       MonthlyAnalysis(sales: salesByEnterprise),
                                       const SizedBox(height: 8),

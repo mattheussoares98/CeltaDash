@@ -7,11 +7,9 @@ import '../../../components/components.dart';
 import '../../pages.dart';
 
 class DailyStatistics extends StatelessWidget {
-  final ScrollController scrollController;
   final List<SaleStatisticViewModel> saleStatistics;
   const DailyStatistics({
     super.key,
-    required this.scrollController,
     required this.saleStatistics,
   });
 

@@ -8,21 +8,24 @@ import 'month_comparison.dart';
 
 class MonthGoalComparison extends StatefulWidget {
   final bool isLoading;
-  const MonthGoalComparison({super.key, required this.isLoading});
+  final ScrollController scrollController;
+  const MonthGoalComparison({
+    super.key,
+    required this.isLoading,
+    required this.scrollController,
+  });
 
   @override
   State<MonthGoalComparison> createState() => _MonthGoalComparisonState();
 }
 
 class _MonthGoalComparisonState extends State<MonthGoalComparison> {
-  final scrollController = ScrollController();
   bool showEditGoal = false;
   final goalController = TextEditingController();
   final goalFocusNode = FocusNode();
 
   @override
   void dispose() {
-    scrollController.dispose();
     goalController.dispose();
     goalFocusNode.dispose();
     super.dispose();
@@ -83,7 +86,7 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 8, 8, 0),
                   child: AnimatedCircleProgress(
-                    key: ValueKey(sales.sumLiquidValue()),
+                    key: ValueKey(goalLiquidValue),
                     value: currentMonthLiquidValue,
                     maximum: goalLiquidValue,
                     height: mediaQuery.size.width *
@@ -94,7 +97,7 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
                         (mediaQuery.orientation == Orientation.portrait
                             ? 0.4
                             : 0.2),
-                    scrollController: scrollController,
+                    scrollController: widget.scrollController,
                   ),
                 ),
                 Expanded(

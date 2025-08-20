@@ -45,6 +45,7 @@ class EditGoalFieldAndButtons extends StatelessWidget {
               context: context,
               labelText: R.string.goal.addBrazilianCoin(),
             ),
+            onFieldSubmitted: (_) => changeGoal(),
             inputFormatters: [
               FilteringTextInputFormatter.digitsOnly,
               BrazilianRealInputFormatter(),
