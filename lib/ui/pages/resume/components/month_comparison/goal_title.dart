@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../helpers/helpers.dart';
+import '../../../pages.dart';
 
 class GoalTitle extends StatelessWidget {
   final DateTime comparisonEndDate;
@@ -16,6 +18,7 @@ class GoalTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final resumePresenter = Get.find<ResumePresenter>();
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -30,9 +33,10 @@ class GoalTitle extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 16),
           child: Tooltip(
-            message:
-                '''Meta = vendas de (${DateFormat.yM("pt_BR").format(DateTime(comparisonEndDate.year, comparisonEndDate.month))}) + 5% 
-'${comparisonLiquidValue.toString().toBrazilianNumber().addBrazilianCoin()}' + 5%''',
+            message: resumePresenter.firebaseEnterpriseGoal == null
+                ? '''Meta = vendas de (${DateFormat.yM("pt_BR").format(DateTime(comparisonEndDate.year, comparisonEndDate.month))}) + 5% 
+'${comparisonLiquidValue.toString().toBrazilianNumber().addBrazilianCoin()}' + 5%'''
+                : "Meta inserida manualmente",
             child: Icon(
               theme.platform == TargetPlatform.iOS
                   ? CupertinoIcons.info
