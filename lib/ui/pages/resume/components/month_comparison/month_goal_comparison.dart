@@ -1,9 +1,7 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../components/components.dart';
 import '../../../../helpers/helpers.dart';
@@ -47,7 +45,6 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
     final resumePresenter = Get.find<ResumePresenter>();
     final homePresenter = Get.find<HomePresenter>();
     final mediaQuery = MediaQuery.of(context);
-    final theme = Theme.of(context);
     final circleSize = getCircleSize(mediaQuery);
 
     return Obx(() {
@@ -178,22 +175,10 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
           Positioned(
             top: 2,
             right: 2,
-            child: InkWell(
-              onTap: () {
-                DefaultModalPage.open(
-                  context,
-                  Text(resumePresenter.firebaseEnterpriseGoal == null
-                      ? '''Meta = vendas de (${DateFormat.yM("pt_BR").format(DateTime(comparisonEndDate!.year, comparisonEndDate.month))}) + 5% 
-'${comparisonLiquidValue.toString().toBrazilianNumber().addBrazilianCoin()}' + 5%'''
-                      : "Meta inserida manualmente"),
-                );
-              },
-              child: Icon(
-                theme.platform == TargetPlatform.iOS
-                    ? CupertinoIcons.info
-                    : Icons.info,
-                color: theme.colorScheme.primary.withAlpha(200),
-              ),
+            child: GoalInfoButton(
+              comparisonEndDate: comparisonEndDate!,
+              comparisonLiquidValue: comparisonLiquidValue,
+              goalLiquidValue: goalLiquidValue,
             ),
           ),
         ],
