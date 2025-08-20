@@ -260,18 +260,20 @@ class GetxResumePresenter extends GetxController
     mainError = null;
     try {
       //TODO create tests
-      final docId =
-          "${homePresenter.selectedEnterprise?.id}-${DateFormat('yyyy-MM').format(homePresenter.selectedDate)}";
 
       await firebaseManager.put(
         path: "enterprises/${EnterpriseBuilder.entity!.firebaseId}/goals/all",
-        data: {docId: value},
+        data: {goalId: value},
       );
     } catch (e) {
       mainError = getUIError(e);
     } finally {
       isLoading = false;
     }
+  }
+
+  String get goalId {
+    return "${homePresenter.selectedEnterprise?.id}-${DateFormat('yyyy-MM').format(homePresenter.selectedDate)}";
   }
 
   final _compareDaysStatistics = Rx<List<SaleStatisticViewModel>?>(null);
