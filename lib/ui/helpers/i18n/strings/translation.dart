@@ -83,6 +83,7 @@ abstract class Translation {
   String get difference;
   String get disabled;
   String get discounts;
+  String get editGoal;
   String get email;
   String get empty;
   String get emptySubEnterprises;
