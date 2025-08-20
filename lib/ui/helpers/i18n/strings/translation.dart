@@ -72,6 +72,7 @@ abstract class Translation {
   String get daily;
   String get dailyAnalysis;
   String get dailyAnalysisAverage;
+  String get dailyGoal;
   String get date;
   String get dateNotUpdated;
   String get day;
@@ -103,6 +104,7 @@ abstract class Translation {
   String get generate;
   String get goal;
   String get goalHistory;
+  String get goalInfo;
   String get grossMargin;
   String get groupCategory;
   String get groupOfStores;

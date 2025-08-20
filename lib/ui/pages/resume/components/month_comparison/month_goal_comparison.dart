@@ -1,5 +1,9 @@
+import 'dart:math';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../components/components.dart';
 import '../../../../helpers/helpers.dart';
@@ -31,92 +35,123 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
     super.dispose();
   }
 
+  double getCircleSize(MediaQueryData mediaQuery) {
+    final value = mediaQuery.size.width *
+        (mediaQuery.orientation == Orientation.portrait ? 0.4 : 0.2);
+
+    return min(value, 130);
+  }
+
   @override
   Widget build(BuildContext context) {
     final resumePresenter = Get.find<ResumePresenter>();
     final homePresenter = Get.find<HomePresenter>();
     final mediaQuery = MediaQuery.of(context);
+    final theme = Theme.of(context);
+    final circleSize = getCircleSize(mediaQuery);
 
     return Obx(() {
       final sales = resumePresenter.monthlyComparison;
 
-      final currentMonthSales = sales
-          ?.filteredSales(
-            enterprise: homePresenter.selectedEnterprise,
-            filterYear: homePresenter.selectedDate.year,
-          )
-          .map((e) => e.toViewModel())
-          .toList();
+      final currentMonthLiquidValue = sales
+              ?.filteredSales(
+                enterprise: homePresenter.selectedEnterprise,
+                filterYear: homePresenter.selectedDate.year,
+              )
+              .map((e) => e.toViewModel())
+              .toList()
+              .sumLiquidValue() ??
+          0;
 
-      final comparisonParams = resumePresenter.lastGetMonthlyComparisonParams;
-      final comparisonSales = sales
-          ?.filteredSales(
-            enterprise: homePresenter.selectedEnterprise,
-            filterYear: comparisonParams?.endDate.year,
-            filterMonth: comparisonParams?.endDate.month,
-          )
-          .map((e) => e.toViewModel())
-          .toList();
-      final comparisonEndDate =
-          resumePresenter.lastGetMonthlyComparisonParams?.endDate;
+      final comparisonLiquidValue = sales
+              ?.filteredSales(
+                enterprise: homePresenter.selectedEnterprise,
+                filterYear: resumePresenter
+                    .lastGetMonthlyComparisonParams?.endDate.year,
+                filterMonth: resumePresenter
+                    .lastGetMonthlyComparisonParams?.endDate.month,
+              )
+              .map((e) => e.toViewModel())
+              .toList()
+              .sumLiquidValue() ??
+          0;
 
-      final comparisonLiquidValue = comparisonSales?.sumLiquidValue() ?? 0;
-      final currentMonthLiquidValue = currentMonthSales?.sumLiquidValue() ?? 0;
       final goalLiquidValue =
           resumePresenter.firebaseEnterpriseGoal?.value == null
               ? comparisonLiquidValue * 1.05
               : resumePresenter.firebaseEnterpriseGoal!.value!.toDouble();
 
+      final salesTodayLiquidValue = resumePresenter.saleStatistics
+              ?.filteredSales(
+                enterprise: homePresenter.selectedEnterprise,
+                filterYear: homePresenter.selectedDate.year,
+                filterMonth: homePresenter.selectedDate.month,
+                filterDay: homePresenter.selectedDate.day,
+              )
+              .map((e) => e.toViewModel())
+              .toList()
+              .sumLiquidValue() ??
+          0;
+
+      final comparisonEndDate =
+          resumePresenter.lastGetMonthlyComparisonParams?.endDate;
+
       if (sales == null || sales.isEmpty) {
         return const SizedBox.shrink();
       }
 
-      return Container(
-        decoration: ContainerDecoration.defaultDecoration,
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            GoalTitle(
-              comparisonEndDate: comparisonEndDate!,
-              comparisonLiquidValue: comparisonLiquidValue,
-            ),
-            Row(
+      return Stack(
+        children: [
+          Container(
+            decoration: ContainerDecoration.defaultDecoration,
+            padding: const EdgeInsets.all(8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 8, 8, 0),
-                  child: AnimatedCircleProgress(
-                    key: ValueKey(goalLiquidValue),
-                    value: currentMonthLiquidValue,
-                    maximum: goalLiquidValue,
-                    height: mediaQuery.size.width *
-                        (mediaQuery.orientation == Orientation.portrait
-                            ? 0.4
-                            : 0.2),
-                    width: mediaQuery.size.width *
-                        (mediaQuery.orientation == Orientation.portrait
-                            ? 0.4
-                            : 0.2),
-                    scrollController: widget.scrollController,
-                  ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: AnimatedCircleProgress(
+                        key: ValueKey(comparisonLiquidValue + goalLiquidValue),
+                        title: R.string.monthlyGoal,
+                        value: currentMonthLiquidValue,
+                        maximum: goalLiquidValue,
+                        height: circleSize,
+                        width: circleSize,
+                        scrollController: widget.scrollController,
+                      ),
+                    ),
+                    Expanded(
+                      child: AnimatedCircleProgress(
+                        key: ValueKey(salesTodayLiquidValue + goalLiquidValue),
+                        title: R.string.dailyGoal,
+                        value: salesTodayLiquidValue,
+                        maximum: goalLiquidValue / 31,
+                        height: circleSize,
+                        width: circleSize,
+                        scrollController: widget.scrollController,
+                      ),
+                    ),
+                  ],
                 ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      GoalValue(goalLiquidValue: goalLiquidValue),
-                      const SizedBox(height: 8),
-                      if (!showEditGoal)
-                        EditGoalButton(changeShowEditGoal: () {
+                const SizedBox(height: 16),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (!showEditGoal)
+                      Expanded(
+                        child: EditGoalButton(changeShowEditGoal: () {
                           setState(() {
                             showEditGoal = !showEditGoal;
                           });
                           Future.delayed(Duration.zero, () {
                             goalFocusNode.requestFocus();
                           });
-                        })
-                      else
-                        EditGoalFieldAndButtons(
+                        }),
+                      )
+                    else
+                      Expanded(
+                        child: EditGoalFieldAndButtons(
                           goalController: goalController,
                           goalFocusNode: goalFocusNode,
                           changeShowEditGoal: () {
@@ -125,20 +160,43 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
                             });
                           },
                         ),
-                      const SizedBox(height: 8),
-                      DefaultButton(
+                      ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: DefaultButton(
                         onTap: () {
                           //TODO implement
                         },
                         title: "Histórico",
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+          Positioned(
+            top: 2,
+            right: 2,
+            child: InkWell(
+              onTap: () {
+                DefaultModalPage.open(
+                  context,
+                  Text(resumePresenter.firebaseEnterpriseGoal == null
+                      ? '''Meta = vendas de (${DateFormat.yM("pt_BR").format(DateTime(comparisonEndDate!.year, comparisonEndDate.month))}) + 5% 
+'${comparisonLiquidValue.toString().toBrazilianNumber().addBrazilianCoin()}' + 5%'''
+                      : "Meta inserida manualmente"),
+                );
+              },
+              child: Icon(
+                theme.platform == TargetPlatform.iOS
+                    ? CupertinoIcons.info
+                    : Icons.info,
+                color: theme.colorScheme.primary.withAlpha(200),
+              ),
+            ),
+          ),
+        ],
       );
     });
   }

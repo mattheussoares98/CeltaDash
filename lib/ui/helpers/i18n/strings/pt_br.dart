@@ -87,6 +87,7 @@ class PtBr implements Translation {
   String get daily => "Diário";
   String get dailyAnalysis => "Análise diária";
   String get dailyAnalysisAverage => "Análise diária (média)";
+  String get dailyGoal => "Meta diária";
   String get date => "Data";
   String get dateNotUpdated => "Data não atualizada";
   String get day => "Dia";
@@ -118,6 +119,7 @@ class PtBr implements Translation {
   String get generate => "Gerar";
   String get goal => "Meta";
   String get goalHistory => "Histórico de metas";
+  String get goalInfo => "Informações da meta";
   String get grossMargin => "Margem bruta";
   String get groupCategory => "Agrupar categoria";
   String get groupPeriod => "Agrupar período";

@@ -7,6 +7,7 @@ class AnimatedCircleProgress extends StatefulWidget {
   final double maximum;
   final double height;
   final double width;
+  final String? title;
   final ScrollController
       scrollController; //need to repeat the animation when hide from the page and appears agein
 
@@ -16,6 +17,7 @@ class AnimatedCircleProgress extends StatefulWidget {
     required this.maximum,
     required this.height,
     required this.width,
+    required this.title,
     required this.scrollController,
   });
 
@@ -49,7 +51,7 @@ class _AnimatedCircleProgressState extends State<AnimatedCircleProgress>
   @override
   void dispose() {
     _controller.dispose();
-    widget.scrollController.removeListener(_checkVisibility);
+    // widget.scrollController.removeListener(_checkVisibility);
     super.dispose();
   }
 
@@ -77,80 +79,96 @@ class _AnimatedCircleProgressState extends State<AnimatedCircleProgress>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        _controller.reset();
-        _controller.forward();
-        _hasAnimated = true;
-      },
-      child: SizedBox(
-        width: widget.width,
-        height: widget.height,
-        key: _widgetKey,
-        child: LayoutBuilder(builder: (context, constraints) {
-          return AnimatedBuilder(
-            animation: _progressAnimation,
-            builder: (context, child) {
-              return Stack(
-                alignment: Alignment.center,
-                children: [
-                  CustomPaint(
-                    size: Size(constraints.maxWidth, constraints.maxHeight),
-                    painter: _ProgressCirclePainter(
-                      progress: _progressAnimation.value,
-                      backgroundColor: IsDarkTheme.isDark
-                          ? Theme.of(context).disabledColor
-                          : Theme.of(
-                              context,
-                            ).primaryColorLight.withAlpha(100),
-                      progressColor: widget.value >= widget.maximum
-                          ? Theme.of(context).primaryColor
-                          : Colors.red,
-                    ),
-                  ),
-                  SizedBox(
-                    width: constraints.maxWidth * 0.8,
-                    height: constraints.maxHeight * 0.8,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        FittedBox(
-                          child: Text(
-                            widget.value
-                                .toString()
-                                .toBrazilianNumber()
-                                .addBrazilianCoin(),
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineMedium
-                                ?.copyWith(
-                                    color: widget.value >= widget.maximum
-                                        ? Theme.of(context).primaryColor
-                                        : Colors.red),
-                          ),
+    final theme = Theme.of(context);
+    return Column(
+      children: [
+        if (widget.title != null)
+          Column(
+            children: [
+              Text(
+                widget.title!,
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                widget.maximum
+                    .toString()
+                    .toBrazilianNumber()
+                    .addBrazilianCoin(),
+                style: theme.textTheme.bodySmall,
+              ),
+              const SizedBox(height: 8),
+            ],
+          ),
+        GestureDetector(
+          onTap: () {
+            _controller.reset();
+            _controller.forward();
+            _hasAnimated = true;
+          },
+          child: SizedBox(
+            width: widget.width,
+            height: widget.height,
+            key: _widgetKey,
+            child: LayoutBuilder(builder: (context, constraints) {
+              return AnimatedBuilder(
+                animation: _progressAnimation,
+                builder: (context, child) {
+                  return Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      CustomPaint(
+                        size: Size(constraints.maxWidth, constraints.maxHeight),
+                        painter: _ProgressCirclePainter(
+                          progress: _progressAnimation.value,
+                          backgroundColor: IsDarkTheme.isDark
+                              ? theme.disabledColor
+                              : theme.primaryColorLight.withAlpha(100),
+                          progressColor: widget.value >= widget.maximum
+                              ? theme.primaryColor
+                              : Colors.red,
                         ),
-                        if (widget.value > 0 && widget.maximum > 0)
-                          FittedBox(
-                            child: Text(
-                              "${(widget.value / widget.maximum * 100).toString().toBrazilianNumber()}%",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelSmall
-                                  ?.copyWith(
-                                      color: widget.value >= widget.maximum
-                                          ? Theme.of(context).primaryColor
-                                          : Colors.red),
+                      ),
+                      SizedBox(
+                        width: constraints.maxWidth * 0.8,
+                        height: constraints.maxHeight * 0.8,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            FittedBox(
+                              child: Text(
+                                widget.value
+                                    .toString()
+                                    .toBrazilianNumber()
+                                    .addBrazilianCoin(),
+                                style: theme.textTheme.headlineMedium?.copyWith(
+                                    color: widget.value >= widget.maximum
+                                        ? theme.primaryColor
+                                        : Colors.red),
+                              ),
                             ),
-                          ),
-                      ],
-                    ),
-                  ),
-                ],
+                            if (widget.value > 0 && widget.maximum > 0)
+                              FittedBox(
+                                child: Text(
+                                  "${(widget.value / widget.maximum * 100).toString().toBrazilianNumber()}%",
+                                  style: theme.textTheme.labelSmall?.copyWith(
+                                      color: widget.value >= widget.maximum
+                                          ? theme.primaryColor
+                                          : Colors.red),
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                },
               );
-            },
-          );
-        }),
-      ),
+            }),
+          ),
+        ),
+      ],
     );
   }
 }
