@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class GoalHistoryPage extends StatelessWidget {
-  const GoalHistoryPage({super.key});
+class GoalHistoricPage extends StatelessWidget {
+  const GoalHistoricPage({super.key});
 
   @override
   Widget build(BuildContext context) {

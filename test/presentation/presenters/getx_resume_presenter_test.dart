@@ -107,10 +107,10 @@ void main() {
       ).called(1);
     });
     test("Should navigate to goal history page correctly", () async {
-      sut.goToGoalHistoryPage();
+      sut.goToGoalHistoricPage();
 
       verify(
-        () => navigateTo.navigate(pageRoute: PageRoutes.goalHistory),
+        () => navigateTo.navigate(pageRoute: PageRoutes.goalHistoric),
       ).called(1);
     });
   });

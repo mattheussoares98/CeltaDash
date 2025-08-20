@@ -5,7 +5,7 @@ export './compare_months/compare_months.dart';
 export 'more/more.dart';
 export './departments/departments.dart';
 export './enterprises_manager/enterprises_manager.dart';
-export './goal_history/goal_history.dart';
+export 'goal_historic/goal_historic.dart';
 export './group_summary/group_summary.dart';
 export './home/home.dart';
 export './login/login.dart';

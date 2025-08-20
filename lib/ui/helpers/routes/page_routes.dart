@@ -6,7 +6,7 @@ class PageRoutes {
   static const String compareMonths = "/compare_months";
   static const String departments = "/departments";
   static const String enterprisesManager = "/enterprises_manager";
-  static const String goalHistory = "/goal_history";
+  static const String goalHistoric = "/goal_historic";
   static const String groupSummary = "/group_summary";
   static const String home = "/home";
   static const String login = "/login";

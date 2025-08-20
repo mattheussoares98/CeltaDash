@@ -18,7 +18,7 @@ abstract class ResumePresenter implements Listenable {
   List<GoalViewModel> get goals;
   GoalViewModel? get firebaseEnterpriseGoal;
 
-  void goToGoalHistoryPage();
+  void goToGoalHistoricPage();
   void goToGroupSummaryPage();
 
   Future<void> getSales(

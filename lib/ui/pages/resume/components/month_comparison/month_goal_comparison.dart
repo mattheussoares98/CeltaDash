@@ -161,9 +161,7 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: DefaultButton(
-                        onTap: () {
-                          //TODO implement
-                        },
+                        onTap: resumePresenter.goToGoalHistoricPage,
                         title: R.string.historic,
                       ),
                     ),
