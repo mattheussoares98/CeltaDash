@@ -21,8 +21,7 @@ abstract class ResumePresenter implements Listenable {
   void goToGoalHistoricPage();
   void goToGroupSummaryPage();
 
-  Future<void> getSales(
-    HomePresenter homePresenter, {
+  Future<void> getSales({
     required DateTime now,
     PeriodType? periodType,
     bool? forceRefresh,

@@ -27,8 +27,7 @@ class _DepartmentsPageState extends State<DepartmentsPage>
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
-        final home = Get.find<HomePresenter>();
-        Get.find<DepartmentsPresenter>().getSales(home);
+        Get.find<DepartmentsPresenter>().getSales();
       }
     });
   }
@@ -62,17 +61,10 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                 children: [
                   DefaultAppBar(
                     isLoading: isLoading,
-                    onChangeEnterprise: (_) {
-                      departmentsPresenter.getSales(homePresenter);
-                    },
-                    onChangeDate: (_) {
-                      departmentsPresenter.getSales(homePresenter);
-                    },
+                    onChangeEnterprise: (_) {},
+                    onChangeDate: (_) {},
                     onTapRefresh: () {
-                      departmentsPresenter.getSales(
-                        homePresenter,
-                        forceRefresh: true,
-                      );
+                      departmentsPresenter.getSales(forceRefresh: true);
                     },
                   ),
                   Row(
@@ -83,13 +75,11 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                         selectedPeriodType: departmentsPresenter.selectedPeriod,
                         onTapDaily: () {
                           departmentsPresenter.getSales(
-                            homePresenter,
                             periodType: PeriodType.daily,
                           );
                         },
                         onTapMonthly: () {
                           departmentsPresenter.getSales(
-                            homePresenter,
                             periodType: PeriodType.monthly,
                           );
                         },

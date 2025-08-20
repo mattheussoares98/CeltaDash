@@ -13,7 +13,6 @@ abstract class CompareDaysPresenter implements Listenable {
   Future<void> getSales({
     required DateTime? firstDay,
     required DateTime? secondDay,
-    required HomePresenter homePresenter,
     bool? forceRefresh,
   });
 }

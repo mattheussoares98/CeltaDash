@@ -14,7 +14,6 @@ class SalesPresenterSpy extends Mock implements SalesPresenter {
   }
 
   When _mockGetSalesCall() => when(() => this.getSales(
-        any(),
         periodType: any(named: 'periodType'),
         forceRefresh: any(named: 'forceRefresh'),
       ));

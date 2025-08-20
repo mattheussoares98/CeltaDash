@@ -19,12 +19,12 @@ class GetxCompareDaysPresenter extends GetxController
   });
 
   final appAnalyticsService = Get.find<AppAnalyticsService>();
+  final homePresenter = Get.find<HomePresenter>();
 
   @override
   Future<void> getSales({
     required DateTime? firstDay,
     required DateTime? secondDay,
-    required HomePresenter homePresenter,
     bool? forceRefresh,
   }) async {
     isLoading = true;

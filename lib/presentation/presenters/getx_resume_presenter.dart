@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -45,9 +44,7 @@ class GetxResumePresenter extends GetxController
   }
 
   @override
-  Future<void> getSales(
-    //TODO remove from all presenters as parameter
-    HomePresenter homePresenter, {
+  Future<void> getSales({
     required DateTime now,
     PeriodType? periodType,
     bool? forceRefresh,
@@ -84,9 +81,8 @@ class GetxResumePresenter extends GetxController
           canSearchAgain ||
           homePresenter.selectedDate.day !=
               lastGetDailyComparisonParams?.startDate.day) {
-        await _getCompareDaysStatistics(homePresenter, now);
-        await _getCompareCurrentMonthAndPreviousYearMonthStatistics(
-            homePresenter, now);
+        await _getCompareDaysStatistics(now);
+        await _getCompareCurrentMonthAndPreviousYearMonthStatistics(now);
       }
       if (!canSearchAgain) {
         return;
@@ -132,10 +128,7 @@ class GetxResumePresenter extends GetxController
     }
   }
 
-  Future<void> _getCompareDaysStatistics(
-    HomePresenter homePresenter,
-    DateTime now,
-  ) async {
+  Future<void> _getCompareDaysStatistics(DateTime now) async {
     final isCurrentDay = homePresenter.selectedDate.day == now.day &&
         homePresenter.selectedDate.month == now.month &&
         homePresenter.selectedDate.year == now.year;
@@ -190,7 +183,6 @@ class GetxResumePresenter extends GetxController
   }
 
   Future<void> _getCompareCurrentMonthAndPreviousYearMonthStatistics(
-    HomePresenter homePresenter,
     DateTime now,
   ) async {
     final defaultParams = GetSaleStatisticsParams(
@@ -306,9 +298,9 @@ class GetxResumePresenter extends GetxController
 
   Future<void> _getGoals() async {
     //TODO create tests
-    final DocumentSnapshot doc = await firebaseManager.get(path: goalPath);
+    final doc = await firebaseManager.get(path: goalPath);
 
-    if (!doc.exists || doc.data() == null) {
+    if (doc.data() == null || doc.data()!.isEmpty) {
       _goals.value = [];
       return;
     }

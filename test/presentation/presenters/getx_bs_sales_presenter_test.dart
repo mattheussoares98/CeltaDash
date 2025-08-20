@@ -97,7 +97,7 @@ void main() {
         expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
         expectLater(sut.mainErrorStream, emits(null));
 
-        await sut.getCanceledSales(homePresenter);
+        await sut.getCanceledSales();
       });
       test("Should emit correct values on error", () async {
         expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
@@ -108,37 +108,33 @@ void main() {
 
         loadSaleMovements.mockGetError();
 
-        await sut.getCanceledSales(homePresenter);
+        await sut.getCanceledSales();
       });
       test("Should update selected period correctly", () async {
         await sut.getCanceledSales(
-          homePresenter,
           periodType: PeriodType.daily,
         );
         expect(sut.selectedPeriod, PeriodType.daily);
 
         await sut.getCanceledSales(
-          homePresenter,
           periodType: PeriodType.monthly,
         );
         expect(sut.selectedPeriod, PeriodType.monthly);
 
         await sut.getCanceledSales(
-          homePresenter,
           periodType: PeriodType.daily,
         );
         expect(sut.selectedPeriod, PeriodType.daily);
       });
       test("Should update sale movements correctly", () async {
-        await sut.getCanceledSales(homePresenter);
+        await sut.getCanceledSales();
 
         expect(
           sut.dailyCanceledSales,
           SaleMovementModel.fromEntity(saleMovementEntity).toViewModel(),
         );
 
-        await sut.getCanceledSales(homePresenter,
-            periodType: PeriodType.monthly);
+        await sut.getCanceledSales(periodType: PeriodType.monthly);
 
         expect(
           sut.monthlyCanceledSales,
@@ -150,7 +146,6 @@ void main() {
             .values[faker.randomGenerator.integer(PeriodType.values.length)];
 
         await sut.getCanceledSales(
-          homePresenter,
           forceRefresh: true,
           periodType: period,
         );
@@ -167,7 +162,6 @@ void main() {
     group("Daily", () {
       test("Should load sales with correct params", () async {
         await sut.getCanceledSales(
-          homePresenter,
           periodType: PeriodType.daily,
         );
 
@@ -194,7 +188,7 @@ void main() {
       });
 
       test("Should call load sale movements with correct values", () async {
-        await sut.getCanceledSales(homePresenter, periodType: PeriodType.daily);
+        await sut.getCanceledSales(periodType: PeriodType.daily);
 
         final startDate = DateTime(
           homePresenter.selectedDateMock.year,
@@ -216,8 +210,8 @@ void main() {
         ).called(1);
       });
       test("Should not load again if dont force refresh", () async {
-        await sut.getCanceledSales(homePresenter, periodType: PeriodType.daily);
-        await sut.getCanceledSales(homePresenter, periodType: PeriodType.daily);
+        await sut.getCanceledSales(periodType: PeriodType.daily);
+        await sut.getCanceledSales(periodType: PeriodType.daily);
 
         final startDate = DateTime(
           homePresenter.selectedDateMock.year,
@@ -239,7 +233,7 @@ void main() {
         ).called(1);
       });
       test("Should update last get sales params correctly", () async {
-        await sut.getCanceledSales(homePresenter, periodType: PeriodType.daily);
+        await sut.getCanceledSales(periodType: PeriodType.daily);
 
         final startDate = DateTime(
           homePresenter.selectedDateMock.year,
@@ -259,7 +253,7 @@ void main() {
       });
 
       test("Should update sale movements correctly", () async {
-        await sut.getCanceledSales(homePresenter, periodType: PeriodType.daily);
+        await sut.getCanceledSales(periodType: PeriodType.daily);
 
         expect(
           sut.dailyCanceledSales,
@@ -268,7 +262,7 @@ void main() {
       });
 
       test("Should load again if change the selected enterprise", () async {
-        await sut.getCanceledSales(homePresenter);
+        await sut.getCanceledSales();
 
         final startDate = DateTime(
           homePresenter.selectedDateMock.year,
@@ -292,7 +286,7 @@ void main() {
         homePresenter.selectedEnterpriseMock =
             EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
                 .toViewModel();
-        await sut.getCanceledSales(homePresenter);
+        await sut.getCanceledSales();
 
         verify(
           () => loadSaleMovements.get(
@@ -311,8 +305,7 @@ void main() {
 
     group("Monthly", () {
       test("Should load sales with correct params", () async {
-        await sut.getCanceledSales(homePresenter,
-            periodType: PeriodType.monthly);
+        await sut.getCanceledSales(periodType: PeriodType.monthly);
 
         verify(
           () => loadSaleMovements.get(
@@ -337,8 +330,7 @@ void main() {
       });
 
       test("Should call load sale movements with correct values", () async {
-        await sut.getCanceledSales(homePresenter,
-            periodType: PeriodType.monthly);
+        await sut.getCanceledSales(periodType: PeriodType.monthly);
 
         verify(
           () => loadSaleMovements.get(
@@ -362,10 +354,8 @@ void main() {
         ).called(1);
       });
       test("Should not load again if dont force refresh", () async {
-        await sut.getCanceledSales(homePresenter,
-            periodType: PeriodType.monthly);
-        await sut.getCanceledSales(homePresenter,
-            periodType: PeriodType.monthly);
+        await sut.getCanceledSales(periodType: PeriodType.monthly);
+        await sut.getCanceledSales(periodType: PeriodType.monthly);
 
         verify(
           () => loadSaleMovements.get(
@@ -389,8 +379,7 @@ void main() {
         ).called(1);
       });
       test("Should update last get sales params correctly", () async {
-        await sut.getCanceledSales(homePresenter,
-            periodType: PeriodType.monthly);
+        await sut.getCanceledSales(periodType: PeriodType.monthly);
 
         expect(
           sut.lastGetMonthlyParams,
@@ -412,8 +401,7 @@ void main() {
       });
 
       test("Should update sale movements correctly", () async {
-        await sut.getCanceledSales(homePresenter,
-            periodType: PeriodType.monthly);
+        await sut.getCanceledSales(periodType: PeriodType.monthly);
 
         expect(
           sut.monthlyCanceledSales,
@@ -422,8 +410,7 @@ void main() {
       });
 
       test("Should load again if change the selected enterprise", () async {
-        await sut.getCanceledSales(homePresenter,
-            periodType: PeriodType.monthly);
+        await sut.getCanceledSales(periodType: PeriodType.monthly);
 
         verify(
           () => loadSaleMovements.get(
@@ -449,8 +436,7 @@ void main() {
         homePresenter.selectedEnterpriseMock =
             EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
                 .toViewModel();
-        await sut.getCanceledSales(homePresenter,
-            periodType: PeriodType.monthly);
+        await sut.getCanceledSales(periodType: PeriodType.monthly);
 
         verify(
           () => loadSaleMovements.get(

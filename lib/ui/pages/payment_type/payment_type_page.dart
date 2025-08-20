@@ -30,8 +30,8 @@ class _PaymentTypePageState extends State<PaymentTypePage>
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
         PaymentTypePresenter paymentTypePresenter = Get.find();
-        HomePresenter homePresenter = Get.find();
-        paymentTypePresenter.getSales(homePresenter);
+
+        paymentTypePresenter.getSales();
       }
     });
   }
@@ -63,16 +63,13 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                     DefaultAppBar(
                       isLoading: loadingSnap.data == true,
                       onChangeEnterprise: (_) {
-                        paymentTypePresenter.getSales(homePresenter);
+                        paymentTypePresenter.getSales();
                       },
                       onChangeDate: (_) {
-                        paymentTypePresenter.getSales(homePresenter);
+                        paymentTypePresenter.getSales();
                       },
                       onTapRefresh: () {
-                        paymentTypePresenter.getSales(
-                          homePresenter,
-                          forceRefresh: true,
-                        );
+                        paymentTypePresenter.getSales(forceRefresh: true);
                       },
                     ),
                     SelectPeriodItems(
@@ -80,13 +77,11 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                       selectedPeriodType: paymentTypePresenter.selectedPeriod,
                       onTapMonthly: () {
                         paymentTypePresenter.getSales(
-                          homePresenter,
                           periodType: PeriodType.monthly,
                         );
                       },
                       onTapDaily: () {
                         paymentTypePresenter.getSales(
-                          homePresenter,
                           periodType: PeriodType.daily,
                         );
                       },

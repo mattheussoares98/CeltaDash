@@ -22,8 +22,8 @@ class _SellersPageState extends State<SellersPage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       SellersPresenter sellersPresenter = Get.find();
-      HomePresenter homePresenter = Get.find();
-      sellersPresenter.getSales(homePresenter);
+
+      sellersPresenter.getSales();
     });
   }
 
@@ -60,16 +60,13 @@ class _SellersPageState extends State<SellersPage> {
                   DefaultAppBar(
                     isLoading: loadingSnap.data == true,
                     onChangeEnterprise: (_) {
-                      sellersPresenter.getSales(homePresenter);
+                      sellersPresenter.getSales();
                     },
                     onChangeDate: (_) {
-                      sellersPresenter.getSales(homePresenter);
+                      sellersPresenter.getSales();
                     },
                     onTapRefresh: () {
-                      sellersPresenter.getSales(
-                        homePresenter,
-                        forceRefresh: true,
-                      );
+                      sellersPresenter.getSales(forceRefresh: true);
                     },
                   ),
                   Padding(
@@ -79,19 +76,16 @@ class _SellersPageState extends State<SellersPage> {
                       selectedPeriodType: sellersPresenter.selectedPeriod,
                       onTapDaily: () {
                         sellersPresenter.getSales(
-                          homePresenter,
                           periodType: PeriodType.daily,
                         );
                       },
                       onTapMonthly: () {
                         sellersPresenter.getSales(
-                          homePresenter,
                           periodType: PeriodType.monthly,
                         );
                       },
                       onTapYearly: () {
                         sellersPresenter.getSales(
-                          homePresenter,
                           periodType: PeriodType.yearly,
                         );
                       },

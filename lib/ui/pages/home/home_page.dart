@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
           loadedEnterprises = true;
         });
 
-        resumePresenter.getSales(homePresenter, now: DateTime.now());
+        resumePresenter.getSales(now: DateTime.now());
       }
     });
   }
@@ -132,8 +132,7 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
               ? (index) async {
                   homePresenter.updateSelectedIndex(index);
                   if (index == 0) {
-                    await resumePresenter.getSales(homePresenter,
-                        now: DateTime.now());
+                    await resumePresenter.getSales(now: DateTime.now());
                   }
                 }
               : (_) {

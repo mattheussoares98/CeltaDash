@@ -29,8 +29,7 @@ class GetxBsSalesPresenter extends GetxController
   final homePresenter = Get.find<HomePresenter>();
 
   @override
-  Future<void> getCanceledSales(
-    HomePresenter homePresenter, {
+  Future<void> getCanceledSales({
     PeriodType? periodType,
     bool? forceRefresh,
   }) async {

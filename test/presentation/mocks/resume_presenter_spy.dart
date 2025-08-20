@@ -16,7 +16,6 @@ class ResumePresenterSpy extends Mock implements ResumePresenter {
   }
 
   When _mockGetSalesCall() => when(() => this.getSales(
-        any(),
         forceRefresh: any(named: "forceRefresh"),
         now: any(named: "now"),
       ));

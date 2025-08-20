@@ -2,8 +2,10 @@ import 'package:celta_dash/data/models/models.dart';
 import 'package:celta_dash/domain/entities/entities.dart';
 import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/domain/usecases/usecases.dart';
+import 'package:celta_dash/main/builders/builders.dart';
 import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:celta_dash/ui/pages/pages.dart';
 import 'package:celta_dash/ui/services/services.dart';
 import 'package:faker/faker.dart';
 
@@ -11,6 +13,7 @@ import 'package:get/get.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../data/mocks/mocks.dart';
@@ -49,19 +52,28 @@ void main() {
       loadSaleStatistics: loadSaleStatistics,
       firebaseManager: firebaseManager,
     );
-    homePresenter = HomePresenterSpy();
   }
 
   void initEntities() {
+    now = DateTime.now();
+    EnterpriseBuilder.entity = EntityFactory.makeFirebaseEnterpriseEntity();
+
     saleStatisticsEntities = [
       EntityFactory.makeSaleStatisticEntity(),
       EntityFactory.makeSaleStatisticEntity(),
       EntityFactory.makeSaleStatisticEntity(),
     ];
     mockedFirebaseGet = MockedFirebaseGet(
-      dataToReturn: [FakeDoc({}, faker.guid.guid())],
+      dataToReturn: [
+        FakeDoc(
+          {
+            "${faker.randomGenerator.integer(100)}-${DateFormat("yyyy-MM").format(now)}":
+                faker.randomGenerator.decimal(),
+          },
+          faker.guid.guid(),
+        ),
+      ],
     );
-    now = DateTime.now();
   }
 
   void initMockSuccess() {
@@ -73,14 +85,16 @@ void main() {
 
   void initServices() {
     appAnalyticsService = AppAnalyticsServiceSpy();
+    homePresenter = HomePresenterSpy();
+    Get.put<HomePresenter>(homePresenter);
     Get.put<AppAnalyticsService>(appAnalyticsService);
   }
 
   setUp(() {
     initServices();
+    initEntities();
     initUsecases();
     initPresenters();
-    initEntities();
     initMockSuccess();
   });
 
@@ -120,7 +134,7 @@ void main() {
       expectLater(sut.mainErrorStream, emits(null));
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
 
-      await sut.getSales(now: now, homePresenter);
+      await sut.getSales(now: now);
     });
 
     test("Should emit correct values on error", () async {
@@ -132,11 +146,11 @@ void main() {
 
       loadSaleStatistics.mockGetError();
 
-      await sut.getSales(now: now, homePresenter);
+      await sut.getSales(now: now);
     });
 
     test("Should update sale movements correctly", () async {
-      await sut.getSales(now: now, homePresenter);
+      await sut.getSales(now: now);
 
       expect(
         sut.saleStatistics,
@@ -147,7 +161,7 @@ void main() {
     });
 
     test("Should load sale movements with correct values", () async {
-      await sut.getSales(now: now, homePresenter);
+      await sut.getSales(now: now);
 
       DateTime startDate = DateTime(
         homePresenter.selectedDateMock.year,
@@ -174,7 +188,6 @@ void main() {
         () async {
       await sut.getSales(
         now: now,
-        homePresenter,
         forceRefresh: true,
         periodType: PeriodType.daily,
       );
@@ -203,7 +216,6 @@ void main() {
         () async {
       await sut.getSales(
         now: now,
-        homePresenter,
         forceRefresh: true,
         periodType: PeriodType.monthly,
       );
@@ -226,10 +238,8 @@ void main() {
     });
 
     test("Should not load sales again if dont change the month", () async {
-      await sut.getSales(
-          now: now, homePresenter, periodType: PeriodType.monthly);
-      await sut.getSales(
-          now: now, homePresenter, periodType: PeriodType.monthly);
+      await sut.getSales(now: now, periodType: PeriodType.monthly);
+      await sut.getSales(now: now, periodType: PeriodType.monthly);
 
       verify(() => loadSaleStatistics.get(
             GetSaleStatisticsParams(
@@ -250,8 +260,8 @@ void main() {
     });
     test("Should load sales again if force refresh", () async {
       homePresenter.selectedDateMock = faker.date.dateTime();
-      await sut.getSales(now: now, homePresenter);
-      await sut.getSales(now: now, homePresenter, forceRefresh: true);
+      await sut.getSales(now: now);
+      await sut.getSales(now: now, forceRefresh: true);
 
       DateTime startDate = DateTime(
         homePresenter.selectedDateMock.year,
@@ -277,7 +287,7 @@ void main() {
     group("Get compare days statistics", () {
       test("Should update last get comparison sales params correctly",
           () async {
-        await sut.getSales(now: now, homePresenter);
+        await sut.getSales(now: now);
 
         expect(
             sut.lastGetDailyComparisonParams,
@@ -302,7 +312,7 @@ void main() {
             ));
       });
       test("Should call current day get sales with correct values", () async {
-        await sut.getSales(now: now, homePresenter);
+        await sut.getSales(now: now);
 
         verify(() => loadSaleStatistics.get(
               GetSaleStatisticsParams(
@@ -328,7 +338,7 @@ void main() {
       });
       test("Should call previous month day get sales with correct values",
           () async {
-        await sut.getSales(now: now, homePresenter);
+        await sut.getSales(now: now);
 
         verify(() => loadSaleStatistics.get(
               GetSaleStatisticsParams(
@@ -354,7 +364,7 @@ void main() {
       });
 
       test("Should update compare sales statistics correctly", () async {
-        await sut.getSales(now: now, homePresenter);
+        await sut.getSales(now: now);
 
         expect(sut.compareDaysStatistics, [
           ...saleStatisticsEntities
@@ -366,8 +376,8 @@ void main() {
       test(
           "Should not call again if dont change the enterprise and is not forcing refresh",
           () async {
-        await sut.getSales(now: now, homePresenter);
-        await sut.getSales(now: now, homePresenter);
+        await sut.getSales(now: now);
+        await sut.getSales(now: now);
 
         //first date
         final firstParams = GetSaleStatisticsParams(
@@ -410,8 +420,8 @@ void main() {
         verify(() => loadSaleStatistics.get(secondParams)).called(1);
       });
       test("Should call again if is forcing refresh", () async {
-        await sut.getSales(now: now, homePresenter);
-        await sut.getSales(now: now, homePresenter, forceRefresh: true);
+        await sut.getSales(now: now);
+        await sut.getSales(now: now, forceRefresh: true);
 
         //first date
         verify(() => loadSaleStatistics.get(
@@ -460,7 +470,7 @@ void main() {
             )).called(2);
       });
       test("Should call again if change the enterprise", () async {
-        await sut.getSales(now: now, homePresenter);
+        await sut.getSales(now: now);
 
         //first date
         verify(() => loadSaleStatistics.get(
@@ -514,7 +524,7 @@ void main() {
                     id: homePresenter.selectedEnterpriseMock!.id!.toInt() + 1))
             .toViewModel();
 
-        await sut.getSales(now: now, homePresenter);
+        await sut.getSales(now: now);
 
         //first date
         verify(() => loadSaleStatistics.get(
@@ -563,7 +573,7 @@ void main() {
             )).called(1);
       });
       test("Should call again if change the selected date", () async {
-        await sut.getSales(now: now, homePresenter);
+        await sut.getSales(now: now);
 
         //first date
         verify(() => loadSaleStatistics.get(
@@ -619,7 +629,7 @@ void main() {
           newDay == homePresenter.selectedDateMock.day ? newDay + 1 : newDay,
         );
 
-        await sut.getSales(now: now, homePresenter);
+        await sut.getSales(now: now);
 
         //first date
         verify(() => loadSaleStatistics.get(
@@ -669,7 +679,7 @@ void main() {
       });
       test("Should call with correct values when select today", () async {
         homePresenter.selectedDateMock = now;
-        await sut.getSales(now: now, homePresenter);
+        await sut.getSales(now: now);
 
         //first date
         verify(() => loadSaleStatistics.get(
@@ -720,7 +730,6 @@ void main() {
       test("Should update selected period correctly", () async {
         await sut.getSales(
           now: now,
-          homePresenter,
           periodType: PeriodType.daily,
           forceRefresh: true,
         );
@@ -728,7 +737,6 @@ void main() {
 
         await sut.getSales(
           now: now,
-          homePresenter,
           periodType: PeriodType.monthly,
           forceRefresh: true,
         );
@@ -788,7 +796,7 @@ void main() {
           ),
         );
 
-        await sut.getSales(now: now, homePresenter);
+        await sut.getSales(now: now);
 
         verify(() => loadSaleStatistics.get(currentMonthComparisonParams))
             .called(1);
@@ -852,7 +860,7 @@ void main() {
           ),
         );
 
-        await sut.getSales(now: now, homePresenter);
+        await sut.getSales(now: now);
 
         verify(() => loadSaleStatistics.get(currentMonthComparisonParams))
             .called(1);
@@ -866,7 +874,7 @@ void main() {
       });
       test("Should add sales correctly", () async {
         homePresenter.selectedDateMock = faker.date.dateTime();
-        await sut.getSales(now: now, homePresenter);
+        await sut.getSales(now: now);
 
         expect(sut.monthlyComparison, [
           ...saleStatisticsEntities
@@ -881,7 +889,6 @@ void main() {
       final periodType = PeriodType.values[index];
 
       await sut.getSales(
-        homePresenter,
         periodType: periodType,
         forceRefresh: true,
         now: now,

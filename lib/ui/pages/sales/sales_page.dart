@@ -34,8 +34,7 @@ class _SalesPageState extends State<SalesPage>
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
         final salesPresenter = Get.find<SalesPresenter>();
-        final homePresenter = Get.find<HomePresenter>();
-        salesPresenter.getSales(homePresenter);
+        salesPresenter.getSales();
 
         setState(() {
           _initialLoadFinished = true;
@@ -81,13 +80,13 @@ class _SalesPageState extends State<SalesPage>
                 showEnterpriseManagerButton: true,
                 isLoading: loadingSnap.data == true,
                 onChangeEnterprise: (_) {
-                  salesPresenter.getSales(homePresenter);
+                  salesPresenter.getSales();
                 },
                 onChangeDate: (_) {
-                  salesPresenter.getSales(homePresenter);
+                  salesPresenter.getSales();
                 },
                 onTapRefresh: () {
-                  salesPresenter.getSales(homePresenter, forceRefresh: true);
+                  salesPresenter.getSales(forceRefresh: true);
                 },
               ),
               body: Column(
@@ -109,25 +108,21 @@ class _SalesPageState extends State<SalesPage>
                               selectedPeriodType: salesPresenter.selectedPeriod,
                               onTapHourly: () {
                                 salesPresenter.getSales(
-                                  homePresenter,
                                   periodType: PeriodType.hourly,
                                 );
                               },
                               onTapDaily: () {
                                 salesPresenter.getSales(
-                                  homePresenter,
                                   periodType: PeriodType.daily,
                                 );
                               },
                               onTapMonthly: () {
                                 salesPresenter.getSales(
-                                  homePresenter,
                                   periodType: PeriodType.monthly,
                                 );
                               },
                               onTapYearly: () {
                                 salesPresenter.getSales(
-                                  homePresenter,
                                   periodType: PeriodType.yearly,
                                 );
                               },

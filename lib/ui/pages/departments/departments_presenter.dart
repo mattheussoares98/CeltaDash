@@ -14,8 +14,7 @@ abstract class DepartmentsPresenter implements Listenable {
   GetSaleStatisticsParams? get lastGetDailyParams;
   GetSaleStatisticsParams? get lastGetMonthlyParams;
 
-  Future<void> getSales(
-    HomePresenter homePresenter, {
+  Future<void> getSales({
     PeriodType? periodType,
     bool? forceRefresh,
   });

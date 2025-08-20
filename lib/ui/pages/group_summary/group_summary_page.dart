@@ -40,19 +40,16 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
               showEnterpriseDropdown: false,
               onChangeDate: (newDate) async {
                 await resumePresenter.getSales(
-                  homePresenter,
                   now: DateTime.now(),
                 );
               },
               onChangeEnterprise: (_) async {
                 await resumePresenter.getSales(
-                  homePresenter,
                   now: DateTime.now(),
                 );
               },
               onTapRefresh: () async {
                 await resumePresenter.getSales(
-                  homePresenter,
                   forceRefresh: true,
                   now: DateTime.now(),
                 );
@@ -70,14 +67,12 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
                         selectedPeriodType: resumePresenter.selectedPeriod,
                         onTapDaily: () {
                           resumePresenter.getSales(
-                            homePresenter,
                             periodType: PeriodType.daily,
                             now: DateTime.now(),
                           );
                         },
                         onTapMonthly: () {
                           resumePresenter.getSales(
-                            homePresenter,
                             periodType: PeriodType.monthly,
                             now: DateTime.now(),
                           );

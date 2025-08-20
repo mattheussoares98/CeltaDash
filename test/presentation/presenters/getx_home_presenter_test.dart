@@ -533,10 +533,7 @@ void main() {
           now: now,
         );
 
-        verify(() => resumePresenter.getSales(
-              sut,
-              now: now,
-            )).called(1);
+        verify(() => resumePresenter.getSales(now: now)).called(1);
       });
 
       test("Should call resumePresenter get sales forcing refresh", () async {
@@ -549,7 +546,6 @@ void main() {
         );
 
         verify(() => resumePresenter.getSales(
-              sut,
               forceRefresh: true,
               now: now,
             )).called(1);
@@ -565,7 +561,7 @@ void main() {
           now: now,
         );
 
-        verify(() => salesPresenter.getSales(sut)).called(1);
+        verify(() => salesPresenter.getSales()).called(1);
       });
 
       test("Should call salesPresenter get sales forcing refresh", () async {
@@ -577,8 +573,7 @@ void main() {
           now: now,
         );
 
-        verify(() => salesPresenter.getSales(sut, forceRefresh: true))
-            .called(1);
+        verify(() => salesPresenter.getSales(forceRefresh: true)).called(1);
       });
     });
     group("ProductsPresenter", () {
@@ -590,7 +585,7 @@ void main() {
           now: now,
         );
 
-        verify(() => productsPresenter.getSales(sut)).called(1);
+        verify(() => productsPresenter.getSales()).called(1);
       });
 
       test("Should call ProductsPresenter get sales forcing refresh", () async {
@@ -602,8 +597,7 @@ void main() {
           now: now,
         );
 
-        verify(() => productsPresenter.getSales(sut, forceRefresh: true))
-            .called(1);
+        verify(() => productsPresenter.getSales(forceRefresh: true)).called(1);
       });
     });
   });

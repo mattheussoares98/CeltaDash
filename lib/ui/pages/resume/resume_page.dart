@@ -57,14 +57,13 @@ class _ResumePageState extends State<ResumePage>
                 isLoading: loadingSnap.data == true,
                 showDatePicker: enterpriseIsEnabled,
                 onChangeEnterprise: (_) {
-                  resumePresenter.getSales(homePresenter, now: DateTime.now());
+                  resumePresenter.getSales(now: DateTime.now());
                 },
                 onChangeDate: (_) {
-                  resumePresenter.getSales(homePresenter, now: DateTime.now());
+                  resumePresenter.getSales(now: DateTime.now());
                 },
                 onTapRefresh: () {
                   resumePresenter.getSales(
-                    homePresenter,
                     now: DateTime.now(),
                     forceRefresh: true,
                   );
@@ -76,7 +75,6 @@ class _ResumePageState extends State<ResumePage>
                     RefreshIndicator(
                       onRefresh: () async {
                         resumePresenter.getSales(
-                          homePresenter,
                           now: DateTime.now(),
                           forceRefresh: true,
                         );

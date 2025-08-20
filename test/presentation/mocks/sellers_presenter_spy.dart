@@ -8,7 +8,6 @@ class SellersPresenterSpy extends Mock implements SellersPresenter {
   }
 
   When _mockGetSalesCall() => when(() => this.getSales(
-        any(),
         forceRefresh: any(named: 'forceRefresh'),
       ));
 

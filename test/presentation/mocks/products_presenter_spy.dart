@@ -17,7 +17,6 @@ class ProductsPresenterSpy extends Mock implements ProductsPresenter {
   }
 
   When _mockLoadProductsCall() => when(() => this.getSales(
-        any(),
         forceRefresh: any(named: 'forceRefresh'),
         periodType: any(named: 'periodType'),
       ));

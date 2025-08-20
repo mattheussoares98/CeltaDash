@@ -4,6 +4,7 @@ import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:celta_dash/ui/pages/pages.dart';
 import 'package:celta_dash/ui/services/services.dart';
 import 'package:faker/faker.dart';
 
@@ -42,7 +43,6 @@ void main() {
     sut = GetxCompareDaysPresenter(
       loadSaleStatistics: loadSaleStatistics,
     );
-    homePresenter = HomePresenterSpy();
   }
 
   void initEntities() {
@@ -64,6 +64,8 @@ void main() {
 
   void initServices() {
     appAnalyticsService = AppAnalyticsServiceSpy();
+    homePresenter = HomePresenterSpy();
+    Get.put<HomePresenter>(homePresenter);
     Get.put<AppAnalyticsService>(appAnalyticsService);
   }
 
@@ -96,7 +98,6 @@ void main() {
       expectLater(sut.mainErrorStream, emits(null));
 
       await sut.getSales(
-        homePresenter: homePresenter,
         firstDay: firstDay,
         secondDay: secondDay,
       );
@@ -108,7 +109,6 @@ void main() {
       loadSaleStatistics.mockGetError();
 
       await sut.getSales(
-        homePresenter: homePresenter,
         firstDay: firstDay,
         secondDay: firstDay,
       );
@@ -121,14 +121,12 @@ void main() {
       loadSaleStatistics.mockGetError();
 
       await sut.getSales(
-        homePresenter: homePresenter,
         firstDay: firstDay,
         secondDay: secondDay,
       );
     });
     test("Should update firstDaySaleStatistics correctly", () async {
       await sut.getSales(
-        homePresenter: homePresenter,
         firstDay: firstDay,
         secondDay: secondDay,
       );
@@ -144,10 +142,7 @@ void main() {
       );
     });
     test("Should update secondDaySaleStatistics correctly", () async {
-      await sut.getSales(
-          homePresenter: homePresenter,
-          firstDay: firstDay,
-          secondDay: secondDay);
+      await sut.getSales(firstDay: firstDay, secondDay: secondDay);
 
       expect(
         sut.saleStatistics,
@@ -160,24 +155,17 @@ void main() {
       );
     });
     test("Should update selected first day correctly", () async {
-      await sut.getSales(
-          homePresenter: homePresenter,
-          firstDay: firstDay,
-          secondDay: secondDay);
+      await sut.getSales(firstDay: firstDay, secondDay: secondDay);
 
       expect(sut.selectedFirstDay, firstDay);
     });
     test("Should update selected second day correctly", () async {
-      await sut.getSales(
-          homePresenter: homePresenter,
-          firstDay: firstDay,
-          secondDay: secondDay);
+      await sut.getSales(firstDay: firstDay, secondDay: secondDay);
 
       expect(sut.selectedSecondDay, secondDay);
     });
     test("Should call load first day with correct parameters", () async {
       await sut.getSales(
-        homePresenter: homePresenter,
         firstDay: firstDay,
         secondDay: null,
       );
@@ -203,7 +191,6 @@ void main() {
     });
     test("Should call load second day with correct parameters", () async {
       await sut.getSales(
-        homePresenter: homePresenter,
         firstDay: null,
         secondDay: secondDay,
       );
@@ -229,12 +216,10 @@ void main() {
     });
     test("Should not load again if dont change the second day", () async {
       await sut.getSales(
-        homePresenter: homePresenter,
         firstDay: null,
         secondDay: secondDay,
       );
       await sut.getSales(
-        homePresenter: homePresenter,
         firstDay: null,
         secondDay: secondDay,
       );
@@ -260,12 +245,10 @@ void main() {
     });
     test("Should not load again if dont change the first day", () async {
       await sut.getSales(
-        homePresenter: homePresenter,
         firstDay: firstDay,
         secondDay: null,
       );
       await sut.getSales(
-        homePresenter: homePresenter,
         firstDay: firstDay,
         secondDay: null,
       );
@@ -292,12 +275,10 @@ void main() {
 
     test("Should notload again if force refresh", () async {
       await sut.getSales(
-        homePresenter: homePresenter,
         firstDay: null,
         secondDay: secondDay,
       );
       await sut.getSales(
-        homePresenter: homePresenter,
         firstDay: null,
         secondDay: secondDay,
         forceRefresh: true,
@@ -324,7 +305,6 @@ void main() {
     });
     test("Should call appAnalyticsService add new analytics", () async {
       await sut.getSales(
-        homePresenter: homePresenter,
         firstDay: null,
         secondDay: secondDay,
       );

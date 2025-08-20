@@ -28,13 +28,11 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
-        HomePresenter homePresenter = Get.find();
         CompareDaysPresenter compareDaysPresenter = Get.find();
 
         await compareDaysPresenter.getSales(
           firstDay: firstDay,
           secondDay: secondDay,
-          homePresenter: homePresenter,
         );
       }
     });
@@ -48,7 +46,6 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
 
   @override
   Widget build(BuildContext context) {
-    HomePresenter homePresenter = Get.find();
     CompareDaysPresenter compareDaysPresenter = Get.find();
 
     mainErrorSubscription?.cancel();
@@ -65,7 +62,6 @@ class _ProfitabilityPageState extends State<CompareDaysPage>
                   firstDay: compareDaysPresenter.selectedFirstDay ?? firstDay,
                   secondDay:
                       compareDaysPresenter.selectedSecondDay ?? secondDay,
-                  homePresenter: homePresenter,
                   forceRefresh: true,
                 );
               },

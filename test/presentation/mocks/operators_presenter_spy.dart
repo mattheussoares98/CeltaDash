@@ -8,7 +8,6 @@ class OperatorsPresenterSpy extends Mock implements OperatorsPresenter {
   }
 
   When _mockGetSalesCall() => when(() => this.getSales(
-        any(),
         forceRefresh: any(named: 'forceRefresh'),
       ));
 

@@ -23,6 +23,7 @@ class GetxSalesPresenter extends GetxController
   GetxSalesPresenter({required this.loadSaleStatistics});
 
   final appAnalyticsService = Get.find<AppAnalyticsService>();
+  final homePresenter = Get.find<HomePresenter>();
 
   @override
   void onInit() {
@@ -31,8 +32,7 @@ class GetxSalesPresenter extends GetxController
   }
 
   @override
-  Future<void> getSales(
-    HomePresenter homePresenter, {
+  Future<void> getSales({
     PeriodType? periodType,
     bool? forceRefresh,
   }) async {

@@ -17,7 +17,6 @@ class DepartmentsPresenterSpy extends Mock implements DepartmentsPresenter {
   }
 
   When _mockGetSalesCall() => when(() => this.getSales(
-        any(),
         forceRefresh: any(named: 'forceRefresh'),
       ));
 

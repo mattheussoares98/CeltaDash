@@ -37,8 +37,8 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
         final productsPresenter = Get.find<ProductsPresenter>();
-        final homePresenter = Get.find<HomePresenter>();
-        productsPresenter.getSales(homePresenter);
+
+        productsPresenter.getSales();
         setState(() {
           _initialLoadFinished = true;
         });
@@ -66,13 +66,13 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                 showEnterpriseManagerButton: true,
                 isLoading: loadingSnap.data == true,
                 onChangeEnterprise: (_) {
-                  productsPresenter.getSales(homePresenter);
+                  productsPresenter.getSales();
                 },
                 onChangeDate: (_) {
-                  productsPresenter.getSales(homePresenter);
+                  productsPresenter.getSales();
                 },
                 onTapRefresh: () {
-                  productsPresenter.getSales(homePresenter, forceRefresh: true);
+                  productsPresenter.getSales(forceRefresh: true);
                 },
               ),
               body: Obx(() {
@@ -127,13 +127,11 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                                   productsPresenter.selectedPeriod,
                               onTapDaily: () {
                                 productsPresenter.getSales(
-                                  homePresenter,
                                   periodType: PeriodType.daily,
                                 );
                               },
                               onTapMonthly: () {
                                 productsPresenter.getSales(
-                                  homePresenter,
                                   periodType: PeriodType.monthly,
                                 );
                               },

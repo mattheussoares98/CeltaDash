@@ -36,7 +36,6 @@ class ChangeDatesButtons extends StatelessWidget {
       await compareDaysPresenter.getSales(
         firstDay: isFirstDate ? newDate : firstDay,
         secondDay: isFirstDate == false ? newDate : secondDay,
-        homePresenter: homePresenter,
       );
 
       debugPrint("Changed date");
@@ -122,7 +121,6 @@ class ChangeDatesButtons extends StatelessWidget {
                           await compareDaysPresenter.getSales(
                             firstDay: firstDay,
                             secondDay: secondDay,
-                            homePresenter: homePresenter,
                             forceRefresh: true,
                           );
                         },

@@ -14,8 +14,7 @@ abstract class PaymentTypePresenter implements Listenable {
   GetSaleStatisticsParams? get lastGetMonthlyParams;
   PeriodType get selectedPeriod;
 
-  Future<void> getSales(
-    HomePresenter homePresenter, {
+  Future<void> getSales({
     PeriodType? periodType,
     bool? forceRefresh,
   });

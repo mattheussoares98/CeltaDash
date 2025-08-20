@@ -22,8 +22,8 @@ class _OperatorsPageState extends State<OperatorsPage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       OperatorsPresenter operatorsPresenter = Get.find();
-      HomePresenter homePresenter = Get.find();
-      operatorsPresenter.getSales(homePresenter);
+
+      operatorsPresenter.getSales();
     });
   }
 
@@ -60,16 +60,13 @@ class _OperatorsPageState extends State<OperatorsPage> {
                   DefaultAppBar(
                     isLoading: loadingSnap.data == true,
                     onChangeEnterprise: (_) {
-                      operatorsPresenter.getSales(homePresenter);
+                      operatorsPresenter.getSales();
                     },
                     onChangeDate: (_) {
-                      operatorsPresenter.getSales(homePresenter);
+                      operatorsPresenter.getSales();
                     },
                     onTapRefresh: () {
-                      operatorsPresenter.getSales(
-                        homePresenter,
-                        forceRefresh: true,
-                      );
+                      operatorsPresenter.getSales(forceRefresh: true);
                     },
                   ),
                   Padding(
@@ -79,19 +76,16 @@ class _OperatorsPageState extends State<OperatorsPage> {
                       selectedPeriodType: operatorsPresenter.selectedPeriod,
                       onTapDaily: () {
                         operatorsPresenter.getSales(
-                          homePresenter,
                           periodType: PeriodType.daily,
                         );
                       },
                       onTapMonthly: () {
                         operatorsPresenter.getSales(
-                          homePresenter,
                           periodType: PeriodType.monthly,
                         );
                       },
                       onTapYearly: () {
                         operatorsPresenter.getSales(
-                          homePresenter,
                           periodType: PeriodType.yearly,
                         );
                       },

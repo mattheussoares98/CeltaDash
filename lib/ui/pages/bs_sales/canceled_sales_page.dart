@@ -31,9 +31,7 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
 
   void reloadSales({bool? forceRefresh}) {
     final bsSalesPresenter = Get.find<BsSalesPresenter>();
-    final homePresenter = Get.find<HomePresenter>();
-    bsSalesPresenter.getCanceledSales(homePresenter,
-        forceRefresh: forceRefresh);
+    bsSalesPresenter.getCanceledSales(forceRefresh: forceRefresh);
   }
 
   @override
@@ -69,13 +67,11 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                     selectedPeriodType: bsSalesPresenter.selectedPeriod,
                     onTapDaily: () {
                       bsSalesPresenter.getCanceledSales(
-                        homePresenter,
                         periodType: PeriodType.daily,
                       );
                     },
                     onTapMonthly: () {
                       bsSalesPresenter.getCanceledSales(
-                        homePresenter,
                         periodType: PeriodType.monthly,
                       );
                     },

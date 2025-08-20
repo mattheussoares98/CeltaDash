@@ -4,6 +4,7 @@ import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:celta_dash/ui/pages/pages.dart';
 import 'package:celta_dash/ui/services/services.dart';
 import 'package:faker/faker.dart';
 
@@ -40,7 +41,6 @@ void main() {
     sut = GetxOperatorsPresenter(
       loadSaleStatistics: loadSaleStatistics,
     );
-    homePresenter = HomePresenterSpy();
   }
 
   void initEntities() {
@@ -60,6 +60,8 @@ void main() {
 
   void initServices() {
     appAnalyticsService = AppAnalyticsServiceSpy();
+    homePresenter = HomePresenterSpy();
+    Get.put<HomePresenter>(homePresenter);
     Get.put<AppAnalyticsService>(appAnalyticsService);
   }
 
@@ -91,7 +93,7 @@ void main() {
         expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
         expectLater(sut.mainErrorStream, emits(null));
 
-        await sut.getSales(homePresenter);
+        await sut.getSales();
       });
       test("Should emit correct values on error", () async {
         expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
@@ -102,16 +104,16 @@ void main() {
 
         loadSaleStatistics.mockGetError();
 
-        await sut.getSales(homePresenter);
+        await sut.getSales();
       });
       test("Should update period type correctly", () async {
-        await sut.getSales(homePresenter, periodType: PeriodType.daily);
+        await sut.getSales(periodType: PeriodType.daily);
         expect(sut.selectedPeriod, PeriodType.daily);
 
-        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
+        await sut.getSales(periodType: PeriodType.monthly);
         expect(sut.selectedPeriod, PeriodType.monthly);
 
-        await sut.getSales(homePresenter, periodType: PeriodType.yearly);
+        await sut.getSales(periodType: PeriodType.yearly);
         expect(sut.selectedPeriod, PeriodType.yearly);
       });
 
@@ -124,7 +126,6 @@ void main() {
         final periodType = enabledPeriods[faker.randomGenerator.integer(3)];
 
         await sut.getSales(
-          homePresenter,
           periodType: periodType,
           forceRefresh: true,
         );
@@ -136,7 +137,7 @@ void main() {
     });
     group("PeriodType.daily", () {
       test("Should update sale movements correctly", () async {
-        await sut.getSales(homePresenter);
+        await sut.getSales();
 
         expect(
           sut.dailyStatistics,
@@ -146,7 +147,7 @@ void main() {
         );
       });
       test("Should call load sale movements with correct values", () async {
-        await sut.getSales(homePresenter, periodType: PeriodType.daily);
+        await sut.getSales(periodType: PeriodType.daily);
 
         final startDate = DateTime(
           homePresenter.selectedDateMock.year,
@@ -170,8 +171,8 @@ void main() {
         ).called(1);
       });
       test("Should not load again if dont force refresh", () async {
-        await sut.getSales(homePresenter, periodType: PeriodType.daily);
-        await sut.getSales(homePresenter, periodType: PeriodType.daily);
+        await sut.getSales(periodType: PeriodType.daily);
+        await sut.getSales(periodType: PeriodType.daily);
 
         final startDate = DateTime(
           homePresenter.selectedDateMock.year,
@@ -195,7 +196,7 @@ void main() {
         ).called(1);
       });
       test("Should load again if change the enterprise", () async {
-        await sut.getSales(homePresenter, periodType: PeriodType.daily);
+        await sut.getSales(periodType: PeriodType.daily);
 
         final startDate = DateTime(
           homePresenter.selectedDateMock.year,
@@ -224,7 +225,7 @@ void main() {
                     id: faker.randomGenerator.integer(min: 100, 200)))
             .toViewModel();
         homePresenter.selectedEnterpriseMock = newEnterprise;
-        await sut.getSales(homePresenter, periodType: PeriodType.daily);
+        await sut.getSales(periodType: PeriodType.daily);
 
         verify(
           () => loadSaleStatistics.get(
@@ -240,9 +241,8 @@ void main() {
         ).called(1);
       });
       test("Should load again if force refresh", () async {
-        await sut.getSales(homePresenter, periodType: PeriodType.daily);
+        await sut.getSales(periodType: PeriodType.daily);
         await sut.getSales(
-          homePresenter,
           periodType: PeriodType.daily,
           forceRefresh: true,
         );
@@ -269,7 +269,7 @@ void main() {
         ).called(2);
       });
       test("Should update lastGetSalesParams correctly", () async {
-        await sut.getSales(homePresenter, periodType: PeriodType.daily);
+        await sut.getSales(periodType: PeriodType.daily);
 
         final startDate = DateTime(
           homePresenter.selectedDateMock.year,
@@ -293,7 +293,7 @@ void main() {
     });
     group("PeriodType.monthly", () {
       test("Should update sale movements correctly", () async {
-        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
+        await sut.getSales(periodType: PeriodType.monthly);
 
         expect(
           sut.monthlyStatistics,
@@ -303,7 +303,7 @@ void main() {
         );
       });
       test("Should call load sale movements with correct values", () async {
-        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
+        await sut.getSales(periodType: PeriodType.monthly);
 
         final startDate = DateTime(
           homePresenter.selectedDateMock.year,
@@ -332,8 +332,8 @@ void main() {
         ).called(1);
       });
       test("Should not load again if dont force refresh", () async {
-        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
-        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
+        await sut.getSales(periodType: PeriodType.monthly);
+        await sut.getSales(periodType: PeriodType.monthly);
 
         final startDate = DateTime(
           homePresenter.selectedDateMock.year,
@@ -363,7 +363,7 @@ void main() {
       });
 
       test("Should load again if change the enterprise", () async {
-        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
+        await sut.getSales(periodType: PeriodType.monthly);
         final startDate = DateTime(
           homePresenter.selectedDateMock.year,
           homePresenter.selectedDateMock.month,
@@ -395,7 +395,7 @@ void main() {
             EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
                 .toViewModel();
         homePresenter.selectedEnterpriseMock = newEnterprise;
-        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
+        await sut.getSales(periodType: PeriodType.monthly);
 
         verify(
           () => loadSaleStatistics.get(
@@ -411,9 +411,8 @@ void main() {
         ).called(1);
       });
       test("Should load again if force refresh", () async {
-        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
+        await sut.getSales(periodType: PeriodType.monthly);
         await sut.getSales(
-          homePresenter,
           periodType: PeriodType.monthly,
           forceRefresh: true,
         );
@@ -445,7 +444,7 @@ void main() {
         ).called(2);
       });
       test("Should update lastGetSalesParams correctly", () async {
-        await sut.getSales(homePresenter, periodType: PeriodType.monthly);
+        await sut.getSales(periodType: PeriodType.monthly);
 
         final startDate = DateTime(
           homePresenter.selectedDateMock.year,
@@ -474,7 +473,7 @@ void main() {
     });
     group("PeriodType.yearly", () {
       test("Should update sale movements correctly", () async {
-        await sut.getSales(homePresenter, periodType: PeriodType.yearly);
+        await sut.getSales(periodType: PeriodType.yearly);
 
         expect(
           sut.yearlyStatistics,
@@ -484,7 +483,7 @@ void main() {
         );
       });
       test("Should call load sale movements with correct values", () async {
-        await sut.getSales(homePresenter, periodType: PeriodType.yearly);
+        await sut.getSales(periodType: PeriodType.yearly);
 
         final startDate = DateTime(homePresenter.selectedDateMock.year);
         final endDate = DateTime(homePresenter.selectedDateMock.year, 12, 31);
@@ -505,8 +504,8 @@ void main() {
         ).called(1);
       });
       test("Should not load again if dont force refresh", () async {
-        await sut.getSales(homePresenter, periodType: PeriodType.yearly);
-        await sut.getSales(homePresenter, periodType: PeriodType.yearly);
+        await sut.getSales(periodType: PeriodType.yearly);
+        await sut.getSales(periodType: PeriodType.yearly);
 
         final startDate = DateTime(homePresenter.selectedDateMock.year);
         final endDate = DateTime(homePresenter.selectedDateMock.year, 12, 31);
@@ -527,9 +526,8 @@ void main() {
         ).called(1);
       });
       test("Should load again if force refresh", () async {
-        await sut.getSales(homePresenter, periodType: PeriodType.yearly);
+        await sut.getSales(periodType: PeriodType.yearly);
         await sut.getSales(
-          homePresenter,
           periodType: PeriodType.yearly,
           forceRefresh: true,
         );
@@ -553,7 +551,7 @@ void main() {
         ).called(2);
       });
       test("Should update lastGetSalesParams correctly", () async {
-        await sut.getSales(homePresenter, periodType: PeriodType.yearly);
+        await sut.getSales(periodType: PeriodType.yearly);
 
         final startDate = DateTime(homePresenter.selectedDateMock.year);
         final endDate = DateTime(homePresenter.selectedDateMock.year, 12, 31);
@@ -573,7 +571,7 @@ void main() {
       });
 
       test("Should load again if change the enterprise", () async {
-        await sut.getSales(homePresenter, periodType: PeriodType.yearly);
+        await sut.getSales(periodType: PeriodType.yearly);
 
         final startDate = DateTime(homePresenter.selectedDateMock.year);
         final endDate = DateTime(homePresenter.selectedDateMock.year, 12, 31);
@@ -600,7 +598,7 @@ void main() {
                   faker.randomGenerator.integer(100, min: 1)),
         ).toViewModel();
         homePresenter.selectedEnterpriseMock = newEnterprise;
-        await sut.getSales(homePresenter, periodType: PeriodType.yearly);
+        await sut.getSales(periodType: PeriodType.yearly);
 
         verify(
           () => loadSaleStatistics.get(
