@@ -67,7 +67,7 @@ void main() {
       dataToReturn: [
         FakeDoc(
           {
-            "${faker.randomGenerator.integer(100)}-${DateFormat("yyyy-MM").format(now)}":
+            "${homePresenter.selectedEnterpriseMock?.id}-${DateFormat('yyyy-MM').format(homePresenter.selectedDate)}":
                 faker.randomGenerator.decimal(),
           },
           faker.guid.guid(),
@@ -130,118 +130,99 @@ void main() {
   });
 
   group("Get sales", () {
-    test("Should emit correct values on success", () async {
-      expectLater(sut.mainErrorStream, emits(null));
-      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+    group("pattern", () {
+      test("Should emit correct values on success", () async {
+        expectLater(sut.mainErrorStream, emits(null));
+        expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
 
-      await sut.getSales(now: now);
-    });
+        await sut.getSales(now: now);
+      });
 
-    test("Should emit correct values on error", () async {
-      expectLater(
-        sut.mainErrorStream,
-        emitsInOrder([null, UIError.unexpected]),
-      );
-      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      test("Should emit correct values on error", () async {
+        expectLater(
+          sut.mainErrorStream,
+          emitsInOrder([null, UIError.unexpected]),
+        );
+        expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
 
-      loadSaleStatistics.mockGetError();
+        loadSaleStatistics.mockGetError();
 
-      await sut.getSales(now: now);
-    });
+        await sut.getSales(now: now);
+      });
 
-    test("Should update sale movements correctly", () async {
-      await sut.getSales(now: now);
+      test("Should update sale movements correctly", () async {
+        await sut.getSales(now: now);
 
-      expect(
-        sut.saleStatistics,
-        saleStatisticsEntities
-            .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
-            .toList(),
-      );
-    });
+        expect(
+          sut.saleStatistics,
+          saleStatisticsEntities
+              .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
+              .toList(),
+        );
+      });
 
-    test("Should load sale movements with correct values", () async {
-      await sut.getSales(now: now);
+      test("Should load sale movements with correct values", () async {
+        await sut.getSales(now: now);
 
-      DateTime startDate = DateTime(
-        homePresenter.selectedDateMock.year,
-        homePresenter.selectedDateMock.month,
-        1,
-      );
+        DateTime startDate = DateTime(
+          homePresenter.selectedDateMock.year,
+          homePresenter.selectedDateMock.month,
+          1,
+        );
 
-      DateTime endDate = DateTime(
-        homePresenter.selectedDateMock.year,
-        homePresenter.selectedDateMock.month + 1,
-      ).subtract(const Duration(days: 1));
+        DateTime endDate = DateTime(
+          homePresenter.selectedDateMock.year,
+          homePresenter.selectedDateMock.month + 1,
+        ).subtract(const Duration(days: 1));
 
-      verify(() => loadSaleStatistics.get(
+        verify(() => loadSaleStatistics.get(
+              GetSaleStatisticsParams(
+                startDate: startDate,
+                endDate: endDate,
+                groupByDay: true,
+                groupByEnterprise: true,
+              ),
+            )).called(1);
+      });
+
+      test("Should update last get sales params correctly when is daily",
+          () async {
+        await sut.getSales(
+          now: now,
+          forceRefresh: true,
+          periodType: PeriodType.daily,
+        );
+
+        DateTime startDate = DateTime(
+          homePresenter.selectedDateMock.year,
+          homePresenter.selectedDateMock.month,
+          1,
+        );
+
+        DateTime endDate = DateTime(
+          homePresenter.selectedDateMock.year,
+          homePresenter.selectedDateMock.month + 1,
+        ).subtract(const Duration(days: 1));
+
+        expect(
+            sut.lastGetStatisticsParams,
             GetSaleStatisticsParams(
               startDate: startDate,
               endDate: endDate,
               groupByDay: true,
               groupByEnterprise: true,
-            ),
-          )).called(1);
-    });
+            ));
+      });
+      test("Should update last get sales params correctly when is monthly",
+          () async {
+        await sut.getSales(
+          now: now,
+          forceRefresh: true,
+          periodType: PeriodType.monthly,
+        );
 
-    test("Should update last get sales params correctly when is daily",
-        () async {
-      await sut.getSales(
-        now: now,
-        forceRefresh: true,
-        periodType: PeriodType.daily,
-      );
-
-      DateTime startDate = DateTime(
-        homePresenter.selectedDateMock.year,
-        homePresenter.selectedDateMock.month,
-        1,
-      );
-
-      DateTime endDate = DateTime(
-        homePresenter.selectedDateMock.year,
-        homePresenter.selectedDateMock.month + 1,
-      ).subtract(const Duration(days: 1));
-
-      expect(
-          sut.lastGetStatisticsParams,
-          GetSaleStatisticsParams(
-            startDate: startDate,
-            endDate: endDate,
-            groupByDay: true,
-            groupByEnterprise: true,
-          ));
-    });
-    test("Should update last get sales params correctly when is monthly",
-        () async {
-      await sut.getSales(
-        now: now,
-        forceRefresh: true,
-        periodType: PeriodType.monthly,
-      );
-
-      expect(
-          sut.lastGetStatisticsParams,
-          GetSaleStatisticsParams(
-            startDate: DateTime(
-              homePresenter.selectedDateMock.year,
-              homePresenter.selectedDateMock.month,
-              1,
-            ),
-            endDate: DateTime(
-              homePresenter.selectedDateMock.year,
-              homePresenter.selectedDateMock.month + 1,
-            ).subtract(const Duration(days: 1)),
-            groupByDay: true,
-            groupByEnterprise: true,
-          ));
-    });
-
-    test("Should not load sales again if dont change the month", () async {
-      await sut.getSales(now: now, periodType: PeriodType.monthly);
-      await sut.getSales(now: now, periodType: PeriodType.monthly);
-
-      verify(() => loadSaleStatistics.get(
+        expect(
+            sut.lastGetStatisticsParams,
             GetSaleStatisticsParams(
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
@@ -251,39 +232,76 @@ void main() {
               endDate: DateTime(
                 homePresenter.selectedDateMock.year,
                 homePresenter.selectedDateMock.month + 1,
-                1,
               ).subtract(const Duration(days: 1)),
               groupByDay: true,
               groupByEnterprise: true,
-            ),
-          )).called(1);
+            ));
+      });
+
+      test("Should not load sales again if dont change the month", () async {
+        await sut.getSales(now: now, periodType: PeriodType.monthly);
+        await sut.getSales(now: now, periodType: PeriodType.monthly);
+
+        verify(() => loadSaleStatistics.get(
+              GetSaleStatisticsParams(
+                startDate: DateTime(
+                  homePresenter.selectedDateMock.year,
+                  homePresenter.selectedDateMock.month,
+                  1,
+                ),
+                endDate: DateTime(
+                  homePresenter.selectedDateMock.year,
+                  homePresenter.selectedDateMock.month + 1,
+                  1,
+                ).subtract(const Duration(days: 1)),
+                groupByDay: true,
+                groupByEnterprise: true,
+              ),
+            )).called(1);
+      });
+      test("Should load sales again if force refresh", () async {
+        homePresenter.selectedDateMock = faker.date.dateTime();
+        await sut.getSales(now: now);
+        await sut.getSales(now: now, forceRefresh: true);
+
+        DateTime startDate = DateTime(
+          homePresenter.selectedDateMock.year,
+          homePresenter.selectedDateMock.month,
+          1,
+        );
+
+        DateTime endDate = DateTime(
+          homePresenter.selectedDateMock.year,
+          homePresenter.selectedDateMock.month + 1,
+        ).subtract(const Duration(days: 1));
+
+        verify(() => loadSaleStatistics.get(
+              GetSaleStatisticsParams(
+                startDate: startDate,
+                endDate: endDate,
+                groupByDay: true,
+                groupByEnterprise: true,
+              ),
+            )).called(2);
+      });
+      test("Should add new analysis", () async {
+        final index = faker.randomGenerator.integer(PeriodType.values.length);
+        final periodType = PeriodType.values[index];
+
+        await sut.getSales(
+          periodType: periodType,
+          forceRefresh: true,
+          now: now,
+        );
+
+        verify(
+          () => appAnalyticsService.addNewMonthlyAnalytic(
+            reportType: ReportType.resume,
+            periodType: periodType,
+          ),
+        ).called(1);
+      });
     });
-    test("Should load sales again if force refresh", () async {
-      homePresenter.selectedDateMock = faker.date.dateTime();
-      await sut.getSales(now: now);
-      await sut.getSales(now: now, forceRefresh: true);
-
-      DateTime startDate = DateTime(
-        homePresenter.selectedDateMock.year,
-        homePresenter.selectedDateMock.month,
-        1,
-      );
-
-      DateTime endDate = DateTime(
-        homePresenter.selectedDateMock.year,
-        homePresenter.selectedDateMock.month + 1,
-      ).subtract(const Duration(days: 1));
-
-      verify(() => loadSaleStatistics.get(
-            GetSaleStatisticsParams(
-              startDate: startDate,
-              endDate: endDate,
-              groupByDay: true,
-              groupByEnterprise: true,
-            ),
-          )).called(2);
-    });
-
     group("Get compare days statistics", () {
       test("Should update last get comparison sales params correctly",
           () async {
@@ -884,22 +902,92 @@ void main() {
         ]);
       });
     });
-    test("Should add new analysis", () async {
-      final index = faker.randomGenerator.integer(PeriodType.values.length);
-      final periodType = PeriodType.values[index];
 
-      await sut.getSales(
-        periodType: periodType,
-        forceRefresh: true,
-        now: now,
+    group("Get goals", () {
+      test("Should load goals correctly", () async {
+        await sut.getSales(now: now, forceRefresh: true);
+
+        verify(() => firebaseManager.get(
+                path:
+                    "enterprises/${EnterpriseBuilder.entity!.firebaseId}/goals/all"))
+            .called(1);
+      });
+      test("Should update local goals correctly", () async {
+        expect(sut.goals, isEmpty);
+
+        await sut.getSales(now: now, forceRefresh: true);
+
+        expect(sut.goals, isNotEmpty);
+      });
+    });
+  });
+
+  group("Set goal", () {
+    test("Should emit correct values on success", () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(sut.mainErrorStream, emits(null));
+
+      await sut.setGoal(faker.randomGenerator.decimal());
+    });
+
+    test("Should emit correct values on error", () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      expectLater(
+        sut.mainErrorStream,
+        emitsInOrder([null, UIError.unexpected]),
       );
 
+      firebaseManager.mockPutError();
+
+      await sut.setGoal(faker.randomGenerator.decimal());
+    });
+    test("Should call put with correct values", () async {
+      final value = faker.randomGenerator.decimal();
+      await sut.setGoal(value);
+
+      final selectedEnterprise = homePresenter.selectedEnterpriseMock;
       verify(
-        () => appAnalyticsService.addNewMonthlyAnalytic(
-          reportType: ReportType.resume,
-          periodType: periodType,
+        () => firebaseManager.put(
+          path: "enterprises/${EnterpriseBuilder.entity!.firebaseId}/goals/all",
+          data: {
+            "${selectedEnterprise?.id}-${DateFormat('yyyy-MM').format(homePresenter.selectedDate)}":
+                value
+          },
         ),
-      ).called(1);
+      );
+    });
+    test("Should update goals correctly", () async {
+      final firstValue = faker.randomGenerator.decimal();
+      await sut.setGoal(firstValue);
+
+      expect(sut.goals, [
+        GoalViewModel(
+          FirebaseGoalEntity(
+            enterpriseId: homePresenter.selectedEnterpriseMock!.id!.toInt(),
+            year: homePresenter.selectedDate.year,
+            month: homePresenter.selectedDate.month,
+            value: firstValue,
+            goalId:
+                "${homePresenter.selectedEnterpriseMock?.id}-${DateFormat('yyyy-MM').format(homePresenter.selectedDate)}",
+          ),
+        ),
+      ]);
+
+      final secondValue = faker.randomGenerator.decimal();
+      await sut.setGoal(secondValue);
+
+      expect(sut.goals, [
+        GoalViewModel(
+          FirebaseGoalEntity(
+            enterpriseId: homePresenter.selectedEnterpriseMock!.id!.toInt(),
+            year: homePresenter.selectedDate.year,
+            month: homePresenter.selectedDate.month,
+            value: secondValue,
+            goalId:
+                "${homePresenter.selectedEnterpriseMock?.id}-${DateFormat('yyyy-MM').format(homePresenter.selectedDate)}",
+          ),
+        ),
+      ]);
     });
   });
 }

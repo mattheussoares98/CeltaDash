@@ -256,8 +256,6 @@ class GetxResumePresenter extends GetxController
     isLoading = true;
     mainError = null;
     try {
-      //TODO create tests
-
       await firebaseManager.put(
         path: goalPath,
         data: {goalId: value},
@@ -265,6 +263,8 @@ class GetxResumePresenter extends GetxController
 
       final enterpriseId = homePresenter.selectedEnterprise?.id;
       final selectedDate = homePresenter.selectedDate;
+
+      _goals.value.removeWhere((e) => e.enterpriseId == enterpriseId);
       _goals.value.add(
         GoalViewModel(
           FirebaseGoalEntity(
@@ -297,7 +297,6 @@ class GetxResumePresenter extends GetxController
   }
 
   Future<void> _getGoals() async {
-    //TODO create tests
     final doc = await firebaseManager.get(path: goalPath);
 
     if (doc.data() == null || doc.data()!.isEmpty) {
@@ -316,7 +315,6 @@ class GetxResumePresenter extends GetxController
 
   @override
   GoalViewModel? get firebaseEnterpriseGoal {
-    //TODO create tests
     final index =
         _goals.value.indexWhere((e) => e.goalEntity?.goalId == goalId);
 

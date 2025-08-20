@@ -1,4 +1,6 @@
-class FirebaseGoalEntity {
+import 'package:equatable/equatable.dart';
+
+class FirebaseGoalEntity extends Equatable {
   final int enterpriseId;
   final int year;
   final int month;
@@ -12,6 +14,9 @@ class FirebaseGoalEntity {
     required this.value,
     required this.goalId,
   });
+
+  @override
+  List<Object?> get props => [enterpriseId, year, month, value, goalId];
 
   FirebaseGoalEntity copyWith({
     int? enterpriseId,

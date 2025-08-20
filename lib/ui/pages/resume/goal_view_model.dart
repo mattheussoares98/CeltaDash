@@ -1,6 +1,8 @@
+import 'package:equatable/equatable.dart';
+
 import '../../../domain/entities/entities.dart';
 
-class GoalViewModel {
+class GoalViewModel extends Equatable {
   final FirebaseGoalEntity? goalEntity;
 
   const GoalViewModel(this.goalEntity);
@@ -9,4 +11,7 @@ class GoalViewModel {
   String? get enterpriseId => goalEntity?.enterpriseId.toString();
   String? get value => goalEntity?.value.toString();
   String get displayPeriod => '${goalEntity?.month}/${goalEntity?.year}';
+
+  @override
+  List<Object?> get props => [goalEntity];
 }
