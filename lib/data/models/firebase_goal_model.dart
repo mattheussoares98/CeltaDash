@@ -35,5 +35,5 @@ class FirebaseGoalModel extends FirebaseGoalEntity {
     );
   }
 
-  FirebaseGoalViewModel toViewModel() => FirebaseGoalViewModel(this);
+  GoalViewModel toViewModel() => GoalViewModel(this);
 }

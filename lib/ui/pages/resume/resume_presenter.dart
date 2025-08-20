@@ -15,7 +15,7 @@ abstract class ResumePresenter implements Listenable {
   GetSaleStatisticsParams? get lastGetStatisticsParams;
   GetSaleStatisticsParams? get lastGetDailyComparisonParams;
   GetSaleStatisticsParams? get lastGetMonthlyComparisonParams;
-  List<FirebaseGoalViewModel> get goals;
+  List<GoalViewModel> get goals;
 
   void goToGoalHistoryPage();
   void goToGroupSummaryPage();

@@ -317,7 +317,7 @@ class GetxResumePresenter extends GetxController
   set monthlyComparison(List<SaleStatisticViewModel>? value) =>
       _monthlyComparison.value = value;
 
-  final _goals = Rx<List<FirebaseGoalViewModel>>([]); //TODO use view model
+  final _goals = Rx<List<GoalViewModel>>([]); //TODO use view model
   @override
-  List<FirebaseGoalViewModel> get goals => _goals.value;
+  List<GoalViewModel> get goals => _goals.value;
 }
