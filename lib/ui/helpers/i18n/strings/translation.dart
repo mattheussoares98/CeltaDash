@@ -7,6 +7,7 @@ abstract class Translation {
   String get msgEnterpriseAlreadyExists;
   String get msgEnterpriseNotFound;
   String get msgFutureMonth;
+  String get msgHistoricGoalAvailableSince;
   String get msgInvalidCredentials;
   String get msgInvalidEmail;
   String get msgInvalidField;

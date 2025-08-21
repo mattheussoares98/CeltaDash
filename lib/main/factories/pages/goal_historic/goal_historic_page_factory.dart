@@ -1,6 +1,6 @@
 import '../../../../ui/pages/pages.dart';
 import '../../factories.dart';
 
-GoalHistoricPage makeGoalHistoricPage() => GoalHistoricPage(
+HistoricGoalPage makeGoalHistoricPage() => HistoricGoalPage(
       presenter: makeGetxGoalHistoricPresenter(),
     );
