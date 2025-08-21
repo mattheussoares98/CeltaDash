@@ -68,6 +68,7 @@ class PtBr implements Translation {
   String get cancellationAbbreviated => "Canc";
   String get cancelledBy => "Cancelado por";
   String get cashierNumber => "Caixa";
+  String get changedBy => "Alterado por";
   String get chargeBacks => "Estornos";
   String get close => "Fechar";
   String get cnpj => "CNPJ";

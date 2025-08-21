@@ -53,6 +53,7 @@ abstract class Translation {
   String get cancellationAbbreviated;
   String get cancelledBy;
   String get cashierNumber;
+  String get changedBy;
   String get chargeBacks;
   String get close;
   String get cnpj;

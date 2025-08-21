@@ -10,6 +10,7 @@ class GoalViewModel extends Equatable {
   bool get isWrittenByUser => goalEntity != null;
   String? get enterpriseId => goalEntity?.enterpriseId.toString();
   String? get value => goalEntity?.value.toString();
+  String? get userName => goalEntity?.userName;
   String get displayPeriod => '${goalEntity?.month}/${goalEntity?.year}';
 
   @override

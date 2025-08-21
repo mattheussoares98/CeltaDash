@@ -157,7 +157,13 @@ class _MonthlyInfo extends StatelessWidget {
               showCoin: true,
               value: goalLiquidValue.toString().toBrazilianNumber(),
             ),
-          ]
+          ],
+          if (resumePresenter.firebaseEnterpriseGoal?.userName != null)
+            Text(
+                "${R.string.changedBy}: ${resumePresenter.firebaseEnterpriseGoal!.userName!}",
+                style: const TextStyle(
+                  fontStyle: FontStyle.italic,
+                )),
         ],
       ),
     );
