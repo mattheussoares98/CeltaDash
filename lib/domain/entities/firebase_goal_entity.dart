@@ -6,6 +6,7 @@ class FirebaseGoalEntity extends Equatable {
   final int month;
   final double value;
   final String? goalId;
+  final String userName;
 
   const FirebaseGoalEntity({
     required this.enterpriseId,
@@ -13,10 +14,12 @@ class FirebaseGoalEntity extends Equatable {
     required this.month,
     required this.value,
     required this.goalId,
+    required this.userName,
   });
 
   @override
-  List<Object?> get props => [enterpriseId, year, month, value, goalId];
+  List<Object?> get props =>
+      [enterpriseId, year, month, value, goalId, userName];
 
   FirebaseGoalEntity copyWith({
     int? enterpriseId,
@@ -24,6 +27,7 @@ class FirebaseGoalEntity extends Equatable {
     int? month,
     double? value,
     String? goalId,
+    String? userName,
   }) =>
       FirebaseGoalEntity(
         enterpriseId: enterpriseId ?? this.enterpriseId,
@@ -31,5 +35,6 @@ class FirebaseGoalEntity extends Equatable {
         month: month ?? this.month,
         value: value ?? this.value,
         goalId: goalId ?? this.goalId,
+        userName: userName ?? this.userName,
       );
 }

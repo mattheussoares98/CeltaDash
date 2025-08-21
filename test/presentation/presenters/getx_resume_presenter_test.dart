@@ -68,7 +68,10 @@ void main() {
         FakeDoc(
           {
             "${homePresenter.selectedEnterpriseMock?.id}-${DateFormat('yyyy-MM').format(homePresenter.selectedDate)}":
-                faker.randomGenerator.decimal(),
+                {
+              "value": faker.randomGenerator.decimal(),
+              "userName": faker.person.name(),
+            },
           },
           faker.guid.guid(),
         ),
@@ -951,7 +954,10 @@ void main() {
           path: "enterprises/${EnterpriseBuilder.entity!.firebaseId}/goals/all",
           data: {
             "${selectedEnterprise?.id}-${DateFormat('yyyy-MM').format(homePresenter.selectedDate)}":
-                value
+                {
+              "value": value,
+              "userName": EnterpriseBuilder.entity?.bsUser?.name ?? '',
+            }
           },
         ),
       );
@@ -967,6 +973,7 @@ void main() {
             year: homePresenter.selectedDate.year,
             month: homePresenter.selectedDate.month,
             value: firstValue,
+            userName: EnterpriseBuilder.entity?.bsUser?.name ?? '',
             goalId:
                 "${homePresenter.selectedEnterpriseMock?.id}-${DateFormat('yyyy-MM').format(homePresenter.selectedDate)}",
           ),
@@ -983,6 +990,7 @@ void main() {
             year: homePresenter.selectedDate.year,
             month: homePresenter.selectedDate.month,
             value: secondValue,
+            userName: EnterpriseBuilder.entity?.bsUser?.name ?? '',
             goalId:
                 "${homePresenter.selectedEnterpriseMock?.id}-${DateFormat('yyyy-MM').format(homePresenter.selectedDate)}",
           ),

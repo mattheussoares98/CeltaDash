@@ -8,6 +8,7 @@ class FirebaseGoalModel extends FirebaseGoalEntity {
     required super.month,
     required super.value,
     required super.goalId,
+    required super.userName,
   });
 
   factory FirebaseGoalModel.fromMapEntry(MapEntry<String, dynamic> entry) {
@@ -26,14 +27,17 @@ class FirebaseGoalModel extends FirebaseGoalEntity {
     final int month = int.parse(parts[2]);
 
     // The value is the map associated with the key, e.g., {value: 100}
-    final value = entry.value as double;
+    final values = entry.value as Map<String, dynamic>;
+    final double value = (values['value'] as num).toDouble();
+    final String userName = values['userName'] as String? ?? '';
 
     return FirebaseGoalModel(
+      goalId: key,
       enterpriseId: enterpriseId,
       year: year,
       month: month,
       value: value,
-      goalId: key,
+      userName: userName,
     );
   }
 

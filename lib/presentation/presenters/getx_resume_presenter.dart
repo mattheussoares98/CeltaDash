@@ -258,7 +258,12 @@ class GetxResumePresenter extends GetxController
     try {
       await firebaseManager.put(
         path: goalPath,
-        data: {goalId: value},
+        data: {
+          goalId: {
+            "value": value,
+            "userName": EnterpriseBuilder.entity?.bsUser?.name ?? ''
+          },
+        },
       );
 
       final enterpriseId = homePresenter.selectedEnterprise?.id;
@@ -273,6 +278,7 @@ class GetxResumePresenter extends GetxController
             month: selectedDate.month,
             value: value,
             goalId: goalId,
+            userName: EnterpriseBuilder.entity?.bsUser?.name ?? '',
           ),
         ),
       );
