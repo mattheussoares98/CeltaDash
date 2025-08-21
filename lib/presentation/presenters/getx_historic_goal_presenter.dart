@@ -72,13 +72,14 @@ class GetxHistoricGoalPresenter extends GetxController
   @override
   double getGoalValue(int year, int month) {
     //TODO use this function in monthlyComparison
-    final manualGoal = resumePresenter.goals.where((e) =>
-        e.goalEntity?.year == year &&
-        e.goalEntity?.month == month &&
-        e.goalEntity?.enterpriseId ==
-            homePresenter.selectedEnterprise!.id!.toInt());
 
-    //TODO create tests
+    final manualGoal = resumePresenter.goals
+        .where((e) =>
+            e.goalEntity?.year == year &&
+            e.goalEntity?.month == month &&
+            e.goalEntity?.enterpriseId ==
+                homePresenter.selectedEnterprise!.id!.toInt())
+        .toList();
 
     if (manualGoal.isNotEmpty) {
       return manualGoal.first.goalEntity!.value;
@@ -93,18 +94,22 @@ class GetxHistoricGoalPresenter extends GetxController
 
       if (previousYearSameMonthSales != null &&
           previousYearSameMonthSales.isNotEmpty) {
-        return previousYearSameMonthSales.sumLiquidValue();
+        return (previousYearSameMonthSales.sumLiquidValue() * 1.05)
+            .toStringAsFixed(2)
+            .toDouble();
       } else {
-        return (_selectedYearSalesStatistics.value
-                    ?.filteredSales(
-                      filterYear: year,
-                      filterMonth: month - 1,
-                    )
-                    .map((e) => e.toViewModel())
-                    .toList()
-                    .sumLiquidValue() ??
-                0) *
-            1.05;
+        return ((_selectedYearSalesStatistics.value
+                        ?.filteredSales(
+                          filterYear: year,
+                          filterMonth: month - 1,
+                        )
+                        .map((e) => e.toViewModel())
+                        .toList()
+                        .sumLiquidValue() ??
+                    1) *
+                1.05)
+            .toStringAsFixed(2)
+            .toDouble();
       }
     }
   }

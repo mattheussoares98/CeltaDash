@@ -49,13 +49,17 @@ class EntityFactory {
     );
   }
 
-  static SaleStatisticsEntity makeSaleStatisticEntity({int? enterpriseId}) =>
+  static SaleStatisticsEntity makeSaleStatisticEntity({
+    int? enterpriseId,
+    int? year,
+    int? month,
+  }) =>
       SaleStatisticsEntity(
         QuantityOfProducts: faker.randomGenerator.decimal(),
         TotalRepositionCost: faker.randomGenerator.decimal(),
         LiquidValue: faker.randomGenerator.decimal(),
-        Year: faker.randomGenerator.integer(3000),
-        Month: faker.randomGenerator.integer(12, min: 1),
+        Year: year ?? faker.randomGenerator.integer(3000),
+        Month: month ?? faker.randomGenerator.integer(12, min: 1),
         Date: faker.date.dateTime(),
         Hour: faker.randomGenerator.integer(23, min: 0),
         Product: faker.food.dish(),
@@ -230,5 +234,19 @@ class EntityFactory {
         mountSeller: faker.randomGenerator.boolean(),
         onlyCancelled: faker.randomGenerator.boolean(),
         onlyNotCancelled: faker.randomGenerator.boolean(),
+      );
+
+  static FirebaseGoalEntity makeFirebaseGoalEntity({
+    int? enterpriseId,
+    int? year,
+    int? month,
+  }) =>
+      FirebaseGoalEntity(
+        month: month ?? faker.randomGenerator.integer(12, min: 1),
+        year: year ?? faker.randomGenerator.integer(3000),
+        enterpriseId: enterpriseId ?? faker.randomGenerator.integer(100),
+        value: faker.randomGenerator.decimal() * 1000,
+        goalId: faker.guid.guid(),
+        userName: faker.person.name(),
       );
 }

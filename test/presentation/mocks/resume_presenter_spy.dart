@@ -5,10 +5,12 @@ import 'package:mocktail/mocktail.dart';
 
 class ResumePresenterSpy extends Mock implements ResumePresenter {
   GetSaleStatisticsParams? lastGetSalesParamsMock;
+  List<GoalViewModel> goalsMock = [];
 
   ResumePresenterSpy() {
     when(() => this.lastGetStatisticsParams)
         .thenAnswer((_) => lastGetSalesParamsMock);
+    when(() => this.goals).thenAnswer((_) => goalsMock);
 
     when(() => this.goToGoalHistoricPage()).thenAnswer((any) => any);
     when(() => this.goToGroupSummaryPage()).thenAnswer((any) => any);

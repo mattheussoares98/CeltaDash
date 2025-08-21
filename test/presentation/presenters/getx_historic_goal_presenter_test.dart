@@ -22,11 +22,13 @@ void main() {
   late GetxHistoricGoalPresenter sut;
 
   late HomePresenterSpy homePresenter;
+  late ResumePresenterSpy resumePresenter;
 
   late LoadSaleStatisticsSpy loadSaleStatistics;
 
   late List<SaleStatisticsEntity> saleStatisticEntities;
   late DateTime now;
+  late List<GoalViewModel> firebaseGoals;
 
   WidgetsFlutterBinding.ensureInitialized();
   Get.testMode = true;
@@ -43,25 +45,35 @@ void main() {
 
   void initEntities() {
     EnterpriseBuilder.entity = EntityFactory.makeFirebaseEnterpriseEntity();
+    now = DateTime.now();
+
+    firebaseGoals = [
+      GoalViewModel(
+        EntityFactory.makeFirebaseGoalEntity(
+          enterpriseId: homePresenter.selectedEnterpriseMock!.id!.toInt(),
+          year: now.year,
+          month: now.month,
+        ),
+      ),
+    ];
 
     saleStatisticEntities = [
       EntityFactory.makeSaleStatisticEntity(),
       EntityFactory.makeSaleStatisticEntity(),
       EntityFactory.makeSaleStatisticEntity(),
     ];
-    now = DateTime.now();
   }
 
   void initMockSuccess() {
-    homePresenter.selectedEnterpriseMock =
-        EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
-            .toViewModel();
     loadSaleStatistics.mockGet(saleStatisticEntities);
+    resumePresenter.goalsMock = firebaseGoals;
   }
 
   void initServices() {
     homePresenter = HomePresenterSpy();
+    resumePresenter = ResumePresenterSpy();
     Get.put<HomePresenter>(homePresenter);
+    Get.put<ResumePresenter>(resumePresenter);
   }
 
   setUp(() {
@@ -164,12 +176,12 @@ void main() {
     });
 
     test("Should get sales from the previous selected year", () async {
-      await sut.loadHistoricSales(2025);
+      await sut.loadHistoricSales(2026);
 
       verify(() => loadSaleStatistics.get(
             GetSaleStatisticsParams(
-              startDate: DateTime(2024, 1, 1),
-              endDate: DateTime(2024, 12, 31),
+              startDate: DateTime(2025, 1, 1),
+              endDate: DateTime(2025, 12, 31),
               groupByMonth: true,
               groupByYear: true,
               enterpriseIds: [
@@ -188,6 +200,92 @@ void main() {
         ...saleStatisticEntities
             .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel()),
       ]);
+    });
+  });
+
+  group("Get goal value", () {
+    test(
+        "Should return the remote value if contains value with the same period and enterprise",
+        () {
+      final goalValue = sut.getGoalValue(now.year, now.month);
+
+      expect(goalValue, firebaseGoals.first.goalEntity!.value);
+    });
+    test("Should return previous year + 5% if doesnt exists remote goal",
+        () async {
+      final enterpriseId = homePresenter.selectedEnterpriseMock!.id!.toInt();
+      final sales = [
+        EntityFactory.makeSaleStatisticEntity(
+          enterpriseId: enterpriseId,
+          year: now.year - 1,
+          month: now.month,
+        ),
+        EntityFactory.makeSaleStatisticEntity(
+          enterpriseId: enterpriseId,
+          year: now.year - 1,
+          month: now.month,
+        ),
+        EntityFactory.makeSaleStatisticEntity(
+          enterpriseId: enterpriseId,
+          year: now.year - 1,
+          month: now.month,
+        ),
+      ];
+      resumePresenter.goalsMock = []; //no goals
+      loadSaleStatistics.mockGet(sales);
+
+      await sut.loadHistoricSales(now.year);
+
+      final goalValue = sut.getGoalValue(now.year, now.month);
+
+      final salesViewModels = sales
+          .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
+          .toList();
+      expect(
+          goalValue,
+          (salesViewModels.sumLiquidValue() *
+                  1.05 *
+                  2) //! *2 because load sales twice
+              .toStringAsFixed(2)
+              .toDouble());
+    });
+    test("Should return previous month + 5% if doesnt exists remote goal",
+        () async {
+      final enterpriseId = homePresenter.selectedEnterpriseMock!.id!.toInt();
+      final sales = [
+        EntityFactory.makeSaleStatisticEntity(
+          enterpriseId: enterpriseId,
+          year: now.year,
+          month: now.month - 1,
+        ),
+        EntityFactory.makeSaleStatisticEntity(
+          enterpriseId: enterpriseId,
+          year: now.year,
+          month: now.month - 1,
+        ),
+        EntityFactory.makeSaleStatisticEntity(
+          enterpriseId: enterpriseId,
+          year: now.year,
+          month: now.month - 1,
+        ),
+      ];
+      resumePresenter.goalsMock = []; //no goals
+      loadSaleStatistics.mockGet(sales);
+
+      await sut.loadHistoricSales(now.year);
+
+      final goalValue = sut.getGoalValue(now.year, now.month);
+
+      final salesViewModels = sales
+          .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
+          .toList();
+      expect(
+          goalValue,
+          (salesViewModels.sumLiquidValue() *
+                  1.05 *
+                  2) //! *2 because load sales twice
+              .toStringAsFixed(2)
+              .toDouble());
     });
   });
 }
