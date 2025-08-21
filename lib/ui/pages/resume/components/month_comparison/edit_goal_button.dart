@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../../helpers/helpers.dart';
+import '../../../home/home.dart';
 
 class EditGoalButton extends StatelessWidget {
   final VoidCallback changeShowEditGoal;
@@ -10,9 +12,14 @@ class EditGoalButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final homePresenter = Get.find<HomePresenter>();
+    final now = DateTime.now();
 
     return TextButton.icon(
-      onPressed: changeShowEditGoal,
+      onPressed:
+          homePresenter.selectedDate.isBefore(DateTime(now.year, now.month))
+              ? null
+              : changeShowEditGoal,
       icon: Icon(
         theme.platform == TargetPlatform.iOS
             ? CupertinoIcons.pencil
