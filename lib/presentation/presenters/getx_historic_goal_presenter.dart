@@ -17,6 +17,7 @@ class GetxHistoricGoalPresenter extends GetxController
   });
 
   final homePresenter = Get.find<HomePresenter>();
+  final resumePresenter = Get.find<ResumePresenter>();
 
   @override
   Future<void> loadHistoricSales(int year) async {
@@ -34,15 +35,17 @@ class GetxHistoricGoalPresenter extends GetxController
           startDate: DateTime(year, year == 2025 ? 7 : 1, 1),
           endDate: DateTime(year, 12, 31),
           groupByMonth: true,
+          groupByYear: true,
           enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
         ),
       );
 
       final previousYearRemoteSales = await loadSaleStatistics.get(
         GetSaleStatisticsParams(
-          startDate: DateTime(year - 1, 1, 1),
+          startDate: DateTime(year - 1, year == 2025 ? 8 : 1, 1),
           endDate: DateTime(year - 1, 12, 31),
           groupByMonth: true,
+          groupByYear: true,
           enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
         ),
       );
@@ -64,6 +67,46 @@ class GetxHistoricGoalPresenter extends GetxController
 
   String get goalPath {
     return "enterprises/${EnterpriseBuilder.entity!.firebaseId}/goals/all";
+  }
+
+  @override
+  double getGoalValue(int year, int month) {
+    //TODO use this function in monthlyComparison
+    final manualGoal = resumePresenter.goals.where((e) =>
+        e.goalEntity?.year == year &&
+        e.goalEntity?.month == month &&
+        e.goalEntity?.enterpriseId ==
+            homePresenter.selectedEnterprise!.id!.toInt());
+
+    //TODO create tests
+
+    if (manualGoal.isNotEmpty) {
+      return manualGoal.first.goalEntity!.value;
+    } else {
+      final previousYearSameMonthSales = _selectedYearSalesStatistics.value
+          ?.filteredSales(
+            filterYear: year - 1,
+            filterMonth: month,
+          )
+          .map((e) => e.toViewModel())
+          .toList();
+
+      if (previousYearSameMonthSales != null &&
+          previousYearSameMonthSales.isNotEmpty) {
+        return previousYearSameMonthSales.sumLiquidValue();
+      } else {
+        return (_selectedYearSalesStatistics.value
+                    ?.filteredSales(
+                      filterYear: year,
+                      filterMonth: month - 1,
+                    )
+                    .map((e) => e.toViewModel())
+                    .toList()
+                    .sumLiquidValue() ??
+                0) *
+            1.05;
+      }
+    }
   }
 
   final _selectedYearSalesStatistics = Rx<List<SaleStatisticViewModel>?>(null);

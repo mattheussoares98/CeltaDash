@@ -185,6 +185,7 @@ class PtBr implements Translation {
   String get removeEnterprise => "Remover empresa";
   String get requests => "Requisições";
   String get resume => "Resumo";
+  String get result => "Resultado";
   String get revenue => "Faturamento";
   String get sale => "Venda";
   String get sales => "Vendas";

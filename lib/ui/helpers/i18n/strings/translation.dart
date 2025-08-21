@@ -169,6 +169,7 @@ abstract class Translation {
   String get quantityOfPortions;
   String get requests;
   String get resume;
+  String get result;
   String get revenue;
   String get sale;
   String get sales;

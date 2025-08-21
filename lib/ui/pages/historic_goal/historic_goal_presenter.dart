@@ -10,4 +10,5 @@ abstract class HistoricGoalPresenter implements Listenable {
   List<SaleStatisticViewModel>? get selectedYearSalesStatistics;
 
   Future<void> loadHistoricSales(int year);
+  double getGoalValue(int year, int month);
 }

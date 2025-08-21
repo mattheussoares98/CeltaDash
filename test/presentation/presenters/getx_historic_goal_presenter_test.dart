@@ -124,6 +124,19 @@ void main() {
               startDate: DateTime(2025, 7, 1),
               endDate: DateTime(2025, 12, 31),
               groupByMonth: true,
+              groupByYear: true,
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
+            ),
+          )).called(1);
+
+      verify(() => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
+              startDate: DateTime(2024, 8, 1),
+              endDate: DateTime(2024, 12, 31),
+              groupByMonth: true,
+              groupByYear: true,
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
               ],
@@ -142,6 +155,7 @@ void main() {
               startDate: DateTime(year, 1, 1),
               endDate: DateTime(year, 12, 31),
               groupByMonth: true,
+              groupByYear: true,
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
               ],
@@ -157,6 +171,7 @@ void main() {
               startDate: DateTime(2024, 1, 1),
               endDate: DateTime(2024, 12, 31),
               groupByMonth: true,
+              groupByYear: true,
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
               ],
