@@ -8,7 +8,7 @@ import '../../ui/pages/pages.dart';
 import '../mixins/mixins.dart';
 
 class GetxHistoricGoalPresenter extends GetxController
-    with ErrorHandling, LoadingManager, UIErrorManager, SaleStatisticsManager
+    with ErrorHandling, LoadingManager, UIErrorManager
     implements HistoricGoalPresenter {
   final LoadSaleStatistics loadSaleStatistics;
 
@@ -29,22 +29,30 @@ class GetxHistoricGoalPresenter extends GetxController
         return;
       }
 
-      final remoteSales = await loadSaleStatistics.get(
+      final selectedYearRemoteSales = await loadSaleStatistics.get(
         GetSaleStatisticsParams(
-          startDate: DateTime(
-            homePresenter.selectedDate.year,
-            homePresenter.selectedDate.year == 2025 ? 8 : 1,
-            1,
-          ),
-          endDate: DateTime(homePresenter.selectedDate.year, 12, 31),
+          startDate: DateTime(year, year == 2025 ? 7 : 1, 1),
+          endDate: DateTime(year, 12, 31),
           groupByMonth: true,
           enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
         ),
       );
 
-      saleStatistics = remoteSales
-          .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
-          .toList();
+      final previousYearRemoteSales = await loadSaleStatistics.get(
+        GetSaleStatisticsParams(
+          startDate: DateTime(year - 1, 1, 1),
+          endDate: DateTime(year - 1, 12, 31),
+          groupByMonth: true,
+          enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+        ),
+      );
+
+      selectedYearSalesStatistics = [
+        ...selectedYearRemoteSales
+            .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel()),
+        ...previousYearRemoteSales
+            .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel()),
+      ];
 
       //! already has the goals in resume presenter because load there
     } catch (e) {
@@ -57,4 +65,11 @@ class GetxHistoricGoalPresenter extends GetxController
   String get goalPath {
     return "enterprises/${EnterpriseBuilder.entity!.firebaseId}/goals/all";
   }
+
+  final _selectedYearSalesStatistics = Rx<List<SaleStatisticViewModel>?>(null);
+  @override
+  List<SaleStatisticViewModel>? get selectedYearSalesStatistics =>
+      _selectedYearSalesStatistics.value;
+  set selectedYearSalesStatistics(List<SaleStatisticViewModel>? value) =>
+      _selectedYearSalesStatistics.value = value;
 }

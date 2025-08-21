@@ -7,7 +7,7 @@ abstract class HistoricGoalPresenter implements Listenable {
   Stream<UIError?> get mainErrorStream;
   Stream<bool> get isLoadingStream;
 
-  List<SaleStatisticViewModel>? get saleStatistics;
+  List<SaleStatisticViewModel>? get selectedYearSalesStatistics;
 
   Future<void> loadHistoricSales(int year);
 }

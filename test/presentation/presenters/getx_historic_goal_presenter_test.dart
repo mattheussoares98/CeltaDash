@@ -98,6 +98,8 @@ void main() {
         emitsInOrder([null, UIError.unexpected]),
       );
 
+      loadSaleStatistics.mockGetError();
+
       await sut.loadHistoricSales(now.year);
     });
     test("Should emit correct values on select period previous 08/2025",
@@ -114,29 +116,50 @@ void main() {
       await sut
           .loadHistoricSales(faker.randomGenerator.integer(2024, min: 2000));
     });
-    test("Should start the search from month 8 if year is 2025", () async {
+    test("Should start the search from month 7 if year is 2025", () async {
       await sut.loadHistoricSales(2025);
 
       verify(() => loadSaleStatistics.get(
             GetSaleStatisticsParams(
-              startDate: DateTime(2025, 8, 1),
+              startDate: DateTime(2025, 7, 1),
               endDate: DateTime(2025, 12, 31),
               groupByMonth: true,
-              enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
             ),
           )).called(1);
     });
-    test("Should start the search from month 8 if year is 2025", () async {
-      final year = faker.randomGenerator.integer(2024, min: 2000);
 
-      await sut.loadHistoricSales(2025);
+    test("Should search sales from current selected year if is not 2025",
+        () async {
+      final year = faker.randomGenerator.integer(2050, min: 2026);
+
+      await sut.loadHistoricSales(year);
 
       verify(() => loadSaleStatistics.get(
             GetSaleStatisticsParams(
               startDate: DateTime(year, 1, 1),
               endDate: DateTime(year, 12, 31),
               groupByMonth: true,
-              enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
+            ),
+          )).called(1);
+    });
+
+    test("Should get sales from the previous selected year", () async {
+      await sut.loadHistoricSales(2025);
+
+      verify(() => loadSaleStatistics.get(
+            GetSaleStatisticsParams(
+              startDate: DateTime(2024, 1, 1),
+              endDate: DateTime(2024, 12, 31),
+              groupByMonth: true,
+              enterpriseIds: [
+                homePresenter.selectedEnterpriseMock!.id!.toInt()
+              ],
             ),
           )).called(1);
     });
@@ -144,12 +167,12 @@ void main() {
       await sut
           .loadHistoricSales(faker.randomGenerator.integer(2050, min: 2025));
 
-      expect(
-        sut.saleStatistics,
-        saleStatisticEntities
-            .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
-            .toList(),
-      );
+      expect(sut.selectedYearSalesStatistics, [
+        ...saleStatisticEntities
+            .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel()),
+        ...saleStatisticEntities
+            .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel()),
+      ]);
     });
   });
 }
