@@ -21,7 +21,9 @@ class _DefaultExpansionTileState extends State<DefaultExpansionTile> {
   void initState() {
     super.initState();
     widget.controller.addListener(() {
-      setState(() {});
+      if (mounted) {
+        setState(() {});
+      }
     });
   }
 
