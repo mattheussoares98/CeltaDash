@@ -61,8 +61,12 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                 children: [
                   DefaultAppBar(
                     isLoading: isLoading,
-                    onChangeEnterprise: (_) {},
-                    onChangeDate: (_) {},
+                    onChangeEnterprise: (_) {
+                      departmentsPresenter.getSales();
+                    },
+                    onChangeDate: (_) {
+                      departmentsPresenter.getSales();
+                    },
                     onTapRefresh: () {
                       departmentsPresenter.getSales(forceRefresh: true);
                     },
