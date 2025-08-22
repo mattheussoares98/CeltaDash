@@ -22,6 +22,8 @@ class _AppAnalyticsPageState extends State<AppAnalyticsPage>
   StreamSubscription? mainErrorSubscription;
   StreamSubscription? loadingSubscription;
   static final now = DateTime.now();
+  final filteredEnterpriseController = TextEditingController();
+  final filteredEnterpriseFocusNode = FocusNode();
 
   final currentMonth = DateTime(now.year, now.month);
   final previousMonth = DateTime(now.year, now.month - 1);
@@ -50,6 +52,8 @@ class _AppAnalyticsPageState extends State<AppAnalyticsPage>
     super.dispose();
     mainErrorSubscription?.cancel();
     loadingSubscription?.cancel();
+    filteredEnterpriseController.dispose();
+    filteredEnterpriseFocusNode.dispose();
   }
 
   @override
@@ -96,9 +100,18 @@ class _AppAnalyticsPageState extends State<AppAnalyticsPage>
               },
             ),
           ),
+          FilterEnterpriseFormfield(
+            filteredEnterpriseController: filteredEnterpriseController,
+            filteredEnterpriseFocusNode: filteredEnterpriseFocusNode,
+            callSetState: () => setState(() {}),
+          ),
           Expanded(
             child: Obx(() {
-              final analytics = appAnalyticsPresenter.analytics;
+              final analytics = appAnalyticsPresenter.analytics
+                  ?.where((e) => e.enterprise.toLowerCase().contains(
+                        filteredEnterpriseController.text.toLowerCase(),
+                      ))
+                  .toList();
               if (analytics == null || analytics.isEmpty) {
                 return Center(
                   child: Text(R.string.empty),
