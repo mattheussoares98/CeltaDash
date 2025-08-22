@@ -52,7 +52,7 @@ class _ResumePageState extends State<ResumePage>
           stream: resumePresenter.isLoadingStream,
           builder: (context, loadingSnap) {
             return Scaffold(
-              resizeToAvoidBottomInset: false,
+              // resizeToAvoidBottomInset: false,
               appBar: DefaultAppBar(
                 showEnterpriseManagerButton: true,
                 isLoading: loadingSnap.data == true,
@@ -75,7 +75,7 @@ class _ResumePageState extends State<ResumePage>
                   children: [
                     RefreshIndicator(
                       onRefresh: () async {
-                        resumePresenter.getSales(
+                        await resumePresenter.getSales(
                           now: DateTime.now(),
                           forceRefresh: true,
                         );
