@@ -52,6 +52,7 @@ class _ResumePageState extends State<ResumePage>
           stream: resumePresenter.isLoadingStream,
           builder: (context, loadingSnap) {
             return Scaffold(
+              resizeToAvoidBottomInset: false,
               appBar: DefaultAppBar(
                 showEnterpriseManagerButton: true,
                 isLoading: loadingSnap.data == true,
