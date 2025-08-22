@@ -68,18 +68,18 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
   @override
   void didPopNext() {
     debugPrint('Closed another page and returned to homePage');
-    // ResumePresenter resumePresenter = Get.find();
-    // HomePresenter homePresenter = Get.find();
-    // SalesPresenter salesPresenter = Get.find();
-    // ProductsPresenter productsPresenter = Get.find();
-    // WidgetsBinding.instance.addPostFrameCallback(
-    //   (_) => homePresenter.reloadSales(
-    //     resumePresenter,
-    //     salesPresenter,
-    //     productsPresenter,
-    //     now: DateTime.now(),
-    //   ),
-    // );
+    ResumePresenter resumePresenter = Get.find();
+    HomePresenter homePresenter = Get.find();
+    SalesPresenter salesPresenter = Get.find();
+    ProductsPresenter productsPresenter = Get.find();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => homePresenter.reloadSales(
+        resumePresenter,
+        salesPresenter,
+        productsPresenter,
+        now: DateTime.now(),
+      ),
+    );
   }
 
   final pages = <Widget>[
