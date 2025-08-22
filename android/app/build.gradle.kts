@@ -27,7 +27,7 @@ android {
         // CORRECTED: Use the correct property names 'minSdk' and 'targetSdk'.
         minSdk = flutter.minSdkVersion.toInt()
         targetSdk = flutter.targetSdkVersion.toInt()
-        versionCode = 21
+        versionCode = 22
         versionName = flutter.versionName
     }
 
