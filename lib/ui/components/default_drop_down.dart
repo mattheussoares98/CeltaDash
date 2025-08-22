@@ -156,7 +156,7 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
             ),
           Expanded(
             child: DropdownButtonFormField<T>(
-              value: widget.selectedItem,
+              initialValue: widget.selectedItem,
               items: widget.items,
               onChanged:
                   widget.onChanged == null || (widget.items?.length ?? 0) <= 1

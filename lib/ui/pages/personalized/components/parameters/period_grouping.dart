@@ -23,6 +23,14 @@ class PeriodGrouping extends StatefulWidget {
 }
 
 class _PeriodGroupingState extends State<PeriodGrouping> {
+  void changeValue(PersonalizedPresenter presenter, PeriodGroupingType e) {
+    setState(() {
+      presenter.changePeriodGroupingType(e);
+    });
+    widget.collapseAll(false);
+    widget.categoriesController.expand();
+  }
+
   @override
   Widget build(BuildContext context) {
     final personalizedPresenter = Get.find<PersonalizedPresenter>();
@@ -53,20 +61,22 @@ class _PeriodGroupingState extends State<PeriodGrouping> {
       ),
       children: PeriodGroupingType.values
           .map(
-            (e) => RadioListTile(
-              contentPadding: const EdgeInsets.all(0),
-              value: e,
-              toggleable: true,
-              dense: true,
-              groupValue: selectedPeriod,
-              title: Text(e.name),
-              onChanged: (_) {
-                setState(() {
-                  personalizedPresenter.changePeriodGroupingType(e);
-                });
-                widget.collapseAll(false);
-                widget.categoriesController.expand();
+            (e) => InkWell(
+              onTap: () {
+                changeValue(personalizedPresenter, e);
               },
+              child: RadioGroup(
+                groupValue: selectedPeriod,
+                child: Row(
+                  children: [
+                    Radio(value: e),
+                    Expanded(child: Text(e.name)),
+                  ],
+                ),
+                onChanged: (_) {
+                  changeValue(personalizedPresenter, e);
+                },
+              ),
             ),
           )
           .toList(),

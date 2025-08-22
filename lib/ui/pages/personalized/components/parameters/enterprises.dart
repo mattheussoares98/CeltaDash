@@ -21,6 +21,14 @@ class Enterprises extends StatefulWidget {
 }
 
 class _EnterprisesState extends State<Enterprises> {
+  void changeValue(PersonalizedPresenter presenter, EcEnterpriseViewModel e) {
+    setState(() {
+      presenter.changeSelectedEnterprise(e.id!.toInt());
+    });
+    widget.collapseAll(false);
+    widget.periodsController.expand();
+  }
+
   @override
   Widget build(BuildContext context) {
     final personalizedPresenter = Get.find<PersonalizedPresenter>();
@@ -57,25 +65,28 @@ class _EnterprisesState extends State<Enterprises> {
       ),
       children: allEnterprises
               ?.map(
-                (e) => RadioListTile(
-                  value: e.id?.toInt(),
-                  dense: true,
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 4),
-                  groupValue: selectedId,
-                  toggleable: true,
-                  title: Text(
-                    "${e.personalizedCode} - ${e.name}",
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  onChanged: (_) {
-                    setState(() {
-                      personalizedPresenter
-                          .changeSelectedEnterprise(e.id!.toInt());
-                    });
-                    widget.collapseAll(false);
-                    widget.periodsController.expand();
+                (e) => InkWell(
+                  onTap: () {
+                    changeValue(personalizedPresenter, e);
                   },
+                  child: RadioGroup<int?>(
+                    groupValue: e.id?.toInt(),
+                    child: Row(
+                      children: [
+                        Radio(value: selectedId),
+                        Expanded(
+                          child: Text(
+                            "${e.personalizedCode} - ${e.name}",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                    onChanged: (_) {
+                      changeValue(personalizedPresenter, e);
+                    },
+                  ),
                 ),
               )
               .toList() ??
