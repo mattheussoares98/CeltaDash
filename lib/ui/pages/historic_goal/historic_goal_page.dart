@@ -21,15 +21,14 @@ class HistoricGoalPage extends StatefulWidget {
 }
 
 class _HistoricGoalPageState extends State<HistoricGoalPage> {
-  DateTime now = DateTime.now();
-  late int selectedYear;
+  static DateTime now = DateTime.now();
+  int selectedYear = now.year;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
-        selectedYear = now.year;
         widget.presenter.loadHistoricSales(selectedYear);
       }
     });
@@ -41,15 +40,62 @@ class _HistoricGoalPageState extends State<HistoricGoalPage> {
         stream: widget.presenter.isLoadingStream,
         builder: (context, loadingSnap) {
           return Scaffold(
-            appBar: DefaultAppBar(
-              isLoading: loadingSnap.data == true,
-              onChangeEnterprise: (_) {
-                widget.presenter.loadHistoricSales(selectedYear);
-              },
-              showDatePicker: false,
-            ),
             body: Column(
               children: [
+                DefaultAppBar(
+                  isLoading: loadingSnap.data == true,
+                  onChangeEnterprise: (_) {
+                    widget.presenter.loadHistoricSales(selectedYear);
+                  },
+                  showDatePicker: false,
+                ),
+                if (now.year > 2025)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      DropdownButton<int>(
+                        value: selectedYear,
+                        underline: const SizedBox(),
+                        icon: const Icon(Icons.arrow_drop_down),
+                        style: Theme.of(context).textTheme.bodyLarge,
+                        iconSize: 24,
+                        elevation: 16,
+                        borderRadius: BorderRadius.circular(5),
+                        dropdownColor: Theme.of(context).colorScheme.surface,
+                        focusColor: Theme.of(context).colorScheme.primary,
+                        hint: Text(selectedYear.toString()),
+                        items: List.generate(now.year - 2025 + 1, (index) {
+                          final year = 2025 + index;
+                          return DropdownMenuItem<int>(
+                            value: year,
+                            child: Text(year.toString()),
+                          );
+                        }),
+                        onChanged: loadingSnap.data == true
+                            ? null
+                            : (year) {
+                                if (year != null) {
+                                  setState(() {
+                                    selectedYear = year;
+                                    widget.presenter
+                                        .loadHistoricSales(selectedYear);
+                                  });
+                                }
+                              },
+                      ),
+                      if (loadingSnap.data == true)
+                        const Padding(
+                          padding: EdgeInsets.only(left: 8.0),
+                          child: SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 1,
+                            ),
+                          ),
+                        )
+                    ],
+                  ),
                 Obx(() {
                   final sales = widget.presenter.selectedYearSalesStatistics;
 
