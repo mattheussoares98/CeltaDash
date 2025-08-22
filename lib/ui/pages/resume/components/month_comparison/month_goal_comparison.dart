@@ -144,6 +144,7 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
                           Future.delayed(Duration.zero, () {
                             goalFocusNode.requestFocus();
                           });
+                          goalController.clear();
                         }),
                       )
                     else
@@ -155,6 +156,7 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
                             setState(() {
                               showEditGoal = !showEditGoal;
                             });
+                            goalController.clear();
                           },
                         ),
                       ),

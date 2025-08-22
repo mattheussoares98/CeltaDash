@@ -20,17 +20,17 @@ class EditGoalFieldAndButtons extends StatelessWidget {
     required this.changeShowEditGoal,
   });
 
+  static final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final resumePresenter = Get.find<ResumePresenter>();
-    final formKey = GlobalKey<FormState>();
 
     Future<void> changeGoal() async {
       if (formKey.currentState?.validate() == true) {
         await resumePresenter.setGoal(goalController.text.toDouble());
 
-        changeShowEditGoal();
+        changeShowEditGoal.call();
       }
     }
 
