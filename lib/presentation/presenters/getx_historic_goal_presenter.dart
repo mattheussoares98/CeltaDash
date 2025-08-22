@@ -36,6 +36,7 @@ class GetxHistoricGoalPresenter extends GetxController
           endDate: DateTime(year, 12, 31),
           groupByMonth: true,
           groupByYear: true,
+          groupByEnterprise: true,
           enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
         ),
       );
@@ -46,6 +47,7 @@ class GetxHistoricGoalPresenter extends GetxController
           endDate: DateTime(year - 1, 12, 31),
           groupByMonth: true,
           groupByYear: true,
+          groupByEnterprise: true,
           enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
         ),
       );

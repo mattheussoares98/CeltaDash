@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import '../../components/components.dart';
 import '../pages.dart';
+import 'components/components.dart';
 
 bool _showAnimation = true;
 
@@ -36,6 +37,8 @@ class _HistoricGoalPageState extends State<HistoricGoalPage> {
 
   @override
   Widget build(BuildContext context) {
+    final homePresenter = Get.find<HomePresenter>();
+
     return StreamBuilder(
         stream: widget.presenter.isLoadingStream,
         builder: (context, loadingSnap) {
@@ -49,59 +52,13 @@ class _HistoricGoalPageState extends State<HistoricGoalPage> {
                   },
                   showDatePicker: false,
                 ),
-                if (now.year > 2025)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      DropdownButton<int>(
-                        value: selectedYear,
-                        underline: const SizedBox(),
-                        icon: const Icon(Icons.arrow_drop_down),
-                        style: Theme.of(context).textTheme.bodyLarge,
-                        iconSize: 24,
-                        elevation: 16,
-                        borderRadius: BorderRadius.circular(5),
-                        dropdownColor: Theme.of(context).colorScheme.surface,
-                        focusColor: Theme.of(context).colorScheme.primary,
-                        hint: Text(selectedYear.toString()),
-                        items: List.generate(now.year - 2025 + 1, (index) {
-                          final year = 2025 + index;
-                          return DropdownMenuItem<int>(
-                            value: year,
-                            child: Text(year.toString()),
-                          );
-                        }),
-                        onChanged: loadingSnap.data == true
-                            ? null
-                            : (year) {
-                                if (year != null) {
-                                  setState(() {
-                                    selectedYear = year;
-                                    widget.presenter
-                                        .loadHistoricSales(selectedYear);
-                                  });
-                                }
-                              },
-                      ),
-                      if (loadingSnap.data == true)
-                        const Padding(
-                          padding: EdgeInsets.only(left: 8.0),
-                          child: SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 1,
-                            ),
-                          ),
-                        )
-                    ],
-                  ),
                 Obx(() {
                   final sales = widget.presenter.selectedYearSalesStatistics;
 
                   final salesFromSelectedYear = sales
                       ?.filteredSales(
                     filterYear: selectedYear,
+                    enterprise: homePresenter.selectedEnterprise,
                   )
                       .where((e) {
                     if (selectedYear == 2025) {
@@ -115,70 +72,77 @@ class _HistoricGoalPageState extends State<HistoricGoalPage> {
                     return EmptySales(isLoading: loadingSnap.data == true);
                   }
 
-                  return ScrollableTableItem(
-                    columnsWidths: [60, 100, 100, 60],
-                    showAnimation: _showAnimation,
-                    hideShowAnimation: () {
-                      _showAnimation = false;
-                    },
-                    pdfFileName: R.string.goalHistory,
-                    columnsIndexToSum: [1, 2],
-                    titles: [
-                      R.string.period,
-                      R.string.goal,
-                      R.string.sales,
-                      R.string.result,
-                    ]
-                        .map((e) =>
-                            PersonalizedTableCell(value: e, isTitle: true))
-                        .toList(),
-                    rowValues: salesFromSelectedYear.map((sale) {
-                      final salePeriod = DateFormat("MM/yyyy", "pt_BR")
-                          .format(DateTime(selectedYear, sale.Month!));
-
-                      final goalValue = widget.presenter
-                          .getGoalValue(selectedYear, sale.Month!);
-
-                      final percentageValue =
-                          ((sale.LiquidValue ?? 1) / goalValue) * 100;
-
-                      return [
-                        PersonalizedTableCell(value: salePeriod),
-                        PersonalizedTableCell(
-                          value: goalValue,
-                          isMoney: true,
-                        ),
-                        PersonalizedTableCell(
-                          value: sale.LiquidValue,
-                          isMoney: true,
-                        ),
-                        PersonalizedTableCell(
-                          value: percentageValue,
-                          isPercentage: true,
-                          decoration: BoxDecoration(
-                            color: percentageValue < 100
-                                ? Colors.red.withAlpha(50)
-                                : Colors.green.withAlpha(50),
-                            borderRadius: BorderRadius.circular(5),
+                  return Expanded(
+                    child: Column(
+                      children: [
+                        if (now.year != 2025)
+                          ChangeYearDropdown(
+                            now: now,
+                            selectedYear: selectedYear,
+                            isLoading: loadingSnap.data == true,
+                            onYearChanged: (year) {
+                              if (year != null) {
+                                setState(() {
+                                  selectedYear = year;
+                                  widget.presenter
+                                      .loadHistoricSales(selectedYear);
+                                });
+                              }
+                            },
                           ),
+                        ScrollableTableItem(
+                          columnsWidths: [60, 100, 100, 60],
+                          showAnimation: _showAnimation,
+                          hideShowAnimation: () {
+                            _showAnimation = false;
+                          },
+                          pdfFileName: R.string.goalHistory,
+                          columnsIndexToSum: [1, 2],
+                          titles: [
+                            R.string.period,
+                            R.string.goal,
+                            R.string.sales,
+                            R.string.result,
+                          ]
+                              .map((e) => PersonalizedTableCell(
+                                  value: e, isTitle: true))
+                              .toList(),
+                          rowValues: salesFromSelectedYear.map((sale) {
+                            final salePeriod = DateFormat("MM/yyyy", "pt_BR")
+                                .format(DateTime(selectedYear, sale.Month!));
+
+                            final goalValue = widget.presenter
+                                .getGoalValue(selectedYear, sale.Month!);
+
+                            final percentageValue =
+                                ((sale.LiquidValue ?? 1) / goalValue) * 100;
+
+                            return [
+                              PersonalizedTableCell(value: salePeriod),
+                              PersonalizedTableCell(
+                                value: goalValue,
+                                isMoney: true,
+                              ),
+                              PersonalizedTableCell(
+                                value: sale.LiquidValue,
+                                isMoney: true,
+                              ),
+                              PersonalizedTableCell(
+                                value: percentageValue,
+                                isPercentage: true,
+                                decoration: BoxDecoration(
+                                  color: percentageValue < 100
+                                      ? Colors.red.withAlpha(50)
+                                      : Colors.green.withAlpha(50),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
+                            ];
+                          }).toList(),
                         ),
-                      ];
-                    }).toList(),
+                      ],
+                    ),
                   );
-
-                  // return ListView.builder(
-                  //   itemCount: salesFromSelectedYear.length,
-                  //   itemBuilder: (context, index) {
-                  //     final sale = salesFromSelectedYear[index];
-
-                  //     return ListTile(
-                  //       title: Text(
-                  //           "${R.string.goal} $salePeriod: ${widget.presenter.getGoalValue(selectedYear, sale.Month!)}"),
-                  //       subtitle: Text(
-                  //           "${R.string.sales}: ${sale.LiquidValue.toString().toBrazilianNumber().addBrazilianCoin()}"),
-                  //     );
-                  //   },
-                  // );
                 }),
               ],
             ),

@@ -137,6 +137,7 @@ void main() {
               endDate: DateTime(2025, 12, 31),
               groupByMonth: true,
               groupByYear: true,
+              groupByEnterprise: true,
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
               ],
@@ -149,6 +150,7 @@ void main() {
               endDate: DateTime(2024, 12, 31),
               groupByMonth: true,
               groupByYear: true,
+              groupByEnterprise: true,
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
               ],
@@ -168,6 +170,7 @@ void main() {
               endDate: DateTime(year, 12, 31),
               groupByMonth: true,
               groupByYear: true,
+              groupByEnterprise: true,
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
               ],
@@ -184,6 +187,7 @@ void main() {
               endDate: DateTime(2025, 12, 31),
               groupByMonth: true,
               groupByYear: true,
+              groupByEnterprise: true,
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
               ],
