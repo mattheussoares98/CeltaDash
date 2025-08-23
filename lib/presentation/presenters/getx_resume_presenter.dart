@@ -88,7 +88,7 @@ class GetxResumePresenter extends GetxController
         return;
       }
 
-      if (_goals.value.isEmpty) {
+      if (_goals.value.isEmpty || forceRefresh == true) {
         await _getGoals();
       }
 
