@@ -9,7 +9,7 @@ import '../../../../../validation/validators/validators.dart';
 import '../../../../helpers/helpers.dart';
 import '../../../pages.dart';
 
-class EditGoalFieldAndButtons extends StatelessWidget {
+class EditGoalFieldAndButtons extends StatefulWidget {
   final TextEditingController goalController;
   final FocusNode goalFocusNode;
   final VoidCallback changeShowEditGoal;
@@ -20,7 +20,13 @@ class EditGoalFieldAndButtons extends StatelessWidget {
     required this.changeShowEditGoal,
   });
 
-  static final formKey = GlobalKey<FormState>();
+  @override
+  State<EditGoalFieldAndButtons> createState() =>
+      _EditGoalFieldAndButtonsState();
+}
+
+class _EditGoalFieldAndButtonsState extends State<EditGoalFieldAndButtons> {
+  final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -28,9 +34,9 @@ class EditGoalFieldAndButtons extends StatelessWidget {
 
     Future<void> changeGoal() async {
       if (formKey.currentState?.validate() == true) {
-        await resumePresenter.setGoal(goalController.text.toDouble());
+        await resumePresenter.setGoal(widget.goalController.text.toDouble());
 
-        changeShowEditGoal.call();
+        widget.changeShowEditGoal.call();
       }
     }
 
@@ -39,8 +45,8 @@ class EditGoalFieldAndButtons extends StatelessWidget {
       child: Column(
         children: [
           TextFormField(
-            focusNode: goalFocusNode,
-            controller: goalController,
+            focusNode: widget.goalFocusNode,
+            controller: widget.goalController,
             decoration: FormFieldDecoration.decoration(
               context: context,
               labelText: R.string.goal.addBrazilianCoin(),
@@ -53,14 +59,15 @@ class EditGoalFieldAndButtons extends StatelessWidget {
             validator: (value) => ValidationComposite([
               const RequiredFieldValidation(),
             ]).validate(value)?.description,
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            keyboardType: const TextInputType.numberWithOptions(
+                decimal: false, signed: true),
           ),
           const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               InkWell(
-                onTap: changeShowEditGoal,
+                onTap: widget.changeShowEditGoal,
                 child: Icon(
                   theme.platform == TargetPlatform.iOS
                       ? CupertinoIcons.xmark
