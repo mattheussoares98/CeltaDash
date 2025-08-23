@@ -81,6 +81,9 @@ class _ResumePageState extends State<ResumePage>
                         );
                       },
                       child: SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(
+                          parent: BouncingScrollPhysics(),
+                        ),
                         controller: monthComparisonScrollController,
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
