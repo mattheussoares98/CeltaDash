@@ -54,6 +54,7 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
               ?.filteredSales(
                 enterprise: homePresenter.selectedEnterprise,
                 filterYear: homePresenter.selectedDate.year,
+                filterMonth: homePresenter.selectedDate.month,
               )
               .map((e) => e.toViewModel())
               .toList()
