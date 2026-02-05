@@ -98,6 +98,20 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
         return const SizedBox.shrink();
       }
 
+      final daysInMonth =
+          resumePresenter.firebaseEnterpriseGoal?.value == null &&
+                  comparisonEndDate != null
+              ? DateTime(
+                  comparisonEndDate.year,
+                  comparisonEndDate.month + 1,
+                  0,
+                ).day
+              : DateTime(
+                  homePresenter.selectedDate.year,
+                  homePresenter.selectedDate.month + 1,
+                  0,
+                ).day;
+
       return Stack(
         children: [
           Container(
@@ -124,7 +138,7 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
                         key: ValueKey(salesTodayLiquidValue + goalLiquidValue),
                         title: R.string.dailyGoal,
                         value: salesTodayLiquidValue,
-                        maximum: goalLiquidValue / 31,
+                        maximum: goalLiquidValue / daysInMonth,
                         height: circleSize,
                         width: circleSize,
                         scrollController: widget.scrollController,

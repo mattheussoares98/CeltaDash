@@ -181,6 +181,20 @@ class _DailyInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final resumePresenter = Get.find<ResumePresenter>();
+    final homePresenter = Get.find<HomePresenter>();
+
+    final endDate = resumePresenter.firebaseEnterpriseGoal?.value == null
+        ? DateTime(
+            comparisonEndDate.year,
+            comparisonEndDate.month + 1,
+            0,
+          )
+        : DateTime(
+            homePresenter.selectedDate.year,
+            homePresenter.selectedDate.month + 1,
+            0,
+          );
 
     return Container(
       decoration: ContainerDecoration.defaultDecoration,
@@ -208,24 +222,14 @@ class _DailyInfo extends StatelessWidget {
           ),
           _RowSpan(
             title: "${R.string.daysInMonth} = ",
-            value: DateTime(
-              comparisonEndDate.year,
-              comparisonEndDate.month + 1,
-              0,
-            ).day,
+            value: endDate.day,
             showCoin: false,
           ),
           _RowSpan(
             title: "${R.string.total} = ",
             showCoin: true,
-            value: (goalLiquidValue /
-                    DateTime(
-                      comparisonEndDate.year,
-                      comparisonEndDate.month + 1,
-                      0,
-                    ).day)
-                .toString()
-                .toBrazilianNumber(),
+            value:
+                (goalLiquidValue / endDate.day).toString().toBrazilianNumber(),
           ),
         ],
       ),
