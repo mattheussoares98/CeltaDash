@@ -79,7 +79,7 @@ class PtBr implements Translation {
   String get comparedToDay => "Em comparação ao dia";
   String get configurations => "Configurações";
   String get connectedEnterprises => "Empresas conectadas";
-  String get cost => "Custo";
+  String get cost => "Custo de reposição";
   String get coupon => "Cupom";
   String get couponNumber => "Número do cupom";
   String get couponNumberAbbreviated => "Cup";
