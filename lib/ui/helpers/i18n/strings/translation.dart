@@ -64,6 +64,7 @@ abstract class Translation {
   String get configurations;
   String get connectedEnterprises;
   String get cost;
+  String get costAverage;
   String get coupon;
   String get couponNumber;
   String get couponNumberAbbreviated;

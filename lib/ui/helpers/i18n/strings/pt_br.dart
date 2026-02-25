@@ -80,6 +80,7 @@ class PtBr implements Translation {
   String get configurations => "Configurações";
   String get connectedEnterprises => "Empresas conectadas";
   String get cost => "Custo de reposição";
+  String get costAverage => "Média do custo";
   String get coupon => "Cupom";
   String get couponNumber => "Número do cupom";
   String get couponNumberAbbreviated => "Cup";

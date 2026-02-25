@@ -67,9 +67,9 @@ class ProductsTable extends StatelessWidget {
       showAnimation: showAnimation,
       hideShowAnimation: hideShowAnimation,
       animationSecondsDuration: 3,
-      columnsWidths: [130, 100, 70, 70, 90, 90, 60],
+      columnsWidths: [130, 100, 70, 70, 90, 90, 90, 60],
       fixFirstColumn: true,
-      columnsIndexToSum: [1, 2, 4, 5],
+      columnsIndexToSum: [1, 2, 4, 6],
       columnIndexToCompareAndDetachBetterAndWorstValue: 5,
       indexToSort: 5,
       titles: [
@@ -92,6 +92,8 @@ class ProductsTable extends StatelessWidget {
         PersonalizedTableCell(
             value: R.string.cost.toUpperCase(), isTitle: true),
         PersonalizedTableCell(
+            value: R.string.costAverage.toUpperCase(), isTitle: true),
+        PersonalizedTableCell(
             value: R.string.profit.toUpperCase(), isTitle: true),
         PersonalizedTableCell(
             value: R.string.margin.toUpperCase(), isTitle: true),
@@ -110,6 +112,9 @@ class ProductsTable extends StatelessWidget {
         final profitPercent = profit == 0 || sale.LiquidValue?.toDouble() == 0
             ? 0
             : (profit / (sale.LiquidValue?.toDouble() ?? 0)) * 100;
+
+        final costAverage = (sale.TotalRepositionCost?.toDouble() ?? 0) /
+            (sale.QuantityOfProducts?.toDouble() ?? 1);
         return [
           // PersonalizedTableCell(value: index + 1),
           PersonalizedTableCell(value: productName),
@@ -123,6 +128,10 @@ class ProductsTable extends StatelessWidget {
           PersonalizedTableCell(value: ticketAverage, isMoney: true),
           PersonalizedTableCell(
             value: sale.TotalRepositionCost?.toDouble() ?? 0,
+            isMoney: true,
+          ),
+          PersonalizedTableCell(
+            value: costAverage,
             isMoney: true,
           ),
           PersonalizedTableCell(value: profit, isMoney: true),
