@@ -247,7 +247,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
     return sumRow;
   }
 
-  Color getTableBorderColor() =>
+  final tableBorderColor =
       Platform.isIOS ? CupertinoColors.separator : Colors.black;
 
   @override
@@ -322,7 +322,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                       if (widget.fixFirstColumn)
                         Table(
                           border: TableBorder.all(
-                              color: getTableBorderColor(), width: 0.06),
+                              color: tableBorderColor, width: 0.06),
                           defaultColumnWidth: const FlexColumnWidth(1),
                           columnWidths: {
                             0: FixedColumnWidth(
@@ -356,7 +356,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                           physics: const ClampingScrollPhysics(),
                           child: Table(
                             border: TableBorder.all(
-                                color: getTableBorderColor(), width: 0.06),
+                                color: tableBorderColor, width: 0.06),
                             defaultColumnWidth: const FlexColumnWidth(1),
                             columnWidths: scrollableColumnWidthsMap,
                             children: [
@@ -422,7 +422,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                           style: cupertinoTextStyle,
                           child: Table(
                             border: TableBorder.all(
-                                color: getTableBorderColor(), width: 0.06),
+                                color: tableBorderColor, width: 0.06),
                             defaultColumnWidth: const FlexColumnWidth(1),
                             columnWidths: {
                               0: FixedColumnWidth(
@@ -469,7 +469,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                             style: cupertinoTextStyle,
                             child: Table(
                               border: TableBorder.all(
-                                  color: getTableBorderColor(), width: 0.06),
+                                  color: tableBorderColor, width: 0.06),
                               defaultColumnWidth: const FlexColumnWidth(1),
                               columnWidths: scrollableColumnWidthsMap,
                               children: List.generate(
@@ -559,7 +559,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                     if (widget.fixFirstColumn)
                       Table(
                         border: TableBorder.all(
-                            color: getTableBorderColor(), width: 0.06),
+                            color: tableBorderColor, width: 0.06),
                         defaultColumnWidth: const FlexColumnWidth(1),
                         columnWidths: {
                           0: FixedColumnWidth(
@@ -583,7 +583,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                         physics: const ClampingScrollPhysics(),
                         child: Table(
                           border: TableBorder.all(
-                              color: getTableBorderColor(), width: 0.06),
+                              color: tableBorderColor, width: 0.06),
                           defaultColumnWidth: const FlexColumnWidth(1),
                           columnWidths: scrollableColumnWidthsMap,
                           children: [
