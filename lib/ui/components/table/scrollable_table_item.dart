@@ -310,102 +310,25 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
     return Expanded(
       child: Column(
         children: [
-          // Header Row
-          SizedBox(
-            height: widget.titleMinHeight,
-            child: DefaultTextStyle(
-              style: cupertinoTextStyle,
-              child: Stack(
-                children: [
-                  Row(
-                    children: [
-                      if (widget.fixFirstColumn)
-                        Table(
-                          border: TableBorder.all(
-                              color: tableBorderColor, width: 0.06),
-                          defaultColumnWidth: const FlexColumnWidth(1),
-                          columnWidths: {
-                            0: FixedColumnWidth(
-                                widget.columnsWidths[0] + availableSize)
-                          },
-                          children: [
-                            TableRow(
-                              children: [
-                                IntrinsicHeight(
-                                  child: InkWell(
-                                    onTap: () => _handleHeaderTap(0),
-                                    child: Container(
-                                      constraints: BoxConstraints(
-                                          minHeight: widget.titleMinHeight),
-                                      decoration: BoxDecoration(
-                                        border: borderDecoration,
-                                        color: disabledColor,
-                                      ),
-                                      child: fixedTitles[0],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      Expanded(
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          controller: _headerHorizontalController,
-                          physics: const ClampingScrollPhysics(),
-                          child: Table(
-                            border: TableBorder.all(
-                                color: tableBorderColor, width: 0.06),
-                            defaultColumnWidth: const FlexColumnWidth(1),
-                            columnWidths: scrollableColumnWidthsMap,
-                            children: [
-                              TableRow(
-                                children: List.generate(scrollableTitles.length,
-                                    (index) {
-                                  final originalIndex =
-                                      widget.fixFirstColumn ? index + 1 : index;
-                                  final tableCell = scrollableTitles[index];
-                                  return IntrinsicHeight(
-                                    child: InkWell(
-                                      onTap: () =>
-                                          _handleHeaderTap(originalIndex),
-                                      child: Container(
-                                        constraints: BoxConstraints(
-                                          minHeight: widget.titleMinHeight,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          border: borderDecoration,
-                                          color: disabledColor,
-                                        ),
-                                        child: tableCell,
-                                      ),
-                                    ),
-                                  );
-                                }),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Positioned(
-                    left: 0,
-                    top: 0,
-                    child: InkWell(
-                      onTap: () => openPdfPage(
-                        context: context,
-                        sortedRows: _sortedRows,
-                        sumRow: fullSumRow,
-                        minValueRowIndex: minValueRowIndex,
-                        maxValueRowIndex: maxValueRowIndex,
-                      ),
-                      child: const Icon(Icons.picture_as_pdf_outlined),
-                    ),
-                  ),
-                ],
-              ),
+          HeaderRow(
+            fullSumRow: fullSumRow,
+            titleMinHeight: widget.titleMinHeight,
+            fixFirstColumn: widget.fixFirstColumn,
+            tableBorderColor: tableBorderColor,
+            fixedColumnWidth: widget.columnsWidths[0] + availableSize,
+            onTap: _handleHeaderTap,
+            borderDecoration: borderDecoration,
+            disabledColor: disabledColor,
+            fixedTitles: fixedTitles,
+            headerHorizontalController: _headerHorizontalController,
+            scrollableColumnWidthsMap: scrollableColumnWidthsMap,
+            scrollableTitles: scrollableTitles,
+            openPdfPage: () => openPdfPage(
+              context: context,
+              sortedRows: _sortedRows,
+              sumRow: fullSumRow,
+              minValueRowIndex: minValueRowIndex,
+              maxValueRowIndex: maxValueRowIndex,
             ),
           ),
 
