@@ -380,8 +380,9 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
       return const Text("Some titles are not defined as title");
     }
 
-    final theme = Theme.of(context);
-    final disabledColor = theme.disabledColor.withAlpha(70);
+    final materialTheme = Theme.of(context);
+    final cupertinoTextStyle = CupertinoTheme.of(context).textTheme.textStyle;
+    final disabledColor = materialTheme.disabledColor.withAlpha(70);
 
     return Expanded(
       child: Column(
@@ -390,7 +391,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
           SizedBox(
             height: widget.titleMinHeight,
             child: DefaultTextStyle(
-              style: CupertinoTheme.of(context).textTheme.textStyle,
+              style: cupertinoTextStyle,
               child: Stack(
                 children: [
                   Row(
@@ -489,7 +490,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                       SingleChildScrollView(
                         controller: _fixedColumnScrollController,
                         child: DefaultTextStyle(
-                          style: CupertinoTheme.of(context).textTheme.textStyle,
+                          style: cupertinoTextStyle,
                           child: Table(
                             border: TableBorder.all(
                                 color: getTableBorderColor(), width: 0.06),
@@ -532,8 +533,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                           controller: _bodyHorizontalController,
                           physics: const ClampingScrollPhysics(),
                           child: DefaultTextStyle(
-                            style:
-                                CupertinoTheme.of(context).textTheme.textStyle,
+                            style: cupertinoTextStyle,
                             child: Table(
                               border: TableBorder.all(
                                   color: getTableBorderColor(), width: 0.06),
@@ -616,7 +616,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
             SizedBox(
               height: widget.titleMinHeight,
               child: DefaultTextStyle(
-                style: CupertinoTheme.of(context).textTheme.textStyle,
+                style: cupertinoTextStyle,
                 child: Row(
                   children: [
                     if (widget.fixFirstColumn)
