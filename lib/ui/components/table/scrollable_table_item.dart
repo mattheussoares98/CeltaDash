@@ -380,6 +380,9 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
       return const Text("Some titles are not defined as title");
     }
 
+    final theme = Theme.of(context);
+    final disabledColor = theme.disabledColor.withAlpha(70);
+
     return Expanded(
       child: Column(
         children: [
@@ -412,9 +415,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                                           minHeight: widget.titleMinHeight),
                                       decoration: BoxDecoration(
                                         border: borderDecoration,
-                                        color: Theme.of(context)
-                                            .disabledColor
-                                            .withAlpha(70),
+                                        color: disabledColor,
                                       ),
                                       child: fixedTitles[0],
                                     ),
@@ -451,9 +452,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                                         ),
                                         decoration: BoxDecoration(
                                           border: borderDecoration,
-                                          color: Theme.of(context)
-                                              .disabledColor
-                                              .withAlpha(70),
+                                          color: disabledColor,
                                         ),
                                         child: tableCell,
                                       ),
@@ -632,8 +631,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                         children: [
                           buildTableRow(
                             fixedSumRow,
-                            rowColor:
-                                Theme.of(context).disabledColor.withAlpha(70),
+                            rowColor: disabledColor,
                             isSumRow: true,
                             isUnifiedTapRow: false, // Sum row is not tappable
                             unifiedTap: null,
@@ -655,8 +653,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                           children: [
                             buildTableRow(
                               scrollableSumRow,
-                              rowColor:
-                                  Theme.of(context).disabledColor.withAlpha(70),
+                              rowColor: disabledColor,
                               isSumRow: true,
                               isUnifiedTapRow: false, // Sum row is not tappable
                               unifiedTap: null,
