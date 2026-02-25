@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import '../../../domain/helpers/helpers.dart';
 import '../../../domain/usecases/usecases.dart';
 import '../../../ui/helpers/helpers.dart';
-import '../../pages/pages.dart';
 import 'mixin/mixin.dart';
 import 'table.dart';
 
@@ -291,38 +290,6 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
   Color getTableBorderColor() =>
       Platform.isIOS ? CupertinoColors.separator : Colors.black;
 
-  Future<void> _openPdfPage() async {
-    if (_sortedRows.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("There is no data to export.")),
-      );
-      return;
-    }
-
-    // 1. Instantiate the generator as before.
-    final pdfGenerator = SaleStatisticPdfGenerator(
-      pdfFileName: widget.pdfFileName, // Title in Portuguese
-      titles: widget.titles,
-      sortedRows: _sortedRows,
-      columnsWidths: widget.columnsWidths,
-      sumRow: (widget.columnsIndexToSum?.isNotEmpty ?? false)
-          ? _buildSumRow()
-          : null,
-      minValueRowIndex: minValueRowIndex,
-      maxValueRowIndex: maxValueRowIndex,
-      getSalesStatisticsParams: widget.getSalesStatisticsParams,
-    );
-
-    // 2. Get the Future that will generate the PDF bytes, but DO NOT await it here.
-    final bytes = await pdfGenerator.generatePdfBytes();
-
-    // 3. Navigate to the new viewer page, passing the Future to it.
-    // The FutureBuilder inside PdfViewerPage will handle waiting for the result.
-    if (mounted) {
-      PdfViewerPage.openPdf(bytes, widget.pdfFileName);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     if (_sortedRows.isEmpty && widget.rowValues.isNotEmpty) {
@@ -467,7 +434,13 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                     left: 0,
                     top: 0,
                     child: InkWell(
-                      onTap: _openPdfPage,
+                      onTap: () => openPdfPage(
+                        context: context,
+                        sortedRows: _sortedRows,
+                        sumRow: fullSumRow,
+                        minValueRowIndex: minValueRowIndex,
+                        maxValueRowIndex: maxValueRowIndex,
+                      ),
                       child: const Icon(Icons.picture_as_pdf_outlined),
                     ),
                   ),
@@ -514,7 +487,6 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                                 unifiedTap: unifiedTap,
                                 startingColumnIndex: 0,
                                 context: context,
-                                titleMinHeight: widget.titleMinHeight,
                               );
                             }),
                           ),
@@ -555,7 +527,6 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                                   startingColumnIndex:
                                       widget.fixFirstColumn ? 1 : 0,
                                   context: context,
-                                  titleMinHeight: widget.titleMinHeight,
                                 );
                               }),
                             ),
@@ -632,7 +603,6 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                             isUnifiedTapRow: false, // Sum row is not tappable
                             unifiedTap: null,
                             startingColumnIndex: 0, context: context,
-                            titleMinHeight: widget.titleMinHeight,
                           ),
                         ],
                       ),
@@ -656,7 +626,6 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                               startingColumnIndex:
                                   widget.fixFirstColumn ? 1 : 0,
                               context: context,
-                              titleMinHeight: widget.titleMinHeight,
                             ),
                           ],
                         ),

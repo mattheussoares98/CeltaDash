@@ -3,9 +3,10 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../pages/pages.dart';
 import '../../components.dart';
 
-mixin HelpersMixin {
+mixin HelpersMixin on State<ScrollableTableItem> {
   final borderDecoration = const BorderDirectional(
     end: BorderSide(
       width: 0.5,
@@ -28,7 +29,6 @@ mixin HelpersMixin {
     required bool isUnifiedTapRow,
     required VoidCallback? unifiedTap,
     required int startingColumnIndex,
-    required double titleMinHeight,
     required BuildContext context,
   }) {
     final rowChildren = List.generate(cells.length, (colIndex) {
@@ -61,7 +61,7 @@ mixin HelpersMixin {
             Container(
               decoration: BoxDecoration(border: borderDecoration),
               width: double.infinity,
-              constraints: BoxConstraints(minHeight: titleMinHeight),
+              constraints: BoxConstraints(minHeight: widget.titleMinHeight),
               child: cell,
             ),
             if (showIndicator)
@@ -85,5 +85,41 @@ mixin HelpersMixin {
       decoration: BoxDecoration(color: rowColor),
       children: rowChildren,
     );
+  }
+
+  Future<void> openPdfPage({
+    required BuildContext context,
+    required List<List<PersonalizedTableCell>> sortedRows,
+    required List<PersonalizedTableCell> sumRow,
+    required int? minValueRowIndex,
+    required int? maxValueRowIndex,
+  }) async {
+    if (sortedRows.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("There is no data to export.")),
+      );
+      return;
+    }
+
+    // 1. Instantiate the generator as before.
+    final pdfGenerator = SaleStatisticPdfGenerator(
+      pdfFileName: widget.pdfFileName, // Title in Portuguese
+      titles: widget.titles,
+      sortedRows: sortedRows,
+      columnsWidths: widget.columnsWidths,
+      sumRow: (widget.columnsIndexToSum?.isNotEmpty ?? false) ? sumRow : null,
+      minValueRowIndex: minValueRowIndex,
+      maxValueRowIndex: maxValueRowIndex,
+      getSalesStatisticsParams: widget.getSalesStatisticsParams,
+    );
+
+    // 2. Get the Future that will generate the PDF bytes, but DO NOT await it here.
+    final bytes = await pdfGenerator.generatePdfBytes();
+
+    // 3. Navigate to the new viewer page, passing the Future to it.
+    // The FutureBuilder inside PdfViewerPage will handle waiting for the result.
+    if (mounted) {
+      PdfViewerPage.openPdf(bytes, widget.pdfFileName);
+    }
   }
 }
