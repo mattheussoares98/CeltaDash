@@ -295,79 +295,6 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
     return Platform.isIOS ? CupertinoColors.separator : Colors.black;
   }
 
-  TableRow _buildTableRow(
-    List<PersonalizedTableCell> cells, {
-    required Color? rowColor,
-    required bool isSumRow,
-    required bool isUnifiedTapRow,
-    required VoidCallback? unifiedTap,
-    required int startingColumnIndex,
-  }) {
-    final rowChildren = List.generate(cells.length, (colIndex) {
-      final cell = cells[colIndex];
-      // The cell's absolute position in the original row (e.g., 0, 1, 2, ...)
-      final absoluteCellIndex = startingColumnIndex + colIndex;
-
-      // If it's a unified row, all cells use the single tap. Otherwise, each uses its own.
-      final effectiveTap = isUnifiedTapRow ? unifiedTap : cell.onTap;
-
-      bool showIndicator = false;
-      if (effectiveTap != null && !isSumRow) {
-        // If there's ONE tap for the whole row, show the icon ONLY on the FIRST column.
-        if (isUnifiedTapRow && absoluteCellIndex == 0) {
-          showIndicator = true;
-        }
-        // If there are MULTIPLE taps, show the icon on each specific cell that has a tap.
-        else if (!isUnifiedTapRow && cell.onTap != null) {
-          showIndicator = true;
-        }
-      }
-
-      // Build the cell with a GestureDetector and a conditional Stack for the icon
-      return GestureDetector(
-        onTap: effectiveTap,
-        behavior: HitTestBehavior.opaque,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Container(
-              decoration: BoxDecoration(border: getBorderDecoration()),
-              width: double.infinity,
-              constraints: BoxConstraints(minHeight: widget.titleMinHeight),
-              child: cell,
-            ),
-            if (showIndicator)
-              Positioned(
-                left: 0,
-                bottom: 0,
-                child: Icon(
-                  Platform.isIOS
-                      ? CupertinoIcons.hand_point_right
-                      : Icons.touch_app_outlined,
-                  size: 14,
-                  color: Theme.of(context).primaryColor.withAlpha(200),
-                ),
-              ),
-          ],
-        ),
-      );
-    }).toList();
-
-    return TableRow(
-      decoration: BoxDecoration(color: rowColor),
-      children: rowChildren,
-    );
-  }
-
-  BorderDirectional getBorderDecoration() {
-    return const BorderDirectional(
-      end: BorderSide(
-        width: 0.5,
-        color: Colors.white,
-      ),
-    );
-  }
-
   Future<void> _openPdfPage() async {
     if (_sortedRows.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -484,7 +411,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                                       constraints: BoxConstraints(
                                           minHeight: widget.titleMinHeight),
                                       decoration: BoxDecoration(
-                                        border: getBorderDecoration(),
+                                        border: borderDecoration,
                                         color: Theme.of(context)
                                             .disabledColor
                                             .withAlpha(70),
@@ -523,7 +450,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                                           minHeight: widget.titleMinHeight,
                                         ),
                                         decoration: BoxDecoration(
-                                          border: getBorderDecoration(),
+                                          border: borderDecoration,
                                           color: Theme.of(context)
                                               .disabledColor
                                               .withAlpha(70),
@@ -583,13 +510,15 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                               final unifiedTap =
                                   isUnifiedTapRow ? tapsInRow.first : null;
 
-                              return _buildTableRow(
+                              return buildTableRow(
                                 fixedRowValues[rowIndex],
                                 rowColor: getColor(rowIndex),
                                 isSumRow: false,
                                 isUnifiedTapRow: isUnifiedTapRow,
                                 unifiedTap: unifiedTap,
                                 startingColumnIndex: 0,
+                                context: context,
+                                titleMinHeight: widget.titleMinHeight,
                               );
                             }),
                           ),
@@ -622,7 +551,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                                 final unifiedTap =
                                     isUnifiedTapRow ? tapsInRow.first : null;
 
-                                return _buildTableRow(
+                                return buildTableRow(
                                   scrollableRowValues[rowIndex],
                                   rowColor: getColor(rowIndex),
                                   isSumRow: false,
@@ -630,6 +559,8 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                                   unifiedTap: unifiedTap,
                                   startingColumnIndex:
                                       widget.fixFirstColumn ? 1 : 0,
+                                  context: context,
+                                  titleMinHeight: widget.titleMinHeight,
                                 );
                               }),
                             ),
@@ -699,14 +630,15 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                               widget.columnsWidths[0] + availableSize)
                         },
                         children: [
-                          _buildTableRow(
+                          buildTableRow(
                             fixedSumRow,
                             rowColor:
                                 Theme.of(context).disabledColor.withAlpha(70),
                             isSumRow: true,
                             isUnifiedTapRow: false, // Sum row is not tappable
                             unifiedTap: null,
-                            startingColumnIndex: 0,
+                            startingColumnIndex: 0, context: context,
+                            titleMinHeight: widget.titleMinHeight,
                           ),
                         ],
                       ),
@@ -721,7 +653,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                           defaultColumnWidth: const FlexColumnWidth(1),
                           columnWidths: scrollableColumnWidthsMap,
                           children: [
-                            _buildTableRow(
+                            buildTableRow(
                               scrollableSumRow,
                               rowColor:
                                   Theme.of(context).disabledColor.withAlpha(70),
@@ -730,6 +662,8 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                               unifiedTap: null,
                               startingColumnIndex:
                                   widget.fixFirstColumn ? 1 : 0,
+                              context: context,
+                              titleMinHeight: widget.titleMinHeight,
                             ),
                           ],
                         ),
