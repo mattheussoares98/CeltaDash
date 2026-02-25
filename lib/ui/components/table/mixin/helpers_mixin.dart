@@ -168,4 +168,23 @@ mixin HelpersMixin on State<ScrollableTableItem> {
     calculateMinMaxIndexes();
     return currentRows;
   }
+
+  Color getRowColor({
+    required int rowIndex,
+    required int? maxValueRowIndex,
+    required int? minValueRowIndex,
+    required List<List<PersonalizedTableCell>> sortedRows,
+  }) {
+    if (rowIndex == maxValueRowIndex && sortedRows.length > 1) {
+      return Colors.green.withAlpha(120);
+    } else if (rowIndex == minValueRowIndex && sortedRows.length > 1) {
+      return Colors.red.withAlpha(120);
+    } else if (sortedRows.isNotEmpty &&
+        sortedRows[rowIndex].first.decoration != null) {
+      return sortedRows[rowIndex].first.decoration?.color ?? Colors.transparent;
+    } else if (rowIndex % 2 == 0) {
+      return Theme.of(context).disabledColor.withAlpha(30);
+    }
+    return Colors.transparent;
+  }
 }

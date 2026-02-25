@@ -214,21 +214,6 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
     }
   }
 
-  Color getColor(int rowIndex) {
-    if (rowIndex == maxValueRowIndex && _sortedRows.length > 1) {
-      return Colors.green.withAlpha(120);
-    } else if (rowIndex == minValueRowIndex && _sortedRows.length > 1) {
-      return Colors.red.withAlpha(120);
-    } else if (_sortedRows.isNotEmpty &&
-        _sortedRows[rowIndex].first.decoration != null) {
-      return _sortedRows[rowIndex].first.decoration?.color ??
-          Colors.transparent;
-    } else if (rowIndex % 2 == 0) {
-      return Theme.of(context).disabledColor.withAlpha(30);
-    }
-    return Colors.transparent;
-  }
-
   List<PersonalizedTableCell> _buildSumRow() {
     List<PersonalizedTableCell> sumRow = [];
     for (int col = 0; col < widget.titles.length; col++) {
@@ -456,7 +441,12 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
 
                               return buildTableRow(
                                 fixedRowValues[rowIndex],
-                                rowColor: getColor(rowIndex),
+                                rowColor: getRowColor(
+                                  rowIndex: rowIndex,
+                                  maxValueRowIndex: maxValueRowIndex,
+                                  minValueRowIndex: minValueRowIndex,
+                                  sortedRows: _sortedRows,
+                                ),
                                 isSumRow: false,
                                 isUnifiedTapRow: isUnifiedTapRow,
                                 unifiedTap: unifiedTap,
@@ -495,7 +485,12 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
 
                                 return buildTableRow(
                                   scrollableRowValues[rowIndex],
-                                  rowColor: getColor(rowIndex),
+                                  rowColor: getRowColor(
+                                    rowIndex: rowIndex,
+                                    maxValueRowIndex: maxValueRowIndex,
+                                    minValueRowIndex: minValueRowIndex,
+                                    sortedRows: _sortedRows,
+                                  ),
                                   isSumRow: false,
                                   isUnifiedTapRow: isUnifiedTapRow,
                                   unifiedTap: unifiedTap,
