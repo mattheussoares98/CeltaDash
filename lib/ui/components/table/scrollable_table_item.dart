@@ -288,12 +288,8 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
     return sumRow;
   }
 
-  Color getTableBorderColor() {
-    if (MediaQuery.of(context).platformBrightness == Brightness.dark) {
-      return Colors.white;
-    }
-    return Platform.isIOS ? CupertinoColors.separator : Colors.black;
-  }
+  Color getTableBorderColor() =>
+      Platform.isIOS ? CupertinoColors.separator : Colors.black;
 
   Future<void> _openPdfPage() async {
     if (_sortedRows.isEmpty) {
