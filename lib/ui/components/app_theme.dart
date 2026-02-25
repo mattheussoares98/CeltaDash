@@ -119,7 +119,7 @@ ThemeData makeAppTheme(BuildContext context) {
     primaryColor: primaryColor,
     primaryColorDark: primaryColorDark,
     primaryColorLight: primaryColorLight,
-    highlightColor: CupertinoColors.systemGrey4.withOpacity(0.2),
+    highlightColor: CupertinoColors.systemGrey4.withAlpha(50),
     secondaryHeaderColor: secondaryColor,
     disabledColor: disabledColor,
     dividerColor: dividerColor,
