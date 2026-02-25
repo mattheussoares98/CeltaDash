@@ -122,4 +122,50 @@ mixin HelpersMixin on State<ScrollableTableItem> {
       PdfViewerPage.openPdf(bytes, widget.pdfFileName);
     }
   }
+
+  List<List<PersonalizedTableCell>> getSortedRows({
+    required List<List<PersonalizedTableCell>> currentRows,
+    required int? currentSortColumn,
+    required VoidCallback calculateMinMaxIndexes,
+    required bool isAscending,
+  }) {
+    if (currentSortColumn == null) {
+      calculateMinMaxIndexes();
+      return currentRows;
+    }
+
+    final int columnIndex = currentSortColumn;
+
+    currentRows.sort((a, b) {
+      final aValue = a[columnIndex].value.toString();
+      final bValue = b[columnIndex].value.toString();
+      final aSplit = aValue.toString().split(' ').first.padLeft(2, "0");
+      final bSplit = bValue.toString().split(' ').first.padLeft(2, "0");
+      final aNum = double.tryParse(aSplit);
+      final bNum = double.tryParse(bSplit);
+
+      if (aNum != null && bNum != null) {
+        return isAscending ? aNum.compareTo(bNum) : bNum.compareTo(aNum);
+      }
+
+      final aInt = int.tryParse(aValue.split(':').first);
+      final bInt = int.tryParse(bValue.split(':').first);
+      if (aInt != null && bInt != null) {
+        return isAscending ? aInt.compareTo(bInt) : bInt.compareTo(aInt);
+      }
+      try {
+        final aTime = parseTime(aValue);
+        final bTime = parseTime(bValue);
+        // Assuming time comparison logic might be different
+        return isAscending ? aTime.compareTo(bTime) : bTime.compareTo(aTime);
+      } catch (_) {
+        return isAscending
+            ? aValue.compareTo(bValue)
+            : bValue.compareTo(aValue);
+      }
+    });
+
+    calculateMinMaxIndexes();
+    return currentRows;
+  }
 }

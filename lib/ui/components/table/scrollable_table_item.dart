@@ -84,7 +84,12 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
     if (widget.rowValues != oldWidget.rowValues) {
       setState(() {
         _sortedRows = [...widget.rowValues]; // Update the data
-        _sortRows(); // Re-apply the existing sort, not the initial one
+        _sortedRows = getSortedRows(
+          currentRows: _sortedRows,
+          currentSortColumn: _currentSortColumn,
+          calculateMinMaxIndexes: _calculateMinMaxIndexes,
+          isAscending: _isAscending,
+        ); // Re-apply the existing sort, not the initial one
       });
     }
   }
@@ -106,7 +111,12 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
       _isAscending = false; // Default sort direction
 
       if (_currentSortColumn != null) {
-        _sortRows();
+        _sortedRows = getSortedRows(
+          currentRows: _sortedRows,
+          currentSortColumn: _currentSortColumn,
+          calculateMinMaxIndexes: _calculateMinMaxIndexes,
+          isAscending: _isAscending,
+        );
       } else {
         _calculateMinMaxIndexes();
       }
@@ -123,48 +133,13 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
         _currentSortColumn = columnIndex;
         _isAscending = false;
       }
-      _sortRows();
+      _sortedRows = getSortedRows(
+        currentRows: _sortedRows,
+        currentSortColumn: _currentSortColumn,
+        calculateMinMaxIndexes: _calculateMinMaxIndexes,
+        isAscending: _isAscending,
+      );
     });
-  }
-
-  void _sortRows() {
-    if (_currentSortColumn == null) {
-      _calculateMinMaxIndexes();
-      return;
-    }
-
-    final int columnIndex = _currentSortColumn!;
-
-    _sortedRows.sort((a, b) {
-      final aValue = a[columnIndex].value.toString();
-      final bValue = b[columnIndex].value.toString();
-      final aSplit = aValue.toString().split(' ').first.padLeft(2, "0");
-      final bSplit = bValue.toString().split(' ').first.padLeft(2, "0");
-      final aNum = double.tryParse(aSplit);
-      final bNum = double.tryParse(bSplit);
-
-      if (aNum != null && bNum != null) {
-        return _isAscending ? aNum.compareTo(bNum) : bNum.compareTo(aNum);
-      }
-
-      final aInt = int.tryParse(aValue.split(':').first);
-      final bInt = int.tryParse(bValue.split(':').first);
-      if (aInt != null && bInt != null) {
-        return _isAscending ? aInt.compareTo(bInt) : bInt.compareTo(aInt);
-      }
-      try {
-        final aTime = parseTime(aValue);
-        final bTime = parseTime(bValue);
-        // Assuming time comparison logic might be different
-        return _isAscending ? aTime.compareTo(bTime) : bTime.compareTo(aTime);
-      } catch (_) {
-        return _isAscending
-            ? aValue.compareTo(bValue)
-            : bValue.compareTo(aValue);
-      }
-    });
-
-    _calculateMinMaxIndexes();
   }
 
   void _setupVerticalScrollControllers() {
