@@ -9,6 +9,7 @@ import '../../../domain/helpers/helpers.dart';
 import '../../../domain/usecases/usecases.dart';
 import '../../../ui/helpers/helpers.dart';
 import '../../pages/pages.dart';
+import 'mixin/mixin.dart';
 import 'table.dart';
 
 class ScrollableTableItem extends StatefulWidget {
@@ -49,7 +50,8 @@ class ScrollableTableItem extends StatefulWidget {
   State<ScrollableTableItem> createState() => _ScrollableTableItemState();
 }
 
-class _ScrollableTableItemState extends State<ScrollableTableItem> {
+class _ScrollableTableItemState extends State<ScrollableTableItem>
+    with HelpersMixin {
   late List<List<PersonalizedTableCell>> _sortedRows;
   int? _currentSortColumn;
   bool _isAscending = false;
@@ -152,8 +154,8 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
         return _isAscending ? aInt.compareTo(bInt) : bInt.compareTo(aInt);
       }
       try {
-        final aTime = _parseTime(aValue);
-        final bTime = _parseTime(bValue);
+        final aTime = parseTime(aValue);
+        final bTime = parseTime(bValue);
         // Assuming time comparison logic might be different
         return _isAscending ? aTime.compareTo(bTime) : bTime.compareTo(aTime);
       } catch (_) {
@@ -236,14 +238,6 @@ class _ScrollableTableItemState extends State<ScrollableTableItem> {
         }
       }
     }
-  }
-
-  DateTime _parseTime(String time) {
-    final cleaned = time.replaceFirst(RegExp(r'\r?\n[\s\S]*$'), '');
-    final parts = cleaned.split(':');
-    final hour = int.parse(parts[0]);
-    final minute = parts.length > 1 ? int.parse(parts[1]) : 0;
-    return DateTime(0, 1, 1, hour, minute);
   }
 
   Color getColor(int rowIndex) {
