@@ -332,143 +332,65 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
             ),
           ),
 
-          // Body Rows
-          Flexible(
-            child: Stack(
-              children: [
-                Row(
-                  children: [
-                    if (widget.fixFirstColumn)
-                      SingleChildScrollView(
-                        controller: _fixedColumnScrollController,
-                        child: DefaultTextStyle(
-                          style: cupertinoTextStyle,
-                          child: Table(
-                            border: TableBorder.all(
-                                color: tableBorderColor, width: 0.06),
-                            defaultColumnWidth: const FlexColumnWidth(1),
-                            columnWidths: {
-                              0: FixedColumnWidth(
-                                  widget.columnsWidths[0] + availableSize)
-                            },
-                            children: List.generate(fixedRowValues.length,
-                                (rowIndex) {
-                              final fullRow = _sortedRows[rowIndex];
-                              final tapsInRow = fullRow
-                                  .map((c) => c.onTap)
-                                  .whereType<VoidCallback>()
-                                  .toSet();
-                              final isUnifiedTapRow = tapsInRow.length == 1;
-                              final unifiedTap =
-                                  isUnifiedTapRow ? tapsInRow.first : null;
+          BodyRows(
+            fixedColumnScrollController: _fixedColumnScrollController,
+            scrollableColumnsScrollController:
+                _scrollableColumnsScrollController,
+            bodyHorizontalController: _bodyHorizontalController,
+            tableBorderColor: tableBorderColor,
+            columnWidth: widget.columnsWidths[0] + availableSize,
+            fixedRowValues: fixedRowValues,
+            sortedRows: _sortedRows,
+            scrollableColumnWidthsMap: scrollableColumnWidthsMap,
+            scrollableRowValues: scrollableRowValues,
+            widget: widget,
+            alreadyShowedAnimation: alreadyShowedAnimation,
+            availableSize: availableSize,
+            notFixedColumns:
+                List.generate(scrollableRowValues.length, (rowIndex) {
+              final fullRow = _sortedRows[rowIndex];
+              final tapsInRow =
+                  fullRow.map((c) => c.onTap).whereType<VoidCallback>().toSet();
+              final isUnifiedTapRow = tapsInRow.length == 1;
+              final unifiedTap = isUnifiedTapRow ? tapsInRow.first : null;
 
-                              return buildTableRow(
-                                fixedRowValues[rowIndex],
-                                rowColor: getRowColor(
-                                  rowIndex: rowIndex,
-                                  maxValueRowIndex: maxValueRowIndex,
-                                  minValueRowIndex: minValueRowIndex,
-                                  sortedRows: _sortedRows,
-                                ),
-                                isSumRow: false,
-                                isUnifiedTapRow: isUnifiedTapRow,
-                                unifiedTap: unifiedTap,
-                                startingColumnIndex: 0,
-                                context: context,
-                              );
-                            }),
-                          ),
-                        ),
-                      ),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        controller: _scrollableColumnsScrollController,
-                        physics: const ClampingScrollPhysics(),
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          controller: _bodyHorizontalController,
-                          physics: const ClampingScrollPhysics(),
-                          child: DefaultTextStyle(
-                            style: cupertinoTextStyle,
-                            child: Table(
-                              border: TableBorder.all(
-                                  color: tableBorderColor, width: 0.06),
-                              defaultColumnWidth: const FlexColumnWidth(1),
-                              columnWidths: scrollableColumnWidthsMap,
-                              children: List.generate(
-                                  scrollableRowValues.length, (rowIndex) {
-                                final fullRow = _sortedRows[rowIndex];
-                                final tapsInRow = fullRow
-                                    .map((c) => c.onTap)
-                                    .whereType<VoidCallback>()
-                                    .toSet();
-                                final isUnifiedTapRow = tapsInRow.length == 1;
-                                final unifiedTap =
-                                    isUnifiedTapRow ? tapsInRow.first : null;
-
-                                return buildTableRow(
-                                  scrollableRowValues[rowIndex],
-                                  rowColor: getRowColor(
-                                    rowIndex: rowIndex,
-                                    maxValueRowIndex: maxValueRowIndex,
-                                    minValueRowIndex: minValueRowIndex,
-                                    sortedRows: _sortedRows,
-                                  ),
-                                  isSumRow: false,
-                                  isUnifiedTapRow: isUnifiedTapRow,
-                                  unifiedTap: unifiedTap,
-                                  startingColumnIndex:
-                                      widget.fixFirstColumn ? 1 : 0,
-                                  context: context,
-                                );
-                              }),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+              return buildTableRow(
+                scrollableRowValues[rowIndex],
+                rowColor: getRowColor(
+                  rowIndex: rowIndex,
+                  maxValueRowIndex: maxValueRowIndex,
+                  minValueRowIndex: minValueRowIndex,
+                  sortedRows: _sortedRows,
                 ),
-                if (availableSize == 0 &&
-                    widget.showAnimation &&
-                    !alreadyShowedAnimation)
-                  Builder(builder: (context) {
-                    final animationDuration = Duration(
-                        seconds: (widget.animationSecondsDuration / 2).toInt());
+                isSumRow: false,
+                isUnifiedTapRow: isUnifiedTapRow,
+                unifiedTap: unifiedTap,
+                startingColumnIndex: widget.fixFirstColumn ? 1 : 0,
+                context: context,
+              );
+            }),
+            fixedColumns: List.generate(fixedRowValues.length, (rowIndex) {
+              final fullRow = _sortedRows[rowIndex];
+              final tapsInRow =
+                  fullRow.map((c) => c.onTap).whereType<VoidCallback>().toSet();
+              final isUnifiedTapRow = tapsInRow.length == 1;
+              final unifiedTap = isUnifiedTapRow ? tapsInRow.first : null;
 
-                    if (_bodyHorizontalController.hasClients) {
-                      _bodyHorizontalController.animateTo(
-                        curve: Curves.linear,
-                        duration: animationDuration,
-                        widget.columnsWidths.reduce((p, e) => p + e),
-                      );
-                    }
-                    Future.delayed(animationDuration, () async {
-                      if (_bodyHorizontalController.hasClients) {
-                        await _bodyHorizontalController.animateTo(
-                          curve: Curves.linear,
-                          duration: animationDuration,
-                          0,
-                        );
-                        if (mounted) {
-                          setState(() {
-                            alreadyShowedAnimation = true;
-                          });
-                        }
-                      }
-                    });
-
-                    widget.hideShowAnimation();
-
-                    return Positioned(
-                      bottom: 0,
-                      top: 0,
-                      left: widget.columnsWidths.first,
-                      child: const HorizontalScrollableIndicator(),
-                    );
-                  }),
-              ],
-            ),
+              return buildTableRow(
+                fixedRowValues[rowIndex],
+                rowColor: getRowColor(
+                  rowIndex: rowIndex,
+                  maxValueRowIndex: maxValueRowIndex,
+                  minValueRowIndex: minValueRowIndex,
+                  sortedRows: _sortedRows,
+                ),
+                isSumRow: false,
+                isUnifiedTapRow: isUnifiedTapRow,
+                unifiedTap: unifiedTap,
+                startingColumnIndex: 0,
+                context: context,
+              );
+            }),
           ),
           // Sum Row
           if (widget.columnsIndexToSum != null &&
