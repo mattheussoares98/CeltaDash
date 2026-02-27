@@ -1555,13 +1555,13 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   abseil: a05cc83bf02079535e17169a73c5be5ba47f714b
   BoringSSL-GRPC: dded2a44897e45f28f08ae87a55ee4bcd19bc508
-  cloud_firestore: d12568452e8283063a2c849d00a49fdbf240dffc
-  device_info_plus: bf2e3232933866d73fe290f2942f2156cdd10342
+  cloud_firestore: 4bd00c3464706d9e09dabac0bb8e9610456109f5
+  device_info_plus: 21fcca2080fbcd348be798aa36c3e5ed849eefbe
   Firebase: 9a58fdbc9d8655ed7b79a19cf9690bb007d3d46d
-  firebase_analytics: a463fef86e489e34a1b58bced6a7f6bb26132498
-  firebase_auth: e7aec07fcada64e296cf237a61df9660e52842c2
-  firebase_core: 8d5e24676350f15dd111aa59a88a1ae26605f9ba
-  firebase_crashlytics: a14ae83fe2d4738b6b5a7bebdf9dad9ccc747e70
+  firebase_analytics: a3285a9ab410456957496cdb659f00c1cf19a95f
+  firebase_auth: e9031a1dbe04a90d98e8d11ff2302352a1c6d9e8
+  firebase_core: ee30637e6744af8e0c12a6a1e8a9718506ec2398
+  firebase_crashlytics: 28b8f39df8104131376393e6af658b8b77dd120f
   FirebaseAnalytics: f20bbad8cb7f65d8a5eaefeb424ae8800a31bdfc
   FirebaseAppCheckInterop: ba3dc604a89815379e61ec2365101608d365cf7d
   FirebaseAuth: 4c289b1a43f5955283244a55cf6bd616de344be5
@@ -1586,14 +1586,14 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: b8ab00db932816e14b0a0664a08cb73dda6d164b
   leveldb-library: cc8b8f8e013647a295ad3f8cd2ddf49a6f19be19
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
-  native_device_orientation: 42487b19c552fb5a6a2b51e61b93366f628113df
-  package_info_plus: c0502532a26c7662a62a356cebe2692ec5fe4ec4
+  native_device_orientation: f3ba5f2ddbab3deee23a5f6693b4f97b02dafea2
+  package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
   RecaptchaInterop: 11e0b637842dfb48308d242afc3f448062325aba
-  share_plus: 8b6f8b3447e494cca5317c8c3073de39b3600d1f
-  syncfusion_flutter_pdfviewer: cfcf23c03816192575902e615fa50adc9f95b724
-  url_launcher_ios: bb13df5870e8c4234ca12609d04010a21be43dfa
+  share_plus: 50da8cb520a8f0f65671c6c6a99b3617ed10a58a
+  syncfusion_flutter_pdfviewer: 90dc48305d2e33d4aa20681d1e98ddeda891bc14
+  url_launcher_ios: 7a95fa5b60cc718a708b8f2966718e93db0cef1b
 
 PODFILE CHECKSUM: 6142133309b4a875b029555aacde11864af72fb9
 

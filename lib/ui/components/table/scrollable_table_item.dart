@@ -54,7 +54,6 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
   late List<List<PersonalizedTableCell>> _sortedRows;
   int? _currentSortColumn;
   bool _isAscending = false;
-  bool alreadyShowedAnimation = false;
 
   int? minValueRowIndex;
   int? maxValueRowIndex;
@@ -344,7 +343,6 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
             scrollableColumnWidthsMap: scrollableColumnWidthsMap,
             scrollableRowValues: scrollableRowValues,
             widget: widget,
-            alreadyShowedAnimation: alreadyShowedAnimation,
             availableSize: availableSize,
             notFixedColumns:
                 List.generate(scrollableRowValues.length, (rowIndex) {

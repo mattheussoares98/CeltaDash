@@ -13,7 +13,6 @@ class BodyRows extends StatefulWidget {
   final Map<int, TableColumnWidth> scrollableColumnWidthsMap;
   final List<List<PersonalizedTableCell>> scrollableRowValues;
   final ScrollableTableItem widget;
-  final bool alreadyShowedAnimation;
   final double availableSize;
   final List<TableRow> fixedColumns;
   final List<TableRow> notFixedColumns;
@@ -29,7 +28,6 @@ class BodyRows extends StatefulWidget {
     required this.scrollableColumnWidthsMap,
     required this.scrollableRowValues,
     required this.widget,
-    required this.alreadyShowedAnimation,
     required this.availableSize,
     required this.fixedColumns,
     required this.notFixedColumns,
@@ -90,7 +88,7 @@ class _BodyRowsState extends State<BodyRows> {
           ),
           if (widget.availableSize == 0 &&
               widget.widget.showAnimation &&
-              !widget.alreadyShowedAnimation)
+              !alreadyShowedAnimation)
             Builder(builder: (context) {
               final animationDuration = Duration(
                   seconds:
@@ -117,8 +115,6 @@ class _BodyRowsState extends State<BodyRows> {
                   }
                 }
               });
-
-              widget.widget.hideShowAnimation();
 
               return Positioned(
                 bottom: 0,
