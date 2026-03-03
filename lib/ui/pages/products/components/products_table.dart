@@ -69,8 +69,12 @@ class ProductsTable extends StatelessWidget {
       ],
       rowValues: sales!.map((sale) {
         final parts = sale.Product?.split('-');
-        final productName =
-            parts?.length != null && parts!.length > 2 ? parts[2] : '';
+
+        String productName = '';
+
+        if (parts != null && parts.length > 2) {
+          productName = parts.sublist(2).join(' ');
+        }
 
         final ticketAverage = (sale.LiquidValue?.toDouble() ?? 0) /
             (sale.QuantityOfProducts?.toDouble() ?? 1);
