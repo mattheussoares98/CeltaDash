@@ -19,37 +19,6 @@ class ProductsTable extends StatelessWidget {
     required this.hideShowAnimation,
   });
 
-  List<List<PersonalizedTableCell>> constructRows(
-    List<SaleStatisticViewModel> saleStatistics,
-  ) {
-    final sorted = [...saleStatistics]..sort((a, b) =>
-        (b.LiquidValue?.toDouble() ?? 0)
-            .compareTo(a.LiquidValue?.toDouble() ?? 0));
-
-    List<List<PersonalizedTableCell>> sales = [];
-
-    for (var index = 0; index < saleStatistics.length; index++) {
-      final sale = sorted[index];
-      final parts = sale.Product?.split('-');
-      final productName =
-          parts?.length != null && parts!.length > 2 ? parts[2] : '';
-
-      final ticketAverage = (sale.LiquidValue?.toDouble() ?? 0) /
-          (sale.QuantityOfProducts?.toDouble() ?? 1);
-
-      sales.add([
-        // PersonalizedTableCell(value: index + 1),
-        PersonalizedTableCell(value: productName),
-        PersonalizedTableCell(
-            value: sale.LiquidValue?.toDouble() ?? 0, isMoney: true),
-        PersonalizedTableCell(value: sale.QuantityOfProducts?.toDouble()),
-        PersonalizedTableCell(value: ticketAverage, isMoney: true),
-      ]);
-    }
-
-    return sales;
-  }
-
   @override
   Widget build(BuildContext context) {
     final productsPresenter = Get.find<ProductsPresenter>();

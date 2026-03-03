@@ -1,0 +1,62 @@
+############################
+# FLUTTER GENERATED
+############################
+
+.dart_tool
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub
+.pub-cache
+build
+coverage
+
+############################
+# ANDROID BUILD
+############################
+
+android/build
+android/app/build
+android/local.properties
+
+############################
+# IOS BUILD
+############################
+
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Pods
+ios/build
+
+############################
+# FIREBASE LOCAL CONFIG
+############################
+
+.firebase
+
+############################
+# IDE FILES
+############################
+
+.idea
+.vscode
+*.iml
+*.ipr
+*.iws
+
+############################
+# SYSTEM FILES
+############################
+
+.DS_Store
+Thumbs.db
+*.log
+*.swp
+*.class
+*.pyc
+
+############################
+# GENERATED DART FILES
+############################
+
+*.g.dart
