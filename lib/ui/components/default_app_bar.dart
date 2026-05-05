@@ -131,13 +131,11 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                     ),
                   Expanded(
                     child: DefaultDropDown<EcEnterpriseViewModel?>(
-                      onChanged: widget.isLoading == true
-                          ? null
-                          : (e) {
-                              if (e == homePresenter.selectedEnterprise) return;
-                              homePresenter.updateSelectedEnterprise(e);
-                              widget.onChangeEnterprise(true);
-                            },
+                      onChanged: (e) {
+                        if (e == homePresenter.selectedEnterprise) return;
+                        homePresenter.updateSelectedEnterprise(e);
+                        widget.onChangeEnterprise(true);
+                      },
                       hint: Text(
                           "${selectedEnterprise?.personalizedCode} - ${selectedEnterprise?.name}"),
                       items: enterprises.map(

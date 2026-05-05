@@ -42,9 +42,11 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
     final currentIndex =
         widget.items?.indexWhere((item) => item.value == widget.selectedItem) ??
             -1;
-    final bool hasPrevious = currentIndex > 0;
-    final bool hasNext =
-        currentIndex != -1 && currentIndex < (widget.items?.length ?? 0) - 1;
+    final bool hasPrevious = currentIndex > 0 &&
+        (widget.items?.take(currentIndex).any((item) => item.enabled) ?? false);
+    final bool hasNext = currentIndex != -1 &&
+        (widget.items?.skip(currentIndex + 1).any((item) => item.enabled) ??
+            false);
     final theme = Theme.of(context);
 
     if (Platform.isIOS) {
@@ -241,16 +243,26 @@ class _ChangeItemByArrow<T> extends StatelessWidget {
       maintainState: true,
       child: IconButton(
         onPressed: () {
-          if (onChanged != null && isPrevious) {
-            final previousItemValue = items![index - 1].value;
-            if (previousItemValue != null) {
-              onChanged!(previousItemValue);
-            }
-          } else {
-            if (onChanged != null) {
-              final nextItemValue = items![index + 1].value;
-              if (nextItemValue != null) {
-                onChanged!(nextItemValue);
+          if (onChanged != null && items != null) {
+            if (isPrevious) {
+              for (int i = index - 1; i >= 0; i--) {
+                if (items![i].enabled) {
+                  final value = items![i].value;
+                  if (value != null) {
+                    onChanged!(value);
+                    return;
+                  }
+                }
+              }
+            } else {
+              for (int i = index + 1; i < items!.length; i++) {
+                if (items![i].enabled) {
+                  final value = items![i].value;
+                  if (value != null) {
+                    onChanged!(value);
+                    return;
+                  }
+                }
               }
             }
           }
