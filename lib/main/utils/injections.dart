@@ -1,3 +1,7 @@
+import 'url_strategy_non_web.dart'
+    if (dart.library.js_util) 'url_strategy_web.dart'
+    if (dart.library.html) 'url_strategy_web.dart' as impl;
+
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -21,8 +25,13 @@ class MyHttpOverrides extends HttpOverrides {
   }
 }
 
+void configureUrlStrategy() {
+  impl.configureUrlStrategy();
+}
+
 Future<void> initApp() async {
   WidgetsFlutterBinding.ensureInitialized();
+  configureUrlStrategy();
 
   HttpOverrides.global = MyHttpOverrides();
   await _initFirebase();
