@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -38,6 +39,8 @@ class _SearchWidgetState extends State<SearchWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final isIOS = !kIsWeb && Platform.isIOS;
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(4, 8, 0, 4),
       child: Row(
@@ -103,7 +106,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                             ),
                           ),
                         ),
-                        if (Platform.isIOS || Platform.isAndroid)
+                        if (isIOS || Platform.isAndroid)
                           Flexible(
                             child: Padding(
                               padding: const EdgeInsets.only(left: 5),

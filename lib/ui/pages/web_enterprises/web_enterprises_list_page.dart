@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -31,6 +32,8 @@ class _WebEnterprisesListPageState extends State<WebEnterprisesListPage> {
   @override
   Widget build(BuildContext context) {
     final webEnterprisesPresenter = Get.find<WebEnterprisesPresenter>();
+    final isIOS = !kIsWeb && Platform.isIOS;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(R.string.enterprises),
@@ -72,9 +75,7 @@ class _WebEnterprisesListPageState extends State<WebEnterprisesListPage> {
                   context: context,
                   labelText: R.string.filter,
                   suffixIcon: Icon(
-                    Platform.isIOS
-                        ? CupertinoIcons.search
-                        : Icons.search_rounded,
+                    isIOS ? CupertinoIcons.search : Icons.search_rounded,
                   ),
                 ),
               ),

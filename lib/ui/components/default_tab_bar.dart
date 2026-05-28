@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class DefaultTabBar extends StatelessWidget {
@@ -43,7 +44,7 @@ class DefaultTab extends StatelessWidget {
       children: [
         Icon(
           size: 20,
-          Platform.isIOS ? cupertinoIcon : materialIcon,
+          !kIsWeb && Platform.isIOS ? cupertinoIcon : materialIcon,
         ),
         Text(title),
       ],

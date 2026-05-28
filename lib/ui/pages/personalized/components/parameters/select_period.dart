@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -105,6 +106,8 @@ class _Icon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isIOS = !kIsWeb && Platform.isIOS;
+
     return isLoading == true
         ? const SizedBox(
             height: 15,
@@ -112,7 +115,7 @@ class _Icon extends StatelessWidget {
             child: CircularProgressIndicator(strokeWidth: 0.5),
           )
         : Icon(
-            Platform.isIOS ? Icons.calendar_today : Icons.date_range_outlined,
+            isIOS ? Icons.calendar_today : Icons.date_range_outlined,
           );
   }
 }

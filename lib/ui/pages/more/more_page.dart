@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -49,6 +50,8 @@ class MorePage extends StatelessWidget {
     ];
     buttons.sort((a, b) => a.title.compareTo(b.title));
 
+    final isIOS = !kIsWeb && Platform.isIOS;
+
     return DefaultSafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -66,9 +69,7 @@ class MorePage extends StatelessWidget {
                 );
               },
               icon: Icon(
-                Platform.isIOS
-                    ? CupertinoIcons.arrow_right_square
-                    : Icons.exit_to_app,
+                isIOS ? CupertinoIcons.arrow_right_square : Icons.exit_to_app,
               ),
             )
           ],

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../pages/pages.dart';
@@ -51,6 +52,8 @@ mixin HelpersMixin on State<ScrollableTableItem> {
         }
       }
 
+      final isIOS = !kIsWeb && Platform.isIOS;
+
       // Build the cell with a GestureDetector and a conditional Stack for the icon
       return GestureDetector(
         onTap: effectiveTap,
@@ -69,7 +72,7 @@ mixin HelpersMixin on State<ScrollableTableItem> {
                 left: 0,
                 bottom: 0,
                 child: Icon(
-                  Platform.isIOS
+                  isIOS
                       ? CupertinoIcons.hand_point_right
                       : Icons.touch_app_outlined,
                   size: 14,

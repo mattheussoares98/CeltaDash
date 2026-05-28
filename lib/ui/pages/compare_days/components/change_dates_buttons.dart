@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -63,6 +64,7 @@ class ChangeDatesButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     CompareDaysPresenter compareDaysPresenter = Get.find();
     HomePresenter homePresenter = Get.find();
+    final isIOS = !kIsWeb && Platform.isIOS;
 
     return Padding(
       padding: const EdgeInsets.all(4),
@@ -81,7 +83,7 @@ class ChangeDatesButtons extends StatelessWidget {
                       );
                     },
               icon: Icon(
-                Platform.isIOS ? CupertinoIcons.calendar : Icons.calendar_month,
+                isIOS ? CupertinoIcons.calendar : Icons.calendar_month,
                 color: Colors.white,
               ),
               label: FittedBox(
@@ -101,7 +103,7 @@ class ChangeDatesButtons extends StatelessWidget {
                       );
                     },
               icon: Icon(
-                Platform.isIOS ? CupertinoIcons.calendar : Icons.calendar_month,
+                isIOS ? CupertinoIcons.calendar : Icons.calendar_month,
                 color: Colors.white,
               ),
               label: FittedBox(

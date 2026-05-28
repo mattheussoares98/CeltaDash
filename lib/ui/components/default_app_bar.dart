@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -68,7 +69,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
   Widget build(BuildContext context) {
     HomePresenter homePresenter = Get.find();
     EnterprisesManagerPresenter enterprisesManagerPresenter = Get.find();
-    final isIOS = Platform.isIOS;
+    final isIOS = !kIsWeb && Platform.isIOS;
     bool isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
 
@@ -107,9 +108,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                           context, enterprisesManagerPresenter);
                     },
                     icon: Icon(
-                      Platform.isIOS
-                          ? CupertinoIcons.person_add
-                          : Icons.manage_accounts,
+                      isIOS ? CupertinoIcons.person_add : Icons.manage_accounts,
                     ),
                   ),
                 )
@@ -178,7 +177,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                                 context, enterprisesManagerPresenter);
                       },
                       icon: Icon(
-                        Platform.isIOS
+                        isIOS
                             ? CupertinoIcons.person_add
                             : Icons.manage_accounts,
                       ),
@@ -217,6 +216,7 @@ class _SelectDateState extends State<SelectDate> {
   @override
   Widget build(BuildContext context) {
     final homePresenter = Get.find<HomePresenter>();
+    final isIOS = !kIsWeb && Platform.isIOS;
 
     return Row(
       children: [
@@ -262,7 +262,7 @@ class _SelectDateState extends State<SelectDate> {
                     ),
                   )
                 : Icon(
-                    Platform.isIOS ? CupertinoIcons.refresh : Icons.refresh,
+                    isIOS ? CupertinoIcons.refresh : Icons.refresh,
                     color: IsDarkTheme.isDark
                         ? Theme.of(context).primaryColorLight
                         : Theme.of(context).primaryColorDark,

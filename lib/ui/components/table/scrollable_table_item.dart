@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 // Assuming these are your custom imports.
@@ -246,11 +247,11 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
     return sumRow;
   }
 
-  final tableBorderColor =
-      Platform.isIOS ? CupertinoColors.separator : Colors.black;
-
   @override
   Widget build(BuildContext context) {
+    final isIOS = !kIsWeb && Platform.isIOS;
+    final tableBorderColor = isIOS ? CupertinoColors.separator : Colors.black;
+
     if (_sortedRows.isEmpty && widget.rowValues.isNotEmpty) {
       // This can act as a fallback if the state somehow isn't initialized yet.
       _resetDataAndSort();

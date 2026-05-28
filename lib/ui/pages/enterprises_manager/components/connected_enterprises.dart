@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,6 +14,7 @@ class ConnectedEnterprises extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final enterprisesManagerPresenter = Get.find<EnterprisesManagerPresenter>();
+    final isIOS = !kIsWeb && Platform.isIOS;
 
     return Row(
       children: [
@@ -27,7 +29,7 @@ class ConnectedEnterprises extends StatelessWidget {
           ),
         ),
         IconButton(
-          icon: Icon(Platform.isIOS ? CupertinoIcons.xmark : Icons.close),
+          icon: Icon(isIOS ? CupertinoIcons.xmark : Icons.close),
           onPressed: () => Navigator.pop(context),
         ),
       ],

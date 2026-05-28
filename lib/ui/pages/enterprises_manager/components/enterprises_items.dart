@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -23,10 +24,10 @@ class _EnterprisesItemsState extends State<EnterprisesItems> {
   Widget build(BuildContext context) {
     final enterprisesManagerPresenter = Get.find<EnterprisesManagerPresenter>();
     final theme = Theme.of(context);
+    final isIOS = !kIsWeb && Platform.isIOS;
 
+    final selectedId = EnterpriseBuilder.entity?.firebaseId;
     return Obx(() {
-      final selectedId = EnterpriseBuilder.entity?.firebaseId;
-
       enterprisesManagerPresenter.allEnterprises?.sort((a, b) {
         final isASelected = a.firebaseId == selectedId;
         final isBSelected = b.firebaseId == selectedId;
@@ -66,7 +67,7 @@ class _EnterprisesItemsState extends State<EnterprisesItems> {
                     ),
                     trailing: isSelected
                         ? Icon(
-                            Platform.isIOS
+                            isIOS
                                 ? CupertinoIcons.checkmark
                                 : Icons.check_circle,
                             color: theme.colorScheme.primary)
@@ -96,7 +97,7 @@ class _EnterprisesItemsState extends State<EnterprisesItems> {
                           );
                         },
                         icon: Icon(
-                          Platform.isIOS ? CupertinoIcons.trash : Icons.delete,
+                          isIOS ? CupertinoIcons.trash : Icons.delete,
                           color: isSelected
                               ? theme.disabledColor
                               : theme.colorScheme.error,

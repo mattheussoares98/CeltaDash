@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../helpers/helpers.dart';
@@ -48,8 +49,9 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
         (widget.items?.skip(currentIndex + 1).any((item) => item.enabled) ??
             false);
     final theme = Theme.of(context);
+    final isIOS = !kIsWeb && Platform.isIOS;
 
-    if (Platform.isIOS) {
+    if (isIOS) {
       return SizedBox(
         height: DropdownHeight.height,
         child: CupertinoButton(
@@ -236,6 +238,8 @@ class _ChangeItemByArrow<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isIOS = !kIsWeb && Platform.isIOS;
+
     return Visibility(
       visible: true,
       maintainSize: true,
@@ -268,7 +272,7 @@ class _ChangeItemByArrow<T> extends StatelessWidget {
           }
         },
         icon: Icon(
-          Platform.isIOS
+          isIOS
               ? (isPrevious
                   ? CupertinoIcons.arrow_left
                   : CupertinoIcons.arrow_right)

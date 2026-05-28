@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../main/utils/utils.dart';
@@ -22,8 +23,9 @@ class GetNewDate {
     );
 
     DateTime? selectedDate;
+    final isIOS = !kIsWeb && Platform.isIOS;
 
-    if (Platform.isIOS) {
+    if (isIOS) {
       selectedDate = await _showCupertinoDatePicker(
         initialDate: initialDate,
         lastDate: lastDate ?? now.add(const Duration(days: 1825)),
@@ -42,7 +44,7 @@ class GetNewDate {
 
     TimeOfDay? selectedTime;
 
-    if (Platform.isIOS) {
+    if (isIOS) {
       selectedTime = await _showCupertinoTimePicker();
     } else {
       selectedTime = await showTimePicker(

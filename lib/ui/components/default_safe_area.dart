@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:native_device_orientation/native_device_orientation.dart';
 
@@ -16,10 +17,10 @@ class _DefaultSafeAreaState extends State<DefaultSafeArea> {
 
   @override
   Widget build(BuildContext context) {
-    bool isIos = Platform.isIOS; //TODO remove this Platform from all app
+    final isIOS = !kIsWeb && Platform.isIOS;
     final nativeOrientation = NativeDeviceOrientationCommunicator();
 
-    if (isIos) {
+    if (isIOS) {
       return FutureBuilder(
           future: nativeOrientation.orientation(),
           //get the current orientation

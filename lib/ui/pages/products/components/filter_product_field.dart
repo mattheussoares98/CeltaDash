@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../helpers/helpers.dart';
@@ -18,6 +19,8 @@ class FilterProductField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isIOS = !kIsWeb && Platform.isIOS;
+
     return Padding(
       padding: const EdgeInsets.only(left: 8),
       child: SizedBox(
@@ -34,7 +37,7 @@ class FilterProductField extends StatelessWidget {
             labelText: R.string.filter,
             hintText: R.string.filter,
             suffixIcon: Icon(
-              Platform.isIOS ? CupertinoIcons.search : Icons.search,
+              isIOS ? CupertinoIcons.search : Icons.search,
             ),
           ),
         ),

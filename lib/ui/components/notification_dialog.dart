@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../ui/helpers/helpers.dart';
@@ -19,7 +20,9 @@ Future<void> notificationDialog({
   bool? showLargeDialog = true,
   bool? showCloseAction = false,
 }) async {
-  if (Platform.isIOS && content == null) {
+  final isIOS = !kIsWeb && Platform.isIOS;
+
+  if (isIOS && content == null) {
     //when has a content, doesnt works well in cupertino
     await _cupertinoNotificationDialog(
       context: context,

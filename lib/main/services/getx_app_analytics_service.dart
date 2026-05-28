@@ -29,7 +29,9 @@ class GetxAppAnalyticsService implements AppAnalyticsService {
     required PeriodType periodType,
   }) async {
     try {
-      if (kDebugMode && !Platform.environment.containsKey('FLUTTER_TEST')) {
+      if (kDebugMode &&
+          !kIsWeb &&
+          !Platform.environment.containsKey('FLUTTER_TEST')) {
         //dont need to add if is on debug mode
         return;
       }

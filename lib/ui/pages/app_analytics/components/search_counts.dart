@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../helpers/helpers.dart';
@@ -131,12 +132,14 @@ class OrdenationIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isIOS = !kIsWeb && Platform.isIOS;
+
     if (ascending) {
-      return Icon(Platform.isIOS
+      return Icon(isIOS
           ? CupertinoIcons.arrow_up_circle_fill
           : Icons.arrow_upward_outlined);
     } else {
-      return Icon(Platform.isIOS
+      return Icon(isIOS
           ? CupertinoIcons.arrow_down_circle_fill
           : Icons.arrow_downward_outlined);
     }

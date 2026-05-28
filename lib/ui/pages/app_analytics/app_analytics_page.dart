@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -59,6 +60,7 @@ class _AppAnalyticsPageState extends State<AppAnalyticsPage>
   @override
   Widget build(BuildContext context) {
     final appAnalyticsPresenter = Get.find<AppAnalyticsPresenter>();
+    final isIOS = !kIsWeb && Platform.isIOS;
 
     return Scaffold(
       appBar: AppBar(
@@ -66,7 +68,7 @@ class _AppAnalyticsPageState extends State<AppAnalyticsPage>
         actions: [
           IconButton(
             onPressed: appAnalyticsPresenter.loadAnalytics,
-            icon: Icon(Platform.isIOS ? CupertinoIcons.refresh : Icons.refresh),
+            icon: Icon(isIOS ? CupertinoIcons.refresh : Icons.refresh),
           ),
         ],
       ),
