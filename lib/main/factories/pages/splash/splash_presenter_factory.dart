@@ -4,7 +4,6 @@ import '../../factories.dart';
 
 SplashPresenter makeGetxSplashPresenter() => GetxSplashPresenter(
       navigateTo: makeGetxNavigateTo(),
-      getPlatform: makeLocalGetPlatform(),
       loadDeviceData: makeLocalLoadDeviceData(),
       firebaseManager: makeRemoteFirebaseManager(),
     );

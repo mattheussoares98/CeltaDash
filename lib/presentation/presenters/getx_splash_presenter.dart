@@ -8,13 +8,11 @@ import '../../ui/pages/pages.dart';
 
 class GetxSplashPresenter extends GetxController implements SplashPresenter {
   final NavigateTo navigateTo;
-  final GetPlatformType getPlatform;
   final LoadDeviceData loadDeviceData;
   final FirebaseManager firebaseManager;
 
   GetxSplashPresenter({
     required this.navigateTo,
-    required this.getPlatform,
     required this.loadDeviceData,
     required this.firebaseManager,
   });
@@ -39,12 +37,6 @@ class GetxSplashPresenter extends GetxController implements SplashPresenter {
           remoteVersionNumber.replaceAll(RegExp(r'\.'), '').toInt()) {
         navigateTo.navigate(
             pageRoute: PageRoutes.updateAppVersion, clear: true);
-        return;
-      }
-
-      final platform = getPlatform.get();
-      if (platform == PlatformType.web) {
-        navigateTo.navigate(pageRoute: PageRoutes.webLogin, clear: true);
         return;
       }
 

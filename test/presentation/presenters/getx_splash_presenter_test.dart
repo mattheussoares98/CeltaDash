@@ -1,5 +1,4 @@
 import 'package:celta_dash/data/models/models.dart';
-import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/infra/helpers/helpers.dart';
 import 'package:celta_dash/main/builders/builders.dart';
 import 'package:celta_dash/presentation/presenters/presenters.dart';
@@ -22,7 +21,6 @@ void main() {
   late EnterprisesManagerPresenterSpy enterprisesManagerPresenter;
 
   late NavigateToSpy navigateTo;
-  late GetPlatformTypeSpy getPlatform;
   late LoadDeviceDataSpy loadDeviceData;
   late FirebaseManagerSpy firebaseManager;
 
@@ -34,7 +32,6 @@ void main() {
 
   void initUsecases() {
     navigateTo = NavigateToSpy();
-    getPlatform = GetPlatformTypeSpy();
     loadDeviceData = LoadDeviceDataSpy();
     firebaseManager = FirebaseManagerSpy(mockedFirebaseGet: mockedFirebaseGet);
   }
@@ -42,7 +39,6 @@ void main() {
   void initPresenters() {
     sut = GetxSplashPresenter(
       navigateTo: navigateTo,
-      getPlatform: getPlatform,
       loadDeviceData: loadDeviceData,
       firebaseManager: firebaseManager,
     );
@@ -59,7 +55,6 @@ void main() {
   }
 
   void initMockSuccess() {
-    getPlatform.mockGet(PlatformType.android);
     loadDeviceData.mockGetAppVersion(requiredAppVersion);
     firebaseManager.mockGet(MockedFirebaseGet(dataToReturn: [
       FakeDoc({"required": "1.2.3"}, "version")
@@ -141,26 +136,6 @@ void main() {
     verify(() => enterprisesManagerPresenter.loadLocalEnterprises()).called(1);
   });
 
-  test("Should navigate to all customers page if is web platform", () async {
-    getPlatform.mockGet(PlatformType.web);
-
-    await sut.checkPageToGo(
-        enterprisesManagerPresenter: enterprisesManagerPresenter,
-        durationInSeconds: 0);
-
-    verify(
-      () => navigateTo.navigate(pageRoute: PageRoutes.webLogin, clear: true),
-    ).called(1);
-  });
-  test("Should call verify platform", () async {
-    getPlatform.mockGet(PlatformType.web);
-
-    await sut.checkPageToGo(
-        enterprisesManagerPresenter: enterprisesManagerPresenter,
-        durationInSeconds: 0);
-
-    verify(() => getPlatform.get()).called(1);
-  });
   test("Should load enterprisesManagerPresenter.loadLocallEnterprises",
       () async {
     await sut.checkPageToGo(
