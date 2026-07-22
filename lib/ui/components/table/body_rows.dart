@@ -39,6 +39,56 @@ class BodyRows extends StatefulWidget {
 
 class _BodyRowsState extends State<BodyRows> {
   bool alreadyShowedAnimation = false;
+  bool _showAnimation = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (widget.availableSize == 0 &&
+        !alreadyShowedAnimation &&
+        !_showAnimation) {
+      final route = ModalRoute.of(context);
+      if (route != null && !animatedRoutes.contains(route)) {
+        animatedRoutes.add(route);
+        _showAnimation = true;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _startScrollAnimation();
+        });
+      }
+    }
+  }
+
+  void _startScrollAnimation() {
+    if (!mounted) return;
+    const animationDuration = Duration(seconds: 2);
+    if (widget.bodyHorizontalController.hasClients) {
+      widget.bodyHorizontalController
+          .animateTo(
+        widget.widget.columnsWidths.reduce((p, e) => p + e),
+        duration: animationDuration,
+        curve: Curves.linear,
+      )
+          .then((_) {
+        if (!mounted) return;
+        if (widget.bodyHorizontalController.hasClients) {
+          widget.bodyHorizontalController
+              .animateTo(
+            0,
+            duration: animationDuration,
+            curve: Curves.linear,
+          )
+              .then((_) {
+            if (mounted) {
+              setState(() {
+                alreadyShowedAnimation = true;
+                _showAnimation = false;
+              });
+            }
+          });
+        }
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,46 +136,13 @@ class _BodyRowsState extends State<BodyRows> {
               ),
             ],
           ),
-          if (widget.availableSize == 0 && !alreadyShowedAnimation)
-            Builder(builder: (context) {
-              final route = ModalRoute.of(context);
-              if (route == null || animatedRoutes.contains(route)) {
-                return const SizedBox.shrink();
-              }
-
-              animatedRoutes.add(route);
-
-              const animationDuration = Duration(seconds: 2);
-
-              if (widget.bodyHorizontalController.hasClients) {
-                widget.bodyHorizontalController.animateTo(
-                  curve: Curves.linear,
-                  duration: animationDuration,
-                  widget.widget.columnsWidths.reduce((p, e) => p + e),
-                );
-              }
-              Future.delayed(animationDuration, () async {
-                if (widget.bodyHorizontalController.hasClients) {
-                  await widget.bodyHorizontalController.animateTo(
-                    curve: Curves.linear,
-                    duration: animationDuration,
-                    0,
-                  );
-                  if (mounted) {
-                    setState(() {
-                      alreadyShowedAnimation = true;
-                    });
-                  }
-                }
-              });
-
-              return Positioned(
-                bottom: 0,
-                top: 0,
-                left: widget.widget.columnsWidths.first,
-                child: const HorizontalScrollableIndicator(),
-              );
-            }),
+          if (_showAnimation && !alreadyShowedAnimation)
+            Positioned(
+              bottom: 0,
+              top: 0,
+              left: widget.widget.columnsWidths.first,
+              child: const HorizontalScrollableIndicator(),
+            ),
         ],
       ),
     );
