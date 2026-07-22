@@ -13,8 +13,6 @@ import '../../mixins/mixins.dart';
 import '../pages.dart';
 import 'components/components.dart';
 
-bool _showAnimation = true;
-
 class CompareMonthsPage extends StatefulWidget {
   const CompareMonthsPage({super.key});
 
@@ -190,10 +188,6 @@ class _CompareMonthsPageState extends State<CompareMonthsPage>
                             indexToSort: 0,
                             columnsIndexToSum: [1, 2],
                             columnsWidths: [60, 80, 80, 80],
-                            showAnimation: _showAnimation,
-                            hideShowAnimation: () {
-                              _showAnimation = false;
-                            },
                             titles: [
                               PersonalizedTableCell(
                                 value: R.string.day,

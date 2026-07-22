@@ -11,8 +11,6 @@ import '../../mixins/mixins.dart';
 import '../pages.dart';
 import 'components/components.dart';
 
-bool _showAnimation = true;
-
 class NotCanceledSalesPage extends StatefulWidget {
   const NotCanceledSalesPage({super.key});
 
@@ -114,10 +112,6 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage>
                           fixFirstColumn: true,
                           indexToSort: 2,
                           columnsWidths: [65, 35, 80, 90],
-                          showAnimation: _showAnimation,
-                          hideShowAnimation: () {
-                            _showAnimation = false;
-                          },
                           titles: [
                             PersonalizedTableCell(
                               value: R.string.couponNumberAbbreviated

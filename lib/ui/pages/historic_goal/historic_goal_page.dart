@@ -8,8 +8,6 @@ import '../../components/components.dart';
 import '../pages.dart';
 import 'components/components.dart';
 
-bool _showAnimation = true;
-
 class HistoricGoalPage extends StatefulWidget {
   final HistoricGoalPresenter presenter;
   const HistoricGoalPage({
@@ -92,10 +90,6 @@ class _HistoricGoalPageState extends State<HistoricGoalPage> {
                           ),
                         ScrollableTableItem(
                           columnsWidths: [60, 100, 100, 60],
-                          showAnimation: _showAnimation,
-                          hideShowAnimation: () {
-                            _showAnimation = false;
-                          },
                           pdfFileName: R.string.goalHistory,
                           columnsIndexToSum: [1, 2],
                           titles: [

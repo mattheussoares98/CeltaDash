@@ -5,8 +5,6 @@ import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
-bool _showAnimation = true;
-
 class HourTable extends StatelessWidget {
   final List<SaleStatisticViewModel> hourlyStatistics;
   const HourTable({
@@ -31,12 +29,8 @@ class HourTable extends StatelessWidget {
       getSalesStatisticsParams: salesPresenter.lastGetHourlyParams,
       titleMinHeight: orientation == Orientation.portrait ? 45 : 25,
       pdfFileName: R.string.hourlyAnalysis,
-      showAnimation: _showAnimation,
       selectedPeriodType: salesPresenter.selectedPeriod,
       fixFirstColumn: true,
-      hideShowAnimation: () {
-        _showAnimation = false;
-      },
       columnsWidths: [60, 90, 40, 60, 50],
       columnIndexToCompareAndDetachBetterAndWorstValue: 1,
       columnsIndexToSum: [1, 2],

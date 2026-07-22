@@ -6,8 +6,6 @@ import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
-bool _showAnimation = true;
-
 class MonthSales extends StatelessWidget {
   final List<SaleStatisticViewModel> saleStatisticsByMonth;
   const MonthSales({super.key, required this.saleStatisticsByMonth});
@@ -24,12 +22,8 @@ class MonthSales extends StatelessWidget {
       getSalesStatisticsParams: salesPresenter.lastGetMonthlyParams,
       titleMinHeight: orientation == Orientation.portrait ? 45 : 25,
       pdfFileName: R.string.monthlyAnalysis,
-      showAnimation: _showAnimation,
       selectedPeriodType: salesPresenter.selectedPeriod,
       fixFirstColumn: true,
-      hideShowAnimation: () {
-        _showAnimation = false;
-      },
       columnsWidths: [60, 110, 55, 60, 50],
       columnIndexToCompareAndDetachBetterAndWorstValue: 1,
       columnsIndexToSum: [1, 2],

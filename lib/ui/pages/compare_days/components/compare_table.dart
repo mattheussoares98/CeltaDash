@@ -6,8 +6,6 @@ import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
-bool _showAnimation = true;
-
 class CompareTable extends StatelessWidget {
   final DateTime firstDay;
   final DateTime secondDay;
@@ -38,10 +36,6 @@ class CompareTable extends StatelessWidget {
       columnIndexToCompareAndDetachBetterAndWorstValue: 3,
       columnsIndexToSum: [1, 2],
       columnsWidths: [80, 75, 75, 70],
-      showAnimation: _showAnimation,
-      hideShowAnimation: () {
-        _showAnimation = false;
-      },
       titles: [
         PersonalizedTableCell(
           value: R.string.hour,

@@ -9,14 +9,10 @@ import '../../pages.dart';
 class ProductsTable extends StatelessWidget {
   final List<SaleStatisticViewModel>? sales;
   final bool isLoading;
-  final bool showAnimation;
-  final VoidCallback hideShowAnimation;
   const ProductsTable({
     super.key,
     required this.sales,
     required this.isLoading,
-    required this.showAnimation,
-    required this.hideShowAnimation,
   });
 
   @override
@@ -33,8 +29,6 @@ class ProductsTable extends StatelessWidget {
       titleMinHeight: isPortrait ? 43 : 32,
       selectedPeriodType: productsPresenter.selectedPeriod,
       pdfFileName: R.string.products,
-      showAnimation: showAnimation,
-      hideShowAnimation: hideShowAnimation,
       animationSecondsDuration: 3,
       columnsWidths: [130, 100, 70, 70, 90, 90, 90, 60],
       fixFirstColumn: true,

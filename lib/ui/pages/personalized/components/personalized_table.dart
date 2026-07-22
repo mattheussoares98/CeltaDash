@@ -6,7 +6,6 @@ import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
-bool _showAnimation = true;
 
 class PersonalizedTable extends StatelessWidget {
   const PersonalizedTable({super.key});
@@ -233,10 +232,6 @@ class PersonalizedTable extends StatelessWidget {
                           .toList(),
                       rowValues: tableRows,
                       columnsWidths: columnWidths, // Dynamic widths
-                      showAnimation: _showAnimation,
-                      hideShowAnimation: () {
-                        _showAnimation = false;
-                      },
                       pdfFileName: "Personalizado",
                     ),
                   ],

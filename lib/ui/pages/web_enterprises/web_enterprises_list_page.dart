@@ -10,8 +10,6 @@ import '../../helpers/helpers.dart';
 import '../pages.dart';
 import 'components/components.dart';
 
-bool _showAnimation = true;
-
 class WebEnterprisesListPage extends StatefulWidget {
   final TextEditingController filterController;
   const WebEnterprisesListPage({
@@ -83,12 +81,8 @@ class _WebEnterprisesListPageState extends State<WebEnterprisesListPage> {
             ScrollableTableItem(
               pdfFileName: R.string.enterprises,
               columnsWidths: [150, 80, 60],
-              showAnimation: _showAnimation,
               columnsIndexToSum: [1, 2],
               fixFirstColumn: true,
-              hideShowAnimation: () {
-                _showAnimation = false;
-              },
               titles: [
                 PersonalizedTableCell(
                   value: R.string.enterprise,

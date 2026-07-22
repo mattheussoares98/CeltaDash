@@ -7,8 +7,6 @@ import '../../helpers/helpers.dart';
 import '../../components/components.dart';
 import '../pages.dart';
 
-bool _showAnimation = true;
-
 class OperatorsPage extends StatefulWidget {
   const OperatorsPage({super.key});
 
@@ -155,11 +153,7 @@ class _OperatorsPageState extends State<OperatorsPage> {
                             columnIndexToCompareAndDetachBetterAndWorstValue: 1,
                             columnsIndexToSum: [1, 2],
                             columnsWidths: [180, 90, 80],
-                            hideShowAnimation: () {
-                              _showAnimation = false;
-                            },
                             pdfFileName: R.string.operators,
-                            showAnimation: _showAnimation,
                             titles: [
                               PersonalizedTableCell(
                                 isTitle: true,

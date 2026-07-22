@@ -6,8 +6,6 @@ import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
-bool _showAnimation = true;
-
 class DayTable extends StatelessWidget {
   final List<SaleStatisticViewModel> dailyStatistics;
   const DayTable({
@@ -26,12 +24,8 @@ class DayTable extends StatelessWidget {
       getSalesStatisticsParams: salesPresenter.lastGetDailyParams,
       titleMinHeight: orientation == Orientation.portrait ? 45 : 25,
       pdfFileName: R.string.dailyAnalysis,
-      showAnimation: _showAnimation,
       selectedPeriodType: salesPresenter.selectedPeriod,
       fixFirstColumn: true,
-      hideShowAnimation: () {
-        _showAnimation = false;
-      },
       columnsWidths: [60, 90, 40, 60, 50],
       columnIndexToCompareAndDetachBetterAndWorstValue: 1,
       columnsIndexToSum: [1, 2],

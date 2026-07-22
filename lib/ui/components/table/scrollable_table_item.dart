@@ -12,6 +12,9 @@ import '../../../ui/helpers/helpers.dart';
 import 'mixin/mixin.dart';
 import 'table.dart';
 
+// At the top of scrollable_table_item.dart or inside the state class
+final Set<Route<dynamic>> animatedRoutes = {};
+
 class ScrollableTableItem extends StatefulWidget {
   final List<PersonalizedTableCell> titles;
   final List<List<PersonalizedTableCell>> rowValues;
@@ -21,8 +24,6 @@ class ScrollableTableItem extends StatefulWidget {
   final int? indexToSort;
   final List<int>? columnsIndexToSum;
   final bool fixFirstColumn;
-  final bool showAnimation;
-  final void Function() hideShowAnimation;
   final int animationSecondsDuration;
   final String pdfFileName;
   final PeriodType? selectedPeriodType;
@@ -33,8 +34,6 @@ class ScrollableTableItem extends StatefulWidget {
     required this.titles,
     required this.rowValues,
     required this.columnsWidths,
-    required this.showAnimation,
-    required this.hideShowAnimation,
     required this.pdfFileName,
     this.getSalesStatisticsParams,
     this.selectedPeriodType,

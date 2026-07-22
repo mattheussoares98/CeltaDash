@@ -6,8 +6,6 @@ import '../../../ui/helpers/helpers.dart';
 import '../../components/components.dart';
 import '../pages.dart';
 
-bool _showAnimation = true;
-
 class GroupSummaryDetailsPage extends StatelessWidget {
   final double groupSalesTotalLiquid;
   final List<SaleStatisticViewModel> saleStatistics;
@@ -58,12 +56,10 @@ class GroupSummaryDetailsPage extends StatelessWidget {
           titleMinHeight: isPortrait ? 40 : 25,
           selectedPeriodType: resumePresenter.selectedPeriod,
           pdfFileName: R.string.groupSummary,
-          hideShowAnimation: () => _showAnimation = !_showAnimation,
           columnIndexToCompareAndDetachBetterAndWorstValue: 1,
           columnsIndexToSum: [1],
           indexToSort: 1,
           columnsWidths: [180, 90, 80],
-          showAnimation: _showAnimation,
           titles: [
             PersonalizedTableCell(value: R.string.enterprise, isTitle: true),
             PersonalizedTableCell(value: R.string.sales, isTitle: true),

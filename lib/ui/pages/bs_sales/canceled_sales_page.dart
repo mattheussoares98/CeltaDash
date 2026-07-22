@@ -8,8 +8,6 @@ import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 import '../pages.dart';
 
-bool _showAnimation = true;
-
 class CanceledSalesPage extends StatefulWidget {
   const CanceledSalesPage({super.key});
 
@@ -136,10 +134,6 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                           fixFirstColumn: true,
                           indexToSort: 2,
                           columnsWidths: [65, 35, 80, 90, 80, 150],
-                          showAnimation: _showAnimation,
-                          hideShowAnimation: () {
-                            _showAnimation = false;
-                          },
                           titles: [
                             PersonalizedTableCell(
                               value: R.string.couponNumberAbbreviated

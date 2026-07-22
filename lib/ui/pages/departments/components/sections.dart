@@ -54,8 +54,6 @@ class Sections extends StatelessWidget {
           titleMinHeight: isPortrait ? 50 : 35,
           selectedPeriodType: departmentsPresenter.selectedPeriod,
           pdfFileName: R.string.sections,
-          showAnimation: false,
-          hideShowAnimation: () {},
           animationSecondsDuration: 3,
           columnsWidths: [110, 85, 85, 85, 60, 55],
           fixFirstColumn: true,

@@ -6,8 +6,6 @@ import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
-bool _showAnimation = true;
-
 class Departments extends StatelessWidget {
   final List<SaleStatisticViewModel> saleStatistics;
 
@@ -33,10 +31,6 @@ class Departments extends StatelessWidget {
           titleMinHeight: isPortrait ? 43 : 25,
           selectedPeriodType: departmentsPresenter.selectedPeriod,
           pdfFileName: R.string.departments,
-          showAnimation: _showAnimation,
-          hideShowAnimation: () {
-            _showAnimation = false;
-          },
           animationSecondsDuration: 3,
           columnsWidths: [110, 85, 85, 85, 60, 55],
           fixFirstColumn: true,

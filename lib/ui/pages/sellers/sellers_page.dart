@@ -7,8 +7,6 @@ import '../../helpers/helpers.dart';
 import '../../components/components.dart';
 import '../pages.dart';
 
-bool _showAnimation = true;
-
 class SellersPage extends StatefulWidget {
   const SellersPage({super.key});
 
@@ -152,12 +150,8 @@ class _SellersPageState extends State<SellersPage> {
                             columnIndexToCompareAndDetachBetterAndWorstValue: 1,
                             columnsIndexToSum: [1, 2],
                             pdfFileName: R.string.sellers,
-                            showAnimation: _showAnimation,
                             selectedPeriodType: sellersPresenter.selectedPeriod,
                             fixFirstColumn: true,
-                            hideShowAnimation: () {
-                              _showAnimation = false;
-                            },
                             columnsWidths: [150, 120, 70],
                             titles: [
                               PersonalizedTableCell(

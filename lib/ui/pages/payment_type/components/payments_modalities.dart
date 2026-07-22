@@ -6,8 +6,6 @@ import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
-bool _showAnimation = true;
-
 class PaymentsModalities extends StatefulWidget {
   final List<SaleStatisticViewModel> saleStatistics;
   final bool filterByFinalizations;
@@ -40,11 +38,7 @@ class _PaymentsModalitiesState extends State<PaymentsModalities> {
           pdfFileName: R.string.paymentsType,
           columnsWidths: [100, 90, 50, 70, 70],
           columnIndexToCompareAndDetachBetterAndWorstValue: 1,
-          showAnimation: _showAnimation,
           fixFirstColumn: true,
-          hideShowAnimation: () {
-            _showAnimation = false;
-          },
           columnsIndexToSum: [1, 2],
           titles: [
             PersonalizedTableCell(value: R.string.paymentsType, isTitle: true),
