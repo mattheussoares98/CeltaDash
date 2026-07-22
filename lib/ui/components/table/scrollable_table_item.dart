@@ -24,7 +24,6 @@ class ScrollableTableItem extends StatefulWidget {
   final int? indexToSort;
   final List<int>? columnsIndexToSum;
   final bool fixFirstColumn;
-  final int animationSecondsDuration;
   final String pdfFileName;
   final PeriodType? selectedPeriodType;
   final GetSaleStatisticsParams? getSalesStatisticsParams;
@@ -37,7 +36,6 @@ class ScrollableTableItem extends StatefulWidget {
     required this.pdfFileName,
     this.getSalesStatisticsParams,
     this.selectedPeriodType,
-    this.animationSecondsDuration = 2,
     this.columnIndexToCompareAndDetachBetterAndWorstValue,
     this.titleMinHeight = 40,
     this.indexToSort,

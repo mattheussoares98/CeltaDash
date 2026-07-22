@@ -29,7 +29,6 @@ class ProductsTable extends StatelessWidget {
       titleMinHeight: isPortrait ? 43 : 32,
       selectedPeriodType: productsPresenter.selectedPeriod,
       pdfFileName: R.string.products,
-      animationSecondsDuration: 3,
       columnsWidths: [130, 100, 70, 70, 90, 90, 90, 60],
       fixFirstColumn: true,
       columnsIndexToSum: [1, 2, 4, 6, 7],

@@ -31,7 +31,6 @@ class Departments extends StatelessWidget {
           titleMinHeight: isPortrait ? 43 : 25,
           selectedPeriodType: departmentsPresenter.selectedPeriod,
           pdfFileName: R.string.departments,
-          animationSecondsDuration: 3,
           columnsWidths: [110, 85, 85, 85, 60, 55],
           fixFirstColumn: true,
           columnsIndexToSum: [1, 2, 3],

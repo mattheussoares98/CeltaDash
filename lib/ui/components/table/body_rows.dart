@@ -86,19 +86,16 @@ class _BodyRowsState extends State<BodyRows> {
               ),
             ],
           ),
-          if (widget.availableSize == 0 &&
-              !alreadyShowedAnimation)
+          if (widget.availableSize == 0 && !alreadyShowedAnimation)
             Builder(builder: (context) {
               final route = ModalRoute.of(context);
               if (route == null || animatedRoutes.contains(route)) {
                 return const SizedBox.shrink();
               }
-              
+
               animatedRoutes.add(route);
 
-              final animationDuration = Duration(
-                  seconds:
-                      (widget.widget.animationSecondsDuration / 2).toInt());
+              const animationDuration = Duration(seconds: 2);
 
               if (widget.bodyHorizontalController.hasClients) {
                 widget.bodyHorizontalController.animateTo(
