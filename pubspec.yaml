@@ -58,7 +58,7 @@ dependencies:
   pdf: ^3.11.3
   share_plus: ^12.0.1
   native_device_orientation: ^2.0.3
-  syncfusion_flutter_pdfviewer: ^32.2.5
+  syncfusion_flutter_pdfviewer: ^33.2.13
 
 icons_launcher:
   image_path: "lib/ui/assets/dev_assets/CeltaDashIcon.png"
