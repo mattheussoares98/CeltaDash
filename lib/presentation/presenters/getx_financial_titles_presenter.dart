@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:get/get.dart';
 
 import '../../domain/entities/entities.dart';
@@ -11,15 +9,14 @@ class GetxFinancialTitlesPresenter extends GetxController
     with ErrorHandling
     implements FinancialTitlesPresenter {
   final LoadFinancialTitleData loadFinancialTitleData;
-  final Duration cacheDuration;
+
+  static const _cacheDuration = Duration(minutes: 5);
 
   final _states = <FinancialTitleRequestKey, Rx<FinancialTitleState>>{};
-  final _expirationTimers = <FinancialTitleRequestKey, Timer>{};
   final _requestVersions = <FinancialTitleRequestKey, int>{};
 
   GetxFinancialTitlesPresenter({
     required this.loadFinancialTitleData,
-    this.cacheDuration = const Duration(minutes: 5),
   });
 
   Rx<FinancialTitleState> _stateChannel(FinancialTitleRequestKey key) =>
@@ -47,16 +44,18 @@ class GetxFinancialTitlesPresenter extends GetxController
     final channel = _stateChannel(key);
     final currentState = channel.value;
 
-    if (!forceRefresh && currentState.status == FinancialTitleStatus.success) {
-      _scheduleExpiration(key, _requestVersions[key]!);
+    final isCacheValid = currentState.loadedAt != null &&
+        DateTime.now().difference(currentState.loadedAt!) < _cacheDuration;
+
+    if (!forceRefresh &&
+        isCacheValid &&
+        currentState.status == FinancialTitleStatus.success) {
       return;
     }
 
     if (!forceRefresh && currentState.status == FinancialTitleStatus.loading) {
       return;
     }
-
-    _expirationTimers.remove(key)?.cancel();
 
     // A newer request for the same key may finish before this one. The version
     // prevents this older response from overwriting the newer cached state.
@@ -85,7 +84,6 @@ class GetxFinancialTitlesPresenter extends GetxController
         data: data,
         loadedAt: DateTime.now(),
       );
-      _scheduleExpiration(key, requestVersion);
     } catch (error) {
       if (_requestVersions[key] != requestVersion) {
         return;
@@ -98,58 +96,20 @@ class GetxFinancialTitlesPresenter extends GetxController
         error: getUIError(error),
         loadedAt: previousLoadedAt,
       );
-      if (previousData != null) {
-        _scheduleExpiration(key, requestVersion);
-      }
     }
-  }
-
-  void _scheduleExpiration(
-    FinancialTitleRequestKey key,
-    int requestVersion,
-  ) {
-    _expirationTimers.remove(key)?.cancel();
-    if (cacheDuration <= Duration.zero) {
-      _expire(key, requestVersion);
-      return;
-    }
-
-    _expirationTimers[key] = Timer(
-      cacheDuration,
-      () => _expire(key, requestVersion),
-    );
-  }
-
-  void _expire(FinancialTitleRequestKey key, int requestVersion) {
-    if (_requestVersions[key] != requestVersion) {
-      return;
-    }
-
-    _expirationTimers.remove(key)?.cancel();
-    _requestVersions[key] = requestVersion + 1;
-    _stateChannel(key).value = const FinancialTitleState(
-      status: FinancialTitleStatus.initial,
-    );
   }
 
   @override
-  void clear(FinancialTitleRequestKey key) {
-    _expirationTimers.remove(key)?.cancel();
+  void release(FinancialTitleRequestKey key) {
     _requestVersions[key] = (_requestVersions[key] ?? 0) + 1;
-    _stateChannel(key).value = const FinancialTitleState(
-      status: FinancialTitleStatus.initial,
-    );
+    _states.remove(key)?.close();
   }
 
   @override
   void onClose() {
-    for (final timer in _expirationTimers.values) {
-      timer.cancel();
-    }
     for (final state in _states.values) {
       state.close();
     }
-    _expirationTimers.clear();
     _states.clear();
     _requestVersions.clear();
     super.onClose();

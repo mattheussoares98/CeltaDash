@@ -138,6 +138,7 @@ void main() {
     final secondRequest = sut.load(
       key: FinancialTitleTestRequest.daily,
       params: secondParams,
+      forceRefresh: true,
     );
 
     secondCompleter.complete(secondResponse);
@@ -151,21 +152,34 @@ void main() {
     );
   });
 
-  test('Should clear cached data after the configured duration', () async {
-    sut.onClose();
-    sut = GetxFinancialTitlesPresenter(
-      loadFinancialTitleData: loadFinancialTitleData,
-      cacheDuration: const Duration(milliseconds: 10),
-    );
-
+  test('Should release the state owned by a key', () async {
     await sut.load(
       key: FinancialTitleTestRequest.daily,
       params: params,
     );
-    await Future<void>.delayed(const Duration(milliseconds: 30));
+
+    sut.release(FinancialTitleTestRequest.daily);
 
     final state = sut.stateOf(FinancialTitleTestRequest.daily);
     expect(state.status, FinancialTitleStatus.initial);
     expect(state.data, isNull);
+  });
+
+  test('Should ignore an in-flight response after releasing its key', () async {
+    final completer = Completer<FinancialTitleDataResponseEntity>();
+    loadFinancialTitleData.mockGetWith((_) => completer.future);
+
+    final request = sut.load(
+      key: FinancialTitleTestRequest.daily,
+      params: params,
+    );
+    sut.release(FinancialTitleTestRequest.daily);
+    completer.complete(response);
+    await request;
+
+    expect(
+      sut.stateOf(FinancialTitleTestRequest.daily).status,
+      FinancialTitleStatus.initial,
+    );
   });
 }

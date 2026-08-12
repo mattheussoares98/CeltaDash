@@ -15,5 +15,5 @@ abstract class FinancialTitlesPresenter implements Listenable {
     bool forceRefresh = false,
   });
 
-  void clear(FinancialTitleRequestKey key);
+  void release(FinancialTitleRequestKey key);
 }
