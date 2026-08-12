@@ -249,4 +249,300 @@ class EntityFactory {
         goalId: faker.guid.guid(),
         userName: faker.person.name(),
       );
+
+  static SearchFinancialTitleDataParams makeSearchFinancialTitleDataParams() {
+    final startDate = faker.date.dateTime(minYear: 2020, maxYear: 2025);
+    return SearchFinancialTitleDataParams(
+      enterpriseCodes: [faker.randomGenerator.integer(100, min: 1)],
+      financialTitleTypes: FinancialTitleType.values,
+      situations: FinancialTitleSituation.values,
+      periodType: FinancialTitlePeriodType.emission,
+      period: FinancialTitlePeriodParams(
+        startDate: startDate,
+        endDate: startDate.add(const Duration(days: 20)),
+      ),
+      comparisonPeriod: FinancialTitlePeriodParams(
+        startDate: startDate.subtract(const Duration(days: 30)),
+        endDate: startDate.subtract(const Duration(days: 10)),
+      ),
+      positionDate: faker.date.dateTime(),
+      documentNumbers: [faker.randomGenerator.integer(99999).toString()],
+      documentTypeCodes: [faker.randomGenerator.integer(100, min: 1)],
+      treasuryAccountCodes: [faker.randomGenerator.integer(100, min: 1)],
+      cadasterTypes: FinancialTitleCadasterType.values,
+      cadasterCodes: [faker.randomGenerator.integer(100, min: 1)],
+      financialClassificationCodes: [
+        faker.randomGenerator.integer(100, min: 1),
+      ],
+      excludeFinancialClassifications: faker.randomGenerator.boolean(),
+      periodGrouping: null,
+      mountPortionPayments: true,
+      mountPortionsAdministrativeTax: true,
+      mountLiquidationPortions: true,
+      mountLiquidationPortionPaymentForms: true,
+      mountRetroactivePosition: true,
+      mountEnterprises: true,
+      mountUnitGroups: true,
+      mountControlDocuments: true,
+      mountIncomeExpenseCenters: true,
+      mountFinancialClassifications: true,
+      mountFinancialClassificationIncomeExpenseCenters: true,
+      mountComparisonPeriod: true,
+      mountCalculatedTotals: true,
+    );
+  }
+
+  static FinancialTitleDataEntity makeFinancialTitleDataEntity() =>
+      FinancialTitleDataEntity(
+        financialTitleCode: faker.randomGenerator.integer(1000, min: 1),
+        financialTitlePortionCode: faker.randomGenerator.integer(1000, min: 1),
+        enterpriseCode: faker.randomGenerator.integer(100, min: 1),
+        portionNumber: faker.randomGenerator.integer(10, min: 1),
+        portionQuantity: faker.randomGenerator.integer(10, min: 1),
+        documentNumber: faker.randomGenerator.integer(99999).toString(),
+        documentTypeCode: faker.randomGenerator.integer(100, min: 1),
+        financialTitleType: FinancialTitleType.receive,
+        situation: FinancialTitleSituation.partiallySettled,
+        isForecast: faker.randomGenerator.boolean(),
+        isBlocked: faker.randomGenerator.boolean(),
+        emissionDate: faker.date.dateTime(),
+        generationDate: faker.date.dateTime(),
+        deliveryDate: faker.date.dateTime(),
+        expirationDate: faker.date.dateTime(),
+        anticipatedPaymentDate: faker.date.dateTime(),
+        periodDate: faker.date.dateTime(),
+        date: faker.date.dateTime(),
+        year: faker.randomGenerator.integer(2030, min: 2020),
+        month: faker.randomGenerator.integer(12, min: 1),
+        grossValue: faker.randomGenerator.decimal(),
+        liquidValue: faker.randomGenerator.decimal(),
+        openValue: faker.randomGenerator.decimal(),
+        settledValue: faker.randomGenerator.decimal(),
+        increaseValue: faker.randomGenerator.decimal(),
+        discountValue: faker.randomGenerator.decimal(),
+        receiveGrossValue: faker.randomGenerator.decimal(),
+        payGrossValue: faker.randomGenerator.decimal(),
+        grossBalanceValue: faker.randomGenerator.decimal(),
+        receiveLiquidValue: faker.randomGenerator.decimal(),
+        payLiquidValue: faker.randomGenerator.decimal(),
+        liquidBalanceValue: faker.randomGenerator.decimal(),
+        receiveOpenValue: faker.randomGenerator.decimal(),
+        payOpenValue: faker.randomGenerator.decimal(),
+        openBalanceValue: faker.randomGenerator.decimal(),
+        receiveSettledValue: faker.randomGenerator.decimal(),
+        paySettledValue: faker.randomGenerator.decimal(),
+        settledBalanceValue: faker.randomGenerator.decimal(),
+        receiveIncreaseValue: faker.randomGenerator.decimal(),
+        payIncreaseValue: faker.randomGenerator.decimal(),
+        increaseBalanceValue: faker.randomGenerator.decimal(),
+        receiveDiscountValue: faker.randomGenerator.decimal(),
+        payDiscountValue: faker.randomGenerator.decimal(),
+        discountBalanceValue: faker.randomGenerator.decimal(),
+        cadasterType: FinancialTitleCadasterType.customer,
+        cadasterCode: faker.randomGenerator.integer(100, min: 1),
+        treasuryAccountCode: faker.randomGenerator.integer(100, min: 1),
+        unitGroupCode: faker.randomGenerator.integer(100, min: 1),
+      );
+
+  static FinancialTitlePortionPaymentEntity
+      makeFinancialTitlePortionPaymentEntity() =>
+          FinancialTitlePortionPaymentEntity(
+            financialTitlePortionCode:
+                faker.randomGenerator.integer(1000, min: 1),
+            paymentFormDescription: faker.lorem.word(),
+            value: faker.randomGenerator.decimal(),
+            liquidationDate: faker.date.dateTime(),
+          );
+
+  static FinancialTitleAdministrativeTaxEntity
+      makeFinancialTitleAdministrativeTaxEntity() =>
+          FinancialTitleAdministrativeTaxEntity(
+            financialTitlePortionCode:
+                faker.randomGenerator.integer(1000, min: 1),
+            saleDateOfBilling: faker.date.dateTime(),
+            saleDocumentNumber: faker.randomGenerator.integer(99999).toString(),
+            administrativeTaxValue: faker.randomGenerator.decimal(),
+            operationalTaxValue: faker.randomGenerator.decimal(),
+            value: faker.randomGenerator.decimal(),
+            liquidValue: faker.randomGenerator.decimal(),
+            cadasterTypeName: faker.lorem.word(),
+            enterpriseCode: faker.randomGenerator.integer(100, min: 1),
+            portionQuantity: faker.randomGenerator.integer(10, min: 1),
+          );
+
+  static FinancialTitleLiquidationPortionEntity
+      makeFinancialTitleLiquidationPortionEntity() =>
+          FinancialTitleLiquidationPortionEntity(
+            financialTitleLiquidationPortionCode:
+                faker.randomGenerator.integer(1000, min: 1),
+            financialTitlePortionCode:
+                faker.randomGenerator.integer(1000, min: 1),
+            value: faker.randomGenerator.decimal(),
+            expenseAccessory: faker.randomGenerator.decimal(),
+            expenseRegistry: faker.randomGenerator.decimal(),
+            interest: faker.randomGenerator.decimal(),
+            increment: faker.randomGenerator.decimal(),
+            discount: faker.randomGenerator.decimal(),
+            fine: faker.randomGenerator.decimal(),
+            collectTax: faker.randomGenerator.decimal(),
+            discountByAnticipatedPay: faker.randomGenerator.decimal(),
+            liquidationDate: faker.date.dateTime(),
+          );
+
+  static FinancialTitleLiquidationPaymentFormEntity
+      makeFinancialTitleLiquidationPaymentFormEntity() =>
+          FinancialTitleLiquidationPaymentFormEntity(
+            financialTitleLiquidationPortionPaymentFormCode:
+                faker.randomGenerator.integer(1000, min: 1),
+            financialTitleLiquidationPortionCode:
+                faker.randomGenerator.integer(1000, min: 1),
+            financialTitlePortionCode:
+                faker.randomGenerator.integer(1000, min: 1),
+            paymentFormDescription: faker.lorem.word(),
+            value: faker.randomGenerator.decimal(),
+            expenseAccessory: faker.randomGenerator.decimal(),
+            expenseRegistry: faker.randomGenerator.decimal(),
+            interest: faker.randomGenerator.decimal(),
+            increment: faker.randomGenerator.decimal(),
+            discount: faker.randomGenerator.decimal(),
+            fine: faker.randomGenerator.decimal(),
+            discountByAnticipatedPay: faker.randomGenerator.decimal(),
+            collectTax: faker.randomGenerator.decimal(),
+          );
+
+  static FinancialTitleRetroactivePositionEntity
+      makeFinancialTitleRetroactivePositionEntity() =>
+          FinancialTitleRetroactivePositionEntity(
+            enterpriseCode: faker.randomGenerator.integer(100, min: 1),
+            financialTitleType: FinancialTitleType.toPay,
+            grossValue: faker.randomGenerator.decimal(),
+            openValue: faker.randomGenerator.decimal(),
+          );
+
+  static FinancialTitleEnterpriseEntity makeFinancialTitleEnterpriseEntity() =>
+      FinancialTitleEnterpriseEntity(
+        code: faker.randomGenerator.integer(100, min: 1),
+        name: faker.company.name(),
+        fantasyName: faker.company.name(),
+      );
+
+  static FinancialTitleUnitGroupEntity makeFinancialTitleUnitGroupEntity() =>
+      FinancialTitleUnitGroupEntity(
+        code: faker.randomGenerator.integer(100, min: 1),
+        name: faker.lorem.word(),
+      );
+
+  static FinancialTitleControlDocumentEntity
+      makeFinancialTitleControlDocumentEntity() =>
+          FinancialTitleControlDocumentEntity(
+            code: faker.randomGenerator.integer(100, min: 1),
+            controlCode: faker.guid.guid(),
+            value: faker.randomGenerator.decimal(),
+            ourNumber: faker.randomGenerator.integer(99999).toString(),
+            financialTitlePortionCode:
+                faker.randomGenerator.integer(1000, min: 1),
+          );
+
+  static FinancialTitleIncomeExpenseCenterEntity
+      makeFinancialTitleIncomeExpenseCenterEntity() =>
+          FinancialTitleIncomeExpenseCenterEntity(
+            code: faker.randomGenerator.integer(100, min: 1),
+            personalizedCode: faker.randomGenerator.integer(99999).toString(),
+            description: faker.lorem.sentence(),
+          );
+
+  static FinancialTitleClassificationEntity
+      makeFinancialTitleClassificationEntity() =>
+          FinancialTitleClassificationEntity(
+            financialTitlePortionCode:
+                faker.randomGenerator.integer(1000, min: 1),
+            financialClassificationCode:
+                faker.randomGenerator.integer(1000, min: 1),
+            apportionmentPercentage: faker.randomGenerator.decimal(),
+            group: faker.lorem.word(),
+            category: faker.lorem.word(),
+            subCategory: faker.lorem.word(),
+            liquidValue: faker.randomGenerator.decimal(),
+            settledValue: faker.randomGenerator.decimal(),
+          );
+
+  static FinancialTitleClassificationIncomeExpenseCenterEntity
+      makeFinancialTitleClassificationIncomeExpenseCenterEntity() =>
+          FinancialTitleClassificationIncomeExpenseCenterEntity(
+            financialTitlePortionCode:
+                faker.randomGenerator.integer(1000, min: 1),
+            financialClassificationCode:
+                faker.randomGenerator.integer(1000, min: 1),
+            incomeExpenseCenterCode:
+                faker.randomGenerator.integer(1000, min: 1),
+            financialClassificationPercentage: faker.randomGenerator.decimal(),
+            incomeExpenseCenterPercentage: faker.randomGenerator.decimal(),
+            incomeExpenseCenter: faker.lorem.word(),
+            liquidValue: faker.randomGenerator.decimal(),
+            settledValue: faker.randomGenerator.decimal(),
+          );
+
+  static FinancialTitleCalculatedTotalsEntity
+      makeFinancialTitleCalculatedTotalsEntity() =>
+          FinancialTitleCalculatedTotalsEntity(
+            receiveGrossValue: faker.randomGenerator.decimal(),
+            payGrossValue: faker.randomGenerator.decimal(),
+            grossBalanceValue: faker.randomGenerator.decimal(),
+            receiveLiquidValue: faker.randomGenerator.decimal(),
+            payLiquidValue: faker.randomGenerator.decimal(),
+            liquidBalanceValue: faker.randomGenerator.decimal(),
+            receiveOpenValue: faker.randomGenerator.decimal(),
+            payOpenValue: faker.randomGenerator.decimal(),
+            openBalanceValue: faker.randomGenerator.decimal(),
+            receiveSettledValue: faker.randomGenerator.decimal(),
+            paySettledValue: faker.randomGenerator.decimal(),
+            settledBalanceValue: faker.randomGenerator.decimal(),
+            receiveIncreaseValue: faker.randomGenerator.decimal(),
+            payIncreaseValue: faker.randomGenerator.decimal(),
+            increaseBalanceValue: faker.randomGenerator.decimal(),
+            receiveDiscountValue: faker.randomGenerator.decimal(),
+            payDiscountValue: faker.randomGenerator.decimal(),
+            discountBalanceValue: faker.randomGenerator.decimal(),
+            financialClassificationLiquidValue: faker.randomGenerator.decimal(),
+            financialClassificationIncomeExpenseCenterLiquidValue:
+                faker.randomGenerator.decimal(),
+          );
+
+  static FinancialTitleDataResponseEntity makeFinancialTitleDataResponseEntity({
+    SearchFinancialTitleDataParams? searchParameters,
+  }) =>
+      FinancialTitleDataResponseEntity(
+        searchParameters:
+            searchParameters ?? makeSearchFinancialTitleDataParams(),
+        financialTitlePortions: [makeFinancialTitleDataEntity()],
+        portionPayments: [makeFinancialTitlePortionPaymentEntity()],
+        portionsAdministrativeTax: [
+          makeFinancialTitleAdministrativeTaxEntity(),
+        ],
+        liquidationPortions: [
+          makeFinancialTitleLiquidationPortionEntity(),
+        ],
+        liquidationPortionPaymentForms: [
+          makeFinancialTitleLiquidationPaymentFormEntity(),
+        ],
+        retroactivePositions: [
+          makeFinancialTitleRetroactivePositionEntity(),
+        ],
+        enterprises: [makeFinancialTitleEnterpriseEntity()],
+        unitGroups: [makeFinancialTitleUnitGroupEntity()],
+        controlDocuments: [makeFinancialTitleControlDocumentEntity()],
+        incomeExpenseCenters: [
+          makeFinancialTitleIncomeExpenseCenterEntity(),
+        ],
+        financialClassifications: [
+          makeFinancialTitleClassificationEntity(),
+        ],
+        financialClassificationIncomeExpenseCenters: [
+          makeFinancialTitleClassificationIncomeExpenseCenterEntity(),
+        ],
+        comparisonFinancialTitlePortions: [
+          makeFinancialTitleDataEntity(),
+        ],
+        calculatedTotals: makeFinancialTitleCalculatedTotalsEntity(),
+      );
 }

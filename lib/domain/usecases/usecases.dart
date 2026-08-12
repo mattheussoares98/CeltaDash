@@ -1,5 +1,6 @@
 export './device/device.dart';
 export './enterprises/enterprises.dart';
+export 'financial_title_data/financial_title_data.dart';
 export './login/login.dart';
 export './navigation/navigation.dart';
 export './platform/platform.dart';

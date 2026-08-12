@@ -171,8 +171,11 @@ class SearchFinancialTitleDataModel extends SearchFinancialTitleDataParams {
         financialTitleTypes: financialTitleTypes,
         situations: situations,
         periodType: periodType,
-        period: period,
-        comparisonPeriod: comparisonPeriod,
+        period: FinancialTitlePeriodModel.fromEntity(period).toEntity(),
+        comparisonPeriod: comparisonPeriod == null
+            ? null
+            : FinancialTitlePeriodModel.fromEntity(comparisonPeriod!)
+                .toEntity(),
         positionDate: positionDate,
         documentNumbers: documentNumbers,
         documentTypeCodes: documentTypeCodes,

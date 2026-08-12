@@ -217,21 +217,70 @@ class FinancialTitleDataResponseModel extends FinancialTitleDataResponseEntity {
 
   FinancialTitleDataResponseEntity toEntity() =>
       FinancialTitleDataResponseEntity(
-        searchParameters: searchParameters,
-        financialTitlePortions: financialTitlePortions,
-        portionPayments: portionPayments,
-        portionsAdministrativeTax: portionsAdministrativeTax,
-        liquidationPortions: liquidationPortions,
-        liquidationPortionPaymentForms: liquidationPortionPaymentForms,
-        retroactivePositions: retroactivePositions,
-        enterprises: enterprises,
-        unitGroups: unitGroups,
-        controlDocuments: controlDocuments,
-        incomeExpenseCenters: incomeExpenseCenters,
-        financialClassifications: financialClassifications,
+        searchParameters:
+            SearchFinancialTitleDataModel.fromEntity(searchParameters)
+                .toEntity(),
+        financialTitlePortions: financialTitlePortions
+            .map((item) => FinancialTitleDataModel.fromEntity(item).toEntity())
+            .toList(),
+        portionPayments: portionPayments
+            ?.map((item) =>
+                FinancialTitlePortionPaymentModel.fromEntity(item).toEntity())
+            .toList(),
+        portionsAdministrativeTax: portionsAdministrativeTax
+            ?.map((item) =>
+                FinancialTitleAdministrativeTaxModel.fromEntity(item)
+                    .toEntity())
+            .toList(),
+        liquidationPortions: liquidationPortions
+            ?.map((item) =>
+                FinancialTitleLiquidationPortionModel.fromEntity(item)
+                    .toEntity())
+            .toList(),
+        liquidationPortionPaymentForms: liquidationPortionPaymentForms
+            ?.map((item) =>
+                FinancialTitleLiquidationPaymentFormModel.fromEntity(item)
+                    .toEntity())
+            .toList(),
+        retroactivePositions: retroactivePositions
+            ?.map((item) =>
+                FinancialTitleRetroactivePositionModel.fromEntity(item)
+                    .toEntity())
+            .toList(),
+        enterprises: enterprises
+            ?.map((item) =>
+                FinancialTitleEnterpriseModel.fromEntity(item).toEntity())
+            .toList(),
+        unitGroups: unitGroups
+            ?.map((item) =>
+                FinancialTitleUnitGroupModel.fromEntity(item).toEntity())
+            .toList(),
+        controlDocuments: controlDocuments
+            ?.map((item) =>
+                FinancialTitleControlDocumentModel.fromEntity(item).toEntity())
+            .toList(),
+        incomeExpenseCenters: incomeExpenseCenters
+            ?.map((item) =>
+                FinancialTitleIncomeExpenseCenterModel.fromEntity(item)
+                    .toEntity())
+            .toList(),
+        financialClassifications: financialClassifications
+            ?.map((item) =>
+                FinancialTitleClassificationModel.fromEntity(item).toEntity())
+            .toList(),
         financialClassificationIncomeExpenseCenters:
-            financialClassificationIncomeExpenseCenters,
-        comparisonFinancialTitlePortions: comparisonFinancialTitlePortions,
-        calculatedTotals: calculatedTotals,
+            financialClassificationIncomeExpenseCenters
+                ?.map((item) =>
+                    FinancialTitleClassificationIncomeExpenseCenterModel
+                            .fromEntity(item)
+                        .toEntity())
+                .toList(),
+        comparisonFinancialTitlePortions: comparisonFinancialTitlePortions
+            ?.map((item) => FinancialTitleDataModel.fromEntity(item).toEntity())
+            .toList(),
+        calculatedTotals: calculatedTotals == null
+            ? null
+            : FinancialTitleCalculatedTotalsModel.fromEntity(calculatedTotals!)
+                .toEntity(),
       );
 }
