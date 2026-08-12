@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 
-import '../../../domain/entities/entities.dart';
+import 'package:celta_dash/domain/entities/entities.dart';
 import '../../../ui/helpers/helpers.dart';
 import '../../../ui/pages/pages.dart';
 import 'sale_movement.dart';

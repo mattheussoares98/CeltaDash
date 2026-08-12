@@ -7,4 +7,10 @@ enum FinancialTitlePeriodGrouping {
   final int value;
 
   const FinancialTitlePeriodGrouping(this.value);
+
+  static FinancialTitlePeriodGrouping? fromValue(int? value) => value == null
+      ? null
+      : FinancialTitlePeriodGrouping.values.firstWhere(
+          (item) => item.value == value,
+        );
 }

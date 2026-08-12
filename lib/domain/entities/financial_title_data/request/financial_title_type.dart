@@ -6,4 +6,8 @@ enum FinancialTitleType {
   final int value;
 
   const FinancialTitleType(this.value);
+
+  static FinancialTitleType? fromValue(int? value) => value == null
+      ? null
+      : FinancialTitleType.values.firstWhere((item) => item.value == value);
 }

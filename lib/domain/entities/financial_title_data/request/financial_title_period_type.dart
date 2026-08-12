@@ -11,4 +11,10 @@ enum FinancialTitlePeriodType {
   final int value;
 
   const FinancialTitlePeriodType(this.value);
+
+  static FinancialTitlePeriodType? fromValue(int? value) => value == null
+      ? null
+      : FinancialTitlePeriodType.values.firstWhere(
+          (item) => item.value == value,
+        );
 }

@@ -14,4 +14,10 @@ enum FinancialTitleCadasterType {
   final int value;
 
   const FinancialTitleCadasterType(this.value);
+
+  static FinancialTitleCadasterType? fromValue(int? value) => value == null
+      ? null
+      : FinancialTitleCadasterType.values.firstWhere(
+          (item) => item.value == value,
+        );
 }

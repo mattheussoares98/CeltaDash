@@ -1,4 +1,4 @@
-import '../../../domain/entities/entities.dart';
+import 'package:celta_dash/domain/entities/entities.dart';
 
 class ActiveUserModel extends ActiveUserEntity {
   const ActiveUserModel({

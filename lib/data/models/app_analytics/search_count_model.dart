@@ -1,4 +1,4 @@
-import '../../../domain/entities/entities.dart';
+import 'package:celta_dash/domain/entities/entities.dart';
 import '../../../domain/helpers/helpers.dart';
 
 class SearchCountModel extends SearchCountEntity {

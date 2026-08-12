@@ -3,6 +3,7 @@ export './sale_movement/sale_movement.dart';
 export './bs_user_model.dart';
 export './date_and_value_model.dart';
 export 'enterprise_model.dart';
+export 'financial_title_data/financial_title_data.dart';
 export 'firebase_enterprise_model.dart';
 export './firebase_goal_model.dart';
 export 'firebase_sub_enterprise_model.dart';
