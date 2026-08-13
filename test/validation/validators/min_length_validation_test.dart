@@ -22,7 +22,7 @@ void main() {
 
   test('Should return error if value is less than min size', () {
     expect(
-      sut.validate(faker.randomGenerator.string(4, min: 1)),
+      sut.validate(faker.randomGenerator.string(4)),
       ValidationError.shortField,
     );
   });

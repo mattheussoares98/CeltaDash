@@ -148,8 +148,8 @@ class _OperatorsPageState extends State<OperatorsPage> {
                             titleMinHeight: isPortrait ? 43 : 25,
                             indexToSort: 1,
                             columnIndexToCompareAndDetachBetterAndWorstValue: 1,
-                            columnsIndexToSum: [1, 2],
-                            columnsWidths: [180, 90, 80],
+                            columnsIndexToSum: const [1, 2],
+                            columnsWidths: const [180, 90, 80],
                             pdfFileName: R.string.operators,
                             titles: [
                               PersonalizedTableCell(

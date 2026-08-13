@@ -401,7 +401,6 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                       Table(
                         border: TableBorder.all(
                             color: tableBorderColor, width: 0.06),
-                        defaultColumnWidth: const FlexColumnWidth(1),
                         columnWidths: {
                           0: FixedColumnWidth(
                               widget.columnsWidths[0] + availableSize)
@@ -425,7 +424,6 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                         child: Table(
                           border: TableBorder.all(
                               color: tableBorderColor, width: 0.06),
-                          defaultColumnWidth: const FlexColumnWidth(1),
                           columnWidths: scrollableColumnWidthsMap,
                           children: [
                             buildTableRow(

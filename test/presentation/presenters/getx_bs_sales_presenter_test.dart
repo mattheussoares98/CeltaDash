@@ -317,7 +317,6 @@ void main() {
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
                 homePresenter.selectedDateMock.month,
-                1,
               ),
               endDate: DateTime(
                 homePresenter.selectedDateMock.year,
@@ -342,7 +341,6 @@ void main() {
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
                 homePresenter.selectedDateMock.month,
-                1,
               ),
               endDate: DateTime(
                 homePresenter.selectedDateMock.year,
@@ -367,7 +365,6 @@ void main() {
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
                 homePresenter.selectedDateMock.month,
-                1,
               ),
               endDate: DateTime(
                 homePresenter.selectedDateMock.year,
@@ -389,7 +386,6 @@ void main() {
             startDate: DateTime(
               homePresenter.selectedDateMock.year,
               homePresenter.selectedDateMock.month,
-              1,
             ),
             endDate: DateTime(
               homePresenter.selectedDateMock.year,
@@ -422,7 +418,6 @@ void main() {
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
                 homePresenter.selectedDateMock.month,
-                1,
               ),
               endDate: DateTime(
                 homePresenter.selectedDateMock.year,
@@ -448,7 +443,6 @@ void main() {
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
                 homePresenter.selectedDateMock.month,
-                1,
               ),
               endDate: DateTime(
                 homePresenter.selectedDateMock.year,
@@ -656,7 +650,6 @@ void main() {
               endDate: selectedDate,
               onlyNotCancelled: true,
               actualPage: 1,
-              documentNumbers: null,
             ),
           )).called(1);
     });

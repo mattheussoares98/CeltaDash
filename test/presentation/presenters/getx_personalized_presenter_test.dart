@@ -264,8 +264,6 @@ void main() {
             startDate: startDate,
             endDate: endDate,
             enterpriseIds: [enterpriseId],
-            topCount:
-                categorySelected == CategoryGroupingType.product ? 300 : null,
             groupByHour: isFilteringProduct ? false : null,
             groupByDay: isFilteringProduct ? false : null,
             groupByMonth: isFilteringProduct ? false : null,

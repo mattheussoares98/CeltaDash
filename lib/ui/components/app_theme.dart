@@ -82,25 +82,25 @@ ThemeData makeAppTheme(BuildContext context) {
     fillColor: CupertinoColors.systemGrey6,
     disabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(width: 1, color: disabledColor),
+      borderSide: const BorderSide(color: disabledColor),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
       borderSide:
-          const BorderSide(width: 1, color: CupertinoColors.systemGrey4),
+          const BorderSide(color: CupertinoColors.systemGrey4),
     ),
     focusedErrorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
       borderSide:
-          const BorderSide(width: 1, color: CupertinoColors.destructiveRed),
+          const BorderSide(color: CupertinoColors.destructiveRed),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(width: 1, color: primaryColor),
+      borderSide: const BorderSide(color: primaryColor),
     ),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(width: 1, color: primaryColor),
+      borderSide: const BorderSide(color: primaryColor),
     ),
   );
 

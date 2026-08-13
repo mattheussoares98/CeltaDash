@@ -70,7 +70,7 @@ class SearchHelper {
     T? lastParams,
     DateTime selectedDate,
   ) {
-    if (lastParams?.startDate == DateTime(selectedDate.year, 1, 1) &&
+    if (lastParams?.startDate == DateTime(selectedDate.year) &&
         lastParams?.endDate == DateTime(selectedDate.year, 12, 31)) {
       return false;
     } else if (lastParams?.startDate == DateTime(selectedDate.year - 2) &&
@@ -87,7 +87,7 @@ class SearchHelper {
     T? lastParams,
     DateTime selectedDate,
   ) {
-    if (lastParams?.startDate == DateTime(selectedDate.year, 1, 1) &&
+    if (lastParams?.startDate == DateTime(selectedDate.year) &&
         lastParams?.endDate == DateTime(selectedDate.year, 12, 31)) {
       return false;
     }

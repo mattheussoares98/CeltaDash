@@ -145,11 +145,11 @@ class _SellersPageState extends State<SellersPage> {
                             titleMinHeight: isPortrait ? 43 : 30,
                             indexToSort: 1,
                             columnIndexToCompareAndDetachBetterAndWorstValue: 1,
-                            columnsIndexToSum: [1, 2],
+                            columnsIndexToSum: const [1, 2],
                             pdfFileName: R.string.sellers,
                             selectedPeriodType: sellersPresenter.selectedPeriod,
                             fixFirstColumn: true,
-                            columnsWidths: [150, 120, 70],
+                            columnsWidths: const [150, 120, 70],
                             titles: [
                               PersonalizedTableCell(
                                   value: R.string.seller, isTitle: true),

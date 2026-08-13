@@ -97,7 +97,6 @@ class GetxOperatorsPresenter extends GetxController
           startDate: DateTime(
             homePresenter.selectedDate.year,
             homePresenter.selectedDate.month,
-            1,
           ),
           endDate: DateTime(
             homePresenter.selectedDate.year,

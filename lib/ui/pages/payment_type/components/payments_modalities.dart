@@ -36,10 +36,10 @@ class _PaymentsModalitiesState extends State<PaymentsModalities> {
           titleMinHeight: isPortrait ? 43 : 25,
           selectedPeriodType: paymentTypePresenter.selectedPeriod,
           pdfFileName: R.string.paymentsType,
-          columnsWidths: [100, 90, 50, 70, 70],
+          columnsWidths: const [100, 90, 50, 70, 70],
           columnIndexToCompareAndDetachBetterAndWorstValue: 1,
           fixFirstColumn: true,
-          columnsIndexToSum: [1, 2],
+          columnsIndexToSum: const [1, 2],
           titles: [
             PersonalizedTableCell(value: R.string.paymentsType, isTitle: true),
             PersonalizedTableCell(value: R.string.sales, isTitle: true),

@@ -17,7 +17,7 @@ class GroupSummaryPage extends StatefulWidget {
 }
 
 class _GroupSummaryPageState extends State<GroupSummaryPage> {
-  final pageController = PageController(initialPage: 0);
+  final pageController = PageController();
   int currentIndex = 0;
 
   @override

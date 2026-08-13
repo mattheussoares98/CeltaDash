@@ -152,7 +152,6 @@ class _ChartPieWidgetState extends State<ChartPieWidget> {
                             }
                           },
                         ),
-                        borderData: null,
                         sectionsSpace: 3,
                         centerSpaceRadius: centerSpaceRadius,
                         centerSpaceColor: Colors.transparent,

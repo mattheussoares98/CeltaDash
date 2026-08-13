@@ -47,8 +47,8 @@ class ContainerDecoration {
         color: theme.cardTheme.color,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.green),
-        boxShadow: [
-          const BoxShadow(
+        boxShadow: const [
+          BoxShadow(
             color: Colors.green,
             offset: Offset(2, 2),
             blurRadius: 4,

@@ -26,9 +26,9 @@ class DayTable extends StatelessWidget {
       pdfFileName: R.string.dailyAnalysis,
       selectedPeriodType: salesPresenter.selectedPeriod,
       fixFirstColumn: true,
-      columnsWidths: [60, 90, 40, 60, 50],
+      columnsWidths: const [60, 90, 40, 60, 50],
       columnIndexToCompareAndDetachBetterAndWorstValue: 1,
-      columnsIndexToSum: [1, 2],
+      columnsIndexToSum: const [1, 2],
       indexToSort: 0,
       titles: [
         PersonalizedTableCell(value: R.string.day, isTitle: true),

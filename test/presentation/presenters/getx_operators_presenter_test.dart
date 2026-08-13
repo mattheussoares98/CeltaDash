@@ -308,7 +308,6 @@ void main() {
         final startDate = DateTime(
           homePresenter.selectedDateMock.year,
           homePresenter.selectedDateMock.month,
-          1,
         );
         final endDate = DateTime(
           homePresenter.selectedDateMock.year,
@@ -338,7 +337,6 @@ void main() {
         final startDate = DateTime(
           homePresenter.selectedDateMock.year,
           homePresenter.selectedDateMock.month,
-          1,
         );
         final endDate = DateTime(
           homePresenter.selectedDateMock.year,
@@ -367,7 +365,6 @@ void main() {
         final startDate = DateTime(
           homePresenter.selectedDateMock.year,
           homePresenter.selectedDateMock.month,
-          1,
         );
         final endDate = DateTime(
           homePresenter.selectedDateMock.year,
@@ -420,7 +417,6 @@ void main() {
         final startDate = DateTime(
           homePresenter.selectedDateMock.year,
           homePresenter.selectedDateMock.month,
-          1,
         );
         final endDate = DateTime(
           homePresenter.selectedDateMock.year,
@@ -449,7 +445,6 @@ void main() {
         final startDate = DateTime(
           homePresenter.selectedDateMock.year,
           homePresenter.selectedDateMock.month,
-          1,
         );
         final endDate = DateTime(
           homePresenter.selectedDateMock.year,

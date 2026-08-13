@@ -127,10 +127,10 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                           titleMinHeight: isPortrait ? 43 : 30,
                           selectedPeriodType: bsSalesPresenter.selectedPeriod,
                           pdfFileName: R.string.canceledSales,
-                          columnsIndexToSum: [3],
+                          columnsIndexToSum: const [3],
                           fixFirstColumn: true,
                           indexToSort: 2,
-                          columnsWidths: [65, 35, 80, 90, 80, 150],
+                          columnsWidths: const [65, 35, 80, 90, 80, 150],
                           titles: [
                             PersonalizedTableCell(
                               value: R.string.couponNumberAbbreviated

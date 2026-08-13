@@ -19,10 +19,8 @@ class EmailField extends StatelessWidget {
       maxLength: 30,
       decoration: FormFieldDecoration.decoration(
         context: context,
-        showCounterText: false,
         hintText: R.string.email,
         labelText: R.string.email,
-        errorText: null,
       ),
       onFieldSubmitted: (_) {
         passwordFocusNode.requestFocus();

@@ -107,7 +107,6 @@ class _BodyRowsState extends State<BodyRows> {
                     child: Table(
                       border: TableBorder.all(
                           color: widget.tableBorderColor, width: 0.06),
-                      defaultColumnWidth: const FlexColumnWidth(1),
                       columnWidths: {0: FixedColumnWidth(widget.columnWidth)},
                       children: widget.fixedColumns,
                     ),
@@ -126,7 +125,6 @@ class _BodyRowsState extends State<BodyRows> {
                       child: Table(
                         border: TableBorder.all(
                             color: widget.tableBorderColor, width: 0.06),
-                        defaultColumnWidth: const FlexColumnWidth(1),
                         columnWidths: widget.scrollableColumnWidthsMap,
                         children: widget.notFixedColumns,
                       ),

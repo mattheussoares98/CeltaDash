@@ -21,7 +21,7 @@ void main() {
 
   test('Should return error if value is not a email', () {
     expect(
-      sut.validate(faker.randomGenerator.string(4, min: 1)),
+      sut.validate(faker.randomGenerator.string(4)),
       ValidationError.invalidEmail,
     );
   });

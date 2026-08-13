@@ -111,7 +111,7 @@ class _FilterNotCanceledSalesState extends State<FilterNotCanceledSales> {
                 maxLength: 10,
                 enabled: widget.isLoading == false,
                 keyboardType:
-                    const TextInputType.numberWithOptions(decimal: false),
+                    const TextInputType.numberWithOptions(),
                 onFieldSubmitted: (_) {
                   _submit(bsSalesPresenter);
                 },

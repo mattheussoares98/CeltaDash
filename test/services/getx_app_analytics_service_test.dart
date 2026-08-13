@@ -41,7 +41,7 @@ void main() {
   void initTestData() {
     reportType = ReportType.sales;
     periodType = PeriodType.daily;
-    mockedFirebaseGet = MockedFirebaseGet(dataToReturn: []);
+    mockedFirebaseGet = MockedFirebaseGet(dataToReturn: const []);
     EnterpriseBuilder.entity = EntityFactory.makeFirebaseEnterpriseEntity();
   }
 

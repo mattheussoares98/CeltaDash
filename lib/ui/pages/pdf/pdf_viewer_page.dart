@@ -66,11 +66,8 @@ class _PdfViewerPageState extends State<_PdfViewerPage> {
       await SharePlus.instance.share(
         ShareParams(
           files: [pdfFile],
-          // text: "Compartilhar PDF",
-          downloadFallbackEnabled: true,
           title: widget.pdfFileName,
           previewThumbnail: pdfFile,
-          mailToFallbackEnabled: true,
           fileNameOverrides: ['${widget.pdfFileName}.pdf'],
         ),
       );
@@ -100,15 +97,7 @@ class _PdfViewerPageState extends State<_PdfViewerPage> {
         ],
       ),
       body: SfPdfViewer.memory(
-        enableDoubleTapZooming: true,
-        enableTextSelection: true,
-        enableDocumentLinkAnnotation: true,
-        enableHyperlinkNavigation: true,
-        interactionMode: PdfInteractionMode.selection,
-        canShowScrollStatus: true,
-        canShowScrollHead: true,
         widget.pdfBytes,
-        canShowTextSelectionMenu: true,
       ),
     );
   }

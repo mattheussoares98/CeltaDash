@@ -25,7 +25,6 @@ class DisabledEnterpriseBlur extends StatelessWidget {
               shadows: const [
                 Shadow(
                   color: Colors.white,
-                  offset: Offset(0, 0),
                   blurRadius: 1,
                 ),
                 Shadow(

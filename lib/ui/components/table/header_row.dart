@@ -50,7 +50,6 @@ class HeaderRow extends StatelessWidget {
                   Table(
                     border:
                         TableBorder.all(color: tableBorderColor, width: 0.06),
-                    defaultColumnWidth: const FlexColumnWidth(1),
                     columnWidths: {0: FixedColumnWidth(fixedColumnWidth)},
                     children: [
                       TableRow(
@@ -81,7 +80,6 @@ class HeaderRow extends StatelessWidget {
                     child: Table(
                       border:
                           TableBorder.all(color: tableBorderColor, width: 0.06),
-                      defaultColumnWidth: const FlexColumnWidth(1),
                       columnWidths: scrollableColumnWidthsMap,
                       children: [
                         TableRow(

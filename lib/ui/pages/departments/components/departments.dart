@@ -31,9 +31,9 @@ class Departments extends StatelessWidget {
           titleMinHeight: isPortrait ? 43 : 25,
           selectedPeriodType: departmentsPresenter.selectedPeriod,
           pdfFileName: R.string.departments,
-          columnsWidths: [110, 85, 85, 85, 60, 55],
+          columnsWidths: const [110, 85, 85, 85, 60, 55],
           fixFirstColumn: true,
-          columnsIndexToSum: [1, 2, 3],
+          columnsIndexToSum: const [1, 2, 3],
           columnIndexToCompareAndDetachBetterAndWorstValue: 3,
           indexToSort: 3,
           titles: [

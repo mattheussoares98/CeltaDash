@@ -80,7 +80,6 @@ class _RowSpan extends StatelessWidget {
     final theme = Theme.of(context);
 
     return RichText(
-      textAlign: TextAlign.start,
       text: TextSpan(
         style: const TextStyle(color: Colors.black),
         children: [

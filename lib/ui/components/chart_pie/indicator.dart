@@ -52,7 +52,7 @@ class Indicator extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     title,
-                    if (subtitle != null) subtitle!,
+                    ?subtitle,
                   ],
                 ),
               ),

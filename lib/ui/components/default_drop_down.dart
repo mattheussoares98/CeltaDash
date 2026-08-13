@@ -56,7 +56,7 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
         height: DropdownHeight.height,
         child: CupertinoButton(
           disabledColor: theme.disabledColor.withAlpha(100),
-          padding: const EdgeInsets.only(left: 0),
+          padding: const EdgeInsets.only(),
           color: IsDarkTheme.isDark
               ? theme.disabledColor
               : theme.disabledColor.withAlpha(40),
@@ -100,7 +100,6 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
                       }
                     },
           child: Align(
-            alignment: Alignment.center,
             child: Row(
               children: [
                 // Left Arrow Button - only visible if there's a previous item
@@ -241,7 +240,6 @@ class _ChangeItemByArrow<T> extends StatelessWidget {
     final isIOS = !kIsWeb && Platform.isIOS;
 
     return Visibility(
-      visible: true,
       maintainSize: true,
       maintainAnimation: true,
       maintainState: true,

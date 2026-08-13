@@ -31,7 +31,6 @@ class PersonalizedPieChart extends StatelessWidget {
       return Container(
         decoration: ContainerDecoration.defaultDecoration,
         child: ChartPieWidget(
-          showTotalAmount: true,
           pieParameters: [
             ...topFour.map(
               (e) => PieParameter(

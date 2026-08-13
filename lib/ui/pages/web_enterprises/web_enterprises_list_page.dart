@@ -80,8 +80,8 @@ class _WebEnterprisesListPageState extends State<WebEnterprisesListPage> {
             ),
             ScrollableTableItem(
               pdfFileName: R.string.enterprises,
-              columnsWidths: [150, 80, 60],
-              columnsIndexToSum: [1, 2],
+              columnsWidths: const [150, 80, 60],
+              columnsIndexToSum: const [1, 2],
               fixFirstColumn: true,
               titles: [
                 PersonalizedTableCell(

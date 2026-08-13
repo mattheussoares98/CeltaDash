@@ -60,7 +60,7 @@ class _WebEnterpriseDetailsPageState extends State<WebEnterpriseDetailsPage>
     return Scaffold(
       appBar: AppBar(
         title: Text(selectedEnterprise?.enterpriseName ?? ""),
-        actions: [],
+        actions: const [],
       ),
       body: selectedEnterprise == null
           ? Center(child: Text(R.string.msgUnexpectedError))

@@ -145,7 +145,7 @@ void main() {
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
               ],
-              startDate: DateTime(firstSelectedYear, firstSelectedMonth, 1),
+              startDate: DateTime(firstSelectedYear, firstSelectedMonth),
               endDate: DateTime(firstSelectedYear, firstSelectedMonth + 1, 0),
             ),
           )).called(1);
@@ -171,7 +171,7 @@ void main() {
               enterpriseIds: [
                 homePresenter.selectedEnterpriseMock!.id!.toInt()
               ],
-              startDate: DateTime(secondSelectedYear, secondSelectedMonth, 1),
+              startDate: DateTime(secondSelectedYear, secondSelectedMonth),
               endDate: DateTime(secondSelectedYear, secondSelectedMonth + 1, 0),
             ),
           )).called(1);
@@ -216,7 +216,6 @@ void main() {
             startDate: DateTime(
               firstSelectedYear,
               firstSelectedMonth,
-              1,
             ),
             endDate: DateTime(
               firstSelectedYear,
@@ -234,7 +233,6 @@ void main() {
             startDate: DateTime(
               secondSelectedYear,
               secondSelectedMonth,
-              1,
             ),
             endDate: DateTime(
               secondSelectedYear,
@@ -286,7 +284,7 @@ void main() {
             groupByDay: true,
             groupByEnterprise: true,
             enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
-            startDate: DateTime(now.year, now.month, 1),
+            startDate: DateTime(now.year, now.month),
             endDate: DateTime(now.year, now.month + 1, 0),
           ),
         ),
@@ -302,7 +300,7 @@ void main() {
             groupByDay: true,
             groupByEnterprise: true,
             enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
-            startDate: DateTime(now.year, now.month, 1),
+            startDate: DateTime(now.year, now.month),
             endDate: DateTime(now.year, now.month + 1, 0),
           ),
         ),

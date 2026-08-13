@@ -182,7 +182,7 @@ class SaleStatisticPdfGenerator {
       children: [
         headers,
         ...rows,
-        if (pdfSumRow != null) pdfSumRow,
+        ?pdfSumRow,
       ],
     );
   }

@@ -127,7 +127,7 @@ class GetNewDate {
                 CupertinoButton(
                   child: const Text('OK'),
                   onPressed: () => Navigator.of(context).pop(tempPickedDate),
-                )
+                ),
               ],
             ),
           ),
@@ -164,8 +164,9 @@ class GetNewDate {
                 onPressed: () {
                   Navigator.of(context).pop(
                     TimeOfDay(
-                        hour: pickedDateTime.hour,
-                        minute: pickedDateTime.minute),
+                      hour: pickedDateTime.hour,
+                      minute: pickedDateTime.minute,
+                    ),
                   );
                 },
               ),

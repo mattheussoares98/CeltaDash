@@ -57,9 +57,9 @@ class GroupSummaryDetailsPage extends StatelessWidget {
           selectedPeriodType: resumePresenter.selectedPeriod,
           pdfFileName: R.string.groupSummary,
           columnIndexToCompareAndDetachBetterAndWorstValue: 1,
-          columnsIndexToSum: [1],
+          columnsIndexToSum: const [1],
           indexToSort: 1,
-          columnsWidths: [180, 90, 80],
+          columnsWidths: const [180, 90, 80],
           titles: [
             PersonalizedTableCell(value: R.string.enterprise, isTitle: true),
             PersonalizedTableCell(value: R.string.sales, isTitle: true),

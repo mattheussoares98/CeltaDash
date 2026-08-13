@@ -34,8 +34,8 @@ class CompareTable extends StatelessWidget {
       pdfFileName: R.string.compareDays,
       indexToSort: 0,
       columnIndexToCompareAndDetachBetterAndWorstValue: 3,
-      columnsIndexToSum: [1, 2],
-      columnsWidths: [80, 75, 75, 70],
+      columnsIndexToSum: const [1, 2],
+      columnsWidths: const [80, 75, 75, 70],
       titles: [
         PersonalizedTableCell(
           value: R.string.hour,

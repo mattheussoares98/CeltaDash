@@ -320,7 +320,6 @@ void main() {
         final startDate = DateTime(
           homePresenter.selectedDateMock.year,
           homePresenter.selectedDateMock.month,
-          1,
         );
 
         final endDate = DateTime(
@@ -353,7 +352,6 @@ void main() {
         final startDate = DateTime(
           homePresenter.selectedDateMock.year,
           homePresenter.selectedDateMock.month,
-          1,
         );
 
         final endDate = DateTime(
@@ -384,7 +382,6 @@ void main() {
         final startDate = DateTime(
           homePresenter.selectedDateMock.year,
           homePresenter.selectedDateMock.month,
-          1,
         );
         final endDate = DateTime(
           homePresenter.selectedDateMock.year,
@@ -441,7 +438,6 @@ void main() {
         final startDate = DateTime(
           homePresenter.selectedDateMock.year,
           homePresenter.selectedDateMock.month,
-          1,
         );
 
         final endDate = DateTime(
@@ -473,7 +469,6 @@ void main() {
         final startDate = DateTime(
           homePresenter.selectedDateMock.year,
           homePresenter.selectedDateMock.month,
-          1,
         );
 
         final endDate = DateTime(
@@ -512,7 +507,7 @@ void main() {
       test("Should call load sale movements with correct values", () async {
         await sut.getSales(periodType: PeriodType.monthly);
 
-        final startDate = DateTime(homePresenter.selectedDateMock.year, 1, 1);
+        final startDate = DateTime(homePresenter.selectedDateMock.year);
         final endDate = DateTime(homePresenter.selectedDateMock.year, 12, 31);
 
         verify(
@@ -536,7 +531,7 @@ void main() {
         await sut.getSales(periodType: PeriodType.monthly);
         await sut.getSales(periodType: PeriodType.monthly);
 
-        final startDate = DateTime(homePresenter.selectedDateMock.year, 1, 1);
+        final startDate = DateTime(homePresenter.selectedDateMock.year);
         final endDate = DateTime(homePresenter.selectedDateMock.year, 12, 31);
 
         verify(
@@ -559,7 +554,7 @@ void main() {
 
       test("Should load again if change the enterprise", () async {
         await sut.getSales(periodType: PeriodType.monthly);
-        final startDate = DateTime(homePresenter.selectedDateMock.year, 1, 1);
+        final startDate = DateTime(homePresenter.selectedDateMock.year);
         final endDate = DateTime(homePresenter.selectedDateMock.year, 12, 31);
 
         verify(
@@ -609,7 +604,7 @@ void main() {
           forceRefresh: true,
         );
 
-        final startDate = DateTime(homePresenter.selectedDateMock.year, 1, 1);
+        final startDate = DateTime(homePresenter.selectedDateMock.year);
         final endDate = DateTime(homePresenter.selectedDateMock.year, 12, 31);
 
         verify(
@@ -632,7 +627,7 @@ void main() {
       test("Should update lastGetSalesParams correctly", () async {
         await sut.getSales(periodType: PeriodType.monthly);
 
-        final startDate = DateTime(homePresenter.selectedDateMock.year, 1, 1);
+        final startDate = DateTime(homePresenter.selectedDateMock.year);
         final endDate = DateTime(homePresenter.selectedDateMock.year, 12, 31);
 
         expect(

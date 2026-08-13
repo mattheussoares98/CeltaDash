@@ -186,8 +186,8 @@ class _CompareMonthsPageState extends State<CompareMonthsPage>
                             fixFirstColumn: true,
                             pdfFileName: R.string.compareMonths,
                             indexToSort: 0,
-                            columnsIndexToSum: [1, 2],
-                            columnsWidths: [60, 80, 80, 80],
+                            columnsIndexToSum: const [1, 2],
+                            columnsWidths: const [60, 80, 80, 80],
                             titles: [
                               PersonalizedTableCell(
                                 value: R.string.day,

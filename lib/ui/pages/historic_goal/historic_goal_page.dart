@@ -89,9 +89,9 @@ class _HistoricGoalPageState extends State<HistoricGoalPage> {
                             },
                           ),
                         ScrollableTableItem(
-                          columnsWidths: [60, 100, 100, 60],
+                          columnsWidths: const [60, 100, 100, 60],
                           pdfFileName: R.string.goalHistory,
-                          columnsIndexToSum: [1, 2],
+                          columnsIndexToSum: const [1, 2],
                           titles: [
                             R.string.period,
                             R.string.goal,

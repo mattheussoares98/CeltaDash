@@ -60,7 +60,7 @@ class _EditGoalFieldAndButtonsState extends State<EditGoalFieldAndButtons> {
               const RequiredFieldValidation(),
             ]).validate(value)?.description,
             keyboardType: const TextInputType.numberWithOptions(
-                decimal: false, signed: true),
+                signed: true),
           ),
           const SizedBox(height: 8),
           Row(

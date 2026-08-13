@@ -21,9 +21,9 @@ class YearSales extends StatelessWidget {
       pdfFileName: R.string.yearlyAnalysis,
       selectedPeriodType: salesPresenter.selectedPeriod,
       fixFirstColumn: true,
-      columnsWidths: [60, 110, 55, 60, 50],
+      columnsWidths: const [60, 110, 55, 60, 50],
       columnIndexToCompareAndDetachBetterAndWorstValue: 1,
-      columnsIndexToSum: [1, 2],
+      columnsIndexToSum: const [1, 2],
       indexToSort: 1,
       titles: [
         PersonalizedTableCell(value: R.string.year, isTitle: true),

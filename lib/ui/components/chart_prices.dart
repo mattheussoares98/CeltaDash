@@ -34,11 +34,9 @@ class ChartPrices extends StatelessWidget {
               child: LineChart(
                 transformationConfig: const FlTransformationConfig(
                   scaleAxis: FlScaleAxis.horizontal,
-                  minScale: 1.0,
                   maxScale: 10.0,
                   panEnabled: false,
                   scaleEnabled: false,
-                  transformationController: null,
                 ),
                 LineChartData(
                   minY: datesAndValues
@@ -79,8 +77,8 @@ class ChartPrices extends StatelessWidget {
                   ],
                   lineTouchData: LineTouchData(
                     touchSpotThreshold: 5,
-                    getTouchLineStart: (_, __) => -double.infinity,
-                    getTouchLineEnd: (_, __) => double.infinity,
+                    getTouchLineStart: (_, _) => -double.infinity,
+                    getTouchLineEnd: (_, _) => double.infinity,
                     getTouchedSpotIndicator: (
                       LineChartBarData barData,
                       List<int> spotIndexes,
@@ -93,12 +91,10 @@ class ChartPrices extends StatelessWidget {
                             dashArray: [4, 2],
                           ),
                           FlDotData(
-                            show: true,
                             getDotPainter: (spot, percent, barData, index) {
                               return FlDotCirclePainter(
                                 radius: 6,
                                 color: Theme.of(context).primaryColorLight,
-                                strokeWidth: 0,
                                 strokeColor: Theme.of(context).primaryColorDark,
                               );
                             },
@@ -143,17 +139,14 @@ class ChartPrices extends StatelessWidget {
                     ),
                   ),
                   titlesData: FlTitlesData(
-                    show: true,
                     rightTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
                       axisNameSize: 10,
                       axisNameWidget: Text(''),
                     ),
                     topTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
+                      
                     ),
                     leftTitles: AxisTitles(
-                      drawBelowEverything: true,
                       sideTitles: SideTitles(
                         getTitlesWidget: (value, meta) {
                           String formatted = value.toString();
@@ -182,8 +175,6 @@ class ChartPrices extends StatelessWidget {
                       sideTitles: SideTitles(
                         showTitles: true,
                         reservedSize: 40,
-                        maxIncluded: true,
-                        minIncluded: true,
                         getTitlesWidget: (double value, TitleMeta meta) {
                           final index = value.toInt();
                           final date = datesAndValues[index].date;

@@ -32,7 +32,7 @@ class GetxHistoricGoalPresenter extends GetxController
 
       final selectedYearRemoteSales = await loadSaleStatistics.get(
         GetSaleStatisticsParams(
-          startDate: DateTime(year, year == 2025 ? 7 : 1, 1),
+          startDate: DateTime(year, year == 2025 ? 7 : 1),
           endDate: DateTime(year, 12, 31),
           groupByMonth: true,
           groupByYear: true,
@@ -43,7 +43,7 @@ class GetxHistoricGoalPresenter extends GetxController
 
       final previousYearRemoteSales = await loadSaleStatistics.get(
         GetSaleStatisticsParams(
-          startDate: DateTime(year - 1, year == 2025 ? 8 : 1, 1),
+          startDate: DateTime(year - 1, year == 2025 ? 8 : 1),
           endDate: DateTime(year - 1, 12, 31),
           groupByMonth: true,
           groupByYear: true,

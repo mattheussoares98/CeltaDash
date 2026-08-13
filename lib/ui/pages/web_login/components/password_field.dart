@@ -25,10 +25,8 @@ class PasswordField extends StatelessWidget {
       },
       decoration: FormFieldDecoration.decoration(
         context: context,
-        showCounterText: false,
         hintText: R.string.password,
         labelText: R.string.password,
-        errorText: null,
       ),
     );
   }

@@ -61,7 +61,7 @@ class App extends StatelessWidget with KeyboardManager {
           Locale('en', 'US'),
           Locale('pt', 'BR'),
         ],
-        localizationsDelegates: [
+        localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,

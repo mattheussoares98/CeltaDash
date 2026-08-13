@@ -133,7 +133,7 @@ void main() {
 
       verify(() => loadSaleStatistics.get(
             GetSaleStatisticsParams(
-              startDate: DateTime(2025, 7, 1),
+              startDate: DateTime(2025, 7),
               endDate: DateTime(2025, 12, 31),
               groupByMonth: true,
               groupByYear: true,
@@ -146,7 +146,7 @@ void main() {
 
       verify(() => loadSaleStatistics.get(
             GetSaleStatisticsParams(
-              startDate: DateTime(2024, 8, 1),
+              startDate: DateTime(2024, 8),
               endDate: DateTime(2024, 12, 31),
               groupByMonth: true,
               groupByYear: true,
@@ -166,7 +166,7 @@ void main() {
 
       verify(() => loadSaleStatistics.get(
             GetSaleStatisticsParams(
-              startDate: DateTime(year, 1, 1),
+              startDate: DateTime(year),
               endDate: DateTime(year, 12, 31),
               groupByMonth: true,
               groupByYear: true,
@@ -183,7 +183,7 @@ void main() {
 
       verify(() => loadSaleStatistics.get(
             GetSaleStatisticsParams(
-              startDate: DateTime(2025, 1, 1),
+              startDate: DateTime(2025),
               endDate: DateTime(2025, 12, 31),
               groupByMonth: true,
               groupByYear: true,

@@ -157,7 +157,7 @@ void main() {
         final value = SearchHelper.canSearch(
           forceRefresh: false,
           lastParams: GetSaleStatisticsParams(
-            startDate: DateTime(selectedDate.year, 1, 1),
+            startDate: DateTime(selectedDate.year),
             endDate: DateTime(selectedDate.year, 12, 31),
           ),
           selectedDate: selectedDate,

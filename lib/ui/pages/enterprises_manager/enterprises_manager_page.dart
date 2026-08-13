@@ -20,8 +20,6 @@ class EnterprisesManagerPage extends StatefulWidget {
       context: context,
       isScrollControlled: true, // Allows the modal to be full-screen
       backgroundColor: Colors.transparent,
-      isDismissible: true,
-      enableDrag: true,
       useSafeArea: true,
       builder: (context) {
         return Stack(

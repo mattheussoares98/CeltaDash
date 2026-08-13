@@ -86,7 +86,7 @@ extension SaleStatisticsExtensions on List<SaleStatisticViewModel> {
       (sum, e) => sum + (e.LiquidValue ?? 0),
     );
 
-    final start = DateTime(now.year, 1, 1);
+    final start = DateTime(now.year);
     final totalDays = now.difference(start).inDays + 1;
     final mondaysQuantity = totalDays ~/ 7;
 

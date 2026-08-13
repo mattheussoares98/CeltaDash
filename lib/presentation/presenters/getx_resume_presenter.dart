@@ -95,12 +95,10 @@ class GetxResumePresenter extends GetxController
       final startDate = DateTime(
         homePresenter.selectedDate.year,
         homePresenter.selectedDate.month,
-        1,
       );
       final endDate = DateTime(
         homePresenter.selectedDate.year,
         homePresenter.selectedDate.month + 1,
-        1,
       ).subtract(const Duration(days: 1));
 
       final salesParams = GetSaleStatisticsParams(
@@ -198,7 +196,6 @@ class GetxResumePresenter extends GetxController
       startDate: DateTime(
         homePresenter.selectedDate.year,
         homePresenter.selectedDate.month,
-        1,
       ),
       endDate: DateTime(
         homePresenter.selectedDate.year,
@@ -213,7 +210,6 @@ class GetxResumePresenter extends GetxController
       startDate: DateTime(
         homePresenter.selectedDate.year - 1,
         homePresenter.selectedDate.month,
-        1,
       ),
       endDate: DateTime(
         homePresenter.selectedDate.year - 1,
@@ -229,7 +225,6 @@ class GetxResumePresenter extends GetxController
         startDate: DateTime(
           homePresenter.selectedDate.year,
           homePresenter.selectedDate.month - 1,
-          1,
         ),
         endDate: DateTime(
           homePresenter.selectedDate.year,

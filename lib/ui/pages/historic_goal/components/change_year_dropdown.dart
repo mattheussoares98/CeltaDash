@@ -23,7 +23,6 @@ class ChangeYearDropdown extends StatelessWidget {
           underline: const SizedBox(),
           icon: const Icon(Icons.arrow_drop_down),
           style: Theme.of(context).textTheme.bodyLarge,
-          iconSize: 24,
           elevation: 16,
           borderRadius: BorderRadius.circular(5),
           dropdownColor: Theme.of(context).colorScheme.surface,

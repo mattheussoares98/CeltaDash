@@ -107,10 +107,10 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage>
                           titleMinHeight: isPortrait ? 43 : 30,
                           selectedPeriodType: bsSalesPresenter.selectedPeriod,
                           pdfFileName: R.string.notCanceledSales,
-                          columnsIndexToSum: [3],
+                          columnsIndexToSum: const [3],
                           fixFirstColumn: true,
                           indexToSort: 2,
-                          columnsWidths: [65, 35, 80, 90],
+                          columnsWidths: const [65, 35, 80, 90],
                           titles: [
                             PersonalizedTableCell(
                               value: R.string.couponNumberAbbreviated

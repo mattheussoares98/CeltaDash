@@ -36,12 +36,12 @@ class GetxCompareMonthsPresenter extends GetxController
           _firstSelectedYear == _secondSelectedYear) {
         mainError = UIError.custom(R.string.msgSamePeriod);
         return;
-      } else if (DateTime(_firstSelectedYear, _firstSelectedMonth, 1)
-          .isAfter(DateTime(now.year, now.month, 1))) {
+      } else if (DateTime(_firstSelectedYear, _firstSelectedMonth)
+          .isAfter(DateTime(now.year, now.month))) {
         mainError = UIError.custom(R.string.msgFutureMonth);
         return;
-      } else if (DateTime(_secondSelectedYear, _secondSelectedMonth, 1)
-          .isAfter(DateTime(now.year, now.month, 1))) {
+      } else if (DateTime(_secondSelectedYear, _secondSelectedMonth)
+          .isAfter(DateTime(now.year, now.month))) {
         mainError = UIError.custom(R.string.msgFutureMonth);
         return;
       }
@@ -53,7 +53,6 @@ class GetxCompareMonthsPresenter extends GetxController
         startDate: DateTime(
           firstSelectedYear,
           firstSelectedMonth,
-          1,
         ),
         endDate: DateTime(
           firstSelectedYear,
@@ -70,7 +69,6 @@ class GetxCompareMonthsPresenter extends GetxController
         startDate: DateTime(
           secondSelectedYear,
           secondSelectedMonth,
-          1,
         ),
         endDate: DateTime(
           secondSelectedYear,
