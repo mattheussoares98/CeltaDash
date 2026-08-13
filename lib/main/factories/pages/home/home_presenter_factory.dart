@@ -7,4 +7,5 @@ HomePresenter makeGetxHomePresenter() => GetxHomePresenter(
       loadEnterprises: makeRemoteLoadEnterprises(),
       firebaseManager: makeRemoteFirebaseManager(),
       localStorage: makeHiveLocalStorage(),
+      manageAppMode: makeLocalManageAppMode(),
     );

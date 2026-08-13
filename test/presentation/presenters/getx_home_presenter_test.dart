@@ -1,5 +1,6 @@
 import 'package:celta_dash/data/models/models.dart';
 import 'package:celta_dash/domain/entities/entities.dart';
+import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/infra/helpers/helpers.dart';
 import 'package:celta_dash/main/builders/builders.dart';
 import 'package:celta_dash/presentation/presenters/presenters.dart';
@@ -31,6 +32,7 @@ void main() {
   late LoadEnterprisesSpy loadEnterprises;
   late FirebaseManagerSpy firebaseManager;
   late LocalStorageSpy localStorage;
+  late ManageAppModeSpy manageAppMode;
 
   late List<EnterpriseEntity> enterprisesInBs;
   late MockedFirebaseGet mockedFirebaseGet;
@@ -41,6 +43,7 @@ void main() {
     navigateTo = NavigateToSpy();
     loadEnterprises = LoadEnterprisesSpy();
     localStorage = LocalStorageSpy();
+    manageAppMode = ManageAppModeSpy();
     firebaseManager = FirebaseManagerSpy(
       mockedFirebaseGet: mockedFirebaseGet,
     );
@@ -52,6 +55,7 @@ void main() {
       loadEnterprises: loadEnterprises,
       firebaseManager: firebaseManager,
       localStorage: localStorage,
+      manageAppMode: manageAppMode,
     );
     salesPresenter = SalesPresenterSpy();
     resumePresenter = ResumePresenterSpy();
@@ -105,6 +109,34 @@ void main() {
     for (var key in DatabaseKeys.values) {
       registerFallbackValue(key);
     }
+  });
+
+  group('App mode', () {
+    test('Should load the persisted app mode', () async {
+      manageAppMode.mockLoad(AppMode.financialTitles);
+
+      await sut.loadAppMode();
+
+      expect(sut.appMode, AppMode.financialTitles);
+      verify(manageAppMode.load).called(1);
+    });
+
+    test('Should toggle from sales to financial titles', () async {
+      await sut.toggleAppMode();
+
+      expect(sut.appMode, AppMode.financialTitles);
+      verify(() => manageAppMode.change(AppMode.financialTitles)).called(1);
+    });
+
+    test('Should toggle from financial titles to sales', () async {
+      manageAppMode.mockLoad(AppMode.financialTitles);
+      await sut.loadAppMode();
+
+      await sut.toggleAppMode();
+
+      expect(sut.appMode, AppMode.sales);
+      verify(() => manageAppMode.change(AppMode.sales)).called(1);
+    });
   });
 
   group("Change page index", () {

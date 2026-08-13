@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../../../domain/helpers/helpers.dart';
 import '../../helpers/helpers.dart';
 import '../pages.dart';
 
 abstract class HomePresenter implements Listenable {
   int get currentPageIndex;
+  AppMode get appMode;
   Stream<UIError?> get mainErrorStream;
   bool get selectedEnterpriseIsEnabled;
   DateTime get selectedDate;
@@ -27,6 +29,8 @@ abstract class HomePresenter implements Listenable {
   void goToNotCanceledSalesPage();
 
   Future<void> getBsEnterprises();
+  Future<void> loadAppMode();
+  Future<void> toggleAppMode();
 
   void updateSelectedEnterprise(EcEnterpriseViewModel? enterprise);
 

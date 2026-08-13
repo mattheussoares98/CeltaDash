@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
 import '../../domain/entities/entities.dart';
+import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
 import '../../infra/helpers/helpers.dart';
 import '../../main/builders/builders.dart';
@@ -19,13 +20,29 @@ class GetxHomePresenter extends GetxController
   final LoadEnterprises loadEnterprises;
   final FirebaseManager firebaseManager;
   final LocalStorage localStorage;
+  final ManageAppMode manageAppMode;
 
   GetxHomePresenter({
     required this.navigateTo,
     required this.loadEnterprises,
     required this.firebaseManager,
     required this.localStorage,
+    required this.manageAppMode,
   });
+
+  @override
+  Future<void> loadAppMode() async {
+    _appMode.value = await manageAppMode.load();
+  }
+
+  @override
+  Future<void> toggleAppMode() async {
+    final newMode =
+        appMode == AppMode.sales ? AppMode.financialTitles : AppMode.sales;
+
+    await manageAppMode.change(newMode);
+    _appMode.value = newMode;
+  }
 
   @override
   void updateSelectedIndex(int index) {
@@ -182,6 +199,10 @@ class GetxHomePresenter extends GetxController
   int get currentPageIndex => _currentPageIndex.value;
   final _currentPageIndex = 0.obs;
 
+  final _appMode = AppMode.sales.obs;
+  @override
+  AppMode get appMode => _appMode.value;
+
   DateTime _selectedDate = DateTime.now();
   @override
   DateTime get selectedDate => _selectedDate;
@@ -226,6 +247,7 @@ class GetxHomePresenter extends GetxController
   @override
   void onInit() {
     super.onInit();
+    unawaited(loadAppMode());
     initFirebaseStream();
   }
 
