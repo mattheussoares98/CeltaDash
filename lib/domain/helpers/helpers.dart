@@ -1,4 +1,5 @@
 export 'search_helper.dart';
+export 'app_mode.dart';
 export 'category_grouping_type.dart';
 export './domain_error.dart';
 export 'period_grouping_type.dart';

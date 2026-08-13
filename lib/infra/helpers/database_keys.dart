@@ -3,4 +3,5 @@ enum DatabaseKeys {
   allEnterprises,
   enterprise,
   monthlyAnalytics,
+  appMode,
 }
