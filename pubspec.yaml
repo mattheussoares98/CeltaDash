@@ -53,14 +53,15 @@ dependencies:
   firebase_analytics: ^12.0.0
   icons_launcher: ^3.0.0 #dart run icons_launcher:create
   firebase_auth: ^6.0.1
-  package_info_plus: ^9.0.0
+  package_info_plus: ^10.2.1
   url_launcher: ^6.3.1
   pdf: ^3.11.3
-  share_plus: ^12.0.1
+  share_plus: ^13.3.0
   native_device_orientation: ^2.0.3
-  syncfusion_flutter_pdfviewer: ^33.2.13
+  syncfusion_flutter_pdfviewer: ^34.2.3
 
-  flutter_web_plugins: any
+  flutter_web_plugins:
+    sdk: flutter
 icons_launcher:
   image_path: "lib/ui/assets/dev_assets/CeltaDashIcon.png"
   platforms:
