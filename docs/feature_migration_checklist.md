@@ -10,16 +10,17 @@
 - [ ] Create `lib/features/[feature]/domain/entities/[entity]_entity.dart` (pure Dart, immutable, `copyWith`, `const`).
 - [ ] Create `lib/features/[feature]/domain/entities/entities.dart` (barrel file).
 - [ ] Create `lib/features/[feature]/domain/repository/i_[feature]_repository.dart` (domain interface returning entities).
-- [ ] Create `lib/features/[feature]/domain/repository/[feature]_repository_impl.dart` (implements interface, calls datasource, converts models via `.toEntity()`).
 - [ ] Create `lib/features/[feature]/domain/repository/repository.dart` (barrel file).
 - [ ] Create `lib/features/[feature]/domain/domain.dart` (layer barrel file).
 
-### Phase 2: Data & Datasources
+### Phase 2: Data, Datasources & Repositories
 - [ ] Create `lib/features/[feature]/data/models/[model]_model.dart` (handles JSON parsing and `toEntity()`).
 - [ ] Create `lib/features/[feature]/data/models/models.dart` (barrel file).
 - [ ] Create `lib/features/[feature]/data/datasource/i_[feature]_datasource.dart` (datasource interface).
 - [ ] Create `lib/features/[feature]/data/datasource/[feature]_datasource.dart` (datasource implementation, NO `_impl` in filename).
 - [ ] Create `lib/features/[feature]/data/datasource/datasource.dart` (barrel file).
+- [ ] Create `lib/features/[feature]/data/repository/[feature]_repository_impl.dart` (implements domain interface, calls datasource, converts models via `.toEntity()`).
+- [ ] Create `lib/features/[feature]/data/repository/repository.dart` (barrel file).
 - [ ] Create `lib/features/[feature]/data/data.dart` (layer barrel file).
 
 ### Phase 3: Dependency Injection

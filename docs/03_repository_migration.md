@@ -30,9 +30,10 @@ abstract class ISellerRepository {
 
 ---
 
-## 2. Repository Implementation (`domain/repository/[feature]_repository_impl.dart`)
-- **Location**: `lib/features/[feature]/domain/repository/[feature]_repository_impl.dart`
+## 2. Repository Implementation (`data/repository/[feature]_repository_impl.dart`)
+- **Location**: `lib/features/[feature]/data/repository/[feature]_repository_impl.dart`
 - **Rules**:
+  - Lives in the **Data Layer** (implements the Domain repository interface).
   - Injects `I[Feature]Datasource`.
   - Calls datasource methods and maps Models to Entities using `.toEntity()`.
   - Performs any domain validation, data aggregation, or sorting before returning.
@@ -40,10 +41,11 @@ abstract class ISellerRepository {
 
 ### Example
 ```dart
-// lib/features/seller/domain/repository/seller_repository_impl.dart
+// lib/features/seller/data/repository/seller_repository_impl.dart
+import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/features/seller/data/datasource/datasource.dart';
 import 'package:celta_dash/features/seller/domain/entities/entities.dart';
-import 'package:celta_dash/features/seller/domain/repository/i_seller_repository.dart';
+import 'package:celta_dash/features/seller/domain/repository/repository.dart';
 
 class SellerRepositoryImpl implements ISellerRepository {
   final ISellerDatasource _datasource;
@@ -52,14 +54,12 @@ class SellerRepositoryImpl implements ISellerRepository {
 
   @override
   Future<List<SellerEntity>> getSellers({
-    required DateTime startDate,
-    required DateTime endDate,
-    int? companyId,
+    required GetSellerParams params,
+    required EcParams ecParams,
   }) async {
     final models = await _datasource.getSellers(
-      startDate: startDate,
-      endDate: endDate,
-      companyId: companyId,
+      params: params,
+      ecParams: ecParams,
     );
 
     return models.map((model) => model.toEntity()).toList();

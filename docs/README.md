@@ -32,14 +32,16 @@ lib/features/[feature_name]/
 │   ├── models/
 │   │   ├── [model_name]_model.dart
 │   │   └── models.dart                     # Barrel file
+│   ├── repository/
+│   │   ├── [feature]_repository_impl.dart  # Implementation in Data Layer
+│   │   └── repository.dart                 # Barrel file
 │   └── data.dart                           # Barrel file
 ├── domain/
 │   ├── entities/
 │   │   ├── [entity_name]_entity.dart
 │   │   └── entities.dart                   # Barrel file
 │   ├── repository/
-│   │   ├── i_[feature]_repository.dart
-│   │   ├── [feature]_repository_impl.dart
+│   │   ├── i_[feature]_repository.dart     # Interface in Domain Layer
 │   │   └── repository.dart                 # Barrel file
 │   └── domain.dart                         # Barrel file
 ├── presentation/
