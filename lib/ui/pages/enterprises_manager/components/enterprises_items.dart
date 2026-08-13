@@ -51,31 +51,40 @@ class _EnterprisesItemsState extends State<EnterprisesItems> {
           return Row(
             children: [
               Expanded(
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 8),
-                  decoration: isSelected
-                      ? ContainerDecoration.enabled
-                      : ContainerDecoration.defaultDecoration,
-                  child: ListTile(
-                    title: Text(
-                      enterprise.enterpriseName?.toUpperCase() ?? "null",
-                      style: theme.textTheme.headlineSmall?.copyWith(
-                        fontWeight:
-                            isSelected ? FontWeight.bold : FontWeight.normal,
-                        color: isSelected ? theme.primaryColor : Colors.black,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Material(
+                    color: theme.cardTheme.color,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      side: BorderSide(
+                        color: isSelected
+                            ? Colors.green
+                            : theme.disabledColor.withAlpha(100),
                       ),
                     ),
-                    trailing: isSelected
-                        ? Icon(
-                            isIOS
-                                ? CupertinoIcons.checkmark
-                                : Icons.check_circle,
-                            color: theme.colorScheme.primary)
-                        : null,
-                    onTap: () {
-                      enterprisesManagerPresenter
-                          .updateSelectedEnterprise(enterprise);
-                    },
+                    clipBehavior: Clip.antiAlias,
+                    child: ListTile(
+                      title: Text(
+                        enterprise.enterpriseName?.toUpperCase() ?? "null",
+                        style: theme.textTheme.headlineSmall?.copyWith(
+                          fontWeight:
+                              isSelected ? FontWeight.bold : FontWeight.normal,
+                          color: isSelected ? theme.primaryColor : Colors.black,
+                        ),
+                      ),
+                      trailing: isSelected
+                          ? Icon(
+                              isIOS
+                                  ? CupertinoIcons.checkmark
+                                  : Icons.check_circle,
+                              color: theme.colorScheme.primary)
+                          : null,
+                      onTap: () {
+                        enterprisesManagerPresenter
+                            .updateSelectedEnterprise(enterprise);
+                      },
+                    ),
                   ),
                 ),
               ),

@@ -58,46 +58,48 @@ class _AddNewEnterpriseState extends State<AddNewEnterprise> {
 
     return Form(
       key: _formKey,
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 8),
-        decoration: ContainerDecoration.defaultDecoration,
-        clipBehavior: Clip.antiAlias,
-        child: ExpansionTile(
-          controller: _expansibleController,
-          childrenPadding: const EdgeInsets.all(4),
-          title: Text(
-            R.string.addNewEnterprise,
-            style: Theme.of(context).textTheme.headlineSmall,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: Material(
+          borderRadius: BorderRadius.circular(12),
+          clipBehavior: Clip.antiAlias,
+          child: ExpansionTile(
+            controller: _expansibleController,
+            childrenPadding: const EdgeInsets.all(4),
+            title: Text(
+              R.string.addNewEnterprise,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            onExpansionChanged: (value) {
+              if (value) {
+                widget.enterpriseNameFocusNode.requestFocus();
+              }
+            },
+            children: [
+              EnterpriseNameField(
+                enterpriseNameController: widget.enterpriseNameController,
+                enterpriseNameFocusNode: widget.enterpriseNameFocusNode,
+                bsUserNameFocusNode: widget.bsUserNameFocusNode,
+              ),
+              UserNameField(
+                bsUserNameController: widget.bsUserNameController,
+                bsUserNameFocusNode: widget.bsUserNameFocusNode,
+                bsPasswordFocusNode: widget.bsPasswordFocusNode,
+              ),
+              PasswordField(
+                bsPasswordController: widget.bsPasswordController,
+                bsPasswordFocusNode: widget.bsPasswordFocusNode,
+                onSubmit: () async {
+                  await onSubmit(enterprisesManagerPresenter);
+                },
+              ),
+              SubmitButton(
+                onSubmit: () async {
+                  await onSubmit(enterprisesManagerPresenter);
+                },
+              ),
+            ],
           ),
-          onExpansionChanged: (value) {
-            if (value) {
-              widget.enterpriseNameFocusNode.requestFocus();
-            }
-          },
-          children: [
-            EnterpriseNameField(
-              enterpriseNameController: widget.enterpriseNameController,
-              enterpriseNameFocusNode: widget.enterpriseNameFocusNode,
-              bsUserNameFocusNode: widget.bsUserNameFocusNode,
-            ),
-            UserNameField(
-              bsUserNameController: widget.bsUserNameController,
-              bsUserNameFocusNode: widget.bsUserNameFocusNode,
-              bsPasswordFocusNode: widget.bsPasswordFocusNode,
-            ),
-            PasswordField(
-              bsPasswordController: widget.bsPasswordController,
-              bsPasswordFocusNode: widget.bsPasswordFocusNode,
-              onSubmit: () async {
-                await onSubmit(enterprisesManagerPresenter);
-              },
-            ),
-            SubmitButton(
-              onSubmit: () async {
-                await onSubmit(enterprisesManagerPresenter);
-              },
-            ),
-          ],
         ),
       ),
     );
