@@ -1,3 +1,4 @@
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -75,9 +76,12 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                 Expanded(
                   child: Obx(() {
                     final dailySales = bsSalesPresenter
-                        .dailyCanceledSales?.collection
-                        .map((e) =>
-                            SaleMovementCollectionItemModel.fromViewModel(e))
+                        .dailyCanceledSales
+                        ?.collection
+                        .map(
+                          (e) =>
+                              SaleMovementCollectionItemModel.fromViewModel(e),
+                        )
                         .where((e) {
                           return e.dateHourOfBilling?.year ==
                                   homePresenter.selectedDate.year &&
@@ -91,9 +95,12 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                         .toList();
 
                     final monthlySales = bsSalesPresenter
-                        .monthlyCanceledSales?.collection
-                        .map((e) =>
-                            SaleMovementCollectionItemModel.fromViewModel(e))
+                        .monthlyCanceledSales
+                        ?.collection
+                        .map(
+                          (e) =>
+                              SaleMovementCollectionItemModel.fromViewModel(e),
+                        )
                         .where((e) {
                           return e.dateHourOfBilling?.year ==
                                   homePresenter.selectedDate.year &&
@@ -106,8 +113,8 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
 
                     final sales =
                         bsSalesPresenter.selectedPeriod == PeriodType.daily
-                            ? dailySales
-                            : monthlySales;
+                        ? dailySales
+                        : monthlySales;
 
                     if (sales == null) {
                       return EmptySales(isLoading: loadingSnap.data == true);
@@ -161,10 +168,12 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                             ),
                           ],
                           rowValues: sales.map((e) {
-                            final dateTime = DateFormat("dd/MM/yyyy HH:mm:ss")
-                                .parse(e.dateHourOfBilling!);
-                            final formatted =
-                                DateFormat("dd/MM/yyyy").format(dateTime);
+                            final dateTime = DateFormat(
+                              "dd/MM/yyyy HH:mm:ss",
+                            ).parse(e.dateHourOfBilling!);
+                            final formatted = DateFormat(
+                              "dd/MM/yyyy",
+                            ).format(dateTime);
                             return [
                               PersonalizedTableCell(value: e.documentNumber),
                               PersonalizedTableCell(value: e.cashierNumber),
@@ -173,8 +182,9 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                                 value: e.totalLiquid?.toDouble(),
                                 isMoney: true,
                                 onTap: () {
-                                  bsSalesPresenter
-                                      .updateSelectedSaleMovement(e);
+                                  bsSalesPresenter.updateSelectedSaleMovement(
+                                    e,
+                                  );
                                 },
                               ),
                               PersonalizedTableCell(

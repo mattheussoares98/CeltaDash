@@ -1,3 +1,4 @@
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -31,8 +32,8 @@ class _PaymentsModalitiesState extends State<PaymentsModalities> {
         ScrollableTableItem(
           getSalesStatisticsParams:
               paymentTypePresenter.selectedPeriod == PeriodType.daily
-                  ? paymentTypePresenter.lastGetDailyParams
-                  : paymentTypePresenter.lastGetMonthlyParams,
+              ? paymentTypePresenter.lastGetDailyParams
+              : paymentTypePresenter.lastGetMonthlyParams,
           titleMinHeight: isPortrait ? 43 : 25,
           selectedPeriodType: paymentTypePresenter.selectedPeriod,
           pdfFileName: R.string.paymentsType,
@@ -63,11 +64,16 @@ class _PaymentsModalitiesState extends State<PaymentsModalities> {
                 final modality = entry.key;
                 final sales = entry.value;
                 final totalValue = sales.fold<double>(
-                    0, (sum, s) => sum + (s.LiquidValue?.toDouble() ?? 1));
+                  0,
+                  (sum, s) => sum + (s.LiquidValue?.toDouble() ?? 1),
+                );
                 final totalQuantity = sales.fold<int>(
-                    0, (sum, s) => sum + (s.QuantitySales?.toInt() ?? 1));
-                final overallValue =
-                    widget.saleStatistics.toList().sumLiquidValue();
+                  0,
+                  (sum, s) => sum + (s.QuantitySales?.toInt() ?? 1),
+                );
+                final overallValue = widget.saleStatistics
+                    .toList()
+                    .sumLiquidValue();
 
                 return [
                   PersonalizedTableCell(value: modality),

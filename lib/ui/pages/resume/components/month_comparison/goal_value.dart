@@ -1,7 +1,7 @@
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../../ui/helpers/helpers.dart';
 import '../../../pages.dart';
 
 class GoalValue extends StatelessWidget {
@@ -15,9 +15,7 @@ class GoalValue extends StatelessWidget {
 
     return RichText(
       text: TextSpan(
-        style: theme.textTheme.bodyMedium?.copyWith(
-          color: Colors.black,
-        ),
+        style: theme.textTheme.bodyMedium?.copyWith(color: Colors.black),
         text: "Meta",
         children: [
           TextSpan(
@@ -28,8 +26,8 @@ class GoalValue extends StatelessWidget {
             text: resumePresenter.firebaseEnterpriseGoal == null
                 ? goalLiquidValue.toString().toBrazilianNumber()
                 : resumePresenter.firebaseEnterpriseGoal!.value
-                    ?.toString()
-                    .toBrazilianNumber(),
+                      ?.toString()
+                      .toBrazilianNumber(),
             style: theme.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.bold,
             ),

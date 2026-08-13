@@ -1,3 +1,4 @@
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -21,9 +22,12 @@ class PersonalizedPieChart extends StatelessWidget {
       }
 
       sales.sort(
-          (saleA, saleB) => saleB.LiquidValue!.compareTo(saleA.LiquidValue!));
+        (saleA, saleB) => saleB.LiquidValue!.compareTo(saleA.LiquidValue!),
+      );
       final topFour = sales.take(4);
-      final othersTotal = sales.skip(4).fold<double>(
+      final othersTotal = sales
+          .skip(4)
+          .fold<double>(
             0.0,
             (sum, e) => sum + (e.LiquidValue?.toDouble() ?? 0),
           );
@@ -36,10 +40,12 @@ class PersonalizedPieChart extends StatelessWidget {
               (e) => PieParameter(
                 value: e.LiquidValue?.toDouble() ?? 0,
                 title: PersonalizedPieTitle(sale: e),
-                subtitle: Text(e.LiquidValue?.toString()
-                        .toBrazilianNumber()
-                        .addBrazilianCoin() ??
-                    ''),
+                subtitle: Text(
+                  e.LiquidValue?.toString()
+                          .toBrazilianNumber()
+                          .addBrazilianCoin() ??
+                      '',
+                ),
               ),
             ),
             if (othersTotal > 0)
@@ -49,10 +55,9 @@ class PersonalizedPieChart extends StatelessWidget {
                   R.string.anothers,
                   style: theme.textTheme.titleSmall,
                 ),
-                subtitle: Text(othersTotal
-                    .toString()
-                    .toBrazilianNumber()
-                    .addBrazilianCoin()),
+                subtitle: Text(
+                  othersTotal.toString().toBrazilianNumber().addBrazilianCoin(),
+                ),
               ),
           ],
         ),

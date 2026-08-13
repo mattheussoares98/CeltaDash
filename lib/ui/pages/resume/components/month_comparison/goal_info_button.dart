@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -35,25 +36,28 @@ class GoalInfoButton extends StatelessWidget {
           onPress: () async {},
           content: SizedBox(
             height: min(mediaQuery.size.height * 0.5, 400),
-            child: Builder(builder: (context) {
-              final formattedDate = DateFormat.yM("pt_BR").format(
-                  DateTime(comparisonEndDate.year, comparisonEndDate.month));
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    _MonthlyInfo(
-                      comparisonLiquidValue: comparisonLiquidValue,
-                      goalLiquidValue: goalLiquidValue,
-                      formattedDate: formattedDate,
-                    ),
-                    _DailyInfo(
-                      goalLiquidValue: goalLiquidValue,
-                      comparisonEndDate: comparisonEndDate,
-                    ),
-                  ],
-                ),
-              );
-            }),
+            child: Builder(
+              builder: (context) {
+                final formattedDate = DateFormat.yM("pt_BR").format(
+                  DateTime(comparisonEndDate.year, comparisonEndDate.month),
+                );
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      _MonthlyInfo(
+                        comparisonLiquidValue: comparisonLiquidValue,
+                        goalLiquidValue: goalLiquidValue,
+                        formattedDate: formattedDate,
+                      ),
+                      _DailyInfo(
+                        goalLiquidValue: goalLiquidValue,
+                        comparisonEndDate: comparisonEndDate,
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
         );
       },
@@ -142,8 +146,9 @@ class _MonthlyInfo extends StatelessWidget {
             _RowSpan(
               title: "5% = ",
               showCoin: true,
-              value:
-                  (comparisonLiquidValue * 0.05).toString().toBrazilianNumber(),
+              value: (comparisonLiquidValue * 0.05)
+                  .toString()
+                  .toBrazilianNumber(),
             ),
             _RowSpan(
               title: "${R.string.total} = ",
@@ -159,10 +164,9 @@ class _MonthlyInfo extends StatelessWidget {
           ],
           if (resumePresenter.firebaseEnterpriseGoal?.userName != null)
             Text(
-                "${R.string.changedBy}: ${resumePresenter.firebaseEnterpriseGoal!.userName!}",
-                style: const TextStyle(
-                  fontStyle: FontStyle.italic,
-                )),
+              "${R.string.changedBy}: ${resumePresenter.firebaseEnterpriseGoal!.userName!}",
+              style: const TextStyle(fontStyle: FontStyle.italic),
+            ),
         ],
       ),
     );
@@ -184,11 +188,7 @@ class _DailyInfo extends StatelessWidget {
     final homePresenter = Get.find<HomePresenter>();
 
     final endDate = resumePresenter.firebaseEnterpriseGoal?.value == null
-        ? DateTime(
-            comparisonEndDate.year,
-            comparisonEndDate.month + 1,
-            0,
-          )
+        ? DateTime(comparisonEndDate.year, comparisonEndDate.month + 1, 0)
         : DateTime(
             homePresenter.selectedDate.year,
             homePresenter.selectedDate.month + 1,
@@ -227,8 +227,9 @@ class _DailyInfo extends StatelessWidget {
           _RowSpan(
             title: "${R.string.total} = ",
             showCoin: true,
-            value:
-                (goalLiquidValue / endDate.day).toString().toBrazilianNumber(),
+            value: (goalLiquidValue / endDate.day)
+                .toString()
+                .toBrazilianNumber(),
           ),
         ],
       ),

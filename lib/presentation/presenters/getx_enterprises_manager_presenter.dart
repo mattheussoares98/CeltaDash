@@ -1,3 +1,4 @@
+import 'package:celta_dash/utils/utils.dart';
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';

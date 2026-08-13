@@ -1,10 +1,10 @@
+import 'package:celta_dash/utils/utils.dart';
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
-import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
 import '../../ui/services/services.dart';
 import '../mixins/mixins.dart';
@@ -20,18 +20,13 @@ class GetxDepartmentsPresenter extends GetxController
     implements DepartmentsPresenter {
   final LoadSaleStatistics loadSaleStatistics;
 
-  GetxDepartmentsPresenter({
-    required this.loadSaleStatistics,
-  });
+  GetxDepartmentsPresenter({required this.loadSaleStatistics});
 
   final appAnalyticsService = Get.find<AppAnalyticsService>();
   final homePresenter = Get.find<HomePresenter>();
 
   @override
-  Future<void> getSales({
-    PeriodType? periodType,
-    bool? forceRefresh,
-  }) async {
+  Future<void> getSales({PeriodType? periodType, bool? forceRefresh}) async {
     if (isLoadingValue == true) {
       isLoading = false;
       isLoading = true;
@@ -87,7 +82,7 @@ class GetxDepartmentsPresenter extends GetxController
         groupByProductSection: true,
         enterpriseIds: homePresenter.selectedEnterprise == null
             ? []
-            : [homePresenter.selectedEnterprise!.id!.toInt()],
+            : [homePresenter.selectedEnterprise!.id!.toInt()!],
       );
 
       final response = await loadSaleStatistics.get(params);

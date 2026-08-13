@@ -1,4 +1,4 @@
-import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../domain/entities/entities.dart';
@@ -18,26 +18,21 @@ class EnterpriseModel extends Equatable {
   });
 
   @override
-  List<Object?> get props => [
-        id,
-        name,
-        personalizedCode,
-        cnpj,
-      ];
+  List<Object?> get props => [id, name, personalizedCode, cnpj];
 
   factory EnterpriseModel.fromJson(Map json) => EnterpriseModel(
-        id: json['id'],
-        name: json['name'],
-        personalizedCode: json['personalizedCode'],
-        cnpj: json['cnpj'],
-      );
+    id: json['id'],
+    name: json['name'],
+    personalizedCode: json['personalizedCode'],
+    cnpj: json['cnpj'],
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'personalizedCode': personalizedCode,
-        'cnpj': cnpj,
-      };
+    'id': id,
+    'name': name,
+    'personalizedCode': personalizedCode,
+    'cnpj': cnpj,
+  };
 
   factory EnterpriseModel.fromEntity(EnterpriseEntity entity) =>
       EnterpriseModel(
@@ -48,11 +43,11 @@ class EnterpriseModel extends Equatable {
       );
 
   EnterpriseEntity toEntity() => EnterpriseEntity(
-        id: id,
-        name: name,
-        personalizedCode: personalizedCode,
-        cnpj: cnpj,
-      );
+    id: id,
+    name: name,
+    personalizedCode: personalizedCode,
+    cnpj: cnpj,
+  );
 
   factory EnterpriseModel.fromViewModel(EcEnterpriseViewModel viewModel) {
     return EnterpriseModel(
@@ -64,9 +59,9 @@ class EnterpriseModel extends Equatable {
   }
 
   EcEnterpriseViewModel toViewModel() => EcEnterpriseViewModel(
-        id: id.toString(),
-        name: name,
-        personalizedCode: personalizedCode,
-        cnpj: cnpj,
-      );
+    id: id.toString(),
+    name: name,
+    personalizedCode: personalizedCode,
+    cnpj: cnpj,
+  );
 }

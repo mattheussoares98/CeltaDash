@@ -6,12 +6,11 @@ import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
 import 'package:celta_dash/ui/pages/pages.dart';
 import 'package:celta_dash/ui/services/services.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:faker/faker.dart';
-
-import 'package:get/get.dart';
-
-import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:get/get.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../data/mocks/mocks.dart';
@@ -37,9 +36,7 @@ void main() {
   }
 
   void initPresenters() {
-    sut = GetxSalesPresenter(
-      loadSaleStatistics: loadSaleStatistics,
-    );
+    sut = GetxSalesPresenter(loadSaleStatistics: loadSaleStatistics);
   }
 
   void initEntities() {
@@ -121,18 +118,17 @@ void main() {
           PeriodType.hourly,
           PeriodType.daily,
           PeriodType.monthly,
-          PeriodType.yearly
+          PeriodType.yearly,
         ];
         final periodType = enabledPeriods[faker.randomGenerator.integer(4)];
 
-        await sut.getSales(
-          periodType: periodType,
-          forceRefresh: true,
-        );
+        await sut.getSales(periodType: periodType, forceRefresh: true);
 
         verify(
           () => appAnalyticsService.addNewMonthlyAnalytic(
-              reportType: ReportType.sales, periodType: periodType),
+            reportType: ReportType.sales,
+            periodType: periodType,
+          ),
         ).called(1);
       });
     });
@@ -157,7 +153,7 @@ void main() {
         );
 
         final params = GetSaleStatisticsParams(
-          enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+          enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()!],
           startDate: startDate,
           endDate: startDate,
           groupByEnterprise: true,
@@ -167,9 +163,7 @@ void main() {
           groupByYear: false,
         );
 
-        verify(
-          () => loadSaleStatistics.get(params),
-        ).called(1);
+        verify(() => loadSaleStatistics.get(params)).called(1);
       });
       test("Should not load again if dont force refresh", () async {
         await sut.getSales(periodType: PeriodType.hourly);
@@ -185,7 +179,7 @@ void main() {
           () => loadSaleStatistics.get(
             GetSaleStatisticsParams(
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               startDate: startDate,
               endDate: startDate,
@@ -211,7 +205,7 @@ void main() {
           () => loadSaleStatistics.get(
             GetSaleStatisticsParams(
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               startDate: startDate,
               endDate: startDate,
@@ -226,16 +220,17 @@ void main() {
 
         ////////////////////CHANGING ENTERPRISE/////////////////////////////////
         final newEnterprise = EnterpriseModel.fromEntity(
-                EntityFactory.makeEnterpriseEntity(
-                    id: homePresenter.selectedEnterpriseMock!.id!.toInt() + 1))
-            .toViewModel();
+          EntityFactory.makeEnterpriseEntity(
+            id: homePresenter.selectedEnterpriseMock!.id!.toInt()! + 1,
+          ),
+        ).toViewModel();
         homePresenter.selectedEnterpriseMock = newEnterprise;
         await sut.getSales(periodType: PeriodType.hourly);
 
         verify(
           () => loadSaleStatistics.get(
             GetSaleStatisticsParams(
-              enterpriseIds: [newEnterprise.id!.toInt()],
+              enterpriseIds: [newEnterprise.id!.toInt()!],
               startDate: startDate,
               endDate: startDate,
               groupByEnterprise: true,
@@ -249,10 +244,7 @@ void main() {
       });
       test("Should load again if force refresh", () async {
         await sut.getSales(periodType: PeriodType.hourly);
-        await sut.getSales(
-          periodType: PeriodType.hourly,
-          forceRefresh: true,
-        );
+        await sut.getSales(periodType: PeriodType.hourly, forceRefresh: true);
 
         final startDate = DateTime(
           homePresenter.selectedDateMock.year,
@@ -264,7 +256,7 @@ void main() {
           () => loadSaleStatistics.get(
             GetSaleStatisticsParams(
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               startDate: startDate,
               endDate: startDate,
@@ -287,19 +279,18 @@ void main() {
         );
 
         expect(
-            sut.lastGetHourlyParams,
-            GetSaleStatisticsParams(
-              enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
-              ],
-              startDate: startDate,
-              endDate: startDate,
-              groupByEnterprise: true,
-              groupByHour: true,
-              groupByDay: false,
-              groupByMonth: false,
-              groupByYear: false,
-            ));
+          sut.lastGetHourlyParams,
+          GetSaleStatisticsParams(
+            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()!],
+            startDate: startDate,
+            endDate: startDate,
+            groupByEnterprise: true,
+            groupByHour: true,
+            groupByDay: false,
+            groupByMonth: false,
+            groupByYear: false,
+          ),
+        );
       });
     });
 
@@ -332,7 +323,7 @@ void main() {
           () => loadSaleStatistics.get(
             GetSaleStatisticsParams(
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               startDate: startDate,
               endDate: endDate,
@@ -364,7 +355,7 @@ void main() {
           () => loadSaleStatistics.get(
             GetSaleStatisticsParams(
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               startDate: startDate,
               endDate: endDate,
@@ -393,7 +384,7 @@ void main() {
           () => loadSaleStatistics.get(
             GetSaleStatisticsParams(
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               startDate: startDate,
               endDate: endDate,
@@ -407,16 +398,16 @@ void main() {
         ).called(1);
 
         ////////////////////CHANGING ENTERPRISE/////////////////////////////////
-        final newEnterprise =
-            EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
-                .toViewModel();
+        final newEnterprise = EnterpriseModel.fromEntity(
+          EntityFactory.makeEnterpriseEntity(),
+        ).toViewModel();
         homePresenter.selectedEnterpriseMock = newEnterprise;
         await sut.getSales(periodType: PeriodType.daily);
 
         verify(
           () => loadSaleStatistics.get(
             GetSaleStatisticsParams(
-              enterpriseIds: [newEnterprise.id!.toInt()],
+              enterpriseIds: [newEnterprise.id!.toInt()!],
               startDate: startDate,
               endDate: endDate,
               groupByEnterprise: true,
@@ -430,10 +421,7 @@ void main() {
       });
       test("Should load again if force refresh", () async {
         await sut.getSales(periodType: PeriodType.daily);
-        await sut.getSales(
-          periodType: PeriodType.daily,
-          forceRefresh: true,
-        );
+        await sut.getSales(periodType: PeriodType.daily, forceRefresh: true);
 
         final startDate = DateTime(
           homePresenter.selectedDateMock.year,
@@ -450,7 +438,7 @@ void main() {
           () => loadSaleStatistics.get(
             GetSaleStatisticsParams(
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               startDate: startDate,
               endDate: endDate,
@@ -478,19 +466,18 @@ void main() {
         );
 
         expect(
-            sut.lastGetDailyParams,
-            GetSaleStatisticsParams(
-              enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
-              ],
-              startDate: startDate,
-              endDate: endDate,
-              groupByEnterprise: true,
-              groupByHour: false,
-              groupByDay: true,
-              groupByMonth: false,
-              groupByYear: false,
-            ));
+          sut.lastGetDailyParams,
+          GetSaleStatisticsParams(
+            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()!],
+            startDate: startDate,
+            endDate: endDate,
+            groupByEnterprise: true,
+            groupByHour: false,
+            groupByDay: true,
+            groupByMonth: false,
+            groupByYear: false,
+          ),
+        );
       });
     });
     group("PeriodType.monthly", () {
@@ -514,7 +501,7 @@ void main() {
           () => loadSaleStatistics.get(
             GetSaleStatisticsParams(
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               startDate: startDate,
               endDate: endDate,
@@ -538,7 +525,7 @@ void main() {
           () => loadSaleStatistics.get(
             GetSaleStatisticsParams(
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               startDate: startDate,
               endDate: endDate,
@@ -561,7 +548,7 @@ void main() {
           () => loadSaleStatistics.get(
             GetSaleStatisticsParams(
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               startDate: startDate,
               endDate: endDate,
@@ -576,16 +563,17 @@ void main() {
 
         ////////////////////CHANGING ENTERPRISE/////////////////////////////////
         final newEnterprise = EnterpriseModel.fromEntity(
-                EntityFactory.makeEnterpriseEntity(
-                    id: faker.randomGenerator.integer(999, min: 200)))
-            .toViewModel();
+          EntityFactory.makeEnterpriseEntity(
+            id: faker.randomGenerator.integer(999, min: 200),
+          ),
+        ).toViewModel();
         homePresenter.selectedEnterpriseMock = newEnterprise;
         await sut.getSales(periodType: PeriodType.monthly);
 
         verify(
           () => loadSaleStatistics.get(
             GetSaleStatisticsParams(
-              enterpriseIds: [newEnterprise.id!.toInt()],
+              enterpriseIds: [newEnterprise.id!.toInt()!],
               startDate: startDate,
               endDate: endDate,
               groupByEnterprise: true,
@@ -599,10 +587,7 @@ void main() {
       });
       test("Should load again if force refresh", () async {
         await sut.getSales(periodType: PeriodType.monthly);
-        await sut.getSales(
-          periodType: PeriodType.monthly,
-          forceRefresh: true,
-        );
+        await sut.getSales(periodType: PeriodType.monthly, forceRefresh: true);
 
         final startDate = DateTime(homePresenter.selectedDateMock.year);
         final endDate = DateTime(homePresenter.selectedDateMock.year, 12, 31);
@@ -611,7 +596,7 @@ void main() {
           () => loadSaleStatistics.get(
             GetSaleStatisticsParams(
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               startDate: startDate,
               endDate: endDate,
@@ -631,19 +616,18 @@ void main() {
         final endDate = DateTime(homePresenter.selectedDateMock.year, 12, 31);
 
         expect(
-            sut.lastGetMonthlyParams,
-            GetSaleStatisticsParams(
-              enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
-              ],
-              startDate: startDate,
-              endDate: endDate,
-              groupByEnterprise: true,
-              groupByHour: false,
-              groupByDay: false,
-              groupByMonth: true,
-              groupByYear: true,
-            ));
+          sut.lastGetMonthlyParams,
+          GetSaleStatisticsParams(
+            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()!],
+            startDate: startDate,
+            endDate: endDate,
+            groupByEnterprise: true,
+            groupByHour: false,
+            groupByDay: false,
+            groupByMonth: true,
+            groupByYear: true,
+          ),
+        );
       });
     });
     group("PeriodType.yearly", () {
@@ -667,7 +651,7 @@ void main() {
           () => loadSaleStatistics.get(
             GetSaleStatisticsParams(
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               startDate: startDate,
               endDate: endDate,
@@ -691,7 +675,7 @@ void main() {
           () => loadSaleStatistics.get(
             GetSaleStatisticsParams(
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               startDate: startDate,
               endDate: endDate,
@@ -706,10 +690,7 @@ void main() {
       });
       test("Should load again if force refresh", () async {
         await sut.getSales(periodType: PeriodType.yearly);
-        await sut.getSales(
-          periodType: PeriodType.yearly,
-          forceRefresh: true,
-        );
+        await sut.getSales(periodType: PeriodType.yearly, forceRefresh: true);
 
         final startDate = DateTime(homePresenter.selectedDateMock.year - 2);
         final endDate = DateTime(homePresenter.selectedDateMock.year, 12, 31);
@@ -718,7 +699,7 @@ void main() {
           () => loadSaleStatistics.get(
             GetSaleStatisticsParams(
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               startDate: startDate,
               endDate: endDate,
@@ -738,19 +719,18 @@ void main() {
         final endDate = DateTime(homePresenter.selectedDateMock.year, 12, 31);
 
         expect(
-            sut.lastGetYearlyParams,
-            GetSaleStatisticsParams(
-              enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
-              ],
-              startDate: startDate,
-              endDate: endDate,
-              groupByEnterprise: true,
-              groupByYear: true,
-              groupByMonth: false,
-              groupByHour: false,
-              groupByDay: false,
-            ));
+          sut.lastGetYearlyParams,
+          GetSaleStatisticsParams(
+            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()!],
+            startDate: startDate,
+            endDate: endDate,
+            groupByEnterprise: true,
+            groupByYear: true,
+            groupByMonth: false,
+            groupByHour: false,
+            groupByDay: false,
+          ),
+        );
       });
 
       test("Should load again if change the enterprise", () async {
@@ -763,7 +743,7 @@ void main() {
           () => loadSaleStatistics.get(
             GetSaleStatisticsParams(
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               startDate: startDate,
               endDate: endDate,
@@ -777,16 +757,16 @@ void main() {
         ).called(1);
 
         ////////////////////CHANGING ENTERPRISE/////////////////////////////////
-        final newEnterprise =
-            EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
-                .toViewModel();
+        final newEnterprise = EnterpriseModel.fromEntity(
+          EntityFactory.makeEnterpriseEntity(),
+        ).toViewModel();
         homePresenter.selectedEnterpriseMock = newEnterprise;
         await sut.getSales(periodType: PeriodType.yearly);
 
         verify(
           () => loadSaleStatistics.get(
             GetSaleStatisticsParams(
-              enterpriseIds: [newEnterprise.id!.toInt()],
+              enterpriseIds: [newEnterprise.id!.toInt()!],
               startDate: startDate,
               endDate: endDate,
               groupByEnterprise: true,

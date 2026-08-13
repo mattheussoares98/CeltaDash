@@ -1,7 +1,7 @@
+import 'package:celta_dash/domain/entities/entities.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:celta_dash/domain/entities/entities.dart';
-import '../../../ui/helpers/helpers.dart';
 import '../../../ui/pages/pages.dart';
 
 class SaleMovementCustomerModel extends Equatable {
@@ -18,12 +18,7 @@ class SaleMovementCustomerModel extends Equatable {
   });
 
   @override
-  List<Object?> get props => [
-        SaleMovementId,
-        Id,
-        Name,
-        CpfCnpj,
-      ];
+  List<Object?> get props => [SaleMovementId, Id, Name, CpfCnpj];
 
   factory SaleMovementCustomerModel.fromJson(Map json) =>
       SaleMovementCustomerModel(
@@ -34,41 +29,41 @@ class SaleMovementCustomerModel extends Equatable {
       );
 
   factory SaleMovementCustomerModel.fromEntity(
-          SaleMovementCustomerEntity? entity) =>
-      SaleMovementCustomerModel(
-        SaleMovementId: entity?.SaleMovementId,
-        Id: entity?.Id,
-        Name: entity?.Name,
-        CpfCnpj: entity?.CpfCnpj,
-      );
+    SaleMovementCustomerEntity? entity,
+  ) => SaleMovementCustomerModel(
+    SaleMovementId: entity?.SaleMovementId,
+    Id: entity?.Id,
+    Name: entity?.Name,
+    CpfCnpj: entity?.CpfCnpj,
+  );
 
   Map<String, dynamic> toJson() => {
-        'saleMovementId': SaleMovementId,
-        'id': Id,
-        'name': Name,
-        'cpfCnpj': CpfCnpj,
-      };
+    'saleMovementId': SaleMovementId,
+    'id': Id,
+    'name': Name,
+    'cpfCnpj': CpfCnpj,
+  };
 
   SaleMovementCustomerEntity toEntity() => SaleMovementCustomerEntity(
-        SaleMovementId: SaleMovementId,
-        Id: Id,
-        Name: Name,
-        CpfCnpj: CpfCnpj,
-      );
+    SaleMovementId: SaleMovementId,
+    Id: Id,
+    Name: Name,
+    CpfCnpj: CpfCnpj,
+  );
 
   SaleMovementCustomerViewModel toViewModel() => SaleMovementCustomerViewModel(
-        SaleMovementId: SaleMovementId?.toString(),
-        Id: Id?.toString(),
-        Name: Name,
-        CpfCnpj: CpfCnpj,
-      );
+    SaleMovementId: SaleMovementId?.toString(),
+    Id: Id?.toString(),
+    Name: Name,
+    CpfCnpj: CpfCnpj,
+  );
 
   factory SaleMovementCustomerModel.fromViewModel(
-          SaleMovementCustomerViewModel viewModel) =>
-      SaleMovementCustomerModel(
-        SaleMovementId: viewModel.SaleMovementId?.toInt(),
-        Id: viewModel.Id?.toInt(),
-        Name: viewModel.Name,
-        CpfCnpj: viewModel.CpfCnpj,
-      );
+    SaleMovementCustomerViewModel viewModel,
+  ) => SaleMovementCustomerModel(
+    SaleMovementId: viewModel.SaleMovementId?.toInt()!,
+    Id: viewModel.Id?.toInt()!,
+    Name: viewModel.Name,
+    CpfCnpj: viewModel.CpfCnpj,
+  );
 }

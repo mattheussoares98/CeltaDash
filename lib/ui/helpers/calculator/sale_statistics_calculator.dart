@@ -1,5 +1,7 @@
-import '../../../ui/helpers/helpers.dart';
+import 'package:celta_dash/utils/utils.dart';
+
 import '../../../data/models/models.dart';
+import '../../../ui/helpers/helpers.dart';
 import '../../pages/pages.dart';
 
 extension SaleStatisticsExtensions on List<SaleStatisticViewModel> {
@@ -14,10 +16,7 @@ extension SaleStatisticsExtensions on List<SaleStatisticViewModel> {
       filterYear: filterYear,
       filterMonth: filterMonth,
       filterDay: filterDay,
-    ).fold<double>(
-      0.0,
-      (sum, e) => sum + (e.LiquidValue ?? 0),
-    );
+    ).fold<double>(0.0, (sum, e) => sum + (e.LiquidValue ?? 0));
   }
 
   double sumCost({
@@ -31,10 +30,7 @@ extension SaleStatisticsExtensions on List<SaleStatisticViewModel> {
       filterYear: filterYear,
       filterMonth: filterMonth,
       filterDay: filterDay,
-    ).fold<double>(
-      0.0,
-      (sum, e) => sum + (e.TotalRepositionCost ?? 0),
-    );
+    ).fold<double>(0.0, (sum, e) => sum + (e.TotalRepositionCost ?? 0));
   }
 
   int quantitySales({
@@ -48,10 +44,7 @@ extension SaleStatisticsExtensions on List<SaleStatisticViewModel> {
       filterYear: filterYear,
       filterMonth: filterMonth,
       filterDay: filterDay,
-    ).fold<int>(
-      0,
-      (sum, e) => sum + (e.QuantitySales ?? 1),
-    );
+    ).fold<int>(0, (sum, e) => sum + (e.QuantitySales ?? 1));
   }
 
   double ticketAverage(
@@ -66,12 +59,16 @@ extension SaleStatisticsExtensions on List<SaleStatisticViewModel> {
       filterMonth: filterMonth,
       filterDay: filterDay,
     );
-    final totalQuantity =
-        filtered.fold<int>(0, (p, e) => p + (e.QuantitySales ?? 0));
+    final totalQuantity = filtered.fold<int>(
+      0,
+      (p, e) => p + (e.QuantitySales ?? 0),
+    );
     if (totalQuantity == 0) return 0;
 
-    final totalValue =
-        filtered.fold<double>(0.0, (p, e) => p + (e.LiquidValue ?? 0));
+    final totalValue = filtered.fold<double>(
+      0.0,
+      (p, e) => p + (e.LiquidValue ?? 0),
+    );
     return totalValue / totalQuantity;
   }
 
@@ -81,10 +78,7 @@ extension SaleStatisticsExtensions on List<SaleStatisticViewModel> {
       enterprise: enterprise,
       filterYear: now.year,
       filterWeekday: now.weekday,
-    ).fold<double>(
-      0.0,
-      (sum, e) => sum + (e.LiquidValue ?? 0),
-    );
+    ).fold<double>(0.0, (sum, e) => sum + (e.LiquidValue ?? 0));
 
     final start = DateTime(now.year);
     final totalDays = now.difference(start).inDays + 1;
@@ -102,15 +96,18 @@ extension SaleStatisticsExtensions on List<SaleStatisticViewModel> {
   }) {
     return this
         .where((viewModel) {
-          final matchesEnterprise = enterprise == null ||
+          final matchesEnterprise =
+              enterprise == null ||
               viewModel.EnterprisePersonalizedCode ==
                   enterprise.personalizedCode;
 
-          final matchesYear = filterYear == null ||
+          final matchesYear =
+              filterYear == null ||
               (viewModel.Date?.year == filterYear ||
                   viewModel.Year?.toInt() == filterYear);
 
-          final matchesMonth = filterMonth == null ||
+          final matchesMonth =
+              filterMonth == null ||
               (viewModel.Date?.month == filterMonth ||
                   viewModel.Month?.toInt() == filterMonth);
 
@@ -193,28 +190,28 @@ extension SaleStatisticsExtensions on List<SaleStatisticViewModel> {
     int? filterMonth,
     int? filterDay,
     int? filterWeekday,
-  }) =>
-      this
-          .filteredSales(
-            enterprise: enterprise,
-            filterYear: filterYear,
-            filterMonth: filterMonth,
-            filterDay: filterDay,
-            filterWeekday: filterWeekday,
-          )
-          .map((e) => e.toViewModel())
-          .toList()
-          .map((e) => e.Hour)
-          .whereType<String>()
-          .toSet()
-          .toList();
+  }) => this
+      .filteredSales(
+        enterprise: enterprise,
+        filterYear: filterYear,
+        filterMonth: filterMonth,
+        filterDay: filterDay,
+        filterWeekday: filterWeekday,
+      )
+      .map((e) => e.toViewModel())
+      .toList()
+      .map((e) => e.Hour)
+      .whereType<String>()
+      .toSet()
+      .toList();
 
-  double totalForHourOnDate(String hour, DateTime date) => where((e) =>
-          e.Hour == hour &&
-          e.Date?.year == date.year &&
-          e.Date?.month == date.month &&
-          e.Date?.day == date.day)
-      .fold(0.0, (sum, e) => sum + (e.LiquidValue?.toDouble() ?? 0));
+  double totalForHourOnDate(String hour, DateTime date) => where(
+    (e) =>
+        e.Hour == hour &&
+        e.Date?.year == date.year &&
+        e.Date?.month == date.month &&
+        e.Date?.day == date.day,
+  ).fold(0.0, (sum, e) => sum + (e.LiquidValue?.toDouble() ?? 0));
 
   double differenceForHour(double day1, double day2) {
     if (day1 == 0 && day2 == 0) return 0.0;

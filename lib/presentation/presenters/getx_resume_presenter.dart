@@ -1,3 +1,4 @@
+import 'package:celta_dash/utils/utils.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -146,7 +147,7 @@ class GetxResumePresenter extends GetxController
       ),
       groupByEnterprise: true,
       groupByDay: true,
-      enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+      enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()!],
     );
     final todaySaleStatistics = await loadSaleStatistics.get(todayParams);
 
@@ -166,7 +167,7 @@ class GetxResumePresenter extends GetxController
         ),
         groupByEnterprise: true,
         groupByDay: true,
-        enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+        enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()!],
       ),
     );
 
@@ -189,7 +190,7 @@ class GetxResumePresenter extends GetxController
       groupByEnterprise: true,
       groupByYear: true,
       groupByMonth: true,
-      enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+      enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()!],
     );
 
     final selectedMonthParams = defaultParams.copyWith(
@@ -268,7 +269,7 @@ class GetxResumePresenter extends GetxController
       _goals.value.add(
         GoalViewModel(
           FirebaseGoalEntity(
-            enterpriseId: enterpriseId!.toInt(),
+            enterpriseId: enterpriseId!.toInt()!,
             year: selectedDate.year,
             month: selectedDate.month,
             value: value,

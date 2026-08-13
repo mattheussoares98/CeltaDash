@@ -1,3 +1,4 @@
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -5,7 +6,6 @@ import 'package:intl/intl.dart';
 import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
-
 
 class PersonalizedTable extends StatelessWidget {
   const PersonalizedTable({super.key});
@@ -33,115 +33,119 @@ class PersonalizedTable extends StatelessWidget {
 
               // 1. Define all possible columns in one place.
               // This map links a title to its check rule and its value getter.
-              final columnDefinitions = <String,
-                  ({
-                bool Function(SaleStatisticViewModel) check,
-                String Function(SaleStatisticViewModel) getValue,
-                double width,
-              })>{
-                R.string.enterprise: (
-                  width: 100,
-                  check: (s) => s.EnterpriseFantasyName != null,
-                  getValue: (s) => s.EnterpriseFantasyName ?? "",
-                ),
-                R.string.year: (
-                  width: 70,
-                  check: (s) => s.Year != null,
-                  getValue: (s) => s.Year ?? "",
-                ),
-                R.string.month: (
-                  width: 70,
-                  check: (s) => s.Month != null,
-                  getValue: (s) {
-                    final date = DateTime(0, s.Month!.toInt());
-                    return DateFormat.MMM("pt_BR")
-                        .format(date)
-                        .toUpperCase()
-                        .replaceAll(RegExp(r'\.'), '');
-                  },
-                ),
-                R.string.hour: (
-                  width: 100,
-                  check: (s) => s.Hour != null,
-                  getValue: (s) {
-                    final formatter = DateFormat("y/MM/dd", "pt_BR");
-                    final hour = s.Hour?.replaceAll(RegExp(r'\n'), '~');
-                    return "$hour\n${formatter.format(s.Date!)}";
-                  }
-                ),
-                R.string.product: (
-                  width: 200,
-                  check: (s) => s.Product != null,
-                  getValue: (s) {
-                    final parts = s.Product?.split('-');
-                    return parts?.length != null && parts!.length > 2
-                        ? parts[2]
-                        : '';
-                  }
-                ),
-                R.string.productsQuantityAbbreviated: (
-                  width: 80,
-                  check: (s) => s.QuantityOfProducts != null,
-                  getValue: (s) => s.QuantityOfProducts ?? ""
-                ),
-                R.string.departmentAbbreviated: (
-                  width: 150,
-                  check: (s) => s.ProductDepartment != null,
-                  getValue: (s) => s.ProductDepartment ?? ""
-                ),
-                R.string.section: (
-                  width: 170,
-                  check: (s) => s.ProductSection != null,
-                  getValue: (s) => s.ProductSection ?? ""
-                ),
-                R.string.finalization: (
-                  width: 170,
-                  check: (s) => s.PaymentFinalization != null,
-                  getValue: (s) => s.PaymentFinalization ?? ""
-                ),
-                R.string.paymentsType: (
-                  width: 120,
-                  check: (s) => s.PaymentModality != null,
-                  getValue: (s) => s.PaymentModality ?? ""
-                ),
-                R.string.salesQuantityAbbreviated: (
-                  width: 60,
-                  check: (s) => s.QuantitySales != null,
-                  getValue: (s) => s.QuantitySales ?? ""
-                ),
-                R.string.operator: (
-                  width: 200,
-                  check: (s) => s.CashierOperator != null,
-                  getValue: (s) => s.CashierOperator ?? ""
-                ),
-                R.string.seller: (
-                  width: 200,
-                  check: (s) => s.Seller != null,
-                  getValue: (s) => s.Seller ?? ""
-                ),
-                R.string.cost: (
-                  width: 100,
-                  check: (s) => s.TotalRepositionCost != null,
-                  getValue: (s) => s.TotalRepositionCost ?? ""
-                ),
-                R.string.quantityAbbreviated: (
-                  width: 100,
-                  check: (s) => s.QuantityOfProducts != null,
-                  getValue: (s) => s.QuantityOfProducts ?? ""
-                ),
-                R.string.total: (
-                  width: 120,
-                  check: (s) => s.LiquidValue != null,
-                  getValue: (s) => s.LiquidValue ?? "",
-                ),
-                R.string.profit: (
-                  width: 120,
-                  check: (s) =>
-                      s.LiquidValue != null && s.TotalRepositionCost != null,
-                  getValue: (s) =>
-                      '${(s.LiquidValue?.toDouble() ?? 0) - (s.TotalRepositionCost?.toDouble() ?? 0)}',
-                ),
-              };
+              final columnDefinitions =
+                  <
+                    String,
+                    ({
+                      bool Function(SaleStatisticViewModel) check,
+                      String Function(SaleStatisticViewModel) getValue,
+                      double width,
+                    })
+                  >{
+                    R.string.enterprise: (
+                      width: 100,
+                      check: (s) => s.EnterpriseFantasyName != null,
+                      getValue: (s) => s.EnterpriseFantasyName ?? "",
+                    ),
+                    R.string.year: (
+                      width: 70,
+                      check: (s) => s.Year != null,
+                      getValue: (s) => s.Year ?? "",
+                    ),
+                    R.string.month: (
+                      width: 70,
+                      check: (s) => s.Month != null,
+                      getValue: (s) {
+                        final date = DateTime(0, s.Month!.toInt()!);
+                        return DateFormat.MMM("pt_BR")
+                            .format(date)
+                            .toUpperCase()
+                            .replaceAll(RegExp(r'\.'), '');
+                      },
+                    ),
+                    R.string.hour: (
+                      width: 100,
+                      check: (s) => s.Hour != null,
+                      getValue: (s) {
+                        final formatter = DateFormat("y/MM/dd", "pt_BR");
+                        final hour = s.Hour?.replaceAll(RegExp(r'\n'), '~');
+                        return "$hour\n${formatter.format(s.Date!)}";
+                      },
+                    ),
+                    R.string.product: (
+                      width: 200,
+                      check: (s) => s.Product != null,
+                      getValue: (s) {
+                        final parts = s.Product?.split('-');
+                        return parts?.length != null && parts!.length > 2
+                            ? parts[2]
+                            : '';
+                      },
+                    ),
+                    R.string.productsQuantityAbbreviated: (
+                      width: 80,
+                      check: (s) => s.QuantityOfProducts != null,
+                      getValue: (s) => s.QuantityOfProducts ?? "",
+                    ),
+                    R.string.departmentAbbreviated: (
+                      width: 150,
+                      check: (s) => s.ProductDepartment != null,
+                      getValue: (s) => s.ProductDepartment ?? "",
+                    ),
+                    R.string.section: (
+                      width: 170,
+                      check: (s) => s.ProductSection != null,
+                      getValue: (s) => s.ProductSection ?? "",
+                    ),
+                    R.string.finalization: (
+                      width: 170,
+                      check: (s) => s.PaymentFinalization != null,
+                      getValue: (s) => s.PaymentFinalization ?? "",
+                    ),
+                    R.string.paymentsType: (
+                      width: 120,
+                      check: (s) => s.PaymentModality != null,
+                      getValue: (s) => s.PaymentModality ?? "",
+                    ),
+                    R.string.salesQuantityAbbreviated: (
+                      width: 60,
+                      check: (s) => s.QuantitySales != null,
+                      getValue: (s) => s.QuantitySales ?? "",
+                    ),
+                    R.string.operator: (
+                      width: 200,
+                      check: (s) => s.CashierOperator != null,
+                      getValue: (s) => s.CashierOperator ?? "",
+                    ),
+                    R.string.seller: (
+                      width: 200,
+                      check: (s) => s.Seller != null,
+                      getValue: (s) => s.Seller ?? "",
+                    ),
+                    R.string.cost: (
+                      width: 100,
+                      check: (s) => s.TotalRepositionCost != null,
+                      getValue: (s) => s.TotalRepositionCost ?? "",
+                    ),
+                    R.string.quantityAbbreviated: (
+                      width: 100,
+                      check: (s) => s.QuantityOfProducts != null,
+                      getValue: (s) => s.QuantityOfProducts ?? "",
+                    ),
+                    R.string.total: (
+                      width: 120,
+                      check: (s) => s.LiquidValue != null,
+                      getValue: (s) => s.LiquidValue ?? "",
+                    ),
+                    R.string.profit: (
+                      width: 120,
+                      check: (s) =>
+                          s.LiquidValue != null &&
+                          s.TotalRepositionCost != null,
+                      getValue: (s) =>
+                          '${(s.LiquidValue?.toDouble() ?? 0) - (s.TotalRepositionCost?.toDouble() ?? 0)}',
+                    ),
+                  };
 
               // 2. Determine which columns are active in a single pass.
               final remainingChecks = columnDefinitions.keys.toSet();
@@ -169,7 +173,8 @@ class PersonalizedTable extends StatelessWidget {
                 return activeTitles.map((title) {
                   // For each active title, get the corresponding value from the sale.
                   dynamic value = columnDefinitions[title]!.getValue(sale);
-                  bool isMoney = title == R.string.total ||
+                  bool isMoney =
+                      title == R.string.total ||
                       title == R.string.cost ||
                       title == R.string.profit;
 
@@ -179,10 +184,7 @@ class PersonalizedTable extends StatelessWidget {
                     value = value.toString().toDouble();
                   }
 
-                  return PersonalizedTableCell(
-                    value: value,
-                    isMoney: isMoney,
-                  );
+                  return PersonalizedTableCell(value: value, isMoney: isMoney);
                 }).toList();
               }).toList();
 
@@ -190,18 +192,24 @@ class PersonalizedTable extends StatelessWidget {
                   .map((title) => columnDefinitions[title]!.width)
                   .toList();
 
-              final totalIndex =
-                  activeTitles.indexWhere((e) => e == R.string.total);
-              final costIndex =
-                  activeTitles.indexWhere((e) => e == R.string.cost);
-              final quantityAbbreviatedIndex = activeTitles
-                  .indexWhere((e) => e == R.string.quantityAbbreviated);
-              final productsQuantityAbbreviatedIndex = activeTitles
-                  .indexWhere((e) => e == R.string.productsQuantityAbbreviated);
-              final salesQuantityAbbreviated = activeTitles
-                  .indexWhere((e) => e == R.string.salesQuantityAbbreviated);
-              final profit =
-                  activeTitles.indexWhere((e) => e == R.string.profit);
+              final totalIndex = activeTitles.indexWhere(
+                (e) => e == R.string.total,
+              );
+              final costIndex = activeTitles.indexWhere(
+                (e) => e == R.string.cost,
+              );
+              final quantityAbbreviatedIndex = activeTitles.indexWhere(
+                (e) => e == R.string.quantityAbbreviated,
+              );
+              final productsQuantityAbbreviatedIndex = activeTitles.indexWhere(
+                (e) => e == R.string.productsQuantityAbbreviated,
+              );
+              final salesQuantityAbbreviated = activeTitles.indexWhere(
+                (e) => e == R.string.salesQuantityAbbreviated,
+              );
+              final profit = activeTitles.indexWhere(
+                (e) => e == R.string.profit,
+              );
 
               final columnsToSum = [
                 if (totalIndex != -1) totalIndex,
@@ -227,8 +235,12 @@ class PersonalizedTable extends StatelessWidget {
                       fixFirstColumn: true,
                       columnsIndexToSum: columnsToSum,
                       titles: activeTitles
-                          .map((title) => PersonalizedTableCell(
-                              value: title, isTitle: true))
+                          .map(
+                            (title) => PersonalizedTableCell(
+                              value: title,
+                              isTitle: true,
+                            ),
+                          )
                           .toList(),
                       rowValues: tableRows,
                       columnsWidths: columnWidths, // Dynamic widths

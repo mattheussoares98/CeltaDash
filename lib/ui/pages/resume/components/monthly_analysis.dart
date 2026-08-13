@@ -1,4 +1,5 @@
 import 'package:celta_dash/ui/components/chart_prices.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -29,47 +30,51 @@ class MonthlyAnalysis extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    final datesAndValues = (sales
-            .where((e) =>
-                e.EnterpriseId == homePresenter.selectedEnterprise?.id &&
-                e.Date?.month == homePresenter.selectedDate.month &&
-                (!isToday(e.Date) || daysQuantity <= 2))
-            .map((e) => e.Date!.day)
-            .toSet()
-            .toList()
-          ..sort())
-        .map((day) {
-      final salesByDay = sales
-          .where((e) =>
-              e.EnterpriseId == homePresenter.selectedEnterprise?.id &&
-              e.Date?.day == day &&
-              e.Date?.month == homePresenter.selectedDate.month)
-          .toList();
+    final datesAndValues =
+        (sales
+                .where(
+                  (e) =>
+                      e.EnterpriseId == homePresenter.selectedEnterprise?.id &&
+                      e.Date?.month == homePresenter.selectedDate.month &&
+                      (!isToday(e.Date) || daysQuantity <= 2),
+                )
+                .map((e) => e.Date!.day)
+                .toSet()
+                .toList()
+              ..sort())
+            .map((day) {
+              final salesByDay = sales
+                  .where(
+                    (e) =>
+                        e.EnterpriseId ==
+                            homePresenter.selectedEnterprise?.id &&
+                        e.Date?.day == day &&
+                        e.Date?.month == homePresenter.selectedDate.month,
+                  )
+                  .toList();
 
-      final firstSale = salesByDay.first;
+              final firstSale = salesByDay.first;
 
-      return DateAndValueModel(
-        value: salesByDay.sumLiquidValue(),
-        date: DateTime(
-          firstSale.Date!.year,
-          firstSale.Date!.month,
-          firstSale.Date!.day,
-        ),
-      );
-    }).toList();
+              return DateAndValueModel(
+                value: salesByDay.sumLiquidValue(),
+                date: DateTime(
+                  firstSale.Date!.year,
+                  firstSale.Date!.month,
+                  firstSale.Date!.day,
+                ),
+              );
+            })
+            .toList();
 
     DateAndValueModel? betterValue = datesAndValues.isEmpty
         ? null
-        : datesAndValues.reduce(
-            (a, b) => a.value > b.value ? a : b,
-          );
+        : datesAndValues.reduce((a, b) => a.value > b.value ? a : b);
     DateAndValueModel? worstValue = datesAndValues.isEmpty
         ? null
-        : datesAndValues.reduce(
-            (a, b) => a.value < b.value ? a : b,
-          );
+        : datesAndValues.reduce((a, b) => a.value < b.value ? a : b);
 
-    final averageValue = datesAndValues.fold(
+    final averageValue =
+        datesAndValues.fold(
           0.0,
           (previous, element) => previous + element.value,
         ) /
@@ -105,8 +110,8 @@ class MonthlyAnalysis extends StatelessWidget {
                           .toBrazilianNumber()
                           .addBrazilianCoin(),
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontStyle: FontStyle.italic,
-                          ),
+                        fontStyle: FontStyle.italic,
+                      ),
                     ),
                   ],
                 ),
@@ -125,8 +130,8 @@ class MonthlyAnalysis extends StatelessWidget {
                           .toBrazilianNumber()
                           .addBrazilianCoin(),
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontStyle: FontStyle.italic,
-                          ),
+                        fontStyle: FontStyle.italic,
+                      ),
                     ),
                   ],
                 ),

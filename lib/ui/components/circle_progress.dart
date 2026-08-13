@@ -1,3 +1,4 @@
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 import '../../../ui/helpers/helpers.dart';
@@ -9,7 +10,7 @@ class AnimatedCircleProgress extends StatefulWidget {
   final double width;
   final String? title;
   final ScrollController
-      scrollController; //need to repeat the animation when hide from the page and appears agein
+  scrollController; //need to repeat the animation when hide from the page and appears agein
 
   const AnimatedCircleProgress({
     super.key,
@@ -111,61 +112,69 @@ class _AnimatedCircleProgressState extends State<AnimatedCircleProgress>
             width: widget.width,
             height: widget.height,
             key: _widgetKey,
-            child: LayoutBuilder(builder: (context, constraints) {
-              return AnimatedBuilder(
-                animation: _progressAnimation,
-                builder: (context, child) {
-                  return Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      CustomPaint(
-                        size: Size(constraints.maxWidth, constraints.maxHeight),
-                        painter: _ProgressCirclePainter(
-                          progress: _progressAnimation.value,
-                          backgroundColor: IsDarkTheme.isDark
-                              ? theme.disabledColor
-                              : theme.primaryColorLight.withAlpha(100),
-                          progressColor: widget.value >= widget.maximum
-                              ? theme.primaryColor
-                              : Colors.red,
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return AnimatedBuilder(
+                  animation: _progressAnimation,
+                  builder: (context, child) {
+                    return Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        CustomPaint(
+                          size: Size(
+                            constraints.maxWidth,
+                            constraints.maxHeight,
+                          ),
+                          painter: _ProgressCirclePainter(
+                            progress: _progressAnimation.value,
+                            backgroundColor: IsDarkTheme.isDark
+                                ? theme.disabledColor
+                                : theme.primaryColorLight.withAlpha(100),
+                            progressColor: widget.value >= widget.maximum
+                                ? theme.primaryColor
+                                : Colors.red,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: constraints.maxWidth * 0.8,
-                        height: constraints.maxHeight * 0.8,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            FittedBox(
-                              child: Text(
-                                widget.value
-                                    .toString()
-                                    .toBrazilianNumber()
-                                    .addBrazilianCoin(),
-                                style: theme.textTheme.headlineMedium?.copyWith(
-                                    color: widget.value >= widget.maximum
-                                        ? theme.primaryColor
-                                        : Colors.red),
-                              ),
-                            ),
-                            if (widget.value > 0 && widget.maximum > 0)
+                        SizedBox(
+                          width: constraints.maxWidth * 0.8,
+                          height: constraints.maxHeight * 0.8,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
                               FittedBox(
                                 child: Text(
-                                  "${(widget.value / widget.maximum * 100).toString().toBrazilianNumber()}%",
-                                  style: theme.textTheme.labelSmall?.copyWith(
-                                      color: widget.value >= widget.maximum
-                                          ? theme.primaryColor
-                                          : Colors.red),
+                                  widget.value
+                                      .toString()
+                                      .toBrazilianNumber()
+                                      .addBrazilianCoin(),
+                                  style: theme.textTheme.headlineMedium
+                                      ?.copyWith(
+                                        color: widget.value >= widget.maximum
+                                            ? theme.primaryColor
+                                            : Colors.red,
+                                      ),
                                 ),
                               ),
-                          ],
+                              if (widget.value > 0 && widget.maximum > 0)
+                                FittedBox(
+                                  child: Text(
+                                    "${(widget.value / widget.maximum * 100).toString().toBrazilianNumber()}%",
+                                    style: theme.textTheme.labelSmall?.copyWith(
+                                      color: widget.value >= widget.maximum
+                                          ? theme.primaryColor
+                                          : Colors.red,
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  );
-                },
-              );
-            }),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
           ),
         ),
       ],

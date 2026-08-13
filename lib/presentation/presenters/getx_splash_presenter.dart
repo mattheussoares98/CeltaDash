@@ -1,3 +1,4 @@
+import 'package:celta_dash/utils/utils.dart';
 import 'package:get/get.dart';
 
 import '../../domain/helpers/helpers.dart';
@@ -33,8 +34,8 @@ class GetxSplashPresenter extends GetxController implements SplashPresenter {
           ? remoteVersion.data()["required"]
           : "0.0";
 
-      if (localVersion.replaceAll(RegExp(r'\.'), '').toInt() <
-          remoteVersionNumber.replaceAll(RegExp(r'\.'), '').toInt()) {
+      if (localVersion.replaceAll(RegExp(r'\.'), '').toInt()! <
+          remoteVersionNumber.replaceAll(RegExp(r'\.'), '').toInt()!) {
         navigateTo.navigate(
             pageRoute: PageRoutes.updateAppVersion, clear: true);
         return;

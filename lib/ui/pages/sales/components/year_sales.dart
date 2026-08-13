@@ -1,3 +1,4 @@
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -29,14 +30,17 @@ class YearSales extends StatelessWidget {
         PersonalizedTableCell(value: R.string.year, isTitle: true),
         PersonalizedTableCell(value: R.string.sales, isTitle: true),
         PersonalizedTableCell(
-            value: R.string.quantityAbbreviated, isTitle: true),
+          value: R.string.quantityAbbreviated,
+          isTitle: true,
+        ),
         PersonalizedTableCell(value: R.string.average, isTitle: true),
         PersonalizedTableCell(value: R.string.share, isTitle: true),
       ],
-      rowValues:
-          saleStatisticsByYear.map((e) => e.Year).toSet().toList().map((year) {
+      rowValues: saleStatisticsByYear.map((e) => e.Year).toSet().toList().map((
+        year,
+      ) {
         final salesByCurrentYear = saleStatisticsByYear
-            .filteredSales(filterYear: year?.toInt())
+            .filteredSales(filterYear: year?.toInt()!)
             .map((e) => e.toViewModel())
             .toList();
 
@@ -45,10 +49,7 @@ class YearSales extends StatelessWidget {
 
         return [
           PersonalizedTableCell(value: year),
-          PersonalizedTableCell(
-            value: totalLiquidByCurrentYear,
-            isMoney: true,
-          ),
+          PersonalizedTableCell(value: totalLiquidByCurrentYear, isMoney: true),
           PersonalizedTableCell(value: totalSalesByCurrentYear),
           PersonalizedTableCell(
             value: totalLiquidByCurrentYear / totalSalesByCurrentYear,

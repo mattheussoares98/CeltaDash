@@ -1,10 +1,10 @@
+import 'package:celta_dash/utils/utils.dart';
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
-import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
 import '../../ui/services/services.dart';
 import '../mixins/mixins.dart';
@@ -106,7 +106,7 @@ class GetxSalesPresenter extends GetxController
       );
 
       final getSalesParams = GetSaleStatisticsParams(
-        enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+        enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()!],
         startDate: startDate,
         endDate: selectedPeriod == PeriodType.hourly ? startDate : endDate,
         groupByEnterprise: true,

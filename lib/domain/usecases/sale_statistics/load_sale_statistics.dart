@@ -1,5 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
 
@@ -53,23 +53,23 @@ class GetSaleStatisticsParams extends Equatable implements DateRangeParams {
 
   @override
   List<Object?> get props => [
-        startDate,
-        endDate,
-        enterpriseIds,
-        groupByEnterprise,
-        groupByYear,
-        groupByMonth,
-        groupByDay,
-        groupByHour,
-        groupByProduct,
-        groupByProductDepartment,
-        groupByProductSection,
-        groupByPaymentFinalization,
-        groupByPaymentModality,
-        groupByCashierOperator,
-        groupBySeller,
-        topCount,
-      ];
+    startDate,
+    endDate,
+    enterpriseIds,
+    groupByEnterprise,
+    groupByYear,
+    groupByMonth,
+    groupByDay,
+    groupByHour,
+    groupByProduct,
+    groupByProductDepartment,
+    groupByProductSection,
+    groupByPaymentFinalization,
+    groupByPaymentModality,
+    groupByCashierOperator,
+    groupBySeller,
+    topCount,
+  ];
 
   GetSaleStatisticsParams copyWith({
     DateTime? startDate,
@@ -154,7 +154,9 @@ extension GetSaleStatisticsParamsCategoryGroupingsType
 }
 
 bool _categoryIsEnabled(
-    CategoryGroupingType type, GetSaleStatisticsParams params) {
+  CategoryGroupingType type,
+  GetSaleStatisticsParams params,
+) {
   switch (type) {
     case CategoryGroupingType.product:
       return params.groupByProduct == true;
@@ -174,7 +176,9 @@ bool _categoryIsEnabled(
 }
 
 bool _periodGroupIsEnabled(
-    PeriodGroupingType type, GetSaleStatisticsParams params) {
+  PeriodGroupingType type,
+  GetSaleStatisticsParams params,
+) {
   switch (type) {
     case PeriodGroupingType.day:
       return params.groupByDay == true;

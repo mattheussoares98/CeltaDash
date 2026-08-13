@@ -1,7 +1,7 @@
+import 'package:celta_dash/domain/entities/entities.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:celta_dash/domain/entities/entities.dart';
-import '../../../ui/helpers/helpers.dart';
 import '../../../ui/pages/pages.dart';
 
 class SaleMovementFinalizationFinalizationModel extends Equatable {
@@ -23,22 +23,16 @@ class SaleMovementFinalizationFinalizationModel extends Equatable {
       );
 
   factory SaleMovementFinalizationFinalizationModel.fromEntity(
-          SaleMovementFinalizationFinalizationEntity? entity) =>
-      SaleMovementFinalizationFinalizationModel(
-        Id: entity?.Id,
-        Name: entity?.Name,
-      );
+    SaleMovementFinalizationFinalizationEntity? entity,
+  ) => SaleMovementFinalizationFinalizationModel(
+    Id: entity?.Id,
+    Name: entity?.Name,
+  );
 
-  Map<String, dynamic> toJson() => {
-        'id': Id,
-        'name': Name,
-      };
+  Map<String, dynamic> toJson() => {'id': Id, 'name': Name};
 
   SaleMovementFinalizationFinalizationEntity toEntity() =>
-      SaleMovementFinalizationFinalizationEntity(
-        Id: Id,
-        Name: Name,
-      );
+      SaleMovementFinalizationFinalizationEntity(Id: Id, Name: Name);
 
   SaleMovementFinalizationFinalizationViewModel toViewModel() =>
       SaleMovementFinalizationFinalizationViewModel(
@@ -47,9 +41,9 @@ class SaleMovementFinalizationFinalizationModel extends Equatable {
       );
 
   factory SaleMovementFinalizationFinalizationModel.fromViewModel(
-          SaleMovementFinalizationFinalizationViewModel viewModel) =>
-      SaleMovementFinalizationFinalizationModel(
-        Id: viewModel.Id?.toInt(),
-        Name: viewModel.Name,
-      );
+    SaleMovementFinalizationFinalizationViewModel viewModel,
+  ) => SaleMovementFinalizationFinalizationModel(
+    Id: viewModel.Id?.toInt(),
+    Name: viewModel.Name,
+  );
 }

@@ -1,3 +1,4 @@
+import 'package:celta_dash/utils/utils.dart';
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
@@ -49,7 +50,7 @@ class GetxCompareMonthsPresenter extends GetxController
       final firstParams = GetSaleStatisticsParams(
         groupByDay: true,
         groupByEnterprise: true,
-        enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+        enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()!],
         startDate: DateTime(
           firstSelectedYear,
           firstSelectedMonth,
@@ -65,7 +66,7 @@ class GetxCompareMonthsPresenter extends GetxController
       final secondParams = GetSaleStatisticsParams(
         groupByDay: true,
         groupByEnterprise: true,
-        enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+        enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()!],
         startDate: DateTime(
           secondSelectedYear,
           secondSelectedMonth,

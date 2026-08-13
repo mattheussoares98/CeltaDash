@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -34,7 +35,8 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
   }
 
   double getCircleSize(MediaQueryData mediaQuery) {
-    final value = mediaQuery.size.width *
+    final value =
+        mediaQuery.size.width *
         (mediaQuery.orientation == Orientation.portrait ? 0.4 : 0.2);
 
     return min(value, 130);
@@ -50,7 +52,8 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
     return Obx(() {
       final sales = resumePresenter.monthlyComparison;
 
-      final currentMonthLiquidValue = sales
+      final currentMonthLiquidValue =
+          sales
               ?.filteredSales(
                 enterprise: homePresenter.selectedEnterprise,
                 filterYear: homePresenter.selectedDate.year,
@@ -61,13 +64,18 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
               .sumLiquidValue() ??
           0;
 
-      final comparisonLiquidValue = sales
+      final comparisonLiquidValue =
+          sales
               ?.filteredSales(
                 enterprise: homePresenter.selectedEnterprise,
                 filterYear: resumePresenter
-                    .lastGetMonthlyComparisonParams?.endDate.year,
+                    .lastGetMonthlyComparisonParams
+                    ?.endDate
+                    .year,
                 filterMonth: resumePresenter
-                    .lastGetMonthlyComparisonParams?.endDate.month,
+                    .lastGetMonthlyComparisonParams
+                    ?.endDate
+                    .month,
               )
               .map((e) => e.toViewModel())
               .toList()
@@ -76,10 +84,11 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
 
       final goalLiquidValue =
           resumePresenter.firebaseEnterpriseGoal?.value == null
-              ? comparisonLiquidValue * 1.05
-              : resumePresenter.firebaseEnterpriseGoal!.value!.toDouble();
+          ? comparisonLiquidValue * 1.05
+          : resumePresenter.firebaseEnterpriseGoal!.value!.toDouble();
 
-      final salesTodayLiquidValue = resumePresenter.saleStatistics
+      final salesTodayLiquidValue =
+          resumePresenter.saleStatistics
               ?.filteredSales(
                 enterprise: homePresenter.selectedEnterprise,
                 filterYear: homePresenter.selectedDate.year,
@@ -100,17 +109,13 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
 
       final daysInMonth =
           resumePresenter.firebaseEnterpriseGoal?.value == null &&
-                  comparisonEndDate != null
-              ? DateTime(
-                  comparisonEndDate.year,
-                  comparisonEndDate.month + 1,
-                  0,
-                ).day
-              : DateTime(
-                  homePresenter.selectedDate.year,
-                  homePresenter.selectedDate.month + 1,
-                  0,
-                ).day;
+              comparisonEndDate != null
+          ? DateTime(comparisonEndDate.year, comparisonEndDate.month + 1, 0).day
+          : DateTime(
+              homePresenter.selectedDate.year,
+              homePresenter.selectedDate.month + 1,
+              0,
+            ).day;
 
       return Stack(
         children: [
@@ -124,7 +129,7 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
                   children: [
                     Expanded(
                       child: AnimatedCircleProgress(
-                        key: ValueKey(comparisonLiquidValue + goalLiquidValue),
+                        key: ValueKey(comparisonLiquidValue + goalLiquidValue!),
                         title: R.string.monthlyGoal,
                         value: currentMonthLiquidValue,
                         maximum: goalLiquidValue,
@@ -152,15 +157,17 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
                   children: [
                     if (!showEditGoal)
                       Expanded(
-                        child: EditGoalButton(changeShowEditGoal: () {
-                          setState(() {
-                            showEditGoal = !showEditGoal;
-                          });
-                          Future.delayed(Duration.zero, () {
-                            goalFocusNode.requestFocus();
-                          });
-                          goalController.clear();
-                        }),
+                        child: EditGoalButton(
+                          changeShowEditGoal: () {
+                            setState(() {
+                              showEditGoal = !showEditGoal;
+                            });
+                            Future.delayed(Duration.zero, () {
+                              goalFocusNode.requestFocus();
+                            });
+                            goalController.clear();
+                          },
+                        ),
                       )
                     else
                       Expanded(

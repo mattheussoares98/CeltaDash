@@ -6,12 +6,11 @@ import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
 import 'package:celta_dash/ui/pages/pages.dart';
 import 'package:celta_dash/ui/services/services.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:faker/faker.dart';
-
-import 'package:get/get.dart';
-
-import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:get/get.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../data/mocks/mocks.dart';
@@ -143,7 +142,7 @@ void main() {
               groupByDay: true,
               groupByEnterprise: true,
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!
               ],
               startDate: DateTime(firstSelectedYear, firstSelectedMonth),
               endDate: DateTime(firstSelectedYear, firstSelectedMonth + 1, 0),
@@ -169,7 +168,7 @@ void main() {
               groupByDay: true,
               groupByEnterprise: true,
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!
               ],
               startDate: DateTime(secondSelectedYear, secondSelectedMonth),
               endDate: DateTime(secondSelectedYear, secondSelectedMonth + 1, 0),
@@ -212,7 +211,7 @@ void main() {
           GetSaleStatisticsParams(
             groupByDay: true,
             groupByEnterprise: true,
-            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()!],
             startDate: DateTime(
               firstSelectedYear,
               firstSelectedMonth,
@@ -229,7 +228,7 @@ void main() {
           GetSaleStatisticsParams(
             groupByDay: true,
             groupByEnterprise: true,
-            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()!],
             startDate: DateTime(
               secondSelectedYear,
               secondSelectedMonth,
@@ -283,7 +282,7 @@ void main() {
           GetSaleStatisticsParams(
             groupByDay: true,
             groupByEnterprise: true,
-            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()!],
             startDate: DateTime(now.year, now.month),
             endDate: DateTime(now.year, now.month + 1, 0),
           ),
@@ -299,7 +298,7 @@ void main() {
           GetSaleStatisticsParams(
             groupByDay: true,
             groupByEnterprise: true,
-            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()!],
             startDate: DateTime(now.year, now.month),
             endDate: DateTime(now.year, now.month + 1, 0),
           ),

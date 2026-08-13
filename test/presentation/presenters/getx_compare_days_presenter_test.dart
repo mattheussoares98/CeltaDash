@@ -6,12 +6,11 @@ import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
 import 'package:celta_dash/ui/pages/pages.dart';
 import 'package:celta_dash/ui/services/services.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:faker/faker.dart';
-
-import 'package:get/get.dart';
-
-import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:get/get.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../data/mocks/mocks.dart';
@@ -40,9 +39,7 @@ void main() {
   }
 
   void initPresenters() {
-    sut = GetxCompareDaysPresenter(
-      loadSaleStatistics: loadSaleStatistics,
-    );
+    sut = GetxCompareDaysPresenter(loadSaleStatistics: loadSaleStatistics);
   }
 
   void initEntities() {
@@ -57,9 +54,9 @@ void main() {
 
   void initMockSuccess() {
     loadSaleStatistics.mockGet(saleStatisticsEntities);
-    homePresenter.selectedEnterpriseMock =
-        EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
-            .toViewModel();
+    homePresenter.selectedEnterpriseMock = EnterpriseModel.fromEntity(
+      EntityFactory.makeEnterpriseEntity(),
+    ).toViewModel();
   }
 
   void initServices() {
@@ -97,10 +94,7 @@ void main() {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(sut.mainErrorStream, emits(null));
 
-      await sut.getSales(
-        firstDay: firstDay,
-        secondDay: secondDay,
-      );
+      await sut.getSales(firstDay: firstDay, secondDay: secondDay);
     });
     test("Should emit correct values on select same days", () async {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
@@ -108,51 +102,42 @@ void main() {
 
       loadSaleStatistics.mockGetError();
 
-      await sut.getSales(
-        firstDay: firstDay,
-        secondDay: firstDay,
-      );
+      await sut.getSales(firstDay: firstDay, secondDay: firstDay);
     });
     test("Should emit correct values on error", () async {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(
-          sut.mainErrorStream, emitsInOrder([null, UIError.unexpected]));
+        sut.mainErrorStream,
+        emitsInOrder([null, UIError.unexpected]),
+      );
 
       loadSaleStatistics.mockGetError();
 
-      await sut.getSales(
-        firstDay: firstDay,
-        secondDay: secondDay,
-      );
+      await sut.getSales(firstDay: firstDay, secondDay: secondDay);
     });
     test("Should update firstDaySaleStatistics correctly", () async {
-      await sut.getSales(
-        firstDay: firstDay,
-        secondDay: secondDay,
-      );
+      await sut.getSales(firstDay: firstDay, secondDay: secondDay);
 
-      expect(
-        sut.saleStatistics,
-        [
-          ...saleStatisticsEntities
-              .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel()),
-          ...saleStatisticsEntities
-              .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
-        ],
-      );
+      expect(sut.saleStatistics, [
+        ...saleStatisticsEntities.map(
+          (e) => SaleStatisticsModel.fromEntity(e).toViewModel(),
+        ),
+        ...saleStatisticsEntities.map(
+          (e) => SaleStatisticsModel.fromEntity(e).toViewModel(),
+        ),
+      ]);
     });
     test("Should update secondDaySaleStatistics correctly", () async {
       await sut.getSales(firstDay: firstDay, secondDay: secondDay);
 
-      expect(
-        sut.saleStatistics,
-        [
-          ...saleStatisticsEntities
-              .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel()),
-          ...saleStatisticsEntities
-              .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel())
-        ],
-      );
+      expect(sut.saleStatistics, [
+        ...saleStatisticsEntities.map(
+          (e) => SaleStatisticsModel.fromEntity(e).toViewModel(),
+        ),
+        ...saleStatisticsEntities.map(
+          (e) => SaleStatisticsModel.fromEntity(e).toViewModel(),
+        ),
+      ]);
     });
     test("Should update selected first day correctly", () async {
       await sut.getSales(firstDay: firstDay, secondDay: secondDay);
@@ -165,10 +150,7 @@ void main() {
       expect(sut.selectedSecondDay, secondDay);
     });
     test("Should call load first day with correct parameters", () async {
-      await sut.getSales(
-        firstDay: firstDay,
-        secondDay: null,
-      );
+      await sut.getSales(firstDay: firstDay, secondDay: null);
 
       verify(
         () => loadSaleStatistics.get(
@@ -178,22 +160,15 @@ void main() {
             groupByDay: true,
             groupByHour: true,
             groupByEnterprise: true,
-            enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+            enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()!],
             startDate: firstDay,
-            endDate: DateTime(
-              firstDay.year,
-              firstDay.month,
-              firstDay.day,
-            ),
+            endDate: DateTime(firstDay.year, firstDay.month, firstDay.day),
           ),
         ),
       ).called(1);
     });
     test("Should call load second day with correct parameters", () async {
-      await sut.getSales(
-        firstDay: null,
-        secondDay: secondDay,
-      );
+      await sut.getSales(firstDay: null, secondDay: secondDay);
 
       verify(
         () => loadSaleStatistics.get(
@@ -203,26 +178,16 @@ void main() {
             groupByDay: true,
             groupByHour: true,
             groupByEnterprise: true,
-            enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+            enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()!],
             startDate: secondDay,
-            endDate: DateTime(
-              secondDay.year,
-              secondDay.month,
-              secondDay.day,
-            ),
+            endDate: DateTime(secondDay.year, secondDay.month, secondDay.day),
           ),
         ),
       ).called(1);
     });
     test("Should not load again if dont change the second day", () async {
-      await sut.getSales(
-        firstDay: null,
-        secondDay: secondDay,
-      );
-      await sut.getSales(
-        firstDay: null,
-        secondDay: secondDay,
-      );
+      await sut.getSales(firstDay: null, secondDay: secondDay);
+      await sut.getSales(firstDay: null, secondDay: secondDay);
 
       verify(
         () => loadSaleStatistics.get(
@@ -232,26 +197,16 @@ void main() {
             groupByDay: true,
             groupByHour: true,
             groupByEnterprise: true,
-            enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+            enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()!],
             startDate: secondDay,
-            endDate: DateTime(
-              secondDay.year,
-              secondDay.month,
-              secondDay.day,
-            ),
+            endDate: DateTime(secondDay.year, secondDay.month, secondDay.day),
           ),
         ),
       ).called(1);
     });
     test("Should not load again if dont change the first day", () async {
-      await sut.getSales(
-        firstDay: firstDay,
-        secondDay: null,
-      );
-      await sut.getSales(
-        firstDay: firstDay,
-        secondDay: null,
-      );
+      await sut.getSales(firstDay: firstDay, secondDay: null);
+      await sut.getSales(firstDay: firstDay, secondDay: null);
 
       verify(
         () => loadSaleStatistics.get(
@@ -261,23 +216,16 @@ void main() {
             groupByDay: true,
             groupByHour: true,
             groupByEnterprise: true,
-            enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+            enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()!],
             startDate: firstDay,
-            endDate: DateTime(
-              firstDay.year,
-              firstDay.month,
-              firstDay.day,
-            ),
+            endDate: DateTime(firstDay.year, firstDay.month, firstDay.day),
           ),
         ),
       ).called(1);
     });
 
     test("Should notload again if force refresh", () async {
-      await sut.getSales(
-        firstDay: null,
-        secondDay: secondDay,
-      );
+      await sut.getSales(firstDay: null, secondDay: secondDay);
       await sut.getSales(
         firstDay: null,
         secondDay: secondDay,
@@ -292,27 +240,22 @@ void main() {
             groupByDay: true,
             groupByHour: true,
             groupByEnterprise: true,
-            enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+            enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()!],
             startDate: secondDay,
-            endDate: DateTime(
-              secondDay.year,
-              secondDay.month,
-              secondDay.day,
-            ),
+            endDate: DateTime(secondDay.year, secondDay.month, secondDay.day),
           ),
         ),
       ).called(2);
     });
     test("Should call appAnalyticsService add new analytics", () async {
-      await sut.getSales(
-        firstDay: null,
-        secondDay: secondDay,
-      );
+      await sut.getSales(firstDay: null, secondDay: secondDay);
 
-      verify(() => appAnalyticsService.addNewMonthlyAnalytic(
-            reportType: ReportType.compareDays,
-            periodType: PeriodType.hourly,
-          )).called(1);
+      verify(
+        () => appAnalyticsService.addNewMonthlyAnalytic(
+          reportType: ReportType.compareDays,
+          periodType: PeriodType.hourly,
+        ),
+      ).called(1);
     });
   });
 }

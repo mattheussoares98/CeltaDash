@@ -6,12 +6,11 @@ import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
 import 'package:celta_dash/ui/pages/pages.dart';
 import 'package:celta_dash/ui/services/services.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:faker/faker.dart';
-
-import 'package:get/get.dart';
-
-import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:get/get.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../data/mocks/mocks.dart';
@@ -37,9 +36,7 @@ void main() {
   }
 
   void initPresenters() {
-    sut = GetxPaymentTypePresenter(
-      loadSaleStatistics: loadSaleStatistics,
-    );
+    sut = GetxPaymentTypePresenter(loadSaleStatistics: loadSaleStatistics);
   }
 
   void initEntities() {
@@ -103,19 +100,13 @@ void main() {
         await sut.getSales();
       });
       test("Should update selected period correctly", () async {
-        await sut.getSales(
-          periodType: PeriodType.daily,
-        );
+        await sut.getSales(periodType: PeriodType.daily);
         expect(sut.selectedPeriod, PeriodType.daily);
 
-        await sut.getSales(
-          periodType: PeriodType.monthly,
-        );
+        await sut.getSales(periodType: PeriodType.monthly);
         expect(sut.selectedPeriod, PeriodType.monthly);
 
-        await sut.getSales(
-          periodType: PeriodType.daily,
-        );
+        await sut.getSales(periodType: PeriodType.daily);
         expect(sut.selectedPeriod, PeriodType.daily);
       });
       test("Should update sale movements correctly", () async {
@@ -142,14 +133,13 @@ void main() {
         final enabledPeriods = [PeriodType.daily, PeriodType.monthly];
         final periodType = enabledPeriods[faker.randomGenerator.integer(2)];
 
-        await sut.getSales(
-          periodType: periodType,
-          forceRefresh: true,
-        );
+        await sut.getSales(periodType: periodType, forceRefresh: true);
 
         verify(
           () => appAnalyticsService.addNewMonthlyAnalytic(
-              reportType: ReportType.payments, periodType: periodType),
+            reportType: ReportType.payments,
+            periodType: periodType,
+          ),
         ).called(1);
       });
     });
@@ -170,7 +160,7 @@ void main() {
               startDate: startDate,
               endDate: startDate,
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               groupByEnterprise: true,
               groupByDay: true,
@@ -198,7 +188,7 @@ void main() {
               startDate: startDate,
               endDate: startDate,
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               groupByEnterprise: true,
               groupByDay: true,
@@ -226,7 +216,7 @@ void main() {
               startDate: startDate,
               endDate: startDate,
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               groupByEnterprise: true,
               groupByDay: true,
@@ -253,7 +243,7 @@ void main() {
               startDate: startDate,
               endDate: startDate,
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               groupByEnterprise: true,
               groupByDay: true,
@@ -292,7 +282,7 @@ void main() {
               startDate: startDate,
               endDate: startDate,
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               groupByEnterprise: true,
               groupByDay: true,
@@ -304,9 +294,9 @@ void main() {
           ),
         ).called(1);
 
-        homePresenter.selectedEnterpriseMock =
-            EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
-                .toViewModel();
+        homePresenter.selectedEnterpriseMock = EnterpriseModel.fromEntity(
+          EntityFactory.makeEnterpriseEntity(),
+        ).toViewModel();
         await sut.getSales();
 
         verify(
@@ -315,7 +305,7 @@ void main() {
               startDate: startDate,
               endDate: startDate,
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               groupByEnterprise: true,
               groupByDay: true,
@@ -346,7 +336,7 @@ void main() {
                 0,
               ),
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               groupByEnterprise: true,
               groupByDay: false,
@@ -375,7 +365,7 @@ void main() {
                 0,
               ),
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               groupByEnterprise: true,
               groupByDay: false,
@@ -404,7 +394,7 @@ void main() {
                 0,
               ),
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               groupByEnterprise: true,
               groupByDay: false,
@@ -431,7 +421,7 @@ void main() {
               homePresenter.selectedDateMock.month + 1,
               0,
             ),
-            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()!],
             groupByEnterprise: true,
             groupByDay: false,
             groupByMonth: true,
@@ -469,7 +459,7 @@ void main() {
                 0,
               ),
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               groupByEnterprise: true,
               groupByDay: false,
@@ -482,10 +472,12 @@ void main() {
         ).called(1);
 
         homePresenter.selectedEnterpriseMock = EnterpriseModel.fromEntity(
-                EntityFactory.makeEnterpriseEntity(
-                    id: homePresenter.selectedEnterpriseMock!.id!.toInt() +
-                        faker.randomGenerator.integer(100)))
-            .toViewModel();
+          EntityFactory.makeEnterpriseEntity(
+            id:
+                homePresenter.selectedEnterpriseMock!.id!.toInt()! +
+                faker.randomGenerator.integer(100),
+          ),
+        ).toViewModel();
         await sut.getSales(periodType: PeriodType.monthly);
 
         verify(
@@ -501,7 +493,7 @@ void main() {
                 0,
               ),
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               groupByEnterprise: true,
               groupByDay: false,

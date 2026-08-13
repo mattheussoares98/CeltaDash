@@ -1,10 +1,10 @@
+import 'package:celta_dash/utils/utils.dart';
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
-import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/pages.dart';
 import '../../ui/services/services.dart';
 import '../mixins/mixins.dart';
@@ -14,9 +14,7 @@ class GetxCompareDaysPresenter extends GetxController
     implements CompareDaysPresenter {
   final LoadSaleStatistics loadSaleStatistics;
 
-  GetxCompareDaysPresenter({
-    required this.loadSaleStatistics,
-  });
+  GetxCompareDaysPresenter({required this.loadSaleStatistics});
 
   final appAnalyticsService = Get.find<AppAnalyticsService>();
   final homePresenter = Get.find<HomePresenter>();
@@ -53,12 +51,8 @@ class GetxCompareDaysPresenter extends GetxController
             // groupByMonth: true,
             // groupByDay: true,
             groupByHour: true,
-            enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
-            endDate: DateTime(
-              firstDay.year,
-              firstDay.month,
-              firstDay.day,
-            ),
+            enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()!],
+            endDate: DateTime(firstDay.year, firstDay.month, firstDay.day),
           ),
         );
 
@@ -76,12 +70,8 @@ class GetxCompareDaysPresenter extends GetxController
             // groupByMonth: true,
             // groupByDay: true,
             groupByHour: true,
-            enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
-            endDate: DateTime(
-              secondDay.year,
-              secondDay.month,
-              secondDay.day,
-            ),
+            enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()!],
+            endDate: DateTime(secondDay.year, secondDay.month, secondDay.day),
           ),
         );
 

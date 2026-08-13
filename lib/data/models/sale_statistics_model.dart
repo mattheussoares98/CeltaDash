@@ -1,4 +1,4 @@
-import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../domain/entities/entities.dart';
@@ -47,46 +47,46 @@ class SaleStatisticsModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        LiquidValue,
-        QuantityOfProducts,
-        TotalRepositionCost,
-        Year,
-        Month,
-        Date,
-        Hour,
-        Product,
-        ProductDepartment,
-        ProductSection,
-        PaymentFinalization,
-        PaymentModality,
-        EnterpriseId,
-        EnterprisePersonalizedCode,
-        EnterpriseFantasyName,
-        CashierOperator,
-        Seller,
-        QuantitySales,
-      ];
+    LiquidValue,
+    QuantityOfProducts,
+    TotalRepositionCost,
+    Year,
+    Month,
+    Date,
+    Hour,
+    Product,
+    ProductDepartment,
+    ProductSection,
+    PaymentFinalization,
+    PaymentModality,
+    EnterpriseId,
+    EnterprisePersonalizedCode,
+    EnterpriseFantasyName,
+    CashierOperator,
+    Seller,
+    QuantitySales,
+  ];
 
   factory SaleStatisticsModel.fromJson(Map json) => SaleStatisticsModel(
-        LiquidValue: json['LiquidValue'],
-        QuantityOfProducts: json['QuantityOfProducts'],
-        TotalRepositionCost: json['TotalRepositionCost'],
-        Year: json['Year'],
-        Month: json['Month'],
-        Date: json['Date'] == null ? null : DateTime.parse(json['Date']),
-        Hour: json['Hour'],
-        Product: json['Product'],
-        ProductDepartment: json['ProductDepartment'],
-        ProductSection: json['ProductSection'],
-        PaymentFinalization: json['PaymentFinalization'],
-        PaymentModality: json['PaymentModality'],
-        EnterpriseId: json['EnterpriseId'],
-        EnterprisePersonalizedCode: json['EnterprisePersonalizedCode'],
-        EnterpriseFantasyName: json['EnterpriseFantasyName'],
-        CashierOperator: json['CashierOperator'],
-        Seller: json['Seller'],
-        QuantitySales: json['QuantitySales'],
-      );
+    LiquidValue: json['LiquidValue'],
+    QuantityOfProducts: json['QuantityOfProducts'],
+    TotalRepositionCost: json['TotalRepositionCost'],
+    Year: json['Year'],
+    Month: json['Month'],
+    Date: json['Date'] == null ? null : DateTime.parse(json['Date']),
+    Hour: json['Hour'],
+    Product: json['Product'],
+    ProductDepartment: json['ProductDepartment'],
+    ProductSection: json['ProductSection'],
+    PaymentFinalization: json['PaymentFinalization'],
+    PaymentModality: json['PaymentModality'],
+    EnterpriseId: json['EnterpriseId'],
+    EnterprisePersonalizedCode: json['EnterprisePersonalizedCode'],
+    EnterpriseFantasyName: json['EnterpriseFantasyName'],
+    CashierOperator: json['CashierOperator'],
+    Seller: json['Seller'],
+    QuantitySales: json['QuantitySales'],
+  );
 
   factory SaleStatisticsModel.fromEntity(SaleStatisticsEntity entity) =>
       SaleStatisticsModel(
@@ -111,53 +111,55 @@ class SaleStatisticsModel extends Equatable {
       );
 
   Map<String, dynamic> toJson() => {
-        'LiquidValue': LiquidValue,
-        'QuantityOfProducts': QuantityOfProducts,
-        'TotalRepositionCost': TotalRepositionCost,
-        'Year': Year,
-        'Month': Month,
-        'Date': Date?.toIso8601String(),
-        'Hour': Hour,
-        'Product': Product,
-        'ProductDepartment': ProductDepartment,
-        'ProductSection': ProductSection,
-        'PaymentFinalization': PaymentFinalization,
-        'PaymentModality': PaymentModality,
-        'EnterpriseId': EnterpriseId,
-        'EnterprisePersonalizedCode': EnterprisePersonalizedCode,
-        'EnterpriseFantasyName': EnterpriseFantasyName,
-        'CashierOperator': CashierOperator,
-        'Seller': Seller,
-        'QuantitySales': QuantitySales,
-      };
+    'LiquidValue': LiquidValue,
+    'QuantityOfProducts': QuantityOfProducts,
+    'TotalRepositionCost': TotalRepositionCost,
+    'Year': Year,
+    'Month': Month,
+    'Date': Date?.toIso8601String(),
+    'Hour': Hour,
+    'Product': Product,
+    'ProductDepartment': ProductDepartment,
+    'ProductSection': ProductSection,
+    'PaymentFinalization': PaymentFinalization,
+    'PaymentModality': PaymentModality,
+    'EnterpriseId': EnterpriseId,
+    'EnterprisePersonalizedCode': EnterprisePersonalizedCode,
+    'EnterpriseFantasyName': EnterpriseFantasyName,
+    'CashierOperator': CashierOperator,
+    'Seller': Seller,
+    'QuantitySales': QuantitySales,
+  };
 
   SaleStatisticsEntity toEntity() => SaleStatisticsEntity(
-        LiquidValue: LiquidValue,
-        QuantityOfProducts: QuantityOfProducts,
-        TotalRepositionCost: TotalRepositionCost,
-        Year: Year,
-        Month: Month,
-        Date: Date,
-        Hour: Hour,
-        Product: Product,
-        ProductDepartment: ProductDepartment,
-        ProductSection: ProductSection,
-        PaymentFinalization: PaymentFinalization,
-        PaymentModality: PaymentModality,
-        EnterpriseId: EnterpriseId,
-        EnterprisePersonalizedCode: EnterprisePersonalizedCode,
-        EnterpriseFantasyName: EnterpriseFantasyName,
-        CashierOperator: CashierOperator,
-        Seller: Seller,
-        QuantitySales: QuantitySales,
-      );
+    LiquidValue: LiquidValue,
+    QuantityOfProducts: QuantityOfProducts,
+    TotalRepositionCost: TotalRepositionCost,
+    Year: Year,
+    Month: Month,
+    Date: Date,
+    Hour: Hour,
+    Product: Product,
+    ProductDepartment: ProductDepartment,
+    ProductSection: ProductSection,
+    PaymentFinalization: PaymentFinalization,
+    PaymentModality: PaymentModality,
+    EnterpriseId: EnterpriseId,
+    EnterprisePersonalizedCode: EnterprisePersonalizedCode,
+    EnterpriseFantasyName: EnterpriseFantasyName,
+    CashierOperator: CashierOperator,
+    Seller: Seller,
+    QuantitySales: QuantitySales,
+  );
 
   factory SaleStatisticsModel.fromViewModel(SaleStatisticViewModel viewModel) {
     double? parsedLiquidValue = double.tryParse(viewModel.LiquidValue ?? '');
-    double? parsedQuantityOfProducts =
-        double.tryParse(viewModel.QuantityOfProducts ?? '');
-    double? parsedTotalRepositionCost =
-        double.tryParse(viewModel.TotalRepositionCost ?? '');
+    double? parsedQuantityOfProducts = double.tryParse(
+      viewModel.QuantityOfProducts ?? '',
+    );
+    double? parsedTotalRepositionCost = double.tryParse(
+      viewModel.TotalRepositionCost ?? '',
+    );
     int? parsedYear = int.tryParse(viewModel.Year ?? '');
     int? parsedMonth = int.tryParse(viewModel.Month ?? '');
     int? parsedHour;

@@ -1,6 +1,6 @@
+import 'package:celta_dash/utils/utils.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../ui/helpers/helpers.dart';
 import '../../domain/entities/entities.dart';
 import '../../ui/pages/pages.dart';
 
@@ -20,13 +20,7 @@ class FirebaseSubEnterpriseModel extends Equatable {
   });
 
   @override
-  List<Object?> get props => [
-        id,
-        name,
-        personalizedCode,
-        cnpj,
-        enabled,
-      ];
+  List<Object?> get props => [id, name, personalizedCode, cnpj, enabled];
 
   factory FirebaseSubEnterpriseModel.fromJson(Map json) =>
       FirebaseSubEnterpriseModel(
@@ -38,30 +32,30 @@ class FirebaseSubEnterpriseModel extends Equatable {
       );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'personalizedCode': personalizedCode,
-        'cnpj': cnpj,
-        'enabled': enabled,
-      };
+    'id': id,
+    'name': name,
+    'personalizedCode': personalizedCode,
+    'cnpj': cnpj,
+    'enabled': enabled,
+  };
 
   factory FirebaseSubEnterpriseModel.fromEntity(
-          FirebaseSubEnterpriseEntity entity) =>
-      FirebaseSubEnterpriseModel(
-        id: entity.id,
-        name: entity.name,
-        personalizedCode: entity.personalizedCode,
-        cnpj: entity.cnpj,
-        enabled: entity.enabled,
-      );
+    FirebaseSubEnterpriseEntity entity,
+  ) => FirebaseSubEnterpriseModel(
+    id: entity.id,
+    name: entity.name,
+    personalizedCode: entity.personalizedCode,
+    cnpj: entity.cnpj,
+    enabled: entity.enabled,
+  );
 
   FirebaseSubEnterpriseEntity toEntity() => FirebaseSubEnterpriseEntity(
-        id: id,
-        name: name,
-        personalizedCode: personalizedCode,
-        cnpj: cnpj,
-        enabled: enabled,
-      );
+    id: id,
+    name: name,
+    personalizedCode: personalizedCode,
+    cnpj: cnpj,
+    enabled: enabled,
+  );
 
   factory FirebaseSubEnterpriseModel.fromViewModel(
     FirebaseSubEnterpriseViewModel viewModel,

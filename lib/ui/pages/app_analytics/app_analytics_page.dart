@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -33,10 +34,12 @@ class _AppAnalyticsPageState extends State<AppAnalyticsPage>
   static final formatter = DateFormat('yyyy/MM');
 
   final currentMonthFormatted = formatter.format(now);
-  final previousMonthFormatted =
-      formatter.format(DateTime(now.year, now.month - 1));
-  final antiPreviousMonthFormatted =
-      formatter.format(DateTime(now.year, now.month - 2));
+  final previousMonthFormatted = formatter.format(
+    DateTime(now.year, now.month - 1),
+  );
+  final antiPreviousMonthFormatted = formatter.format(
+    DateTime(now.year, now.month - 2),
+  );
 
   @override
   void initState() {
@@ -110,19 +113,21 @@ class _AppAnalyticsPageState extends State<AppAnalyticsPage>
           Expanded(
             child: Obx(() {
               final analytics = appAnalyticsPresenter.analytics
-                  ?.where((e) => e.enterprise.toLowerCase().contains(
-                        filteredEnterpriseController.text.toLowerCase(),
-                      ))
+                  ?.where(
+                    (e) => e.enterprise.toLowerCase().contains(
+                      filteredEnterpriseController.text.toLowerCase(),
+                    ),
+                  )
                   .toList();
               if (analytics == null || analytics.isEmpty) {
-                return Center(
-                  child: Text(R.string.empty),
-                );
+                return Center(child: Text(R.string.empty));
               }
 
-              analytics.sort((a, b) => b.totalSearchesFormatted
-                  .toInt()
-                  .compareTo(a.totalSearchesFormatted.toInt()));
+              analytics.sort(
+                (a, b) => b.totalSearchesFormatted.toInt()!.compareTo(
+                  a.totalSearchesFormatted.toInt()!,
+                ),
+              );
 
               return RefreshIndicator(
                 onRefresh: appAnalyticsPresenter.loadAnalytics,
@@ -138,12 +143,8 @@ class _AppAnalyticsPageState extends State<AppAnalyticsPage>
                           children: [
                             Text(
                               analytic.enterprise.toUpperCase(),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleLarge
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              style: Theme.of(context).textTheme.titleLarge
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             SearchCounts(analytic: analytic),
                             const Divider(),
@@ -166,10 +167,7 @@ class _AppAnalyticsPageState extends State<AppAnalyticsPage>
 class _Item extends StatelessWidget {
   final String periodFormatted;
   final DateTime? period;
-  const _Item({
-    required this.periodFormatted,
-    required this.period,
-  });
+  const _Item({required this.periodFormatted, required this.period});
 
   @override
   Widget build(BuildContext context) {
@@ -179,9 +177,7 @@ class _Item extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Text(
         periodFormatted,
-        style: TextStyle(
-          color: period == selectedPeriod ? Colors.white : null,
-        ),
+        style: TextStyle(color: period == selectedPeriod ? Colors.white : null),
       ),
     );
   }

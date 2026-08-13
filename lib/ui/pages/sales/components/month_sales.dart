@@ -1,3 +1,4 @@
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -31,14 +32,16 @@ class MonthSales extends StatelessWidget {
         PersonalizedTableCell(value: R.string.month, isTitle: true),
         PersonalizedTableCell(value: R.string.sales, isTitle: true),
         PersonalizedTableCell(
-            value: R.string.quantityAbbreviated, isTitle: true),
+          value: R.string.quantityAbbreviated,
+          isTitle: true,
+        ),
         PersonalizedTableCell(value: R.string.average, isTitle: true),
         PersonalizedTableCell(value: R.string.share, isTitle: true),
       ],
       rowValues: saleStatisticsByMonth
           .map((e) {
             final monthAbbreviation = DateFormat.MMM("pt_BR")
-                .format(DateTime(e.Year!.toInt(), e.Month!.toInt()))
+                .format(DateTime(e.Year!.toInt()!, e.Month!.toInt()!))
                 .toString()
                 .toUpperCase()
                 .substring(0, 3);
@@ -48,13 +51,11 @@ class MonthSales extends StatelessWidget {
 
             return [
               PersonalizedTableCell(value: monthAbbreviation),
-              PersonalizedTableCell(
-                value: totalLiquidByMonth,
-                isMoney: true,
-              ),
+              PersonalizedTableCell(value: totalLiquidByMonth, isMoney: true),
               PersonalizedTableCell(value: totalQuantityByMonth),
               PersonalizedTableCell(
-                value: totalLiquidByMonth /
+                value:
+                    totalLiquidByMonth /
                     (totalQuantityByMonth == 0 ? 1 : totalQuantityByMonth),
                 isMoney: true,
               ),

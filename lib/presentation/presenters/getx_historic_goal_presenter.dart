@@ -1,3 +1,4 @@
+import 'package:celta_dash/utils/utils.dart';
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
@@ -12,9 +13,7 @@ class GetxHistoricGoalPresenter extends GetxController
     implements HistoricGoalPresenter {
   final LoadSaleStatistics loadSaleStatistics;
 
-  GetxHistoricGoalPresenter({
-    required this.loadSaleStatistics,
-  });
+  GetxHistoricGoalPresenter({required this.loadSaleStatistics});
 
   final homePresenter = Get.find<HomePresenter>();
   final resumePresenter = Get.find<ResumePresenter>();
@@ -25,8 +24,9 @@ class GetxHistoricGoalPresenter extends GetxController
     mainError = null;
     try {
       if (year < 2025) {
-        mainError =
-            UIError.custom("${R.string.msgHistoricGoalAvailableSince} 2025");
+        mainError = UIError.custom(
+          "${R.string.msgHistoricGoalAvailableSince} 2025",
+        );
         return;
       }
 
@@ -37,7 +37,7 @@ class GetxHistoricGoalPresenter extends GetxController
           groupByMonth: true,
           groupByYear: true,
           groupByEnterprise: true,
-          enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+          enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()!],
         ),
       );
 
@@ -48,15 +48,17 @@ class GetxHistoricGoalPresenter extends GetxController
           groupByMonth: true,
           groupByYear: true,
           groupByEnterprise: true,
-          enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+          enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()!],
         ),
       );
 
       selectedYearSalesStatistics = [
-        ...selectedYearRemoteSales
-            .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel()),
-        ...previousYearRemoteSales
-            .map((e) => SaleStatisticsModel.fromEntity(e).toViewModel()),
+        ...selectedYearRemoteSales.map(
+          (e) => SaleStatisticsModel.fromEntity(e).toViewModel(),
+        ),
+        ...previousYearRemoteSales.map(
+          (e) => SaleStatisticsModel.fromEntity(e).toViewModel(),
+        ),
       ];
 
       //! already has the goals in resume presenter because load there
@@ -76,21 +78,20 @@ class GetxHistoricGoalPresenter extends GetxController
     //TODO use this function in monthlyComparison
 
     final manualGoal = resumePresenter.goals
-        .where((e) =>
-            e.goalEntity?.year == year &&
-            e.goalEntity?.month == month &&
-            e.goalEntity?.enterpriseId ==
-                homePresenter.selectedEnterprise!.id!.toInt())
+        .where(
+          (e) =>
+              e.goalEntity?.year == year &&
+              e.goalEntity?.month == month &&
+              e.goalEntity?.enterpriseId ==
+                  homePresenter.selectedEnterprise!.id!.toInt()!,
+        )
         .toList();
 
     if (manualGoal.isNotEmpty) {
       return manualGoal.first.goalEntity!.value;
     } else {
       final previousYearSameMonthSales = _selectedYearSalesStatistics.value
-          ?.filteredSales(
-            filterYear: year - 1,
-            filterMonth: month,
-          )
+          ?.filteredSales(filterYear: year - 1, filterMonth: month)
           .map((e) => e.toViewModel())
           .toList();
 
@@ -98,7 +99,7 @@ class GetxHistoricGoalPresenter extends GetxController
           previousYearSameMonthSales.isNotEmpty) {
         return (previousYearSameMonthSales.sumLiquidValue() * 1.05)
             .toStringAsFixed(2)
-            .toDouble();
+            .toDouble()!;
       } else {
         return ((_selectedYearSalesStatistics.value
                         ?.filteredSales(
@@ -111,7 +112,7 @@ class GetxHistoricGoalPresenter extends GetxController
                     1) *
                 1.05)
             .toStringAsFixed(2)
-            .toDouble();
+            .toDouble()!;
       }
     }
   }

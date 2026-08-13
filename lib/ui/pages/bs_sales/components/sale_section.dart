@@ -1,3 +1,4 @@
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../helpers/helpers.dart';
@@ -19,28 +20,13 @@ class SaleSection extends StatelessWidget {
           title: "${R.string.date} ${R.string.sale.toLowerCase()}",
           value: sale.dateHourOfBilling,
         ),
-        DetailRow(
-          title: R.string.cashierNumber,
-          value: sale.cashierNumber,
-        ),
-        DetailRow(
-          title: R.string.coupon,
-          value: sale.documentNumber,
-        ),
-        DetailRow(
-          title: R.string.type,
-          value: sale.fiscalNoteType?.Name,
-        ),
+        DetailRow(title: R.string.cashierNumber, value: sale.cashierNumber),
+        DetailRow(title: R.string.coupon, value: sale.documentNumber),
+        DetailRow(title: R.string.type, value: sale.fiscalNoteType?.Name),
 
-        DetailRow(
-          title: R.string.customer,
-          value: sale.customer?.Name,
-        ),
+        DetailRow(title: R.string.customer, value: sale.customer?.Name),
 
-        DetailRow(
-          title: R.string.cpfCnpj,
-          value: sale.customer?.CpfCnpj,
-        ),
+        DetailRow(title: R.string.cpfCnpj, value: sale.customer?.CpfCnpj),
         if (sale.seller != null)
           DetailRow(
             title: R.string.seller,

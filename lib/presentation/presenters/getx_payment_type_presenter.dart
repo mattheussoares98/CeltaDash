@@ -1,4 +1,4 @@
-import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
@@ -20,18 +20,13 @@ class GetxPaymentTypePresenter extends GetxController
     implements PaymentTypePresenter {
   final LoadSaleStatistics loadSaleStatistics;
 
-  GetxPaymentTypePresenter({
-    required this.loadSaleStatistics,
-  });
+  GetxPaymentTypePresenter({required this.loadSaleStatistics});
 
   final appAnalyticsService = Get.find<AppAnalyticsService>();
   final homePresenter = Get.find<HomePresenter>();
-  
+
   @override
-  Future<void> getSales({
-    PeriodType? periodType,
-    bool? forceRefresh,
-  }) async {
+  Future<void> getSales({PeriodType? periodType, bool? forceRefresh}) async {
     if (isLoadingValue == true) {
       isLoading = false;
       isLoading = true;
@@ -79,7 +74,7 @@ class GetxPaymentTypePresenter extends GetxController
       );
 
       final params = GetSaleStatisticsParams(
-        enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()],
+        enterpriseIds: [homePresenter.selectedEnterprise!.id!.toInt()!],
         startDate: startDate,
         endDate: selectedPeriod == PeriodType.daily ? startDate : endDate,
         groupByEnterprise: true,

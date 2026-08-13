@@ -1,14 +1,12 @@
 import 'dart:io';
 
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-// Assuming these are your custom imports.
-// You may need to adjust the paths if they are incorrect.
 import '../../../domain/helpers/helpers.dart';
 import '../../../domain/usecases/usecases.dart';
-import '../../../ui/helpers/helpers.dart';
 import 'mixin/mixin.dart';
 import 'table.dart';
 
@@ -144,15 +142,17 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
       _fixedColumnScrollController.addListener(() {
         if (_fixedColumnScrollController.position.pixels !=
             _scrollableColumnsScrollController.position.pixels) {
-          _scrollableColumnsScrollController
-              .jumpTo(_fixedColumnScrollController.position.pixels);
+          _scrollableColumnsScrollController.jumpTo(
+            _fixedColumnScrollController.position.pixels,
+          );
         }
       });
       _scrollableColumnsScrollController.addListener(() {
         if (_scrollableColumnsScrollController.position.pixels !=
             _fixedColumnScrollController.position.pixels) {
-          _fixedColumnScrollController
-              .jumpTo(_scrollableColumnsScrollController.position.pixels);
+          _fixedColumnScrollController.jumpTo(
+            _scrollableColumnsScrollController.position.pixels,
+          );
         }
       });
     }
@@ -254,27 +254,31 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
       _resetDataAndSort();
     }
 
-    final List<PersonalizedTableCell> fixedTitles =
-        widget.fixFirstColumn ? [widget.titles[0]] : [];
-    final List<PersonalizedTableCell> scrollableTitles =
-        widget.fixFirstColumn ? widget.titles.sublist(1) : widget.titles;
+    final List<PersonalizedTableCell> fixedTitles = widget.fixFirstColumn
+        ? [widget.titles[0]]
+        : [];
+    final List<PersonalizedTableCell> scrollableTitles = widget.fixFirstColumn
+        ? widget.titles.sublist(1)
+        : widget.titles;
 
     // NEW, SIMPLIFIED LOGIC
     final List<List<PersonalizedTableCell>> fixedRowValues =
         widget.fixFirstColumn
-            ? _sortedRows.map((row) => [row[0]]).toList()
-            : [];
+        ? _sortedRows.map((row) => [row[0]]).toList()
+        : [];
 
     final List<List<PersonalizedTableCell>> scrollableRowValues =
         widget.fixFirstColumn
-            ? _sortedRows.map((row) => row.sublist(1)).toList()
-            : _sortedRows;
+        ? _sortedRows.map((row) => row.sublist(1)).toList()
+        : _sortedRows;
 
     final List<PersonalizedTableCell> fullSumRow = _buildSumRow();
-    final List<PersonalizedTableCell> fixedSumRow =
-        widget.fixFirstColumn ? [fullSumRow[0]] : [];
-    final List<PersonalizedTableCell> scrollableSumRow =
-        widget.fixFirstColumn ? fullSumRow.sublist(1) : fullSumRow;
+    final List<PersonalizedTableCell> fixedSumRow = widget.fixFirstColumn
+        ? [fullSumRow[0]]
+        : [];
+    final List<PersonalizedTableCell> scrollableSumRow = widget.fixFirstColumn
+        ? fullSumRow.sublist(1)
+        : fullSumRow;
 
     final screenWidth = MediaQuery.of(context).size.width;
     final sumColumnsWidths = widget.columnsWidths.reduce((p, e) => p + e);
@@ -286,13 +290,15 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
     final Map<int, TableColumnWidth> scrollableColumnWidthsMap = {};
     if (widget.fixFirstColumn) {
       for (int i = 0; i < scrollableTitles.length; i++) {
-        scrollableColumnWidthsMap[i] =
-            FixedColumnWidth(widget.columnsWidths[i + 1] + availableSize);
+        scrollableColumnWidthsMap[i] = FixedColumnWidth(
+          widget.columnsWidths[i + 1] + availableSize,
+        );
       }
     } else {
       for (int i = 0; i < widget.titles.length; i++) {
-        scrollableColumnWidthsMap[i] =
-            FixedColumnWidth(widget.columnsWidths[i] + availableSize);
+        scrollableColumnWidthsMap[i] = FixedColumnWidth(
+          widget.columnsWidths[i] + availableSize,
+        );
       }
     }
 
@@ -342,11 +348,14 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
             scrollableRowValues: scrollableRowValues,
             widget: widget,
             availableSize: availableSize,
-            notFixedColumns:
-                List.generate(scrollableRowValues.length, (rowIndex) {
+            notFixedColumns: List.generate(scrollableRowValues.length, (
+              rowIndex,
+            ) {
               final fullRow = _sortedRows[rowIndex];
-              final tapsInRow =
-                  fullRow.map((c) => c.onTap).whereType<VoidCallback>().toSet();
+              final tapsInRow = fullRow
+                  .map((c) => c.onTap)
+                  .whereType<VoidCallback>()
+                  .toSet();
               final isUnifiedTapRow = tapsInRow.length == 1;
               final unifiedTap = isUnifiedTapRow ? tapsInRow.first : null;
 
@@ -367,8 +376,10 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
             }),
             fixedColumns: List.generate(fixedRowValues.length, (rowIndex) {
               final fullRow = _sortedRows[rowIndex];
-              final tapsInRow =
-                  fullRow.map((c) => c.onTap).whereType<VoidCallback>().toSet();
+              final tapsInRow = fullRow
+                  .map((c) => c.onTap)
+                  .whereType<VoidCallback>()
+                  .toSet();
               final isUnifiedTapRow = tapsInRow.length == 1;
               final unifiedTap = isUnifiedTapRow ? tapsInRow.first : null;
 
@@ -400,10 +411,13 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                     if (widget.fixFirstColumn)
                       Table(
                         border: TableBorder.all(
-                            color: tableBorderColor, width: 0.06),
+                          color: tableBorderColor,
+                          width: 0.06,
+                        ),
                         columnWidths: {
                           0: FixedColumnWidth(
-                              widget.columnsWidths[0] + availableSize)
+                            widget.columnsWidths[0] + availableSize,
+                          ),
                         },
                         children: [
                           buildTableRow(
@@ -412,7 +426,8 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                             isSumRow: true,
                             isUnifiedTapRow: false, // Sum row is not tappable
                             unifiedTap: null,
-                            startingColumnIndex: 0, context: context,
+                            startingColumnIndex: 0,
+                            context: context,
                           ),
                         ],
                       ),
@@ -423,7 +438,9 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                         physics: const ClampingScrollPhysics(),
                         child: Table(
                           border: TableBorder.all(
-                              color: tableBorderColor, width: 0.06),
+                            color: tableBorderColor,
+                            width: 0.06,
+                          ),
                           columnWidths: scrollableColumnWidthsMap,
                           children: [
                             buildTableRow(
@@ -432,8 +449,9 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
                               isSumRow: true,
                               isUnifiedTapRow: false, // Sum row is not tappable
                               unifiedTap: null,
-                              startingColumnIndex:
-                                  widget.fixFirstColumn ? 1 : 0,
+                              startingColumnIndex: widget.fixFirstColumn
+                                  ? 1
+                                  : 0,
                               context: context,
                             ),
                           ],

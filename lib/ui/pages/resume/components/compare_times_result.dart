@@ -1,6 +1,5 @@
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../ui/helpers/helpers.dart';
 
 class CompareTimesResult extends StatelessWidget {
   final String betterTime;
@@ -65,8 +64,9 @@ class _Item extends StatelessWidget {
         children: [
           Text(
             isBestHour ? betterTimeMessage : worstTimeMessage,
-            style:
-                Theme.of(context).textTheme.titleSmall?.copyWith(color: color),
+            style: Theme.of(
+              context,
+            ).textTheme.titleSmall?.copyWith(color: color),
           ),
           FittedBox(
             child: Row(
@@ -83,10 +83,9 @@ class _Item extends StatelessWidget {
                   child: FittedBox(
                     child: Text(
                       hour,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleSmall
-                          ?.copyWith(color: color),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.titleSmall?.copyWith(color: color),
                     ),
                   ),
                 ),
@@ -95,8 +94,9 @@ class _Item extends StatelessWidget {
           ),
           Text(
             value.toString().toBrazilianNumber().addBrazilianCoin(),
-            style:
-                Theme.of(context).textTheme.titleSmall?.copyWith(color: color),
+            style: Theme.of(
+              context,
+            ).textTheme.titleSmall?.copyWith(color: color),
           ),
         ],
       ),

@@ -1,3 +1,4 @@
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -23,7 +24,7 @@ class Enterprises extends StatefulWidget {
 class _EnterprisesState extends State<Enterprises> {
   void changeValue(PersonalizedPresenter presenter, EcEnterpriseViewModel e) {
     setState(() {
-      presenter.changeSelectedEnterprise(e.id!.toInt());
+      presenter.changeSelectedEnterprise(e.id!.toInt()!);
     });
     widget.collapseAll(false);
     widget.periodsController.expand();
@@ -47,23 +48,20 @@ class _EnterprisesState extends State<Enterprises> {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         text: TextSpan(
-          style: const TextStyle(
-            color: Colors.black,
-          ),
+          style: const TextStyle(color: Colors.black),
           children: [
             TextSpan(text: R.string.enterprise),
             if (selectedEnterprise != null)
               TextSpan(
                 text:
                     " ${selectedEnterprise.personalizedCode} - ${selectedEnterprise.name}",
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
           ],
         ),
       ),
-      children: allEnterprises
+      children:
+          allEnterprises
               ?.map(
                 (e) => InkWell(
                   onTap: () {

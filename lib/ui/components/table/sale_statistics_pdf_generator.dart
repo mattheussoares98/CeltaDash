@@ -1,5 +1,6 @@
 import 'dart:typed_data';
-import 'package:celta_dash/ui/helpers/helpers.dart';
+
+import 'package:celta_dash/utils/utils.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
@@ -47,9 +48,7 @@ class SaleStatisticPdfGenerator {
         pageFormat: PdfPageFormat.a4.landscape,
         header: (pw.Context context) => _buildHeader(),
         footer: (pw.Context context) => _buildFooter(context),
-        build: (pw.Context context) => [
-          _buildPdfTable(),
-        ],
+        build: (pw.Context context) => [_buildPdfTable()],
       ),
     );
 
@@ -64,8 +63,8 @@ class SaleStatisticPdfGenerator {
     final startDate = getSalesStatisticsParams?.startDate;
     final endDate =
         getSalesStatisticsParams?.endDate.isAfter(selectedDate) == true
-            ? selectedDate
-            : getSalesStatisticsParams?.endDate;
+        ? selectedDate
+        : getSalesStatisticsParams?.endDate;
     // final selectedPeriodType = getSalesStatisticsParams?.selectedPeriod;
     // final selectedCategories = getSalesStatisticsParams?.selectedsCategories;
     final selectedsEnterprises = getSalesStatisticsParams?.selectedsEnterprises;
@@ -76,32 +75,38 @@ class SaleStatisticPdfGenerator {
       child: pw.Column(
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
-          pw.Text(pdfFileName,
-              style:
-                  pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 18)),
-          // The text is now in Portuguese and uses the formatted date.
-          pw.Row(children: [
-            pw.Text(
-              'Gerado em: ${formatter.format(selectedDate)}',
-              style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey),
+          pw.Text(
+            pdfFileName,
+            style: const pw.TextStyle(
+              fontWeight: pw.FontWeight.bold,
+              fontSize: 18,
             ),
-            if (startDate != null && endDate != null)
+          ),
+          // The text is now in Portuguese and uses the formatted date.
+          pw.Row(
+            children: [
               pw.Text(
-                ' - Período: ${DateFormat.yMd('pt_BR').format(startDate)} até ${DateFormat.yMd('pt_BR').format(endDate)}',
-                style: const pw.TextStyle(fontSize: 10),
+                'Gerado em: ${formatter.format(selectedDate)}',
+                style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey),
               ),
-            // if (selectedPeriodType != null)
-            //   pw.Text(
-            //     ' - Período: $selectedPeriodType}',
-            //     style: const pw.TextStyle(fontSize: 10),
-            //   ),
-            // if (selectedCategories != null) ...[
-            //   pw.Text(
-            //     selectedCategories.map((e) => e.name).toList().join(", "),
-            //     style: const pw.TextStyle(fontSize: 10),
-            //   ),
-            // ],
-          ]),
+              if (startDate != null && endDate != null)
+                pw.Text(
+                  ' - Período: ${DateFormat.yMd('pt_BR').format(startDate)} até ${DateFormat.yMd('pt_BR').format(endDate)}',
+                  style: const pw.TextStyle(fontSize: 10),
+                ),
+              // if (selectedPeriodType != null)
+              //   pw.Text(
+              //     ' - Período: $selectedPeriodType}',
+              //     style: const pw.TextStyle(fontSize: 10),
+              //   ),
+              // if (selectedCategories != null) ...[
+              //   pw.Text(
+              //     selectedCategories.map((e) => e.name).toList().join(", "),
+              //     style: const pw.TextStyle(fontSize: 10),
+              //   ),
+              // ],
+            ],
+          ),
           if (selectedsEnterprises != null) ...[
             pw.Text(
               selectedsEnterprises.map((e) => e.name!).toList().join(", "),
@@ -127,9 +132,9 @@ class SaleStatisticPdfGenerator {
       child: pw.Text(
         // The page information text is now in Portuguese.
         'Página ${context.pageNumber} de ${context.pagesCount}',
-        style: pw.Theme.of(context)
-            .defaultTextStyle
-            .copyWith(color: PdfColors.grey),
+        style: pw.Theme.of(
+          context,
+        ).defaultTextStyle.copyWith(color: PdfColors.grey),
       ),
     );
   }
@@ -179,11 +184,7 @@ class SaleStatisticPdfGenerator {
       border: pw.TableBorder.all(color: PdfColors.grey600, width: 0.5),
       columnWidths: pdfColumnWidths,
       // The children list starts with the repeatable header row.
-      children: [
-        headers,
-        ...rows,
-        ?pdfSumRow,
-      ],
+      children: [headers, ...rows, ?pdfSumRow],
     );
   }
 
@@ -231,10 +232,7 @@ class SaleStatisticPdfGenerator {
         children: [
           // Conditionally add the 'R$' prefix.
           if (cell.isMoney == true)
-            pw.TextSpan(
-              text: 'R\$ ',
-              style: symbolStyle,
-            ),
+            pw.TextSpan(text: 'R\$ ', style: symbolStyle),
           // The main value.
           pw.TextSpan(
             text: isHeader || cell.isTitle == true
@@ -244,10 +242,7 @@ class SaleStatisticPdfGenerator {
           ),
           // Conditionally add the '%' suffix.
           if (cell.isPercentage == true)
-            pw.TextSpan(
-              text: ' %',
-              style: symbolStyle,
-            ),
+            pw.TextSpan(text: ' %', style: symbolStyle),
         ],
       ),
     );

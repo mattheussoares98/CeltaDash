@@ -1,5 +1,4 @@
 export './calculator/calculator.dart';
-export './convert/convert.dart';
 export './decorations/decorations.dart';
 export './errors/errors.dart';
 export './formatters/formatters.dart';
@@ -9,3 +8,4 @@ export './routes/routes.dart';
 export 'sizes/sizes.dart';
 export 'theme/theme.dart';
 export 'validations/validations.dart';
+//TODO delete this entire folder

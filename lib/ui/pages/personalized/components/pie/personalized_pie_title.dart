@@ -1,3 +1,4 @@
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -74,7 +75,7 @@ class PersonalizedPieTitle extends StatelessWidget {
 
     if (presenter.lastGetStatisticsParams?.groupByMonth == true) {
       final formatter = DateFormat('MMMM', 'pt_BR');
-      final DateTime date = DateTime(DateTime.now().year, sale.Month!.toInt());
+      final DateTime date = DateTime(DateTime.now().year, sale.Month!.toInt()!);
       return formatter.format(date);
     }
 
@@ -92,9 +93,9 @@ class PersonalizedPieTitle extends StatelessWidget {
 
     return Text(
       categories + periods,
-      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+      style: Theme.of(
+        context,
+      ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),
     );
   }
 }

@@ -6,12 +6,11 @@ import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
 import 'package:celta_dash/ui/pages/pages.dart';
 import 'package:celta_dash/ui/services/services.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:faker/faker.dart';
-
-import 'package:get/get.dart';
-
-import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:get/get.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../data/mocks/mocks.dart';
@@ -111,19 +110,13 @@ void main() {
         await sut.getCanceledSales();
       });
       test("Should update selected period correctly", () async {
-        await sut.getCanceledSales(
-          periodType: PeriodType.daily,
-        );
+        await sut.getCanceledSales(periodType: PeriodType.daily);
         expect(sut.selectedPeriod, PeriodType.daily);
 
-        await sut.getCanceledSales(
-          periodType: PeriodType.monthly,
-        );
+        await sut.getCanceledSales(periodType: PeriodType.monthly);
         expect(sut.selectedPeriod, PeriodType.monthly);
 
-        await sut.getCanceledSales(
-          periodType: PeriodType.daily,
-        );
+        await sut.getCanceledSales(periodType: PeriodType.daily);
         expect(sut.selectedPeriod, PeriodType.daily);
       });
       test("Should update sale movements correctly", () async {
@@ -145,10 +138,7 @@ void main() {
         final period = PeriodType
             .values[faker.randomGenerator.integer(PeriodType.values.length)];
 
-        await sut.getCanceledSales(
-          forceRefresh: true,
-          periodType: period,
-        );
+        await sut.getCanceledSales(forceRefresh: true, periodType: period);
 
         verify(
           () => appAnalyticsService.addNewMonthlyAnalytic(
@@ -161,15 +151,13 @@ void main() {
 
     group("Daily", () {
       test("Should load sales with correct params", () async {
-        await sut.getCanceledSales(
-          periodType: PeriodType.daily,
-        );
+        await sut.getCanceledSales(periodType: PeriodType.daily);
 
         verify(
           () => loadSaleMovements.get(
             GetSaleMovementParams(
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
@@ -200,7 +188,7 @@ void main() {
           () => loadSaleMovements.get(
             GetSaleMovementParams(
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               startDate: startDate,
               endDate: startDate,
@@ -223,7 +211,7 @@ void main() {
           () => loadSaleMovements.get(
             GetSaleMovementParams(
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               startDate: startDate,
               endDate: startDate,
@@ -245,7 +233,7 @@ void main() {
           sut.lastGetDailyParams,
           GetSaleMovementParams(
             onlyCancelled: true,
-            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()!],
             startDate: startDate,
             endDate: startDate,
           ),
@@ -275,7 +263,7 @@ void main() {
             GetSaleMovementParams(
               onlyCancelled: true,
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               startDate: startDate,
               endDate: startDate,
@@ -283,9 +271,9 @@ void main() {
           ),
         ).called(1);
 
-        homePresenter.selectedEnterpriseMock =
-            EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
-                .toViewModel();
+        homePresenter.selectedEnterpriseMock = EnterpriseModel.fromEntity(
+          EntityFactory.makeEnterpriseEntity(),
+        ).toViewModel();
         await sut.getCanceledSales();
 
         verify(
@@ -293,7 +281,7 @@ void main() {
             GetSaleMovementParams(
               onlyCancelled: true,
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               startDate: startDate,
               endDate: startDate,
@@ -312,7 +300,7 @@ void main() {
             GetSaleMovementParams(
               onlyCancelled: true,
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
@@ -336,7 +324,7 @@ void main() {
             GetSaleMovementParams(
               onlyCancelled: true,
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
@@ -360,7 +348,7 @@ void main() {
             GetSaleMovementParams(
               onlyCancelled: true,
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
@@ -382,7 +370,7 @@ void main() {
           sut.lastGetMonthlyParams,
           GetSaleMovementParams(
             onlyCancelled: true,
-            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()],
+            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()!],
             startDate: DateTime(
               homePresenter.selectedDateMock.year,
               homePresenter.selectedDateMock.month,
@@ -413,7 +401,7 @@ void main() {
             GetSaleMovementParams(
               onlyCancelled: true,
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
@@ -428,9 +416,9 @@ void main() {
           ),
         ).called(1);
 
-        homePresenter.selectedEnterpriseMock =
-            EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
-                .toViewModel();
+        homePresenter.selectedEnterpriseMock = EnterpriseModel.fromEntity(
+          EntityFactory.makeEnterpriseEntity(),
+        ).toViewModel();
         await sut.getCanceledSales(periodType: PeriodType.monthly);
 
         verify(
@@ -438,7 +426,7 @@ void main() {
             GetSaleMovementParams(
               onlyCancelled: true,
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               startDate: DateTime(
                 homePresenter.selectedDateMock.year,
@@ -477,8 +465,9 @@ void main() {
 
       sut.updateSelectedSaleMovement(newSaleMovement);
 
-      verify(() => navigateTo.navigate(pageRoute: PageRoutes.bsSaleDetails))
-          .called(1);
+      verify(
+        () => navigateTo.navigate(pageRoute: PageRoutes.bsSaleDetails),
+      ).called(1);
     });
   });
 
@@ -491,8 +480,8 @@ void main() {
       final newSaleMovement = EntityFactory.makeSaleMovementEntity();
       final newSaleMovementViewModel =
           SaleMovementCollectionItemModel.fromEntity(
-        newSaleMovement.collection.first,
-      ).toViewModel();
+            newSaleMovement.collection.first,
+          ).toViewModel();
 
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(sut.mainErrorStream, emits(null));
@@ -527,7 +516,8 @@ void main() {
       await sut.getSelectedSaleDetails();
 
       final sale = SaleMovementCollectionItemModel.fromEntity(
-          saleMovementEntity.collection.first);
+        saleMovementEntity.collection.first,
+      );
 
       final date = DateTime(
         sale.dateHourOfBilling!.year,
@@ -535,19 +525,21 @@ void main() {
         sale.dateHourOfBilling!.day,
       );
 
-      verify(() => loadSaleMovements.get(
-            GetSaleMovementParams(
-              documentNumbers: [sale.documentNumber!],
-              enterpriseIds: [sale.enterpriseId!],
-              startDate: date,
-              endDate: date,
-              mountCustomer: true,
-              mountFiscalNoteType: true,
-              mountProducts: true,
-              mountSeller: true,
-              mountPaymentFinalizations: true,
-            ),
-          )).called(1);
+      verify(
+        () => loadSaleMovements.get(
+          GetSaleMovementParams(
+            documentNumbers: [sale.documentNumber!],
+            enterpriseIds: [sale.enterpriseId!],
+            startDate: date,
+            endDate: date,
+            mountCustomer: true,
+            mountFiscalNoteType: true,
+            mountProducts: true,
+            mountSeller: true,
+            mountPaymentFinalizations: true,
+          ),
+        ),
+      ).called(1);
     });
     test("Should update selected sale correctly", () async {
       final newSale = SaleMovementCollectionItemModel.fromEntity(
@@ -575,8 +567,8 @@ void main() {
       //change the selected enterprise, but...
 
       final sale = SaleMovementCollectionItemModel.fromEntity(
-              saleMovementEntity.collection.first)
-          .toViewModel();
+        saleMovementEntity.collection.first,
+      ).toViewModel();
       expectLater(sut.selectedSaleStream, emitsInOrder([null, sale]));
 
       await sut.getSelectedSaleDetails();
@@ -613,17 +605,18 @@ void main() {
       );
     });
     test(
-        "Should get sales with correct values when doesnt pass a date as parameter",
-        () async {
-      await sut.getNotCanceledSales(
-        documentNumbers: documentNumbers,
-        date: selectedDate,
-      );
+      "Should get sales with correct values when doesnt pass a date as parameter",
+      () async {
+        await sut.getNotCanceledSales(
+          documentNumbers: documentNumbers,
+          date: selectedDate,
+        );
 
-      verify(() => loadSaleMovements.get(
+        verify(
+          () => loadSaleMovements.get(
             GetSaleMovementParams(
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               startDate: selectedDate,
               endDate: selectedDate,
@@ -631,35 +624,42 @@ void main() {
               actualPage: 1,
               documentNumbers: documentNumbers,
             ),
-          )).called(1);
-    });
+          ),
+        ).called(1);
+      },
+    );
     test(
-        "Should not pass the document number parameter if has only empty values",
-        () async {
-      await sut.getNotCanceledSales(
-        documentNumbers: [""],
-        date: selectedDate,
-      );
+      "Should not pass the document number parameter if has only empty values",
+      () async {
+        await sut.getNotCanceledSales(
+          documentNumbers: [""],
+          date: selectedDate,
+        );
 
-      verify(() => loadSaleMovements.get(
+        verify(
+          () => loadSaleMovements.get(
             GetSaleMovementParams(
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
               startDate: selectedDate,
               endDate: selectedDate,
               onlyNotCancelled: true,
               actualPage: 1,
             ),
-          )).called(1);
-    });
+          ),
+        ).called(1);
+      },
+    );
     test("Should add correct app analytics", () async {
       await sut.getNotCanceledSales(date: selectedDate);
 
-      verify(() => appAnalyticsService.addNewMonthlyAnalytic(
-            reportType: ReportType.notCanceledSales,
-            periodType: PeriodType.daily,
-          )).called(1);
+      verify(
+        () => appAnalyticsService.addNewMonthlyAnalytic(
+          reportType: ReportType.notCanceledSales,
+          periodType: PeriodType.daily,
+        ),
+      ).called(1);
     });
 
     test("Should return false on success with empty collection", () async {

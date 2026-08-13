@@ -1,14 +1,14 @@
+import 'package:celta_dash/domain/entities/entities.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 
-import 'package:celta_dash/domain/entities/entities.dart';
-import '../../../ui/helpers/helpers.dart';
 import '../../../ui/pages/pages.dart';
-import 'sale_movement_fiscal_note_model.dart';
 import 'sale_movement_customer_model.dart';
-import 'sale_movement_seller_model.dart';
-import 'sale_movement_product_model.dart';
 import 'sale_movement_finalization_model.dart';
+import 'sale_movement_fiscal_note_model.dart';
+import 'sale_movement_product_model.dart';
+import 'sale_movement_seller_model.dart';
 
 class SaleMovementCollectionItemModel extends Equatable {
   final int? Id;
@@ -51,24 +51,24 @@ class SaleMovementCollectionItemModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        Id,
-        enterpriseId,
-        fiscalNoteTypeId,
-        sellerId,
-        documentNumber,
-        cashierNumber,
-        dateHourOfBilling,
-        dateHourOfCancellation,
-        totalLiquid,
-        isCancelled,
-        fiscalNoteType,
-        customer,
-        seller,
-        userCancellation,
-        products,
-        paymentFinalizations,
-        motiveCancellation,
-      ];
+    Id,
+    enterpriseId,
+    fiscalNoteTypeId,
+    sellerId,
+    documentNumber,
+    cashierNumber,
+    dateHourOfBilling,
+    dateHourOfCancellation,
+    totalLiquid,
+    isCancelled,
+    fiscalNoteType,
+    customer,
+    seller,
+    userCancellation,
+    products,
+    paymentFinalizations,
+    motiveCancellation,
+  ];
 
   factory SaleMovementCollectionItemModel.fromJson(Map json) =>
       SaleMovementCollectionItemModel(
@@ -90,7 +90,8 @@ class SaleMovementCollectionItemModel extends Equatable {
         isCancelled: json['isCancelled'] as bool?,
         fiscalNoteType: json['fiscalNoteType'] != null
             ? SaleMovementFiscalNoteModel.fromJson(
-                json['fiscalNoteType'] as Map)
+                json['fiscalNoteType'] as Map,
+              )
             : null,
         customer: json['customer'] != null
             ? SaleMovementCustomerModel.fromJson(json['customer'] as Map)
@@ -100,68 +101,69 @@ class SaleMovementCollectionItemModel extends Equatable {
             : null,
         products: json['products'] != null
             ? (json['products'] as List)
-                .map((e) => SaleMovementProductModel.fromJson(e as Map))
-                .toList()
+                  .map((e) => SaleMovementProductModel.fromJson(e as Map))
+                  .toList()
             : null,
         paymentFinalizations: json['paymentFinalizations'] != null
             ? (json['paymentFinalizations'] as List)
-                .map((e) => SaleMovementFinalizationModel.fromJson(e as Map))
-                .toList()
+                  .map((e) => SaleMovementFinalizationModel.fromJson(e as Map))
+                  .toList()
             : null,
       );
 
   factory SaleMovementCollectionItemModel.fromEntity(
-          SaleMovementCollectionItemEntity? entity) =>
-      SaleMovementCollectionItemModel(
-        Id: entity?.id,
-        enterpriseId: entity?.enterpriseId,
-        fiscalNoteTypeId: entity?.fiscalNoteTypeId,
-        sellerId: entity?.sellerId,
-        documentNumber: entity?.documentNumber,
-        cashierNumber: entity?.cashierNumber,
-        dateHourOfBilling: entity?.dateHourOfBilling,
-        dateHourOfCancellation: entity?.dateHourOfCancellation,
-        totalLiquid: entity?.totalLiquid,
-        isCancelled: entity?.isCancelled,
-        motiveCancellation: entity?.motiveCancellation,
-        fiscalNoteType: entity?.fiscalNoteType != null
-            ? SaleMovementFiscalNoteModel.fromEntity(entity!.fiscalNoteType)
-            : null,
-        customer: entity?.customer != null
-            ? SaleMovementCustomerModel.fromEntity(entity!.customer)
-            : null,
-        seller: entity?.seller != null
-            ? SaleMovementSellerModel.fromEntity(entity!.seller)
-            : null,
-        userCancellation: entity?.userCancellation,
-        products: entity?.products
-            ?.map((e) => SaleMovementProductModel.fromEntity(e))
-            .toList(),
-        paymentFinalizations: entity?.paymentFinalizations
-            ?.map((e) => SaleMovementFinalizationModel.fromEntity(e))
-            .toList(),
-      );
+    SaleMovementCollectionItemEntity? entity,
+  ) => SaleMovementCollectionItemModel(
+    Id: entity?.id,
+    enterpriseId: entity?.enterpriseId,
+    fiscalNoteTypeId: entity?.fiscalNoteTypeId,
+    sellerId: entity?.sellerId,
+    documentNumber: entity?.documentNumber,
+    cashierNumber: entity?.cashierNumber,
+    dateHourOfBilling: entity?.dateHourOfBilling,
+    dateHourOfCancellation: entity?.dateHourOfCancellation,
+    totalLiquid: entity?.totalLiquid,
+    isCancelled: entity?.isCancelled,
+    motiveCancellation: entity?.motiveCancellation,
+    fiscalNoteType: entity?.fiscalNoteType != null
+        ? SaleMovementFiscalNoteModel.fromEntity(entity!.fiscalNoteType)
+        : null,
+    customer: entity?.customer != null
+        ? SaleMovementCustomerModel.fromEntity(entity!.customer)
+        : null,
+    seller: entity?.seller != null
+        ? SaleMovementSellerModel.fromEntity(entity!.seller)
+        : null,
+    userCancellation: entity?.userCancellation,
+    products: entity?.products
+        ?.map((e) => SaleMovementProductModel.fromEntity(e))
+        .toList(),
+    paymentFinalizations: entity?.paymentFinalizations
+        ?.map((e) => SaleMovementFinalizationModel.fromEntity(e))
+        .toList(),
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': Id,
-        'enterpriseId': enterpriseId,
-        'fiscalNoteTypeId': fiscalNoteTypeId,
-        'sellerId': sellerId,
-        'documentNumber': documentNumber,
-        'cashierNumber': cashierNumber,
-        'dateHourOfBilling': dateHourOfBilling?.toIso8601String(),
-        'dateHourOfCancellation': dateHourOfCancellation?.toIso8601String(),
-        'totalLiquid': totalLiquid,
-        'isCancelled': isCancelled,
-        'motiveCancellation': motiveCancellation,
-        'fiscalNoteType': fiscalNoteType?.toJson(),
-        'customer': customer?.toJson(),
-        'userCancellation': userCancellation,
-        'seller': seller?.toJson(),
-        'products': products?.map((e) => e.toJson()).toList(),
-        'paymentFinalizations':
-            paymentFinalizations?.map((e) => e.toJson()).toList(),
-      };
+    'id': Id,
+    'enterpriseId': enterpriseId,
+    'fiscalNoteTypeId': fiscalNoteTypeId,
+    'sellerId': sellerId,
+    'documentNumber': documentNumber,
+    'cashierNumber': cashierNumber,
+    'dateHourOfBilling': dateHourOfBilling?.toIso8601String(),
+    'dateHourOfCancellation': dateHourOfCancellation?.toIso8601String(),
+    'totalLiquid': totalLiquid,
+    'isCancelled': isCancelled,
+    'motiveCancellation': motiveCancellation,
+    'fiscalNoteType': fiscalNoteType?.toJson(),
+    'customer': customer?.toJson(),
+    'userCancellation': userCancellation,
+    'seller': seller?.toJson(),
+    'products': products?.map((e) => e.toJson()).toList(),
+    'paymentFinalizations': paymentFinalizations
+        ?.map((e) => e.toJson())
+        .toList(),
+  };
 
   SaleMovementCollectionItemEntity toEntity() =>
       SaleMovementCollectionItemEntity(
@@ -181,8 +183,9 @@ class SaleMovementCollectionItemModel extends Equatable {
         seller: seller?.toEntity(),
         userCancellation: userCancellation,
         products: products?.map((e) => e.toEntity()).toList(),
-        paymentFinalizations:
-            paymentFinalizations?.map((e) => e.toEntity()).toList(),
+        paymentFinalizations: paymentFinalizations
+            ?.map((e) => e.toEntity())
+            .toList(),
       );
 
   SaleMovementCollectionItemViewModel toViewModel() {
@@ -195,8 +198,9 @@ class SaleMovementCollectionItemModel extends Equatable {
       documentNumber: documentNumber,
       cashierNumber: cashierNumber,
       motiveCancellation: motiveCancellation,
-      dateHourOfBilling:
-          dateHourOfBilling != null ? df.format(dateHourOfBilling!) : null,
+      dateHourOfBilling: dateHourOfBilling != null
+          ? df.format(dateHourOfBilling!)
+          : null,
       dateHourOfCancellation: dateHourOfCancellation != null
           ? df.format(dateHourOfCancellation!)
           : null,
@@ -207,13 +211,15 @@ class SaleMovementCollectionItemModel extends Equatable {
       seller: seller?.toViewModel(),
       userCancellation: userCancellation,
       products: products?.map((e) => e.toViewModel()).toList(),
-      paymentFinalizations:
-          paymentFinalizations?.map((e) => e.toViewModel()).toList(),
+      paymentFinalizations: paymentFinalizations
+          ?.map((e) => e.toViewModel())
+          .toList(),
     );
   }
 
   factory SaleMovementCollectionItemModel.fromViewModel(
-      SaleMovementCollectionItemViewModel viewModel) {
+    SaleMovementCollectionItemViewModel viewModel,
+  ) {
     final df = DateFormat('dd/MM/yyyy HH:mm:ss');
     return SaleMovementCollectionItemModel(
       Id: viewModel.Id?.toInt(),

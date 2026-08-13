@@ -8,12 +8,11 @@ import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
 import 'package:celta_dash/ui/pages/pages.dart';
 import 'package:celta_dash/ui/services/services.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:faker/faker.dart';
-
-import 'package:get/get.dart';
-
-import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:get/get.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../data/mocks/mocks.dart';
@@ -59,9 +58,9 @@ void main() {
 
   void initMockSuccess() {
     loadSaleStatistics.mockGet(saleStatisticsEntities);
-    homePresenter.selectedEnterpriseMock =
-        EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
-            .toViewModel();
+    homePresenter.selectedEnterpriseMock = EnterpriseModel.fromEntity(
+      EntityFactory.makeEnterpriseEntity(),
+    ).toViewModel();
     homePresenter.selectedDateMock = faker.date.dateTime();
   }
 
@@ -117,19 +116,13 @@ void main() {
         await sut.getSales();
       });
       test("Should update selected period correctly", () async {
-        await sut.getSales(
-          periodType: PeriodType.daily,
-        );
+        await sut.getSales(periodType: PeriodType.daily);
         expect(sut.selectedPeriod, PeriodType.daily);
 
-        await sut.getSales(
-          periodType: PeriodType.monthly,
-        );
+        await sut.getSales(periodType: PeriodType.monthly);
         expect(sut.selectedPeriod, PeriodType.monthly);
 
-        await sut.getSales(
-          periodType: PeriodType.daily,
-        );
+        await sut.getSales(periodType: PeriodType.daily);
         expect(sut.selectedPeriod, PeriodType.daily);
       });
       test("Should update sale movements correctly", () async {
@@ -156,23 +149,20 @@ void main() {
         final enabledPeriods = [PeriodType.daily, PeriodType.monthly];
         final periodType = enabledPeriods[faker.randomGenerator.integer(2)];
 
-        await sut.getSales(
-          periodType: periodType,
-          forceRefresh: true,
-        );
+        await sut.getSales(periodType: periodType, forceRefresh: true);
 
         verify(
           () => appAnalyticsService.addNewMonthlyAnalytic(
-              reportType: ReportType.products, periodType: periodType),
+            reportType: ReportType.products,
+            periodType: periodType,
+          ),
         ).called(1);
       });
     });
 
     group("Daily", () {
       test("Should load sales with correct params", () async {
-        await sut.getSales(
-          periodType: PeriodType.daily,
-        );
+        await sut.getSales(periodType: PeriodType.daily);
 
         verify(
           () => loadSaleStatistics.get(
@@ -194,7 +184,7 @@ void main() {
               groupByProduct: true,
               groupByEnterprise: true,
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
             ),
           ),
@@ -222,7 +212,7 @@ void main() {
               groupByProduct: true,
               groupByEnterprise: true,
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
             ),
           ),
@@ -250,7 +240,7 @@ void main() {
               groupByProduct: true,
               groupByEnterprise: true,
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
             ),
           ),
@@ -266,20 +256,19 @@ void main() {
         );
 
         expect(
-            sut.lastGetDailyParams,
-            GetSaleStatisticsParams(
-              startDate: startDate,
-              endDate: startDate,
-              groupByDay: true,
-              groupByMonth: false,
-              groupByYear: false,
-              topCount: 200,
-              groupByProduct: true,
-              groupByEnterprise: true,
-              enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
-              ],
-            ));
+          sut.lastGetDailyParams,
+          GetSaleStatisticsParams(
+            startDate: startDate,
+            endDate: startDate,
+            groupByDay: true,
+            groupByMonth: false,
+            groupByYear: false,
+            topCount: 200,
+            groupByProduct: true,
+            groupByEnterprise: true,
+            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()!],
+          ),
+        );
       });
 
       test("Should update sale movements correctly", () async {
@@ -314,15 +303,15 @@ void main() {
               groupByProduct: true,
               groupByEnterprise: true,
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
             ),
           ),
         ).called(1);
 
-        homePresenter.selectedEnterpriseMock =
-            EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
-                .toViewModel();
+        homePresenter.selectedEnterpriseMock = EnterpriseModel.fromEntity(
+          EntityFactory.makeEnterpriseEntity(),
+        ).toViewModel();
         await sut.getSales();
 
         verify(
@@ -337,7 +326,7 @@ void main() {
               groupByProduct: true,
               groupByEnterprise: true,
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
             ),
           ),
@@ -368,7 +357,7 @@ void main() {
               groupByProduct: true,
               groupByEnterprise: true,
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
             ),
           ),
@@ -397,7 +386,7 @@ void main() {
               groupByProduct: true,
               groupByEnterprise: true,
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
             ),
           ),
@@ -426,7 +415,7 @@ void main() {
               groupByProduct: true,
               groupByEnterprise: true,
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
             ),
           ),
@@ -436,27 +425,26 @@ void main() {
         await sut.getSales(periodType: PeriodType.monthly);
 
         expect(
-            sut.lastGetMonthlyParams,
-            GetSaleStatisticsParams(
-              startDate: DateTime(
-                homePresenter.selectedDateMock.year,
-                homePresenter.selectedDateMock.month,
-              ),
-              endDate: DateTime(
-                homePresenter.selectedDateMock.year,
-                homePresenter.selectedDateMock.month + 1,
-                0,
-              ),
-              groupByDay: false,
-              groupByMonth: true,
-              groupByYear: true,
-              topCount: 200,
-              groupByProduct: true,
-              groupByEnterprise: true,
-              enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
-              ],
-            ));
+          sut.lastGetMonthlyParams,
+          GetSaleStatisticsParams(
+            startDate: DateTime(
+              homePresenter.selectedDateMock.year,
+              homePresenter.selectedDateMock.month,
+            ),
+            endDate: DateTime(
+              homePresenter.selectedDateMock.year,
+              homePresenter.selectedDateMock.month + 1,
+              0,
+            ),
+            groupByDay: false,
+            groupByMonth: true,
+            groupByYear: true,
+            topCount: 200,
+            groupByProduct: true,
+            groupByEnterprise: true,
+            enterpriseIds: [homePresenter.selectedEnterpriseMock!.id!.toInt()!],
+          ),
+        );
       });
 
       test("Should update sale movements correctly", () async {
@@ -492,15 +480,15 @@ void main() {
               groupByProduct: true,
               groupByEnterprise: true,
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
             ),
           ),
         ).called(1);
 
-        homePresenter.selectedEnterpriseMock =
-            EnterpriseModel.fromEntity(EntityFactory.makeEnterpriseEntity())
-                .toViewModel();
+        homePresenter.selectedEnterpriseMock = EnterpriseModel.fromEntity(
+          EntityFactory.makeEnterpriseEntity(),
+        ).toViewModel();
         await sut.getSales(periodType: PeriodType.monthly);
 
         verify(
@@ -522,7 +510,7 @@ void main() {
               groupByProduct: true,
               groupByEnterprise: true,
               enterpriseIds: [
-                homePresenter.selectedEnterpriseMock!.id!.toInt()
+                homePresenter.selectedEnterpriseMock!.id!.toInt()!,
               ],
             ),
           ),

@@ -1,4 +1,4 @@
-import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class PersonalizedTableCell extends StatelessWidget {
@@ -54,22 +54,22 @@ class PersonalizedTableCell extends StatelessWidget {
                   if (isMoney == true)
                     TextSpan(
                       text: 'R\$ ',
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontSize: 10,
-                          ),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.titleSmall?.copyWith(fontSize: 10),
                     ),
                   TextSpan(
                     text: isTitle == true ? getName().toUpperCase() : getName(),
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          fontWeight: isTitle == true ? FontWeight.bold : null,
-                        ),
+                      fontWeight: isTitle == true ? FontWeight.bold : null,
+                    ),
                   ),
                   if (isPercentage == true)
                     TextSpan(
                       text: ' %',
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontSize: 10,
-                          ),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.titleSmall?.copyWith(fontSize: 10),
                     ),
                 ],
               ),

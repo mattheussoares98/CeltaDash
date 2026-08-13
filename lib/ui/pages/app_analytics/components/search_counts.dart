@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -27,11 +28,15 @@ class _SearchCountsState extends State<SearchCounts> {
 
   void orderRequests() {
     if (requestAscending) {
-      widget.analytic.searchCounts.sort((a, b) =>
-          b.countFormatted.toInt().compareTo(a.countFormatted.toInt()));
+      widget.analytic.searchCounts.sort(
+        (a, b) =>
+            b.countFormatted.toInt()!.compareTo(a.countFormatted.toInt()!),
+      );
     } else {
-      widget.analytic.searchCounts.sort((a, b) =>
-          a.countFormatted.toInt().compareTo(b.countFormatted.toInt()));
+      widget.analytic.searchCounts.sort(
+        (a, b) =>
+            a.countFormatted.toInt()!.compareTo(b.countFormatted.toInt()!),
+      );
     }
     setState(() {
       requestAscending = !requestAscending;
@@ -74,8 +79,9 @@ class _SearchCountsState extends State<SearchCounts> {
                             child: Text(
                               R.string.type,
                               textAlign: TextAlign.end,
-                              style: theme.textTheme.titleLarge
-                                  ?.copyWith(fontWeight: FontWeight.bold),
+                              style: theme.textTheme.titleLarge?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
@@ -89,8 +95,9 @@ class _SearchCountsState extends State<SearchCounts> {
                             child: Text(
                               R.string.requests,
                               textAlign: TextAlign.end,
-                              style: theme.textTheme.titleLarge
-                                  ?.copyWith(fontWeight: FontWeight.bold),
+                              style: theme.textTheme.titleLarge?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
@@ -135,13 +142,17 @@ class OrdenationIcon extends StatelessWidget {
     final isIOS = !kIsWeb && Platform.isIOS;
 
     if (ascending) {
-      return Icon(isIOS
-          ? CupertinoIcons.arrow_up_circle_fill
-          : Icons.arrow_upward_outlined);
+      return Icon(
+        isIOS
+            ? CupertinoIcons.arrow_up_circle_fill
+            : Icons.arrow_upward_outlined,
+      );
     } else {
-      return Icon(isIOS
-          ? CupertinoIcons.arrow_down_circle_fill
-          : Icons.arrow_downward_outlined);
+      return Icon(
+        isIOS
+            ? CupertinoIcons.arrow_down_circle_fill
+            : Icons.arrow_downward_outlined,
+      );
     }
   }
 }

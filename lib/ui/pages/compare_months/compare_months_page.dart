@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -32,7 +33,9 @@ class _CompareMonthsPageState extends State<CompareMonthsPage>
         final presenter = Get.find<CompareMonthsPresenter>();
         presenter.getSales(false);
         mainErrorSubscription = handleMainError(
-            NavigatorKey.key.currentState!.context, presenter.mainErrorStream);
+          NavigatorKey.key.currentState!.context,
+          presenter.mainErrorStream,
+        );
       }
     });
   }
@@ -58,10 +61,12 @@ class _CompareMonthsPageState extends State<CompareMonthsPage>
         .map((sale) => sale.Date?.day ?? 0)
         .toList();
 
-    final greaterFirstDay =
-        firstPeriodDays.isEmpty ? 0 : firstPeriodDays.reduce(max);
-    final greaterSecondDay =
-        seconfPeriodDays.isEmpty ? 0 : seconfPeriodDays.reduce(max);
+    final greaterFirstDay = firstPeriodDays.isEmpty
+        ? 0
+        : firstPeriodDays.reduce(max);
+    final greaterSecondDay = seconfPeriodDays.isEmpty
+        ? 0
+        : seconfPeriodDays.reduce(max);
 
     return max(greaterFirstDay, greaterSecondDay);
   }
@@ -75,214 +80,228 @@ class _CompareMonthsPageState extends State<CompareMonthsPage>
     final theme = Theme.of(context);
 
     return StreamBuilder(
-        stream: compareMonthsPresenter.isLoadingStream,
-        builder: (context, loadingSnap) {
-          return Scaffold(
-            appBar: DefaultAppBar(
-              showDatePicker: false,
-              onChangeEnterprise: (_) {
-                compareMonthsPresenter.getSales(true);
-              },
-              isLoading: loadingSnap.data,
-            ),
-            body: DefaultSafeArea(
-              child: Column(
-                children: [
-                  IntrinsicHeight(
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: ChangePeriod(
-                            isLoading: loadingSnap.data == true,
-                            title: R.string.firstPeriod,
-                            month: compareMonthsPresenter.firstSelectedMonth,
-                            year: compareMonthsPresenter.firstSelectedYear,
-                            onMonthChanged: (month) {
-                              setState(() {
-                                compareMonthsPresenter
-                                    .changeFirstSelectedMonth(month!);
-                              });
-                            },
-                            onYearChanged: (year) {
-                              setState(() {
-                                compareMonthsPresenter
-                                    .changeFirstSelectedYear(year!);
-                              });
-                            },
-                          ),
+      stream: compareMonthsPresenter.isLoadingStream,
+      builder: (context, loadingSnap) {
+        return Scaffold(
+          appBar: DefaultAppBar(
+            showDatePicker: false,
+            onChangeEnterprise: (_) {
+              compareMonthsPresenter.getSales(true);
+            },
+            isLoading: loadingSnap.data,
+          ),
+          body: DefaultSafeArea(
+            child: Column(
+              children: [
+                IntrinsicHeight(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: ChangePeriod(
+                          isLoading: loadingSnap.data == true,
+                          title: R.string.firstPeriod,
+                          month: compareMonthsPresenter.firstSelectedMonth,
+                          year: compareMonthsPresenter.firstSelectedYear,
+                          onMonthChanged: (month) {
+                            setState(() {
+                              compareMonthsPresenter.changeFirstSelectedMonth(
+                                month!,
+                              );
+                            });
+                          },
+                          onYearChanged: (year) {
+                            setState(() {
+                              compareMonthsPresenter.changeFirstSelectedYear(
+                                year!,
+                              );
+                            });
+                          },
                         ),
-                        const VerticalDivider(
-                          thickness: 0.3,
-                          width: 0.3,
-                          color: Colors.grey,
+                      ),
+                      const VerticalDivider(
+                        thickness: 0.3,
+                        width: 0.3,
+                        color: Colors.grey,
+                      ),
+                      Expanded(
+                        child: ChangePeriod(
+                          isLoading: loadingSnap.data == true,
+                          title: R.string.secondPeriod,
+                          month: compareMonthsPresenter.secondSelectedMonth,
+                          year: compareMonthsPresenter.secondSelectedYear,
+                          onMonthChanged: (month) {
+                            setState(() {
+                              compareMonthsPresenter.changeSecondSelectedMonth(
+                                month!,
+                              );
+                            });
+                          },
+                          onYearChanged: (year) {
+                            setState(() {
+                              compareMonthsPresenter.changeSecondSelectedYear(
+                                year!,
+                              );
+                            });
+                          },
                         ),
-                        Expanded(
-                          child: ChangePeriod(
-                            isLoading: loadingSnap.data == true,
-                            title: R.string.secondPeriod,
-                            month: compareMonthsPresenter.secondSelectedMonth,
-                            year: compareMonthsPresenter.secondSelectedYear,
-                            onMonthChanged: (month) {
-                              setState(() {
-                                compareMonthsPresenter
-                                    .changeSecondSelectedMonth(month!);
-                              });
-                            },
-                            onYearChanged: (year) {
-                              setState(() {
-                                compareMonthsPresenter
-                                    .changeSecondSelectedYear(year!);
-                              });
-                            },
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: loadingSnap.data == true
-                              ? null
-                              : () {
-                                  compareMonthsPresenter.getSales(true);
-                                },
-                          icon: loadingSnap.data == true
-                              ? const SizedBox(
-                                  height: 15,
-                                  width: 15,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                  ),
-                                )
-                              : Icon(
-                                  theme.platform == TargetPlatform.iOS
-                                      ? CupertinoIcons.refresh
-                                      : Icons.refresh_outlined,
+                      ),
+                      IconButton(
+                        onPressed: loadingSnap.data == true
+                            ? null
+                            : () {
+                                compareMonthsPresenter.getSales(true);
+                              },
+                        icon: loadingSnap.data == true
+                            ? const SizedBox(
+                                height: 15,
+                                width: 15,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
                                 ),
-                        ),
-                      ],
-                    ),
+                              )
+                            : Icon(
+                                theme.platform == TargetPlatform.iOS
+                                    ? CupertinoIcons.refresh
+                                    : Icons.refresh_outlined,
+                              ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 10),
-                  Expanded(
-                    child: Obx(() {
-                      final firstMonthSales = compareMonthsPresenter
-                          .firstMonthSales
-                          .where((e) =>
+                ),
+                const SizedBox(height: 10),
+                Expanded(
+                  child: Obx(() {
+                    final firstMonthSales = compareMonthsPresenter
+                        .firstMonthSales
+                        .where(
+                          (e) =>
                               e.EnterpriseId ==
-                              homePresenter.selectedEnterprise?.id)
-                          .toList();
-                      final secondMonthSales = compareMonthsPresenter
-                          .secondMonthSales
-                          .where((e) =>
+                              homePresenter.selectedEnterprise?.id,
+                        )
+                        .toList();
+                    final secondMonthSales = compareMonthsPresenter
+                        .secondMonthSales
+                        .where(
+                          (e) =>
                               e.EnterpriseId ==
-                              homePresenter.selectedEnterprise?.id)
-                          .toList();
+                              homePresenter.selectedEnterprise?.id,
+                        )
+                        .toList();
 
-                      if (firstMonthSales.isEmpty && secondMonthSales.isEmpty) {
-                        return EmptySales(isLoading: loadingSnap.data == true);
-                      }
+                    if (firstMonthSales.isEmpty && secondMonthSales.isEmpty) {
+                      return EmptySales(isLoading: loadingSnap.data == true);
+                    }
 
-                      return Column(
-                        children: [
-                          ScrollableTableItem(
-                            titleMinHeight: isPortrait ? 40 : 25,
-                            fixFirstColumn: true,
-                            pdfFileName: R.string.compareMonths,
-                            indexToSort: 0,
-                            columnsIndexToSum: const [1, 2],
-                            columnsWidths: const [60, 80, 80, 80],
-                            titles: [
-                              PersonalizedTableCell(
-                                value: R.string.day,
-                                isTitle: true,
-                              ),
-                              PersonalizedTableCell(
-                                value: DateFormat.yMMM('pt_BR').format(
-                                  DateTime(
-                                    compareMonthsPresenter
-                                        .firstMonthParams!.startDate.year,
-                                    compareMonthsPresenter
-                                        .firstMonthParams!.startDate.month,
-                                  ),
+                    return Column(
+                      children: [
+                        ScrollableTableItem(
+                          titleMinHeight: isPortrait ? 40 : 25,
+                          fixFirstColumn: true,
+                          pdfFileName: R.string.compareMonths,
+                          indexToSort: 0,
+                          columnsIndexToSum: const [1, 2],
+                          columnsWidths: const [60, 80, 80, 80],
+                          titles: [
+                            PersonalizedTableCell(
+                              value: R.string.day,
+                              isTitle: true,
+                            ),
+                            PersonalizedTableCell(
+                              value: DateFormat.yMMM('pt_BR').format(
+                                DateTime(
+                                  compareMonthsPresenter
+                                      .firstMonthParams!
+                                      .startDate
+                                      .year,
+                                  compareMonthsPresenter
+                                      .firstMonthParams!
+                                      .startDate
+                                      .month,
                                 ),
-                                isTitle: true,
                               ),
-                              PersonalizedTableCell(
-                                value: DateFormat.yMMM('pt_BR').format(
-                                  DateTime(
-                                    compareMonthsPresenter
-                                        .secondMonthParams!.startDate.year,
-                                    compareMonthsPresenter
-                                        .secondMonthParams!.startDate.month,
-                                  ),
+                              isTitle: true,
+                            ),
+                            PersonalizedTableCell(
+                              value: DateFormat.yMMM('pt_BR').format(
+                                DateTime(
+                                  compareMonthsPresenter
+                                      .secondMonthParams!
+                                      .startDate
+                                      .year,
+                                  compareMonthsPresenter
+                                      .secondMonthParams!
+                                      .startDate
+                                      .month,
                                 ),
-                                isTitle: true,
                               ),
-                              PersonalizedTableCell(
-                                value: R.string.difference,
-                                isTitle: true,
-                              ),
-                            ],
-                            rowValues:
-                                List.generate(getDaysQuantity(), (index) {
-                              final firstPeriodDaySales = firstMonthSales
-                                  .filteredSales(filterDay: index + 1)
-                                  .map((e) => e.toViewModel())
-                                  .toList()
-                                  .sumLiquidValue();
+                              isTitle: true,
+                            ),
+                            PersonalizedTableCell(
+                              value: R.string.difference,
+                              isTitle: true,
+                            ),
+                          ],
+                          rowValues: List.generate(getDaysQuantity(), (index) {
+                            final firstPeriodDaySales = firstMonthSales
+                                .filteredSales(filterDay: index + 1)
+                                .map((e) => e.toViewModel())
+                                .toList()
+                                .sumLiquidValue();
 
-                              final secondPeriodDaySales = secondMonthSales
-                                  .filteredSales(filterDay: index + 1)
-                                  .map((e) => e.toViewModel())
-                                  .toList()
-                                  .sumLiquidValue();
+                            final secondPeriodDaySales = secondMonthSales
+                                .filteredSales(filterDay: index + 1)
+                                .map((e) => e.toViewModel())
+                                .toList()
+                                .sumLiquidValue();
 
-                              double calculateDifference() {
-                                if (secondPeriodDaySales == 0) {
-                                  return firstPeriodDaySales > 0 ? 100.0 : 0.0;
-                                } else if (firstPeriodDaySales == 0) {
-                                  return -100.0;
-                                }
-
-                                return ((firstPeriodDaySales -
-                                            secondPeriodDaySales) /
-                                        secondPeriodDaySales) *
-                                    100;
+                            double calculateDifference() {
+                              if (secondPeriodDaySales == 0) {
+                                return firstPeriodDaySales > 0 ? 100.0 : 0.0;
+                              } else if (firstPeriodDaySales == 0) {
+                                return -100.0;
                               }
 
-                              final difference = calculateDifference();
+                              return ((firstPeriodDaySales -
+                                          secondPeriodDaySales) /
+                                      secondPeriodDaySales) *
+                                  100;
+                            }
 
-                              return [
-                                PersonalizedTableCell(
-                                  value: index + 1,
+                            final difference = calculateDifference();
+
+                            return [
+                              PersonalizedTableCell(value: index + 1),
+                              PersonalizedTableCell(
+                                value: firstPeriodDaySales,
+                                isMoney: true,
+                              ),
+                              PersonalizedTableCell(
+                                value: secondPeriodDaySales,
+                                isMoney: true,
+                              ),
+                              PersonalizedTableCell(
+                                value: difference,
+                                isPercentage: true,
+                                decoration: BoxDecoration(
+                                  color: difference > 0
+                                      ? Colors.green.withAlpha(50)
+                                      : difference < 0
+                                      ? Colors.red.withAlpha(50)
+                                      : Colors.grey.withAlpha(50),
                                 ),
-                                PersonalizedTableCell(
-                                  value: firstPeriodDaySales,
-                                  isMoney: true,
-                                ),
-                                PersonalizedTableCell(
-                                  value: secondPeriodDaySales,
-                                  isMoney: true,
-                                ),
-                                PersonalizedTableCell(
-                                  value: difference,
-                                  isPercentage: true,
-                                  decoration: BoxDecoration(
-                                    color: difference > 0
-                                        ? Colors.green.withAlpha(50)
-                                        : difference < 0
-                                            ? Colors.red.withAlpha(50)
-                                            : Colors.grey.withAlpha(50),
-                                  ),
-                                ),
-                              ];
-                            }),
-                          ),
-                        ],
-                      );
-                    }),
-                  ),
-                ],
-              ),
+                              ),
+                            ];
+                          }),
+                        ),
+                      ],
+                    );
+                  }),
+                ),
+              ],
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -34,7 +35,7 @@ class _EditGoalFieldAndButtonsState extends State<EditGoalFieldAndButtons> {
 
     Future<void> changeGoal() async {
       if (formKey.currentState?.validate() == true) {
-        await resumePresenter.setGoal(widget.goalController.text.toDouble());
+        await resumePresenter.setGoal(widget.goalController.text.toDouble()!);
 
         widget.changeShowEditGoal.call();
       }
@@ -59,8 +60,7 @@ class _EditGoalFieldAndButtonsState extends State<EditGoalFieldAndButtons> {
             validator: (value) => ValidationComposite([
               const RequiredFieldValidation(),
             ]).validate(value)?.description,
-            keyboardType: const TextInputType.numberWithOptions(
-                signed: true),
+            keyboardType: const TextInputType.numberWithOptions(signed: true),
           ),
           const SizedBox(height: 8),
           Row(

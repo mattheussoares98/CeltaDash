@@ -1,3 +1,4 @@
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
@@ -24,8 +25,8 @@ class ProductsTable extends StatelessWidget {
     return ScrollableTableItem(
       getSalesStatisticsParams:
           productsPresenter.selectedPeriod == PeriodType.daily
-              ? productsPresenter.lastGetDailyParams
-              : productsPresenter.lastGetMonthlyParams,
+          ? productsPresenter.lastGetDailyParams
+          : productsPresenter.lastGetMonthlyParams,
       titleMinHeight: isPortrait ? 43 : 32,
       selectedPeriodType: productsPresenter.selectedPeriod,
       pdfFileName: R.string.products,
@@ -42,7 +43,9 @@ class ProductsTable extends StatelessWidget {
           subtile: isPortrait ? "Top 200" : null,
         ),
         PersonalizedTableCell(
-            value: R.string.sales.toUpperCase(), isTitle: true),
+          value: R.string.sales.toUpperCase(),
+          isTitle: true,
+        ),
         PersonalizedTableCell(
           value: R.string.quantityAbbreviated.toUpperCase(),
           isTitle: true,
@@ -52,13 +55,21 @@ class ProductsTable extends StatelessWidget {
           isTitle: true,
         ),
         PersonalizedTableCell(
-            value: R.string.cost.toUpperCase(), isTitle: true),
+          value: R.string.cost.toUpperCase(),
+          isTitle: true,
+        ),
         PersonalizedTableCell(
-            value: R.string.costAverage.toUpperCase(), isTitle: true),
+          value: R.string.costAverage.toUpperCase(),
+          isTitle: true,
+        ),
         PersonalizedTableCell(
-            value: R.string.profit.toUpperCase(), isTitle: true),
+          value: R.string.profit.toUpperCase(),
+          isTitle: true,
+        ),
         PersonalizedTableCell(
-            value: R.string.margin.toUpperCase(), isTitle: true),
+          value: R.string.margin.toUpperCase(),
+          isTitle: true,
+        ),
       ],
       rowValues: sales!.map((sale) {
         final parts = sale.Product?.split('-');
@@ -69,17 +80,20 @@ class ProductsTable extends StatelessWidget {
           productName = parts.sublist(2).join(' ');
         }
 
-        final ticketAverage = (sale.LiquidValue?.toDouble() ?? 0) /
+        final ticketAverage =
+            (sale.LiquidValue?.toDouble() ?? 0) /
             (sale.QuantityOfProducts?.toDouble() ?? 1);
 
-        final profit = (sale.LiquidValue?.toDouble() ?? 0) -
+        final profit =
+            (sale.LiquidValue?.toDouble() ?? 0) -
             (sale.TotalRepositionCost?.toDouble() ?? 0);
 
         final profitPercent = profit == 0 || sale.LiquidValue?.toDouble() == 0
             ? 0
             : (profit / (sale.LiquidValue?.toDouble() ?? 0)) * 100;
 
-        final costAverage = (sale.TotalRepositionCost?.toDouble() ?? 0) /
+        final costAverage =
+            (sale.TotalRepositionCost?.toDouble() ?? 0) /
             (sale.QuantityOfProducts?.toDouble() ?? 1);
         return [
           // PersonalizedTableCell(value: index + 1),
@@ -96,10 +110,7 @@ class ProductsTable extends StatelessWidget {
             value: sale.TotalRepositionCost?.toDouble() ?? 0,
             isMoney: true,
           ),
-          PersonalizedTableCell(
-            value: costAverage,
-            isMoney: true,
-          ),
+          PersonalizedTableCell(value: costAverage, isMoney: true),
           PersonalizedTableCell(value: profit, isMoney: true),
           PersonalizedTableCell(value: profitPercent, isPercentage: true),
         ];

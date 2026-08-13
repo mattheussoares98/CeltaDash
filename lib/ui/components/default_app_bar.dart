@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:celta_dash/domain/helpers/helpers.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -35,18 +36,19 @@ class DefaultAppBar extends StatefulWidget implements PreferredSizeWidget {
   });
 
   Size get portraitHeight => Size.fromHeight(
-      this.showDatePicker == true && this.showEnterpriseDropdown == true
-          ? DropdownHeight.height + datePickerHeight + paddingPattern
-          : DropdownHeight.height + paddingPattern);
+    this.showDatePicker == true && this.showEnterpriseDropdown == true
+        ? DropdownHeight.height + datePickerHeight + paddingPattern
+        : DropdownHeight.height + paddingPattern,
+  );
 
   Size get landscapeHeight => const Size.fromHeight(DropdownHeight.height);
 
   @override
   Size get preferredSize =>
       MediaQuery.of(NavigatorKey.key.currentState!.context).orientation ==
-              Orientation.landscape
-          ? landscapeHeight
-          : portraitHeight;
+          Orientation.landscape
+      ? landscapeHeight
+      : portraitHeight;
 
   @override
   State<DefaultAppBar> createState() => _DefaultAppBarState();
@@ -57,8 +59,9 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
     final subEnterprises = EnterpriseBuilder.entity?.firebaseSubEnterprises;
 
     if (subEnterprises != null) {
-      final index =
-          subEnterprises.indexWhere((e) => e.id == enterprise.id?.toInt());
+      final index = subEnterprises.indexWhere(
+        (e) => e.id == enterprise.id?.toInt(),
+      );
       return subEnterprises[index].enabled == true;
     }
     return false;
@@ -77,13 +80,13 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
       actionsPadding: EdgeInsets.zero,
       toolbarHeight: isPortrait
           ? (widget.showDatePicker == true &&
-                  widget.showEnterpriseDropdown == true
-              ? DropdownHeight.height +
-                  widget.datePickerHeight +
-                  widget.paddingPattern
-              : DropdownHeight.height +
-                  widget.paddingPattern +
-                  widget.paddingPattern)
+                    widget.showEnterpriseDropdown == true
+                ? DropdownHeight.height +
+                      widget.datePickerHeight +
+                      widget.paddingPattern
+                : DropdownHeight.height +
+                      widget.paddingPattern +
+                      widget.paddingPattern)
           : DropdownHeight.height + widget.paddingPattern,
       title: Obx(() {
         final enterprises = homePresenter.enterprises;
@@ -105,13 +108,15 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                   child: IconButton(
                     onPressed: () {
                       EnterprisesManagerPage.openModalButtonEnterpriseSelection(
-                          context, enterprisesManagerPresenter);
+                        context,
+                        enterprisesManagerPresenter,
+                      );
                     },
                     icon: Icon(
                       isIOS ? CupertinoIcons.person_add : Icons.manage_accounts,
                     ),
                   ),
-                )
+                ),
             ],
           );
         }
@@ -135,34 +140,32 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                         widget.onChangeEnterprise(true);
                       },
                       hint: Text(
-                          "${selectedEnterprise?.personalizedCode} - ${selectedEnterprise?.name}"),
-                      items: enterprises.map(
-                        (e) {
-                          final enabled = enterpriseIsEnabled(e);
-                          return DropdownMenuItem<EcEnterpriseViewModel?>(
-                            value: e,
-                            enabled: enabled,
-                            onTap: enabled == false
-                                ? null
-                                : () {
-                                    debugPrint("apertou");
-                                  },
-                            alignment: Alignment.center,
-                            child: Text(
-                              "${e.personalizedCode} - ${e.name}${enabled == true ? "" : " (${R.string.disabled})"}",
-                              maxLines: 1,
-                              style: TextStyle(
-                                color: enabled
-                                    ? Theme.of(context)
-                                        .textTheme
-                                        .titleSmall
-                                        ?.color
-                                    : Colors.red,
-                              ),
+                        "${selectedEnterprise?.personalizedCode} - ${selectedEnterprise?.name}",
+                      ),
+                      items: enterprises.map((e) {
+                        final enabled = enterpriseIsEnabled(e);
+                        return DropdownMenuItem<EcEnterpriseViewModel?>(
+                          value: e,
+                          enabled: enabled,
+                          onTap: enabled == false
+                              ? null
+                              : () {
+                                  debugPrint("apertou");
+                                },
+                          alignment: Alignment.center,
+                          child: Text(
+                            "${e.personalizedCode} - ${e.name}${enabled == true ? "" : " (${R.string.disabled})"}",
+                            maxLines: 1,
+                            style: TextStyle(
+                              color: enabled
+                                  ? Theme.of(
+                                      context,
+                                    ).textTheme.titleSmall?.color
+                                  : Colors.red,
                             ),
-                          );
-                        },
-                      ).toList(),
+                          ),
+                        );
+                      }).toList(),
                       selectedItem: selectedEnterprise,
                       label:
                           "${selectedEnterprise?.personalizedCode} - ${selectedEnterprise?.name}",
@@ -171,16 +174,17 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                   if (widget.showEnterpriseManagerButton == true)
                     IconButton(
                       onPressed: () {
-                        EnterprisesManagerPage
-                            .openModalButtonEnterpriseSelection(
-                                context, enterprisesManagerPresenter);
+                        EnterprisesManagerPage.openModalButtonEnterpriseSelection(
+                          context,
+                          enterprisesManagerPresenter,
+                        );
                       },
                       icon: Icon(
                         isIOS
                             ? CupertinoIcons.person_add
                             : Icons.manage_accounts,
                       ),
-                    )
+                    ),
                 ],
               ),
             if (widget.showDatePicker == true && isPortrait)
@@ -263,15 +267,17 @@ class _SelectDateState extends State<SelectDate> {
                         : Theme.of(context).primaryColorDark,
                   ),
                   FittedBox(
-                    child: Text(homePresenter.appMode == AppMode.financialTitles
-                        ? R.string.financial
-                        : R.string.sales),
+                    child: Text(
+                      homePresenter.appMode == AppMode.financialTitles
+                          ? R.string.financial
+                          : R.string.sales,
+                    ),
                   ),
                 ],
               ),
             );
           }),
-        )
+        ),
       ],
     );
   }

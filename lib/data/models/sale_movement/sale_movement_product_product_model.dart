@@ -1,7 +1,7 @@
+import 'package:celta_dash/domain/entities/entities.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:celta_dash/domain/entities/entities.dart';
-import '../../../ui/helpers/helpers.dart';
 import '../../../ui/pages/pages.dart';
 
 class SaleMovementProductProductModel extends Equatable {
@@ -21,12 +21,12 @@ class SaleMovementProductProductModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        Id,
-        Plu,
-        Name,
-        PackingAbbreviation,
-        PackingQuantity,
-      ];
+    Id,
+    Plu,
+    Name,
+    PackingAbbreviation,
+    PackingQuantity,
+  ];
 
   factory SaleMovementProductProductModel.fromJson(Map json) =>
       SaleMovementProductProductModel(
@@ -38,22 +38,22 @@ class SaleMovementProductProductModel extends Equatable {
       );
 
   factory SaleMovementProductProductModel.fromEntity(
-          SaleMovementProductProductEntity? entity) =>
-      SaleMovementProductProductModel(
-        Id: entity?.Id,
-        Plu: entity?.Plu,
-        Name: entity?.Name,
-        PackingAbbreviation: entity?.PackingAbbreviation,
-        PackingQuantity: entity?.PackingQuantity,
-      );
+    SaleMovementProductProductEntity? entity,
+  ) => SaleMovementProductProductModel(
+    Id: entity?.Id,
+    Plu: entity?.Plu,
+    Name: entity?.Name,
+    PackingAbbreviation: entity?.PackingAbbreviation,
+    PackingQuantity: entity?.PackingQuantity,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': Id,
-        'plu': Plu,
-        'name': Name,
-        'packingAbbreviation': PackingAbbreviation,
-        'packingQuantity': PackingQuantity,
-      };
+    'id': Id,
+    'plu': Plu,
+    'name': Name,
+    'packingAbbreviation': PackingAbbreviation,
+    'packingQuantity': PackingQuantity,
+  };
 
   SaleMovementProductProductEntity toEntity() =>
       SaleMovementProductProductEntity(
@@ -74,12 +74,12 @@ class SaleMovementProductProductModel extends Equatable {
       );
 
   factory SaleMovementProductProductModel.fromViewModel(
-          SaleMovementProductProductViewModel viewModel) =>
-      SaleMovementProductProductModel(
-        Id: viewModel.Id?.toInt(),
-        Plu: viewModel.Plu,
-        Name: viewModel.Name,
-        PackingAbbreviation: viewModel.PackingAbbreviation,
-        PackingQuantity: viewModel.PackingQuantity?.toDouble(),
-      );
+    SaleMovementProductProductViewModel viewModel,
+  ) => SaleMovementProductProductModel(
+    Id: viewModel.Id?.toInt(),
+    Plu: viewModel.Plu,
+    Name: viewModel.Name,
+    PackingAbbreviation: viewModel.PackingAbbreviation,
+    PackingQuantity: viewModel.PackingQuantity?.toDouble(),
+  );
 }

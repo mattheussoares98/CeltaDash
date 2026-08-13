@@ -1,4 +1,5 @@
-import '../../ui/helpers/helpers.dart';
+import 'package:celta_dash/utils/utils.dart';
+
 import '../../ui/pages/pages.dart';
 import 'helpers.dart';
 
@@ -47,8 +48,9 @@ class SearchHelper {
     T? lastYearlyParams,
   }) {
     bool changed(T? params) {
-      return params?.enterpriseIds
-              ?.any((e) => e == selectedEnterprise?.id?.toInt()) ==
+      return params?.enterpriseIds?.any(
+            (e) => e == selectedEnterprise?.id?.toInt(),
+          ) ==
           false;
     }
 

@@ -1,3 +1,4 @@
+import 'package:celta_dash/utils/utils.dart';
 import 'package:get/get.dart';
 
 import '../../data/models/models.dart';
@@ -81,7 +82,7 @@ class GetxBsSalesPresenter extends GetxController
       final params = GetSaleMovementParams(
         enterpriseIds: homePresenter.selectedEnterprise?.id == null
             ? []
-            : [homePresenter.selectedEnterprise!.id!.toInt()],
+            : [homePresenter.selectedEnterprise!.id!.toInt()!],
         startDate: startDate,
         endDate: selectedPeriod == PeriodType.daily ? startDate : endDate,
         onlyCancelled: true,
@@ -176,7 +177,7 @@ class GetxBsSalesPresenter extends GetxController
       final params = GetSaleMovementParams(
         enterpriseIds: homePresenter.selectedEnterprise?.id == null
             ? []
-            : [homePresenter.selectedEnterprise!.id!.toInt()],
+            : [homePresenter.selectedEnterprise!.id!.toInt()!],
         startDate: date,
         endDate: date,
         onlyNotCancelled: true,
