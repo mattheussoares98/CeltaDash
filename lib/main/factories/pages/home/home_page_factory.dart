@@ -11,6 +11,7 @@ HomePage makeHomePage() {
   Get.replace<CompareDaysPresenter>(makeGetxCompareDaysPresenter());
   Get.replace<CompareMonthsPresenter>(makeGetxCompareMonthsPresenter());
   Get.replace<DepartmentsPresenter>(makeGetxDepartmentsPresenter());
+  Get.replace<FinancialTitlesPresenter>(makeFinancialTitlesPresenter());
   Get.replace<PaymentTypePresenter>(makeGetxPaymentTypePresenter());
   Get.replace<ProductsPresenter>(makeGetxProductsPresenter());
   Get.replace<ResumePresenter>(makeGetxResumePresenter());

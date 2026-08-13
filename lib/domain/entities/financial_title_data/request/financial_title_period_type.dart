@@ -17,4 +17,15 @@ enum FinancialTitlePeriodType {
       : FinancialTitlePeriodType.values.firstWhere(
           (item) => item.value == value,
         );
+
+  static FinancialTitlePeriodType? fromString(String? value) {
+    if (value == null) return null;
+
+    for (var item in FinancialTitlePeriodType.values) {
+      if (item.name.toString().toLowerCase() == value.toLowerCase()) {
+        return item;
+      }
+    }
+    return null;
+  }
 }

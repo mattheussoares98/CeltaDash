@@ -10,4 +10,10 @@ enum FinancialTitleType {
   static FinancialTitleType? fromValue(int? value) => value == null
       ? null
       : FinancialTitleType.values.firstWhere((item) => item.value == value);
+
+  static FinancialTitleType? fromString(String? value) =>
+      value?.toLowerCase() ==
+              FinancialTitleType.receive.toString().toLowerCase()
+          ? FinancialTitleType.receive
+          : FinancialTitleType.toPay;
 }

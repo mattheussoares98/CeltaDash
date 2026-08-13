@@ -169,6 +169,7 @@ abstract class Translation {
   String get removeEnterprise;
   String get quantityAbbreviated;
   String get quantityOfPortions;
+  String get reload;
   String get requests;
   String get resume;
   String get result;

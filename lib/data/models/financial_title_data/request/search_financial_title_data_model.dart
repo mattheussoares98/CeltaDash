@@ -38,13 +38,14 @@ class SearchFinancialTitleDataModel extends SearchFinancialTitleDataParams {
       SearchFinancialTitleDataModel(
         enterpriseCodes: List<int>.from(json['enterpriseCodes'] as List),
         financialTitleTypes: (json['financialTitleTypes'] as List)
-            .map((value) => FinancialTitleType.fromValue(value as int)!)
+            .map((value) => FinancialTitleType.fromString(value as String)!)
             .toList(),
         situations: (json['situations'] as List)
-            .map((value) => FinancialTitleSituation.fromValue(value as int)!)
+            .map(
+                (value) => FinancialTitleSituation.fromString(value as String)!)
             .toList(),
         periodType:
-            FinancialTitlePeriodType.fromValue(json['periodType'] as int)!,
+            FinancialTitlePeriodType.fromString(json['periodType'] as String)!,
         period: FinancialTitlePeriodModel.fromJson(json['period'] as Map),
         comparisonPeriod: json['comparisonPeriod'] == null
             ? null
@@ -67,9 +68,8 @@ class SearchFinancialTitleDataModel extends SearchFinancialTitleDataParams {
             (json['financialClassificationCodes'] as List?)?.cast<int>(),
         excludeFinancialClassifications:
             json['excludeFinancialClassifications'] as bool? ?? false,
-        periodGrouping: FinancialTitlePeriodGrouping.fromValue(
-          json['periodGrouping'] as int?,
-        ),
+        periodGrouping: FinancialTitlePeriodGrouping.fromString(
+            json['periodGrouping'] as String?),
         mountPortionPayments: json['mountPortionPayments'] as bool? ?? false,
         mountPortionsAdministrativeTax:
             json['mountPortionsAdministrativeTax'] as bool? ?? false,

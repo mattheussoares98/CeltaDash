@@ -12,4 +12,15 @@ enum FinancialTitleSituation {
       ? null
       : FinancialTitleSituation.values
           .firstWhere((item) => item.value == value);
+
+  static FinancialTitleSituation? fromString(String? value) {
+    if (value == null) return null;
+
+    for (var item in FinancialTitleSituation.values) {
+      if (item.name.toString().toLowerCase() == value.toLowerCase()) {
+        return item;
+      }
+    }
+    return null;
+  }
 }

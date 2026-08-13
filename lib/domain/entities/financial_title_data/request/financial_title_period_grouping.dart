@@ -13,4 +13,15 @@ enum FinancialTitlePeriodGrouping {
       : FinancialTitlePeriodGrouping.values.firstWhere(
           (item) => item.value == value,
         );
+
+  static FinancialTitlePeriodGrouping? fromString(String? value) {
+    if (value == null) return null;
+
+    for (var item in FinancialTitlePeriodGrouping.values) {
+      if (item.name.toString().toLowerCase() == value.toLowerCase()) {
+        return item;
+      }
+    }
+    return null;
+  }
 }

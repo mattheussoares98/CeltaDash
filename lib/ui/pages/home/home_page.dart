@@ -143,24 +143,7 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
           padding: EdgeInsets.only(
               top: orientation == Orientation.landscape ? 8 : 0),
           child: homePresenter.appMode == AppMode.financialTitles
-              ? Scaffold(
-                  appBar: DefaultAppBar(
-                    showEnterpriseManagerButton: true,
-                    isLoading: false,
-                    showDatePicker: true,
-                    onChangeEnterprise: (_) {
-                      resumePresenter.getSales(now: DateTime.now());
-                    },
-                    onChangeDate: (_) {
-                      resumePresenter.getSales(now: DateTime.now());
-                    },
-                  ),
-                  body: DefaultSafeArea(
-                    child: Center(
-                      child: Text(R.string.financial),
-                    ),
-                  ),
-                )
+              ? const FinancialTitlePage()
               : Stack(
                   children: [
                     salePages[currentIndex],
