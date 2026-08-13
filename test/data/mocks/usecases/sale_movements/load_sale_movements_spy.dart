@@ -4,6 +4,13 @@ import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:mocktail/mocktail.dart';
 
 class LoadSaleStatisticsSpy extends Mock implements LoadSaleStatistics {
+  LoadSaleStatisticsSpy() {
+    registerFallbackValue(GetSaleStatisticsParams(
+      startDate: DateTime(2020),
+      endDate: DateTime(2020),
+    ));
+  }
+
   When _mockGetCall() => when(
         () => this.get(any()),
       );

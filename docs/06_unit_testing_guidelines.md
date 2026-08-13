@@ -1,11 +1,17 @@
-# 06. Unit Testing Guidelines
-
 ## Objective
-Ensure 100% test coverage for all **Datasources**, **Repositories**, and **Riverpod Controllers** using `mocktail` and `flutter_test`.
+Ensure 100% test coverage for all **Datasources**, **Repositories**, and **Riverpod Controllers** using `mocktail`, `faker`, and `flutter_test`.
 
 ---
 
-## 1. Directory Structure for Feature Tests
+## 1. Test Data Generation Rules (Faker & EntityFactory)
+- **Always use `faker`**: Never hardcode primitive test values (strings, dates, numbers, IDs). Always use `faker.person.name()`, `faker.date.dateTime()`, `faker.randomGenerator.decimal()`, etc.
+- **Always use `EntityFactory` (`test/domain/mocks/entity_factory.dart`)**:
+  - Instantiate domain entities and parameter objects through `EntityFactory` factory methods (e.g. `EntityFactory.makeEcParams()`, `EntityFactory.makeGetSalesParams()`, `EntityFactory.makeSaleStatisticEntity()`).
+  - To test data models in datasource tests, create the entity with `EntityFactory`, convert it via `Model.fromEntity(entity)`, and use `model.toJson()` for mock HTTP responses. This guarantees consistency across the test suite.
+
+---
+
+## 2. Directory Structure for Feature Tests
 Mirror the feature structure inside the `test/` directory:
 ```
 test/features/[feature]/

@@ -1,10 +1,25 @@
-import 'package:celta_dash/domain/entities/entities.dart';
-import 'package:celta_dash/domain/usecases/usecases.dart';
+import 'package:celta_dash/core/domain/domain.dart';
+import 'package:celta_dash/domain/entities/entities.dart'
+    hide SaleStatisticsEntity;
+import 'package:celta_dash/domain/usecases/usecases.dart'
+    hide GetSaleStatisticsParams;
+import 'package:celta_dash/features/sale_statistics/domain/entities/entities.dart';
 import 'package:celta_dash/main/builders/builders.dart';
 import 'package:faker/faker.dart';
 
 class EntityFactory {
   EntityFactory._();
+
+  static EcParams makeEcParams({
+    String? url,
+    String? user,
+    String? accessKey,
+  }) =>
+      EcParams(
+        url: url ?? faker.internet.httpUrl(),
+        user: user ?? faker.person.name(),
+        accessKey: accessKey ?? faker.guid.guid(),
+      );
 
   static FirebaseEnterpriseEntity makeFirebaseEnterpriseEntity() =>
       FirebaseEnterpriseEntity(

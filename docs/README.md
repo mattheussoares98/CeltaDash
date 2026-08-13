@@ -27,7 +27,7 @@ lib/features/[feature_name]/
 ├── data/
 │   ├── datasource/
 │   │   ├── i_[feature]_datasource.dart
-│   │   ├── [feature]_datasource_impl.dart
+│   │   ├── [feature]_datasource.dart       # No _impl in datasource filename
 │   │   └── datasource.dart                 # Barrel file
 │   ├── models/
 │   │   ├── [model_name]_model.dart

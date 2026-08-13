@@ -18,7 +18,7 @@
 - [ ] Create `lib/features/[feature]/data/models/[model]_model.dart` (handles JSON parsing and `toEntity()`).
 - [ ] Create `lib/features/[feature]/data/models/models.dart` (barrel file).
 - [ ] Create `lib/features/[feature]/data/datasource/i_[feature]_datasource.dart` (datasource interface).
-- [ ] Create `lib/features/[feature]/data/datasource/[feature]_datasource_impl.dart` (injects HTTP client, maps HTTP responses to models).
+- [ ] Create `lib/features/[feature]/data/datasource/[feature]_datasource.dart` (datasource implementation, NO `_impl` in filename).
 - [ ] Create `lib/features/[feature]/data/datasource/datasource.dart` (barrel file).
 - [ ] Create `lib/features/[feature]/data/data.dart` (layer barrel file).
 

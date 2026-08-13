@@ -28,53 +28,48 @@ abstract class ISellerDatasource {
 
 ---
 
-## 2. Implementation (`[feature]_datasource_impl.dart`)
-- **Location**: `lib/features/[feature]/data/datasource/[feature]_datasource_impl.dart`
+## 2. Implementation (`[feature]_datasource.dart`)
+- **Location**: `lib/features/[feature]/data/datasource/[feature]_datasource.dart` *(Note: Do NOT use `_impl` suffix for datasource files)*.
 - **Rules**:
   - Implements `I[Feature]Datasource`.
-  - Injects `IHttpClient` (or relevant network client) via constructor.
+  - Injects `HttpClient` via constructor.
+  - Receives `EcParams` and parameters object calling `params.toBody()` and `ecParams.toHeaders()`.
+  - **Never import or use global static objects like `EnterpriseBuilder`**. All endpoint credentials must be passed explicitly via `EcParams`.
   - Handles endpoint paths, query parameters, headers, and payload serialization.
   - Converts HTTP JSON responses into Models.
-  - Throws custom app exceptions (e.g. `ServerException`, `UnauthorizedException`) on failures.
+  - Throws custom app exceptions or domain errors on failures.
 
 ### Example
 ```dart
-// lib/features/seller/data/datasource/seller_datasource_impl.dart
-import 'package:celta_dash/core/services/http_client/http_client.dart';
-import 'package:celta_dash/exceptions/exceptions.dart';
+// lib/features/seller/data/datasource/seller_datasource.dart
+import 'package:celta_dash/core/domain/domain.dart';
+import 'package:celta_dash/data/http/http.dart';
+import 'package:celta_dash/data/mixins/mixins.dart';
 import 'package:celta_dash/features/seller/data/datasource/i_seller_datasource.dart';
 import 'package:celta_dash/features/seller/data/models/models.dart';
 
-class SellerDatasourceImpl implements ISellerDatasource {
-  final IHttpClient _httpClient;
+class SellerDatasource with ErrorHandling implements ISellerDatasource {
+  final HttpClient _httpClient;
 
-  const SellerDatasourceImpl(this._httpClient);
+  const SellerDatasource(this._httpClient);
 
   @override
   Future<List<SellerModel>> getSellers({
-    required DateTime startDate,
-    required DateTime endDate,
-    int? companyId,
+    required GetSellerParams params,
+    required EcParams ecParams,
   }) async {
     try {
-      final response = await _httpClient.get(
-        url: '/api/v1/sellers',
-        queryParameters: {
-          'start_date': startDate.toIso8601String(),
-          'end_date': endDate.toIso8601String(),
-          if (companyId != null) 'company_id': companyId.toString(),
-        },
+      final response = await _httpClient.request(
+        url: '${ecParams.url}/api/v1/sellers',
+        method: 'post',
+        headers: ecParams.toHeaders(),
+        body: params.toBody(),
       );
 
-      final List<dynamic> data = response.data;
-      return data.map((json) => SellerModel.fromJson(json as Map<String, dynamic>)).toList();
-    } on AppException {
-      rethrow;
-    } catch (e, stack) {
-      throw ServerException(
-        message: 'Failed to fetch sellers: $e',
-        stackTrace: stack,
-      );
+      final List<dynamic> data = response['results'] ?? [];
+      return data.map((json) => SellerModel.fromJson(json as Map)).toList();
+    } catch (e) {
+      treatError(e);
     }
   }
 }
