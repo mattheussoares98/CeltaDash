@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
@@ -28,17 +29,29 @@ class HttpAdapter implements HttpClient {
     final jsonBody = body != null ? jsonEncode(body) : null;
     var response = Response('', 500);
     Future<Response>? futureResponse;
+
+    String applyedUrl = url;
+
+    //! replace easily when testing the API
+    if (kDebugMode && 1 == 1) {
+      applyedUrl = url.replaceFirstMapped(
+        RegExp(r'(https?://)[^/]+/api'),
+        (match) => '${match[1]}localhost:58915',
+      );
+    }
     try {
       if (method == 'post') {
-        futureResponse = client.post(Uri.parse(url),
+        futureResponse = client.post(Uri.parse(applyedUrl),
             headers: defaultHeaders, body: jsonBody);
       } else if (method == 'get') {
-        futureResponse = client.get(Uri.parse(url), headers: defaultHeaders);
-      } else if (method == 'delete') {
-        futureResponse = client.delete(Uri.parse(url), headers: defaultHeaders);
-      } else if (method == 'put') {
         futureResponse =
-            client.put(Uri.parse(url), headers: defaultHeaders, body: jsonBody);
+            client.get(Uri.parse(applyedUrl), headers: defaultHeaders);
+      } else if (method == 'delete') {
+        futureResponse =
+            client.delete(Uri.parse(applyedUrl), headers: defaultHeaders);
+      } else if (method == 'put') {
+        futureResponse = client.put(Uri.parse(applyedUrl),
+            headers: defaultHeaders, body: jsonBody);
       }
       if (futureResponse != null) {
         response = await futureResponse.timeout(const Duration(seconds: 60));
