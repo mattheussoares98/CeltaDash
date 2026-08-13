@@ -12,6 +12,8 @@ class FinancialTitlePage extends StatefulWidget {
 }
 
 class _FinancialTitlePageState extends State<FinancialTitlePage> {
+  FinancialTitlePeriodType periodType = FinancialTitlePeriodType.expiration;
+
   @override
   void initState() {
     super.initState();
@@ -31,10 +33,18 @@ class _FinancialTitlePageState extends State<FinancialTitlePage> {
       enterpriseCodes: [enterpriseId],
       financialTitleTypes: FinancialTitleType.values,
       situations: FinancialTitleSituation.values,
-      periodType: FinancialTitlePeriodType.expiration,
+      periodType: periodType,
       period: FinancialTitlePeriodParams(
-        startDate: DateTime(selectedDate.year, selectedDate.month),
-        endDate: DateTime(selectedDate.year, selectedDate.month + 1, 0),
+        startDate: DateTime(
+          selectedDate.year,
+          selectedDate.month,
+          selectedDate.day,
+        ),
+        endDate: DateTime(
+          selectedDate.year,
+          selectedDate.month,
+          selectedDate.day,
+        ),
       ),
       periodGrouping: FinancialTitlePeriodGrouping.day,
     );
@@ -76,8 +86,39 @@ class _FinancialTitlePageState extends State<FinancialTitlePage> {
           body: DefaultSafeArea(
             child: RefreshIndicator(
               onRefresh: () => _load(forceRefresh: true),
-              child: FinancialTitleDailySummary(
-                  rows: rows, reload: () => _load(forceRefresh: true)),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(
+                      //TODO create a different widget
+                      child: DropdownButtonFormField<FinancialTitlePeriodType>(
+                        //TODO improve the default drop down and use it
+                        hint: Center(child: Text(periodType.label)),
+                        initialValue: periodType,
+                        items: FinancialTitlePeriodType.values
+                            .map((e) => DropdownMenuItem(
+                                value: e, child: Text(e.label)))
+                            .toList(),
+                        onChanged: (value) {
+                          if (value == null) return;
+                          periodType = value;
+                          _load(forceRefresh: true);
+                        },
+                      ),
+                    ),
+                    const SliverToBoxAdapter(
+                        child: SizedBox(height: 8)), //TODO create gaps
+                    SliverToBoxAdapter(
+                      child: FinancialTitleDailySummary(
+                        rows: rows,
+                        loadedAt: currentState.loadedAt,
+                        reload: () => _load(forceRefresh: true),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         );
