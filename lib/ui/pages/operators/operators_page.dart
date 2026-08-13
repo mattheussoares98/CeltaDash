@@ -63,9 +63,6 @@ class _OperatorsPageState extends State<OperatorsPage> {
                     onChangeDate: (_) {
                       operatorsPresenter.getSales();
                     },
-                    onTapRefresh: () {
-                      operatorsPresenter.getSales(forceRefresh: true);
-                    },
                   ),
                   Padding(
                     padding: EdgeInsets.all(isPortrait ? 8.0 : 0),

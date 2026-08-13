@@ -10,7 +10,6 @@ import '../../mixins/mixins.dart';
 import '../pages.dart';
 import 'components/components.dart';
 
-
 class ProductsPage extends StatefulWidget {
   const ProductsPage({super.key});
 
@@ -69,9 +68,6 @@ class _ProductsPageState extends State<ProductsPage> with UIErrorManager {
                 },
                 onChangeDate: (_) {
                   productsPresenter.getSales();
-                },
-                onTapRefresh: () {
-                  productsPresenter.getSales(forceRefresh: true);
                 },
               ),
               body: Obx(() {

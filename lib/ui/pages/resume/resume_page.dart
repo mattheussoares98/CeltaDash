@@ -63,12 +63,6 @@ class _ResumePageState extends State<ResumePage>
                 onChangeDate: (_) {
                   resumePresenter.getSales(now: DateTime.now());
                 },
-                onTapRefresh: () {
-                  resumePresenter.getSales(
-                    now: DateTime.now(),
-                    forceRefresh: true,
-                  );
-                },
               ),
               body: DefaultSafeArea(
                 child: Stack(

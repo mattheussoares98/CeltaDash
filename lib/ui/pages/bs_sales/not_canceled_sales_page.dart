@@ -57,7 +57,6 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage>
                     }
                   },
                   onChangeDate: (_) async {},
-                  onTapRefresh: () {},
                 ),
                 FilterNotCanceledSales(
                   isLoading: loadingSnap.data == true,

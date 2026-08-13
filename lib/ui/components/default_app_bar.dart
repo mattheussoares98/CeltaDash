@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,6 @@ import 'components.dart';
 
 class DefaultAppBar extends StatefulWidget implements PreferredSizeWidget {
   final void Function(bool changedEnterprise) onChangeEnterprise;
-  final void Function()? onTapRefresh;
   final void Function(DateTime newDate)? onChangeDate;
   final bool? showDatePicker;
   final bool? showEnterpriseDropdown;
@@ -28,7 +28,6 @@ class DefaultAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.showDatePicker = true,
     this.showEnterpriseDropdown = true,
     this.showEnterpriseManagerButton = false,
-    this.onTapRefresh,
     this.onChangeDate,
     this.isLoading,
     this.datePickerHeight = 30,
@@ -75,6 +74,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
 
     return AppBar(
       elevation: isIOS ? 0 : null,
+      actionsPadding: EdgeInsets.zero,
       toolbarHeight: isPortrait
           ? (widget.showDatePicker == true &&
                   widget.showEnterpriseDropdown == true
@@ -125,7 +125,6 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
                       child: SelectDate(
                         onChangeDate: widget.onChangeDate,
                         isLoading: widget.isLoading,
-                        onTapRefresh: widget.onTapRefresh,
                       ),
                     ),
                   Expanded(
@@ -188,7 +187,6 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
               SelectDate(
                 onChangeDate: widget.onChangeDate,
                 isLoading: widget.isLoading,
-                onTapRefresh: widget.onTapRefresh,
               ),
           ],
         );
@@ -200,12 +198,10 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
 class SelectDate extends StatefulWidget {
   final void Function(DateTime newDate)? onChangeDate;
   final bool? isLoading;
-  final VoidCallback? onTapRefresh;
   const SelectDate({
     super.key,
     required this.onChangeDate,
     required this.isLoading,
-    required this.onTapRefresh,
   });
 
   @override
@@ -219,8 +215,10 @@ class _SelectDateState extends State<SelectDate> {
     final isIOS = !kIsWeb && Platform.isIOS;
 
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
+          flex: 7,
           child: ElevatedButton.icon(
             onPressed: widget.isLoading == true
                 ? null
@@ -249,25 +247,30 @@ class _SelectDateState extends State<SelectDate> {
             icon: const Icon(Icons.date_range, color: Colors.white),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(left: 8),
-          child: IconButton(
-            onPressed: widget.isLoading == true ? null : widget.onTapRefresh,
-            icon: widget.isLoading == true
-                ? const SizedBox(
-                    height: 25,
-                    width: 25,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                    ),
-                  )
-                : Icon(
-                    isIOS ? CupertinoIcons.refresh : Icons.refresh,
+        Flexible(
+          flex: 3,
+          child: Obx(() {
+            return TextButton(
+              onPressed: homePresenter.toggleAppMode,
+              child: Column(
+                children: [
+                  Icon(
+                    isIOS
+                        ? CupertinoIcons.arrow_2_squarepath
+                        : Icons.compare_arrows,
                     color: IsDarkTheme.isDark
                         ? Theme.of(context).primaryColorLight
                         : Theme.of(context).primaryColorDark,
                   ),
-          ),
+                  FittedBox(
+                    child: Text(homePresenter.appMode == AppMode.financialTitles
+                        ? R.string.financial
+                        : R.string.sales),
+                  ),
+                ],
+              ),
+            );
+          }),
         )
       ],
     );

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -82,12 +83,40 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
     );
   }
 
-  final pages = <Widget>[
+  final salePages = <Widget>[
     makeResumePage(),
     makeSalesPage(),
     makeProductsPage(),
     makePersonalizedPage(),
     makeMorePage(),
+  ];
+
+  final saleBottomItems = [
+    const BottomNavItem(
+      materialIcon: Icon(Icons.pie_chart),
+      cupertinoIcon: Icon(CupertinoIcons.chart_pie),
+      label: '',
+    ),
+    const BottomNavItem(
+      materialIcon: Icon(Icons.monetization_on),
+      cupertinoIcon: Icon(CupertinoIcons.money_dollar),
+      label: '',
+    ),
+    const BottomNavItem(
+      materialIcon: Icon(Icons.shopping_cart_rounded),
+      cupertinoIcon: Icon(CupertinoIcons.cart),
+      label: '',
+    ),
+    const BottomNavItem(
+      materialIcon: Icon(Icons.assignment_ind),
+      cupertinoIcon: Icon(CupertinoIcons.doc_person),
+      label: '',
+    ),
+    const BottomNavItem(
+      materialIcon: Icon(Icons.grid_view_rounded),
+      cupertinoIcon: Icon(CupertinoIcons.square_grid_2x2_fill),
+      label: '',
+    ),
   ];
 
   @override
@@ -113,63 +142,58 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
         body: Padding(
           padding: EdgeInsets.only(
               top: orientation == Orientation.landscape ? 8 : 0),
-          child: Stack(
-            children: [
-              pages[currentIndex],
-              if (!loadedEnterprises)
-                Container(
-                  height: double.infinity,
-                  width: double.infinity,
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  child: const Center(child: CircularProgressIndicator()),
+          child: homePresenter.appMode == AppMode.financialTitles
+              ? Scaffold(
+                  appBar: DefaultAppBar(
+                    showEnterpriseManagerButton: true,
+                    isLoading: false,
+                    showDatePicker: true,
+                    onChangeEnterprise: (_) {
+                      resumePresenter.getSales(now: DateTime.now());
+                    },
+                    onChangeDate: (_) {
+                      resumePresenter.getSales(now: DateTime.now());
+                    },
+                  ),
+                  body: DefaultSafeArea(
+                    child: Center(
+                      child: Text(R.string.financial),
+                    ),
+                  ),
+                )
+              : Stack(
+                  children: [
+                    salePages[currentIndex],
+                    if (!loadedEnterprises)
+                      Container(
+                        height: double.infinity,
+                        width: double.infinity,
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        child: const Center(child: CircularProgressIndicator()),
+                      ),
+                  ],
                 ),
-            ],
-          ),
         ),
-        bottomNavigationBar: BottomNavBar(
-          currentIndex: currentIndex,
-          onTap: homePresenter.selectedEnterpriseIsEnabled
-              ? (index) async {
-                  homePresenter.updateSelectedIndex(index);
-                  if (index == 0) {
-                    await resumePresenter.getSales(now: DateTime.now());
-                  }
-                }
-              : (_) {
-                  snackBarMessage(
-                    context,
-                    R.string.msgDisabledEnterprise,
-                    Colors.red,
-                  );
-                },
-          items: [
-            const BottomNavItem(
-              materialIcon: Icon(Icons.pie_chart),
-              cupertinoIcon: Icon(CupertinoIcons.chart_pie),
-              label: '',
-            ),
-            const BottomNavItem(
-              materialIcon: Icon(Icons.monetization_on),
-              cupertinoIcon: Icon(CupertinoIcons.money_dollar),
-              label: '',
-            ),
-            const BottomNavItem(
-              materialIcon: Icon(Icons.shopping_cart_rounded),
-              cupertinoIcon: Icon(CupertinoIcons.cart),
-              label: '',
-            ),
-            const BottomNavItem(
-              materialIcon: Icon(Icons.assignment_ind),
-              cupertinoIcon: Icon(CupertinoIcons.doc_person),
-              label: '',
-            ),
-            const BottomNavItem(
-              materialIcon: Icon(Icons.grid_view_rounded),
-              cupertinoIcon: Icon(CupertinoIcons.square_grid_2x2_fill),
-              label: '',
-            ),
-          ],
-        ),
+        bottomNavigationBar: homePresenter.appMode == AppMode.financialTitles
+            ? null
+            : BottomNavBar(
+                currentIndex: currentIndex,
+                onTap: homePresenter.selectedEnterpriseIsEnabled
+                    ? (index) async {
+                        homePresenter.updateSelectedIndex(index);
+                        if (index == 0) {
+                          await resumePresenter.getSales(now: DateTime.now());
+                        }
+                      }
+                    : (_) {
+                        snackBarMessage(
+                          context,
+                          R.string.msgDisabledEnterprise,
+                          Colors.red,
+                        );
+                      },
+                items: saleBottomItems,
+              ),
       );
     });
   }

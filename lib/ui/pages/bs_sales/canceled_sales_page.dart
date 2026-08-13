@@ -54,9 +54,6 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                   onChangeDate: (_) async {
                     reloadSales();
                   },
-                  onTapRefresh: () {
-                    reloadSales(forceRefresh: true);
-                  },
                 ),
                 Padding(
                   padding: EdgeInsets.all(isPortrait ? 8 : 0),

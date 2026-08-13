@@ -85,9 +85,6 @@ class _SalesPageState extends State<SalesPage>
                 onChangeDate: (_) {
                   salesPresenter.getSales();
                 },
-                onTapRefresh: () {
-                  salesPresenter.getSales(forceRefresh: true);
-                },
               ),
               body: Column(
                 children: [

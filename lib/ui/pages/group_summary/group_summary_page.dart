@@ -48,12 +48,6 @@ class _GroupSummaryPageState extends State<GroupSummaryPage> {
                   now: DateTime.now(),
                 );
               },
-              onTapRefresh: () async {
-                await resumePresenter.getSales(
-                  forceRefresh: true,
-                  now: DateTime.now(),
-                );
-              },
             ),
             body: DefaultSafeArea(
               child: DefaultTabController(

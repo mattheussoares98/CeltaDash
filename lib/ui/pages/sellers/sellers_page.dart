@@ -63,9 +63,6 @@ class _SellersPageState extends State<SellersPage> {
                     onChangeDate: (_) {
                       sellersPresenter.getSales();
                     },
-                    onTapRefresh: () {
-                      sellersPresenter.getSales(forceRefresh: true);
-                    },
                   ),
                   Padding(
                     padding: EdgeInsets.all(isPortrait ? 8 : 0),

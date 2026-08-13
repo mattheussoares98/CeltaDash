@@ -67,9 +67,6 @@ class _DepartmentsPageState extends State<DepartmentsPage>
                     onChangeDate: (_) {
                       departmentsPresenter.getSales();
                     },
-                    onTapRefresh: () {
-                      departmentsPresenter.getSales(forceRefresh: true);
-                    },
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,

@@ -68,9 +68,6 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                       onChangeDate: (_) {
                         paymentTypePresenter.getSales();
                       },
-                      onTapRefresh: () {
-                        paymentTypePresenter.getSales(forceRefresh: true);
-                      },
                     ),
                     SelectPeriodItems(
                       isLoading: loadingSnap.data,

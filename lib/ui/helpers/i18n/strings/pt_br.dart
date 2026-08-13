@@ -119,6 +119,7 @@ class PtBr implements Translation {
   String get filter => "Filtrar";
   String get finalization => "Finalizadora";
   String get finalizations => "Finalizadoras";
+  String get financial => "Financeiro";
   String get firstDaySales => "Vendas do primeiro dia";
   String get firstPeriod => "Primeiro período";
   String get generate => "Gerar";

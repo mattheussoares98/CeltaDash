@@ -103,6 +103,7 @@ abstract class Translation {
   String get filter;
   String get finalization;
   String get finalizations;
+  String get financial;
   String get firstDaySales;
   String get firstPeriod;
   String get generate;
