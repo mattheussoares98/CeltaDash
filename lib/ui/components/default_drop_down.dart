@@ -197,7 +197,7 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
                 enabledBorder: InputBorder.none,
               ),
               // Hide the default dropdown arrow
-              icon: const SizedBox.shrink(),
+              icon: const SizedBox.shrink(), iconSize: 0,
               dropdownColor: IsDarkTheme.isDark
                   ? theme.scaffoldBackgroundColor
                   : Colors.white,
