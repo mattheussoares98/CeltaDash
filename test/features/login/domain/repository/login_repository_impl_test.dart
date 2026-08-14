@@ -1,9 +1,6 @@
 // test/features/login/domain/repository/login_repository_impl_test.dart
 import 'package:celta_dash/domain/helpers/helpers.dart';
-import 'package:celta_dash/features/login/data/datasource/datasource.dart';
-import 'package:celta_dash/features/login/data/models/models.dart';
-import 'package:celta_dash/features/login/domain/entities/entities.dart';
-import 'package:celta_dash/features/login/domain/repository/repository.dart';
+import 'package:celta_dash/features/login/login.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
