@@ -9,4 +9,6 @@ abstract class IHomeRepository {
   Future<void> saveAppMode(AppMode mode);
 
   Future<FirebaseEnterpriseEntity?> loadActiveEnterprise();
+
+  Future<void> logout();
 }

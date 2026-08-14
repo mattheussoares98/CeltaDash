@@ -59,4 +59,12 @@ void main() {
     expect(await repository.loadActiveEnterprise(), enterprise);
     verify(() => localDatasource.loadActiveEnterprise()).called(1);
   });
+
+  test('logout delegates to the local datasource', () async {
+    when(() => localDatasource.logout()).thenAnswer((_) async {});
+
+    await repository.logout();
+
+    verify(() => localDatasource.logout()).called(1);
+  });
 }

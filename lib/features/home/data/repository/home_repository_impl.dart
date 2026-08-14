@@ -23,4 +23,7 @@ class HomeRepositoryImpl implements IHomeRepository {
   @override
   Future<FirebaseEnterpriseEntity?> loadActiveEnterprise() =>
       _localDatasource.loadActiveEnterprise();
+
+  @override
+  Future<void> logout() => _localDatasource.logout();
 }
