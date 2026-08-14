@@ -1,3 +1,7 @@
+// lib/core/domain/entities/entities.dart
+export './bs_user_entity.dart';
 export './crashlytics_custom_key_entity.dart';
 export './ec_params.dart';
+export './firebase_enterprise_entity.dart';
+export './firebase_sub_enterprise_entity.dart';
 export './selectable_item.dart';

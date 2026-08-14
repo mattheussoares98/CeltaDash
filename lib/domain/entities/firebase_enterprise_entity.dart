@@ -1,22 +1,2 @@
-import 'package:equatable/equatable.dart';
-import 'entities.dart';
-
-class FirebaseEnterpriseEntity extends Equatable {
-  final String? baseUrl;
-  final String? enterpriseName;
-  final BsUserEntity? bsUser;
-  final List<FirebaseSubEnterpriseEntity>? firebaseSubEnterprises;
-  final String? firebaseId;
-
-  const FirebaseEnterpriseEntity({
-    required this.baseUrl,
-    required this.enterpriseName,
-    required this.bsUser,
-    required this.firebaseSubEnterprises,
-    required this.firebaseId,
-  });
-
-  @override
-  List<Object?> get props =>
-      [baseUrl, enterpriseName, bsUser, firebaseSubEnterprises, firebaseId];
-}
+// lib/domain/entities/firebase_enterprise_entity.dart
+export 'package:celta_dash/core/domain/entities/firebase_enterprise_entity.dart';
