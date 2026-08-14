@@ -1,4 +1,5 @@
 // lib/core/domain/entities/entities.dart
+export './app_mode.dart';
 export './bs_user_entity.dart';
 export './crashlytics_custom_key_entity.dart';
 export './ec_params.dart';
