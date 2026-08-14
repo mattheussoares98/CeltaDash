@@ -20,4 +20,3 @@ class SelectableItemImpl<T> implements SelectableItem<T> {
   @override
   final Color? color;
 }
-

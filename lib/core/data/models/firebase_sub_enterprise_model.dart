@@ -31,28 +31,27 @@ class FirebaseSubEnterpriseModel extends Equatable {
 
   factory FirebaseSubEnterpriseModel.fromEntity(
     FirebaseSubEnterpriseEntity entity,
-  ) =>
-      FirebaseSubEnterpriseModel(
-        id: entity.id,
-        name: entity.name,
-        personalizedCode: entity.personalizedCode,
-        cnpj: entity.cnpj,
-        enabled: entity.enabled,
-      );
+  ) => FirebaseSubEnterpriseModel(
+    id: entity.id,
+    name: entity.name,
+    personalizedCode: entity.personalizedCode,
+    cnpj: entity.cnpj,
+    enabled: entity.enabled,
+  );
 
   Map toJson() => {
-        'id': id,
-        'name': name,
-        'personalizedCode': personalizedCode,
-        'cnpj': cnpj,
-        'enabled': enabled,
-      };
+    'id': id,
+    'name': name,
+    'personalizedCode': personalizedCode,
+    'cnpj': cnpj,
+    'enabled': enabled,
+  };
 
   FirebaseSubEnterpriseEntity toEntity() => FirebaseSubEnterpriseEntity(
-        id: id,
-        name: name,
-        personalizedCode: personalizedCode,
-        cnpj: cnpj,
-        enabled: enabled,
-      );
+    id: id,
+    name: name,
+    personalizedCode: personalizedCode,
+    cnpj: cnpj,
+    enabled: enabled,
+  );
 }

@@ -17,11 +17,5 @@ class FirebaseSubEnterpriseEntity extends Equatable {
   });
 
   @override
-  List<Object?> get props => [
-        id,
-        name,
-        personalizedCode,
-        cnpj,
-        enabled,
-      ];
+  List<Object?> get props => [id, name, personalizedCode, cnpj, enabled];
 }
