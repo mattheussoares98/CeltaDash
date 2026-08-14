@@ -13,12 +13,12 @@ class MorePage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return BaseScaffold(
+      isScrollable: false,
       appBar: BaseAppBar(
         title: 'More'.hardcoded,
         actions: [
-          IconButton(
+          BaseIconButton(
             key: const ValueKey('logout_button'),
-            tooltip: 'Logout'.hardcoded,
             onPressed: () async {
               final confirmed = await showAlertDialog(
                 context: context,
@@ -38,7 +38,7 @@ class MorePage extends HookConsumerWidget {
                 );
               }
             },
-            icon: const PlatformIcon(
+            platformIcon: const PlatformIcon(
               materialIcon: Icons.logout,
               cupertinoIcon: CupertinoIcons.square_arrow_right,
             ),

@@ -15,6 +15,7 @@ class HomePage extends HookConsumerWidget {
     ref.watch(homeControllerProvider);
     final showHomeAppBar = navigationShell.currentIndex <= 2;
     return BaseScaffold(
+      isScrollable: false,
       appBar: showHomeAppBar ? const HomeAppBar() : null,
       body: navigationShell,
       bottomNavigationBar: HomeBottomNavigation(
