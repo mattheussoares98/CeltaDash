@@ -3,6 +3,7 @@ import 'package:celta_dash/core/providers.dart';
 import 'package:celta_dash/features/home/domain/domain.dart';
 import 'package:celta_dash/features/home/presentation/models/models.dart';
 import 'package:celta_dash/features/home/providers.dart';
+import 'package:celta_dash/ui/helpers/helpers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'home_controller.g.dart';
@@ -43,7 +44,9 @@ class HomeController extends _$HomeController {
         .firstOrNull;
     if (enterprise == null || !enterprise.enabled) {
       state = AsyncValue.data(
-        current.copyWith(selectionError: 'This enterprise is disabled.'),
+        current.copyWith(
+          selectionError: 'Essa empresa está desabilitada'.hardcoded,
+        ),
       );
       return;
     }
