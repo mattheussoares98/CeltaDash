@@ -36,7 +36,6 @@ GoRouter goRouter(Ref ref) {
         enterprisesManagerRoute(),
         goalHistoricRoute(),
         groupSummaryRoute(),
-        moreRoute(),
         notCanceledSalesRoute(),
         operatorsRoute(),
         paymentsTypeRoute(),

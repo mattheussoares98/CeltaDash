@@ -1,3 +1,5 @@
+import 'package:celta_dash/commom_widgets/commom_widgets.dart';
+import 'package:celta_dash/ui/helpers/helpers.dart';
 import 'package:flutter/material.dart';
 
 class NotFoundPage extends StatelessWidget {
@@ -6,12 +8,8 @@ class NotFoundPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('404'),
-      ),
-      body: const Center(
-        child: Text('Página não encontrada!'),
-      ),
+      appBar: AppBar(title: BaseText.error('404'.hardcoded)),
+      body: Center(child: BaseText.error('Página não encontrada!'.hardcoded)),
     );
   }
 }
