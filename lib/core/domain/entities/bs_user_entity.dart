@@ -13,9 +13,20 @@ class BsUserEntity extends Equatable {
   });
 
   @override
-  List<Object?> get props => [
-        name,
-        AccessKey,
-        CrossIdentity_Usuario,
-      ];
+  List<Object?> get props => [name, AccessKey, CrossIdentity_Usuario];
+
+  BsUserEntity copyWith({
+    String? name,
+    String? AccessKey,
+    String? CrossIdentity_Usuario,
+    bool? annulName,
+    bool? annulAccessKey,
+    bool? annulCrossIdentity_Usuario,
+  }) => BsUserEntity(
+    name: annulName == true ? null : name ?? this.name,
+    AccessKey: annulAccessKey == true ? null : AccessKey ?? this.AccessKey,
+    CrossIdentity_Usuario: annulCrossIdentity_Usuario == true
+        ? null
+        : CrossIdentity_Usuario ?? this.CrossIdentity_Usuario,
+  );
 }

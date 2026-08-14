@@ -18,7 +18,7 @@ class RemoteFirebaseManager implements FirebaseManager {
       fieldToSearch: fieldToSearch,
       valueToSearch: valueToSearch,
     );
-  }
+  } //TODO move to the new architecture
 
   @override
   Future<void> put({

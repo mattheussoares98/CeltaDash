@@ -1,4 +1,4 @@
-// lib/core/providers.dart
+import 'package:celta_dash/core/infrastructure/infrastructure.dart';
 import 'package:celta_dash/data/database/database.dart';
 import 'package:celta_dash/data/http/http.dart';
 import 'package:celta_dash/data/usecases/usecases.dart';
@@ -34,10 +34,29 @@ HiveStorage hiveStorage(Ref ref) {
 
 @Riverpod(keepAlive: true)
 LocalStorage localStorage(Ref ref) {
-  return HiveLocalStorage(ref.watch(hiveStorageProvider));
+  return HiveLocalStorage(
+    ref.watch(hiveStorageProvider),
+  ); //TODO move to the new
 }
 
 @Riverpod(keepAlive: true)
 SoapRequest soapRequest(Ref ref) {
   return SoapAdapter();
+}
+
+@Riverpod(keepAlive: true)
+FirebaseStorage firebaseStorage(Ref ref) {
+  return FirebaseAdapter();
+}
+
+@Riverpod(keepAlive: true)
+FirebaseManager firebaseManager(Ref ref) {
+  return RemoteFirebaseManager(
+    firebaseStorage: ref.watch(firebaseStorageProvider),
+  );
+}
+
+@Riverpod(keepAlive: true)
+IDeviceService deviceService(Ref ref) {
+  return DeviceService();
 }

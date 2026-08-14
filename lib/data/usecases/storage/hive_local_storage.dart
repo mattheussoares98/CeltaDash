@@ -5,7 +5,7 @@ import '../../mixins/mixins.dart';
 
 class HiveLocalStorage with ErrorHandling implements LocalStorage {
   final HiveStorage hiveAdapter;
-
+  //TODO move to the new architecture
   HiveLocalStorage(this.hiveAdapter);
 
   @override

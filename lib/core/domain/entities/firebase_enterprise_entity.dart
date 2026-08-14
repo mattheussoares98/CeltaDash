@@ -21,10 +21,33 @@ class FirebaseEnterpriseEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        baseUrl,
-        enterpriseName,
-        bsUser,
-        firebaseSubEnterprises,
-        firebaseId,
-      ];
+    baseUrl,
+    enterpriseName,
+    bsUser,
+    firebaseSubEnterprises,
+    firebaseId,
+  ];
+
+  FirebaseEnterpriseEntity copyWith({
+    String? baseUrl,
+    String? enterpriseName,
+    BsUserEntity? bsUser,
+    List<FirebaseSubEnterpriseEntity>? firebaseSubEnterprises,
+    String? firebaseId,
+    bool? annulBaseUrl,
+    bool? annulEnterpriseName,
+    bool? annulBsUser,
+    bool? annulFirebaseSubEnterprises,
+    bool? annulFirebaseId,
+  }) => FirebaseEnterpriseEntity(
+    baseUrl: annulBaseUrl == true ? null : baseUrl ?? this.baseUrl,
+    enterpriseName: annulEnterpriseName == true
+        ? null
+        : enterpriseName ?? this.enterpriseName,
+    bsUser: annulBsUser == true ? null : bsUser ?? this.bsUser,
+    firebaseSubEnterprises: annulFirebaseSubEnterprises == true
+        ? null
+        : firebaseSubEnterprises ?? this.firebaseSubEnterprises,
+    firebaseId: annulFirebaseId == true ? null : firebaseId ?? this.firebaseId,
+  );
 }

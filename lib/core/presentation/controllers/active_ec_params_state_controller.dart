@@ -1,7 +1,6 @@
-// lib/core/presentation/controllers/active_ec_params_controller.dart
+import 'package:celta_dash/core/data/data.dart';
 import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/core/providers.dart';
-import 'package:celta_dash/data/models/models.dart';
 import 'package:celta_dash/infra/helpers/helpers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
