@@ -1,15 +1,13 @@
-import 'package:flutter/foundation.dart';
+import 'package:celta_dash/routing/routing.dart';
+import 'package:celta_dash/ui/components/components.dart';
+import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:celta_dash/ui/mixins/mixins.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
-import 'package:get/get.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../ui/components/components.dart';
-import '../ui/helpers/helpers.dart';
-import '../ui/mixins/mixins.dart';
-import 'main/components/components.dart';
 import 'main/utils/utils.dart';
 
 void main() async {
@@ -34,17 +32,16 @@ void main() async {
   runApp(UncontrolledProviderScope(container: container, child: const App()));
 }
 
-bool _isFirstLoad = true;
-
-class App extends StatelessWidget with KeyboardManager {
+class App extends HookConsumerWidget with KeyboardManager {
   const App({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     StringSize.updateStringSize(context);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     IsDarkTheme.updateIsDark(context);
-    final routeObserver = Get.put(RouteObserver<PageRoute>());
+
+    final router = ref.watch(goRouterProvider);
 
     debugPrint("largura: ${MediaQuery.of(context).size.width}");
     debugPrint("altura: ${MediaQuery.of(context).size.height}");
@@ -59,28 +56,17 @@ class App extends StatelessWidget with KeyboardManager {
         FocusScope.of(context).unfocus();
         hideKeyboard(context);
       },
-      child: GetMaterialApp(
-        navigatorKey: NavigatorKey.key,
+      child: MaterialApp.router(
+        routerConfig: router,
         title: 'Celta Dash',
         debugShowCheckedModeBanner: false,
-        theme: makeAppTheme(context),
-        navigatorObservers: [routeObserver],
-        initialRoute: PageRoutes.splash,
-        routingCallback: (routing) {
-          if (kIsWeb && _isFirstLoad) {
-            _isFirstLoad = false;
-            if (routing != null && routing.current != PageRoutes.splash) {
-              Future.microtask(() => Get.offAllNamed(PageRoutes.splash));
-            }
-          }
-        },
+        theme: makeAppTheme(context), //TODO update
         supportedLocales: const [Locale('en', 'US'), Locale('pt', 'BR')],
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
         ],
-        getPages: GetPages.getPages,
       ),
     );
   }

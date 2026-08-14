@@ -3,12 +3,13 @@ import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/core/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/login/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/login/presentation/pages/components/components.dart';
+import 'package:celta_dash/routing/routing.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
 import 'package:celta_dash/utils/constants/constants.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class LoginPage extends HookConsumerWidget {
@@ -56,7 +57,7 @@ class LoginPage extends HookConsumerWidget {
           );
 
       if (success && context.mounted) {
-        Get.offAllNamed(PageRoutes.home); //TODO change this navigation
+        context.goNamed(Routes.home.name);
       }
     }
 
@@ -72,7 +73,7 @@ class LoginPage extends HookConsumerWidget {
               children: [
                 gapH32,
                 GestureDetector(
-                  onLongPress: () => Get.toNamed(PageRoutes.webLogin),
+                  onLongPress: () => context.pushNamed(Routes.webLogin.name),
                   //TODO update to the new logo
                   child: Image.asset(
                     'lib/ui/assets/images/logoCeltaTransparente.png',
