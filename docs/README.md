@@ -15,7 +15,11 @@ This documentation guides the step-by-step migration of `celta_dash` from the le
 6. **No Modifying Git Commands & No build_runner**:
    - Do not run `build_runner` manually (handled in background via `watch -d`).
    - Only `git status` and `git diff` are permitted.
-7. **Continuous Documentation Updates (Living Docs)**:
+7. **Strict Theme-Driven UI (Dark & Light Mode Ready)**:
+   - Always structure UI styling using `Theme.of(context)` / `context.theme` (`colorScheme`, `textTheme`, `scaffoldBackgroundColor`, etc.).
+   - Never hardcode colors (`Colors.white`, `Colors.black`, hex literals) or text styles directly in widgets.
+   - This ensures all migrated features automatically adapt when dark/light mode switching is toggled.
+8. **Continuous Documentation Updates (Living Docs)**:
    - Whenever a missing edge case, missing convention, or pattern is identified during migration, immediately update the relevant document inside `docs/` to keep documentation accurate and prevent repeating mistakes.
 
 ---
@@ -72,4 +76,5 @@ lib/features/[feature_name]/
 5. [05. Providers & Barrel Files Migration Guide](05_providers_and_barrels_migration.md)
 6. [06. Unit Testing Guidelines](06_unit_testing_guidelines.md)
 7. [07. Navigation & GoRouter Guidelines (Replacing GetX Navigation)](07_navigation_and_gorouter_guidelines.md)
-8. [Master Feature Migration Checklist Template](feature_migration_checklist.md)
+8. [08. File Migration & Compatibility Strategy (Move & Forward-Export)](08_file_migration_and_compatibility.md)
+9. [Master Feature Migration Checklist Template](feature_migration_checklist.md)

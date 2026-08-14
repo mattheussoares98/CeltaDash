@@ -171,6 +171,15 @@ class SellerPage extends ConsumerWidget {
 
 ---
 
+## 5. Strict Theme-Driven UI (Dark & Light Mode Support)
+Because the application supports dynamic switching between **Dark Mode** and **Light Mode**, all UI components and pages must strictly adhere to theme styling:
+- **Colors**: Access colors via `Theme.of(context).colorScheme` (e.g., `primary`, `onSurface`, `surfaceContainer`, `error`) or theme properties (`scaffoldBackgroundColor`, `dividerColor`).
+- **Forbidden**: Never hardcode colors (`Colors.white`, `Colors.black`, `Colors.grey[800]`, `#1E1E1E`).
+- **Typography**: Always use `Theme.of(context).textTheme` styles (e.g., `titleMedium`, `bodyMedium`, `labelSmall`).
+- **Opacity**: Use `.withAlpha(0–255)` instead of `.withOpacity(...)` to avoid performance penalties.
+
+---
+
 ## Checklist for Controller & Presentation
 - [ ] Remove legacy GetX Presenter and ViewModels for the feature.
 - [ ] Create `@riverpod` controller extending `_$[Feature]Controller`.
@@ -180,4 +189,5 @@ class SellerPage extends ConsumerWidget {
 - [ ] Replace `Obx` / `GetBuilder` / `GetX` with `ref.watch(provider)`.
 - [ ] Extract subwidgets to `components/` subfolder if file exceeds ~100 lines.
 - [ ] Ensure `presentation/controllers/controllers.dart` and `presentation/pages/pages.dart` barrel files exist.
+- [ ] Ensure all UI components and text styles use `Theme.of(context)` (no hardcoded colors/styles).
 - [ ] Write unit tests for Riverpod controllers using `ProviderContainer` to verify async loading, data states, and mutations.
