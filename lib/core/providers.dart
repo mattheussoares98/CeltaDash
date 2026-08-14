@@ -40,6 +40,11 @@ LocalStorage localStorage(Ref ref) {
 }
 
 @Riverpod(keepAlive: true)
+IAppStorage appStorage(Ref ref) {
+  return LegacyAppStorage(ref.watch(localStorageProvider));
+}
+
+@Riverpod(keepAlive: true)
 SoapRequest soapRequest(Ref ref) {
   return SoapAdapter();
 }

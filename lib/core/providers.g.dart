@@ -173,6 +173,47 @@ final class LocalStorageProvider
 
 String _$localStorageHash() => r'fc597f102c8b93474eee57132131815532c0fb80';
 
+@ProviderFor(appStorage)
+final appStorageProvider = AppStorageProvider._();
+
+final class AppStorageProvider
+    extends $FunctionalProvider<IAppStorage, IAppStorage, IAppStorage>
+    with $Provider<IAppStorage> {
+  AppStorageProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'appStorageProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$appStorageHash();
+
+  @$internal
+  @override
+  $ProviderElement<IAppStorage> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  IAppStorage create(Ref ref) {
+    return appStorage(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(IAppStorage value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<IAppStorage>(value),
+    );
+  }
+}
+
+String _$appStorageHash() => r'e62e2e05ab70f8d21aa61ca14c615f11e8dad15f';
+
 @ProviderFor(soapRequest)
 final soapRequestProvider = SoapRequestProvider._();
 
