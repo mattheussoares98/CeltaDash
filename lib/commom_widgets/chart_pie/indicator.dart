@@ -50,10 +50,7 @@ class Indicator extends StatelessWidget {
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    title,
-                    ?subtitle,
-                  ],
+                  children: [title, ?subtitle],
                 ),
               ),
               // Expanded(

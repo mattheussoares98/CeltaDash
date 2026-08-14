@@ -1,9 +1,9 @@
+import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../../ui/helpers/helpers.dart';
-import '../../../../components/components.dart';
 import '../../../pages.dart';
 import 'pie.dart';
 

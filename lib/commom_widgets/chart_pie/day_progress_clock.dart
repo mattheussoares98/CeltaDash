@@ -1,9 +1,8 @@
 import 'dart:math';
 
+import 'package:celta_dash/ui/helpers/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
-import '../../helpers/helpers.dart';
 
 /// A clock that paints the passed portion of the day as a filled pie slice.
 class DayProgressClock extends StatefulWidget {
@@ -85,7 +84,8 @@ class DayProgressClockState extends State<DayProgressClock> {
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();
-    _isCurrentDay = widget.date.year == now.year &&
+    _isCurrentDay =
+        widget.date.year == now.year &&
         widget.date.month == now.month &&
         widget.date.day == now.day;
 
@@ -105,8 +105,8 @@ class DayProgressClockState extends State<DayProgressClock> {
     const totalSeconds = 24 * 3600;
     final passedSeconds = _isCurrentDay
         ? _displayTime!.hour * 3600 +
-            _displayTime!.minute * 60 +
-            _displayTime!.second
+              _displayTime!.minute * 60 +
+              _displayTime!.second
         : totalSeconds;
     final fraction = passedSeconds / totalSeconds;
     final timeString = DateFormat.Hm().format(_displayTime!);

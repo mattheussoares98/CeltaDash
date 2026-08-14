@@ -1,4 +1,5 @@
 import 'package:celta_dash/utils/utils.dart';
+import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -9,10 +10,7 @@ import '../../pages.dart';
 
 class DailyStatistics extends StatelessWidget {
   final List<SaleStatisticViewModel> saleStatistics;
-  const DailyStatistics({
-    super.key,
-    required this.saleStatistics,
-  });
+  const DailyStatistics({super.key, required this.saleStatistics});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +18,8 @@ class DailyStatistics extends StatelessWidget {
     ResumePresenter resumePresenter = Get.find();
 
     final now = DateTime.now();
-    bool isCurrentDay = now.day == homePresenter.selectedDate.day &&
+    bool isCurrentDay =
+        now.day == homePresenter.selectedDate.day &&
         now.month == homePresenter.selectedDate.month &&
         now.year == homePresenter.selectedDate.year;
 
@@ -64,8 +63,8 @@ class DailyStatistics extends StatelessWidget {
     final percentageResult = selectedDayLiquidValue == 0.0
         ? 0
         : previousMonthLiquidValue == 0.0
-            ? 100
-            : (selectedDayLiquidValue / previousMonthLiquidValue * 100 - 100);
+        ? 100
+        : (selectedDayLiquidValue / previousMonthLiquidValue * 100 - 100);
 
     return Container(
       decoration: ContainerDecoration.defaultDecoration,
@@ -82,8 +81,8 @@ class DailyStatistics extends StatelessWidget {
                   text:
                       " (${percentageResult.toString().toBrazilianNumber(0)}%)",
                   style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                        color: percentageResult > 0 ? Colors.green : Colors.red,
-                      ),
+                    color: percentageResult > 0 ? Colors.green : Colors.red,
+                  ),
                 ),
               ],
               style: Theme.of(context).textTheme.displayLarge,
@@ -110,9 +109,7 @@ class DailyStatistics extends StatelessWidget {
                     color: percentageResult >= 0 ? Colors.green : Colors.red,
                   ),
                   color: percentageResult >= 0 ? Colors.green : Colors.red,
-                  subtitle: SubTitle(
-                    statistics: selectedDayStatistics ?? [],
-                  ),
+                  subtitle: SubTitle(statistics: selectedDayStatistics ?? []),
                   value: selectedDayLiquidValue,
                 ),
                 // if (previousMonthLiquidValue > 0)
@@ -129,14 +126,12 @@ class DailyStatistics extends StatelessWidget {
                   color: previousMonthLiquidValue > 0
                       ? Colors.orange
                       : Colors.green,
-                  subtitle: SubTitle(
-                    statistics: previousMonthStatistics ?? [],
-                  ),
+                  subtitle: SubTitle(statistics: previousMonthStatistics ?? []),
                   showSubtitleOnlyOnTap: true,
                   value: previousMonthLiquidValue,
                 ),
               ],
-            )
+            ),
           ],
           Row(
             children: [
@@ -185,9 +180,9 @@ class SubTitle extends StatelessWidget {
 
     return Text(
       subtitle,
-      style: Theme.of(Get.context!).textTheme.bodySmall?.copyWith(
-            fontStyle: FontStyle.italic,
-          ),
+      style: Theme.of(
+        Get.context!,
+      ).textTheme.bodySmall?.copyWith(fontStyle: FontStyle.italic),
     );
   }
 }
@@ -219,8 +214,9 @@ class Title extends StatelessWidget {
       homePresenter.selectedDate.day,
     );
 
-    final title =
-        isPreviousMonth ? DateFormat("dd/MM").format(previowsDate) : null;
+    final title = isPreviousMonth
+        ? DateFormat("dd/MM").format(previowsDate)
+        : null;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -229,18 +225,18 @@ class Title extends StatelessWidget {
           Text(
             title,
             style: Theme.of(Get.context!).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: color,
-                ),
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
           ),
         FittedBox(
           child: Text(
             totalValue.toString().toBrazilianNumber().addBrazilianCoin(),
             style: Theme.of(Get.context!).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  color: color,
-                ),
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              color: color,
+            ),
           ),
         ),
       ],
