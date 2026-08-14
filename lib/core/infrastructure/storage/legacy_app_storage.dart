@@ -14,4 +14,8 @@ class LegacyAppStorage implements IAppStorage {
   @override
   Future<void> put(String key, dynamic value) =>
       _storage.put(DatabaseKeys.values.byName(key), value);
+
+  @override
+  Future<void> delete(String key) =>
+      _storage.delete(DatabaseKeys.values.byName(key));
 }
