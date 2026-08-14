@@ -26,31 +26,51 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
       },
     );
 
+    const enterpriseSelector = HomeEnterpriseSelector();
+    const dateSelector = Expanded(child: HomeDateSelector());
+    const modeToggle = Flexible(child: HomeModeToggle());
+    final selectEnterprise = BaseIconButton(
+      key: const ValueKey('home_enterprises_manager'),
+      onPressed: () => context.pushNamed(Routes.enterprisesManager.name),
+      platformIcon: const PlatformIcon(
+        materialIcon: Icons.manage_accounts,
+        cupertinoIcon: CupertinoIcons.person_2,
+      ),
+    );
+
     final controls = AsyncValueWidget(
       value: homeAsync,
       tryAgain: () => ref.invalidate(homeControllerProvider),
       data: (_) {
-        const enterpriseSelector = HomeEnterpriseSelector();
-        const dateSelector = Expanded(child: HomeDateSelector());
-        const modeToggle = Flexible(child: HomeModeToggle());
-
         if (MediaQuery.orientationOf(context) == Orientation.landscape) {
-          return const Row(
+          return Row(
+            mainAxisAlignment: .spaceEvenly,
             children: [
+              const Spacer(),
+              const Expanded(flex: 2, child: enterpriseSelector),
               dateSelector,
               gapW8,
-              Expanded(child: enterpriseSelector),
-              gapW8,
               modeToggle,
+              selectEnterprise,
+              const Spacer(),
             ],
           );
         }
-        return const Column(
+        return Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: .stretch,
           children: [
-            enterpriseSelector,
+            Row(
+              children: [
+                const Expanded(child: enterpriseSelector),
+                selectEnterprise,
+              ],
+            ),
             gapH4,
-            Row(children: [dateSelector, gapW8, modeToggle]),
+            const Row(
+              mainAxisAlignment: .spaceBetween,
+              children: [dateSelector, modeToggle],
+            ),
           ],
         );
       },
@@ -60,16 +80,6 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
       showLeading: false,
       titleWidget: controls,
       actionsPadding: const EdgeInsets.symmetric(vertical: Sizes.p24),
-      actions: [
-        BaseIconButton(
-          key: const ValueKey('home_enterprises_manager'),
-          onPressed: () => context.pushNamed(Routes.enterprisesManager.name),
-          platformIcon: const PlatformIcon(
-            materialIcon: Icons.manage_accounts,
-            cupertinoIcon: CupertinoIcons.person_2,
-          ),
-        ),
-      ],
     );
   }
 }
