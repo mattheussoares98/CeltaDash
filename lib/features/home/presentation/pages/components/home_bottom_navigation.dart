@@ -1,39 +1,23 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
-import 'package:celta_dash/routing/routing.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class HomeBottomNavigation extends StatelessWidget {
-  const HomeBottomNavigation({super.key, required this.currentLocation});
+  const HomeBottomNavigation({
+    super.key,
+    required this.currentIndex,
+    required this.onTap,
+  });
 
-  final String currentLocation;
-
-  static const _routeNames = [
-    Routes.homeResume,
-    Routes.homeSales,
-    Routes.homeProducts,
-    Routes.homePersonalized,
-    Routes.homeMore,
-  ];
-
-  int get _currentIndex {
-    final index = _routeNames.indexWhere(
-      // Example: route.name is "homeProducts". substring(4) removes the first
-      // four characters ("home"), leaving "Products". toLowerCase() converts
-      // it to "products", then endsWith checks for "/products" in the URL.
-      (route) =>
-          currentLocation.endsWith('/${route.name.substring(4).toLowerCase()}'),
-    );
-    return index < 0 ? 0 : index;
-  }
+  final int currentIndex;
+  final ValueChanged<int> onTap;
 
   @override
   Widget build(BuildContext context) {
     return BaseBottomNavigationBar(
-      currentIndex: _currentIndex,
-      onTap: (index) => context.goNamed(_routeNames[index].name),
+      currentIndex: currentIndex,
+      onTap: onTap,
       items: [
         BaseBottomNavigationBarItem(
           label: 'Resume'.hardcoded,

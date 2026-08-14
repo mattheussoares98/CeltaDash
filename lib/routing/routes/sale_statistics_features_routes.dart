@@ -5,55 +5,55 @@ import 'package:celta_dash/routing/routes.dart';
 import 'package:celta_dash/ui/pages/pages.dart';
 
 RouteBase appAnalyticsRoute() => GoRoute(
-  path: 'app-analytics',
+  path: '/home/app-analytics',
   name: Routes.appAnalytics.name,
   builder: (context, state) => makeAppAnalyticsPage(),
 );
 
 RouteBase bsSaleDetailsRoute() => GoRoute(
-  path: 'bs-sale-details',
+  path: '/home/bs-sale-details',
   name: Routes.bsSaleDetails.name,
   builder: (context, state) => makeBsSaleDetailsPage(),
 );
 
 RouteBase canceledSalesRoute() => GoRoute(
-  path: 'canceled-sales',
+  path: '/home/canceled-sales',
   name: Routes.canceledSales.name,
   builder: (context, state) => makeCanceledSalesPage(),
 );
 
 RouteBase compareDaysRoute() => GoRoute(
-  path: 'compare-days',
+  path: '/home/compare-days',
   name: Routes.compareDays.name,
   builder: (context, state) => makeCompareDaysPage(),
 );
 
 RouteBase compareMonthsRoute() => GoRoute(
-  path: 'compare-months',
+  path: '/home/compare-months',
   name: Routes.compareMonths.name,
   builder: (context, state) => makeCompareMonthsPage(),
 );
 
 RouteBase departmentsRoute() => GoRoute(
-  path: 'departments',
+  path: '/home/departments',
   name: Routes.departments.name,
   builder: (context, state) => makeDepartmentsPage(),
 );
 
 RouteBase enterprisesManagerRoute() => GoRoute(
-  path: 'enterprises-manager',
+  path: '/home/enterprises-manager',
   name: Routes.enterprisesManager.name,
   builder: (context, state) => makeEnterprisesManagerPage(),
 );
 
 RouteBase goalHistoricRoute() => GoRoute(
-  path: 'goal-historic',
+  path: '/home/goal-historic',
   name: Routes.goalHistoric.name,
   builder: (context, state) => makeGoalHistoricPage(),
 );
 
 RouteBase groupSummaryRoute() => GoRoute(
-  path: 'group-summary',
+  path: '/home/group-summary',
   name: Routes.groupSummary.name,
   builder: (context, state) => makeGroupSummaryPage(),
 );
@@ -65,49 +65,49 @@ RouteBase moreRoute() => GoRoute(
 );
 
 RouteBase notCanceledSalesRoute() => GoRoute(
-  path: 'not-canceled-sales',
+  path: '/home/not-canceled-sales',
   name: Routes.notCanceledSales.name,
   builder: (context, state) => makeNotCanceledSalesPage(),
 );
 
 RouteBase operatorsRoute() => GoRoute(
-  path: 'operators',
+  path: '/home/operators',
   name: Routes.operators.name,
   builder: (context, state) => makeOperatorsPage(),
 );
 
 RouteBase paymentsTypeRoute() => GoRoute(
-  path: 'payments-type',
+  path: '/home/payments-type',
   name: Routes.paymentsType.name,
   builder: (context, state) => makePaymentsTypePage(),
 );
 
 RouteBase sellersRoute() => GoRoute(
-  path: 'sellers',
+  path: '/home/sellers',
   name: Routes.sellers.name,
   builder: (context, state) => makeSellersPage(),
 );
 
 RouteBase setGoalRoute() => GoRoute(
-  path: 'set-goal',
+  path: '/home/set-goal',
   name: Routes.setGoal.name,
   builder: (context, state) => const SetGoalPage(),
 );
 
 RouteBase updateAppVersionRoute() => GoRoute(
-  path: 'update-app-version',
+  path: '/home/update-app-version',
   name: Routes.updateAppVersion.name,
   builder: (context, state) => makeUpdateAppVersionPage(),
 );
 
 RouteBase webEnterprisesRoute() => GoRoute(
-  path: 'web-enterprises',
+  path: '/home/web-enterprises',
   name: Routes.webEnterprises.name,
   builder: (context, state) => makeWebEnterprisesPage(),
 );
 
 RouteBase webEnterpriseDetailsRoute() => GoRoute(
-  path: 'web-enterprise-details',
+  path: '/home/web-enterprise-details',
   name: Routes.webEnterpriseDetails.name,
   builder: (context, state) => makeWebEnterpriseDetailsPage(),
 );

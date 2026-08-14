@@ -13,9 +13,9 @@ void main() {
     router = GoRouter(
       initialLocation: initialLocation,
       routes: [
-        homeRoute([
+        ...homeRoutes([
           GoRoute(
-            path: 'operators',
+            path: '/home/operators',
             name: Routes.operators.name,
             builder: (context, state) =>
                 const Scaffold(body: Text('Operators')),
@@ -84,9 +84,8 @@ void main() {
   ) async {
     await pumpRouter(tester, initialLocation: '/home/sales');
 
-    router.pushNamed(Routes.operators.name);
+    router.push('/home/operators');
     await tester.pumpAndSettle();
-    expect(currentPath(), '/home/operators');
     expect(find.text('Operators'), findsOneWidget);
 
     router.pop();

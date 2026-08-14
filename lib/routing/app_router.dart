@@ -1,9 +1,8 @@
+import 'package:celta_dash/routing/not_found_page.dart';
+import 'package:celta_dash/routing/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import 'package:celta_dash/routing/not_found_page.dart';
-import 'package:celta_dash/routing/routes/routes.dart';
 
 part 'app_router.g.dart';
 
@@ -26,7 +25,7 @@ GoRouter goRouter(Ref ref) {
       splashRoute(),
       loginRoute(),
       webLoginRoute(),
-      homeRoute([
+      ...homeRoutes([
         appAnalyticsRoute(),
         bsSaleDetailsRoute(),
         canceledSalesRoute(),

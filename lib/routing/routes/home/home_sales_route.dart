@@ -3,7 +3,7 @@ import 'package:celta_dash/routing/routing.dart';
 import 'package:go_router/go_router.dart';
 
 RouteBase homeSalesRoute() => GoRoute(
-  path: 'sales',
+  path: '/home/sales',
   name: Routes.homeSales.name,
   builder: (context, state) => const SalesPage(),
 );
