@@ -4,9 +4,8 @@ import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 
-class BaseIconButton extends HookWidget {
+class BaseIconButton extends StatelessWidget {
   const BaseIconButton({
     super.key,
     required this.onPressed,
@@ -25,41 +24,26 @@ class BaseIconButton extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final localLoading = useState(false);
-    final effectiveLoading = isLoading || localLoading.value;
-
     FutureOr<void>? tapCallback() async {
       FocusManager.instance.primaryFocus?.unfocus();
-      final result = onPressed?.call();
-      if (result is Future) {
-        localLoading.value = true;
-        try {
-          await result;
-        } finally {
-          if (context.mounted) {
-            localLoading.value = false;
-          }
-        }
-      }
+      return onPressed?.call();
     }
 
-    final iconWidget = effectiveLoading
-        ? LoadingCircle.small(platformIcon.color)
-        : platformIcon.copyWith(
-            color: onPressed == null ? context.theme.disabledColor : null,
-          );
+    final iconWidget = platformIcon.copyWith(
+      color: onPressed == null ? context.theme.disabledColor : null,
+    );
 
     Widget child;
 
     if (context.isCupertino) {
       child = CupertinoButton(
-        onPressed: effectiveLoading || onPressed == null ? null : tapCallback,
+        onPressed: isLoading || onPressed == null ? null : tapCallback,
         padding: padding ?? EdgeInsets.zero,
         child: iconWidget,
       );
     } else {
       child = IconButton(
-        onPressed: effectiveLoading || onPressed == null ? null : tapCallback,
+        onPressed: isLoading || onPressed == null ? null : tapCallback,
         icon: iconWidget,
         padding: padding ?? EdgeInsets.zero,
       );
