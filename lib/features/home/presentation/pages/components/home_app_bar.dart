@@ -61,11 +61,10 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
       titleWidget: controls,
       actionsPadding: const EdgeInsets.symmetric(vertical: Sizes.p24),
       actions: [
-        IconButton(
+        BaseIconButton(
           key: const ValueKey('home_enterprises_manager'),
-          tooltip: 'Manage enterprises'.hardcoded,
           onPressed: () => context.pushNamed(Routes.enterprisesManager.name),
-          icon: const PlatformIcon(
+          platformIcon: const PlatformIcon(
             materialIcon: Icons.manage_accounts,
             cupertinoIcon: CupertinoIcons.person_2,
           ),

@@ -14,7 +14,7 @@ class HomeEnterpriseSelector extends ConsumerWidget {
 
     return BaseDropDown<int>(
       key: const ValueKey('home_enterprise_selector'),
-      label: 'Enterprise'.hardcoded,
+      label: 'Empresa'.hardcoded,
       selectedItem: homeState.selectedEnterpriseId,
       onChanged: homeState.isRefreshing
           ? null
@@ -30,7 +30,7 @@ class HomeEnterpriseSelector extends ConsumerWidget {
           child: BaseText.bodyMedium(
             enterprise.enabled
                 ? label.hardcoded
-                : '$label (${'Disabled'.hardcoded})',
+                : '$label (${'desabilitado'.hardcoded})',
             color: enterprise.enabled ? null : context.colorScheme.error,
             overflow: TextOverflow.ellipsis,
           ),
