@@ -1,9 +1,9 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/features/home/home.dart';
+import 'package:celta_dash/utils/extensions/extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 class HomeDateSelector extends ConsumerWidget {
   const HomeDateSelector({super.key});
@@ -15,7 +15,7 @@ class HomeDateSelector extends ConsumerWidget {
 
     return PrimaryTextButton(
       key: const ValueKey('home_date_selector'),
-      text: DateFormat('dd/MM/yyyy').format(homeState.selectedDate),
+      text: homeState.selectedDate.formatDate(),
       isLoading: homeState.isRefreshing,
       onPressed: homeState.selectedEnterpriseIsEnabled
           ? () async {
