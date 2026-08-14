@@ -165,6 +165,15 @@ void main() {
     );
   });
 
+  test('logout clears the persisted Home session', () async {
+    when(() => repository.logout()).thenAnswer((_) async {});
+    await loadState();
+
+    await container.read(homeControllerProvider.notifier).logout();
+
+    verify(() => repository.logout()).called(1);
+  });
+
   test(
     'refreshEnterprises applies only the latest request completion',
     () async {
@@ -182,7 +191,7 @@ void main() {
       await Future<void>.delayed(Duration.zero);
       final secondRefresh = controller.refreshEnterprises();
       await Future<void>.delayed(Duration.zero);
-    final newest = HomeEntityFactory.makeHomeEnterpriseEntity(id: 3);
+      final newest = HomeEntityFactory.makeHomeEnterpriseEntity(id: 3);
       secondRequest.complete([newest]);
       await secondRefresh;
       firstRequest.complete([enabledEnterprise]);

@@ -75,6 +75,12 @@ class HomeController extends _$HomeController {
     }
   }
 
+  Future<void> logout() async {
+    await ref.read(homeRepositoryProvider).logout();
+    ref.invalidate(activeEcParamsStateControllerProvider);
+    ref.invalidateSelf();
+  }
+
   Future<void> refreshEnterprises() async {
     final current = state.value;
     if (current == null) return;
