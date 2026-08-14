@@ -69,11 +69,11 @@ class MyController extends _$MyController {
 ```
 
 ## Widgets and Imports
-- **No relative imports.** Always use `package:celta_mobile/`.
+- **No relative imports.** Always use `package:celta_dash/`.
 - **Barrel files required** in every major folder (same name as folder). Always import the barrel, never an individual file.
-  - ✅ `import 'package:celta_mobile/features/auth/domain/entities/entities.dart';`
-  - ❌ `import 'package:celta_mobile/features/auth/domain/entities/user_entity.dart';`
+  - ✅ `import 'package:celta_dash/features/auth/domain/entities/entities.dart';`
+  - ❌ `import 'package:celta_dash/features/auth/domain/entities/user_entity.dart';`
 - **Always specify the full file path** at the top of every code block you provide.
 - Pages go in `presentation/pages/`. Extract sub-widgets to a `components/` subfolder when the file exceeds ~100 lines.
-- Prefer Riverpod controllers over `StatefulWidget`.
+- **Never use `StatefulWidget`**: Always use `HookWidget` or `HookConsumerWidget` (`flutter_hooks`) to manage local widget state, controllers, and focus nodes, alongside Riverpod controllers for business state.
 - Always use `const` constructors.
