@@ -70,7 +70,7 @@ class DailyComparisonController extends _$DailyComparisonController {
     final results = [selectedState.requireValue, comparisonState.requireValue];
 
     return DailyComparisonState(
-      selectedDate: selectedDate,
+      selectedDate: isCurrentDay ? DateTime.now() : selectedDate,
       comparisonDate: comparisonDate,
       selectedLiquidValue: results.first.sumLiquidValue(),
       comparisonLiquidValue: results.last.sumLiquidValue(),
