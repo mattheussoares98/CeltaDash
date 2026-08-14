@@ -1,0 +1,1 @@
+enum SaleStatisticsSeriesType { primary, comparison }

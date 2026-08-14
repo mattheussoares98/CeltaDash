@@ -101,7 +101,7 @@ void main() {
           isA<Exception>().having(
             (e) => e.toString(),
             'message',
-            contains('Active enterprise credentials (EcParams) not found.'),
+            contains('Credenciais da empresa ativa não encontradas.'),
           ),
         );
         expect(controller.lastLoadedParams, isNull);
