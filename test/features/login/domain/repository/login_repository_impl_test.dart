@@ -1,5 +1,4 @@
 // test/features/login/domain/repository/login_repository_impl_test.dart
-import 'package:celta_dash/core/data/data.dart';
 import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/features/login/data/datasource/datasource.dart';
 import 'package:celta_dash/features/login/data/models/models.dart';
@@ -23,7 +22,9 @@ void main() {
   late LoginRepositoryImpl repository;
 
   final tEnterpriseEntity = EntityFactory.makeFirebaseEnterpriseEntity();
-  final tEnterpriseModel = FirebaseEnterpriseModel.fromEntity(tEnterpriseEntity);
+  final tEnterpriseModel = FirebaseEnterpriseModel.fromEntity(
+    tEnterpriseEntity,
+  );
   final tBsUserEntity = EntityFactory.makeBsUserEntity();
   final tBsUserModel = BsUserModel.fromEntity(tBsUserEntity);
 

@@ -28,13 +28,13 @@ class GetxWebEnterprisesPresenter extends GetxController
     isLoading = true;
     mainError = null;
     try {
-      final remoteEnterprises = await firebaseManager.get(path: "enterprises");
+      // final remoteEnterprises = await firebaseManager.get(path: "enterprises");
 
-      enterprises = remoteEnterprises.docs
-          .map<FirebaseEnterpriseViewModel>((e) =>
-              FirebaseEnterpriseModel.fromJson(e.data(), documentId: e.id)
-                  .toViewModel())
-          .toList();
+      // enterprises = remoteEnterprises.docs
+      //     .map<FirebaseEnterpriseViewModel>((e) =>
+      //         FirebaseEnterpriseModel.fromJson(e.data(), documentId: e.id)
+      //             .toViewModel())
+      //     .toList();
     } catch (e) {
       mainError = getUIError(e);
     } finally {
@@ -81,8 +81,9 @@ class GetxWebEnterprisesPresenter extends GetxController
         bsUser: _selectedEnterprise?.bsUser,
       );
 
-      int? index = _enterprises.value
-          ?.indexWhere((e) => e.firebaseId == _selectedEnterprise?.firebaseId);
+      int? index = _enterprises.value?.indexWhere(
+        (e) => e.firebaseId == _selectedEnterprise?.firebaseId,
+      );
 
       if (index != null && index != -1) {
         final oldEnterprises = [..._enterprises.value!];
@@ -107,9 +108,11 @@ class GetxWebEnterprisesPresenter extends GetxController
     isLoading = true;
     mainError = null;
     try {
-      if (_enterprises.value?.any((e) =>
-              e.enterpriseName?.toLowerCase().removeWhiteSpaces() ==
-              enterpriseName.toLowerCase().removeWhiteSpaces()) ??
+      if (_enterprises.value?.any(
+            (e) =>
+                e.enterpriseName?.toLowerCase().removeWhiteSpaces() ==
+                enterpriseName.toLowerCase().removeWhiteSpaces(),
+          ) ??
           false) {
         throw DomainError.enterpriseAlreadyExists;
       }
@@ -131,16 +134,21 @@ class GetxWebEnterprisesPresenter extends GetxController
         userName: bsUserName,
       );
 
-      await firebaseManager.put(
-        path: "enterprises/${enterpriseName.toLowerCase().removeWhiteSpaces()}",
-        data: {
-          "baseUrl": baseUrl.toLowerCase().removeWhiteSpaces(),
-          "enterpriseName": enterpriseName.toLowerCase().removeWhiteSpaces(),
-          "subEnterprises": enterprises
-              .map((e) => EnterpriseModel.fromEntity(e).toJson())
-              .toList(),
-        },
-      ).timeout(const Duration(seconds: 30));
+      await firebaseManager
+          .put(
+            path:
+                "enterprises/${enterpriseName.toLowerCase().removeWhiteSpaces()}",
+            data: {
+              "baseUrl": baseUrl.toLowerCase().removeWhiteSpaces(),
+              "enterpriseName": enterpriseName
+                  .toLowerCase()
+                  .removeWhiteSpaces(),
+              "subEnterprises": enterprises
+                  .map((e) => EnterpriseModel.fromEntity(e).toJson())
+                  .toList(),
+            },
+          )
+          .timeout(const Duration(seconds: 30));
 
       final oldEnterprises = [...?_enterprises.value];
       _enterprises.value = [
@@ -204,12 +212,12 @@ class GetxWebEnterprisesPresenter extends GetxController
         firebaseSubEnterprises: oldSelectedEnterprise?.firebaseSubEnterprises,
       );
 
-      await firebaseManager.put(
-        path: "enterprises/${_selectedEnterprise?.firebaseId}",
-        data: FirebaseEnterpriseModel.fromViewModel(firebaseEnterpriseUpdated)
-            .toJson(),
-        merge: false,
-      );
+      // await firebaseManager.put(
+      //   path: "enterprises/${_selectedEnterprise?.firebaseId}",
+      //   data: FirebaseEnterpriseModel.fromViewModel(firebaseEnterpriseUpdated)
+      //       .toJson(),
+      //   merge: false,
+      // );
 
       _selectedEnterprise = firebaseEnterpriseUpdated;
       return true;

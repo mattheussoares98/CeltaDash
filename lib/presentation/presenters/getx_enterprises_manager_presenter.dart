@@ -41,13 +41,13 @@ class GetxEnterprisesManagerPresenter extends GetxController
     if (enterprise.enterpriseName == EnterpriseBuilder.entity?.enterpriseName) {
       return;
     }
-    EnterpriseBuilder.entity =
-        FirebaseEnterpriseModel.fromViewModel(enterprise).toEntity();
+    // EnterpriseBuilder.entity =
+    //     FirebaseEnterpriseModel.fromViewModel(enterprise).toEntity();
 
-    await localStorage.put(
-      DatabaseKeys.enterprise,
-      FirebaseEnterpriseModel.fromViewModel(enterprise).toJson(),
-    );
+    // await localStorage.put(
+    //   DatabaseKeys.enterprise,
+    //   FirebaseEnterpriseModel.fromViewModel(enterprise).toJson(),
+    // );
 
     navigateTo.navigate(pageRoute: PageRoutes.splash, clear: true);
   }
@@ -58,22 +58,24 @@ class GetxEnterprisesManagerPresenter extends GetxController
     mainError = null;
 
     try {
-      final selectedEnterprise =
-          await localStorage.get(DatabaseKeys.enterprise);
+      final selectedEnterprise = await localStorage.get(
+        DatabaseKeys.enterprise,
+      );
 
       if (selectedEnterprise != null && selectedEnterprise != "") {
-        EnterpriseBuilder.entity =
-            FirebaseEnterpriseModel.fromJson(selectedEnterprise).toEntity();
+        EnterpriseBuilder.entity = FirebaseEnterpriseModel.fromJson(
+          selectedEnterprise,
+        ).toEntity();
       }
 
-      final localAllEnterprises =
-          await localStorage.get(DatabaseKeys.allEnterprises);
+      // final localAllEnterprises =
+      //     await localStorage.get(DatabaseKeys.allEnterprises);
 
-      if (localAllEnterprises != null && localAllEnterprises != "") {
-        allEnterprises = (localAllEnterprises as List)
-            .map((e) => FirebaseEnterpriseModel.fromJson(e).toViewModel())
-            .toList();
-      }
+      // if (localAllEnterprises != null && localAllEnterprises != "") {
+      //   allEnterprises = (localAllEnterprises as List)
+      //       .map((e) => FirebaseEnterpriseModel.fromJson(e).toViewModel())
+      //       .toList();
+      // }
     } catch (e) {
       mainError = getUIError(e);
     } finally {
@@ -91,9 +93,11 @@ class GetxEnterprisesManagerPresenter extends GetxController
     mainError = null;
 
     try {
-      if (_allEnterprises.value?.any((e) =>
-              e.enterpriseName?.toLowerCase().removeWhiteSpaces() ==
-              enterpriseName.toLowerCase().removeWhiteSpaces()) ??
+      if (_allEnterprises.value?.any(
+            (e) =>
+                e.enterpriseName?.toLowerCase().removeWhiteSpaces() ==
+                enterpriseName.toLowerCase().removeWhiteSpaces(),
+          ) ??
           false) {
         throw DomainError.enterpriseAlreadyExists;
       }
@@ -128,7 +132,8 @@ class GetxEnterprisesManagerPresenter extends GetxController
         ),
         firebaseSubEnterprises: (enterpriseData["subEnterprises"] as List?)
             ?.map<FirebaseSubEnterpriseEntity>(
-                (e) => FirebaseSubEnterpriseModel.fromJson(e).toEntity())
+              (e) => FirebaseSubEnterpriseModel.fromJson(e).toEntity(),
+            )
             .toList(),
       );
 
@@ -140,17 +145,17 @@ class GetxEnterprisesManagerPresenter extends GetxController
         );
       }
 
-      allEnterprises = [
-        ...?_allEnterprises.value,
-        FirebaseEnterpriseModel.fromEntity(newEnterprise).toViewModel(),
-      ];
+      // allEnterprises = [
+      //   ...?_allEnterprises.value,
+      //   FirebaseEnterpriseModel.fromEntity(newEnterprise).toViewModel(),
+      // ];
 
-      await localStorage.put(
-        DatabaseKeys.allEnterprises,
-        _allEnterprises.value
-            ?.map((e) => FirebaseEnterpriseModel.fromViewModel(e).toJson())
-            .toList(),
-      );
+      // await localStorage.put(
+      //   DatabaseKeys.allEnterprises,
+      //   _allEnterprises.value
+      //       ?.map((e) => FirebaseEnterpriseModel.fromViewModel(e).toJson())
+      //       .toList(),
+      // );
 
       return true;
     } catch (e) {
@@ -171,19 +176,20 @@ class GetxEnterprisesManagerPresenter extends GetxController
         throw DomainError.cannotRemoveSelectedEnterprise;
       }
 
-      final enterpriseIndex =
-          allEnterprises?.indexWhere((e) => e.enterpriseName == enterpriseName);
+      final enterpriseIndex = allEnterprises?.indexWhere(
+        (e) => e.enterpriseName == enterpriseName,
+      );
 
       if (enterpriseIndex == null || enterpriseIndex == -1) {
         throw DomainError.unexpected;
       }
 
       allEnterprises?.removeAt(enterpriseIndex);
-      await localStorage.put(
-          DatabaseKeys.allEnterprises,
-          allEnterprises
-              ?.map((e) => FirebaseEnterpriseModel.fromViewModel(e).toJson())
-              .toList());
+      // await localStorage.put(
+      //     DatabaseKeys.allEnterprises,
+      //     allEnterprises
+      //         ?.map((e) => FirebaseEnterpriseModel.fromViewModel(e).toJson())
+      //         .toList());
     } catch (e) {
       mainError = getUIError(e);
     } finally {

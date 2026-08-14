@@ -2,7 +2,6 @@
 import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/core/providers.dart';
 import 'package:celta_dash/data/models/models.dart';
-import 'package:celta_dash/domain/entities/entities.dart';
 import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/infra/helpers/helpers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
