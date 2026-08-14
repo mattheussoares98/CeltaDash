@@ -1,5 +1,6 @@
 import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/features/home/domain/entities/entities.dart';
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 
 class HomeState extends Equatable {
@@ -29,10 +30,7 @@ class HomeState extends Equatable {
   final String? selectionError;
 
   HomeEnterpriseEntity? get selectedEnterprise {
-    for (final enterprise in enterprises) {
-      if (enterprise.id == selectedEnterpriseId) return enterprise;
-    }
-    return null;
+    return enterprises.firstWhereOrNull((e) => e.id == selectedEnterpriseId);
   }
 
   bool get selectedEnterpriseIsEnabled => selectedEnterprise?.enabled == true;
