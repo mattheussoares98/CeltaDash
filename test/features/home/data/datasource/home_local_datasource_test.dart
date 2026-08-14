@@ -56,4 +56,42 @@ void main() {
 
     expect(await datasource.loadActiveEnterprise(), isNull);
   });
+
+  test('logout preserves labels and removes credentials and caches', () async {
+    final enterprise = EntityFactory.makeFirebaseEnterpriseEntity();
+    final json = FirebaseEnterpriseModel.fromEntity(enterprise).toJson();
+    final loggedOutEnterprise = enterprise.copyWith(
+      bsUser: enterprise.bsUser?.copyWith(
+        annulAccessKey: true,
+        annulCrossIdentity_Usuario: true,
+      ),
+      annulBaseUrl: true,
+      annulFirebaseId: true,
+      annulFirebaseSubEnterprises: true,
+    );
+    final loggedOutJson = FirebaseEnterpriseModel.fromEntity(
+      loggedOutEnterprise,
+    ).toJson();
+    when(() => storage.get('enterprise')).thenAnswer((_) async => json);
+    when(
+      () => storage.put('enterprise', loggedOutJson),
+    ).thenAnswer((_) async {});
+    when(() => storage.delete('allEnterprises')).thenAnswer((_) async {});
+
+    await datasource.logout();
+
+    verify(() => storage.put('enterprise', loggedOutJson)).called(1);
+    verify(() => storage.delete('allEnterprises')).called(1);
+  });
+
+  test('logout clears storage when no active enterprise exists', () async {
+    when(() => storage.get('enterprise')).thenAnswer((_) async => null);
+    when(() => storage.delete('enterprise')).thenAnswer((_) async {});
+    when(() => storage.delete('allEnterprises')).thenAnswer((_) async {});
+
+    await datasource.logout();
+
+    verify(() => storage.delete('enterprise')).called(1);
+    verify(() => storage.delete('allEnterprises')).called(1);
+  });
 }

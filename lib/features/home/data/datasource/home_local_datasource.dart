@@ -30,4 +30,28 @@ class HomeLocalDatasource implements IHomeLocalDatasource {
     if (savedEnterprise == null || savedEnterprise == '') return null;
     return FirebaseEnterpriseModel.fromJson(savedEnterprise as Map).toEntity();
   }
+
+  @override
+  Future<void> logout() async {
+    final enterprise = await loadActiveEnterprise();
+    final loggedOutEnterprise = enterprise?.copyWith(
+      bsUser: enterprise.bsUser?.copyWith(
+        annulAccessKey: true,
+        annulCrossIdentity_Usuario: true,
+      ),
+      annulBaseUrl: true,
+      annulFirebaseId: true,
+      annulFirebaseSubEnterprises: true,
+    );
+
+    if (loggedOutEnterprise == null) {
+      await _storage.delete(_enterpriseKey);
+    } else {
+      await _storage.put(
+        _enterpriseKey,
+        FirebaseEnterpriseModel.fromEntity(loggedOutEnterprise).toJson(),
+      );
+    }
+    await _storage.delete('allEnterprises');
+  }
 }
