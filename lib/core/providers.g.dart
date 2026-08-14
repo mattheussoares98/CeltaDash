@@ -172,3 +172,44 @@ final class LocalStorageProvider
 }
 
 String _$localStorageHash() => r'fc597f102c8b93474eee57132131815532c0fb80';
+
+@ProviderFor(soapRequest)
+final soapRequestProvider = SoapRequestProvider._();
+
+final class SoapRequestProvider
+    extends $FunctionalProvider<SoapRequest, SoapRequest, SoapRequest>
+    with $Provider<SoapRequest> {
+  SoapRequestProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'soapRequestProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$soapRequestHash();
+
+  @$internal
+  @override
+  $ProviderElement<SoapRequest> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  SoapRequest create(Ref ref) {
+    return soapRequest(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(SoapRequest value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<SoapRequest>(value),
+    );
+  }
+}
+
+String _$soapRequestHash() => r'5aa18294290a28d3b75f4b534b7b54632882c1aa';

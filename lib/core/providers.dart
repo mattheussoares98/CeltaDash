@@ -36,3 +36,8 @@ HiveStorage hiveStorage(Ref ref) {
 LocalStorage localStorage(Ref ref) {
   return HiveLocalStorage(ref.watch(hiveStorageProvider));
 }
+
+@Riverpod(keepAlive: true)
+SoapRequest soapRequest(Ref ref) {
+  return SoapAdapter();
+}

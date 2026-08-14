@@ -1,6 +1,10 @@
 import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/domain/entities/entities.dart'
-    hide SaleStatisticsEntity;
+    hide
+        BsUserEntity,
+        FirebaseEnterpriseEntity,
+        FirebaseSubEnterpriseEntity,
+        SaleStatisticsEntity;
 import 'package:celta_dash/domain/usecases/usecases.dart'
     hide GetSaleStatisticsParams;
 import 'package:celta_dash/features/sale_statistics/domain/entities/entities.dart';
