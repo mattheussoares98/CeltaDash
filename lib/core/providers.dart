@@ -1,4 +1,5 @@
 // lib/core/providers.dart
+import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/data/http/http.dart';
 import 'package:celta_dash/infra/http/http.dart';
 import 'package:http/http.dart' as http;
@@ -17,4 +18,16 @@ http.Client rawHttpClient(Ref ref) {
 HttpClient httpClient(Ref ref) {
   final client = ref.watch(rawHttpClientProvider);
   return HttpAdapter(client);
+}
+
+@riverpod
+class ActiveEcParams extends _$ActiveEcParams {
+  @override
+  EcParams? build() {
+    return null;
+  }
+
+  void update(EcParams? params) {
+    state = params;
+  }
 }

@@ -90,3 +90,55 @@ final class HttpClientProvider
 }
 
 String _$httpClientHash() => r'5f6ecf1a9fc6517b65485ec21c297a91e1c75613';
+
+@ProviderFor(ActiveEcParams)
+final activeEcParamsProvider = ActiveEcParamsProvider._();
+
+final class ActiveEcParamsProvider
+    extends $NotifierProvider<ActiveEcParams, EcParams?> {
+  ActiveEcParamsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'activeEcParamsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$activeEcParamsHash();
+
+  @$internal
+  @override
+  ActiveEcParams create() => ActiveEcParams();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(EcParams? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<EcParams?>(value),
+    );
+  }
+}
+
+String _$activeEcParamsHash() => r'e4a265b8ca2cd50e39ee8a0163beeef1fd6ac9d6';
+
+abstract class _$ActiveEcParams extends $Notifier<EcParams?> {
+  EcParams? build();
+  @$mustCallSuper
+  @override
+  WhenComplete runBuild() {
+    final ref = this.ref as $Ref<EcParams?, EcParams?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<EcParams?, EcParams?>,
+              EcParams?,
+              Object?,
+              Object?
+            >;
+    return element.handleCreate(ref, build);
+  }
+}
