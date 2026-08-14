@@ -1,4 +1,5 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
+import 'package:celta_dash/utils/constants/constants.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -15,14 +16,20 @@ class DailyComparisonChartTitle extends StatelessWidget {
   final DateTime? date;
 
   @override
-  Widget build(BuildContext context) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      if (date != null) BaseText.titleLarge(date!.formatDate(), color: color),
-      BaseText.titleLarge(
-        liquidValue.toString().toBrazilianNumber().addBrazilianCoin(),
-        color: color,
-      ),
-    ],
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.only(top: Sizes.p8),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (date != null) BaseText.titleLarge(date!.formatDate(), color: color),
+        BaseRichText(
+          color: color,
+          texts: [
+            BaseText.title('R\$ '),
+            BaseText.titleLarge(liquidValue.toString().toBrazilianNumber()),
+          ],
+        ),
+      ],
+    ),
   );
 }

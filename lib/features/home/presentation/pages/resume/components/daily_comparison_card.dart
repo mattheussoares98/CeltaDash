@@ -25,12 +25,16 @@ class DailyComparisonCard extends ConsumerWidget {
           );
         }
 
-        final provider = dailyComparisonControllerProvider(enterpriseId);
-        final comparisonAsync = ref.watch(provider);
-        return AsyncValueWidget(
-          value: comparisonAsync,
-          tryAgain: () => ref.invalidate(provider),
-          data: (comparison) => DailyComparisonContent(comparison: comparison),
+        return Consumer(
+          builder: (_, ref, _) {
+            final provider = dailyComparisonControllerProvider(enterpriseId);
+            return AsyncValueWidget(
+              value: ref.watch(provider),
+              tryAgain: () => ref.invalidate(provider),
+              data: (comparison) =>
+                  DailyComparisonContent(comparison: comparison),
+            );
+          },
         );
       },
     );

@@ -18,7 +18,7 @@ class DailyComparisonContent extends StatelessWidget {
 
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(Sizes.p16),
+        padding: const EdgeInsets.all(Sizes.p8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -28,7 +28,6 @@ class DailyComparisonContent extends StatelessWidget {
               textAlign: TextAlign.center,
               color: todayColor,
             ),
-            gapH12,
             ChartPieWidget(
               showTotalAmount: false,
               centerDate: comparison.selectedDate,

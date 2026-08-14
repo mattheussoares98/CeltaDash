@@ -2,12 +2,26 @@ import 'package:celta_dash/ui/helpers/helpers.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:get/get_utils/get_utils.dart';
 
 import 'chart_pie.dart';
 
+const _kColors = [
+  Colors.green,
+  Colors.amber,
+  Colors.blue,
+  Colors.purple,
+  Colors.pink,
+  Colors.deepOrange,
+  Colors.red,
+  Colors.brown,
+  Colors.teal,
+  Colors.cyanAccent,
+];
+
 // A pie chart widget that can optionally show a day-progress clock in its center hole.
-class ChartPieWidget extends StatefulWidget {
+class ChartPieWidget extends HookWidget {
   final List<PieParameter> pieParameters;
   final int? quantityToShow;
   final BoxShape? itemsShape;
@@ -34,90 +48,60 @@ class ChartPieWidget extends StatefulWidget {
   });
 
   @override
-  State<ChartPieWidget> createState() => _ChartPieWidgetState();
-}
-
-class _ChartPieWidgetState extends State<ChartPieWidget> {
-  int? selectedIndex;
-
-  final colors = [
-    Colors.green,
-    Colors.amber,
-    Colors.blue,
-    Colors.purple,
-    Colors.pink,
-    Colors.deepOrange,
-    Colors.red,
-    Colors.brown,
-    Colors.teal,
-    Colors.cyanAccent,
-  ];
-
-  bool needBreakLoop(int index) =>
-      index > (widget.quantityToShow ?? 4) || (index + 1) > colors.length;
-
-  List<PieChartSectionData> getSections(double chartWidth) {
-    double total = widget.pieParameters.fold<double>(0, (p, e) => p + e.value);
-    if (total == 0) total = 0.001;
-    return List.generate(widget.pieParameters.length, (i) {
-      if (needBreakLoop(i)) return null;
-      final param = widget.pieParameters[i];
-      final isTouched = i == selectedIndex;
-      final radius = chartWidth * (isTouched ? 0.23 : 0.2);
-      return PieChartSectionData(
-        color: param.color ?? colors[i],
-        value: (param.value == 0 && i == 1) ? 0.01 : param.value,
-        title:
-            '${(param.value / total * 100).toString().toBrazilianNumber(0)}%',
-        radius: radius,
-        titleStyle: context.textTheme.titleSmall,
-      );
-    }).whereType<PieChartSectionData>().toList();
-  }
-
-  void changeSelectedIndex(int? index) {
-    if (selectedIndex == index) {
-      setState(() {
-        selectedIndex = null;
-      });
-    } else {
-      setState(() {
-        selectedIndex = index;
-      });
-    }
-  }
-
-  List<Indicator> getIndicators(double indicatorSize) {
-    return List.generate(widget.pieParameters.length, (i) {
-      if (needBreakLoop(i)) return null;
-      final param = widget.pieParameters[i];
-      return Indicator(
-        title: param.title,
-        subtitle: param.subtitle,
-        showOnlyOnTap: param.showSubtitleOnlyOnTap,
-        value: param.value,
-        color: param.color ?? colors[i],
-        boxShape: widget.itemsShape!,
-        padding: widget.paddingItems,
-        isSelected: i == selectedIndex,
-        indicatorSize: indicatorSize,
-        changeSelectedIndex: () {
-          changeSelectedIndex(i);
-        },
-      );
-    }).whereType<Indicator>().toList();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
+    final selectedIndex = useState<int?>(null);
+
+    // Granular subscriptions — only rebuilds when size/orientation actually change.
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final isPortrait =
+        MediaQuery.orientationOf(context) == Orientation.portrait;
+
     final splitFor = screenWidth > 600 ? 2 : 1;
-    double chartWidth = screenWidth * 0.4 / splitFor;
-    double indicatorSize = screenWidth * 0.04 / splitFor;
-    double chartPadding = screenWidth * 0.01 / splitFor;
-    double centerSpaceRadius = screenWidth * 0.1 / splitFor;
-    bool isPortrait =
-        MediaQuery.of(context).orientation == Orientation.portrait;
+    final chartWidth = screenWidth * 0.45 / splitFor;
+    final indicatorSize = screenWidth * 0.04 / splitFor;
+    final centerSpaceRadius = screenWidth * 0.1 / splitFor;
+    final maxIndex = quantityToShow ?? 4;
+
+    void onChangeSelected(int? index) {
+      selectedIndex.value = selectedIndex.value == index ? null : index;
+    }
+
+    final sections = useMemoized(
+      () => _buildSections(
+        pieParameters: pieParameters,
+        maxIndex: maxIndex,
+        selectedIndex: selectedIndex.value,
+        chartWidth: chartWidth,
+        textStyle: context.textTheme.titleSmall,
+      ),
+      [pieParameters, maxIndex, selectedIndex.value, chartWidth],
+    );
+
+    final indicators = useMemoized(
+      () => _buildIndicators(
+        pieParameters: pieParameters,
+        maxIndex: maxIndex,
+        selectedIndex: selectedIndex.value,
+        indicatorSize: indicatorSize,
+        itemsShape: itemsShape!,
+        padding: paddingItems,
+        onChangeSelected: onChangeSelected,
+      ),
+      [
+        pieParameters,
+        maxIndex,
+        selectedIndex.value,
+        indicatorSize,
+        itemsShape,
+        paddingItems,
+      ],
+    );
+
+    final indicatorsColumn = Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: indicators,
+    );
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -137,14 +121,13 @@ class _ChartPieWidgetState extends State<ChartPieWidget> {
                         pieTouchData: PieTouchData(
                           touchCallback:
                               (FlTouchEvent event, PieTouchResponse? resp) {
-                                // Only act once on tap up
                                 if (event is FlTapUpEvent) {
                                   final idx =
                                       resp?.touchedSection?.touchedSectionIndex;
                                   if (idx != null && idx >= 0) {
-                                    changeSelectedIndex(idx);
+                                    onChangeSelected(idx);
                                   } else {
-                                    changeSelectedIndex(null);
+                                    onChangeSelected(null);
                                   }
                                 }
                               },
@@ -152,21 +135,21 @@ class _ChartPieWidgetState extends State<ChartPieWidget> {
                         sectionsSpace: 3,
                         centerSpaceRadius: centerSpaceRadius,
                         centerSpaceColor: Colors.transparent,
-                        sections: getSections(chartWidth),
+                        sections: sections,
                         startDegreeOffset: 180,
                       ),
                     ),
-                    if (widget.centerDate != null)
+                    if (centerDate != null)
                       DayProgressClock(
-                        date: widget.centerDate!,
+                        date: centerDate!,
                         radius: centerSpaceRadius,
-                        passedColor: widget.centerPassedColor,
-                        remainingColor: widget.centerRemainingColor,
+                        passedColor: centerPassedColor,
+                        remainingColor: centerRemainingColor,
                       ),
                   ],
                 ),
               ),
-              if (widget.showTotalAmount == true)
+              if (showTotalAmount == true)
                 Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: Column(
@@ -176,7 +159,7 @@ class _ChartPieWidgetState extends State<ChartPieWidget> {
                         style: context.textTheme.titleMedium,
                       ),
                       Text(
-                        widget.pieParameters
+                        pieParameters
                             .fold(0.0, (p, e) => p + e.value)
                             .toString()
                             .toBrazilianNumber()
@@ -192,26 +175,75 @@ class _ChartPieWidgetState extends State<ChartPieWidget> {
         if (isPortrait)
           Expanded(
             child: Padding(
-              padding: EdgeInsets.only(left: chartPadding),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: getIndicators(indicatorSize),
-              ),
+              padding: const EdgeInsets.only(),
+              child: indicatorsColumn,
             ),
           ),
         if (!isPortrait)
           Flexible(
             child: Padding(
-              padding: EdgeInsets.only(left: chartPadding),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: getIndicators(indicatorSize),
-              ),
+              padding: const EdgeInsets.only(),
+              child: indicatorsColumn,
             ),
           ),
       ],
     );
   }
+}
+
+// ── Pure helper functions (no widget dependency, easily testable) ──
+
+bool _needBreakLoop(int index, int maxIndex) =>
+    index > maxIndex || (index + 1) > _kColors.length;
+
+List<PieChartSectionData> _buildSections({
+  required List<PieParameter> pieParameters,
+  required int maxIndex,
+  required int? selectedIndex,
+  required double chartWidth,
+  required TextStyle? textStyle,
+}) {
+  double total = pieParameters.fold<double>(0, (p, e) => p + e.value);
+  if (total == 0) total = 0.001;
+
+  return List.generate(pieParameters.length, (i) {
+    if (_needBreakLoop(i, maxIndex)) return null;
+    final param = pieParameters[i];
+    final isTouched = i == selectedIndex;
+    final radius = chartWidth * (isTouched ? 0.23 : 0.2);
+    return PieChartSectionData(
+      color: param.color ?? _kColors[i],
+      value: (param.value == 0 && i == 1) ? 0.01 : param.value,
+      title: '${(param.value / total * 100).toString().toBrazilianNumber(0)}%',
+      radius: radius,
+      titleStyle: textStyle,
+    );
+  }).whereType<PieChartSectionData>().toList();
+}
+
+List<Indicator> _buildIndicators({
+  required List<PieParameter> pieParameters,
+  required int maxIndex,
+  required int? selectedIndex,
+  required double indicatorSize,
+  required BoxShape itemsShape,
+  required EdgeInsetsGeometry? padding,
+  required void Function(int?) onChangeSelected,
+}) {
+  return List.generate(pieParameters.length, (i) {
+    if (_needBreakLoop(i, maxIndex)) return null;
+    final param = pieParameters[i];
+    return Indicator(
+      title: param.title,
+      subtitle: param.subtitle,
+      showOnlyOnTap: param.showSubtitleOnlyOnTap,
+      value: param.value,
+      color: param.color ?? _kColors[i],
+      boxShape: itemsShape,
+      padding: padding,
+      isSelected: i == selectedIndex,
+      indicatorSize: indicatorSize,
+      changeSelectedIndex: () => onChangeSelected(i),
+    );
+  }).whereType<Indicator>().toList();
 }
