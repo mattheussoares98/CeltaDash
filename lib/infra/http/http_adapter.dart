@@ -22,9 +22,10 @@ class HttpAdapter implements HttpClient {
   }) async {
     final defaultHeaders = headers?.cast<String, String>() ?? {};
     if (addDefaultHeaders == true) {
-      defaultHeaders.addAll(
-        {'content-type': 'application/json', 'accept': 'application/json'},
-      );
+      defaultHeaders.addAll({
+        'content-type': 'application/json',
+        'accept': 'application/json',
+      });
     }
     final jsonBody = body != null ? jsonEncode(body) : null;
     var response = Response('', 500);
@@ -33,7 +34,7 @@ class HttpAdapter implements HttpClient {
     String applyedUrl = url;
 
     //! replace easily when testing the API
-    if (kDebugMode && 1 == 1) {
+    if (kDebugMode && 1 == 2) {
       applyedUrl = url.replaceFirstMapped(
         RegExp(r'https?://.+?/api', caseSensitive: false),
         (match) => 'http://localhost:58915',
@@ -41,17 +42,27 @@ class HttpAdapter implements HttpClient {
     }
     try {
       if (method == 'post') {
-        futureResponse = client.post(Uri.parse(applyedUrl),
-            headers: defaultHeaders, body: jsonBody);
+        futureResponse = client.post(
+          Uri.parse(applyedUrl),
+          headers: defaultHeaders,
+          body: jsonBody,
+        );
       } else if (method == 'get') {
-        futureResponse =
-            client.get(Uri.parse(applyedUrl), headers: defaultHeaders);
+        futureResponse = client.get(
+          Uri.parse(applyedUrl),
+          headers: defaultHeaders,
+        );
       } else if (method == 'delete') {
-        futureResponse =
-            client.delete(Uri.parse(applyedUrl), headers: defaultHeaders);
+        futureResponse = client.delete(
+          Uri.parse(applyedUrl),
+          headers: defaultHeaders,
+        );
       } else if (method == 'put') {
-        futureResponse = client.put(Uri.parse(applyedUrl),
-            headers: defaultHeaders, body: jsonBody);
+        futureResponse = client.put(
+          Uri.parse(applyedUrl),
+          headers: defaultHeaders,
+          body: jsonBody,
+        );
       }
       if (futureResponse != null) {
         response = await futureResponse.timeout(const Duration(seconds: 60));
