@@ -66,6 +66,7 @@ dependencies:
   go_router: ^17.5.0
   collection: ^1.19.1
   toastification: ^3.2.0
+  flutter_hooks: ^0.21.3+1
 icons_launcher:
   image_path: "lib/ui/assets/dev_assets/CeltaDashIcon.png"
   platforms:
