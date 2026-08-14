@@ -6,10 +6,12 @@ import 'package:celta_dash/features/login/domain/repository/i_login_repository.d
 class LoginRepositoryImpl implements ILoginRepository {
   final IFirebaseLoginEnterpriseDatasource enterpriseDatasource;
   final ILoginBsAuthDatasource bsAuthDatasource;
+  final ILoginLocalDatasource localDatasource;
 
   const LoginRepositoryImpl({
     required this.enterpriseDatasource,
     required this.bsAuthDatasource,
+    required this.localDatasource,
   });
 
   @override
@@ -33,4 +35,8 @@ class LoginRepositoryImpl implements ILoginRepository {
       firebaseId: enterpriseEntity.firebaseId,
     );
   }
+
+  @override
+  Future<FirebaseEnterpriseEntity?> loadLastLogin() =>
+      localDatasource.loadLastEnterprise();
 }

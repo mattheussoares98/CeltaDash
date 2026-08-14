@@ -3,4 +3,5 @@ import 'package:celta_dash/features/login/domain/entities/entities.dart';
 
 abstract class ILoginRepository {
   Future<FirebaseEnterpriseEntity> login(LoginParams params);
+  Future<FirebaseEnterpriseEntity?> loadLastLogin();
 }

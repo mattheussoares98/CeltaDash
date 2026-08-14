@@ -3,7 +3,6 @@ import 'package:celta_dash/core/providers.dart';
 import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/features/login/domain/entities/entities.dart';
-import 'package:celta_dash/features/login/domain/repository/repository.dart';
 import 'package:celta_dash/features/login/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/login/providers.dart';
 import 'package:celta_dash/infra/helpers/helpers.dart';
@@ -13,8 +12,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../domain/mocks/mocks.dart';
-
-class MockLoginRepository extends Mock implements ILoginRepository {}
+import '../../mocks/mocks.dart';
 
 class MockLocalStorage extends Mock implements LocalStorage {}
 

@@ -6,15 +6,14 @@ class BsUserModel {
   final String? accessKey;
   final String? crossIdentityUsuario;
 
-  const BsUserModel({
-    this.name,
-    this.accessKey,
-    this.crossIdentityUsuario,
-  });
+  const BsUserModel({this.name, this.accessKey, this.crossIdentityUsuario});
 
   factory BsUserModel.fromJson(Map json) {
     return BsUserModel(
-      name: json['name'] as String? ?? json['Usuario'] as String?,
+      name:
+          json['name'] as String? ??
+          json['Usuario'] as String? ??
+          json['Identificacao_Usuario'] as String?,
       accessKey: json['AccessKey'] as String?,
       crossIdentityUsuario: json['CrossIdentity_Usuario'] as String?,
     );

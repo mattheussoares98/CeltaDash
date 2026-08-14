@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../domain/mocks/mocks.dart';
+import '../../mocks/mocks.dart';
 
 class MockLoginEnterpriseDatasource extends Mock
     implements IFirebaseLoginEnterpriseDatasource {}
@@ -16,6 +17,7 @@ class MockLoginBsAuthDatasource extends Mock
 void main() {
   late MockLoginEnterpriseDatasource mockEnterpriseDatasource;
   late MockLoginBsAuthDatasource mockBsAuthDatasource;
+  late MockLoginLocalDatasource mockLocalDatasource;
   late LoginRepositoryImpl repository;
 
   final tEnterpriseEntity = EntityFactory.makeFirebaseEnterpriseEntity();
@@ -34,9 +36,11 @@ void main() {
   setUp(() {
     mockEnterpriseDatasource = MockLoginEnterpriseDatasource();
     mockBsAuthDatasource = MockLoginBsAuthDatasource();
+    mockLocalDatasource = MockLoginLocalDatasource();
     repository = LoginRepositoryImpl(
       enterpriseDatasource: mockEnterpriseDatasource,
       bsAuthDatasource: mockBsAuthDatasource,
+      localDatasource: mockLocalDatasource,
     );
   });
 
@@ -90,5 +94,14 @@ void main() {
       () => repository.login(tParams),
       throwsA(DomainError.enterpriseNotFound),
     );
+  });
+
+  test('loadLastLogin delegates to the local datasource', () async {
+    when(
+      () => mockLocalDatasource.loadLastEnterprise(),
+    ).thenAnswer((_) async => tEnterpriseEntity);
+
+    expect(await repository.loadLastLogin(), tEnterpriseEntity);
+    verify(() => mockLocalDatasource.loadLastEnterprise()).called(1);
   });
 }

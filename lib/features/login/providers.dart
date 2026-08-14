@@ -18,9 +18,15 @@ ILoginBsAuthDatasource loginBsAuthDatasource(Ref ref) {
 }
 
 @riverpod
+ILoginLocalDatasource loginLocalDatasource(Ref ref) {
+  return LoginLocalDatasource(ref.watch(appStorageProvider));
+}
+
+@riverpod
 ILoginRepository loginRepository(Ref ref) {
   return LoginRepositoryImpl(
     enterpriseDatasource: ref.watch(firebaseLoginEnterpriseDatasourceProvider),
     bsAuthDatasource: ref.watch(loginBsAuthDatasourceProvider),
+    localDatasource: ref.watch(loginLocalDatasourceProvider),
   );
 }

@@ -1,6 +1,5 @@
 // lib/features/login/presentation/pages/login_page.dart
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
-import 'package:celta_dash/core/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/login/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/login/presentation/pages/components/components.dart';
 import 'package:celta_dash/routing/routing.dart';
@@ -26,16 +25,19 @@ class LoginPage extends HookConsumerWidget {
 
     final formKey = useMemoized(() => GlobalKey<FormState>());
 
-    // Prefill enterprise and user from saved ActiveEcParamsStateController or EnterpriseBuilder
-    final activeEcParamsAsync = ref.watch(
-      activeEcParamsStateControllerProvider,
-    );
+    final loginPrefill = ref.watch(loginPrefillControllerProvider);
     useEffect(() {
-      activeEcParamsAsync.whenData((params) {
-        //TODO change the enterprise text
+      loginPrefill.whenData((prefill) {
+        if (enterpriseController.text.isEmpty &&
+            prefill.enterpriseName != null) {
+          enterpriseController.text = prefill.enterpriseName!;
+        }
+        if (userController.text.isEmpty && prefill.username != null) {
+          userController.text = prefill.username!;
+        }
       });
       return null;
-    }, [activeEcParamsAsync]);
+    }, [loginPrefill]);
 
     ref.listen(loginControllerProvider, (p, n) {
       n.showAlertDialogOnError(context);
