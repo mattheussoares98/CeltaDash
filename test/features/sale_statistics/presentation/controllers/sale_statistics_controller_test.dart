@@ -11,6 +11,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../domain/mocks/mocks.dart';
+import '../../../../presentation/fake_controllers/fake_controllers.dart';
 
 class MockSaleStatisticsRepository extends Mock
     implements ISaleStatisticsRepository {}
@@ -37,7 +38,9 @@ void main() {
 
     container = ProviderContainer(
       overrides: [
-        activeEcParamsProvider.overrideWithValue(tEcParams),
+        activeEcParamsStateControllerProvider.overrideWith(
+          () => FakeActiveEcParams(tEcParams),
+        ),
         saleStatisticsRepositoryProvider.overrideWithValue(mockRepository),
       ],
     );
@@ -68,11 +71,13 @@ void main() {
 
   group('SaleStatisticsController.loadStatistics', () {
     test(
-      'should set state to AsyncError when activeEcParamsProvider is null',
+      'should set state to AsyncError when activeEcParamsStateControllerProvider is null',
       () async {
         final containerWithoutEcParams = ProviderContainer(
           overrides: [
-            activeEcParamsProvider.overrideWith(() => ActiveEcParams()),
+            activeEcParamsStateControllerProvider.overrideWith(
+              () => FakeActiveEcParams(),
+            ),
             saleStatisticsRepositoryProvider.overrideWithValue(mockRepository),
           ],
         );

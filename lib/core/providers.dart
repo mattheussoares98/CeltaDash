@@ -1,33 +1,38 @@
 // lib/core/providers.dart
-import 'package:celta_dash/core/domain/domain.dart';
+import 'package:celta_dash/data/database/database.dart';
 import 'package:celta_dash/data/http/http.dart';
+import 'package:celta_dash/data/usecases/usecases.dart';
+import 'package:celta_dash/domain/usecases/usecases.dart';
+import 'package:celta_dash/infra/databases/databases.dart';
+import 'package:celta_dash/infra/helpers/helpers.dart';
 import 'package:celta_dash/infra/http/http.dart';
+import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+export 'presentation/controllers/active_ec_params_state_controller.dart';
+
 part 'providers.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 http.Client rawHttpClient(Ref ref) {
   final client = http.Client();
   ref.onDispose(client.close);
   return client;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 HttpClient httpClient(Ref ref) {
   final client = ref.watch(rawHttpClientProvider);
   return HttpAdapter(client);
 }
 
-@riverpod
-class ActiveEcParams extends _$ActiveEcParams {
-  @override
-  EcParams? build() {
-    return null;
-  }
+@Riverpod(keepAlive: true)
+HiveStorage hiveStorage(Ref ref) {
+  return HiveAdapter(box: Hive.box(DatabaseKeys.dash.name));
+}
 
-  void update(EcParams? params) {
-    state = params;
-  }
+@Riverpod(keepAlive: true)
+LocalStorage localStorage(Ref ref) {
+  return HiveLocalStorage(ref.watch(hiveStorageProvider));
 }

@@ -18,7 +18,7 @@ class SaleStatisticsController extends _$SaleStatisticsController {
     CategoryGroupingType groupingType,
   ) {
     ref.cache(60);
-    ref.watch(activeEcParamsProvider);
+    ref.watch(activeEcParamsStateControllerProvider);
     return const AsyncValue.data([]);
   }
 
@@ -30,7 +30,10 @@ class SaleStatisticsController extends _$SaleStatisticsController {
       return;
     }
 
-    final ecParams = ref.read(activeEcParamsProvider);
+    final ecParams = await ref.read(
+      activeEcParamsStateControllerProvider.future,
+    );
+
     if (ecParams == null) {
       state = AsyncValue.error(
         Exception('Active enterprise credentials (EcParams) not found.'),

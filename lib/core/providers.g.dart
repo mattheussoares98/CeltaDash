@@ -21,7 +21,7 @@ final class RawHttpClientProvider
         argument: null,
         retry: null,
         name: r'rawHttpClientProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -48,7 +48,7 @@ final class RawHttpClientProvider
   }
 }
 
-String _$rawHttpClientHash() => r'be1fea3a8de68f8f820c92bf70ac3c707462d7a1';
+String _$rawHttpClientHash() => r'0afa6c6dfcb0a8f470c3d707f8345ff43d63061a';
 
 @ProviderFor(httpClient)
 final httpClientProvider = HttpClientProvider._();
@@ -62,7 +62,7 @@ final class HttpClientProvider
         argument: null,
         retry: null,
         name: r'httpClientProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -89,56 +89,86 @@ final class HttpClientProvider
   }
 }
 
-String _$httpClientHash() => r'5f6ecf1a9fc6517b65485ec21c297a91e1c75613';
+String _$httpClientHash() => r'e330b95dbb965f86e1c9780c27509b9613b2d74b';
 
-@ProviderFor(ActiveEcParams)
-final activeEcParamsProvider = ActiveEcParamsProvider._();
+@ProviderFor(hiveStorage)
+final hiveStorageProvider = HiveStorageProvider._();
 
-final class ActiveEcParamsProvider
-    extends $NotifierProvider<ActiveEcParams, EcParams?> {
-  ActiveEcParamsProvider._()
+final class HiveStorageProvider
+    extends $FunctionalProvider<HiveStorage, HiveStorage, HiveStorage>
+    with $Provider<HiveStorage> {
+  HiveStorageProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'activeEcParamsProvider',
-        isAutoDispose: true,
+        name: r'hiveStorageProvider',
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$activeEcParamsHash();
+  String debugGetCreateSourceHash() => _$hiveStorageHash();
 
   @$internal
   @override
-  ActiveEcParams create() => ActiveEcParams();
+  $ProviderElement<HiveStorage> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  HiveStorage create(Ref ref) {
+    return hiveStorage(ref);
+  }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(EcParams? value) {
+  Override overrideWithValue(HiveStorage value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<EcParams?>(value),
+      providerOverride: $SyncValueProvider<HiveStorage>(value),
     );
   }
 }
 
-String _$activeEcParamsHash() => r'e4a265b8ca2cd50e39ee8a0163beeef1fd6ac9d6';
+String _$hiveStorageHash() => r'1d526ed93cc7aa93f75aa7c5c73d0e9b0489809f';
 
-abstract class _$ActiveEcParams extends $Notifier<EcParams?> {
-  EcParams? build();
-  @$mustCallSuper
+@ProviderFor(localStorage)
+final localStorageProvider = LocalStorageProvider._();
+
+final class LocalStorageProvider
+    extends $FunctionalProvider<LocalStorage, LocalStorage, LocalStorage>
+    with $Provider<LocalStorage> {
+  LocalStorageProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'localStorageProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
   @override
-  WhenComplete runBuild() {
-    final ref = this.ref as $Ref<EcParams?, EcParams?>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<EcParams?, EcParams?>,
-              EcParams?,
-              Object?,
-              Object?
-            >;
-    return element.handleCreate(ref, build);
+  String debugGetCreateSourceHash() => _$localStorageHash();
+
+  @$internal
+  @override
+  $ProviderElement<LocalStorage> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  LocalStorage create(Ref ref) {
+    return localStorage(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(LocalStorage value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<LocalStorage>(value),
+    );
   }
 }
+
+String _$localStorageHash() => r'fc597f102c8b93474eee57132131815532c0fb80';
