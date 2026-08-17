@@ -101,9 +101,7 @@ class AnimatedCircleProgress extends HookWidget {
                             progress: progressAnimation.value,
                             backgroundColor: IsDarkTheme.isDark
                                 ? context.theme.disabledColor
-                                : context.theme.primaryColorLight.withAlpha(
-                                    100,
-                                  ),
+                                : context.theme.disabledColor.withAlpha(20),
                             progressColor: value >= maximum
                                 ? context.theme.primaryColor
                                 : Colors.red,
