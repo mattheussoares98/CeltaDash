@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:toastification/toastification.dart';
 
 import 'main/utils/utils.dart';
 import 'ui/themes/theme.dart';
@@ -46,29 +47,31 @@ class App extends HookConsumerWidget with KeyboardManager {
     debugPrint("largura: ${MediaQuery.of(context).size.width}");
     debugPrint("altura: ${MediaQuery.of(context).size.height}");
 
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: () {
-        FocusScope.of(context).unfocus();
-        hideKeyboard(context);
-      },
-      onPanDown: (_) {
-        FocusScope.of(context).unfocus();
-        hideKeyboard(context);
-      },
-      child: MaterialApp.router(
-        routerConfig: router,
-        title: 'Celta Dash',
-        theme: lightTheme,
-        darkTheme: darkTheme,
-        themeMode: .light, //TODO enable changing the theme
-        debugShowCheckedModeBanner: false,
-        supportedLocales: const [Locale('en', 'US'), Locale('pt', 'BR')],
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-        ],
+    return ToastificationWrapper(
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          FocusScope.of(context).unfocus();
+          hideKeyboard(context);
+        },
+        onPanDown: (_) {
+          FocusScope.of(context).unfocus();
+          hideKeyboard(context);
+        },
+        child: MaterialApp.router(
+          routerConfig: router,
+          title: 'Celta Dash',
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          themeMode: .light, //TODO enable changing the theme
+          debugShowCheckedModeBanner: false,
+          supportedLocales: const [Locale('en', 'US'), Locale('pt', 'BR')],
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+        ),
       ),
     );
   }
