@@ -3,6 +3,7 @@ import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/utils/constants/constants.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/misc.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ResumePage extends HookConsumerWidget {
@@ -15,30 +16,23 @@ class ResumePage extends HookConsumerWidget {
       homeControllerProvider.select((s) => s.value?.selectedEnterpriseId),
     );
 
-    final dailyProvider = enterpriseId == null
+    final providers = enterpriseId == null
         ? null
-        : dailyComparisonControllerProvider(enterpriseId);
-    final monthlyProvider = enterpriseId == null
-        ? null
-        : monthlyGoalComparisonControllerProvider(enterpriseId);
-    final monthlyAnalysisProvider = enterpriseId == null
-        ? null
-        : monthlyAnalysisControllerProvider(enterpriseId);
+        : <ProviderBase<AsyncValue<dynamic>>>[
+            dailyComparisonControllerProvider(enterpriseId),
+            monthlyGoalComparisonControllerProvider(enterpriseId),
+            monthlyAnalysisControllerProvider(enterpriseId),
+            groupOfStoresControllerProvider(enterpriseId),
+          ];
 
-    if (dailyProvider != null) {
-      ref.listen(dailyProvider, (p, n) {
+    void showError(AsyncValue? p, AsyncValue n) {
+      if (p?.hasValue ?? false) {
         n.showToastOnError(context, p);
-      });
+      }
     }
-    if (monthlyProvider != null) {
-      ref.listen(monthlyProvider, (p, n) {
-        n.showToastOnError(context, p);
-      });
-    }
-    if (monthlyAnalysisProvider != null) {
-      ref.listen(monthlyAnalysisProvider, (p, n) {
-        n.showToastOnError(context, p);
-      });
+
+    for (final provider in providers ?? const []) {
+      ref.listen(provider, showError);
     }
     //TODO throw an error for each controller to test
 
@@ -47,14 +41,7 @@ class ResumePage extends HookConsumerWidget {
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
       onRefresh: () => ref.invalidate(resumeCurrentDateProvider),
       //TODO test this refresh indicator
-      refreshProviders: enterpriseId == null
-          ? null
-          : [
-              dailyComparisonControllerProvider(enterpriseId),
-              monthlyGoalComparisonControllerProvider(enterpriseId),
-              monthlyAnalysisControllerProvider(enterpriseId),
-              groupOfStoresControllerProvider(enterpriseId),
-            ],
+      refreshProviders: providers,
       body: AsyncValueWidget(
         value: homeAsync,
         tryAgain: () => ref.invalidate(homeControllerProvider),
@@ -65,34 +52,30 @@ class ResumePage extends HookConsumerWidget {
             );
           }
 
-          final dailyAsync = ref.watch(dailyProvider!);
-          final monthlyAsync = ref.watch(monthlyProvider!);
-          final monthlyAnalysisAsync = ref.watch(monthlyAnalysisProvider!);
-          final groupOfStoresAsync = ref.watch(groupOfStoresProvider!);
-
-          final hasCompleteData =
-              dailyAsync.value != null &&
-              monthlyAsync.value != null &&
-              monthlyAnalysisAsync.value != null &&
-              groupOfStoresAsync.value != null;
+          final providerValues = [
+            for (final provider in providers!)
+              (provider: provider, value: ref.watch(provider)),
+          ];
+          final hasCompleteData = providerValues.every(
+            (e) => e.value.value != null,
+          );
+          final failedProviders = providerValues
+              .where((e) => e.value.hasError)
+              .toList();
 
           if (!hasCompleteData) {
+            final firstIncompleteProvider = providerValues.firstWhere(
+              (e) => e.value.value == null,
+            );
+
             return AsyncValueWidget(
-              value: dailyAsync,
-              tryAgain: () => ref.invalidate(dailyProvider),
-              data: (_) => AsyncValueWidget(
-                value: monthlyAsync,
-                tryAgain: () => ref.invalidate(monthlyProvider),
-                data: (_) => AsyncValueWidget(
-                  value: monthlyAnalysisAsync,
-                  tryAgain: () => ref.invalidate(monthlyAnalysisProvider),
-                  data: (_) => AsyncValueWidget(
-                    value: groupOfStoresAsync,
-                    tryAgain: () => ref.invalidate(groupOfStoresProvider),
-                    data: (_) => const SizedBox.shrink(),
-                  ),
-                ),
-              ),
+              value: firstIncompleteProvider.value,
+              tryAgain: () {
+                for (final failedProvider in failedProviders) {
+                  ref.invalidate(failedProvider.provider);
+                }
+              },
+              data: (_) => const SizedBox.shrink(),
             );
           }
 
