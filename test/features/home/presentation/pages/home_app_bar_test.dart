@@ -49,7 +49,10 @@ void main() {
           homeRepositoryProvider.overrideWithValue(repository),
         ],
         child: const MaterialApp(
-          home: Scaffold(appBar: HomeAppBar(), body: SizedBox.shrink()),
+          home: Scaffold(
+            appBar: HomeAppBar(isLandscape: false),
+            body: SizedBox.shrink(),
+          ),
         ),
       ),
     );

@@ -14,10 +14,12 @@ class HomePage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(homeControllerProvider);
     final showHomeAppBar = navigationShell.currentIndex <= 2;
+    final isLandscape =
+        MediaQuery.orientationOf(context) == Orientation.landscape;
     return BaseScaffold(
       isScrollable: false,
       usePadding: false,
-      appBar: showHomeAppBar ? const HomeAppBar() : null,
+      appBar: showHomeAppBar ? HomeAppBar(isLandscape: isLandscape) : null,
       body: navigationShell,
       bottomNavigationBar: HomeBottomNavigation(
         currentIndex: navigationShell.currentIndex,

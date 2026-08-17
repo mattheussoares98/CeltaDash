@@ -9,10 +9,13 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
-  const HomeAppBar({super.key});
+  const HomeAppBar({required this.isLandscape, super.key});
+
+  final bool isLandscape;
 
   @override
-  Size get preferredSize => const Size.fromHeight(95);
+  Size get preferredSize =>
+      Size.fromHeight(isLandscape ? kToolbarHeight : Sizes.p100);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -58,13 +61,11 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
           return Row(
             mainAxisAlignment: .spaceEvenly,
             children: [
-              const Spacer(),
               const Expanded(flex: 2, child: enterpriseSelector),
               dateSelector,
               gapW8,
               modeToggle,
               selectEnterprise,
-              const Spacer(),
               ?reloadIconButton,
             ],
           );
@@ -92,7 +93,9 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
     return BaseAppBar(
       showLeading: false,
       titleWidget: controls,
-      actionsPadding: const EdgeInsets.symmetric(vertical: Sizes.p24),
+      actionsPadding: EdgeInsets.symmetric(
+        vertical: isLandscape ? Sizes.p8 : Sizes.p24,
+      ),
     );
   }
 }
