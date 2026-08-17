@@ -1,4 +1,3 @@
-import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/features/home/presentation/models/models.dart';
 import 'package:celta_dash/features/home/presentation/pages/resume/components/components.dart';
 import 'package:celta_dash/utils/constants/constants.dart';
@@ -17,23 +16,19 @@ class MonthlyAnalysisContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          BaseText.title(
-            'Análise mensal'.hardcoded.toUpperCase(),
-            textAlign: .center,
-          ),
           //TODO use wrap or BaseRich
           Row(
             children: [
               Expanded(
                 child: MonthlyAnalysisSummary(
-                  title: 'Total de vendas'.hardcoded,
+                  title: 'Faturamento mensal'.hardcoded,
                   value: analysis.totalSales,
                 ),
               ),
               gapW4,
               Expanded(
                 child: MonthlyAnalysisSummary(
-                  title: 'Venda média diária'.hardcoded,
+                  title: 'Ticket médio'.hardcoded,
                   value: analysis.averageDailySale,
                 ),
               ),

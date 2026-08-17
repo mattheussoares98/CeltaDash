@@ -21,13 +21,8 @@ class MonthlyAnalysisHighlight extends StatelessWidget {
         : context.theme.colorScheme.error;
     return Column(
       children: [
-        BaseText.title(
-          (isBest ? 'Melhor dia do mês' : 'Pior dia do mês').hardcoded,
-          textAlign: TextAlign.center,
-          color: color,
-        ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: .center,
           children: [
             Icon(
               isBest
@@ -35,8 +30,20 @@ class MonthlyAnalysisHighlight extends StatelessWidget {
                   : Icons.sentiment_dissatisfied_rounded,
               color: color,
             ),
-            gapW8,
-            BaseText.title(day.date.formatDate(.ddMM), color: color),
+            gapW4,
+            Flexible(
+              child: BaseRichText(
+                textAlign: .center,
+                texts: [
+                  BaseText(
+                    (isBest ? 'Melhor dia ' : 'Pior dia ').hardcoded,
+                    textAlign: TextAlign.center,
+                    color: color,
+                  ),
+                  BaseText.title(day.date.formatDate(.ddMM), color: color),
+                ],
+              ),
+            ),
           ],
         ),
         BaseRichText(
