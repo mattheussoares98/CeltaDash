@@ -1,12 +1,3 @@
-export './daily_comparison_card.dart';
-export './daily_comparison_chart_subtitle.dart';
-export './daily_comparison_chart_title.dart';
-export './daily_comparison_content.dart';
-export './monthly_goal_comparison_card.dart';
-export './monthly_goal_comparison_content.dart';
-export 'monthly_analysis_card.dart';
-export 'monthly_analysis_chart.dart';
-export 'monthly_analysis_content.dart';
-export 'monthly_analysis_highlight.dart';
-export 'monthly_analysis_highlights.dart';
-export 'monthly_analysis_summary.dart';
+export 'daily/daily.dart';
+export 'monthly_analysis/monthly_analysis.dart';
+export 'monthly_goal/monthly_goal.dart';
