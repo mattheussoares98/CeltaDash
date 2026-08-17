@@ -13,4 +13,5 @@ extension BuildContextExtension on BuildContext {
   ThemeData get theme => Theme.of(this);
 
   bool get isCupertino => PlatformUtil.isCupertino;
+  bool get isMobile => PlatformUtil.isMobile;
 }
