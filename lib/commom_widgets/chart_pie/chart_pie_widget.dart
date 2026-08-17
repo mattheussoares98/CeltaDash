@@ -37,6 +37,8 @@ class ChartPieWidget extends HookWidget {
   final Color centerPassedColor;
   // Color for the remaining slice in the clock.
   final Color centerRemainingColor;
+  final int leftFlex;
+  final int rightFlex;
 
   const ChartPieWidget({
     super.key,
@@ -48,6 +50,8 @@ class ChartPieWidget extends HookWidget {
     this.centerDate,
     this.centerPassedColor = Colors.blue,
     this.centerRemainingColor = const Color(0xFFE0E0E0),
+    this.leftFlex = 2,
+    this.rightFlex = 2,
   });
 
   @override
@@ -111,6 +115,7 @@ class ChartPieWidget extends HookWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Expanded(
+          flex: leftFlex,
           child: Column(
             children: [
               SizedBox(
@@ -153,24 +158,18 @@ class ChartPieWidget extends HookWidget {
                 ),
               ),
               if (showTotalAmount == true)
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Column(
-                    children: [
-                      Text(
-                        R.string.total,
-                        style: context.textTheme.titleMedium,
-                      ),
-                      Text(
-                        pieParameters
-                            .fold(0.0, (p, e) => p + e.value)
-                            .toString()
-                            .toBrazilianNumber()
-                            .addBrazilianCoin(),
-                        style: context.textTheme.titleMedium,
-                      ),
-                    ],
-                  ),
+                Column(
+                  children: [
+                    Text(R.string.total, style: context.textTheme.titleMedium),
+                    Text(
+                      pieParameters
+                          .fold(0.0, (p, e) => p + e.value)
+                          .toString()
+                          .toBrazilianNumber()
+                          .addBrazilianCoin(),
+                      style: context.textTheme.titleMedium,
+                    ),
+                  ],
                 ),
             ],
           ),
@@ -178,6 +177,7 @@ class ChartPieWidget extends HookWidget {
         gapW12,
         if (isPortrait)
           Expanded(
+            flex: rightFlex,
             child: Padding(
               padding: const EdgeInsets.only(),
               child: indicatorsColumn,
@@ -185,6 +185,7 @@ class ChartPieWidget extends HookWidget {
           ),
         if (!isPortrait)
           Flexible(
+            flex: rightFlex,
             child: Padding(
               padding: const EdgeInsets.only(),
               child: indicatorsColumn,

@@ -62,7 +62,12 @@ class GroupOfStoresContent extends StatelessWidget {
               'Vendas do grupo'.hardcoded.toUpperCase(),
               textAlign: .center,
             ),
-            ChartPieWidget(paddingItems: .zero, pieParameters: parameters),
+            ChartPieWidget(
+              paddingItems: .zero,
+              pieParameters: parameters,
+              rightFlex: 55,
+              leftFlex: 45,
+            ),
             PrimaryButton(
               onPressed: () => context.pushNamed(Routes.groupSummary.name),
               text: 'Resumo do grupo'.hardcoded,
