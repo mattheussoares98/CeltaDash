@@ -1,1 +1,1 @@
-enum SaleStatisticsSeriesType { primary, comparison }
+enum SaleStatisticsSeriesType { primary, comparison, monthlyAnalysis }

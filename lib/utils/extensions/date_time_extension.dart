@@ -19,7 +19,8 @@ enum DateFormatType {
   Hms('Hms'),
   ddMMyyyy('dd/MM/yyyy'),
   ddMMyyyyHHmm('dd/MM/yyyy HH:mm'),
-  ddMMyyyyHHmmss('dd/MM/yyyy HH:mm:ss');
+  ddMMyyyyHHmmss('dd/MM/yyyy HH:mm:ss'),
+  ddMM('dd/MM');
 
   const DateFormatType(this.pattern);
   final String pattern;
