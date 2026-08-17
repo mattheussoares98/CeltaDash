@@ -30,3 +30,4 @@ export 'show_toast_message.dart';
 export 'table/table.dart';
 export 'text/text.dart';
 export 'chart_pie/chart_pie.dart';
+export 'circle_progress.dart';

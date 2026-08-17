@@ -2,7 +2,6 @@ export './table/table.dart';
 export './bottom_nav_bar.dart';
 export "./app_theme.dart";
 export './chart_prices.dart';
-export './circle_progress.dart';
 export './default_app_bar.dart';
 export './default_button.dart';
 export './default_drop_down.dart';

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -135,7 +136,6 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
                         maximum: goalLiquidValue,
                         height: circleSize,
                         width: circleSize,
-                        scrollController: widget.scrollController,
                       ),
                     ),
                     Expanded(
@@ -146,7 +146,6 @@ class _MonthGoalComparisonState extends State<MonthGoalComparison> {
                         maximum: goalLiquidValue / daysInMonth,
                         height: circleSize,
                         width: circleSize,
-                        scrollController: widget.scrollController,
                       ),
                     ),
                   ],
