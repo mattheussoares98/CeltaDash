@@ -1,6 +1,5 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
-import 'package:celta_dash/features/home/presentation/controllers/controllers.dart';
-import 'package:celta_dash/features/home/presentation/pages/resume/components/components.dart';
+import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/utils/constants/constants.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +50,6 @@ class ResumePage extends HookConsumerWidget {
       refreshProviders: enterpriseId == null
           ? null
           : [
-              //TODO it is not reloading the data when refreshing!
               dailyComparisonControllerProvider(enterpriseId),
               monthlyGoalComparisonControllerProvider(enterpriseId),
               monthlyAnalysisControllerProvider(enterpriseId),

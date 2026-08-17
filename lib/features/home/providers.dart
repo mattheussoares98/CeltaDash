@@ -6,6 +6,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'providers.g.dart';
 
 @riverpod
+DateTime resumeCurrentDate(Ref ref) => DateTime.now();
+
+@riverpod
 IHomeDatasource homeDatasource(Ref ref) {
   return HomeDatasource(ref.watch(httpClientProvider));
 }

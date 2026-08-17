@@ -1,6 +1,6 @@
 import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/core/providers.dart';
-import 'package:celta_dash/features/home/presentation/presentation.dart';
+import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/features/sale_statistics/domain/entities/entities.dart';
 import 'package:celta_dash/features/sale_statistics/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

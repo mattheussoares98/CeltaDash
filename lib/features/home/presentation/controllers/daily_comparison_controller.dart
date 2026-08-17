@@ -1,15 +1,11 @@
 import 'package:celta_dash/core/providers.dart';
-import 'package:celta_dash/features/home/presentation/controllers/controllers.dart';
-import 'package:celta_dash/features/home/presentation/models/models.dart';
+import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/features/sale_statistics/domain/entities/entities.dart';
 import 'package:celta_dash/features/sale_statistics/presentation/controllers/controllers.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'daily_comparison_controller.g.dart';
-
-@riverpod
-DateTime resumeCurrentDate(Ref ref) => DateTime.now();
 
 @riverpod
 class DailyComparisonController extends _$DailyComparisonController {
