@@ -21,7 +21,7 @@ class DailyComparisonChartTitle extends StatelessWidget {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (date != null) BaseText.titleLarge(date!.formatDate(), color: color),
+        if (date != null) BaseText.title(date!.formatDate(), color: color),
         BaseRichText(
           color: color,
           texts: [
