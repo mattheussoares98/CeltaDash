@@ -46,6 +46,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
         final reloadIconButton = context.isMobile
             ? null
             : ReloadIconButton(
+                onRefresh: () => ref.invalidate(resumeCurrentDateProvider),
                 refreshProviders: [
                   if (enterpriseId != null) ...[
                     dailyComparisonControllerProvider(enterpriseId),

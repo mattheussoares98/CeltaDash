@@ -46,6 +46,7 @@ class ResumePage extends HookConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
+      onRefresh: () => ref.invalidate(resumeCurrentDateProvider),
       //TODO test this refresh indicator
       refreshProviders: enterpriseId == null
           ? null
