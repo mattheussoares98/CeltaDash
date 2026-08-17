@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:celta_dash/utils/constants/constants.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -52,14 +55,15 @@ class ChartPieWidget extends HookWidget {
     final selectedIndex = useState<int?>(null);
 
     // Granular subscriptions — only rebuilds when size/orientation actually change.
-    final screenWidth = MediaQuery.sizeOf(context).width;
+    final size = MediaQuery.sizeOf(context);
+    final height = size.height;
+    final width = size.width;
     final isPortrait =
         MediaQuery.orientationOf(context) == Orientation.portrait;
 
-    final splitFor = screenWidth > 600 ? 2 : 1;
-    final chartWidth = screenWidth * 0.45 / splitFor;
-    final indicatorSize = screenWidth * 0.04 / splitFor;
-    final centerSpaceRadius = screenWidth * 0.1 / splitFor;
+    final chartWidth = min(height * 0.23, width * 0.45);
+    const indicatorSize = Sizes.p12;
+    final centerSpaceRadius = chartWidth * 0.25;
     final maxIndex = quantityToShow ?? 4;
 
     void onChangeSelected(int? index) {
@@ -106,8 +110,7 @@ class ChartPieWidget extends HookWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Flexible(
-          flex: !isPortrait ? 2 : 1,
+        Expanded(
           child: Column(
             children: [
               SizedBox(
@@ -172,6 +175,7 @@ class ChartPieWidget extends HookWidget {
             ],
           ),
         ),
+        gapW12,
         if (isPortrait)
           Expanded(
             child: Padding(
