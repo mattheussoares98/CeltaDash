@@ -51,8 +51,14 @@ class MonthlyGoalComparisonController
     final currentMonthController = ref.watch(currentMonthProvider.notifier);
     final comparisonController = ref.watch(comparisonProvider.notifier);
     final initialStates = await Future.wait([
-      currentMonthController.loadStatistics(params: currentMonthParams),
-      comparisonController.loadStatistics(params: comparisonParams),
+      currentMonthController.loadStatistics(
+        params: currentMonthParams,
+        forceRefresh: true,
+      ),
+      comparisonController.loadStatistics(
+        params: comparisonParams,
+        forceRefresh: true,
+      ),
     ]);
     for (final statisticsState in initialStates) {
       if (statisticsState.hasError) {
@@ -72,6 +78,7 @@ class MonthlyGoalComparisonController
       );
       comparisonStatistics = (await comparisonController.loadStatistics(
         params: comparisonParams,
+        forceRefresh: true,
       )).requireValue;
     }
 

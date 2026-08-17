@@ -52,8 +52,14 @@ class DailyComparisonController extends _$DailyComparisonController {
     final selectedController = ref.watch(selectedProvider.notifier);
     final comparisonController = ref.watch(comparisonProvider.notifier);
     final statisticsStates = await Future.wait([
-      selectedController.loadStatistics(params: selectedParams),
-      comparisonController.loadStatistics(params: comparisonParams),
+      selectedController.loadStatistics(
+        params: selectedParams,
+        forceRefresh: true,
+      ),
+      comparisonController.loadStatistics(
+        params: comparisonParams,
+        forceRefresh: true,
+      ),
     ]);
     final selectedState = statisticsStates.first;
     final comparisonState = statisticsStates.last;

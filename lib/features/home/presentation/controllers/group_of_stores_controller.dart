@@ -14,7 +14,6 @@ class GroupOfStoresController extends _$GroupOfStoresController {
   Future<GroupOfStoresState> build(int enterpriseId) async {
     ref.cache(300);
     ref.watch(activeEcParamsStateControllerProvider);
-    ref.watch(resumeCurrentDateProvider);
 
     final selectedDate = await ref.watch(
       homeControllerProvider.selectAsync((state) => state.selectedDate),
@@ -45,6 +44,7 @@ class GroupOfStoresController extends _$GroupOfStoresController {
     );
     final statisticsState = await statisticsController.loadStatistics(
       params: params,
+      forceRefresh: true,
     );
     if (statisticsState.hasError) {
       Error.throwWithStackTrace(

@@ -42,6 +42,7 @@ class MonthlyAnalysisController extends _$MonthlyAnalysisController {
     );
     final statisticsState = await statisticsController.loadStatistics(
       params: params,
+      forceRefresh: true,
     );
     if (statisticsState.hasError) {
       Error.throwWithStackTrace(

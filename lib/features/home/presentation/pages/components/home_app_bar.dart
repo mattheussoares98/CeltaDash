@@ -5,6 +5,7 @@ import 'package:celta_dash/utils/constants/constants.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/misc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -46,16 +47,23 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
       tryAgain: () => ref.invalidate(homeControllerProvider),
       data: (homeState) {
         final enterpriseId = homeState.selectedEnterpriseId;
+
+        final providers = enterpriseId == null
+            ? null
+            : <ProviderBase<AsyncValue<dynamic>>>[
+                dailyComparisonControllerProvider(enterpriseId),
+                monthlyGoalComparisonControllerProvider(enterpriseId),
+                monthlyAnalysisControllerProvider(enterpriseId),
+                groupOfStoresControllerProvider(enterpriseId),
+              ];
+
         final reloadIconButton = context.isMobile
             ? null
             : ReloadIconButton(
-                onRefresh: () => ref.invalidate(resumeCurrentDateProvider),
-                refreshProviders: [
-                  if (enterpriseId != null) ...[
-                    dailyComparisonControllerProvider(enterpriseId),
-                    monthlyGoalComparisonControllerProvider(enterpriseId),
-                  ],
-                ],
+                onRefresh: providers == null
+                    ? null
+                    : () => ref.invalidate(resumeCurrentDateProvider),
+                refreshProviders: providers,
               );
         if (MediaQuery.orientationOf(context) == Orientation.landscape) {
           return Row(
