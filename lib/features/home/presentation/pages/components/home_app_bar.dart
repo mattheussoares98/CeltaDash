@@ -10,9 +10,14 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
-  const HomeAppBar({required this.isLandscape, super.key});
+  const HomeAppBar({
+    required this.isLandscape,
+    this.showReload = true,
+    super.key,
+  });
 
   final bool isLandscape;
+  final bool showReload;
 
   @override
   Size get preferredSize =>
@@ -57,7 +62,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
                 groupOfStoresControllerProvider(enterpriseId),
               ];
 
-        final reloadIconButton = context.isMobile
+        final reloadIconButton = context.isMobile || !showReload
             ? null
             : ReloadIconButton(
                 onRefresh: providers == null
