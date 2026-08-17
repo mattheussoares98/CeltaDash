@@ -2,6 +2,7 @@ import 'package:celta_dash/features/home/presentation/controllers/controllers.da
 import 'package:celta_dash/features/home/presentation/models/models.dart';
 import 'package:celta_dash/features/sale_statistics/domain/entities/entities.dart';
 import 'package:celta_dash/features/sale_statistics/presentation/controllers/controllers.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'daily_comparison_controller.g.dart';
@@ -13,6 +14,9 @@ DateTime resumeCurrentDate(Ref ref) => DateTime.now();
 class DailyComparisonController extends _$DailyComparisonController {
   @override
   Future<DailyComparisonState> build(int enterpriseId) async {
+    ref.cache(300);
+    //TODO test changing the logged enterprise to check whether will reload or not
+
     final selectedDate = await ref.watch(
       homeControllerProvider.selectAsync((s) => s.selectedDate),
     );
