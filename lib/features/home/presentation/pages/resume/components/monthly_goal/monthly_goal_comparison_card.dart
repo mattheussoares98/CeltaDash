@@ -10,40 +10,37 @@ class MonthlyGoalComparisonCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final homeAsync = ref.watch(homeControllerProvider);
+    final enterpriseId = ref.watch(
+      homeControllerProvider.select((s) => s.value?.selectedEnterpriseId),
+    );
+    if (enterpriseId == null) {
+      //Shouldn't happen because it is being treated on ResumePage file
+      return const SizedBox.shrink();
+    }
+    final provider = monthlyGoalComparisonControllerProvider(enterpriseId);
+    final comparisonAsync = ref.watch(provider);
+    final comparison = comparisonAsync.value;
+    if (comparison != null) {
+      return comparison.hasGoal
+          ? MonthlyGoalComparisonContent(comparison: comparison)
+          : Center(
+              child: BaseText.bodyLarge(
+                'Não há dados para calcular as metas'.hardcoded,
+                textAlign: TextAlign.center,
+              ),
+            );
+    }
     return AsyncValueWidget(
-      value: homeAsync,
-      tryAgain: () => ref.invalidate(homeControllerProvider),
-      data: (homeState) {
-        final enterpriseId = homeState.selectedEnterpriseId;
-        if (enterpriseId == null) return const SizedBox.shrink();
-
-        final provider = monthlyGoalComparisonControllerProvider(enterpriseId);
-        final comparisonAsync = ref.watch(provider);
-        final comparison = comparisonAsync.value;
-        if (comparison != null) {
-          return comparison.hasGoal
-              ? MonthlyGoalComparisonContent(comparison: comparison)
-              : Center(
-                  child: BaseText.bodyLarge(
-                    'Não há dados para calcular as metas'.hardcoded,
-                    textAlign: TextAlign.center,
-                  ),
-                );
-        }
-        return AsyncValueWidget(
-          value: comparisonAsync,
-          tryAgain: () => ref.invalidate(provider),
-          data: (comparison) => comparison.hasGoal
-              ? MonthlyGoalComparisonContent(comparison: comparison)
-              : Center(
-                  child: BaseText.bodyLarge(
-                    'Não há dados para calcular as metas'.hardcoded,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-        );
-      },
+      value: comparisonAsync,
+      tryAgain: () => ref.invalidate(provider),
+      data: (comparison) => comparison.hasGoal
+          ? MonthlyGoalComparisonContent(comparison: comparison)
+          : Center(
+              child: BaseText.bodyLarge(
+                'Não há dados para calcular as metas'.hardcoded,
+                textAlign: TextAlign.center,
+              ),
+            ),
     );
   }
 }

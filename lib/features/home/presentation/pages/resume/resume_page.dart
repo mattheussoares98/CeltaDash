@@ -59,8 +59,11 @@ class ResumePage extends HookConsumerWidget {
         value: homeAsync,
         tryAgain: () => ref.invalidate(homeControllerProvider),
         data: (_) {
-          if (enterpriseId == null) return const DailyComparisonCard();
-          //TODO test waht happens when enterpriseId is null
+          if (enterpriseId == null) {
+            return Center(
+              child: BaseText.error('Nenhuma empresa selecionada'.hardcoded),
+            );
+          }
 
           final dailyAsync = ref.watch(dailyProvider!);
           final monthlyAsync = ref.watch(monthlyProvider!);

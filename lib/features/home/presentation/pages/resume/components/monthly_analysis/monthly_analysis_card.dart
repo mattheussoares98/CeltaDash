@@ -9,32 +9,28 @@ class MonthlyAnalysisCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final homeAsync = ref.watch(homeControllerProvider);
-    //TODO listen to this in a single part of the page
-    return AsyncValueWidget(
-      value: homeAsync,
-      tryAgain: () => ref.invalidate(homeControllerProvider),
-      data: (homeState) {
-        final enterpriseId = homeState.selectedEnterpriseId;
-        if (enterpriseId == null) return const SizedBox.shrink();
-        //TODO handle this in a single part of the page
+    final enterpriseId = ref.watch(
+      homeControllerProvider.select((s) => s.value?.selectedEnterpriseId),
+    );
+    if (enterpriseId == null) {
+      //Shouldn't happen because it is being treated on ResumePage file
+      return const SizedBox.shrink();
+    }
 
-        final provider = monthlyAnalysisControllerProvider(enterpriseId);
-        final analysisAsync = ref.watch(provider);
-        final analysis = analysisAsync.value;
-        if (analysis != null) {
-          return analysis.hasAnalysis
-              ? MonthlyAnalysisContent(analysis: analysis)
-              : const SizedBox.shrink();
-        }
-        return AsyncValueWidget(
-          value: analysisAsync,
-          tryAgain: () => ref.invalidate(provider),
-          data: (analysis) => analysis.hasAnalysis
-              ? MonthlyAnalysisContent(analysis: analysis)
-              : const SizedBox.shrink(),
-        );
-      },
+    final provider = monthlyAnalysisControllerProvider(enterpriseId);
+    final analysisAsync = ref.watch(provider);
+    final analysis = analysisAsync.value;
+    if (analysis != null) {
+      return analysis.hasAnalysis
+          ? MonthlyAnalysisContent(analysis: analysis)
+          : const SizedBox.shrink();
+    }
+    return AsyncValueWidget(
+      value: analysisAsync,
+      tryAgain: () => ref.invalidate(provider),
+      data: (analysis) => analysis.hasAnalysis
+          ? MonthlyAnalysisContent(analysis: analysis)
+          : const SizedBox.shrink(),
     );
   }
 }
