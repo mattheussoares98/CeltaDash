@@ -1,5 +1,5 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
-import 'package:celta_dash/features/home/presentation/models/models.dart';
+import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/routing/routing.dart';
 import 'package:celta_dash/utils/constants/constants.dart';
 import 'package:celta_dash/utils/utils.dart';
@@ -59,10 +59,9 @@ class GroupOfStoresContent extends StatelessWidget {
           crossAxisAlignment: .stretch,
           children: [
             BaseText.titleLarge(
-              'Grupo de lojas'.hardcoded.toUpperCase(),
+              'Vendas do grupo'.hardcoded.toUpperCase(),
               textAlign: .center,
             ),
-            BaseText('Vendas do dia'.hardcoded, textAlign: .center),
             ChartPieWidget(paddingItems: .zero, pieParameters: parameters),
             PrimaryButton(
               onPressed: () => context.pushNamed(Routes.groupSummary.name),
