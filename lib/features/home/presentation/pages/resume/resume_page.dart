@@ -53,6 +53,7 @@ class ResumePage extends HookConsumerWidget {
               dailyComparisonControllerProvider(enterpriseId),
               monthlyGoalComparisonControllerProvider(enterpriseId),
               monthlyAnalysisControllerProvider(enterpriseId),
+              groupOfStoresControllerProvider(enterpriseId),
             ],
       body: AsyncValueWidget(
         value: homeAsync,
@@ -67,11 +68,13 @@ class ResumePage extends HookConsumerWidget {
           final dailyAsync = ref.watch(dailyProvider!);
           final monthlyAsync = ref.watch(monthlyProvider!);
           final monthlyAnalysisAsync = ref.watch(monthlyAnalysisProvider!);
+          final groupOfStoresAsync = ref.watch(groupOfStoresProvider!);
 
           final hasCompleteData =
               dailyAsync.value != null &&
               monthlyAsync.value != null &&
-              monthlyAnalysisAsync.value != null;
+              monthlyAnalysisAsync.value != null &&
+              groupOfStoresAsync.value != null;
 
           if (!hasCompleteData) {
             return AsyncValueWidget(
@@ -83,7 +86,11 @@ class ResumePage extends HookConsumerWidget {
                 data: (_) => AsyncValueWidget(
                   value: monthlyAnalysisAsync,
                   tryAgain: () => ref.invalidate(monthlyAnalysisProvider),
-                  data: (_) => const SizedBox.shrink(),
+                  data: (_) => AsyncValueWidget(
+                    value: groupOfStoresAsync,
+                    tryAgain: () => ref.invalidate(groupOfStoresProvider),
+                    data: (_) => const SizedBox.shrink(),
+                  ),
                 ),
               ),
             );
@@ -93,6 +100,7 @@ class ResumePage extends HookConsumerWidget {
             const DailyComparisonCard(),
             const MonthlyGoalComparisonCard(),
             const MonthlyAnalysisCard(),
+            const GroupOfStoresCard(),
           ];
           return ResponsiveListFlow(
             maxItemWidth: Breakpoint.tablet,
