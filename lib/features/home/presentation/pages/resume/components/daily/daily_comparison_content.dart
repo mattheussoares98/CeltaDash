@@ -1,9 +1,11 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/features/home/presentation/models/models.dart';
 import 'package:celta_dash/features/home/presentation/pages/resume/components/components.dart';
+import 'package:celta_dash/routing/routing.dart';
 import 'package:celta_dash/utils/constants/constants.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class DailyComparisonContent extends StatelessWidget {
   const DailyComparisonContent({super.key, required this.comparison});
@@ -60,6 +62,21 @@ class DailyComparisonContent extends StatelessWidget {
                     averageTicket: comparison.comparisonAverageTicket,
                   ),
                 ),
+              ],
+            ),
+            gapH8,
+            Row(
+              children: [
+                Expanded(
+                  child: PrimaryButton(
+                    text: 'Pagamentos'.hardcoded,
+                    onPressed: () {
+                      context.pushNamed(Routes.paymentsType.name);
+                    },
+                  ),
+                ),
+                gapW8,
+                Expanded(child: PrimaryButton(text: 'Departamentos'.hardcoded)),
               ],
             ),
           ],

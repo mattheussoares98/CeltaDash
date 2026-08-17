@@ -11,10 +11,12 @@ void main() {
     WidgetTester tester, {
     String initialLocation = '/home',
   }) async {
+    final navigatorKey = GlobalKey<NavigatorState>();
     router = GoRouter(
+      navigatorKey: navigatorKey,
       initialLocation: initialLocation,
       routes: [
-        ...homeRoutes([
+        ...homeRoutes(navigatorKey, [
           GoRoute(
             path: '/home/operators',
             name: Routes.operators.name,
@@ -95,6 +97,15 @@ void main() {
     await tester.pumpAndSettle();
     expect(currentPath(), '/home/sales');
     expect(find.text('Sales'), findsWidgets);
+  });
+
+  testWidgets('payments is nested under the resume route', (tester) async {
+    await pumpRouter(tester);
+
+    expect(
+      router.namedLocation(Routes.paymentsType.name),
+      '/home/resume/payments-type',
+    );
   });
 
   testWidgets('an unknown home route renders the not-found page', (

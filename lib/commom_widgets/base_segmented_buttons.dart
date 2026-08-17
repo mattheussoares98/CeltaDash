@@ -9,7 +9,7 @@ class BaseSegmentedButtons<T extends SelectableItem<T>>
     extends StatelessWidget {
   const BaseSegmentedButtons({
     super.key,
-    required this.items,
+    required this.items, //TODO delete this widget
     required this.selectedValue,
     required this.onChanged,
   });

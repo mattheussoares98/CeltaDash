@@ -1,7 +1,9 @@
 import 'package:celta_dash/utils/utils.dart';
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
+import 'package:celta_dash/routing/routing.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../ui/helpers/helpers.dart';
@@ -137,7 +139,7 @@ class DailyStatistics extends StatelessWidget {
             children: [
               Expanded(
                 child: DefaultButton(
-                  onTap: homePresenter.goToPaymentsTypePage,
+                  onTap: () => context.pushNamed(Routes.paymentsType.name),
                   title: R.string.payments,
                 ),
               ),

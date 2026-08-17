@@ -1,13 +1,21 @@
 import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/routing/routing.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-List<RouteBase> homeRoutes(List<RouteBase> secondaryRoutes) => [
+List<RouteBase> homeRoutes(
+  GlobalKey<NavigatorState> rootNavigatorKey,
+  List<RouteBase> secondaryRoutes,
+) => [
   StatefulShellRoute.indexedStack(
     builder: (context, state, navigationShell) =>
         HomePage(navigationShell: navigationShell),
     branches: [
-      StatefulShellBranch(routes: [homeResumeRoute()]),
+      StatefulShellBranch(
+        routes: [
+          homeResumeRoute([paymentsTypeRoute(rootNavigatorKey)]),
+        ],
+      ),
       StatefulShellBranch(routes: [homeSalesRoute()]),
       StatefulShellBranch(routes: [homeProductsRoute()]),
       StatefulShellBranch(routes: [homePersonalizedRoute()]),
@@ -18,6 +26,11 @@ List<RouteBase> homeRoutes(List<RouteBase> secondaryRoutes) => [
   GoRoute(
     path: '/home',
     name: Routes.home.name,
-    redirect: (context, state) => state.namedLocation(Routes.homeResume.name),
+    redirect: (context, state) {
+      final homeLocation = state.namedLocation(Routes.home.name);
+      return state.uri.path == homeLocation
+          ? state.namedLocation(Routes.homeResume.name)
+          : null;
+    },
   ),
 ];

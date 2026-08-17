@@ -6,6 +6,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'app_router.g.dart';
 
+final rootNavigatorKey = GlobalKey<NavigatorState>();
+
 class Bridge<T> extends ChangeNotifier {
   T? _value;
   T? get value => _value;
@@ -20,12 +22,13 @@ class Bridge<T> extends ChangeNotifier {
 @Riverpod(keepAlive: true)
 GoRouter goRouter(Ref ref) {
   return GoRouter(
+    navigatorKey: rootNavigatorKey,
     initialLocation: '/splash',
     routes: [
       splashRoute(),
       loginRoute(),
       webLoginRoute(),
-      ...homeRoutes([
+      ...homeRoutes(rootNavigatorKey, [
         appAnalyticsRoute(),
         bsSaleDetailsRoute(),
         canceledSalesRoute(),
@@ -37,7 +40,6 @@ GoRouter goRouter(Ref ref) {
         groupSummaryRoute(),
         notCanceledSalesRoute(),
         operatorsRoute(),
-        paymentsTypeRoute(),
         sellersRoute(),
         setGoalRoute(),
         updateAppVersionRoute(),

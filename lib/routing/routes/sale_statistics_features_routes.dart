@@ -76,12 +76,6 @@ RouteBase operatorsRoute() => GoRoute(
   builder: (context, state) => makeOperatorsPage(),
 );
 
-RouteBase paymentsTypeRoute() => GoRoute(
-  path: '/home/payments-type',
-  name: Routes.paymentsType.name,
-  builder: (context, state) => makePaymentsTypePage(),
-);
-
 RouteBase sellersRoute() => GoRoute(
   path: '/home/sellers',
   name: Routes.sellers.name,
