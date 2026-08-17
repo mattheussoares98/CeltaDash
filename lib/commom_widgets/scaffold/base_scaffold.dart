@@ -19,7 +19,7 @@ class BaseScaffold extends StatelessWidget {
     this.onPopInvokedWithResult,
     this.resizeToAvoidBottomInset = false,
     this.appBar,
-    this.refreshProvider,
+    this.refreshProviders,
     this.isScrollable = true,
     this.scrollPhysics,
     this.padding,
@@ -37,7 +37,7 @@ class BaseScaffold extends StatelessWidget {
   final void Function()? onPopInvokedWithResult;
   final bool? resizeToAvoidBottomInset;
   final Widget? appBar;
-  final ProviderBase<AsyncValue<dynamic>>? refreshProvider;
+  final List<ProviderBase<AsyncValue<dynamic>>>? refreshProviders;
   final bool isScrollable;
   final ScrollPhysics? scrollPhysics;
   final EdgeInsets? padding;
@@ -93,11 +93,11 @@ class _BaseScaffold extends ConsumerWidget {
 
     Widget? finalAppBar = params.appBar;
 
-    if (params.refreshProvider != null &&
+    if (params.refreshProviders != null &&
         (PlatformUtil.isWeb || PlatformUtil.isDesktop)) {
       if (finalAppBar is BaseAppBar) {
         final refreshAction = ReloadIconButton(
-          refreshProvider: params.refreshProvider,
+          refreshProviders: params.refreshProviders,
         );
         finalAppBar = finalAppBar.copyWith(
           actions: [
@@ -127,15 +127,14 @@ class _BaseScaffold extends ConsumerWidget {
       newChild = Padding(padding: effectivePadding, child: params.body);
     }
 
-    if (params.refreshProvider != null) {
+    if (params.refreshProviders != null) {
       newChild = Consumer(
         builder: (context, ref, child) {
           return RefreshIndicator.adaptive(
             onRefresh: () async {
-              ref.invalidate(params.refreshProvider!);
-              // try {
-              //   await ref.read((params.refreshProvider! as dynamic).future);
-              // } catch (_) {}
+              for (final provider in params.refreshProviders!) {
+                ref.invalidate(provider);
+              }
             },
             backgroundColor: context.theme.colorScheme.surface,
             strokeWidth: 2,
