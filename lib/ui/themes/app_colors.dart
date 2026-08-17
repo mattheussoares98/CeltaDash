@@ -21,13 +21,13 @@ abstract final class AppColors {
   static const base = Color(0xFF121212);
   static const fade = Color(0xFF5E6A75);
   static const fadeLight = Color(0x4D5E6A75);
-  static const hightLight = Color(0xFF254EDB);
+  static const hightLight = primary;
   static const iconContainer = Color(0xFFFEF3EB);
 
   // Color Scheme
-  static const primary = Color(0xFF003399);
-  static const primaryLight = Color.fromARGB(255, 101, 153, 249);
-  static const secondary = Color(0xFF263A43);
+  static const primary = Color.fromRGBO(76, 175, 80, 1);
+  static const primaryLight = Color.fromRGBO(139, 195, 74, 1);
+  static const secondary = Colors.amber;
   static const surface = white;
   static const onSurface = base;
   static const error = Color(0xFFE20A17);

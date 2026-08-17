@@ -9,7 +9,13 @@ ColorScheme get colorScheme => ColorScheme.fromSeed(
 );
 
 IconThemeData get iconThemeData =>
-    const IconThemeData(color: AppColors.primaryLight);
+    const IconThemeData(color: AppColors.primary);
+
+IconButtonThemeData get iconButtonThemeData => const IconButtonThemeData(
+  style: ButtonStyle(
+    foregroundColor: WidgetStatePropertyAll(AppColors.primary),
+  ),
+);
 
 ColorScheme get darkColorScheme => ColorScheme.fromSeed(
   seedColor: AppColors.primary,
@@ -20,7 +26,7 @@ ColorScheme get darkColorScheme => ColorScheme.fromSeed(
 );
 
 IconThemeData get darkIconThemeData =>
-    const IconThemeData(color: AppColors.primaryLight);
+    const IconThemeData(color: AppColors.primary);
 
 /// App ar Theme
 AppBarTheme get appBarTheme => const AppBarTheme(
