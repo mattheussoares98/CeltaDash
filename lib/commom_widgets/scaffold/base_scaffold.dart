@@ -20,6 +20,7 @@ class BaseScaffold extends StatelessWidget {
     this.resizeToAvoidBottomInset = false,
     this.appBar,
     this.refreshProviders,
+    this.onRefresh,
     this.isScrollable = true,
     this.scrollPhysics,
     this.padding,
@@ -38,10 +39,10 @@ class BaseScaffold extends StatelessWidget {
   final bool? resizeToAvoidBottomInset;
   final Widget? appBar;
   final List<ProviderBase<AsyncValue<dynamic>>>? refreshProviders;
+  final VoidCallback? onRefresh;
   final bool isScrollable;
   final ScrollPhysics? scrollPhysics;
   final EdgeInsets? padding;
-
   final bool usePadding;
   final Widget body;
   final Widget? bottomNavigationBar;
@@ -92,12 +93,14 @@ class _BaseScaffold extends ConsumerWidget {
     Widget newChild = params.body;
 
     Widget? finalAppBar = params.appBar;
+    final hasRefreshParams =
+        params.refreshProviders != null || params.onRefresh != null;
 
-    if (params.refreshProviders != null &&
-        (PlatformUtil.isWeb || PlatformUtil.isDesktop)) {
+    if (hasRefreshParams && (PlatformUtil.isWeb || PlatformUtil.isDesktop)) {
       if (finalAppBar is BaseAppBar) {
         final refreshAction = ReloadIconButton(
           refreshProviders: params.refreshProviders,
+          onRefresh: params.onRefresh,
         );
         finalAppBar = finalAppBar.copyWith(
           actions: [
@@ -127,13 +130,16 @@ class _BaseScaffold extends ConsumerWidget {
       newChild = Padding(padding: effectivePadding, child: params.body);
     }
 
-    if (params.refreshProviders != null) {
+    if (hasRefreshParams) {
       newChild = Consumer(
         builder: (context, ref, child) {
           return RefreshIndicator.adaptive(
             onRefresh: () async {
-              for (final provider in params.refreshProviders!) {
-                ref.invalidate(provider);
+              params.onRefresh?.call();
+              if (params.refreshProviders?.isNotEmpty ?? false) {
+                for (final provider in params.refreshProviders!) {
+                  ref.invalidate(provider);
+                }
               }
             },
             backgroundColor: context.theme.colorScheme.surface,

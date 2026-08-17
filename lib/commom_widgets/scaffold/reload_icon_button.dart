@@ -7,12 +7,17 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ReloadIconButton extends HookConsumerWidget {
   final List<ProviderBase<AsyncValue<dynamic>>>? refreshProviders;
+  final VoidCallback? onRefresh;
 
-  const ReloadIconButton({super.key, required this.refreshProviders});
+  const ReloadIconButton({
+    super.key,
+    required this.refreshProviders,
+    this.onRefresh,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (refreshProviders?.isEmpty ?? true) {
+    if ((refreshProviders?.isEmpty ?? true) && onRefresh == null) {
       return const SizedBox.shrink();
     }
 
@@ -20,9 +25,9 @@ class ReloadIconButton extends HookConsumerWidget {
       duration: const Duration(milliseconds: 1000),
     );
 
-    final isLoading = refreshProviders!.any(
-      (e) => ref.watch(e.select((s) => s.isLoading)),
-    );
+    final isLoading =
+        refreshProviders?.any((e) => ref.watch(e.select((s) => s.isLoading))) ??
+        false;
 
     useEffect(() {
       if (isLoading) {
@@ -42,8 +47,11 @@ class ReloadIconButton extends HookConsumerWidget {
     }, [isLoading]);
 
     void reload() {
-      for (final provider in refreshProviders!) {
-        ref.invalidate(provider);
+      onRefresh?.call();
+      if (refreshProviders?.isNotEmpty ?? false) {
+        for (final provider in refreshProviders!) {
+          ref.invalidate(provider);
+        }
       }
     }
 
