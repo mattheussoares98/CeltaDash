@@ -2,6 +2,7 @@ import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/features/home/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/home/presentation/pages/resume/components/components.dart';
 import 'package:celta_dash/utils/constants/constants.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -11,22 +12,48 @@ class ResumePage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final homeAsync = ref.watch(homeControllerProvider);
+    final enterpriseId = ref.watch(
+      homeControllerProvider.select((s) => s.value?.selectedEnterpriseId),
+    );
+
+    final dailyProvider = enterpriseId == null
+        ? null
+        : dailyComparisonControllerProvider(enterpriseId);
+    final monthlyProvider = enterpriseId == null
+        ? null
+        : monthlyGoalComparisonControllerProvider(enterpriseId);
+
+    if (dailyProvider != null) {
+      ref.listen(dailyProvider, (p, n) {
+        n.showToastOnError(context, p);
+      });
+    }
+    if (monthlyProvider != null) {
+      ref.listen(monthlyProvider, (p, n) {
+        n.showToastOnError(context, p);
+      });
+    }
+    //TODO throw an error for each controller to test
+
     return BaseScaffold(
       isScrollable: false,
-      usePadding: false,
+      padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
+      //TODO test this refresh indicator
+      refreshProviders: enterpriseId == null
+          ? null
+          : [
+              dailyComparisonControllerProvider(enterpriseId),
+              monthlyGoalComparisonControllerProvider(enterpriseId),
+            ],
       body: AsyncValueWidget(
         value: homeAsync,
         tryAgain: () => ref.invalidate(homeControllerProvider),
-        data: (homeState) {
-          final enterpriseId = homeState.selectedEnterpriseId;
+        data: (_) {
           if (enterpriseId == null) return const DailyComparisonCard();
 
-          final dailyProvider = dailyComparisonControllerProvider(enterpriseId);
-          final monthlyProvider = monthlyGoalComparisonControllerProvider(
-            enterpriseId,
-          );
-          final dailyAsync = ref.watch(dailyProvider);
-          final monthlyAsync = ref.watch(monthlyProvider);
+          final dailyAsync = ref.watch(dailyProvider!);
+          final monthlyAsync = ref.watch(monthlyProvider!);
+
           final hasCompleteData =
               dailyAsync.value != null && monthlyAsync.value != null;
 
@@ -42,30 +69,13 @@ class ResumePage extends HookConsumerWidget {
             );
           }
 
-          return RefreshIndicator.adaptive(
-            onRefresh: () async {
-              ref.invalidate(dailyProvider);
-              ref.invalidate(monthlyProvider);
-              try {
-                await Future.wait([
-                  ref.read(dailyProvider.future),
-                  ref.read(monthlyProvider.future),
-                ]);
-              } catch (error) {
-                showToastMessage(error.toString(), type: ToastType.error);
-              }
-            },
-            child: const SingleChildScrollView(
-              physics: AlwaysScrollableScrollPhysics(),
-              padding: EdgeInsets.all(Sizes.p16),
-              child: Column(
-                children: [
-                  DailyComparisonCard(),
-                  gapH16,
-                  MonthlyGoalComparisonCard(),
-                ],
-              ),
-            ),
+          return const CustomScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            slivers: [
+              SliverToBoxAdapter(child: DailyComparisonCard()),
+              gapSliverH8,
+              SliverToBoxAdapter(child: MonthlyGoalComparisonCard()),
+            ],
           );
         },
       ),

@@ -12,7 +12,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
   const HomeAppBar({super.key});
 
   @override
-  Size get preferredSize => const Size.fromHeight(104);
+  Size get preferredSize => const Size.fromHeight(95);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -41,7 +41,18 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
     final controls = AsyncValueWidget(
       value: homeAsync,
       tryAgain: () => ref.invalidate(homeControllerProvider),
-      data: (_) {
+      data: (homeState) {
+        final enterpriseId = homeState.selectedEnterpriseId;
+        final reloadIconButton = context.isMobile
+            ? null
+            : ReloadIconButton(
+                refreshProviders: [
+                  if (enterpriseId != null) ...[
+                    dailyComparisonControllerProvider(enterpriseId),
+                    monthlyGoalComparisonControllerProvider(enterpriseId),
+                  ],
+                ],
+              );
         if (MediaQuery.orientationOf(context) == Orientation.landscape) {
           return Row(
             mainAxisAlignment: .spaceEvenly,
@@ -53,6 +64,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
               modeToggle,
               selectEnterprise,
               const Spacer(),
+              ?reloadIconButton,
             ],
           );
         }
@@ -67,9 +79,9 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
               ],
             ),
             gapH4,
-            const Row(
+            Row(
               mainAxisAlignment: .spaceBetween,
-              children: [dateSelector, modeToggle],
+              children: [dateSelector, modeToggle, ?reloadIconButton],
             ),
           ],
         );
