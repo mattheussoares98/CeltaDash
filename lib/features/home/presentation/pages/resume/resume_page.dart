@@ -89,15 +89,15 @@ class ResumePage extends HookConsumerWidget {
             );
           }
 
-          return const CustomScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            slivers: [
-              SliverToBoxAdapter(child: DailyComparisonCard()),
-              gapSliverH8,
-              SliverToBoxAdapter(child: MonthlyGoalComparisonCard()),
-              gapSliverH8,
-              SliverToBoxAdapter(child: MonthlyAnalysisCard()),
-            ],
+          final items = <Widget>[
+            const DailyComparisonCard(),
+            const MonthlyGoalComparisonCard(),
+            const MonthlyAnalysisCard(),
+          ];
+          return ResponsiveListFlow(
+            maxItemWidth: Breakpoint.tablet,
+            itemCount: items.length,
+            itemBuilder: (context, index) => items[index],
           );
         },
       ),
