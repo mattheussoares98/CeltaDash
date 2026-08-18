@@ -190,12 +190,36 @@ class BaseText extends StatelessWidget {
   final Color? decorationColor;
   final FontStyle? fontStyle;
 
+  BaseText copyWith({
+    String? text,
+    TextAlign? textAlign,
+    TextOverflow? overflow,
+    int? maxLines,
+    Color? color,
+    TextType? textType,
+    FontWeight? fontWeight,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    FontStyle? fontStyle,
+  }) => BaseText(
+    text ?? this.text,
+    textAlign: textAlign ?? this.textAlign,
+    overflow: overflow ?? this.overflow,
+    maxLines: maxLines ?? this.maxLines,
+    color: color ?? this.color,
+    textType: textType ?? this.textType,
+    fontWeight: fontWeight ?? this.fontWeight,
+    decoration: decoration ?? this.decoration,
+    decorationColor: decorationColor ?? this.decorationColor,
+    fontStyle: fontStyle ?? this.fontStyle,
+  );
+
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
       textAlign: textAlign,
-      overflow: overflow,
+      overflow: overflow ?? (maxLines != null ? TextOverflow.ellipsis : null),
       maxLines: maxLines,
       style: TextStyle(
         color: color,
