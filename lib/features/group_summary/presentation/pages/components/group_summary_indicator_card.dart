@@ -1,6 +1,5 @@
 // lib/features/group_summary/presentation/pages/components/group_summary_indicator_card.dart
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
-import 'package:celta_dash/utils/constants/constants.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 

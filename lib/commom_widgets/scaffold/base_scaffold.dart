@@ -1,7 +1,6 @@
 import 'package:celta_dash/commom_widgets/scaffold/device_orientation_stub.dart'
     if (dart.library.io) 'package:celta_dash/commom_widgets/scaffold/device_orientation_mobile.dart';
 import 'package:celta_dash/core/presentation/controllers/controllers.dart';
-import 'package:celta_dash/utils/constants/constants.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;

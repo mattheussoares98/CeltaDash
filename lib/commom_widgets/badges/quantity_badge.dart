@@ -1,5 +1,4 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
-import 'package:celta_dash/utils/constants/constants.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -186,9 +185,7 @@ class _QuantityBadgeState extends State<QuantityBadge>
                           ),
                         ),
                         TextSpan(
-                          text: _priceRollingAnimation.value
-                              .toString()
-                              .toBRL(),
+                          text: _priceRollingAnimation.value.toString().toBRL(),
                           style: context.theme.textTheme.bodyMedium,
                         ),
                       ],
