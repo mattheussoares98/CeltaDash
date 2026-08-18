@@ -125,7 +125,7 @@ class ChartPrices extends StatelessWidget {
                               ),
                               TextSpan(
                                 text:
-                                    '\n${price.toString().toBrazilianNumber().addBrazilianCoin()}',
+                                    '\n${price.toString().toBRL().addBrazilianCoin()}',
                                 style: TextStyle(
                                   color: Theme.of(context).primaryColorLight,
                                   fontWeight: FontWeight.bold,
@@ -158,7 +158,7 @@ class ChartPrices extends StatelessWidget {
                           }
                           return Expanded(
                             child: Text(
-                              "${formatted.toBrazilianNumber(0)}K",
+                              "${formatted.toBRL(0)}K",
                               style: Theme.of(context)
                                   .textTheme
                                   .titleSmall

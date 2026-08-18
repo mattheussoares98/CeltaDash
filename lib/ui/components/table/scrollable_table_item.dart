@@ -231,7 +231,7 @@ class _ScrollableTableItemState extends State<ScrollableTableItem>
           PersonalizedTableCell(
             value: isPercentage == true && widget.rowValues.isNotEmpty
                 ? sum / widget.rowValues.length
-                : sum.toString().toBrazilianNumber(isInt ? 0 : 2),
+                : sum.toString().toBRL(isInt ? 0 : 2),
             isTitle: true,
             isMoney: isMoney,
             isPercentage: isPercentage,

@@ -93,7 +93,7 @@ class _Item extends StatelessWidget {
             ),
           ),
           Text(
-            value.toString().toBrazilianNumber().addBrazilianCoin(),
+            value.toString().toBRL().addBrazilianCoin(),
             style: Theme.of(
               context,
             ).textTheme.titleSmall?.copyWith(color: color),

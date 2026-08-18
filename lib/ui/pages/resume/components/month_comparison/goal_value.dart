@@ -24,10 +24,10 @@ class GoalValue extends StatelessWidget {
           ),
           TextSpan(
             text: resumePresenter.firebaseEnterpriseGoal == null
-                ? goalLiquidValue.toString().toBrazilianNumber()
+                ? goalLiquidValue.toString().toBRL()
                 : resumePresenter.firebaseEnterpriseGoal!.value
                       ?.toString()
-                      .toBrazilianNumber(),
+                      .toBRL(),
             style: theme.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.bold,
             ),

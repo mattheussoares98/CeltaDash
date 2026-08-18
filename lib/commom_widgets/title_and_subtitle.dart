@@ -91,9 +91,9 @@ class TitleAndSubTitle extends StatelessWidget {
         if (subTitle.toString().toInt() != null) {
           return subTitle.toString().toInt().toString();
         } else if (subTitleIsPrice == true) {
-          return subTitle.toString().toBrazilianNumber();
+          return subTitle.toString().toBRL();
         }
-        return subTitle.toString().toBrazilianNumber(3);
+        return subTitle.toString().toBRL(3);
       } else {
         return subTitle.toString();
       }

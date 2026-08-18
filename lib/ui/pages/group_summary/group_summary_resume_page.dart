@@ -35,28 +35,27 @@ class GroupSummaryResumePage extends StatelessWidget {
                   secondTitle: R.string.averageSalesGroup,
                   firstValue: groupSalesTotalLiquid
                       .toString()
-                      .toBrazilianNumber()
+                      .toBRL()
                       .addBrazilianCoin(),
-                  secondValue: (groupSalesTotalLiquid /
-                          (homePresenter.enterprises?.length ?? 1))
-                      .toString()
-                      .toBrazilianNumber()
-                      .addBrazilianCoin(),
+                  secondValue:
+                      (groupSalesTotalLiquid /
+                              (homePresenter.enterprises?.length ?? 1))
+                          .toString()
+                          .toBRL()
+                          .addBrazilianCoin(),
                   icon: Icons.monetization_on,
                 ),
                 const SizedBox(height: 4),
                 Indicator(
                   firstTitle: R.string.salesQuantity,
                   secondTitle: R.string.salesQuantityAverage,
-                  firstValue: groupSales
-                      .quantitySales()
-                      .toString()
-                      .toBrazilianNumber(0),
-                  secondValue: (groupSalesQuantity /
-                          (homePresenter.enterprises?.length ?? 1))
-                      .toString()
-                      .toBrazilianNumber()
-                      .addBrazilianCoin(),
+                  firstValue: groupSales.quantitySales().toString().toBRL(0),
+                  secondValue:
+                      (groupSalesQuantity /
+                              (homePresenter.enterprises?.length ?? 1))
+                          .toString()
+                          .toBRL()
+                          .addBrazilianCoin(),
                   icon: Icons.person,
                 ),
               ],

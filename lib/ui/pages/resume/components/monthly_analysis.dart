@@ -107,7 +107,7 @@ class MonthlyAnalysis extends StatelessWidget {
                             enterprise: homePresenter.selectedEnterprise,
                           )
                           .toString()
-                          .toBrazilianNumber()
+                          .toBRL()
                           .addBrazilianCoin(),
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         fontStyle: FontStyle.italic,
@@ -127,7 +127,7 @@ class MonthlyAnalysis extends StatelessWidget {
                     Text(
                       averageValue
                           .toString()
-                          .toBrazilianNumber()
+                          .toBRL()
                           .addBrazilianCoin(),
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         fontStyle: FontStyle.italic,

@@ -113,53 +113,53 @@ class SectionsStatisticsTable extends StatelessWidget {
           headerTitle: 'Vendas'.hardcoded,
           isMoney: true,
           cellBuilder: (row) =>
-              BaseText.bodyMedium(row.sales.toString().toBrazilianNumber()),
+              BaseText.bodyMedium(row.sales.toString().toBRL()),
           sortValueMapper: (row) => row.sales,
           footerCellBuilder: (items) => BaseText.bodyMedium(
             items
                 .fold<double>(0, (total, row) => total + row.sales)
                 .toString()
-                .toBrazilianNumber(),
+                .toBRL(),
           ),
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Custo'.hardcoded,
           isMoney: true,
           cellBuilder: (row) =>
-              BaseText.bodyMedium(row.cost.toString().toBrazilianNumber()),
+              BaseText.bodyMedium(row.cost.toString().toBRL()),
           sortValueMapper: (row) => row.cost,
           footerCellBuilder: (items) => BaseText.bodyMedium(
             items
                 .fold<double>(0, (total, row) => total + row.cost)
                 .toString()
-                .toBrazilianNumber(),
+                .toBRL(),
           ),
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Lucro'.hardcoded,
           isMoney: true,
           cellBuilder: (row) =>
-              BaseText.bodyMedium(row.profit.toString().toBrazilianNumber()),
+              BaseText.bodyMedium(row.profit.toString().toBRL()),
           sortValueMapper: (row) => row.profit,
           footerCellBuilder: (items) => BaseText.bodyMedium(
             items
                 .fold<double>(0, (total, row) => total + row.profit)
                 .toString()
-                .toBrazilianNumber(),
+                .toBRL(),
           ),
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Margem'.hardcoded,
           isPercentage: true,
           cellBuilder: (row) =>
-              BaseText.bodyMedium(row.margin.toString().toBrazilianNumber()),
+              BaseText.bodyMedium(row.margin.toString().toBRL()),
           sortValueMapper: (row) => row.margin,
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Share'.hardcoded,
           isPercentage: true,
           cellBuilder: (row) =>
-              BaseText.bodyMedium(row.share.toString().toBrazilianNumber()),
+              BaseText.bodyMedium(row.share.toString().toBRL()),
           sortValueMapper: (row) => row.share,
         ),
       ],

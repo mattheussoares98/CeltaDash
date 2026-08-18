@@ -77,20 +77,20 @@ class GroupSummaryDetailsTable extends StatelessWidget {
           headerTitle: 'Vendas'.hardcoded,
           isMoney: true,
           cellBuilder: (row) =>
-              BaseText.bodyMedium(row.sales.toString().toBrazilianNumber()),
+              BaseText.bodyMedium(row.sales.toString().toBRL()),
           sortValueMapper: (row) => row.sales,
           footerCellBuilder: (items) => BaseText.bodyMedium(
             items
                 .fold<double>(0, (total, row) => total + row.sales)
                 .toString()
-                .toBrazilianNumber(),
+                .toBRL(),
           ),
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Share'.hardcoded,
           isPercentage: true,
           cellBuilder: (row) =>
-              BaseText.bodyMedium(row.share.toString().toBrazilianNumber()),
+              BaseText.bodyMedium(row.share.toString().toBRL()),
           sortValueMapper: (row) => row.share,
         ),
       ],

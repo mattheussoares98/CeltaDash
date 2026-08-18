@@ -50,7 +50,7 @@ class MonthlyAnalysisHighlight extends StatelessWidget {
           color: color,
           texts: [
             BaseText.caption('R\$ '),
-            BaseText.title(day.value.toString().toBrazilianNumber()),
+            BaseText.title(day.value.toString().toBRL()),
           ],
         ),
       ],

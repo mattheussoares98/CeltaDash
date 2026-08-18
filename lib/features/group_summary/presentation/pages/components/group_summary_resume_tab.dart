@@ -47,9 +47,9 @@ class GroupSummaryResumeTab extends StatelessWidget {
             firstTitle:
                 'Total de vendas do grupo ($enterprisesCount $enterpriseLabel)'
                     .hardcoded,
-            firstValue: 'R\$ ${totalSales.toString().toBrazilianNumber()}',
+            firstValue: 'R\$ ${totalSales.toString().toBRL()}',
             secondTitle: 'Média de vendas do grupo'.hardcoded,
-            secondValue: 'R\$ ${averageSales.toString().toBrazilianNumber()}',
+            secondValue: 'R\$ ${averageSales.toString().toBRL()}',
             platformIcon: const PlatformIcon(
               cupertinoIcon: CupertinoIcons.money_dollar_circle_fill,
               materialIcon: Icons.monetization_on,
@@ -58,9 +58,9 @@ class GroupSummaryResumeTab extends StatelessWidget {
           gapH8,
           GroupSummaryIndicatorCard(
             firstTitle: 'Qtd. de vendas'.hardcoded,
-            firstValue: totalQuantity.toString().toBrazilianNumber(0),
+            firstValue: totalQuantity.toString().toBRL(0),
             secondTitle: 'Média de quantidade de vendas'.hardcoded,
-            secondValue: averageQuantity.toString().toBrazilianNumber(2, true),
+            secondValue: averageQuantity.toString().toBRL(2, true),
             platformIcon: const PlatformIcon(
               cupertinoIcon: CupertinoIcons.doc_text,
               materialIcon: Icons.receipt_long,

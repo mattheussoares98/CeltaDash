@@ -24,13 +24,13 @@ class PersonalizedTableCell extends StatelessWidget {
     if (value is String) {
       return value;
     } else if (value is num && value % 1 == 0) {
-      return value.toString().toBrazilianNumber(0);
+      return value.toString().toBRL(0);
     } else if (value is double) {
       var newValue = value as double;
 
-      return newValue.toString().toBrazilianNumber();
+      return newValue.toString().toBRL();
     } else if (value is int) {
-      return value.toString().toBrazilianNumber(0);
+      return value.toString().toBRL(0);
     }
 
     return "error";

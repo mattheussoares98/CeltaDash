@@ -141,25 +141,25 @@ class _MonthlyInfo extends StatelessWidget {
             _RowSpan(
               title: "${R.string.salesFrom} ($formattedDate) =",
               showCoin: true,
-              value: comparisonLiquidValue.toString().toBrazilianNumber(),
+              value: comparisonLiquidValue.toString().toBRL(),
             ),
             _RowSpan(
               title: "5% = ",
               showCoin: true,
               value: (comparisonLiquidValue * 0.05)
                   .toString()
-                  .toBrazilianNumber(),
+                  .toBRL(),
             ),
             _RowSpan(
               title: "${R.string.total} = ",
               showCoin: true,
-              value: goalLiquidValue.toString().toBrazilianNumber(),
+              value: goalLiquidValue.toString().toBRL(),
             ),
           ] else ...[
             _RowSpan(
               title: "${R.string.manualInsertedGoal} = ",
               showCoin: true,
-              value: goalLiquidValue.toString().toBrazilianNumber(),
+              value: goalLiquidValue.toString().toBRL(),
             ),
           ],
           if (resumePresenter.firebaseEnterpriseGoal?.userName != null)
@@ -216,7 +216,7 @@ class _DailyInfo extends StatelessWidget {
           ),
           _RowSpan(
             title: "${R.string.monthlyGoal} = ",
-            value: goalLiquidValue.toString().toBrazilianNumber(),
+            value: goalLiquidValue.toString().toBRL(),
             showCoin: true,
           ),
           _RowSpan(
@@ -229,7 +229,7 @@ class _DailyInfo extends StatelessWidget {
             showCoin: true,
             value: (goalLiquidValue / endDate.day)
                 .toString()
-                .toBrazilianNumber(),
+                .toBRL(),
           ),
         ],
       ),

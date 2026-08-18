@@ -1,6 +1,6 @@
-import 'package:celta_dash/utils/utils.dart';
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/routing/routing.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -80,8 +80,7 @@ class DailyStatistics extends StatelessWidget {
               children: [
                 TextSpan(text: R.string.salesOfTheDay.toUpperCase()),
                 TextSpan(
-                  text:
-                      " (${percentageResult.toString().toBrazilianNumber(0)}%)",
+                  text: " (${percentageResult.toString().toBRL(0)}%)",
                   style: Theme.of(context).textTheme.displayLarge?.copyWith(
                     color: percentageResult > 0 ? Colors.green : Colors.red,
                   ),
@@ -175,10 +174,9 @@ class SubTitle extends StatelessWidget {
         .quantitySales(enterprise: homePresenter.selectedEnterprise)
         .toDouble();
 
+    subtitle += "${R.string.customers}: ${totalTickets.toString().toBRL(0)}";
     subtitle +=
-        "${R.string.customers}: ${totalTickets.toString().toBrazilianNumber(0)}";
-    subtitle +=
-        "\n${R.string.average}: ${statistics.ticketAverage(homePresenter.selectedEnterprise).toString().toBrazilianNumber().addBrazilianCoin()}";
+        "\n${R.string.average}: ${statistics.ticketAverage(homePresenter.selectedEnterprise).toString().toBRL().addBrazilianCoin()}";
 
     return Text(
       subtitle,
@@ -208,7 +206,7 @@ class Title extends StatelessWidget {
   Widget build(BuildContext context) {
     final homePresenter = Get.find<HomePresenter>();
     double totalValue = statistics.sumLiquidValue();
-    "${R.string.sales}: ${totalValue.toString().toBrazilianNumber().addBrazilianCoin()}";
+    "${R.string.sales}: ${totalValue.toString().toBRL().addBrazilianCoin()}";
 
     final previowsDate = DateTime(
       homePresenter.selectedDate.year,
@@ -233,7 +231,7 @@ class Title extends StatelessWidget {
           ),
         FittedBox(
           child: Text(
-            totalValue.toString().toBrazilianNumber().addBrazilianCoin(),
+            totalValue.toString().toBRL().addBrazilianCoin(),
             style: Theme.of(Get.context!).textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
               fontSize: 20,

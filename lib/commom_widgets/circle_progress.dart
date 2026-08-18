@@ -69,7 +69,7 @@ class AnimatedCircleProgress extends HookWidget {
               BaseRichText(
                 texts: [
                   BaseText.caption('R\$ '),
-                  BaseText.bodySmall(maximum.toString().toBrazilianNumber()),
+                  BaseText.bodySmall(maximum.toString().toBRL()),
                 ],
               ),
               gapH8,
@@ -121,7 +121,7 @@ class AnimatedCircleProgress extends HookWidget {
                                   texts: [
                                     BaseText.caption('R\$ '),
                                     BaseText.title(
-                                      value.toString().toBrazilianNumber(),
+                                      value.toString().toBRL(),
                                     ),
                                   ],
                                 ),
@@ -129,7 +129,7 @@ class AnimatedCircleProgress extends HookWidget {
                               if (value > 0 && maximum > 0)
                                 FittedBox(
                                   child: BaseText(
-                                    "${(value / maximum * 100).toString().toBrazilianNumber()}%",
+                                    "${(value / maximum * 100).toString().toBRL()}%",
                                     color: value >= maximum
                                         ? context.theme.primaryColor
                                         : Colors.red,

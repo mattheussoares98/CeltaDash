@@ -9,10 +9,7 @@ import '../../pages.dart';
 
 class GroupOfStores extends StatelessWidget {
   final List<SaleStatisticViewModel> sales;
-  const GroupOfStores({
-    super.key,
-    required this.sales,
-  });
+  const GroupOfStores({super.key, required this.sales});
 
   List<MapEntry<String, double>> getSalesByEnterprise(
     HomePresenter homePresenter,
@@ -24,20 +21,25 @@ class GroupOfStores extends StatelessWidget {
           p.putIfAbsent(key, () => []).add(e);
           return p;
         })
-        .map((key, value) => MapEntry(
+        .map(
+          (key, value) => MapEntry(
             key,
             value.sumLiquidValue(
               filterDay: homePresenter.selectedDate.day,
               filterMonth: homePresenter.selectedDate.month,
               filterYear: homePresenter.selectedDate.year,
-            )))
+            ),
+          ),
+        )
         .entries
         .toList()
       ..sort((a, b) => b.value.compareTo(a.value));
   }
 
   List<PieParameter> getPieParameters(
-      HomePresenter homePresenter, BuildContext context) {
+    HomePresenter homePresenter,
+    BuildContext context,
+  ) {
     final salesByEnterprise = getSalesByEnterprise(homePresenter);
     final pieParameters = <PieParameter>[];
 
@@ -47,43 +49,40 @@ class GroupOfStores extends StatelessWidget {
           (e) => PieParameter(
             value: e.value,
             title: Text(e.key),
-            subtitle:
-                Text(e.value.toString().toBrazilianNumber().addBrazilianCoin()),
+            subtitle: Text(e.value.toString().toBRL().addBrazilianCoin()),
           ),
         ),
       );
     } else {
       final topFour = salesByEnterprise.take(4);
-      final othersTotal = salesByEnterprise.skip(4).fold<double>(
-            0,
-            (sum, e) => sum + e.value,
-          );
+      final othersTotal = salesByEnterprise
+          .skip(4)
+          .fold<double>(0, (sum, e) => sum + e.value);
 
-      pieParameters.addAll(topFour.map(
-        (e) => PieParameter(
-          value: e.value,
-          title: Text(
-            e.key,
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium
-                ?.copyWith(fontWeight: FontWeight.bold),
+      pieParameters.addAll(
+        topFour.map(
+          (e) => PieParameter(
+            value: e.value,
+            title: Text(
+              e.key,
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text(e.value.toString().toBRL().addBrazilianCoin()),
           ),
-          subtitle:
-              Text(e.value.toString().toBrazilianNumber().addBrazilianCoin()),
         ),
-      ));
+      );
       pieParameters.add(
         PieParameter(
           value: othersTotal,
-          title: Text(R.string.anothersEnterprises,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium
-                  ?.copyWith(fontWeight: FontWeight.bold)),
-          subtitle: Text(
-            othersTotal.toString().toBrazilianNumber().addBrazilianCoin(),
+          title: Text(
+            R.string.anothersEnterprises,
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
+          subtitle: Text(othersTotal.toString().toBRL().addBrazilianCoin()),
         ),
       );
     }
@@ -113,8 +112,9 @@ class GroupOfStores extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           ChartPieWidget(
-              paddingItems: const EdgeInsets.all(0),
-              pieParameters: getPieParameters(homePresenter, context)),
+            paddingItems: const EdgeInsets.all(0),
+            pieParameters: getPieParameters(homePresenter, context),
+          ),
           DefaultButton(
             onTap: resumePresenter.goToGroupSummaryPage,
             title: R.string.groupSummary,

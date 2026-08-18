@@ -42,7 +42,7 @@ class PersonalizedPieChart extends StatelessWidget {
                 title: PersonalizedPieTitle(sale: e),
                 subtitle: Text(
                   e.LiquidValue?.toString()
-                          .toBrazilianNumber()
+                          .toBRL()
                           .addBrazilianCoin() ??
                       '',
                 ),
@@ -56,7 +56,7 @@ class PersonalizedPieChart extends StatelessWidget {
                   style: theme.textTheme.titleSmall,
                 ),
                 subtitle: Text(
-                  othersTotal.toString().toBrazilianNumber().addBrazilianCoin(),
+                  othersTotal.toString().toBRL().addBrazilianCoin(),
                 ),
               ),
           ],

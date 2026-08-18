@@ -23,7 +23,7 @@ class GroupOfStoresContent extends StatelessWidget {
           subtitle: BaseRichText(
             texts: [
               BaseText.caption('R\$ '),
-              BaseText(enterprise.liquidValue.toString().toBrazilianNumber()),
+              BaseText(enterprise.liquidValue.toString().toBRL()),
             ],
           ),
         ),
@@ -45,7 +45,7 @@ class GroupOfStoresContent extends StatelessWidget {
                       (total, enterprise) => total + enterprise.liquidValue,
                     )
                     .toString()
-                    .toBrazilianNumber(),
+                    .toBRL(),
               ),
             ],
           ),

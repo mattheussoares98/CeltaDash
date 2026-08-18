@@ -26,7 +26,7 @@ class DailyComparisonChartTitle extends StatelessWidget {
           color: color,
           texts: [
             BaseText.title('R\$ '),
-            BaseText.titleLarge(liquidValue.toString().toBrazilianNumber()),
+            BaseText.titleLarge(liquidValue.toString().toBRL()),
           ],
         ),
       ],

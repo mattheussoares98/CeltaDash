@@ -194,16 +194,16 @@ class SaleStatisticPdfGenerator {
     } else if (value is double) {
       // Mimics the behavior of formatting a double.
       // Replace with your `toBrazilianNumber()` if needed.
-      return value.toString().toBrazilianNumber(value % 1 == 0 ? 0 : 2);
+      return value.toString().toBRL(value % 1 == 0 ? 0 : 2);
     } else if (value is int) {
       // Mimics formatting for an integer.
-      return value.toString().toBrazilianNumber();
+      return value.toString().toBRL();
     } else if (value is num) {
       // Fallback for other numbers (e.g., if it has no decimal part).
       if (value % 1 == 0) {
         return value.toInt().toString();
       }
-      return value.toString().toBrazilianNumber();
+      return value.toString().toBRL();
     }
     return 'error';
   }

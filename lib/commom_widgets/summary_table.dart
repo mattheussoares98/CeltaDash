@@ -48,14 +48,14 @@ class SummaryTable extends StatelessWidget {
 
           if (item.value is num) {
             if (item.isPrice) {
-              priceText = item.value.toString().toBrazilianNumber(
+              priceText = item.value.toString().toBRL(
                 item.decimalHouses,
               );
             } else if (item.isPercentage) {
               formattedValue =
-                  '${item.value.toString().toBrazilianNumber(item.decimalHouses)} %';
+                  '${item.value.toString().toBRL(item.decimalHouses)} %';
             } else {
-              formattedValue = item.value.toString().toBrazilianNumber(
+              formattedValue = item.value.toString().toBRL(
                 item.decimalHouses,
                 true,
               );

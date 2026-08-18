@@ -52,7 +52,7 @@ class Result extends StatelessWidget {
               TextSpan(text: R.string.sold.toLowerCase()),
               TextSpan(
                 text:
-                    " ${compareDaysPresenter.saleStatistics!.differenceForHour(firstDayTotalLiquid, secondDayTotalLiquid).toString().toBrazilianNumber()}% ",
+                    " ${compareDaysPresenter.saleStatistics!.differenceForHour(firstDayTotalLiquid, secondDayTotalLiquid).toString().toBRL()}% ",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: firstDayTotalLiquid > secondDayTotalLiquid

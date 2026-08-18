@@ -36,7 +36,7 @@ class SaleSection extends StatelessWidget {
           title: R.string.total,
           value: sale.totalLiquid
               .toString()
-              .toBrazilianNumber()
+              .toBRL()
               .addBrazilianCoin(),
         ),
       ],

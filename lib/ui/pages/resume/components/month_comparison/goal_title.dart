@@ -36,7 +36,7 @@ class GoalTitle extends StatelessWidget {
           child: Tooltip(
             message: resumePresenter.firebaseEnterpriseGoal == null
                 ? '''Meta = vendas de (${DateFormat.yM("pt_BR").format(DateTime(comparisonEndDate.year, comparisonEndDate.month))}) + 5% 
-'${comparisonLiquidValue.toString().toBrazilianNumber().addBrazilianCoin()}' + 5%'''
+'${comparisonLiquidValue.toString().toBRL().addBrazilianCoin()}' + 5%'''
                 : "Meta inserida manualmente",
             child: Icon(
               theme.platform == TargetPlatform.iOS

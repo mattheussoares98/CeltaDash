@@ -19,7 +19,7 @@ class MonthlyAnalysisSummary extends StatelessWidget {
       BaseRichText(
         texts: [
           BaseText.caption('R\$ '),
-          BaseText.title(value.toString().toBrazilianNumber()),
+          BaseText.title(value.toString().toBRL()),
         ],
       ),
     ],

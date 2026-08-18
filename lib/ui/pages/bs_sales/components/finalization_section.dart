@@ -22,14 +22,14 @@ class FinalizationSection extends StatelessWidget {
       children: sale.paymentFinalizations!.map((e) {
         final portions = (e.QuantityOfPortions?.toString().toInt() ?? 0) <= 1
             ? ""
-            : e.QuantityOfPortions!.toString().toBrazilianNumber(0);
+            : e.QuantityOfPortions!.toString().toBRL(0);
 
         return Column(
           children: [
             DetailRow(
               title:
                   "${e.Finalization?.Name} ${portions.isEmpty ? "" : " (${portions}x)"}",
-              value: e.Value.toString().toBrazilianNumber().addBrazilianCoin(),
+              value: e.Value.toString().toBRL().addBrazilianCoin(),
               titleFlex: 3,
               valueFlex: 1,
             ),

@@ -165,7 +165,7 @@ class ChartPieWidget extends HookWidget {
                       pieParameters
                           .fold(0.0, (p, e) => p + e.value)
                           .toString()
-                          .toBrazilianNumber()
+                          .toBRL()
                           .addBrazilianCoin(),
                       style: context.textTheme.titleMedium,
                     ),
@@ -219,7 +219,7 @@ List<PieChartSectionData> _buildSections({
     return PieChartSectionData(
       color: param.color ?? _kColors[i],
       value: (param.value == 0 && i == 1) ? 0.01 : param.value,
-      title: '${(param.value / total * 100).toString().toBrazilianNumber(0)}%',
+      title: '${(param.value / total * 100).toString().toBRL(0)}%',
       radius: radius,
       titleStyle: textStyle,
     );

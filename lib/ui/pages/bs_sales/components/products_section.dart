@@ -48,7 +48,7 @@ class ProductsSection extends StatelessWidget {
                           ),
                         Text(
                           product.UnitValueLiquid?.toString()
-                                  .toBrazilianNumber() ??
+                                  .toBRL() ??
                               "",
                         ),
                       ],
@@ -63,7 +63,7 @@ class ProductsSection extends StatelessWidget {
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                         Text(
-                          product.Quantity?.toString().toBrazilianNumber(
+                          product.Quantity?.toString().toBRL(
                                 (product.Quantity?.toDouble() ?? 1) % 1 == 0
                                     ? 0
                                     : 2,
@@ -82,7 +82,7 @@ class ProductsSection extends StatelessWidget {
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                         Text(
-                          product.TotalLiquid?.toString().toBrazilianNumber() ??
+                          product.TotalLiquid?.toString().toBRL() ??
                               "",
                         ),
                       ],

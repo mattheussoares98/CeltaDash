@@ -59,7 +59,7 @@ class MonthlyAnalysisChart extends StatelessWidget {
                     final day = days[spot.x.toInt()];
                     return LineTooltipItem(
                       '${day.date.formatDate()}\n'
-                      '${day.value.toString().toBrazilianNumber().addBrazilianCoin()}',
+                      '${day.value.toString().toBRL().addBrazilianCoin()}',
                       theme.textTheme.labelLarge!.copyWith(
                         color: theme.colorScheme.onInverseSurface,
                       ),
@@ -113,11 +113,11 @@ class MonthlyAnalysisChart extends StatelessWidget {
 
   String _compactValue(double value) {
     if (value.abs() >= 1000000) {
-      return '${(value / 1000000).toString().toBrazilianNumber(1)}M';
+      return '${(value / 1000000).toString().toBRL(1)}M';
     }
     if (value.abs() >= 1000) {
-      return '${(value / 1000).toString().toBrazilianNumber(0)}K';
+      return '${(value / 1000).toString().toBRL(0)}K';
     }
-    return value.toString().toBrazilianNumber(0);
+    return value.toString().toBRL(0);
   }
 }

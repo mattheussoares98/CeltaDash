@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 
 extension StringModifier on String {
-  String toBrazilianNumber([
+  String toBRL([
     int decimalHouses = 2,
     bool showDecimalUntilLastNumber = false,
   ]) {

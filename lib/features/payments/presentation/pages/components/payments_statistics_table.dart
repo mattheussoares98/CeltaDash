@@ -75,43 +75,40 @@ class PaymentsStatisticsTable extends StatelessWidget {
         ScrollableTableColumnSpec(
           headerTitle: 'Vendas'.hardcoded,
           isMoney: true,
-          cellBuilder: (row) => BaseText.bodyMedium(
-            row.totalValue.toString().toBrazilianNumber(),
-          ),
+          cellBuilder: (row) =>
+              BaseText.bodyMedium(row.totalValue.toString().toBRL()),
           sortValueMapper: (row) => row.totalValue,
           footerCellBuilder: (items) => BaseText.bodyMedium(
             items
                 .fold<double>(0, (total, row) => total + row.totalValue)
                 .toString()
-                .toBrazilianNumber(),
+                .toBRL(),
           ),
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Qtd'.hardcoded,
-          cellBuilder: (row) => BaseText.bodyMedium(
-            row.totalQuantity.toString().toBrazilianNumber(3, true),
-          ),
+          cellBuilder: (row) =>
+              BaseText.bodyMedium(row.totalQuantity.toString().toBRL(3, true)),
           sortValueMapper: (row) => row.totalQuantity,
           footerCellBuilder: (items) => BaseText.bodyMedium(
             items
                 .fold<int>(0, (total, row) => total + row.totalQuantity)
                 .toString()
-                .toBrazilianNumber(3, true),
+                .toBRL(3, true),
           ),
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Ticket médio'.hardcoded,
           isMoney: true,
-          cellBuilder: (row) => BaseText.bodyMedium(
-            row.averageTicket.toString().toBrazilianNumber(),
-          ),
+          cellBuilder: (row) =>
+              BaseText.bodyMedium(row.averageTicket.toString().toBRL()),
           sortValueMapper: (row) => row.averageTicket,
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Share'.hardcoded,
           isPercentage: true,
           cellBuilder: (row) =>
-              BaseText.bodyMedium(row.share.toString().toBrazilianNumber()),
+              BaseText.bodyMedium(row.share.toString().toBRL()),
           sortValueMapper: (row) => row.share,
         ),
       ],

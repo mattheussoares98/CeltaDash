@@ -15,9 +15,9 @@ class DailyComparisonChartSubtitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) => BaseText.bodySmall(
     '${'Clientes'.hardcoded}: '
-    '${customers.toString().toBrazilianNumber(0)}\n'
+    '${customers.toString().toBRL(0)}\n'
     '${'Média'.hardcoded}: '
-    '${averageTicket.toString().toBrazilianNumber().addBrazilianCoin()}',
+    '${averageTicket.toString().toBRL().addBrazilianCoin()}',
     fontStyle: FontStyle.italic,
   );
 }

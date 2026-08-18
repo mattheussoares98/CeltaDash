@@ -26,7 +26,7 @@ class DailyComparisonContent extends StatelessWidget {
           children: [
             BaseText.titleLarge(
               '${'Vendas do dia'.hardcoded.toUpperCase()} '
-              '(${percentage.toString().toBrazilianNumber(0)}%)',
+              '(${percentage.toString().toBRL(0)}%)',
               textAlign: TextAlign.center,
               color: todayColor,
             ),
