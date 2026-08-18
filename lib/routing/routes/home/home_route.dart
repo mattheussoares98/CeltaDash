@@ -16,6 +16,7 @@ List<RouteBase> homeRoutes(
           homeResumeRoute([
             paymentsTypeRoute(rootNavigatorKey),
             departmentsRoute(rootNavigatorKey),
+            groupSummaryRoute(rootNavigatorKey),
           ]),
         ],
       ),

@@ -47,11 +47,6 @@ RouteBase goalHistoricRoute() => GoRoute(
   builder: (context, state) => makeGoalHistoricPage(),
 );
 
-RouteBase groupSummaryRoute() => GoRoute(
-  path: '/home/group-summary',
-  name: Routes.groupSummary.name,
-  builder: (context, state) => makeGroupSummaryPage(),
-);
 
 RouteBase moreRoute() => GoRoute(
   path: 'more',

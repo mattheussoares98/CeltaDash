@@ -1,4 +1,5 @@
 export 'departments/departments.dart';
+export 'group_summary/group_summary.dart';
 export 'home/home.dart';
 export 'login_route.dart';
 export 'payments/payments.dart';
