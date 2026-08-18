@@ -1,5 +1,6 @@
-import 'package:celta_dash/commom_widgets/commom_widgets.dart';
-import 'package:celta_dash/utils/utils.dart';
+// lib/features/home/presentation/pages/products/products_page.dart
+import 'package:celta_dash/features/home/presentation/pages/components/components.dart';
+import 'package:celta_dash/features/home/presentation/pages/products/components/components.dart';
 import 'package:flutter/material.dart';
 
 class ProductsPage extends StatelessWidget {
@@ -7,6 +8,11 @@ class ProductsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: BaseText.titleLarge('Products'.hardcoded));
+    return EnterpriseGuard(
+      preserveValue: true,
+      builder: (context, enterpriseId) =>
+          ProductsContent(enterpriseId: enterpriseId),
+    );
   }
 }
+
