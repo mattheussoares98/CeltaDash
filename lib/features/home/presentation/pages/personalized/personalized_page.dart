@@ -1,18 +1,123 @@
+// lib/features/home/presentation/pages/personalized/personalized_page.dart
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
+import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class PersonalizedPage extends StatelessWidget {
+import 'components/components.dart';
+
+class PersonalizedPage extends HookConsumerWidget {
   const PersonalizedPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final parametersController = useMemoized(() => ExpansibleController());
+    final enterprisesController = useMemoized(() => ExpansibleController());
+    final periodsController = useMemoized(() => ExpansibleController());
+    final categoriesController = useMemoized(() => ExpansibleController());
+
+    void collapseAll(bool collapseParameters) {
+      if (enterprisesController.isExpanded) enterprisesController.collapse();
+      if (periodsController.isExpanded) periodsController.collapse();
+      if (categoriesController.isExpanded) categoriesController.collapse();
+      if (collapseParameters && parametersController.isExpanded) {
+        parametersController.collapse();
+      }
+    }
+
+    final isGenerating = ref.watch(
+      personalizedControllerProvider.select((s) => s.isGenerating),
+    );
+    final hasValidDateRange = ref.watch(
+      personalizedControllerProvider.select((s) => s.hasValidDateRange),
+    );
+
     return BaseScaffold(
       isScrollable: false,
-      appBar: BaseAppBar(
-        title: 'Personalizado'.hardcoded,
+      usePadding: false,
+      appBar: BaseAppBar(title: 'Personalizado'.hardcoded),
+      body: Column(
+        children: [
+          IgnorePointer(
+            ignoring: isGenerating,
+            child: Card(
+              elevation: 4,
+              margin: const EdgeInsets.fromLTRB(
+                Sizes.p4,
+                Sizes.p8,
+                Sizes.p8,
+                Sizes.p8,
+              ),
+              child: ExpansionTile(
+                controller: parametersController,
+                initiallyExpanded: true,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(Sizes.p8),
+                ),
+                dense: true,
+                title: BaseText.titleMedium(
+                  'Parâmetros'.hardcoded,
+                  fontWeight: FontWeight.bold,
+                ),
+                childrenPadding: const EdgeInsets.symmetric(
+                  horizontal: Sizes.p8,
+                  vertical: Sizes.p4,
+                ),
+                children: [
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight: MediaQuery.sizeOf(context).height * 0.7,
+                    ),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          PersonalizedDateSelector(
+                            onDateRangeCompleted: () {
+                              if (!enterprisesController.isExpanded) {
+                                enterprisesController.expand();
+                              }
+                            },
+                          ),
+                          if (hasValidDateRange) ...[
+                            PersonalizedEnterprisesTile(
+                              controller: enterprisesController,
+                              onEnterpriseSelected: () {
+                                collapseAll(false);
+                                if (!periodsController.isExpanded) {
+                                  periodsController.expand();
+                                }
+                              },
+                            ),
+                            PersonalizedPeriodTile(
+                              controller: periodsController,
+                              onPeriodSelected: () {
+                                collapseAll(false);
+                                if (!categoriesController.isExpanded) {
+                                  categoriesController.expand();
+                                }
+                              },
+                            ),
+                            PersonalizedCategoryTile(
+                              controller: categoriesController,
+                            ),
+                            PersonalizedGenerateButton(
+                              onGenerateSuccess: () => collapseAll(true),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const Expanded(child: PersonalizedTable()),
+        ],
       ),
-      body: Center(child: BaseText.titleLarge('Personalizado'.hardcoded)),
     );
   }
 }

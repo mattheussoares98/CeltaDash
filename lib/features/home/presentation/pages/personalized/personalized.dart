@@ -1,1 +1,2 @@
-export './personalized_page.dart';
+export 'components/components.dart';
+export 'personalized_page.dart';
