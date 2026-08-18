@@ -72,7 +72,7 @@ class _ScrollableTableCell extends StatelessWidget {
           bottom: showBottomBorder == true
               ? BorderSide(color: dividerColor, width: 0.5)
               : BorderSide.none,
-          right: BorderSide(color: dividerColor, width: 0.07),
+          right: const BorderSide(color: Colors.white, width: 0.5),
         ),
       ),
       alignment: Alignment.center,

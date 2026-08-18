@@ -337,6 +337,14 @@ class ScrollableTable<T> extends HookConsumerWidget {
             ? columns.first.minWidth + extraPerColumn
             : 0.0;
 
+        final double totalContentHeight =
+            headerHeight +
+            (sortedItems.length * rowHeight) +
+            (hasFooter ? footerH : 0.0);
+        final bool fitsInAvailableHeight =
+            constraints.maxHeight.isFinite &&
+            totalContentHeight <= constraints.maxHeight;
+
         final bool shouldFix = fixFirstColumn && firstColWidth < available;
 
         Widget mainLayout;
@@ -365,6 +373,7 @@ class ScrollableTable<T> extends HookConsumerWidget {
             scrollablePhysics: scrollablePhysics,
             onTapRow: onTapRow,
             rowColor: getEffectiveRowColor,
+            fitsInAvailableHeight: fitsInAvailableHeight,
           );
         } else {
           mainLayout = _ScrollableLayout<T>(
@@ -386,6 +395,7 @@ class ScrollableTable<T> extends HookConsumerWidget {
             physics: physics,
             onTapRow: onTapRow,
             rowColor: getEffectiveRowColor,
+            fitsInAvailableHeight: fitsInAvailableHeight,
           );
         }
 

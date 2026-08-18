@@ -19,6 +19,7 @@ class _ScrollableLayout<T> extends StatelessWidget {
   final ScrollPhysics? physics;
   final void Function(T item)? onTapRow;
   final Color? Function(T item)? rowColor;
+  final bool fitsInAvailableHeight;
 
   const _ScrollableLayout({
     required this.columns,
@@ -37,6 +38,7 @@ class _ScrollableLayout<T> extends StatelessWidget {
     required this.hasFooter,
     required this.onTapRow,
     required this.rowColor,
+    required this.fitsInAvailableHeight,
     this.horizontalScrollController,
     this.physics,
   });
@@ -45,7 +47,8 @@ class _ScrollableLayout<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final double totalWidth = totalMinWidth + (extraPerColumn * columns.length);
     final theme = context.theme;
-    final Color headerBg = headerBackgroundColor ?? theme.cardColor;
+    final Color headerBg =
+        headerBackgroundColor ?? theme.disabledColor.withAlpha(30);
 
     final baseCardColor = rowBackgroundColor ?? theme.cardColor;
     final isDark = theme.brightness == Brightness.dark;
@@ -54,6 +57,41 @@ class _ScrollableLayout<T> extends StatelessWidget {
         ? Color.alphaBlend(const Color(0x0CFFFFFF), baseCardColor)
         : Color.alphaBlend(const Color(0x0A000000), baseCardColor);
 
+    Widget buildList() {
+      final list = ListView.builder(
+        physics: physics,
+        padding: EdgeInsets.zero,
+        itemCount: sortedItems.length,
+        itemExtent: rowHeight,
+        itemBuilder: (_, index) {
+          final item = sortedItems[index];
+          final rowBg = _resolveRowBackgroundColor<T>(
+            index: index,
+            rowColor: rowColor,
+            item: item,
+            evenRowBg: evenRowBg,
+            oddRowBg: oddRowBg,
+          );
+          return _ScrollableRow<T>(
+            item: item,
+            columns: columns,
+            rowHeight: rowHeight,
+            backgroundColor: rowBg,
+            extraPerColumn: extraPerColumn,
+            onTapRow: onTapRow,
+          );
+        },
+      );
+
+      if (fitsInAvailableHeight) {
+        return SizedBox(
+          height: sortedItems.length * rowHeight,
+          child: list,
+        );
+      }
+      return Expanded(child: list);
+    }
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       controller: horizontalScrollController,
@@ -61,6 +99,9 @@ class _ScrollableLayout<T> extends StatelessWidget {
       child: SizedBox(
         width: totalWidth,
         child: Column(
+          mainAxisSize: fitsInAvailableHeight
+              ? MainAxisSize.min
+              : MainAxisSize.max,
           children: [
             Row(
               children: [
@@ -76,32 +117,7 @@ class _ScrollableLayout<T> extends StatelessWidget {
                   ),
               ],
             ),
-            Expanded(
-              child: ListView.builder(
-                physics: physics,
-                padding: EdgeInsets.zero,
-                itemCount: sortedItems.length,
-                itemExtent: rowHeight,
-                itemBuilder: (_, index) {
-                  final item = sortedItems[index];
-                  final rowBg = _resolveRowBackgroundColor<T>(
-                    index: index,
-                    rowColor: rowColor,
-                    item: item,
-                    evenRowBg: evenRowBg,
-                    oddRowBg: oddRowBg,
-                  );
-                  return _ScrollableRow<T>(
-                    item: item,
-                    columns: columns,
-                    rowHeight: rowHeight,
-                    backgroundColor: rowBg,
-                    extraPerColumn: extraPerColumn,
-                    onTapRow: onTapRow,
-                  );
-                },
-              ),
-            ),
+            buildList(),
             if (hasFooter)
               SizedBox(
                 height: footerHeight,

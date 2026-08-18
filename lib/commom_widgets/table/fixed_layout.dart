@@ -24,6 +24,7 @@ class _FixedLayout<T> extends StatelessWidget {
   final ScrollPhysics? scrollablePhysics;
   final void Function(T item)? onTapRow;
   final Color? Function(T item)? rowColor;
+  final bool fitsInAvailableHeight;
 
   const _FixedLayout({
     required this.columns,
@@ -48,6 +49,7 @@ class _FixedLayout<T> extends StatelessWidget {
     required this.scrollablePhysics,
     required this.onTapRow,
     required this.rowColor,
+    required this.fitsInAvailableHeight,
     this.horizontalScrollController,
   });
 
@@ -56,7 +58,8 @@ class _FixedLayout<T> extends StatelessWidget {
     final firstCol = columns.first;
     final double firstColWidth = firstCol.minWidth + extraPerColumn;
     final theme = context.theme;
-    final Color headerBg = headerBackgroundColor ?? theme.cardColor;
+    final Color headerBg =
+        headerBackgroundColor ?? theme.disabledColor.withAlpha(30);
     final double scrollableWidth = scrollableColumns.fold(
       0.0,
       (sum, col) => sum + col.minWidth + extraPerColumn,
@@ -76,6 +79,9 @@ class _FixedLayout<T> extends StatelessWidget {
         SizedBox(
           width: firstColWidth,
           child: Column(
+            mainAxisSize: fitsInAvailableHeight
+                ? MainAxisSize.min
+                : MainAxisSize.max,
             children: [
               _ScrollableTableCell(
                 width: firstColWidth,
@@ -90,8 +96,8 @@ class _FixedLayout<T> extends StatelessWidget {
                   onTap: () => onHeaderTap(0),
                 ),
               ),
-              Expanded(
-                child: ScrollConfiguration(
+              () {
+                final list = ScrollConfiguration(
                   behavior: ScrollConfiguration.of(
                     context,
                   ).copyWith(scrollbars: false),
@@ -144,8 +150,16 @@ class _FixedLayout<T> extends StatelessWidget {
                       },
                     ),
                   ),
-                ),
-              ),
+                );
+
+                if (fitsInAvailableHeight) {
+                  return SizedBox(
+                    height: sortedItems.length * rowHeight,
+                    child: list,
+                  );
+                }
+                return Expanded(child: list);
+              }(),
               if (hasFooter)
                 _ScrollableTableCell(
                   showTopBorder: true,
@@ -169,6 +183,9 @@ class _FixedLayout<T> extends StatelessWidget {
             child: SizedBox(
               width: scrollableWidth,
               child: Column(
+                mainAxisSize: fitsInAvailableHeight
+                    ? MainAxisSize.min
+                    : MainAxisSize.max,
                 children: [
                   SizedBox(
                     height: headerHeight,
@@ -188,8 +205,8 @@ class _FixedLayout<T> extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Expanded(
-                    child: NotificationListener<ScrollNotification>(
+                  () {
+                    final list = NotificationListener<ScrollNotification>(
                       onNotification: (notification) {
                         if (notification is ScrollStartNotification) {
                           onScrollNotification(
@@ -236,8 +253,16 @@ class _FixedLayout<T> extends StatelessWidget {
                           );
                         },
                       ),
-                    ),
-                  ),
+                    );
+
+                    if (fitsInAvailableHeight) {
+                      return SizedBox(
+                        height: sortedItems.length * rowHeight,
+                        child: list,
+                      );
+                    }
+                    return Expanded(child: list);
+                  }(),
                   if (hasFooter)
                     SizedBox(
                       height: footerHeight,
