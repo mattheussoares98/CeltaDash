@@ -83,7 +83,7 @@ void main() {
     await tester.pumpAndSettle();
 
     verify(() => repository.saveAppMode(AppMode.financialTitles)).called(1);
-    expect(find.text('Financial'), findsOneWidget);
+    expect(find.text('Financeiro'), findsOneWidget);
   });
 
   testWidgets('uses the horizontal control layout in landscape', (

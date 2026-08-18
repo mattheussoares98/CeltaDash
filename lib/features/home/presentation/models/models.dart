@@ -5,3 +5,5 @@ export 'home_state.dart';
 export 'monthly_goal_comparison_state.dart';
 export 'monthly_analysis_day_state.dart';
 export 'monthly_analysis_state.dart';
+export 'sales_period.dart';
+export 'sales_statistics_row_state.dart';
