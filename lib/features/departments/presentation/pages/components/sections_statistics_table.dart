@@ -87,7 +87,7 @@ class SectionsStatisticsTable extends StatelessWidget {
       isLoading: isLoading,
       initialSortColumnIndex: 3,
       initialSortAscending: false,
-      highlightBestAndWorst: true,
+      highlightColumnIndex: 3,
       columns: [
         ScrollableTableColumnSpec(
           headerTitle: 'Seções'.hardcoded,

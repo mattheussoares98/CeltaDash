@@ -2,9 +2,14 @@
 part of '../sales_content.dart';
 
 class _HourlySalesTable extends StatelessWidget {
-  const _HourlySalesTable({required this.statistics, this.isLoading = false});
+  const _HourlySalesTable({
+    required this.statistics,
+    required this.refreshProvider,
+    this.isLoading = false,
+  });
 
   final List<SaleStatisticsEntity> statistics;
+  final ProviderBase<AsyncValue<dynamic>>? refreshProvider;
   final bool isLoading;
 
   @override
@@ -47,8 +52,8 @@ class _HourlySalesTable extends StatelessWidget {
       items: rows,
       fixFirstColumn: true,
       isLoading: isLoading,
-      highlightBestAndWorst: true,
-      initialSortColumnIndex: 1,
+      refreshProvider: refreshProvider,
+      highlightColumnIndex: 1,
       columns: [
         ScrollableTableColumnSpec(
           headerTitle: 'Hora'.hardcoded,

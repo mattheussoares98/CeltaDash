@@ -50,7 +50,11 @@ void main() {
         ],
         child: const MaterialApp(
           home: Scaffold(
-            appBar: HomeAppBar(isLandscape: false),
+            appBar: HomeAppBar(
+              isLandscape: false,
+              showToggleAppMode: true,
+              showEnterpriseManagement: true,
+            ),
             body: SizedBox.shrink(),
           ),
         ),

@@ -63,7 +63,7 @@ class PaymentsStatisticsTable extends StatelessWidget {
       isLoading: isLoading,
       initialSortColumnIndex: 1,
       initialSortAscending: false,
-      highlightBestAndWorst: true,
+      highlightColumnIndex: 1,
       rowHeight: Sizes.p64,
       columns: [
         ScrollableTableColumnSpec(

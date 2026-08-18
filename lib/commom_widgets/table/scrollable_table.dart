@@ -34,7 +34,7 @@ class ScrollableTable<T> extends HookConsumerWidget {
   final bool isLoading;
   final int? initialSortColumnIndex;
   final bool initialSortAscending;
-  final bool highlightBestAndWorst;
+  final int? highlightColumnIndex;
 
   const ScrollableTable({
     super.key,
@@ -52,7 +52,7 @@ class ScrollableTable<T> extends HookConsumerWidget {
     this.isLoading = false,
     this.initialSortColumnIndex,
     this.initialSortAscending = true,
-    this.highlightBestAndWorst = false,
+    this.highlightColumnIndex,
   });
 
   static const double footerH = 40;
@@ -129,20 +129,19 @@ class ScrollableTable<T> extends HookConsumerWidget {
     }, [items, columns, sortColumnIndex.value, sortAscending.value]);
 
     final (bestRow, worstRow) = useMemoized(() {
-      if (!highlightBestAndWorst || sortedItems.length <= 1) {
+      if (highlightColumnIndex == null || sortedItems.length <= 1) {
         return (null, null);
       }
 
-      final activeColIndex = sortColumnIndex.value ?? initialSortColumnIndex;
-      if (activeColIndex == null || activeColIndex >= columns.length) {
+      if (highlightColumnIndex! < 0 || highlightColumnIndex! >= columns.length) {
         return (null, null);
       }
 
-      final mapper = columns[activeColIndex].sortValueMapper;
+      final mapper = columns[highlightColumnIndex!].sortValueMapper;
       if (mapper == null) return (null, null);
 
-      // When sortedItems is already sorted by activeColIndex, O(1) instant lookup:
-      if (sortColumnIndex.value == activeColIndex) {
+      // When sortedItems is already sorted by highlightColumnIndex, O(1) instant lookup:
+      if (sortColumnIndex.value == highlightColumnIndex) {
         final first = sortedItems.first;
         final last = sortedItems.last;
         final firstVal = mapper(first);
@@ -178,17 +177,16 @@ class ScrollableTable<T> extends HookConsumerWidget {
     }, [
       sortedItems,
       columns,
-      highlightBestAndWorst,
+      highlightColumnIndex,
       sortColumnIndex.value,
       sortAscending.value,
-      initialSortColumnIndex,
     ]);
 
     Color? getEffectiveRowColor(T item) {
       final custom = rowColor?.call(item);
       if (custom != null) return custom;
 
-      if (highlightBestAndWorst) {
+      if (highlightColumnIndex != null) {
         if (item == bestRow) return Colors.green.withAlpha(100);
         if (item == worstRow) return Colors.red.withAlpha(100);
       }

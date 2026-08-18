@@ -5,11 +5,13 @@ class _DailySalesTable extends StatelessWidget {
   const _DailySalesTable({
     required this.statistics,
     required this.selectedDate,
+    required this.refreshProvider,
     this.isLoading = false,
   });
 
   final List<SaleStatisticsEntity> statistics;
   final DateTime selectedDate;
+  final ProviderBase<AsyncValue<dynamic>>? refreshProvider;
   final bool isLoading;
 
   @override
@@ -59,9 +61,9 @@ class _DailySalesTable extends StatelessWidget {
       items: rows,
       fixFirstColumn: true,
       isLoading: isLoading,
+      refreshProvider: refreshProvider,
       initialSortColumnIndex: 0,
-      initialSortAscending: false,
-      highlightBestAndWorst: true,
+      highlightColumnIndex: 1,
       columns: [
         ScrollableTableColumnSpec(
           headerTitle: 'Dia'.hardcoded,

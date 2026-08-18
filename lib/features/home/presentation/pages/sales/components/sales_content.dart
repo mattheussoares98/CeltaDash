@@ -6,6 +6,7 @@ import 'package:celta_dash/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_riverpod/misc.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
@@ -61,20 +62,24 @@ class SalesContent extends HookConsumerWidget {
                   return switch (selectedPeriod.value) {
                     SalesPeriod.hourly => _HourlySalesTable(
                       statistics: statistics,
+                      refreshProvider: provider,
                       isLoading: statisticsAsync.isLoading,
                     ),
                     SalesPeriod.daily => _DailySalesTable(
                       statistics: statistics,
                       selectedDate: selectedDate,
+                      refreshProvider: provider,
                       isLoading: statisticsAsync.isLoading,
                     ),
                     SalesPeriod.monthly => _MonthlySalesTable(
                       statistics: statistics,
                       selectedDate: selectedDate,
+                      refreshProvider: provider,
                       isLoading: statisticsAsync.isLoading,
                     ),
                     SalesPeriod.yearly => _YearlySalesTable(
                       statistics: statistics,
+                      refreshProvider: provider,
                       isLoading: statisticsAsync.isLoading,
                     ),
                   };

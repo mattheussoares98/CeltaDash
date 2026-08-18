@@ -66,7 +66,7 @@ class GroupSummaryDetailsTable extends StatelessWidget {
       isLoading: isLoading,
       initialSortColumnIndex: 1,
       initialSortAscending: false,
-      highlightBestAndWorst: true,
+      highlightColumnIndex: 1,
       columns: [
         ScrollableTableColumnSpec(
           headerTitle: 'Empresa'.hardcoded,

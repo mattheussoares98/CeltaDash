@@ -2,9 +2,14 @@
 part of '../sales_content.dart';
 
 class _YearlySalesTable extends StatelessWidget {
-  const _YearlySalesTable({required this.statistics, this.isLoading = false});
+  const _YearlySalesTable({
+    required this.statistics,
+    required this.refreshProvider,
+    this.isLoading = false,
+  });
 
   final List<SaleStatisticsEntity> statistics;
+  final ProviderBase<AsyncValue<dynamic>>? refreshProvider;
   final bool isLoading;
 
   @override
@@ -46,9 +51,9 @@ class _YearlySalesTable extends StatelessWidget {
       items: rows,
       fixFirstColumn: true,
       isLoading: isLoading,
-      initialSortColumnIndex: 1,
-      initialSortAscending: false,
-      highlightBestAndWorst: true,
+      refreshProvider: refreshProvider,
+      initialSortColumnIndex: 0,
+      highlightColumnIndex: 1,
       columns: [
         ScrollableTableColumnSpec(
           headerTitle: 'Ano'.hardcoded,

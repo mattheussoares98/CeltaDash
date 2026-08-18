@@ -66,7 +66,7 @@ class DepartmentsStatisticsTable extends StatelessWidget {
       isLoading: isLoading,
       initialSortColumnIndex: 3,
       initialSortAscending: false,
-      highlightBestAndWorst: true,
+      highlightColumnIndex: 3,
       rowHeight: Sizes.p64,
       columns: [
         ScrollableTableColumnSpec(

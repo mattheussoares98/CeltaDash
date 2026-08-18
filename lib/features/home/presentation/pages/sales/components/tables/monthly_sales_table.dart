@@ -5,11 +5,13 @@ class _MonthlySalesTable extends StatelessWidget {
   const _MonthlySalesTable({
     required this.statistics,
     required this.selectedDate,
+    required this.refreshProvider,
     this.isLoading = false,
   });
 
   final List<SaleStatisticsEntity> statistics;
   final DateTime selectedDate;
+  final ProviderBase<AsyncValue<dynamic>>? refreshProvider;
   final bool isLoading;
 
   @override
@@ -19,13 +21,15 @@ class _MonthlySalesTable extends StatelessWidget {
       (total, s) => total + (s.LiquidValue?.toDouble() ?? 0),
     );
 
+    statistics.sort((a, b) => (a.Month ?? 0).compareTo(b.Month ?? 0));
+
     final grouped = groupBy(
       statistics,
       (SaleStatisticsEntity s) => s.Month ?? 0,
     );
-    final sortedKeys = grouped.keys.toList()..sort();
+    final keys = grouped.keys.toList();
 
-    final rows = sortedKeys.map((month) {
+    final rows = keys.map((month) {
       final group = grouped[month]!;
       final sales = group.fold<double>(
         0,
@@ -59,9 +63,8 @@ class _MonthlySalesTable extends StatelessWidget {
       items: rows,
       fixFirstColumn: true,
       isLoading: isLoading,
-      initialSortColumnIndex: 1,
-      initialSortAscending: false,
-      highlightBestAndWorst: true,
+      refreshProvider: refreshProvider,
+      highlightColumnIndex: 1,
       columns: [
         ScrollableTableColumnSpec(
           headerTitle: 'Mês'.hardcoded,
