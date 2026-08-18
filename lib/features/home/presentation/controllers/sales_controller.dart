@@ -17,6 +17,7 @@ class SalesController extends _$SalesController {
   ) async {
     ref.cache(300);
     ref.watch(activeEcParamsStateControllerProvider);
+    ref.watch(resumeCurrentDateProvider);
     final selectedDate = await ref.watch(
       homeControllerProvider.selectAsync((state) => state.selectedDate),
     );
