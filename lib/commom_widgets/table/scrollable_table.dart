@@ -394,7 +394,14 @@ Color _getRowBackgroundColor<T>({
   if (customColor != null) {
     return isOdd ? customColor.withAlpha(255) : customColor.withAlpha(200);
   }
-  return isOdd
-      ? (rowBackgroundColor ?? context.theme.cardColor)
-      : context.theme.scaffoldBackgroundColor;
+
+  final baseColor = rowBackgroundColor ?? context.theme.cardColor;
+  if (!isOdd) {
+    return baseColor;
+  }
+
+  final isDark = context.theme.brightness == Brightness.dark;
+  return isDark
+      ? Color.alphaBlend(Colors.white.withAlpha(12), baseColor)
+      : Color.alphaBlend(Colors.black.withAlpha(10), baseColor);
 }

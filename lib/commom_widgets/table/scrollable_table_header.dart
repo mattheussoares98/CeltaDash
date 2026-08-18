@@ -35,10 +35,13 @@ class _ScrollableTableHeaderCell<T> extends StatelessWidget {
         children: [
           Center(
             child: BaseRichText(
+              textAlign: TextAlign.center,
               texts: [
-                BaseText.title(spec.headerTitle),
-                if (spec.isMoney == true) BaseText.caption(' R\$'),
-                if (spec.isPercentage == true) BaseText.caption(' %'),
+                BaseText.title(spec.headerTitle, textAlign: TextAlign.center),
+                if (spec.isMoney == true)
+                  BaseText.caption(' R\$', textAlign: TextAlign.center),
+                if (spec.isPercentage == true)
+                  BaseText.caption(' %', textAlign: TextAlign.center),
               ],
             ),
           ),
