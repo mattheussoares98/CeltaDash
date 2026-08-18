@@ -26,8 +26,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
   final bool showEnterpriseDropdown;
 
   @override
-  Size get preferredSize =>
-      Size.fromHeight(isLandscape ? kToolbarHeight : Sizes.p100);
+  Size get preferredSize => Size.fromHeight(isLandscape ? kToolbarHeight : 95);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
