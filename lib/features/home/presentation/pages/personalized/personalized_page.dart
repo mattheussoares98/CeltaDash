@@ -7,6 +7,12 @@ class PersonalizedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: BaseText.titleLarge('Personalized'.hardcoded));
+    return BaseScaffold(
+      isScrollable: false,
+      appBar: BaseAppBar(
+        title: 'Personalizado'.hardcoded,
+      ),
+      body: Center(child: BaseText.titleLarge('Personalizado'.hardcoded)),
+    );
   }
 }

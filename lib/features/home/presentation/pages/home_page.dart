@@ -30,6 +30,7 @@ class HomePage extends HookConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       usePadding: false,
+      drawer: const HomeDrawer(),
       appBar: showHomeAppBar
           ? HomeAppBar(
               isLandscape: isLandscape,

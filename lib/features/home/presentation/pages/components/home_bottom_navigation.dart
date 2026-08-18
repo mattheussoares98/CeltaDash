@@ -43,22 +43,6 @@ class HomeBottomNavigation extends StatelessWidget {
             cupertinoIcon: CupertinoIcons.cart,
           ),
         ),
-        BaseBottomNavigationBarItem(
-          label: 'Personalizado'.hardcoded,
-          platformIcon: const PlatformIcon(
-            key: ValueKey('home_navigation_personalized'),
-            materialIcon: Icons.assignment_ind,
-            cupertinoIcon: CupertinoIcons.doc_person,
-          ),
-        ),
-        BaseBottomNavigationBarItem(
-          label: 'Mais'.hardcoded,
-          platformIcon: const PlatformIcon(
-            key: ValueKey('home_navigation_more'),
-            materialIcon: Icons.grid_view_rounded,
-            cupertinoIcon: CupertinoIcons.square_grid_2x2_fill,
-          ),
-        ),
       ],
     );
   }

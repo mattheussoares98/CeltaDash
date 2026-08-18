@@ -36,6 +36,7 @@ GoRouter goRouter(Ref ref) {
         compareMonthsRoute(),
         enterprisesManagerRoute(),
         goalHistoricRoute(),
+        homePersonalizedRoute(),
         notCanceledSalesRoute(),
         operatorsRoute(),
         sellersRoute(),

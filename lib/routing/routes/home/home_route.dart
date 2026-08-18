@@ -22,8 +22,6 @@ List<RouteBase> homeRoutes(
       ),
       StatefulShellBranch(routes: [homeSalesRoute()]),
       StatefulShellBranch(routes: [homeProductsRoute()]),
-      StatefulShellBranch(routes: [homePersonalizedRoute()]),
-      StatefulShellBranch(routes: [homeMoreRoute()]),
     ],
   ),
   ...secondaryRoutes,

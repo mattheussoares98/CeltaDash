@@ -11,7 +11,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
   const HomeAppBar({
     required this.isLandscape,
     this.reloadButton,
-    this.showLeading = false,
+    this.showLeading = true,
     this.showToggleAppMode = false,
     this.showEnterpriseManagement = false,
     this.showEnterpriseDropdown = true,
@@ -58,6 +58,18 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
             ),
           )
         : null;
+    final drawerButton = showLeading
+        ? Builder(
+            builder: (context) => BaseIconButton(
+              key: const ValueKey('home_drawer_button'),
+              platformIcon: const PlatformIcon(
+                materialIcon: Icons.menu,
+                cupertinoIcon: CupertinoIcons.bars,
+              ),
+              onPressed: Scaffold.of(context).openDrawer,
+            ),
+          )
+        : null;
 
     final controls = AsyncValueWidget(
       value: homeAsync,
@@ -67,6 +79,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
           return Row(
             mainAxisAlignment: .spaceEvenly,
             children: [
+              ?drawerButton,
               if (enterpriseSelector != null)
                 Expanded(flex: 2, child: enterpriseSelector),
               dateSelector,
@@ -83,15 +96,20 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
           children: [
             Row(
               children: [
+                ?drawerButton,
                 if (enterpriseSelector != null)
                   Expanded(child: enterpriseSelector),
-                ?selectEnterprise,
               ],
             ),
             gapH4,
             Row(
               mainAxisAlignment: .spaceBetween,
-              children: [dateSelector, ?modeToggle, ?reloadButton],
+              children: [
+                dateSelector,
+                ?modeToggle,
+                ?selectEnterprise,
+                ?reloadButton,
+              ],
             ),
           ],
         );
@@ -99,7 +117,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
     );
 
     return BaseAppBar(
-      showLeading: showLeading,
+      showLeading: false,
       titleWidget: controls,
       actionsPadding: EdgeInsets.symmetric(
         vertical: isLandscape ? Sizes.p8 : Sizes.p24,

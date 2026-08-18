@@ -43,6 +43,7 @@ class BaseListTile extends StatelessWidget {
         color: Colors.transparent,
         child: ListTile(
           leading: leading,
+          minLeadingWidth: Sizes.p40,
           title: title,
           subtitle: subtitle,
           trailing: trailing,
