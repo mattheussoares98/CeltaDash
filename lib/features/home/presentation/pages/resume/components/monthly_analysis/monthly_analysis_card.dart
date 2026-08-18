@@ -5,28 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class MonthlyAnalysisCard extends ConsumerWidget {
-  const MonthlyAnalysisCard({super.key});
+  const MonthlyAnalysisCard({super.key, required this.enterpriseId});
+
+  final int enterpriseId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final enterpriseId = ref.watch(
-      homeControllerProvider.select((s) => s.value?.selectedEnterpriseId),
-    );
-    if (enterpriseId == null) {
-      //Shouldn't happen because it is being treated on ResumePage file
-      return const SizedBox.shrink();
-    }
-
     final provider = monthlyAnalysisControllerProvider(enterpriseId);
     final analysisAsync = ref.watch(provider);
-    final analysis = analysisAsync.value;
-    if (analysis != null) {
-      return analysis.hasAnalysis
-          ? MonthlyAnalysisContent(analysis: analysis)
-          : const SizedBox.shrink();
-    }
+
     return AsyncValueWidget(
       value: analysisAsync,
+      preserveValue: true,
       tryAgain: () => ref.invalidate(provider),
       data: (analysis) => analysis.hasAnalysis
           ? MonthlyAnalysisContent(analysis: analysis)

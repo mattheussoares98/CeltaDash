@@ -5,17 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class DailyComparisonCard extends ConsumerWidget {
-  const DailyComparisonCard({super.key});
+  const DailyComparisonCard({super.key, required this.enterpriseId});
+
+  final int enterpriseId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final enterpriseId = ref.watch(
-      homeControllerProvider.select((s) => s.value?.selectedEnterpriseId),
-    );
-    if (enterpriseId == null) {
-      //Shouldn't happen because it is being treated on ResumePage file
-      return const SizedBox.shrink();
-    }
     final provider = dailyComparisonControllerProvider(enterpriseId);
     final comparisonAsync = ref.watch(provider);
 

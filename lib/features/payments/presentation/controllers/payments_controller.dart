@@ -13,22 +13,14 @@ part 'payments_controller.g.dart';
 class PaymentsController extends _$PaymentsController {
   @override
   Future<List<SaleStatisticsEntity>> build(
+    int enterpriseId,
     PaymentsPeriod selectedPeriod,
   ) async {
     ref.cache(300);
     ref.watch(activeEcParamsStateControllerProvider);
-    final homeSelection = await ref.watch(
-      homeControllerProvider.selectAsync(
-        (state) => (
-          enterpriseId: state.selectedEnterpriseId,
-          selectedDate: state.selectedDate,
-        ),
-      ),
+    final selectedDate = await ref.watch(
+      homeControllerProvider.selectAsync((state) => state.selectedDate),
     );
-    final enterpriseId = homeSelection.enterpriseId;
-    if (enterpriseId == null) {
-      throw Exception('Nenhuma empresa selecionada.');
-    }
 
     final statisticsController = ref.watch(
       saleStatisticsControllerProvider(
@@ -39,7 +31,8 @@ class PaymentsController extends _$PaymentsController {
     final statisticsState = await statisticsController.loadStatistics(
       params: _buildParams(
         enterpriseId: enterpriseId,
-        selectedDate: homeSelection.selectedDate,
+        selectedDate: selectedDate,
+        selectedPeriod: selectedPeriod,
       ),
       forceRefresh: true,
     );
@@ -57,6 +50,7 @@ class PaymentsController extends _$PaymentsController {
   GetSaleStatisticsParams _buildParams({
     required int enterpriseId,
     required DateTime selectedDate,
+    required PaymentsPeriod selectedPeriod,
   }) {
     final monthEnd = DateTime(selectedDate.year, selectedDate.month + 1, 0);
     final startDate = DateTime(

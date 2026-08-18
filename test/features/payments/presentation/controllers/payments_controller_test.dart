@@ -71,7 +71,7 @@ void main() {
     ).thenAnswer((_) async => [statistic]);
 
     final result = await container.read(
-      paymentsControllerProvider(PaymentsPeriod.daily).future,
+      paymentsControllerProvider(enterpriseId, PaymentsPeriod.daily).future,
     );
 
     expect(result, [statistic]);
@@ -87,7 +87,7 @@ void main() {
     ).thenAnswer((_) async => [statistic]);
 
     final result = await container.read(
-      paymentsControllerProvider(PaymentsPeriod.monthly).future,
+      paymentsControllerProvider(enterpriseId, PaymentsPeriod.monthly).future,
     );
 
     expect(result, [statistic]);
@@ -101,7 +101,10 @@ void main() {
     when(
       () => repository.getSaleStatistics(params: params, ecParams: ecParams),
     ).thenAnswer((_) async => [statistic]);
-    final provider = paymentsControllerProvider(PaymentsPeriod.daily);
+    final provider = paymentsControllerProvider(
+      enterpriseId,
+      PaymentsPeriod.daily,
+    );
     await container.read(provider.future);
 
     container.invalidate(provider);
@@ -119,7 +122,10 @@ void main() {
     when(
       () => repository.getSaleStatistics(params: params, ecParams: ecParams),
     ).thenThrow(exception);
-    final provider = paymentsControllerProvider(PaymentsPeriod.daily);
+    final provider = paymentsControllerProvider(
+      enterpriseId,
+      PaymentsPeriod.daily,
+    );
 
     await expectLater(container.read(provider.future), throwsA(exception));
 

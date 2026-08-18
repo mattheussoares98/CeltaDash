@@ -5,30 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class GroupOfStoresCard extends ConsumerWidget {
-  const GroupOfStoresCard({super.key});
+  const GroupOfStoresCard({super.key, required this.enterpriseId});
+
+  final int enterpriseId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final enterpriseId = ref.watch(
-      homeControllerProvider.select(
-        (state) => state.value?.selectedEnterpriseId,
-      ),
-    );
-    if (enterpriseId == null) {
-      //Shouldn't happen because it is being treated on ResumePage file
-      return const SizedBox.shrink();
-    }
-
     final provider = groupOfStoresControllerProvider(enterpriseId);
     final storesAsync = ref.watch(provider);
-    final stores = storesAsync.value;
-    if (stores != null) {
-      return stores.hasMultipleEnterprises
-          ? GroupOfStoresContent(stores: stores)
-          : const SizedBox.shrink();
-    }
+
     return AsyncValueWidget(
       value: storesAsync,
+      preserveValue: true,
       tryAgain: () => ref.invalidate(provider),
       data: (stores) => stores.hasMultipleEnterprises
           ? GroupOfStoresContent(stores: stores)

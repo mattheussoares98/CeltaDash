@@ -24,10 +24,10 @@ class ResumeContent extends HookConsumerWidget {
         (provider: provider, value: ref.watch(provider)),
     ];
     final items = <Widget>[
-      const DailyComparisonCard(),
-      const MonthlyGoalComparisonCard(),
-      const MonthlyAnalysisCard(),
-      const GroupOfStoresCard(),
+      DailyComparisonCard(enterpriseId: enterpriseId),
+      MonthlyGoalComparisonCard(enterpriseId: enterpriseId),
+      MonthlyAnalysisCard(enterpriseId: enterpriseId),
+      GroupOfStoresCard(enterpriseId: enterpriseId),
     ];
     Widget content = ResponsiveListFlow(
       maxItemWidth: Breakpoint.tablet,
