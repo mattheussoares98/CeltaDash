@@ -32,16 +32,14 @@ class _PaymentsContent extends HookConsumerWidget {
       enterpriseId,
       selectedPeriod.value,
     );
-    final statisticsAsync = ref.watch(provider);
 
-    final reloadButton = ReloadIconButton(refreshProviders: [provider]);
     final isLandscape =
         MediaQuery.orientationOf(context) == Orientation.landscape;
 
     return BaseScaffold(
       appBar: HomeAppBar(
         isLandscape: isLandscape,
-        reloadButton: reloadButton,
+        reloadButton: ReloadIconButton(refreshProviders: [provider]),
         showLeading: true,
       ),
       isScrollable: false,
@@ -74,31 +72,37 @@ class _PaymentsContent extends HookConsumerWidget {
                     ],
                   ),
                   Expanded(
-                    child: AsyncValueWidget(
-                      value: statisticsAsync,
-                      preserveValue: true,
-                      tryAgain: () => ref.invalidate(provider),
-                      data: (statistics) => statistics.isEmpty
-                          ? Center(
-                              child: BaseText(
-                                'Nenhuma venda encontrada'.hardcoded,
-                              ),
-                            )
-                          : TabBarView(
-                              physics: const NeverScrollableScrollPhysics(),
-                              children: [
-                                PaymentsStatisticsTable(
-                                  saleStatistics: statistics,
-                                  filterByFinalizations: false,
-                                  isLoading: statisticsAsync.isLoading,
+                    child: Consumer(
+                      builder: (_, ref, _) {
+                        final statisticsAsync = ref.watch(provider);
+
+                        return AsyncValueWidget(
+                          value: statisticsAsync,
+                          preserveValue: true,
+                          tryAgain: () => ref.invalidate(provider),
+                          data: (statistics) => statistics.isEmpty
+                              ? Center(
+                                  child: BaseText(
+                                    'Nenhuma venda encontrada'.hardcoded,
+                                  ),
+                                )
+                              : TabBarView(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  children: [
+                                    PaymentsStatisticsTable(
+                                      saleStatistics: statistics,
+                                      filterByFinalizations: false,
+                                      isLoading: statisticsAsync.isLoading,
+                                    ),
+                                    PaymentsStatisticsTable(
+                                      saleStatistics: statistics,
+                                      filterByFinalizations: true,
+                                      isLoading: statisticsAsync.isLoading,
+                                    ),
+                                  ],
                                 ),
-                                PaymentsStatisticsTable(
-                                  saleStatistics: statistics,
-                                  filterByFinalizations: true,
-                                  isLoading: statisticsAsync.isLoading,
-                                ),
-                              ],
-                            ),
+                        );
+                      },
                     ),
                   ),
                 ],
