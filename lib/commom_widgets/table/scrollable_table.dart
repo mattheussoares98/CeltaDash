@@ -3,8 +3,9 @@ import 'package:celta_dash/utils/constants/constants.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/misc.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 part 'fixed_layout.dart';
 part 'scrollable_hand_animation.dart';
@@ -17,7 +18,7 @@ part 'scrollable_table_header.dart';
 
 final Set<String> _playedRouteNames = {};
 
-class ScrollableTable<T> extends StatefulWidget {
+class ScrollableTable<T> extends HookConsumerWidget {
   final List<T> items;
   final List<ScrollableTableColumnSpec<T>> columns;
   final bool fixFirstColumn;
@@ -47,391 +48,319 @@ class ScrollableTable<T> extends StatefulWidget {
     this.isLoading = false,
   });
 
-  @override
-  State<ScrollableTable<T>> createState() => _ScrollableTableState<T>();
-}
-
-class _ScrollableTableState<T> extends State<ScrollableTable<T>>
-    with SingleTickerProviderStateMixin {
-  final _fixedVerticalController = ScrollController();
-  final _scrollableVerticalController = ScrollController();
-  final _horizontalScrollController = ScrollController();
-
-  late final AnimationController _handAnimationController;
-  late final Animation<double> _handPositionAnimation;
-  late final Animation<double> _handOpacityAnimation;
-  bool _showHand = false;
-  bool _hasPlayedAnimation = false;
-
-  bool _isSyncing = false;
-  ScrollController? _activeScrollController;
-
-  int? _sortColumnIndex;
-  bool _sortAscending = true;
-
-  late List<T> _sortedItems;
-
-  late List<ScrollableTableColumnSpec<T>> _scrollableColumns;
-
-  bool get _hasFooter =>
-      widget.columns.any((col) => col.footerCellBuilder != null);
-
   static const double footerH = 40;
 
   @override
-  void initState() {
-    super.initState();
+  Widget build(BuildContext context, WidgetRef ref) {
+    if (columns.isEmpty) return const SizedBox.shrink();
 
-    _fixedVerticalController.addListener(_syncFixedToScrollable);
-    _scrollableVerticalController.addListener(_syncScrollableToFixed);
+    final fixedVerticalController = useScrollController();
+    final scrollableVerticalController = useScrollController();
+    final horizontalScrollController = useScrollController();
 
-    _rebuildCache();
-
-    _handAnimationController = AnimationController(
-      vsync: this,
+    final handAnimationController = useAnimationController(
       duration: const Duration(milliseconds: 3500),
     );
 
-    _handOpacityAnimation = TweenSequence<double>([
-      TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.0), weight: 10),
-      TweenSequenceItem(tween: ConstantTween(1.0), weight: 80),
-      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 10),
-    ]).animate(_handAnimationController);
+    final handOpacityAnimation = useMemoized(
+      () => TweenSequence<double>([
+        TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.0), weight: 10),
+        TweenSequenceItem(tween: ConstantTween(1.0), weight: 80),
+        TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 10),
+      ]).animate(handAnimationController),
+      [handAnimationController],
+    );
 
-    _handPositionAnimation = TweenSequence<double>([
-      TweenSequenceItem(
-        tween: Tween(
-          begin: 0.8,
-          end: 0.2,
-        ).chain(CurveTween(curve: Curves.easeInOut)),
-        weight: 35,
-      ),
-      TweenSequenceItem(tween: ConstantTween(0.2), weight: 10),
-      TweenSequenceItem(
-        tween: Tween(
-          begin: 0.2,
-          end: 0.8,
-        ).chain(CurveTween(curve: Curves.easeInOut)),
-        weight: 35,
-      ),
-      TweenSequenceItem(tween: ConstantTween(0.8), weight: 20),
-    ]).animate(_handAnimationController);
-  }
+    final handPositionAnimation = useMemoized(
+      () => TweenSequence<double>([
+        TweenSequenceItem(
+          tween: Tween(
+            begin: 0.8,
+            end: 0.2,
+          ).chain(CurveTween(curve: Curves.easeInOut)),
+          weight: 35,
+        ),
+        TweenSequenceItem(tween: ConstantTween(0.2), weight: 10),
+        TweenSequenceItem(
+          tween: Tween(
+            begin: 0.2,
+            end: 0.8,
+          ).chain(CurveTween(curve: Curves.easeInOut)),
+          weight: 35,
+        ),
+        TweenSequenceItem(tween: ConstantTween(0.8), weight: 20),
+      ]).animate(handAnimationController),
+      [handAnimationController],
+    );
 
-  @override
-  void didUpdateWidget(covariant ScrollableTable<T> oldWidget) {
-    super.didUpdateWidget(oldWidget);
+    final showHand = useState(false);
+    final hasPlayedAnimation = useRef(false);
+    final isSyncing = useRef(false);
+    final activeScrollController = useState<ScrollController?>(null);
 
-    final itemsChanged = !identical(widget.items, oldWidget.items);
-    final columnsChanged = !identical(widget.columns, oldWidget.columns);
+    final sortColumnIndex = useState<int?>(null);
+    final sortAscending = useState(true);
 
-    if (itemsChanged || columnsChanged) {
-      _rebuildCache();
+    final scrollableColumns = useMemoized(
+      () => fixFirstColumn && columns.isNotEmpty ? columns.sublist(1) : columns,
+      [fixFirstColumn, columns],
+    );
+
+    final sortedItems = useMemoized(() {
+      final list = List<T>.of(items);
+      final sortCol = sortColumnIndex.value;
+      if (sortCol != null && sortCol < columns.length) {
+        final mapper = columns[sortCol].sortValueMapper;
+        if (mapper != null) {
+          list.sort((a, b) {
+            final cmp = Comparable.compare(mapper(a), mapper(b));
+            return sortAscending.value ? cmp : -cmp;
+          });
+        }
+      }
+      return list;
+    }, [items, columns, sortColumnIndex.value, sortAscending.value]);
+
+    useEffect(() {
+      void syncFixedToScrollable() {
+        if (isSyncing.value) return;
+        if (!scrollableVerticalController.hasClients) return;
+        if (activeScrollController.value != null &&
+            activeScrollController.value != fixedVerticalController) {
+          return;
+        }
+
+        final offset = fixedVerticalController.offset;
+        if (scrollableVerticalController.offset == offset) return;
+
+        isSyncing.value = true;
+        scrollableVerticalController.jumpTo(offset);
+        isSyncing.value = false;
+      }
+
+      void syncScrollableToFixed() {
+        if (isSyncing.value) return;
+        if (!fixedVerticalController.hasClients) return;
+        if (activeScrollController.value != null &&
+            activeScrollController.value != scrollableVerticalController) {
+          return;
+        }
+
+        final offset = scrollableVerticalController.offset;
+        if (fixedVerticalController.offset == offset) return;
+
+        isSyncing.value = true;
+        fixedVerticalController.jumpTo(offset);
+        isSyncing.value = false;
+      }
+
+      fixedVerticalController.addListener(syncFixedToScrollable);
+      scrollableVerticalController.addListener(syncScrollableToFixed);
+
+      return () {
+        fixedVerticalController.removeListener(syncFixedToScrollable);
+        scrollableVerticalController.removeListener(syncScrollableToFixed);
+      };
+    }, [fixedVerticalController, scrollableVerticalController]);
+
+    void handleHeaderTap(int columnIndex) {
+      if (columns[columnIndex].sortValueMapper == null) return;
+
+      if (sortColumnIndex.value == columnIndex) {
+        sortAscending.value = !sortAscending.value;
+      } else {
+        sortColumnIndex.value = columnIndex;
+        sortAscending.value = true;
+      }
     }
-  }
 
-  void _rebuildCache() {
-    _scrollableColumns = widget.fixFirstColumn && widget.columns.isNotEmpty
-        ? widget.columns.sublist(1)
-        : widget.columns;
+    void handleScrollNotification(ScrollController controller, bool isStart) {
+      if (isStart && activeScrollController.value != null) return;
+      if (!isStart && activeScrollController.value != controller) return;
 
-    _applySort();
-  }
+      activeScrollController.value = isStart ? controller : null;
+    }
 
-  void _applySort() {
-    final items = List<T>.of(widget.items);
+    bool shouldConsumeScrollNotification(ScrollController controller) {
+      final active = activeScrollController.value;
+      return active != null && active != controller;
+    }
 
-    if (_sortColumnIndex != null) {
-      final mapper = widget.columns[_sortColumnIndex!].sortValueMapper;
-      if (mapper != null) {
-        items.sort((a, b) {
-          final cmp = Comparable.compare(mapper(a), mapper(b));
-          return _sortAscending ? cmp : -cmp;
+    Future<void> playScrollHint() async {
+      if (!horizontalScrollController.hasClients) return;
+      final maxScroll = horizontalScrollController.position.maxScrollExtent;
+      if (maxScroll <= 0) return;
+
+      showHand.value = true;
+      handAnimationController.reset();
+      handAnimationController.forward();
+
+      await horizontalScrollController.animateTo(
+        maxScroll,
+        duration: const Duration(milliseconds: 1500),
+        curve: Curves.easeInOut,
+      );
+
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      await horizontalScrollController.animateTo(
+        0.0,
+        duration: const Duration(milliseconds: 1500),
+        curve: Curves.easeInOut,
+      );
+
+      showHand.value = false;
+    }
+
+    void checkAndPlayScrollHint(double totalMinWidth, double available) {
+      if (hasPlayedAnimation.value) return;
+
+      final routeName = ModalRoute.of(context)?.settings.name;
+      if (routeName != null && _playedRouteNames.contains(routeName)) {
+        hasPlayedAnimation.value = true;
+        return;
+      }
+
+      if (totalMinWidth > available) {
+        hasPlayedAnimation.value = true;
+        if (routeName != null) {
+          _playedRouteNames.add(routeName);
+        }
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          playScrollHint();
         });
       }
     }
 
-    _sortedItems = items;
-  }
+    final hasFooter = columns.any((col) => col.footerCellBuilder != null);
 
-  void _handleScrollNotification(ScrollController controller, bool isStart) {
-    if (!mounted) return;
-    if (isStart && _activeScrollController != null) return;
-    if (!isStart && _activeScrollController != controller) return;
-
-    setState(() {
-      if (isStart) {
-        _activeScrollController = controller;
-      } else {
-        _activeScrollController = null;
-      }
-    });
-  }
-
-  bool _shouldConsumeScrollNotification(ScrollController controller) {
-    final activeController = _activeScrollController;
-    return activeController != null && activeController != controller;
-  }
-
-  void _syncFixedToScrollable() {
-    if (_isSyncing) return;
-    if (!_scrollableVerticalController.hasClients) return;
-    if (_activeScrollController != null &&
-        _activeScrollController != _fixedVerticalController) {
-      return;
-    }
-
-    final offset = _fixedVerticalController.offset;
-    if (_scrollableVerticalController.offset == offset) return;
-
-    _isSyncing = true;
-    _scrollableVerticalController.jumpTo(offset);
-    _isSyncing = false;
-  }
-
-  void _syncScrollableToFixed() {
-    if (_isSyncing) return;
-    if (!_fixedVerticalController.hasClients) return;
-    if (_activeScrollController != null &&
-        _activeScrollController != _scrollableVerticalController) {
-      return;
-    }
-
-    final offset = _scrollableVerticalController.offset;
-    if (_fixedVerticalController.offset == offset) return;
-
-    _isSyncing = true;
-    _fixedVerticalController.jumpTo(offset);
-    _isSyncing = false;
-  }
-
-  @override
-  void dispose() {
-    _fixedVerticalController.removeListener(_syncFixedToScrollable);
-    _scrollableVerticalController.removeListener(_syncScrollableToFixed);
-    _fixedVerticalController.dispose();
-    _scrollableVerticalController.dispose();
-    _horizontalScrollController.dispose();
-    _handAnimationController.dispose();
-    super.dispose();
-  }
-
-  void _handleHeaderTap(int columnIndex) {
-    if (widget.columns[columnIndex].sortValueMapper == null) return;
-
-    setState(() {
-      if (_sortColumnIndex == columnIndex) {
-        _sortAscending = !_sortAscending;
-      } else {
-        _sortColumnIndex = columnIndex;
-        _sortAscending = true;
-      }
-      _applySort();
-    });
-  }
-
-  void _checkAndPlayScrollHint(double totalMinWidth, double available) {
-    if (_hasPlayedAnimation) return;
-
-    final routeName = ModalRoute.of(context)?.settings.name;
-    if (routeName != null && _playedRouteNames.contains(routeName)) {
-      _hasPlayedAnimation = true;
-      return;
-    }
-
-    if (totalMinWidth > available) {
-      _hasPlayedAnimation = true;
-      if (routeName != null) {
-        _playedRouteNames.add(routeName);
-      }
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _playScrollHint();
-      });
-    }
-  }
-
-  Future<void> _playScrollHint() async {
-    if (!mounted || !_horizontalScrollController.hasClients) return;
-    final maxScroll = _horizontalScrollController.position.maxScrollExtent;
-    if (maxScroll <= 0) return;
-
-    setState(() {
-      _showHand = true;
-    });
-
-    _handAnimationController.reset();
-    _handAnimationController.forward();
-
-    await _horizontalScrollController.animateTo(
-      maxScroll,
-      duration: const Duration(milliseconds: 1500),
-      curve: Curves.easeInOut,
-    );
-
-    if (!mounted) return;
-    await Future.delayed(const Duration(milliseconds: 500));
-    if (!mounted) return;
-
-    await _horizontalScrollController.animateTo(
-      0.0,
-      duration: const Duration(milliseconds: 1500),
-      curve: Curves.easeInOut,
-    );
-
-    if (!mounted) return;
-    setState(() {
-      _showHand = false;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (widget.columns.isEmpty) return const SizedBox.shrink();
-
-    final physics = widget.refreshProvider != null
+    final physics = refreshProvider != null
         ? const AlwaysScrollableScrollPhysics()
         : null;
 
     final fixedPhysics =
-        _activeScrollController == _scrollableVerticalController
+        activeScrollController.value == scrollableVerticalController
         ? _PassiveScrollPhysics(parent: physics)
         : physics;
 
     final scrollablePhysics =
-        _activeScrollController == _fixedVerticalController
+        activeScrollController.value == fixedVerticalController
         ? _PassiveScrollPhysics(parent: physics)
         : physics;
 
     Widget table = LayoutBuilder(
       builder: (context, constraints) {
-        final double totalMinWidth = widget.columns.fold(
+        final double totalMinWidth = columns.fold(
           0.0,
           (sum, col) => sum + col.minWidth,
         );
         final double available = constraints.maxWidth;
         final double extraPerColumn = available > totalMinWidth
-            ? (available - totalMinWidth) / widget.columns.length
+            ? (available - totalMinWidth) / columns.length
             : 0.0;
 
-        final double firstColWidth = widget.columns.isNotEmpty
-            ? widget.columns.first.minWidth + extraPerColumn
+        final double firstColWidth = columns.isNotEmpty
+            ? columns.first.minWidth + extraPerColumn
             : 0.0;
 
-        final bool shouldFix =
-            widget.fixFirstColumn && firstColWidth < available;
+        final bool shouldFix = fixFirstColumn && firstColWidth < available;
 
         Widget mainLayout;
         if (shouldFix) {
           mainLayout = _FixedLayout<T>(
-            columns: widget.columns,
-            scrollableColumns: _scrollableColumns,
-            sortedItems: _sortedItems,
+            columns: columns,
+            scrollableColumns: scrollableColumns,
+            sortedItems: sortedItems,
             extraPerColumn: extraPerColumn,
-            headerHeight: widget.headerHeight,
-            rowHeight: widget.rowHeight,
+            headerHeight: headerHeight,
+            rowHeight: rowHeight,
             footerHeight: footerH,
-            headerBackgroundColor: widget.headerBackgroundColor,
-            rowBackgroundColor: widget.rowBackgroundColor,
-            footerBackgroundColor: widget.footerBackgroundColor,
-            fixedVerticalController: _fixedVerticalController,
-            scrollableVerticalController: _scrollableVerticalController,
-            horizontalScrollController: _horizontalScrollController,
-            sortColumnIndex: _sortColumnIndex,
-            sortAscending: _sortAscending,
-            onHeaderTap: _handleHeaderTap,
-            onScrollNotification: _handleScrollNotification,
-            shouldConsumeScrollNotification: _shouldConsumeScrollNotification,
-            hasFooter: _hasFooter,
+            headerBackgroundColor: headerBackgroundColor,
+            rowBackgroundColor: rowBackgroundColor,
+            footerBackgroundColor: footerBackgroundColor,
+            fixedVerticalController: fixedVerticalController,
+            scrollableVerticalController: scrollableVerticalController,
+            horizontalScrollController: horizontalScrollController,
+            sortColumnIndex: sortColumnIndex.value,
+            sortAscending: sortAscending.value,
+            onHeaderTap: handleHeaderTap,
+            onScrollNotification: handleScrollNotification,
+            shouldConsumeScrollNotification: shouldConsumeScrollNotification,
+            hasFooter: hasFooter,
             fixedPhysics: fixedPhysics,
             scrollablePhysics: scrollablePhysics,
-            onTapRow: widget.onTapRow,
-            rowColor: widget.rowColor,
+            onTapRow: onTapRow,
+            rowColor: rowColor,
           );
         } else {
           mainLayout = _ScrollableLayout<T>(
-            columns: widget.columns,
-            sortedItems: _sortedItems,
+            columns: columns,
+            sortedItems: sortedItems,
             totalMinWidth: totalMinWidth,
             extraPerColumn: extraPerColumn,
-            headerHeight: widget.headerHeight,
-            rowHeight: widget.rowHeight,
+            headerHeight: headerHeight,
+            rowHeight: rowHeight,
             footerHeight: footerH,
-            headerBackgroundColor: widget.headerBackgroundColor,
-            rowBackgroundColor: widget.rowBackgroundColor,
-            footerBackgroundColor: widget.footerBackgroundColor,
-            horizontalScrollController: _horizontalScrollController,
-            sortColumnIndex: _sortColumnIndex,
-            sortAscending: _sortAscending,
-            onHeaderTap: _handleHeaderTap,
-            hasFooter: _hasFooter,
+            headerBackgroundColor: headerBackgroundColor,
+            rowBackgroundColor: rowBackgroundColor,
+            footerBackgroundColor: footerBackgroundColor,
+            horizontalScrollController: horizontalScrollController,
+            sortColumnIndex: sortColumnIndex.value,
+            sortAscending: sortAscending.value,
+            onHeaderTap: handleHeaderTap,
+            hasFooter: hasFooter,
             physics: physics,
-            onTapRow: widget.onTapRow,
-            rowColor: widget.rowColor,
+            onTapRow: onTapRow,
+            rowColor: rowColor,
           );
         }
 
-        _checkAndPlayScrollHint(totalMinWidth, available);
+        checkAndPlayScrollHint(totalMinWidth, available);
 
         return Stack(
           children: [
             mainLayout,
-            if (_showHand)
+            if (showHand.value)
               _ScrollableHandAnimation(
-                animation: _handAnimationController,
-                handPositionAnimation: _handPositionAnimation,
-                handOpacityAnimation: _handOpacityAnimation,
+                animation: handAnimationController,
+                handPositionAnimation: handPositionAnimation,
+                handOpacityAnimation: handOpacityAnimation,
                 available: available,
-                headerHeight: widget.headerHeight,
-                rowHeight: widget.rowHeight,
+                headerHeight: headerHeight,
+                rowHeight: rowHeight,
               ),
           ],
         );
       },
     );
 
-    if (widget.refreshProvider != null) {
-      table = Consumer(
-        builder: (context, ref, child) {
-          final asyncState = ref.watch(widget.refreshProvider!);
-          final isLoading = asyncState.isLoading || widget.isLoading;
-          return IgnorePointer(
-            ignoring: isLoading,
-            child: AnimatedOpacity(
-              duration: const Duration(milliseconds: 250),
-              curve: Curves.easeInOut,
-              opacity: isLoading ? 0.4 : 1.0,
-              child: RefreshIndicator.adaptive(
+    final isRefreshing = refreshProvider != null
+        ? (ref.watch(refreshProvider!).isLoading || isLoading)
+        : isLoading;
+
+    return IgnorePointer(
+      ignoring: isRefreshing,
+      child: AnimatedOpacity(
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeInOut,
+        opacity: isRefreshing ? 0.4 : 1.0,
+        child: refreshProvider != null
+            ? RefreshIndicator.adaptive(
                 onRefresh: () async {
-                  ref.invalidate(widget.refreshProvider!);
+                  ref.invalidate(refreshProvider!);
                   try {
-                    await ref.read((widget.refreshProvider! as dynamic).future);
+                    await ref.read((refreshProvider! as dynamic).future);
                   } catch (_) {}
                 },
-                notificationPredicate: (notification) {
-                  return notification.depth <= 2;
-                },
+                notificationPredicate: (notification) =>
+                    notification.depth <= 2,
                 backgroundColor: context.theme.colorScheme.surface,
                 strokeWidth: 2,
-                child: child!,
-              ),
-            ),
-          );
-        },
-        child: table,
-      );
-    } else {
-      table = IgnorePointer(
-        ignoring: widget.isLoading,
-        child: AnimatedOpacity(
-          duration: const Duration(milliseconds: 250),
-          curve: Curves.easeInOut,
-          opacity: widget.isLoading ? 0.4 : 1.0,
-          child: table,
-        ),
-      );
-    }
-
-    return table;
+                child: table,
+              )
+            : table,
+      ),
+    );
   }
 }
 
