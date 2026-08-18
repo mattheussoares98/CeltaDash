@@ -25,7 +25,7 @@ class _ScrollableRow<T> extends StatelessWidget {
         children: [
           for (final col in columns)
             _ScrollableTableCell(
-              width: col.minWidth + extraPerColumn,
+              width: col.effectiveMinWidth + extraPerColumn,
               height: rowHeight,
               spec: col,
               backgroundColor: backgroundColor,

@@ -31,24 +31,27 @@ class _ScrollableTableCell extends StatelessWidget {
       final defaultTextAlign = baseText.textAlign ?? TextAlign.center;
 
       if (spec.isMoney == true || spec.isPercentage == true) {
-        processedChild = BaseRichText(
-          maxLines: defaultMaxLines,
-          textAlign: defaultTextAlign,
-          texts: [
-            if (spec.isMoney == true)
-              BaseText.caption(
-                'R\$ ',
-                color: baseText.color,
-                fontWeight: baseText.fontWeight,
-              ),
-            baseText,
-            if (spec.isPercentage == true)
-              BaseText.caption(
-                ' %',
-                color: baseText.color,
-                fontWeight: baseText.fontWeight,
-              ),
-          ],
+        processedChild = FittedBox(
+          fit: BoxFit.scaleDown,
+          child: BaseRichText(
+            maxLines: defaultMaxLines,
+            textAlign: defaultTextAlign,
+            texts: [
+              if (spec.isMoney == true)
+                BaseText.caption(
+                  'R\$ ',
+                  color: baseText.color,
+                  fontWeight: baseText.fontWeight,
+                ),
+              baseText,
+              if (spec.isPercentage == true)
+                BaseText.caption(
+                  ' %',
+                  color: baseText.color,
+                  fontWeight: baseText.fontWeight,
+                ),
+            ],
+          ),
         );
       } else {
         processedChild = baseText.copyWith(

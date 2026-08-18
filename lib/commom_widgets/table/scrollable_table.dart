@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/utils/constants/constants.dart';
 import 'package:celta_dash/utils/utils.dart';
@@ -326,7 +328,7 @@ class ScrollableTable<T> extends HookConsumerWidget {
       builder: (context, constraints) {
         final double totalMinWidth = columns.fold(
           0.0,
-          (sum, col) => sum + col.minWidth,
+          (sum, col) => sum + col.effectiveMinWidth,
         );
         final double available = constraints.maxWidth;
         final double extraPerColumn = available > totalMinWidth
@@ -334,7 +336,7 @@ class ScrollableTable<T> extends HookConsumerWidget {
             : 0.0;
 
         final double firstColWidth = columns.isNotEmpty
-            ? columns.first.minWidth + extraPerColumn
+            ? columns.first.effectiveMinWidth + extraPerColumn
             : 0.0;
 
         final double totalContentHeight =

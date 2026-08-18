@@ -69,13 +69,11 @@ class PaymentsStatisticsTable extends StatelessWidget {
       columns: [
         ScrollableTableColumnSpec(
           headerTitle: 'Forma de pagamento'.hardcoded,
-          minWidth: 130,
           cellBuilder: (row) => BaseText(row.description, maxLines: 3),
           sortValueMapper: (row) => row.description,
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Vendas'.hardcoded,
-          minWidth: 120,
           isMoney: true,
           cellBuilder: (row) => BaseText.bodyMedium(
             row.totalValue.toString().toBrazilianNumber(),
@@ -90,7 +88,6 @@ class PaymentsStatisticsTable extends StatelessWidget {
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Qtd'.hardcoded,
-          minWidth: 50,
           cellBuilder: (row) => BaseText.bodyMedium(
             row.totalQuantity.toString().toBrazilianNumber(3, true),
           ),
@@ -104,7 +101,6 @@ class PaymentsStatisticsTable extends StatelessWidget {
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Ticket médio'.hardcoded,
-          minWidth: 70,
           isMoney: true,
           cellBuilder: (row) => BaseText.bodyMedium(
             row.averageTicket.toString().toBrazilianNumber(),
@@ -113,7 +109,6 @@ class PaymentsStatisticsTable extends StatelessWidget {
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Share'.hardcoded,
-          minWidth: 70,
           isPercentage: true,
           cellBuilder: (row) =>
               BaseText.bodyMedium(row.share.toString().toBrazilianNumber()),

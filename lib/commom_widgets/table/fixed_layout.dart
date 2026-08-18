@@ -56,13 +56,13 @@ class _FixedLayout<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final firstCol = columns.first;
-    final double firstColWidth = firstCol.minWidth + extraPerColumn;
+    final double firstColWidth = firstCol.effectiveMinWidth + extraPerColumn;
     final theme = context.theme;
     final Color headerBg =
         headerBackgroundColor ?? theme.disabledColor.withAlpha(30);
     final double scrollableWidth = scrollableColumns.fold(
       0.0,
-      (sum, col) => sum + col.minWidth + extraPerColumn,
+      (sum, col) => sum + col.effectiveMinWidth + extraPerColumn,
     );
 
     final baseCardColor = rowBackgroundColor ?? theme.cardColor;
@@ -195,7 +195,8 @@ class _FixedLayout<T> extends StatelessWidget {
                           _ScrollableHeaderCellWrapper<T>(
                             col: scrollableColumns[i],
                             colWidth:
-                                scrollableColumns[i].minWidth + extraPerColumn,
+                                scrollableColumns[i].effectiveMinWidth +
+                                extraPerColumn,
                             headerHeight: headerHeight,
                             headerBg: headerBg,
                             isSorted: sortColumnIndex == i + 1,
@@ -271,7 +272,7 @@ class _FixedLayout<T> extends StatelessWidget {
                           for (int i = 0; i < scrollableColumns.length; i++)
                             _ScrollableTableCell(
                               width:
-                                  scrollableColumns[i].minWidth +
+                                  scrollableColumns[i].effectiveMinWidth +
                                   extraPerColumn,
                               height: footerHeight,
                               spec: scrollableColumns[i],

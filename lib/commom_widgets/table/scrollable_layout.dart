@@ -108,7 +108,7 @@ class _ScrollableLayout<T> extends StatelessWidget {
                 for (int i = 0; i < columns.length; i++)
                   _ScrollableHeaderCellWrapper<T>(
                     col: columns[i],
-                    colWidth: columns[i].minWidth + extraPerColumn,
+                    colWidth: columns[i].effectiveMinWidth + extraPerColumn,
                     headerHeight: headerHeight,
                     headerBg: headerBg,
                     isSorted: sortColumnIndex == i,
@@ -126,7 +126,7 @@ class _ScrollableLayout<T> extends StatelessWidget {
                     for (int i = 0; i < columns.length; i++)
                       _ScrollableTableCell(
                         showTopBorder: true,
-                        width: columns[i].minWidth + extraPerColumn,
+                        width: columns[i].effectiveMinWidth + extraPerColumn,
                         height: footerHeight,
                         spec: columns[i],
                         backgroundColor: footerBackgroundColor ?? headerBg,
