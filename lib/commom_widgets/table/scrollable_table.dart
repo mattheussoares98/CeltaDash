@@ -29,6 +29,7 @@ class ScrollableTable<T> extends StatefulWidget {
   final ProviderBase<AsyncValue<dynamic>>? refreshProvider;
   final void Function(T item)? onTapRow;
   final Color? Function(T item)? rowColor;
+  final bool isLoading;
 
   const ScrollableTable({
     super.key,
@@ -43,6 +44,7 @@ class ScrollableTable<T> extends StatefulWidget {
     this.refreshProvider,
     this.onTapRow,
     this.rowColor,
+    this.isLoading = false,
   });
 
   @override
@@ -390,22 +392,42 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>>
     if (widget.refreshProvider != null) {
       table = Consumer(
         builder: (context, ref, child) {
-          return RefreshIndicator.adaptive(
-            onRefresh: () async {
-              ref.invalidate(widget.refreshProvider!);
-              try {
-                await ref.read((widget.refreshProvider! as dynamic).future);
-              } catch (_) {}
-            },
-            notificationPredicate: (notification) {
-              return notification.depth <= 2;
-            },
-            backgroundColor: context.theme.colorScheme.surface,
-            strokeWidth: 2,
-            child: child!,
+          final asyncState = ref.watch(widget.refreshProvider!);
+          final isLoading = asyncState.isLoading || widget.isLoading;
+          return IgnorePointer(
+            ignoring: isLoading,
+            child: AnimatedOpacity(
+              duration: const Duration(milliseconds: 250),
+              curve: Curves.easeInOut,
+              opacity: isLoading ? 0.4 : 1.0,
+              child: RefreshIndicator.adaptive(
+                onRefresh: () async {
+                  ref.invalidate(widget.refreshProvider!);
+                  try {
+                    await ref.read((widget.refreshProvider! as dynamic).future);
+                  } catch (_) {}
+                },
+                notificationPredicate: (notification) {
+                  return notification.depth <= 2;
+                },
+                backgroundColor: context.theme.colorScheme.surface,
+                strokeWidth: 2,
+                child: child!,
+              ),
+            ),
           );
         },
         child: table,
+      );
+    } else {
+      table = IgnorePointer(
+        ignoring: widget.isLoading,
+        child: AnimatedOpacity(
+          duration: const Duration(milliseconds: 250),
+          curve: Curves.easeInOut,
+          opacity: widget.isLoading ? 0.4 : 1.0,
+          child: table,
+        ),
       );
     }
 

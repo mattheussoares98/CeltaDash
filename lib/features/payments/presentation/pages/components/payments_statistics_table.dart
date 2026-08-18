@@ -10,11 +10,13 @@ class PaymentsStatisticsTable extends StatelessWidget {
   const PaymentsStatisticsTable({
     required this.saleStatistics,
     required this.filterByFinalizations,
+    this.isLoading = false,
     super.key,
   });
 
   final List<SaleStatisticsEntity> saleStatistics;
   final bool filterByFinalizations;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +55,7 @@ class PaymentsStatisticsTable extends StatelessWidget {
     return ScrollableTable<PaymentsStatisticsRowState>(
       items: rows,
       fixFirstColumn: true,
+      isLoading: isLoading,
       columns: [
         ScrollableTableColumnSpec(
           headerTitle: R.string.paymentsType,

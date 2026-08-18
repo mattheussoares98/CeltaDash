@@ -89,10 +89,12 @@ class _PaymentsContent extends HookConsumerWidget {
                                 PaymentsStatisticsTable(
                                   saleStatistics: statistics,
                                   filterByFinalizations: false,
+                                  isLoading: statisticsAsync.isLoading,
                                 ),
                                 PaymentsStatisticsTable(
                                   saleStatistics: statistics,
                                   filterByFinalizations: true,
+                                  isLoading: statisticsAsync.isLoading,
                                 ),
                               ],
                             ),
