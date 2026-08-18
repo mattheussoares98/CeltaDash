@@ -44,6 +44,7 @@ class ResumePage extends HookConsumerWidget {
       refreshProviders: providers,
       body: AsyncValueWidget(
         value: homeAsync,
+        preserveValue: true,
         tryAgain: () => ref.invalidate(homeControllerProvider),
         data: (_) {
           if (enterpriseId == null) {
@@ -56,40 +57,29 @@ class ResumePage extends HookConsumerWidget {
             for (final provider in providers!)
               (provider: provider, value: ref.watch(provider)),
           ];
-          final hasCompleteData = providerValues.every(
-            (e) => e.value.value != null,
-          );
-          final failedProviders = providerValues
-              .where((e) => e.value.hasError)
-              .toList();
-
-          if (!hasCompleteData) {
-            final firstIncompleteProvider = providerValues.firstWhere(
-              (e) => e.value.value == null,
-            );
-
-            return AsyncValueWidget(
-              value: firstIncompleteProvider.value,
-              tryAgain: () {
-                for (final failedProvider in failedProviders) {
-                  ref.invalidate(failedProvider.provider);
-                }
-              },
-              data: (_) => const SizedBox.shrink(),
-            );
-          }
-
           final items = <Widget>[
             const DailyComparisonCard(),
             const MonthlyGoalComparisonCard(),
             const MonthlyAnalysisCard(),
             const GroupOfStoresCard(),
           ];
-          return ResponsiveListFlow(
+          Widget content = ResponsiveListFlow(
             maxItemWidth: Breakpoint.tablet,
             itemCount: items.length,
             itemBuilder: (context, index) => items[index],
           );
+          for (final providerValue in providerValues.reversed.where(
+            (e) => e.value.hasError,
+          )) {
+            final child = content;
+            content = AsyncValueWidget(
+              value: providerValue.value,
+              preserveValue: true,
+              tryAgain: () => ref.invalidate(providerValue.provider),
+              data: (_) => child,
+            );
+          }
+          return content;
         },
       ),
     );

@@ -18,12 +18,10 @@ class DailyComparisonCard extends ConsumerWidget {
     }
     final provider = dailyComparisonControllerProvider(enterpriseId);
     final comparisonAsync = ref.watch(provider);
-    final comparison = comparisonAsync.value;
-    if (comparison != null) {
-      return DailyComparisonContent(comparison: comparison);
-    }
+
     return AsyncValueWidget(
       value: comparisonAsync,
+      preserveValue: true,
       tryAgain: () => ref.invalidate(provider),
       data: (comparison) => DailyComparisonContent(comparison: comparison),
     );

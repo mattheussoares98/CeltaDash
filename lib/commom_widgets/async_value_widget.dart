@@ -16,6 +16,7 @@ class AsyncValueWidget<T> extends StatelessWidget {
     this.isSliver,
     this.errorMaxLines,
     this.useLinearProgressIndicator,
+    this.preserveValue = false,
   });
   final AsyncValue<T> value;
   final Widget Function(T) data;
@@ -23,9 +24,15 @@ class AsyncValueWidget<T> extends StatelessWidget {
   final bool? isSliver;
   final bool? useLinearProgressIndicator;
   final int? errorMaxLines;
+  final bool preserveValue;
 
   @override
   Widget build(BuildContext context) {
+    final currentValue = value.value;
+    if (preserveValue && value.isLoading && currentValue != null) {
+      return data(currentValue);
+    }
+
     if (value.isLoading) {
       return _Loading(
         isSliver: isSliver,
