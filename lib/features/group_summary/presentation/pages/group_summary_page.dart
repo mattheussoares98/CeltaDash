@@ -34,15 +34,12 @@ class _GroupSummaryContent extends HookConsumerWidget {
       selectedPeriod.value,
     );
 
-    final isLandscape =
-        MediaQuery.orientationOf(context) == Orientation.landscape;
-
     return BaseScaffold(
       appBar: HomeAppBar(
-        isLandscape: isLandscape,
+        isLandscape: true,
         reloadButton: ReloadIconButton(refreshProviders: [provider]),
         showLeading: true,
-        //TODO hide the enterprise selection because it makes no sense here
+        showEnterpriseDropdown: false,
       ),
       isScrollable: false,
       usePadding: false,

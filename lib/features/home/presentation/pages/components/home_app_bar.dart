@@ -15,6 +15,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
     this.showLeading = false,
     this.showToggleAppMode = false,
     this.showEnterpriseManagement = false,
+    this.showEnterpriseDropdown = true,
     super.key,
   });
 
@@ -23,6 +24,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
   final bool showLeading;
   final bool showToggleAppMode;
   final bool showEnterpriseManagement;
+  final bool showEnterpriseDropdown;
 
   @override
   Size get preferredSize =>
@@ -40,7 +42,9 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
       },
     );
 
-    const enterpriseSelector = HomeEnterpriseSelector();
+    final enterpriseSelector = showEnterpriseDropdown
+        ? const HomeEnterpriseSelector()
+        : null;
     const dateSelector = Expanded(child: HomeDateSelector());
     final modeToggle = showToggleAppMode
         ? const Flexible(child: HomeModeToggle())
@@ -64,7 +68,8 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
           return Row(
             mainAxisAlignment: .spaceEvenly,
             children: [
-              const Expanded(flex: 2, child: enterpriseSelector),
+              if (enterpriseSelector != null)
+                Expanded(flex: 2, child: enterpriseSelector),
               dateSelector,
               gapW8,
               ?modeToggle,
@@ -79,7 +84,8 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
           children: [
             Row(
               children: [
-                const Expanded(child: enterpriseSelector),
+                if (enterpriseSelector != null)
+                  Expanded(child: enterpriseSelector),
                 ?selectEnterprise,
               ],
             ),
