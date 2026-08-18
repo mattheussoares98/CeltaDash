@@ -23,72 +23,102 @@ class SalesContent extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedPeriod = useState(SalesPeriod.hourly);
-    final provider = salesControllerProvider(
-      enterpriseId,
-      selectedPeriod.value,
-    );
-
-    final selectedDate = ref.watch(
-      homeControllerProvider.select(
-        (value) => value.value?.selectedDate ?? DateTime.now(),
-      ),
-    );
+    final visitedPeriods = useState<Set<SalesPeriod>>({SalesPeriod.hourly});
+    //! only build the respective period when it was opened
 
     return Column(
       children: [
         NewBaseSegmentedButtons(
           items: SalesPeriod.values,
           selectedValue: selectedPeriod.value,
-          onChanged: (value) => selectedPeriod.value = value,
+          onChanged: (value) {
+            selectedPeriod.value = value;
+            visitedPeriods.value.add(value);
+          },
           itemLabelBuilder: (value) => value.label,
         ),
         gapH8,
         Expanded(
           child: Consumer(
             builder: (_, ref, _) {
-              final statisticsAsync = ref.watch(provider);
+              final selectedDate = ref.watch(
+                homeControllerProvider.select(
+                  (value) => value.value?.selectedDate ?? DateTime.now(),
+                ),
+              );
 
-              return AsyncValueWidget(
-                value: statisticsAsync,
-                preserveValue: true,
-                tryAgain: () => ref.invalidate(provider),
-                data: (statistics) {
-                  if (statistics.isEmpty) {
-                    return Center(
-                      child: BaseText('Nenhuma venda encontrada'.hardcoded),
-                    );
-                  }
-
-                  return switch (selectedPeriod.value) {
-                    SalesPeriod.hourly => _HourlySalesTable(
-                      statistics: statistics,
-                      refreshProvider: provider,
-                      isLoading: statisticsAsync.isLoading,
-                    ),
-                    SalesPeriod.daily => _DailySalesTable(
-                      statistics: statistics,
-                      selectedDate: selectedDate,
-                      refreshProvider: provider,
-                      isLoading: statisticsAsync.isLoading,
-                    ),
-                    SalesPeriod.monthly => _MonthlySalesTable(
-                      statistics: statistics,
-                      selectedDate: selectedDate,
-                      refreshProvider: provider,
-                      isLoading: statisticsAsync.isLoading,
-                    ),
-                    SalesPeriod.yearly => _YearlySalesTable(
-                      statistics: statistics,
-                      refreshProvider: provider,
-                      isLoading: statisticsAsync.isLoading,
-                    ),
-                  };
-                },
+              return IndexedStack(
+                index: selectedPeriod.value.index,
+                children: [
+                  for (final period in SalesPeriod.values)
+                    if (visitedPeriods.value.contains(period))
+                      _SalesPeriodView(
+                        enterpriseId: enterpriseId,
+                        period: period,
+                        selectedDate: selectedDate,
+                      )
+                    else
+                      const SizedBox.shrink(),
+                ],
               );
             },
           ),
         ),
       ],
+    );
+  }
+}
+
+class _SalesPeriodView extends ConsumerWidget {
+  const _SalesPeriodView({
+    required this.enterpriseId,
+    required this.period,
+    required this.selectedDate,
+  });
+
+  final int enterpriseId;
+  final SalesPeriod period;
+  final DateTime selectedDate;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final provider = salesControllerProvider(enterpriseId, period);
+    final statisticsAsync = ref.watch(provider);
+
+    return AsyncValueWidget(
+      value: statisticsAsync,
+      preserveValue: true,
+      tryAgain: () => ref.invalidate(provider),
+      data: (statistics) {
+        if (statistics.isEmpty) {
+          return Center(child: BaseText('Nenhuma venda encontrada'.hardcoded));
+        }
+
+        return switch (period) {
+          SalesPeriod.hourly => _HourlySalesTable(
+            statistics: statistics,
+            refreshProvider: provider,
+            isLoading: statisticsAsync.isLoading,
+          ),
+          SalesPeriod.daily => _DailySalesTable(
+            statistics: statistics,
+            selectedDate: selectedDate,
+            refreshProvider: provider,
+            isLoading: statisticsAsync.isLoading,
+          ),
+          SalesPeriod.monthly => _MonthlySalesTable(
+            statistics: statistics,
+            selectedDate: selectedDate,
+            refreshProvider: provider,
+            isLoading: statisticsAsync.isLoading,
+          ),
+          SalesPeriod.yearly => _YearlySalesTable(
+            statistics: statistics,
+            refreshProvider: provider,
+            isLoading: statisticsAsync.isLoading,
+          ),
+        };
+      },
     );
   }
 }
