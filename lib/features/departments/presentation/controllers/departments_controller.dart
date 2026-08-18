@@ -17,7 +17,7 @@ class DepartmentsController extends _$DepartmentsController {
     int enterpriseId,
     DepartmentsPeriod selectedPeriod,
   ) async {
-    ref.cache(300);
+    ref.cache();
     ref.watch(activeEcParamsStateControllerProvider);
     final selectedDate = await ref.watch(
       homeControllerProvider.selectAsync((state) => state.selectedDate),

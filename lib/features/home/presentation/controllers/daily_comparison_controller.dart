@@ -11,7 +11,7 @@ part 'daily_comparison_controller.g.dart';
 class DailyComparisonController extends _$DailyComparisonController {
   @override
   Future<DailyComparisonState> build(int enterpriseId) async {
-    ref.cache(300);
+    ref.cache();
     //TODO test changing the logged enterprise to check whether will reload or not
     ref.watch(activeEcParamsStateControllerProvider);
 

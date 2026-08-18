@@ -11,7 +11,7 @@ part 'monthly_analysis_controller.g.dart';
 class MonthlyAnalysisController extends _$MonthlyAnalysisController {
   @override
   Future<MonthlyAnalysisState> build(int enterpriseId) async {
-    ref.cache(300);
+    ref.cache();
     ref.watch(activeEcParamsStateControllerProvider);
 
     final selectedDate = await ref.watch(

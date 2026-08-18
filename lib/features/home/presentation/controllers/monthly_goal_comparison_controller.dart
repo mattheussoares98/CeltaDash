@@ -13,7 +13,7 @@ class MonthlyGoalComparisonController
     extends _$MonthlyGoalComparisonController {
   @override
   Future<MonthlyGoalComparisonState> build(int enterpriseId) async {
-    ref.cache(300);
+    ref.cache();
     //TODO test changing the logged enterprise to check whether will reload or not
     ref.watch(activeEcParamsStateControllerProvider);
 

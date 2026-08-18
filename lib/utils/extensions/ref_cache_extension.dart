@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:riverpod/riverpod.dart';
 
 extension RefCacheExtension on Ref {
-  void cache([int seconds = 20]) {
+  void cache([int seconds = 60]) {
     Timer? disposeTimer;
     final link = keepAlive();
 

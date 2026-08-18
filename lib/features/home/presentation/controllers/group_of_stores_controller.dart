@@ -12,7 +12,7 @@ part 'group_of_stores_controller.g.dart';
 class GroupOfStoresController extends _$GroupOfStoresController {
   @override
   Future<GroupOfStoresState> build(int enterpriseId) async {
-    ref.cache(300);
+    ref.cache();
     ref.watch(activeEcParamsStateControllerProvider);
 
     final selectedDate = await ref.watch(
