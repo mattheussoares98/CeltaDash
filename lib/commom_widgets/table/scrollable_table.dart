@@ -31,6 +31,9 @@ class ScrollableTable<T> extends HookConsumerWidget {
   final void Function(T item)? onTapRow;
   final Color? Function(T item)? rowColor;
   final bool isLoading;
+  final int? initialSortColumnIndex;
+  final bool initialSortAscending;
+  final bool highlightBestAndWorst;
 
   const ScrollableTable({
     super.key,
@@ -46,6 +49,9 @@ class ScrollableTable<T> extends HookConsumerWidget {
     this.onTapRow,
     this.rowColor,
     this.isLoading = false,
+    this.initialSortColumnIndex,
+    this.initialSortAscending = true,
+    this.highlightBestAndWorst = false,
   });
 
   static const double footerH = 40;
@@ -98,8 +104,8 @@ class ScrollableTable<T> extends HookConsumerWidget {
     final isSyncing = useRef(false);
     final activeScrollController = useState<ScrollController?>(null);
 
-    final sortColumnIndex = useState<int?>(null);
-    final sortAscending = useState(true);
+    final sortColumnIndex = useState<int?>(initialSortColumnIndex);
+    final sortAscending = useState(initialSortAscending);
 
     final scrollableColumns = useMemoized(
       () => fixFirstColumn && columns.isNotEmpty ? columns.sublist(1) : columns,
@@ -120,6 +126,74 @@ class ScrollableTable<T> extends HookConsumerWidget {
       }
       return list;
     }, [items, columns, sortColumnIndex.value, sortAscending.value]);
+
+    final (bestRow, worstRow) = useMemoized(() {
+      if (!highlightBestAndWorst || sortedItems.length <= 1) {
+        return (null, null);
+      }
+
+      final activeColIndex = sortColumnIndex.value ?? initialSortColumnIndex;
+      if (activeColIndex == null || activeColIndex >= columns.length) {
+        return (null, null);
+      }
+
+      final mapper = columns[activeColIndex].sortValueMapper;
+      if (mapper == null) return (null, null);
+
+      // When sortedItems is already sorted by activeColIndex, O(1) instant lookup:
+      if (sortColumnIndex.value == activeColIndex) {
+        final first = sortedItems.first;
+        final last = sortedItems.last;
+        final firstVal = mapper(first);
+        final lastVal = mapper(last);
+
+        if (firstVal == lastVal) return (null, null);
+
+        return sortAscending.value
+            ? (last, first) // ascending: largest is last, smallest is first
+            : (first, last); // descending: largest is first, smallest is last
+      }
+
+      // Fast single-pass O(N) fallback with pre-initialized baseline
+      T best = sortedItems.first;
+      T worst = sortedItems.first;
+      Comparable bestVal = mapper(best);
+      Comparable worstVal = bestVal;
+
+      for (int i = 1; i < sortedItems.length; i++) {
+        final item = sortedItems[i];
+        final val = mapper(item);
+        if (val.compareTo(bestVal) > 0) {
+          bestVal = val;
+          best = item;
+        } else if (val.compareTo(worstVal) < 0) {
+          worstVal = val;
+          worst = item;
+        }
+      }
+
+      if (bestVal == worstVal) return (null, null);
+      return (best, worst);
+    }, [
+      sortedItems,
+      columns,
+      highlightBestAndWorst,
+      sortColumnIndex.value,
+      sortAscending.value,
+      initialSortColumnIndex,
+    ]);
+
+    Color? getEffectiveRowColor(T item) {
+      final custom = rowColor?.call(item);
+      if (custom != null) return custom;
+
+      if (highlightBestAndWorst) {
+        if (item == bestRow) return Colors.green.withAlpha(100);
+        if (item == worstRow) return Colors.red.withAlpha(100);
+      }
+
+      return null;
+    }
 
     useEffect(() {
       void syncFixedToScrollable() {
@@ -290,7 +364,7 @@ class ScrollableTable<T> extends HookConsumerWidget {
             fixedPhysics: fixedPhysics,
             scrollablePhysics: scrollablePhysics,
             onTapRow: onTapRow,
-            rowColor: rowColor,
+            rowColor: getEffectiveRowColor,
           );
         } else {
           mainLayout = _ScrollableLayout<T>(
@@ -311,7 +385,7 @@ class ScrollableTable<T> extends HookConsumerWidget {
             hasFooter: hasFooter,
             physics: physics,
             onTapRow: onTapRow,
-            rowColor: rowColor,
+            rowColor: getEffectiveRowColor,
           );
         }
 
@@ -382,26 +456,19 @@ class _PassiveScrollPhysics extends ScrollPhysics {
   }
 }
 
-Color _getRowBackgroundColor<T>({
-  required BuildContext context,
+Color _resolveRowBackgroundColor<T>({
   required int index,
   required Color? Function(T item)? rowColor,
   required T item,
-  required Color? rowBackgroundColor,
+  required Color evenRowBg,
+  required Color oddRowBg,
 }) {
-  final isOdd = index.isOdd;
+  final baseColor = index.isOdd ? oddRowBg : evenRowBg;
   final customColor = rowColor?.call(item);
+
   if (customColor != null) {
-    return isOdd ? customColor.withAlpha(255) : customColor.withAlpha(200);
+    return Color.alphaBlend(customColor, baseColor);
   }
 
-  final baseColor = rowBackgroundColor ?? context.theme.cardColor;
-  if (!isOdd) {
-    return baseColor;
-  }
-
-  final isDark = context.theme.brightness == Brightness.dark;
-  return isDark
-      ? Color.alphaBlend(Colors.white.withAlpha(12), baseColor)
-      : Color.alphaBlend(Colors.black.withAlpha(10), baseColor);
+  return baseColor;
 }

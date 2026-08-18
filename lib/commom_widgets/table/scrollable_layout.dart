@@ -44,7 +44,15 @@ class _ScrollableLayout<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double totalWidth = totalMinWidth + (extraPerColumn * columns.length);
-    final Color headerBg = headerBackgroundColor ?? context.theme.cardColor;
+    final theme = context.theme;
+    final Color headerBg = headerBackgroundColor ?? theme.cardColor;
+
+    final baseCardColor = rowBackgroundColor ?? theme.cardColor;
+    final isDark = theme.brightness == Brightness.dark;
+    final evenRowBg = baseCardColor;
+    final oddRowBg = isDark
+        ? Color.alphaBlend(const Color(0x0CFFFFFF), baseCardColor)
+        : Color.alphaBlend(const Color(0x0A000000), baseCardColor);
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -76,12 +84,12 @@ class _ScrollableLayout<T> extends StatelessWidget {
                 itemExtent: rowHeight,
                 itemBuilder: (_, index) {
                   final item = sortedItems[index];
-                  final rowBg = _getRowBackgroundColor<T>(
-                    context: context,
+                  final rowBg = _resolveRowBackgroundColor<T>(
                     index: index,
                     rowColor: rowColor,
                     item: item,
-                    rowBackgroundColor: rowBackgroundColor,
+                    evenRowBg: evenRowBg,
+                    oddRowBg: oddRowBg,
                   );
                   return _ScrollableRow<T>(
                     item: item,

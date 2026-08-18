@@ -33,29 +33,38 @@ class PaymentsStatisticsTable extends StatelessWidget {
       (total, statistic) => total + (statistic.LiquidValue?.toDouble() ?? 0),
     );
 
-    final rows = groupedStatistics.entries.map((entry) {
-      final totalValue = entry.value.fold<double>(
-        0,
-        (total, statistic) => total + (statistic.LiquidValue?.toDouble() ?? 0),
-      );
-      final totalQuantity = entry.value.fold<int>(
-        0,
-        (total, statistic) => total + (statistic.QuantitySales?.toInt() ?? 0),
-      );
+    final rows = groupedStatistics.entries
+        .map((entry) {
+          final totalValue = entry.value.fold<double>(
+            0,
+            (total, statistic) =>
+                total + (statistic.LiquidValue?.toDouble() ?? 0),
+          );
+          final totalQuantity = entry.value.fold<int>(
+            0,
+            (total, statistic) =>
+                total + (statistic.QuantitySales?.toInt() ?? 0),
+          );
 
-      return PaymentsStatisticsRowState(
-        description: entry.key,
-        totalValue: totalValue,
-        totalQuantity: totalQuantity,
-        averageTicket: totalQuantity == 0 ? 0.0 : totalValue / totalQuantity,
-        share: overallValue == 0 ? 0.0 : totalValue / overallValue * 100,
-      );
-    }).toList();
+          return PaymentsStatisticsRowState(
+            description: entry.key,
+            totalValue: totalValue,
+            totalQuantity: totalQuantity,
+            averageTicket: totalQuantity == 0
+                ? 0.0
+                : totalValue / totalQuantity,
+            share: overallValue == 0 ? 0.0 : totalValue / overallValue * 100,
+          );
+        })
+        .toList(growable: false);
 
     return ScrollableTable<PaymentsStatisticsRowState>(
       items: rows,
       fixFirstColumn: true,
       isLoading: isLoading,
+      initialSortColumnIndex: 1,
+      initialSortAscending: false,
+      highlightBestAndWorst: true,
       columns: [
         ScrollableTableColumnSpec(
           headerTitle: R.string.paymentsType,

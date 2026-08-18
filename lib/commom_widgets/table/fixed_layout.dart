@@ -55,11 +55,19 @@ class _FixedLayout<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final firstCol = columns.first;
     final double firstColWidth = firstCol.minWidth + extraPerColumn;
-    final Color headerBg = headerBackgroundColor ?? context.theme.cardColor;
+    final theme = context.theme;
+    final Color headerBg = headerBackgroundColor ?? theme.cardColor;
     final double scrollableWidth = scrollableColumns.fold(
       0.0,
       (sum, col) => sum + col.minWidth + extraPerColumn,
     );
+
+    final baseCardColor = rowBackgroundColor ?? theme.cardColor;
+    final isDark = theme.brightness == Brightness.dark;
+    final evenRowBg = baseCardColor;
+    final oddRowBg = isDark
+        ? Color.alphaBlend(const Color(0x0CFFFFFF), baseCardColor)
+        : Color.alphaBlend(const Color(0x0A000000), baseCardColor);
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,12 +119,12 @@ class _FixedLayout<T> extends StatelessWidget {
                       itemExtent: rowHeight,
                       itemBuilder: (_, index) {
                         final item = sortedItems[index];
-                        final rowBg = _getRowBackgroundColor<T>(
-                          context: context,
+                        final rowBg = _resolveRowBackgroundColor<T>(
                           index: index,
                           rowColor: rowColor,
                           item: item,
-                          rowBackgroundColor: rowBackgroundColor,
+                          evenRowBg: evenRowBg,
+                          oddRowBg: oddRowBg,
                         );
                         final cell = _ScrollableTableCell(
                           width: firstColWidth,
@@ -211,12 +219,12 @@ class _FixedLayout<T> extends StatelessWidget {
                         itemExtent: rowHeight,
                         itemBuilder: (_, index) {
                           final item = sortedItems[index];
-                          final rowBg = _getRowBackgroundColor<T>(
-                            context: context,
+                          final rowBg = _resolveRowBackgroundColor<T>(
                             index: index,
                             rowColor: rowColor,
                             item: item,
-                            rowBackgroundColor: rowBackgroundColor,
+                            evenRowBg: evenRowBg,
+                            oddRowBg: oddRowBg,
                           );
                           return _ScrollableRow<T>(
                             item: item,
