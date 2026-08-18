@@ -20,7 +20,7 @@ class HomeBottomNavigation extends StatelessWidget {
       onTap: onTap,
       items: [
         BaseBottomNavigationBarItem(
-          label: 'Resume'.hardcoded,
+          label: 'Resumo'.hardcoded,
           platformIcon: const PlatformIcon(
             key: ValueKey('home_navigation_resume'),
             materialIcon: Icons.pie_chart,
@@ -28,7 +28,7 @@ class HomeBottomNavigation extends StatelessWidget {
           ),
         ),
         BaseBottomNavigationBarItem(
-          label: 'Sales'.hardcoded,
+          label: 'Vendas'.hardcoded,
           platformIcon: const PlatformIcon(
             key: ValueKey('home_navigation_sales'),
             materialIcon: Icons.monetization_on,
@@ -36,7 +36,7 @@ class HomeBottomNavigation extends StatelessWidget {
           ),
         ),
         BaseBottomNavigationBarItem(
-          label: 'Products'.hardcoded,
+          label: 'Produtos'.hardcoded,
           platformIcon: const PlatformIcon(
             key: ValueKey('home_navigation_products'),
             materialIcon: Icons.shopping_cart_rounded,
@@ -44,7 +44,7 @@ class HomeBottomNavigation extends StatelessWidget {
           ),
         ),
         BaseBottomNavigationBarItem(
-          label: 'Personalized'.hardcoded,
+          label: 'Personalizado'.hardcoded,
           platformIcon: const PlatformIcon(
             key: ValueKey('home_navigation_personalized'),
             materialIcon: Icons.assignment_ind,
@@ -52,7 +52,7 @@ class HomeBottomNavigation extends StatelessWidget {
           ),
         ),
         BaseBottomNavigationBarItem(
-          label: 'More'.hardcoded,
+          label: 'Mais'.hardcoded,
           platformIcon: const PlatformIcon(
             key: ValueKey('home_navigation_more'),
             materialIcon: Icons.grid_view_rounded,
