@@ -34,11 +34,6 @@ RouteBase compareMonthsRoute() => GoRoute(
   builder: (context, state) => makeCompareMonthsPage(),
 );
 
-RouteBase departmentsRoute() => GoRoute(
-  path: '/home/departments',
-  name: Routes.departments.name,
-  builder: (context, state) => makeDepartmentsPage(),
-);
 
 RouteBase enterprisesManagerRoute() => GoRoute(
   path: '/home/enterprises-manager',

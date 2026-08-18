@@ -1,3 +1,4 @@
+export 'departments/departments.dart';
 export 'home/home.dart';
 export 'login_route.dart';
 export 'payments/payments.dart';

@@ -76,7 +76,14 @@ class DailyComparisonContent extends StatelessWidget {
                   ),
                 ),
                 gapW8,
-                Expanded(child: PrimaryButton(text: 'Departamentos'.hardcoded)),
+                Expanded(
+                  child: PrimaryButton(
+                    text: 'Departamentos'.hardcoded,
+                    onPressed: () {
+                      context.pushNamed(Routes.departments.name);
+                    },
+                  ),
+                ),
               ],
             ),
           ],

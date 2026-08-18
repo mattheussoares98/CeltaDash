@@ -13,7 +13,10 @@ List<RouteBase> homeRoutes(
     branches: [
       StatefulShellBranch(
         routes: [
-          homeResumeRoute([paymentsTypeRoute(rootNavigatorKey)]),
+          homeResumeRoute([
+            paymentsTypeRoute(rootNavigatorKey),
+            departmentsRoute(rootNavigatorKey),
+          ]),
         ],
       ),
       StatefulShellBranch(routes: [homeSalesRoute()]),
