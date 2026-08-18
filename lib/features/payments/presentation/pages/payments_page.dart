@@ -85,6 +85,7 @@ class _PaymentsContent extends HookConsumerWidget {
                               ),
                             )
                           : TabBarView(
+                              physics: const NeverScrollableScrollPhysics(),
                               children: [
                                 PaymentsStatisticsTable(
                                   saleStatistics: statistics,
