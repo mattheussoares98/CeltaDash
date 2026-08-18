@@ -25,17 +25,6 @@ class ResumePage extends HookConsumerWidget {
             groupOfStoresControllerProvider(enterpriseId),
           ];
 
-    void showError(AsyncValue? p, AsyncValue n) {
-      if (p?.hasValue ?? false) {
-        n.showToastOnError(context, p);
-      }
-    }
-
-    for (final provider in providers ?? const []) {
-      ref.listen(provider, showError);
-    }
-    //TODO throw an error for each controller to test
-
     return BaseScaffold(
       isScrollable: false,
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),

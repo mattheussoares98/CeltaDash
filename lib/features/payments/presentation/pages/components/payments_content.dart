@@ -16,11 +16,6 @@ class PaymentsContent extends HookConsumerWidget {
     final selectedPeriod = useState(PaymentsPeriod.daily);
     final provider = paymentsControllerProvider(selectedPeriod.value);
     final statisticsAsync = ref.watch(provider);
-    ref.listen(provider, (p, n) {
-      if (p?.hasValue ?? false) {
-        n.showToastOnError(context, p);
-      }
-    });
 
     final reloadButton = ReloadIconButton(refreshProviders: [provider]);
     final isLandscape =
