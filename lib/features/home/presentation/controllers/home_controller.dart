@@ -120,7 +120,8 @@ class HomeController extends _$HomeController {
     final enterprises = await repository.getEnterprises(ecParams);
     final enabledById = {
       for (final enterprise
-          in activeEnterprise?.firebaseSubEnterprises ?? const [])
+          in activeEnterprise?.firebaseSubEnterprises ??
+              const <FirebaseSubEnterpriseEntity>[])
         if (enterprise.id != null) enterprise.id: enterprise.enabled == true,
     };
     final reconciled = enterprises
@@ -128,7 +129,9 @@ class HomeController extends _$HomeController {
           (enterprise) =>
               enterprise.copyWith(enabled: enabledById[enterprise.id] ?? false),
         )
-        .toList(growable: false);
+        .toList(
+          growable: false, //can't add/remove
+        );
     final selectedId =
         reconciled.any(
           (enterprise) => enterprise.id == previousState.selectedEnterpriseId,
