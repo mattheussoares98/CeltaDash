@@ -1,7 +1,7 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/features/payments/presentation/models/models.dart';
 import 'package:celta_dash/features/sale_statistics/domain/entities/entities.dart';
-import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:celta_dash/utils/constants/constants.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -65,16 +65,17 @@ class PaymentsStatisticsTable extends StatelessWidget {
       initialSortColumnIndex: 1,
       initialSortAscending: false,
       highlightBestAndWorst: true,
+      rowHeight: Sizes.p64,
       columns: [
         ScrollableTableColumnSpec(
-          headerTitle: R.string.paymentsType,
-          minWidth: 100,
-          cellBuilder: (row) => BaseText.bodyMedium(row.description),
+          headerTitle: 'Forma de pagamento'.hardcoded,
+          minWidth: 130,
+          cellBuilder: (row) => BaseText(row.description, maxLines: 3),
           sortValueMapper: (row) => row.description,
         ),
         ScrollableTableColumnSpec(
-          headerTitle: R.string.sales,
-          minWidth: 90,
+          headerTitle: 'Vendas'.hardcoded,
+          minWidth: 120,
           isMoney: true,
           cellBuilder: (row) => BaseText.bodyMedium(
             row.totalValue.toString().toBrazilianNumber(),
@@ -88,16 +89,21 @@ class PaymentsStatisticsTable extends StatelessWidget {
           ),
         ),
         ScrollableTableColumnSpec(
-          headerTitle: R.string.quantityAbbreviated,
+          headerTitle: 'Qtd'.hardcoded,
           minWidth: 50,
-          cellBuilder: (row) => BaseText.bodyMedium('${row.totalQuantity}'),
+          cellBuilder: (row) => BaseText.bodyMedium(
+            row.totalQuantity.toString().toBrazilianNumber(3, true),
+          ),
           sortValueMapper: (row) => row.totalQuantity,
           footerCellBuilder: (items) => BaseText.bodyMedium(
-            '${items.fold<int>(0, (total, row) => total + row.totalQuantity)}',
+            items
+                .fold<int>(0, (total, row) => total + row.totalQuantity)
+                .toString()
+                .toBrazilianNumber(3, true),
           ),
         ),
         ScrollableTableColumnSpec(
-          headerTitle: R.string.ticketAverage,
+          headerTitle: 'Ticket médio'.hardcoded,
           minWidth: 70,
           isMoney: true,
           cellBuilder: (row) => BaseText.bodyMedium(
@@ -106,7 +112,7 @@ class PaymentsStatisticsTable extends StatelessWidget {
           sortValueMapper: (row) => row.averageTicket,
         ),
         ScrollableTableColumnSpec(
-          headerTitle: R.string.share,
+          headerTitle: 'Share'.hardcoded,
           minWidth: 70,
           isPercentage: true,
           cellBuilder: (row) =>
