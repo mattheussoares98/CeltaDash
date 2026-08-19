@@ -60,12 +60,20 @@ class PersonalizedTable extends HookConsumerWidget {
                   headerTitle: 'Mês'.hardcoded,
                   cellBuilder: (s) {
                     final date = DateTime(0, s.Month ?? 1);
-                    final monthName = DateFormat.MMM(
-                      'pt_BR',
-                    ).format(date).toUpperCase().replaceAll(RegExp(r'\.'), '');
-                    return BaseText.bodyMedium(monthName);
+                    return BaseText.bodyMedium(
+                      date.formatDate(.MMM).toUpperCase().replaceAll('.', ''),
+                    );
                   },
                   sortValueMapper: (s) => s.Month ?? 0,
+                ),
+              ),
+              'Dia'.hardcoded: (
+                check: (s) => s.Date != null && s.Hour == null,
+                spec: ScrollableTableColumnSpec<SaleStatisticsEntity>(
+                  headerTitle: 'Dia'.hardcoded,
+                  minWidth: 80,
+                  cellBuilder: (s) => BaseText.bodyMedium(s.Date!.formatDate()),
+                  sortValueMapper: (s) => s.Date ?? DateTime(0),
                 ),
               ),
               'Hora'.hardcoded: (
@@ -96,12 +104,12 @@ class PersonalizedTable extends HookConsumerWidget {
                   sortValueMapper: (s) => s.Product ?? '',
                 ),
               ),
-              'Qtd. Produtos'.hardcoded: (
+              'Qtd produtos'.hardcoded: (
                 check: (s) => s.QuantityOfProducts != null,
                 spec: ScrollableTableColumnSpec<SaleStatisticsEntity>(
-                  headerTitle: 'Qtd. Produtos'.hardcoded,
+                  headerTitle: 'Qtd produtos'.hardcoded,
                   cellBuilder: (s) => BaseText.bodyMedium(
-                    s.QuantityOfProducts?.toString() ?? '',
+                    s.QuantityOfProducts?.toString().toBRL(3, true) ?? '',
                   ),
                   sortValueMapper: (s) => s.QuantityOfProducts ?? 0,
                   footerCellBuilder: (items) => BaseText.bodyMedium(
@@ -110,7 +118,8 @@ class PersonalizedTable extends HookConsumerWidget {
                           0,
                           (total, s) => total + (s.QuantityOfProducts ?? 0),
                         )
-                        .toString(),
+                        .toString()
+                        .toBRL(3, true),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -133,10 +142,10 @@ class PersonalizedTable extends HookConsumerWidget {
                   sortValueMapper: (s) => s.ProductSection ?? '',
                 ),
               ),
-              'Finalização'.hardcoded: (
+              'Finalizadora'.hardcoded: (
                 check: (s) => s.PaymentFinalization != null,
                 spec: ScrollableTableColumnSpec<SaleStatisticsEntity>(
-                  headerTitle: 'Finalização'.hardcoded,
+                  headerTitle: 'Finalizadora'.hardcoded,
                   cellBuilder: (s) =>
                       BaseText.bodyMedium(s.PaymentFinalization ?? ''),
                   sortValueMapper: (s) => s.PaymentFinalization ?? '',
@@ -151,12 +160,13 @@ class PersonalizedTable extends HookConsumerWidget {
                   sortValueMapper: (s) => s.PaymentModality ?? '',
                 ),
               ),
-              'Qtd. Vendas'.hardcoded: (
+              'Qtd vendas'.hardcoded: (
                 check: (s) => s.QuantitySales != null,
                 spec: ScrollableTableColumnSpec<SaleStatisticsEntity>(
-                  headerTitle: 'Qtd. Vendas'.hardcoded,
-                  cellBuilder: (s) =>
-                      BaseText.bodyMedium(s.QuantitySales?.toString() ?? ''),
+                  headerTitle: 'Qtd vendas'.hardcoded,
+                  cellBuilder: (s) => BaseText.bodyMedium(
+                    s.QuantitySales?.toString().toBRL(2, true) ?? '',
+                  ),
                   sortValueMapper: (s) => s.QuantitySales ?? 0,
                   footerCellBuilder: (items) => BaseText.bodyMedium(
                     items
@@ -164,7 +174,8 @@ class PersonalizedTable extends HookConsumerWidget {
                           0,
                           (total, s) => total + (s.QuantitySales ?? 0),
                         )
-                        .toString(),
+                        .toString()
+                        .toBRL(2, true),
                     fontWeight: FontWeight.bold,
                   ),
                 ),

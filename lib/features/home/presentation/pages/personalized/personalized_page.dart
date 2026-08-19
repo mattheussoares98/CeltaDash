@@ -27,6 +27,15 @@ class PersonalizedPage extends HookConsumerWidget {
       }
     }
 
+    ref.listen(
+      personalizedControllerProvider.select((s) => s.validationError),
+      (previous, next) {
+        if (next != null) {
+          showToastMessage(next, type: .error);
+        }
+      },
+    );
+
     final isGenerating = ref.watch(
       personalizedControllerProvider.select((s) => s.isGenerating),
     );
@@ -38,85 +47,91 @@ class PersonalizedPage extends HookConsumerWidget {
       isScrollable: false,
       usePadding: false,
       appBar: BaseAppBar(title: 'Personalizado'.hardcoded),
-      body: Column(
-        children: [
-          IgnorePointer(
-            ignoring: isGenerating,
-            child: Card(
-              elevation: 4,
-              margin: const EdgeInsets.fromLTRB(
-                Sizes.p4,
-                Sizes.p8,
-                Sizes.p8,
-                Sizes.p8,
-              ),
-              child: ExpansionTile(
-                controller: parametersController,
-                initiallyExpanded: true,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(Sizes.p8),
+      body: LayoutBuilder(
+        builder: (context, constraints) => Column(
+          children: [
+            IgnorePointer(
+              ignoring: isGenerating,
+              child: Card(
+                elevation: 4,
+                margin: const EdgeInsets.fromLTRB(
+                  Sizes.p4,
+                  Sizes.p8,
+                  Sizes.p8,
+                  Sizes.p8,
                 ),
-                dense: true,
-                title: BaseText.titleMedium(
-                  'Parâmetros'.hardcoded,
-                  fontWeight: FontWeight.bold,
-                ),
-                childrenPadding: const EdgeInsets.symmetric(
-                  horizontal: Sizes.p8,
-                  vertical: Sizes.p4,
-                ),
-                children: [
-                  ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxHeight: MediaQuery.sizeOf(context).height * 0.7,
-                    ),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          PersonalizedDateSelector(
-                            onDateRangeCompleted: () {
-                              if (!enterprisesController.isExpanded) {
-                                enterprisesController.expand();
-                              }
-                            },
-                          ),
-                          if (hasValidDateRange) ...[
-                            PersonalizedEnterprisesTile(
-                              controller: enterprisesController,
-                              onEnterpriseSelected: () {
-                                collapseAll(false);
-                                if (!periodsController.isExpanded) {
-                                  periodsController.expand();
+                child: ExpansionTile(
+                  controller: parametersController,
+                  initiallyExpanded: true,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(Sizes.p8),
+                  ),
+                  dense: true,
+                  title: BaseText.titleMedium(
+                    'Parâmetros'.hardcoded,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  childrenPadding: const EdgeInsets.symmetric(
+                    horizontal: Sizes.p8,
+                    vertical: Sizes.p4,
+                  ),
+                  children: [
+                    ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxHeight: (constraints.maxHeight - 120).clamp(
+                          //!return always a number between 0 and constraints.maxHeight * 0.7
+                          0,
+                          constraints.maxHeight * 0.7,
+                        ),
+                      ),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            PersonalizedDateSelector(
+                              onDateRangeCompleted: () {
+                                if (!enterprisesController.isExpanded) {
+                                  enterprisesController.expand();
                                 }
                               },
                             ),
-                            PersonalizedPeriodTile(
-                              controller: periodsController,
-                              onPeriodSelected: () {
-                                collapseAll(false);
-                                if (!categoriesController.isExpanded) {
-                                  categoriesController.expand();
-                                }
-                              },
-                            ),
-                            PersonalizedCategoryTile(
-                              controller: categoriesController,
-                            ),
-                            PersonalizedGenerateButton(
-                              onGenerateSuccess: () => collapseAll(true),
-                            ),
+                            if (hasValidDateRange) ...[
+                              PersonalizedEnterprisesTile(
+                                controller: enterprisesController,
+                                onEnterpriseSelected: () {
+                                  collapseAll(false);
+                                  if (!periodsController.isExpanded) {
+                                    periodsController.expand();
+                                  }
+                                },
+                              ),
+                              PersonalizedPeriodTile(
+                                controller: periodsController,
+                                onPeriodSelected: () {
+                                  collapseAll(false);
+                                  if (!categoriesController.isExpanded) {
+                                    categoriesController.expand();
+                                  }
+                                },
+                              ),
+                              PersonalizedCategoryTile(
+                                controller: categoriesController,
+                              ),
+                              PersonalizedGenerateButton(
+                                onGenerateSuccess: () => collapseAll(true),
+                              ),
+                            ],
                           ],
-                        ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          const Expanded(child: PersonalizedTable()),
-        ],
+            const Expanded(child: PersonalizedTable()),
+          ],
+        ),
       ),
     );
   }

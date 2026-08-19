@@ -6,10 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class PersonalizedGenerateButton extends HookConsumerWidget {
-  const PersonalizedGenerateButton({
-    super.key,
-    this.onGenerateSuccess,
-  });
+  const PersonalizedGenerateButton({super.key, this.onGenerateSuccess});
 
   final VoidCallback? onGenerateSuccess;
 

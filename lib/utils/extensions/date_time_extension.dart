@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 
 extension DateTimeExtension on DateTime {
   String formatDate([DateFormatType type = DateFormatType.ddMMyyyy]) {
-    return DateFormat(type.pattern).format(this);
+    return DateFormat(type.pattern, 'pt_BR').format(this);
   }
 }
 
@@ -16,6 +16,8 @@ enum DateFormatType {
   yMMMMEEEEd('yMMMMEEEEd'),
   yMdHm('yMdHm'),
   Hm('Hm'),
+  MM('MM'),
+  MMM('MMM'),
   Hms('Hms'),
   ddMMyyyy('dd/MM/yyyy'),
   ddMMyyyyHHmm('dd/MM/yyyy HH:mm'),
