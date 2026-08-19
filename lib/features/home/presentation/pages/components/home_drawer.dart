@@ -19,7 +19,6 @@ class HomeDrawer extends HookConsumerWidget {
             const DrawerHeader(child: LogoWidget()),
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.symmetric(vertical: Sizes.p8),
                 children: [
                   _DrawerSectionTitle(
                     title: 'Relatórios & consultas'.hardcoded,
@@ -62,6 +61,7 @@ class HomeDrawer extends HookConsumerWidget {
                     platformIcon: const PlatformIcon(
                       materialIcon: Icons.cancel_outlined,
                       cupertinoIcon: CupertinoIcons.clear_circled,
+                      color: Colors.red,
                     ),
                     onTap: () {
                       context.pop();
@@ -186,13 +186,14 @@ class _DrawerItem extends StatelessWidget {
   });
 
   final String title;
-  final Widget platformIcon;
+  final PlatformIcon platformIcon;
   final VoidCallback onTap;
   final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
     return BaseListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
       leading: platformIcon,
       title: BaseText.bodyMedium(
         title,
