@@ -34,7 +34,6 @@ RouteBase compareMonthsRoute() => GoRoute(
   builder: (context, state) => makeCompareMonthsPage(),
 );
 
-
 RouteBase enterprisesManagerRoute() => GoRoute(
   path: '/home/enterprises-manager',
   name: Routes.enterprisesManager.name,
@@ -46,7 +45,6 @@ RouteBase goalHistoricRoute() => GoRoute(
   name: Routes.goalHistoric.name,
   builder: (context, state) => makeGoalHistoricPage(),
 );
-
 
 RouteBase moreRoute() => GoRoute(
   path: 'more',
@@ -64,12 +62,6 @@ RouteBase operatorsRoute() => GoRoute(
   path: '/home/operators',
   name: Routes.operators.name,
   builder: (context, state) => makeOperatorsPage(),
-);
-
-RouteBase sellersRoute() => GoRoute(
-  path: '/home/sellers',
-  name: Routes.sellers.name,
-  builder: (context, state) => makeSellersPage(),
 );
 
 RouteBase setGoalRoute() => GoRoute(
