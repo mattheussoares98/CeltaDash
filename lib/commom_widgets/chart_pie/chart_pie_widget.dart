@@ -1,13 +1,11 @@
 import 'dart:math';
 
-import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:get/get_utils/get_utils.dart';
-
-import 'chart_pie.dart';
 
 const _kColors = [
   Colors.green,
@@ -157,16 +155,15 @@ class ChartPieWidget extends HookWidget {
                 ),
               ),
               if (showTotalAmount == true)
-                Column(
-                  children: [
-                    Text(R.string.total, style: context.textTheme.titleMedium),
-                    Text(
+                BaseRichText(
+                  textAlign: .center,
+                  texts: [
+                    BaseText.caption('R\$ ', fontWeight: .bold),
+                    BaseText.title(
                       pieParameters
                           .fold(0.0, (p, e) => p + e.value)
                           .toString()
-                          .toBRL()
-                          .addBrazilianCoin(),
-                      style: context.textTheme.titleMedium,
+                          .toBRL(),
                     ),
                   ],
                 ),
