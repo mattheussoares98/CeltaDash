@@ -76,57 +76,66 @@ void main() {
 
   tearDown(() => container.dispose());
 
-  test('loads the selected day statistics for daily period with topCount 200', () async {
-    final params = makeParams(ProductsPeriod.daily);
-    when(
-      () => repository.getSaleStatistics(params: params, ecParams: ecParams),
-    ).thenAnswer((_) async => [statistic]);
+  test(
+    'loads the selected day statistics for daily period with topCount 200',
+    () async {
+      final params = makeParams(ProductsPeriod.daily);
+      when(
+        () => repository.getSaleStatistics(params: params, ecParams: ecParams),
+      ).thenAnswer((_) async => [statistic]);
 
-    final result = await container.read(
-      productsControllerProvider(enterpriseId, ProductsPeriod.daily).future,
-    );
+      final result = await container.read(
+        productsControllerProvider(enterpriseId, ProductsPeriod.daily).future,
+      );
 
-    expect(result, [statistic]);
-    verify(
-      () => repository.getSaleStatistics(params: params, ecParams: ecParams),
-    ).called(1);
-  });
+      expect(result, [statistic]);
+      verify(
+        () => repository.getSaleStatistics(params: params, ecParams: ecParams),
+      ).called(1);
+    },
+  );
 
-  test('loads the entire month statistics for monthly period with topCount 200', () async {
-    final params = makeParams(ProductsPeriod.monthly);
-    when(
-      () => repository.getSaleStatistics(params: params, ecParams: ecParams),
-    ).thenAnswer((_) async => [statistic]);
+  test(
+    'loads the entire month statistics for monthly period with topCount 200',
+    () async {
+      final params = makeParams(ProductsPeriod.monthly);
+      when(
+        () => repository.getSaleStatistics(params: params, ecParams: ecParams),
+      ).thenAnswer((_) async => [statistic]);
 
-    final result = await container.read(
-      productsControllerProvider(enterpriseId, ProductsPeriod.monthly).future,
-    );
+      final result = await container.read(
+        productsControllerProvider(enterpriseId, ProductsPeriod.monthly).future,
+      );
 
-    expect(result, [statistic]);
-    verify(
-      () => repository.getSaleStatistics(params: params, ecParams: ecParams),
-    ).called(1);
-  });
+      expect(result, [statistic]);
+      verify(
+        () => repository.getSaleStatistics(params: params, ecParams: ecParams),
+      ).called(1);
+    },
+  );
 
-  test('invalidation forces the current products query to load again', () async {
-    final params = makeParams(ProductsPeriod.daily);
-    when(
-      () => repository.getSaleStatistics(params: params, ecParams: ecParams),
-    ).thenAnswer((_) async => [statistic]);
-    final provider = productsControllerProvider(
-      enterpriseId,
-      ProductsPeriod.daily,
-    );
-    await container.read(provider.future);
+  test(
+    'invalidation forces the current products query to load again',
+    () async {
+      final params = makeParams(ProductsPeriod.daily);
+      when(
+        () => repository.getSaleStatistics(params: params, ecParams: ecParams),
+      ).thenAnswer((_) async => [statistic]);
+      final provider = productsControllerProvider(
+        enterpriseId,
+        ProductsPeriod.daily,
+      );
+      await container.read(provider.future);
 
-    container.invalidate(provider);
-    await container.read(provider.future);
+      container.invalidate(provider);
+      await container.read(provider.future);
 
-    expect(container.read(provider).value, [statistic]);
-    verify(
-      () => repository.getSaleStatistics(params: params, ecParams: ecParams),
-    ).called(2);
-  });
+      expect(container.read(provider).value, [statistic]);
+      verify(
+        () => repository.getSaleStatistics(params: params, ecParams: ecParams),
+      ).called(2);
+    },
+  );
 
   test('preserves repository errors in the controller state', () async {
     final params = makeParams(ProductsPeriod.daily);

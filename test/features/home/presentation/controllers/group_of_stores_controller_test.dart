@@ -32,9 +32,10 @@ void main() {
       ),
       homeControllerProvider.overrideWith(
         () => FakeHomeController(
-          HomeState.initial(
-            appMode: AppMode.sales,
-          ).copyWith(selectedDate: selectedDate),
+          HomeState.initial(appMode: AppMode.sales).copyWith(
+            selectedDate: selectedDate,
+            selectedEnterpriseId: enterpriseId,
+          ),
         ),
       ),
       saleStatisticsRepositoryProvider.overrideWithValue(repository),

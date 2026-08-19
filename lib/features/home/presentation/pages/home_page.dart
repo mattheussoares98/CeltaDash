@@ -1,5 +1,7 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
+import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/features/home/home.dart';
+import 'package:celta_dash/features/home/presentation/pages/components/resume_providers_listener.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/misc.dart';
 import 'package:go_router/go_router.dart';
@@ -12,12 +14,15 @@ class HomePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final homeState = ref.watch(homeControllerProvider);
     final showHomeAppBar = navigationShell.currentIndex <= 2;
     final isLandscape =
         MediaQuery.orientationOf(context) == Orientation.landscape;
 
-    final enterpriseId = homeState.value?.selectedEnterpriseId;
+    final enterpriseId = ref.watch(
+      homeDataSelectionControllerProvider(
+        AppMode.sales,
+      ).select((s) => s.value?.enterpriseId),
+    );
     final providers = enterpriseId == null
         ? null
         : <ProviderBase<AsyncValue<dynamic>>>[

@@ -59,7 +59,9 @@ void main() {
     });
 
     test('setDateRange updates startDate and endDate and clears error', () {
-      final controller = container.read(personalizedControllerProvider.notifier);
+      final controller = container.read(
+        personalizedControllerProvider.notifier,
+      );
 
       controller.setDateRange(startDate, endDate);
       final state = container.read(personalizedControllerProvider);
@@ -70,7 +72,9 @@ void main() {
     });
 
     test('selectEnterprise updates selectedEnterpriseId', () {
-      final controller = container.read(personalizedControllerProvider.notifier);
+      final controller = container.read(
+        personalizedControllerProvider.notifier,
+      );
 
       controller.selectEnterprise(enterpriseId);
       final state = container.read(personalizedControllerProvider);
@@ -79,7 +83,9 @@ void main() {
     });
 
     test('setPeriodGrouping sets and toggles off period grouping', () {
-      final controller = container.read(personalizedControllerProvider.notifier);
+      final controller = container.read(
+        personalizedControllerProvider.notifier,
+      );
 
       controller.setPeriodGrouping(PeriodGroupingType.day);
       expect(
@@ -104,13 +110,14 @@ void main() {
     });
 
     test('toggleCategoryGrouping handles standalone categories', () {
-      final controller = container.read(personalizedControllerProvider.notifier);
+      final controller = container.read(
+        personalizedControllerProvider.notifier,
+      );
 
       controller.toggleCategoryGrouping(CategoryGroupingType.product);
-      expect(
-        container.read(personalizedControllerProvider).categoryGroupings,
-        {CategoryGroupingType.product},
-      );
+      expect(container.read(personalizedControllerProvider).categoryGroupings, {
+        CategoryGroupingType.product,
+      });
 
       // Toggling again removes it
       controller.toggleCategoryGrouping(CategoryGroupingType.product);
@@ -121,67 +128,74 @@ void main() {
 
       // Switching to cashierOperator sets only cashierOperator
       controller.toggleCategoryGrouping(CategoryGroupingType.cashierOperator);
-      expect(
-        container.read(personalizedControllerProvider).categoryGroupings,
-        {CategoryGroupingType.cashierOperator},
-      );
+      expect(container.read(personalizedControllerProvider).categoryGroupings, {
+        CategoryGroupingType.cashierOperator,
+      });
 
       // Switching to seller replaces cashierOperator
       controller.toggleCategoryGrouping(CategoryGroupingType.seller);
-      expect(
-        container.read(personalizedControllerProvider).categoryGroupings,
-        {CategoryGroupingType.seller},
-      );
+      expect(container.read(personalizedControllerProvider).categoryGroupings, {
+        CategoryGroupingType.seller,
+      });
     });
 
-    test('toggleCategoryGrouping allows payment finalization and modality together', () {
-      final controller = container.read(personalizedControllerProvider.notifier);
+    test(
+      'toggleCategoryGrouping allows payment finalization and modality together',
+      () {
+        final controller = container.read(
+          personalizedControllerProvider.notifier,
+        );
 
-      controller.toggleCategoryGrouping(CategoryGroupingType.paymentFinalization);
-      controller.toggleCategoryGrouping(CategoryGroupingType.paymentModality);
-
-      expect(
-        container.read(personalizedControllerProvider).categoryGroupings,
-        {
+        controller.toggleCategoryGrouping(
           CategoryGroupingType.paymentFinalization,
-          CategoryGroupingType.paymentModality,
-        },
-      );
+        );
+        controller.toggleCategoryGrouping(CategoryGroupingType.paymentModality);
 
-      // Toggling off finalization leaves modality
-      controller.toggleCategoryGrouping(CategoryGroupingType.paymentFinalization);
-      expect(
-        container.read(personalizedControllerProvider).categoryGroupings,
-        {CategoryGroupingType.paymentModality},
-      );
-    });
+        expect(
+          container.read(personalizedControllerProvider).categoryGroupings,
+          {
+            CategoryGroupingType.paymentFinalization,
+            CategoryGroupingType.paymentModality,
+          },
+        );
+
+        // Toggling off finalization leaves modality
+        controller.toggleCategoryGrouping(
+          CategoryGroupingType.paymentFinalization,
+        );
+        expect(
+          container.read(personalizedControllerProvider).categoryGroupings,
+          {CategoryGroupingType.paymentModality},
+        );
+      },
+    );
 
     test('toggleCategoryGrouping allows department and section together', () {
-      final controller = container.read(personalizedControllerProvider.notifier);
+      final controller = container.read(
+        personalizedControllerProvider.notifier,
+      );
 
       controller.toggleCategoryGrouping(CategoryGroupingType.productDepartment);
       controller.toggleCategoryGrouping(CategoryGroupingType.productSection);
 
-      expect(
-        container.read(personalizedControllerProvider).categoryGroupings,
-        {
-          CategoryGroupingType.productDepartment,
-          CategoryGroupingType.productSection,
-        },
-      );
+      expect(container.read(personalizedControllerProvider).categoryGroupings, {
+        CategoryGroupingType.productDepartment,
+        CategoryGroupingType.productSection,
+      });
 
       // Switching to product removes department & section
       controller.toggleCategoryGrouping(CategoryGroupingType.product);
-      expect(
-        container.read(personalizedControllerProvider).categoryGroupings,
-        {CategoryGroupingType.product},
-      );
+      expect(container.read(personalizedControllerProvider).categoryGroupings, {
+        CategoryGroupingType.product,
+      });
     });
   });
 
   group('PersonalizedController Validations', () {
     test('generateReport fails when date range is missing', () async {
-      final controller = container.read(personalizedControllerProvider.notifier);
+      final controller = container.read(
+        personalizedControllerProvider.notifier,
+      );
       controller.selectEnterprise(enterpriseId);
 
       final result = await controller.generateReport();
@@ -194,7 +208,9 @@ void main() {
     });
 
     test('generateReport fails when enterprise is missing', () async {
-      final controller = container.read(personalizedControllerProvider.notifier);
+      final controller = container.read(
+        personalizedControllerProvider.notifier,
+      );
       controller.setDateRange(startDate, endDate);
 
       final result = await controller.generateReport();
@@ -207,7 +223,9 @@ void main() {
     });
 
     test('generateReport fails when end date is before start date', () async {
-      final controller = container.read(personalizedControllerProvider.notifier);
+      final controller = container.read(
+        personalizedControllerProvider.notifier,
+      );
       controller.setDateRange(DateTime(2026, 8, 10), DateTime(2026, 8, 5));
       controller.selectEnterprise(enterpriseId);
 
@@ -221,7 +239,9 @@ void main() {
     });
 
     test('generateReport fails when hour grouping exceeds 3 days', () async {
-      final controller = container.read(personalizedControllerProvider.notifier);
+      final controller = container.read(
+        personalizedControllerProvider.notifier,
+      );
       controller.setDateRange(DateTime(2026, 8), DateTime(2026, 8, 10));
       controller.selectEnterprise(enterpriseId);
       controller.setPeriodGrouping(PeriodGroupingType.hour);
@@ -236,7 +256,9 @@ void main() {
     });
 
     test('generateReport fails when day grouping exceeds 60 days', () async {
-      final controller = container.read(personalizedControllerProvider.notifier);
+      final controller = container.read(
+        personalizedControllerProvider.notifier,
+      );
       controller.setDateRange(DateTime(2026), DateTime(2026, 4));
       controller.selectEnterprise(enterpriseId);
       controller.setPeriodGrouping(PeriodGroupingType.day);
@@ -251,7 +273,9 @@ void main() {
     });
 
     test('generateReport fails when month grouping exceeds 365 days', () async {
-      final controller = container.read(personalizedControllerProvider.notifier);
+      final controller = container.read(
+        personalizedControllerProvider.notifier,
+      );
       controller.setDateRange(DateTime(2024), DateTime(2026));
       controller.selectEnterprise(enterpriseId);
       controller.setPeriodGrouping(PeriodGroupingType.month);
@@ -267,48 +291,55 @@ void main() {
   });
 
   group('PersonalizedController Execution', () {
-    test('generateReport succeeds and stores results on valid params', () async {
-      final controller = container.read(personalizedControllerProvider.notifier);
-      controller.setDateRange(startDate, endDate);
-      controller.selectEnterprise(enterpriseId);
-      controller.setPeriodGrouping(PeriodGroupingType.day);
-      controller.toggleCategoryGrouping(CategoryGroupingType.seller);
+    test(
+      'generateReport succeeds and stores results on valid params',
+      () async {
+        final controller = container.read(
+          personalizedControllerProvider.notifier,
+        );
+        controller.setDateRange(startDate, endDate);
+        controller.selectEnterprise(enterpriseId);
+        controller.setPeriodGrouping(PeriodGroupingType.day);
+        controller.toggleCategoryGrouping(CategoryGroupingType.seller);
 
-      final expectedParams = GetSaleStatisticsParams(
-        startDate: startDate,
-        endDate: endDate,
-        enterpriseIds: const [enterpriseId],
-        groupByDay: true,
-        groupByMonth: false,
-        groupByYear: false,
-        groupByHour: false,
-        groupByProduct: false,
-        groupByProductDepartment: false,
-        groupByProductSection: false,
-        groupByPaymentFinalization: false,
-        groupByPaymentModality: false,
-        groupByCashierOperator: false,
-        groupBySeller: true,
-      );
+        final expectedParams = GetSaleStatisticsParams(
+          startDate: startDate,
+          endDate: endDate,
+          enterpriseIds: const [enterpriseId],
+          groupByDay: true,
+          groupByMonth: false,
+          groupByYear: false,
+          groupByHour: false,
+          groupByProduct: false,
+          groupByProductDepartment: false,
+          groupByProductSection: false,
+          groupByPaymentFinalization: false,
+          groupByPaymentModality: false,
+          groupByCashierOperator: false,
+          groupBySeller: true,
+        );
 
-      when(
-        () => repository.getSaleStatistics(
-          params: expectedParams,
-          ecParams: ecParams,
-        ),
-      ).thenAnswer((_) async => [statistic]);
+        when(
+          () => repository.getSaleStatistics(
+            params: expectedParams,
+            ecParams: ecParams,
+          ),
+        ).thenAnswer((_) async => [statistic]);
 
-      final result = await controller.generateReport();
+        final result = await controller.generateReport();
 
-      expect(result, isTrue);
-      final state = container.read(personalizedControllerProvider);
-      expect(state.sales.value, [statistic]);
-      expect(state.lastLoadedParams, expectedParams);
-      expect(state.validationError, isNull);
-    });
+        expect(result, isTrue);
+        final state = container.read(personalizedControllerProvider);
+        expect(state.sales.value, [statistic]);
+        expect(state.lastLoadedParams, expectedParams);
+        expect(state.validationError, isNull);
+      },
+    );
 
     test('generateReport sets sales error on repository failure', () async {
-      final controller = container.read(personalizedControllerProvider.notifier);
+      final controller = container.read(
+        personalizedControllerProvider.notifier,
+      );
       controller.setDateRange(startDate, endDate);
       controller.selectEnterprise(enterpriseId);
 

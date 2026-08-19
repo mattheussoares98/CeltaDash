@@ -1,25 +1,27 @@
+import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/core/providers.dart';
-import 'package:celta_dash/features/home/presentation/controllers/controllers.dart';
-import 'package:celta_dash/features/home/presentation/models/models.dart';
+import 'package:celta_dash/features/home/presentation/controllers/daily_comparison_controller.dart';
+import 'package:celta_dash/features/home/presentation/controllers/home_data_selection_controller.dart';
+import 'package:celta_dash/features/home/presentation/models/monthly_goal_comparison_state.dart';
 import 'package:celta_dash/features/sale_statistics/domain/entities/entities.dart';
 import 'package:celta_dash/features/sale_statistics/presentation/controllers/controllers.dart';
-import 'package:celta_dash/utils/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'monthly_goal_comparison_controller.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class MonthlyGoalComparisonController
     extends _$MonthlyGoalComparisonController {
   @override
   Future<MonthlyGoalComparisonState> build(int enterpriseId) async {
-    ref.cache();
-    //TODO test changing the logged enterprise to check whether will reload or not
     ref.watch(activeEcParamsStateControllerProvider);
 
-    final selectedDate = (await ref.watch(
-      homeControllerProvider.selectAsync((s) => s.selectedDate),
-    ));
+    final selectedDate = await ref.watch(
+      homeDataSelectionControllerProvider(
+        AppMode.sales,
+      ).selectAsync((selection) => selection?.selectedDate),
+    );
+    if (selectedDate == null) return state.requireValue;
 
     final dailyComparisonSelectedLiquidValue = ref.watch(
       dailyComparisonControllerProvider(

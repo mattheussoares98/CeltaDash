@@ -1,23 +1,26 @@
+import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/core/providers.dart';
-import 'package:celta_dash/features/home/home.dart';
+import 'package:celta_dash/features/home/presentation/controllers/home_data_selection_controller.dart';
+import 'package:celta_dash/features/home/presentation/models/daily_comparison_state.dart';
+import 'package:celta_dash/features/home/providers.dart';
 import 'package:celta_dash/features/sale_statistics/domain/entities/entities.dart';
 import 'package:celta_dash/features/sale_statistics/presentation/controllers/controllers.dart';
-import 'package:celta_dash/utils/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'daily_comparison_controller.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class DailyComparisonController extends _$DailyComparisonController {
   @override
   Future<DailyComparisonState> build(int enterpriseId) async {
-    ref.cache();
-    //TODO test changing the logged enterprise to check whether will reload or not
     ref.watch(activeEcParamsStateControllerProvider);
 
     final selectedDate = await ref.watch(
-      homeControllerProvider.selectAsync((s) => s.selectedDate),
+      homeDataSelectionControllerProvider(
+        AppMode.sales,
+      ).selectAsync((selection) => selection?.selectedDate),
     );
+    if (selectedDate == null) return state.requireValue;
     final currentSelectedDate = ref.watch(resumeCurrentDateProvider);
     final isCurrentDay =
         selectedDate.year == currentSelectedDate.year &&

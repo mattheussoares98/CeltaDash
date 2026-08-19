@@ -152,28 +152,22 @@ void main() {
     ).called(1);
   });
 
-  test(
-    'invalidation forces the current sales query to load again',
-    () async {
-      final params = makeParams(SalesPeriod.hourly);
-      when(
-        () => repository.getSaleStatistics(params: params, ecParams: ecParams),
-      ).thenAnswer((_) async => [statistic]);
-      final provider = salesControllerProvider(
-        enterpriseId,
-        SalesPeriod.hourly,
-      );
-      await container.read(provider.future);
+  test('invalidation forces the current sales query to load again', () async {
+    final params = makeParams(SalesPeriod.hourly);
+    when(
+      () => repository.getSaleStatistics(params: params, ecParams: ecParams),
+    ).thenAnswer((_) async => [statistic]);
+    final provider = salesControllerProvider(enterpriseId, SalesPeriod.hourly);
+    await container.read(provider.future);
 
-      container.invalidate(provider);
-      await container.read(provider.future);
+    container.invalidate(provider);
+    await container.read(provider.future);
 
-      expect(container.read(provider).value, [statistic]);
-      verify(
-        () => repository.getSaleStatistics(params: params, ecParams: ecParams),
-      ).called(2);
-    },
-  );
+    expect(container.read(provider).value, [statistic]);
+    verify(
+      () => repository.getSaleStatistics(params: params, ecParams: ecParams),
+    ).called(2);
+  });
 
   test('preserves repository errors in the controller state', () async {
     final params = makeParams(SalesPeriod.hourly);
@@ -181,10 +175,7 @@ void main() {
     when(
       () => repository.getSaleStatistics(params: params, ecParams: ecParams),
     ).thenThrow(exception);
-    final provider = salesControllerProvider(
-      enterpriseId,
-      SalesPeriod.hourly,
-    );
+    final provider = salesControllerProvider(enterpriseId, SalesPeriod.hourly);
 
     await expectLater(container.read(provider.future), throwsA(exception));
 

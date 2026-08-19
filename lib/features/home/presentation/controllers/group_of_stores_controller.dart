@@ -1,23 +1,27 @@
+import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/core/providers.dart';
-import 'package:celta_dash/features/home/home.dart';
+import 'package:celta_dash/features/home/presentation/controllers/home_data_selection_controller.dart';
+import 'package:celta_dash/features/home/presentation/models/models.dart';
 import 'package:celta_dash/features/sale_statistics/domain/entities/entities.dart';
 import 'package:celta_dash/features/sale_statistics/presentation/controllers/controllers.dart';
-import 'package:celta_dash/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'group_of_stores_controller.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class GroupOfStoresController extends _$GroupOfStoresController {
   @override
   Future<GroupOfStoresState> build(int enterpriseId) async {
-    ref.cache();
     ref.watch(activeEcParamsStateControllerProvider);
 
     final selectedDate = await ref.watch(
-      homeControllerProvider.selectAsync((state) => state.selectedDate),
+      homeDataSelectionControllerProvider(
+        AppMode.sales,
+      ).selectAsync((s) => s?.selectedDate),
     );
+    if (selectedDate == null) return state.requireValue;
+
     final params = GetSaleStatisticsParams(
       startDate: DateTime(
         selectedDate.year,

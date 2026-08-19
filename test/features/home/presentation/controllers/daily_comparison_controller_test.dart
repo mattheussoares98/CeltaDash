@@ -16,40 +16,46 @@ void main() {
   late EcParams ecParams;
   late DateTime now;
   late DateTime selectedDate;
+  late FakeHomeController homeController;
   const enterpriseId = 10;
 
-  ProviderContainer makeContainer() => ProviderContainer(
-    retry: (_, _) => null,
-    overrides: [
-      activeEcParamsStateControllerProvider.overrideWith(
-        () => FakeActiveEcParams(ecParams),
+  ProviderContainer makeContainer() {
+    homeController = FakeHomeController(
+      HomeState.initial(appMode: AppMode.sales).copyWith(
+        selectedDate: selectedDate,
+        selectedEnterpriseId: enterpriseId,
       ),
-      resumeCurrentDateProvider.overrideWithValue(now),
-      homeControllerProvider.overrideWith(
-        () => FakeHomeController(
-          HomeState.initial(
-            appMode: AppMode.sales,
-          ).copyWith(selectedDate: selectedDate),
+    );
+    return ProviderContainer(
+      retry: (_, _) => null,
+      overrides: [
+        activeEcParamsStateControllerProvider.overrideWith(
+          () => FakeActiveEcParams(ecParams),
         ),
-      ),
-      saleStatisticsRepositoryProvider.overrideWithValue(repository),
-    ],
-  );
+        resumeCurrentDateProvider.overrideWithValue(now),
+        homeControllerProvider.overrideWith(() => homeController),
+        saleStatisticsRepositoryProvider.overrideWithValue(repository),
+      ],
+    );
+  }
 
-  GetSaleStatisticsParams makeParams(DateTime date, {required bool isToday}) =>
-      GetSaleStatisticsParams(
-        startDate: DateTime(date.year, date.month, date.day),
-        endDate: DateTime(
-          date.year,
-          date.month,
-          date.day,
-          isToday ? now.hour : 23,
-          isToday ? now.minute : 59,
-        ),
-        groupByEnterprise: true,
-        groupByDay: true,
-        enterpriseIds: const [enterpriseId],
-      );
+  GetSaleStatisticsParams makeParams(
+    DateTime date, {
+    required bool isToday,
+    int selectedEnterpriseId = enterpriseId,
+  }) => GetSaleStatisticsParams(
+    startDate: DateTime(date.year, date.month, date.day),
+    endDate: DateTime(
+      date.year,
+      date.month,
+      date.day,
+      isToday ? now.hour : 23,
+      isToday ? now.minute : 59,
+    ),
+    groupByEnterprise: true,
+    groupByDay: true,
+    enterpriseIds: [selectedEnterpriseId],
+  );
 
   setUp(() {
     repository = MockSaleStatisticsRepository();
@@ -179,6 +185,67 @@ void main() {
     expect(result.percentageDifference, 0);
     expect(result.selectedAverageTicket, 0);
     expect(result.comparisonAverageTicket, 0);
+  });
+
+  test('reuses each enterprise state when switching selections', () async {
+    final comparisonDate = DateTime(2026, 7, 14);
+    const nextEnterpriseId = 20;
+    final params = [
+      makeParams(selectedDate, isToday: true),
+      makeParams(comparisonDate, isToday: true),
+      makeParams(
+        selectedDate,
+        isToday: true,
+        selectedEnterpriseId: nextEnterpriseId,
+      ),
+      makeParams(
+        comparisonDate,
+        isToday: true,
+        selectedEnterpriseId: nextEnterpriseId,
+      ),
+    ];
+    for (final item in params) {
+      when(
+        () => repository.getSaleStatistics(params: item, ecParams: ecParams),
+      ).thenAnswer((_) async => []);
+    }
+    final container = makeContainer();
+    addTearDown(container.dispose);
+
+    await container.read(
+      dailyComparisonControllerProvider(enterpriseId).future,
+    );
+    homeController.updateState(
+      homeController.homeState.copyWith(selectedEnterpriseId: nextEnterpriseId),
+    );
+    await pumpEventQueue();
+    await container.read(
+      dailyComparisonControllerProvider(nextEnterpriseId).future,
+    );
+
+    for (final item in params) {
+      verify(
+        () => repository.getSaleStatistics(params: item, ecParams: ecParams),
+      ).called(1);
+    }
+
+    homeController.updateState(
+      homeController.homeState.copyWith(selectedEnterpriseId: enterpriseId),
+    );
+    await pumpEventQueue();
+    await container.read(
+      dailyComparisonControllerProvider(enterpriseId).future,
+    );
+
+    homeController.updateState(
+      homeController.homeState.copyWith(
+        appMode: AppMode.financialTitles,
+        selectedDate: selectedDate.add(const Duration(days: 1)),
+      ),
+    );
+    await pumpEventQueue();
+
+    verifyNoMoreInteractions(repository);
   });
 
   test('exposes repository errors', () async {

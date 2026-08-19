@@ -34,7 +34,9 @@ void main() {
       resumeCurrentDateProvider.overrideWithValue(now),
       homeControllerProvider.overrideWith(
         () => FakeHomeController(
-          HomeState.initial(appMode: AppMode.sales).copyWith(selectedDate: now),
+          HomeState.initial(
+            appMode: AppMode.sales,
+          ).copyWith(selectedDate: now, selectedEnterpriseId: enterpriseId),
         ),
       ),
       saleStatisticsRepositoryProvider.overrideWithValue(repository),
