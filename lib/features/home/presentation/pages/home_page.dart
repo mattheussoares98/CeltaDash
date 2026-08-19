@@ -44,7 +44,10 @@ class HomePage extends HookConsumerWidget {
               ),
             )
           : null,
-      body: navigationShell,
+      body: Stack(
+        fit: StackFit.expand,
+        children: [navigationShell, const ResumeProvidersListener()],
+      ),
       bottomNavigationBar: HomeBottomNavigation(
         currentIndex: navigationShell.currentIndex,
         onTap: (index) => navigationShell.goBranch(

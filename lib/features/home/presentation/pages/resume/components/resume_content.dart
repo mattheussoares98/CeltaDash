@@ -31,10 +31,17 @@ class ResumeContent extends HookConsumerWidget {
       MonthlyAnalysisCard(enterpriseId: enterpriseId),
       GroupOfStoresCard(enterpriseId: enterpriseId),
     ];
-    final errors = providerValues.where((e) => e.value.hasError).toList();
+    final errors = providerValues
+        .where((item) => item.value.hasError && !item.value.hasValue)
+        .toList();
+    final isInitialLoading = providerValues.any(
+      (item) => item.value.isLoading && !item.value.hasValue,
+    );
 
     Widget content;
-    if (errors.isNotEmpty) {
+    if (isInitialLoading) {
+      content = const LoadingWidget();
+    } else if (errors.isNotEmpty) {
       content = ListView(
         children: [
           for (final item in errors)
