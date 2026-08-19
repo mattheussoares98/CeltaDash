@@ -132,6 +132,7 @@ ListTileThemeData get listTileThemeData => const ListTileThemeData(
   minVerticalPadding: 1,
   horizontalTitleGap: 0,
   minLeadingWidth: 0,
+  iconColor: AppColors.primary,
 );
 
 ExpansionTileThemeData get expansionTileThemeData =>
