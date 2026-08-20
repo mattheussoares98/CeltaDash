@@ -16,6 +16,7 @@ part 'scrollable_row.dart';
 part 'scrollable_table_cell.dart';
 part 'scrollable_table_column_spec.dart';
 part 'scrollable_table_header.dart';
+part 'tappable_row_indicator.dart';
 
 final Set<String> _playedRouteNames = {};
 
@@ -128,59 +129,63 @@ class ScrollableTable<T> extends HookConsumerWidget {
       return list;
     }, [items, columns, sortColumnIndex.value, sortAscending.value]);
 
-    final (bestRow, worstRow) = useMemoized(() {
-      if (highlightColumnIndex == null || sortedItems.length <= 1) {
-        return (null, null);
-      }
-
-      if (highlightColumnIndex! < 0 || highlightColumnIndex! >= columns.length) {
-        return (null, null);
-      }
-
-      final mapper = columns[highlightColumnIndex!].sortValueMapper;
-      if (mapper == null) return (null, null);
-
-      // When sortedItems is already sorted by highlightColumnIndex, O(1) instant lookup:
-      if (sortColumnIndex.value == highlightColumnIndex) {
-        final first = sortedItems.first;
-        final last = sortedItems.last;
-        final firstVal = mapper(first);
-        final lastVal = mapper(last);
-
-        if (firstVal == lastVal) return (null, null);
-
-        return sortAscending.value
-            ? (last, first) // ascending: largest is last, smallest is first
-            : (first, last); // descending: largest is first, smallest is last
-      }
-
-      // Fast single-pass O(N) fallback with pre-initialized baseline
-      T best = sortedItems.first;
-      T worst = sortedItems.first;
-      Comparable bestVal = mapper(best);
-      Comparable worstVal = bestVal;
-
-      for (int i = 1; i < sortedItems.length; i++) {
-        final item = sortedItems[i];
-        final val = mapper(item);
-        if (val.compareTo(bestVal) > 0) {
-          bestVal = val;
-          best = item;
-        } else if (val.compareTo(worstVal) < 0) {
-          worstVal = val;
-          worst = item;
+    final (bestRow, worstRow) = useMemoized(
+      () {
+        if (highlightColumnIndex == null || sortedItems.length <= 1) {
+          return (null, null);
         }
-      }
 
-      if (bestVal == worstVal) return (null, null);
-      return (best, worst);
-    }, [
-      sortedItems,
-      columns,
-      highlightColumnIndex,
-      sortColumnIndex.value,
-      sortAscending.value,
-    ]);
+        if (highlightColumnIndex! < 0 ||
+            highlightColumnIndex! >= columns.length) {
+          return (null, null);
+        }
+
+        final mapper = columns[highlightColumnIndex!].sortValueMapper;
+        if (mapper == null) return (null, null);
+
+        // When sortedItems is already sorted by highlightColumnIndex, O(1) instant lookup:
+        if (sortColumnIndex.value == highlightColumnIndex) {
+          final first = sortedItems.first;
+          final last = sortedItems.last;
+          final firstVal = mapper(first);
+          final lastVal = mapper(last);
+
+          if (firstVal == lastVal) return (null, null);
+
+          return sortAscending.value
+              ? (last, first) // ascending: largest is last, smallest is first
+              : (first, last); // descending: largest is first, smallest is last
+        }
+
+        // Fast single-pass O(N) fallback with pre-initialized baseline
+        T best = sortedItems.first;
+        T worst = sortedItems.first;
+        Comparable bestVal = mapper(best);
+        Comparable worstVal = bestVal;
+
+        for (int i = 1; i < sortedItems.length; i++) {
+          final item = sortedItems[i];
+          final val = mapper(item);
+          if (val.compareTo(bestVal) > 0) {
+            bestVal = val;
+            best = item;
+          } else if (val.compareTo(worstVal) < 0) {
+            worstVal = val;
+            worst = item;
+          }
+        }
+
+        if (bestVal == worstVal) return (null, null);
+        return (best, worst);
+      },
+      [
+        sortedItems,
+        columns,
+        highlightColumnIndex,
+        sortColumnIndex.value,
+        sortAscending.value,
+      ],
+    );
 
     Color? getEffectiveRowColor(T item) {
       final custom = rowColor?.call(item);

@@ -132,7 +132,7 @@ class _FixedLayout<T> extends StatelessWidget {
                           evenRowBg: evenRowBg,
                           oddRowBg: oddRowBg,
                         );
-                        final cell = _ScrollableTableCell(
+                        Widget cell = _ScrollableTableCell(
                           width: firstColWidth,
                           height: rowHeight,
                           spec: firstCol,
@@ -140,6 +140,7 @@ class _FixedLayout<T> extends StatelessWidget {
                           child: firstCol.cellBuilder(item),
                         );
                         if (onTapRow != null) {
+                          cell = _TappableRowIndicator(child: cell);
                           return GestureDetector(
                             behavior: HitTestBehavior.opaque,
                             onTap: () => onTapRow!(sortedItems[index]),
@@ -251,6 +252,7 @@ class _FixedLayout<T> extends StatelessWidget {
                             backgroundColor: rowBg,
                             extraPerColumn: extraPerColumn,
                             onTapRow: onTapRow,
+                            showTapIndicator: false,
                           );
                         },
                       ),

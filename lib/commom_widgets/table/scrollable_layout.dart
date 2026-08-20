@@ -79,15 +79,13 @@ class _ScrollableLayout<T> extends StatelessWidget {
             backgroundColor: rowBg,
             extraPerColumn: extraPerColumn,
             onTapRow: onTapRow,
+            showTapIndicator: true,
           );
         },
       );
 
       if (fitsInAvailableHeight) {
-        return SizedBox(
-          height: sortedItems.length * rowHeight,
-          child: list,
-        );
+        return SizedBox(height: sortedItems.length * rowHeight, child: list);
       }
       return Expanded(child: list);
     }
