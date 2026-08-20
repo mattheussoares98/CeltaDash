@@ -1,7 +1,6 @@
-import '../../../../presentation/presenters/presenters.dart';
-import '../../../../ui/pages/pages.dart';
+import '../../../../presentation/presenters/getx_sales_presenter.dart';
+import '../../../../ui/pages/sales/sales_presenter.dart' show SalesPresenter;
 import '../../factories.dart';
 
-SalesPresenter makeGetxSalesPresenter() => GetxSalesPresenter(
-      loadSaleStatistics: makeRemoteLoadSaleStatistics(),
-    );
+SalesPresenter makeGetxSalesPresenter() =>
+    GetxSalesPresenter(loadSaleStatistics: makeRemoteLoadSaleStatistics());

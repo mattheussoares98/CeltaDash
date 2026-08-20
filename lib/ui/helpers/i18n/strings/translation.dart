@@ -49,7 +49,7 @@ abstract class Translation {
   String get bsPassword;
   String get bsUserName;
   String get cancel;
-  String get canceledSales;
+  String get sales;
   String get cancellation;
   String get cancellationAbbreviated;
   String get cancelledBy;
@@ -141,7 +141,7 @@ abstract class Translation {
   String get next;
   String get no;
   String get noData;
-  String get notCanceledSales;
+  String get notSales;
   String get of;
   String get operator;
   String get operators;
@@ -175,7 +175,6 @@ abstract class Translation {
   String get result;
   String get revenue;
   String get sale;
-  String get sales;
   String get salesFrom;
   String get salesOfTheDay;
   String get salesOfTheMonth;

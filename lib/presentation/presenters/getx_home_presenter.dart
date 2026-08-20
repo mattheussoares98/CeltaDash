@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:celta_dash/ui/pages/sales/sales_presenter.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
@@ -38,8 +39,9 @@ class GetxHomePresenter extends GetxController
 
   @override
   Future<void> toggleAppMode() async {
-    final newMode =
-        appMode == AppMode.sales ? AppMode.financialTitles : AppMode.sales;
+    final newMode = appMode == AppMode.sales
+        ? AppMode.financialTitles
+        : AppMode.sales;
 
     await manageAppMode.change(newMode);
     _appMode.value = newMode;
@@ -61,8 +63,9 @@ class GetxHomePresenter extends GetxController
   ) {
     return enterprises
         .where((e) {
-          return !enterprisesToCompare
-              .any((sub) => sub.cnpj == e.cnpj && sub.id == e.id);
+          return !enterprisesToCompare.any(
+            (sub) => sub.cnpj == e.cnpj && sub.id == e.id,
+          );
         })
         .map(
           (e) => FirebaseSubEnterpriseEntity(
@@ -96,7 +99,8 @@ class GetxHomePresenter extends GetxController
             firebaseEnterprise
                 .data()["subEnterprises"]
                 ?.map<FirebaseSubEnterpriseEntity>(
-                    (e) => FirebaseSubEnterpriseModel.fromJson(e).toEntity())
+                  (e) => FirebaseSubEnterpriseModel.fromJson(e).toEntity(),
+                )
                 .toList();
 
         final missingRemote = _getMissingEnterprises(
@@ -111,11 +115,13 @@ class GetxHomePresenter extends GetxController
               {
                 "subEnterprises": FieldValue.arrayUnion(
                   missingLocal
-                      .map((e) =>
-                          FirebaseSubEnterpriseModel.fromEntity(e).toJson())
+                      .map(
+                        (e) =>
+                            FirebaseSubEnterpriseModel.fromEntity(e).toJson(),
+                      )
                       .toList(),
                 ),
-              }
+              },
             ],
             data: {},
             merge: true,
@@ -131,9 +137,11 @@ class GetxHomePresenter extends GetxController
             firebaseId: EnterpriseBuilder.entity?.firebaseId,
           );
           await localStorage.put(
-              DatabaseKeys.enterprise,
-              FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
-                  .toJson());
+            DatabaseKeys.enterprise,
+            FirebaseEnterpriseModel.fromEntity(
+              EnterpriseBuilder.entity!,
+            ).toJson(),
+          );
         }
       }
 
@@ -151,8 +159,9 @@ class GetxHomePresenter extends GetxController
   @override
   void updateSelectedEnterprise(EcEnterpriseViewModel? enterprise) {
     mainError = null;
-    int? index = EnterpriseBuilder.entity?.firebaseSubEnterprises
-        ?.indexWhere((e) => e.id == enterprise?.id?.toInt());
+    int? index = EnterpriseBuilder.entity?.firebaseSubEnterprises?.indexWhere(
+      (e) => e.id == enterprise?.id?.toInt(),
+    );
 
     if (index == null || index == -1) {
       mainError = UIError.unexpected;
@@ -177,8 +186,11 @@ class GetxHomePresenter extends GetxController
         ?.indexWhere((e) => e.id == enterprise?.id?.toInt());
 
     if (subEnterpriseIndex != null && subEnterpriseIndex != -1) {
-      bool isEnabled = EnterpriseBuilder
-              .entity?.firebaseSubEnterprises?[subEnterpriseIndex].enabled ??
+      bool isEnabled =
+          EnterpriseBuilder
+              .entity
+              ?.firebaseSubEnterprises?[subEnterpriseIndex]
+              .enabled ??
           false;
 
       selectedEnterpriseIsEnabled = isEnabled;
@@ -220,29 +232,32 @@ class GetxHomePresenter extends GetxController
         .doc(id)
         .snapshots()
         .listen((snapshot) async {
-      if (!snapshot.exists || snapshot.data() == null) return;
+          if (!snapshot.exists || snapshot.data() == null) return;
 
-      final oldEnterprise = EnterpriseBuilder.entity;
-      final newEnteprise =
-          FirebaseEnterpriseModel.fromJson(snapshot.data()!).toEntity();
-      final newSubEnterprises = newEnteprise.firebaseSubEnterprises;
+          final oldEnterprise = EnterpriseBuilder.entity;
+          final newEnteprise = FirebaseEnterpriseModel.fromJson(
+            snapshot.data()!,
+          ).toEntity();
+          final newSubEnterprises = newEnteprise.firebaseSubEnterprises;
 
-      EnterpriseBuilder.entity = FirebaseEnterpriseEntity(
-        baseUrl: newEnteprise.baseUrl ?? oldEnterprise?.baseUrl,
-        enterpriseName:
-            newEnteprise.enterpriseName ?? oldEnterprise?.enterpriseName,
-        bsUser: oldEnterprise?.bsUser,
-        firebaseId: newEnteprise.firebaseId ?? oldEnterprise?.firebaseId,
-        firebaseSubEnterprises: newSubEnterprises,
-      );
+          EnterpriseBuilder.entity = FirebaseEnterpriseEntity(
+            baseUrl: newEnteprise.baseUrl ?? oldEnterprise?.baseUrl,
+            enterpriseName:
+                newEnteprise.enterpriseName ?? oldEnterprise?.enterpriseName,
+            bsUser: oldEnterprise?.bsUser,
+            firebaseId: newEnteprise.firebaseId ?? oldEnterprise?.firebaseId,
+            firebaseSubEnterprises: newSubEnterprises,
+          );
 
-      await localStorage.put(
-        DatabaseKeys.enterprise,
-        FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson(),
-      );
+          await localStorage.put(
+            DatabaseKeys.enterprise,
+            FirebaseEnterpriseModel.fromEntity(
+              EnterpriseBuilder.entity!,
+            ).toJson(),
+          );
 
-      selectedEnterprise = _selectedEnterprise.value;
-    });
+          selectedEnterprise = _selectedEnterprise.value;
+        });
   }
 
   @override
@@ -289,9 +304,9 @@ class GetxHomePresenter extends GetxController
       );
 
       await localStorage.put(
-          DatabaseKeys.enterprise,
-          FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!)
-              .toJson());
+        DatabaseKeys.enterprise,
+        FirebaseEnterpriseModel.fromEntity(EnterpriseBuilder.entity!).toJson(),
+      );
       await localStorage.delete(DatabaseKeys.allEnterprises);
 
       navigateTo.navigate(pageRoute: PageRoutes.splash, clear: true);
@@ -316,8 +331,8 @@ class GetxHomePresenter extends GetxController
   }
 
   @override
-  void goToCanceledSalesPage() {
-    navigateTo.navigate(pageRoute: PageRoutes.canceledSales);
+  void goToSalesPage() {
+    navigateTo.navigate(pageRoute: PageRoutes.sales);
   }
 
   @override
@@ -346,8 +361,8 @@ class GetxHomePresenter extends GetxController
   }
 
   @override
-  void goToNotCanceledSalesPage() {
-    navigateTo.navigate(pageRoute: PageRoutes.notCanceledSales);
+  void goToNotSalesPage() {
+    navigateTo.navigate(pageRoute: PageRoutes.notSales);
   }
 
   final _selectedEnterpriseIsEnabled = false.obs;

@@ -1,3 +1,4 @@
+import 'package:celta_dash/ui/pages/sales/sales.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
@@ -7,10 +8,7 @@ import '../../pages.dart';
 
 class HourTable extends StatelessWidget {
   final List<SaleStatisticViewModel> hourlyStatistics;
-  const HourTable({
-    super.key,
-    required this.hourlyStatistics,
-  });
+  const HourTable({super.key, required this.hourlyStatistics});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +37,9 @@ class HourTable extends StatelessWidget {
         PersonalizedTableCell(value: R.string.hour, isTitle: true),
         PersonalizedTableCell(value: R.string.sales, isTitle: true),
         PersonalizedTableCell(
-            value: R.string.quantityAbbreviated, isTitle: true),
+          value: R.string.quantityAbbreviated,
+          isTitle: true,
+        ),
         PersonalizedTableCell(value: R.string.average, isTitle: true),
         PersonalizedTableCell(value: R.string.share, isTitle: true),
       ],

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:celta_dash/ui/pages/sales/sales_presenter.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/helpers/helpers.dart';
@@ -18,7 +19,7 @@ abstract class HomePresenter implements Listenable {
   void initFirebaseStream();
   void updateSelectedIndex(int index);
   void updateSelectedDate(DateTime date);
-  void goToCanceledSalesPage();
+  void goToSalesPage();
   void goToCompareDays();
   void goToCompareMonths();
   void goToDepartmentsPage();
@@ -26,7 +27,7 @@ abstract class HomePresenter implements Listenable {
   void goToPaymentsTypePage();
   void goToSellersPage();
   void goToEnterprisesManagerPage();
-  void goToNotCanceledSalesPage();
+  void goToNotSalesPage();
 
   Future<void> getBsEnterprises();
   Future<void> loadAppMode();

@@ -17,7 +17,7 @@ class _PagesSalesInformationsState extends State<PagesSalesInformations> {
   @override
   Widget build(BuildContext context) {
     final bsSalesPresenter = Get.find<BsSalesPresenter>();
-    final resultSales = bsSalesPresenter.notCanceledSales;
+    final resultSales = bsSalesPresenter.notSales;
     final recordInThisPage = resultSales?.recordsOnThisPage ?? 1;
     final totalRecords = resultSales?.totalRecords ?? 0;
     final actualPage = resultSales?.actualPage ?? 1;
@@ -45,7 +45,7 @@ class _PagesSalesInformationsState extends State<PagesSalesInformations> {
                   children: [
                     IconButton(
                       onPressed:
-                          bsSalesPresenter.notCanceledSales?.actualPage == 1 ||
+                          bsSalesPresenter.notSales?.actualPage == 1 ||
                                   widget.isLoading
                               ? null
                               : () async {
@@ -63,9 +63,9 @@ class _PagesSalesInformationsState extends State<PagesSalesInformations> {
                     ),
                     IconButton(
                       onPressed:
-                          bsSalesPresenter.notCanceledSales?.actualPage ==
+                          bsSalesPresenter.notSales?.actualPage ==
                                       bsSalesPresenter
-                                          .notCanceledSales?.totalPages ||
+                                          .notSales?.totalPages ||
                                   widget.isLoading
                               ? null
                               : () async {

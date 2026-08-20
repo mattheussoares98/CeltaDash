@@ -30,10 +30,7 @@ class GetxBsSalesPresenter extends GetxController
   final homePresenter = Get.find<HomePresenter>();
 
   @override
-  Future<void> getCanceledSales({
-    PeriodType? periodType,
-    bool? forceRefresh,
-  }) async {
+  Future<void> getSales({PeriodType? periodType, bool? forceRefresh}) async {
     if (isLoadingValue == true) {
       isLoading = false;
       isLoading = true;
@@ -93,14 +90,14 @@ class GetxBsSalesPresenter extends GetxController
       final newSales = SaleMovementModel.fromEntity(response).toViewModel();
       if (selectedPeriod == PeriodType.daily) {
         lastGetDailyParams = params;
-        _dailyCanceledSales.value = newSales;
+        _dailySales.value = newSales;
       } else {
         lastGetMonthlyParams = params;
-        _monthlyCanceledSales.value = newSales;
+        _monthlySales.value = newSales;
       }
 
       appAnalyticsService.addNewMonthlyAnalytic(
-        reportType: ReportType.canceledSales,
+        reportType: ReportType.sales,
         periodType: selectedPeriod,
       );
     } catch (e) {
@@ -125,8 +122,9 @@ class GetxBsSalesPresenter extends GetxController
       if (_selectedSale.value == null) {
         throw DomainError.unexpected;
       }
-      final sale =
-          SaleMovementCollectionItemModel.fromViewModel(_selectedSale.value!);
+      final sale = SaleMovementCollectionItemModel.fromViewModel(
+        _selectedSale.value!,
+      );
       final date = DateTime(
         sale.dateHourOfBilling!.year,
         sale.dateHourOfBilling!.month,
@@ -148,9 +146,9 @@ class GetxBsSalesPresenter extends GetxController
       );
 
       if (loadedSale.collection.isNotEmpty) {
-        selectedSale =
-            SaleMovementCollectionItemModel.fromEntity(loadedSale.collection[0])
-                .toViewModel();
+        selectedSale = SaleMovementCollectionItemModel.fromEntity(
+          loadedSale.collection[0],
+        ).toViewModel();
       }
     } catch (e) {
       mainError = getUIError(e);
@@ -160,7 +158,7 @@ class GetxBsSalesPresenter extends GetxController
   }
 
   @override
-  Future<bool> getNotCanceledSales({
+  Future<bool> getNotSales({
     required DateTime date,
     List<String>? documentNumbers,
     int? actualPage,
@@ -184,18 +182,18 @@ class GetxBsSalesPresenter extends GetxController
         actualPage: actualPage ?? 1,
         documentNumbers:
             documentNumbers?.length == 1 && documentNumbers![0].isEmpty
-                ? null
-                : documentNumbers,
+            ? null
+            : documentNumbers,
       );
       final response = await loadSaleMovements.get(params);
       lastParams = params;
 
       final newSales = SaleMovementModel.fromEntity(response).toViewModel();
 
-      _notCanceledSales.value = newSales;
+      _notSales.value = newSales;
 
       appAnalyticsService.addNewMonthlyAnalytic(
-        reportType: ReportType.notCanceledSales,
+        reportType: ReportType.notSales,
         periodType: PeriodType.daily,
       );
       return newSales.collection.isNotEmpty;
@@ -210,18 +208,18 @@ class GetxBsSalesPresenter extends GetxController
   @override
   Future<void> changeSalesPage(bool isAdvancing) async {
     try {
-      final oldIndex = _notCanceledSales.value?.actualPage ?? 1;
+      final oldIndex = _notSales.value?.actualPage ?? 1;
       int newIndex = isAdvancing ? oldIndex + 1 : oldIndex - 1;
 
-      final maxIndex = _notCanceledSales.value?.totalPages ?? 1;
+      final maxIndex = _notSales.value?.totalPages ?? 1;
 
       if (newIndex < 1 || newIndex > maxIndex) return;
 
       final date = lastGetSaleMovementParams!.startDate;
 
-      await getNotCanceledSales(date: date, actualPage: newIndex);
+      await getNotSales(date: date, actualPage: newIndex);
     } catch (e) {
-      //the error is already treated in getNotCanceledSales
+      //the error is already treated in getNotSales
     }
   }
 
@@ -234,16 +232,15 @@ class GetxBsSalesPresenter extends GetxController
     _selectedSale.value = value;
   }
 
-  final _dailyCanceledSales = Rx<SaleMovementViewModel?>(null);
+  final _dailySales = Rx<SaleMovementViewModel?>(null);
   @override
-  SaleMovementViewModel? get dailyCanceledSales => _dailyCanceledSales.value;
+  SaleMovementViewModel? get dailySales => _dailySales.value;
 
-  final _monthlyCanceledSales = Rx<SaleMovementViewModel?>(null);
+  final _monthlySales = Rx<SaleMovementViewModel?>(null);
   @override
-  SaleMovementViewModel? get monthlyCanceledSales =>
-      _monthlyCanceledSales.value;
+  SaleMovementViewModel? get monthlySales => _monthlySales.value;
 
-  final _notCanceledSales = Rx<SaleMovementViewModel?>(null);
+  final _notSales = Rx<SaleMovementViewModel?>(null);
   @override
-  SaleMovementViewModel? get notCanceledSales => _notCanceledSales.value;
+  SaleMovementViewModel? get notSales => _notSales.value;
 }

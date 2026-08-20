@@ -1,3 +1,4 @@
+import 'package:celta_dash/ui/pages/sales/sales.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -8,10 +9,7 @@ import '../../pages.dart';
 
 class DayTable extends StatelessWidget {
   final List<SaleStatisticViewModel> dailyStatistics;
-  const DayTable({
-    super.key,
-    required this.dailyStatistics,
-  });
+  const DayTable({super.key, required this.dailyStatistics});
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +32,15 @@ class DayTable extends StatelessWidget {
         PersonalizedTableCell(value: R.string.day, isTitle: true),
         PersonalizedTableCell(value: R.string.sales, isTitle: true),
         PersonalizedTableCell(
-            value: R.string.quantityAbbreviated, isTitle: true),
+          value: R.string.quantityAbbreviated,
+          isTitle: true,
+        ),
         PersonalizedTableCell(value: R.string.average, isTitle: true),
         PersonalizedTableCell(value: R.string.share, isTitle: true),
       ],
-      rowValues:
-          dailyStatistics.map((e) => e.Date?.day).toSet().toList().map((day) {
+      rowValues: dailyStatistics.map((e) => e.Date?.day).toSet().toList().map((
+        day,
+      ) {
         final salesByDay = dailyStatistics
             .filteredSales(filterDay: day)
             .map((e) => e.toViewModel())
@@ -53,10 +54,10 @@ class DayTable extends StatelessWidget {
           day ?? 0,
         );
 
-        final subtitle = DateFormat('EEEE', 'pt_BR')
-            .format(rowDay)
-            .substring(0, 3)
-            .toUpperCase();
+        final subtitle = DateFormat(
+          'EEEE',
+          'pt_BR',
+        ).format(rowDay).substring(0, 3).toUpperCase();
 
         return [
           PersonalizedTableCell(

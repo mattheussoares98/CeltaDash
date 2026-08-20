@@ -1,7 +1,6 @@
 import 'package:celta_dash/data/models/models.dart';
 import 'package:celta_dash/domain/entities/entities.dart';
 import 'package:celta_dash/domain/helpers/helpers.dart';
-import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/presentation/presenters/presenters.dart';
 import 'package:celta_dash/ui/helpers/helpers.dart';
 import 'package:celta_dash/ui/pages/pages.dart';
@@ -96,7 +95,7 @@ void main() {
         expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
         expectLater(sut.mainErrorStream, emits(null));
 
-        await sut.getCanceledSales();
+        await sut.getSales();
       });
       test("Should emit correct values on error", () async {
         expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
@@ -107,30 +106,30 @@ void main() {
 
         loadSaleMovements.mockGetError();
 
-        await sut.getCanceledSales();
+        await sut.getSales();
       });
       test("Should update selected period correctly", () async {
-        await sut.getCanceledSales(periodType: PeriodType.daily);
+        await sut.getSales(periodType: PeriodType.daily);
         expect(sut.selectedPeriod, PeriodType.daily);
 
-        await sut.getCanceledSales(periodType: PeriodType.monthly);
+        await sut.getSales(periodType: PeriodType.monthly);
         expect(sut.selectedPeriod, PeriodType.monthly);
 
-        await sut.getCanceledSales(periodType: PeriodType.daily);
+        await sut.getSales(periodType: PeriodType.daily);
         expect(sut.selectedPeriod, PeriodType.daily);
       });
       test("Should update sale movements correctly", () async {
-        await sut.getCanceledSales();
+        await sut.getSales();
 
         expect(
-          sut.dailyCanceledSales,
+          sut.dailySales,
           SaleMovementModel.fromEntity(saleMovementEntity).toViewModel(),
         );
 
-        await sut.getCanceledSales(periodType: PeriodType.monthly);
+        await sut.getSales(periodType: PeriodType.monthly);
 
         expect(
-          sut.monthlyCanceledSales,
+          sut.monthlySales,
           SaleMovementModel.fromEntity(saleMovementEntity).toViewModel(),
         );
       });
@@ -138,11 +137,11 @@ void main() {
         final period = PeriodType
             .values[faker.randomGenerator.integer(PeriodType.values.length)];
 
-        await sut.getCanceledSales(forceRefresh: true, periodType: period);
+        await sut.getSales(forceRefresh: true, periodType: period);
 
         verify(
           () => appAnalyticsService.addNewMonthlyAnalytic(
-            reportType: ReportType.canceledSales,
+            reportType: ReportType.sales,
             periodType: period,
           ),
         ).called(1);
@@ -151,7 +150,7 @@ void main() {
 
     group("Daily", () {
       test("Should load sales with correct params", () async {
-        await sut.getCanceledSales(periodType: PeriodType.daily);
+        await sut.getSales(periodType: PeriodType.daily);
 
         verify(
           () => loadSaleMovements.get(
@@ -176,7 +175,7 @@ void main() {
       });
 
       test("Should call load sale movements with correct values", () async {
-        await sut.getCanceledSales(periodType: PeriodType.daily);
+        await sut.getSales(periodType: PeriodType.daily);
 
         final startDate = DateTime(
           homePresenter.selectedDateMock.year,
@@ -198,8 +197,8 @@ void main() {
         ).called(1);
       });
       test("Should not load again if dont force refresh", () async {
-        await sut.getCanceledSales(periodType: PeriodType.daily);
-        await sut.getCanceledSales(periodType: PeriodType.daily);
+        await sut.getSales(periodType: PeriodType.daily);
+        await sut.getSales(periodType: PeriodType.daily);
 
         final startDate = DateTime(
           homePresenter.selectedDateMock.year,
@@ -221,7 +220,7 @@ void main() {
         ).called(1);
       });
       test("Should update last get sales params correctly", () async {
-        await sut.getCanceledSales(periodType: PeriodType.daily);
+        await sut.getSales(periodType: PeriodType.daily);
 
         final startDate = DateTime(
           homePresenter.selectedDateMock.year,
@@ -241,16 +240,16 @@ void main() {
       });
 
       test("Should update sale movements correctly", () async {
-        await sut.getCanceledSales(periodType: PeriodType.daily);
+        await sut.getSales(periodType: PeriodType.daily);
 
         expect(
-          sut.dailyCanceledSales,
+          sut.dailySales,
           SaleMovementModel.fromEntity(saleMovementEntity).toViewModel(),
         );
       });
 
       test("Should load again if change the selected enterprise", () async {
-        await sut.getCanceledSales();
+        await sut.getSales();
 
         final startDate = DateTime(
           homePresenter.selectedDateMock.year,
@@ -274,7 +273,7 @@ void main() {
         homePresenter.selectedEnterpriseMock = EnterpriseModel.fromEntity(
           EntityFactory.makeEnterpriseEntity(),
         ).toViewModel();
-        await sut.getCanceledSales();
+        await sut.getSales();
 
         verify(
           () => loadSaleMovements.get(
@@ -293,7 +292,7 @@ void main() {
 
     group("Monthly", () {
       test("Should load sales with correct params", () async {
-        await sut.getCanceledSales(periodType: PeriodType.monthly);
+        await sut.getSales(periodType: PeriodType.monthly);
 
         verify(
           () => loadSaleMovements.get(
@@ -317,7 +316,7 @@ void main() {
       });
 
       test("Should call load sale movements with correct values", () async {
-        await sut.getCanceledSales(periodType: PeriodType.monthly);
+        await sut.getSales(periodType: PeriodType.monthly);
 
         verify(
           () => loadSaleMovements.get(
@@ -340,8 +339,8 @@ void main() {
         ).called(1);
       });
       test("Should not load again if dont force refresh", () async {
-        await sut.getCanceledSales(periodType: PeriodType.monthly);
-        await sut.getCanceledSales(periodType: PeriodType.monthly);
+        await sut.getSales(periodType: PeriodType.monthly);
+        await sut.getSales(periodType: PeriodType.monthly);
 
         verify(
           () => loadSaleMovements.get(
@@ -364,7 +363,7 @@ void main() {
         ).called(1);
       });
       test("Should update last get sales params correctly", () async {
-        await sut.getCanceledSales(periodType: PeriodType.monthly);
+        await sut.getSales(periodType: PeriodType.monthly);
 
         expect(
           sut.lastGetMonthlyParams,
@@ -385,16 +384,16 @@ void main() {
       });
 
       test("Should update sale movements correctly", () async {
-        await sut.getCanceledSales(periodType: PeriodType.monthly);
+        await sut.getSales(periodType: PeriodType.monthly);
 
         expect(
-          sut.monthlyCanceledSales,
+          sut.monthlySales,
           SaleMovementModel.fromEntity(saleMovementEntity).toViewModel(),
         );
       });
 
       test("Should load again if change the selected enterprise", () async {
-        await sut.getCanceledSales(periodType: PeriodType.monthly);
+        await sut.getSales(periodType: PeriodType.monthly);
 
         verify(
           () => loadSaleMovements.get(
@@ -419,7 +418,7 @@ void main() {
         homePresenter.selectedEnterpriseMock = EnterpriseModel.fromEntity(
           EntityFactory.makeEnterpriseEntity(),
         ).toViewModel();
-        await sut.getCanceledSales(periodType: PeriodType.monthly);
+        await sut.getSales(periodType: PeriodType.monthly);
 
         verify(
           () => loadSaleMovements.get(
@@ -581,7 +580,7 @@ void main() {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
       expectLater(sut.mainErrorStream, emits(null));
 
-      await sut.getNotCanceledSales(date: selectedDate);
+      await sut.getNotSales(date: selectedDate);
     });
     test("Should emit correct values on error and return false", () async {
       expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
@@ -592,22 +591,22 @@ void main() {
 
       loadSaleMovements.mockGetError();
 
-      final value = await sut.getNotCanceledSales(date: selectedDate);
+      final value = await sut.getNotSales(date: selectedDate);
 
       expect(value, false);
     });
     test("Should update daily sales correctly", () async {
-      await sut.getNotCanceledSales(date: selectedDate);
+      await sut.getNotSales(date: selectedDate);
 
       expect(
-        sut.notCanceledSales,
+        sut.notSales,
         SaleMovementModel.fromEntity(saleMovementEntity).toViewModel(),
       );
     });
     test(
       "Should get sales with correct values when doesnt pass a date as parameter",
       () async {
-        await sut.getNotCanceledSales(
+        await sut.getNotSales(
           documentNumbers: documentNumbers,
           date: selectedDate,
         );
@@ -631,10 +630,7 @@ void main() {
     test(
       "Should not pass the document number parameter if has only empty values",
       () async {
-        await sut.getNotCanceledSales(
-          documentNumbers: [""],
-          date: selectedDate,
-        );
+        await sut.getNotSales(documentNumbers: [""], date: selectedDate);
 
         verify(
           () => loadSaleMovements.get(
@@ -652,11 +648,11 @@ void main() {
       },
     );
     test("Should add correct app analytics", () async {
-      await sut.getNotCanceledSales(date: selectedDate);
+      await sut.getNotSales(date: selectedDate);
 
       verify(
         () => appAnalyticsService.addNewMonthlyAnalytic(
-          reportType: ReportType.notCanceledSales,
+          reportType: ReportType.notSales,
           periodType: PeriodType.daily,
         ),
       ).called(1);
@@ -667,12 +663,12 @@ void main() {
         EntityFactory.makeSaleMovementEntity(collection: []),
       );
 
-      final success = await sut.getNotCanceledSales(date: selectedDate);
+      final success = await sut.getNotSales(date: selectedDate);
 
       expect(success, false);
     });
     test("Should return true on success", () async {
-      final success = await sut.getNotCanceledSales(date: selectedDate);
+      final success = await sut.getNotSales(date: selectedDate);
 
       expect(success, true);
     });

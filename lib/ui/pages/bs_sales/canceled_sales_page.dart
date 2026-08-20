@@ -9,14 +9,14 @@ import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 import '../pages.dart';
 
-class CanceledSalesPage extends StatefulWidget {
-  const CanceledSalesPage({super.key});
+class SalesPage extends StatefulWidget {
+  const SalesPage({super.key});
 
   @override
-  State<CanceledSalesPage> createState() => _CanceledSalesPageState();
+  State<SalesPage> createState() => _SalesPageState();
 }
 
-class _CanceledSalesPageState extends State<CanceledSalesPage> {
+class _SalesPageState extends State<SalesPage> {
   @override
   void initState() {
     super.initState();
@@ -30,7 +30,7 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
 
   void reloadSales({bool? forceRefresh}) {
     final bsSalesPresenter = Get.find<BsSalesPresenter>();
-    bsSalesPresenter.getCanceledSales(forceRefresh: forceRefresh);
+    bsSalesPresenter.getSales(forceRefresh: forceRefresh);
   }
 
   @override
@@ -62,22 +62,16 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                     isLoading: loadingSnap.data,
                     selectedPeriodType: bsSalesPresenter.selectedPeriod,
                     onTapDaily: () {
-                      bsSalesPresenter.getCanceledSales(
-                        periodType: PeriodType.daily,
-                      );
+                      bsSalesPresenter.getSales(periodType: PeriodType.daily);
                     },
                     onTapMonthly: () {
-                      bsSalesPresenter.getCanceledSales(
-                        periodType: PeriodType.monthly,
-                      );
+                      bsSalesPresenter.getSales(periodType: PeriodType.monthly);
                     },
                   ),
                 ),
                 Expanded(
                   child: Obx(() {
-                    final dailySales = bsSalesPresenter
-                        .dailyCanceledSales
-                        ?.collection
+                    final dailySales = bsSalesPresenter.dailySales?.collection
                         .map(
                           (e) =>
                               SaleMovementCollectionItemModel.fromViewModel(e),
@@ -95,7 +89,7 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                         .toList();
 
                     final monthlySales = bsSalesPresenter
-                        .monthlyCanceledSales
+                        .monthlySales
                         ?.collection
                         .map(
                           (e) =>
@@ -133,7 +127,7 @@ class _CanceledSalesPageState extends State<CanceledSalesPage> {
                         ScrollableTableItem(
                           titleMinHeight: isPortrait ? 43 : 30,
                           selectedPeriodType: bsSalesPresenter.selectedPeriod,
-                          pdfFileName: R.string.canceledSales,
+                          pdfFileName: R.string.sales,
                           columnsIndexToSum: const [3],
                           fixFirstColumn: true,
                           indexToSort: 2,

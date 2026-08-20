@@ -10,9 +10,7 @@ import '../../helpers/helpers.dart';
 import '../pages.dart';
 
 class MorePage extends StatelessWidget {
-  const MorePage({
-    super.key,
-  });
+  const MorePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +25,10 @@ class MorePage extends StatelessWidget {
       //   onTap: homePresenter.goToProfitabilityPage,
       //   title: R.string.profitability,
       // ),
+      DefaultButton(onTap: homePresenter.goToSalesPage, title: R.string.sales),
       DefaultButton(
-        onTap: homePresenter.goToCanceledSalesPage,
-        title: R.string.canceledSales,
-      ),
-      DefaultButton(
-        onTap: homePresenter.goToNotCanceledSalesPage,
-        title: R.string.notCanceledSales,
+        onTap: homePresenter.goToNotSalesPage,
+        title: R.string.notSales,
       ),
       DefaultButton(
         onTap: homePresenter.goToSellersPage,
@@ -71,23 +66,21 @@ class MorePage extends StatelessWidget {
               icon: Icon(
                 isIOS ? CupertinoIcons.arrow_right_square : Icons.exit_to_app,
               ),
-            )
+            ),
           ],
         ),
-        body: Obx(
-          () {
-            final enterprises = homePresenter.enterprises;
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: enterprises == null || enterprises.isEmpty
-                    ? [const EmptySales(isLoading: false)]
-                    : buttons,
-              ),
-            );
-          },
-        ),
+        body: Obx(() {
+          final enterprises = homePresenter.enterprises;
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: enterprises == null || enterprises.isEmpty
+                  ? [const EmptySales(isLoading: false)]
+                  : buttons,
+            ),
+          );
+        }),
       ),
     );
   }

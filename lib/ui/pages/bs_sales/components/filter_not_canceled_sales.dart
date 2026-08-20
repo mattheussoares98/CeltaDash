@@ -10,13 +10,13 @@ import '../../../components/components.dart';
 import '../../../helpers/helpers.dart';
 import '../../pages.dart';
 
-class FilterNotCanceledSales extends StatefulWidget {
+class FilterNotSales extends StatefulWidget {
   final bool isLoading;
   final bool alreadySearched;
   final VoidCallback onSearch;
   final DateTime? selectedDate;
   final void Function(DateTime date) onChangeDate;
-  const FilterNotCanceledSales({
+  const FilterNotSales({
     super.key,
     required this.isLoading,
     required this.alreadySearched,
@@ -26,10 +26,10 @@ class FilterNotCanceledSales extends StatefulWidget {
   });
 
   @override
-  State<FilterNotCanceledSales> createState() => _FilterNotCanceledSalesState();
+  State<FilterNotSales> createState() => _FilterNotSalesState();
 }
 
-class _FilterNotCanceledSalesState extends State<FilterNotCanceledSales> {
+class _FilterNotSalesState extends State<FilterNotSales> {
   final documentNumberController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
@@ -52,7 +52,7 @@ class _FilterNotCanceledSalesState extends State<FilterNotCanceledSales> {
       return;
     }
 
-    bool succeeds = await presenter.getNotCanceledSales(
+    bool succeeds = await presenter.getNotSales(
       documentNumbers: [documentNumberController.text],
       date: widget.selectedDate!,
     );

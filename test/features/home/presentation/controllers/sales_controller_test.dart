@@ -20,9 +20,9 @@ void main() {
   final selectedDate = DateTime(2026, 8, 17);
   const enterpriseId = 10;
 
-  GetSaleStatisticsParams makeParams(SalesPeriod period) {
+  GetSaleStatisticsParams makeParams(HomeSalesPeriod period) {
     switch (period) {
-      case SalesPeriod.hourly:
+      case HomeSalesPeriod.hourly:
         final date = DateTime(2026, 8, 17);
         return GetSaleStatisticsParams(
           enterpriseIds: const [enterpriseId],
@@ -31,7 +31,7 @@ void main() {
           groupByEnterprise: true,
           groupByHour: true,
         );
-      case SalesPeriod.daily:
+      case HomeSalesPeriod.daily:
         return GetSaleStatisticsParams(
           enterpriseIds: const [enterpriseId],
           startDate: DateTime(2026, 8),
@@ -39,7 +39,7 @@ void main() {
           groupByEnterprise: true,
           groupByDay: true,
         );
-      case SalesPeriod.monthly:
+      case HomeSalesPeriod.monthly:
         return GetSaleStatisticsParams(
           enterpriseIds: const [enterpriseId],
           startDate: DateTime(2026),
@@ -48,7 +48,7 @@ void main() {
           groupByMonth: true,
           groupByYear: true,
         );
-      case SalesPeriod.yearly:
+      case HomeSalesPeriod.yearly:
         return GetSaleStatisticsParams(
           enterpriseIds: const [enterpriseId],
           startDate: DateTime(2024),
@@ -89,13 +89,13 @@ void main() {
   tearDown(() => container.dispose());
 
   test('loads the selected day statistics for hourly period', () async {
-    final params = makeParams(SalesPeriod.hourly);
+    final params = makeParams(HomeSalesPeriod.hourly);
     when(
       () => repository.getSaleStatistics(params: params, ecParams: ecParams),
     ).thenAnswer((_) async => [statistic]);
 
     final result = await container.read(
-      salesControllerProvider(enterpriseId, SalesPeriod.hourly).future,
+      homeSalesControllerProvider(enterpriseId, HomeSalesPeriod.hourly).future,
     );
 
     expect(result, [statistic]);
@@ -105,13 +105,13 @@ void main() {
   });
 
   test('loads the entire month statistics for daily period', () async {
-    final params = makeParams(SalesPeriod.daily);
+    final params = makeParams(HomeSalesPeriod.daily);
     when(
       () => repository.getSaleStatistics(params: params, ecParams: ecParams),
     ).thenAnswer((_) async => [statistic]);
 
     final result = await container.read(
-      salesControllerProvider(enterpriseId, SalesPeriod.daily).future,
+      homeSalesControllerProvider(enterpriseId, HomeSalesPeriod.daily).future,
     );
 
     expect(result, [statistic]);
@@ -121,13 +121,13 @@ void main() {
   });
 
   test('loads the entire year statistics for monthly period', () async {
-    final params = makeParams(SalesPeriod.monthly);
+    final params = makeParams(HomeSalesPeriod.monthly);
     when(
       () => repository.getSaleStatistics(params: params, ecParams: ecParams),
     ).thenAnswer((_) async => [statistic]);
 
     final result = await container.read(
-      salesControllerProvider(enterpriseId, SalesPeriod.monthly).future,
+      homeSalesControllerProvider(enterpriseId, HomeSalesPeriod.monthly).future,
     );
 
     expect(result, [statistic]);
@@ -137,13 +137,13 @@ void main() {
   });
 
   test('loads the past 3 years statistics for yearly period', () async {
-    final params = makeParams(SalesPeriod.yearly);
+    final params = makeParams(HomeSalesPeriod.yearly);
     when(
       () => repository.getSaleStatistics(params: params, ecParams: ecParams),
     ).thenAnswer((_) async => [statistic]);
 
     final result = await container.read(
-      salesControllerProvider(enterpriseId, SalesPeriod.yearly).future,
+      homeSalesControllerProvider(enterpriseId, HomeSalesPeriod.yearly).future,
     );
 
     expect(result, [statistic]);
@@ -153,11 +153,14 @@ void main() {
   });
 
   test('invalidation forces the current sales query to load again', () async {
-    final params = makeParams(SalesPeriod.hourly);
+    final params = makeParams(HomeSalesPeriod.hourly);
     when(
       () => repository.getSaleStatistics(params: params, ecParams: ecParams),
     ).thenAnswer((_) async => [statistic]);
-    final provider = salesControllerProvider(enterpriseId, SalesPeriod.hourly);
+    final provider = homeSalesControllerProvider(
+      enterpriseId,
+      HomeSalesPeriod.hourly,
+    );
     await container.read(provider.future);
 
     container.invalidate(provider);
@@ -170,12 +173,15 @@ void main() {
   });
 
   test('preserves repository errors in the controller state', () async {
-    final params = makeParams(SalesPeriod.hourly);
+    final params = makeParams(HomeSalesPeriod.hourly);
     final exception = Exception('failed to load sales');
     when(
       () => repository.getSaleStatistics(params: params, ecParams: ecParams),
     ).thenThrow(exception);
-    final provider = salesControllerProvider(enterpriseId, SalesPeriod.hourly);
+    final provider = homeSalesControllerProvider(
+      enterpriseId,
+      HomeSalesPeriod.hourly,
+    );
 
     await expectLater(container.read(provider.future), throwsA(exception));
 

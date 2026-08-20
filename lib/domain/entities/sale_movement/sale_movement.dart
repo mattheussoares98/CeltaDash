@@ -1,1 +1,1 @@
-export 'package:celta_dash/features/canceled_sales/domain/entities/entities.dart';
+export 'package:celta_dash/features/sales/domain/entities/entities.dart';

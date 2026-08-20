@@ -1,33 +1,32 @@
 import '../../../ui/helpers/helpers.dart';
 
 enum ReportType {
-  canceledSales,
+  sales,
   compareDays,
   compareMonths,
   departments,
-  notCanceledSales,
+  notSales,
   operators,
   payments,
   personalized,
   products,
   resume,
-  sales,
   sellers,
 }
 
 extension ReportTypeExtension on ReportType {
   String get description {
     switch (this) {
-      case ReportType.canceledSales:
-        return R.string.canceledSales;
+      case ReportType.sales:
+        return R.string.sales;
       case ReportType.compareDays:
         return R.string.compareDays;
       case ReportType.compareMonths:
         return R.string.compareMonths;
       case ReportType.departments:
         return R.string.departments;
-      case ReportType.notCanceledSales:
-        return R.string.notCanceledSales;
+      case ReportType.notSales:
+        return R.string.notSales;
       case ReportType.operators:
         return R.string.operators;
       case ReportType.payments:
@@ -38,8 +37,6 @@ extension ReportTypeExtension on ReportType {
         return R.string.products;
       case ReportType.resume:
         return R.string.resume;
-      case ReportType.sales:
-        return R.string.sales;
       case ReportType.sellers:
         return R.string.sellers;
     }

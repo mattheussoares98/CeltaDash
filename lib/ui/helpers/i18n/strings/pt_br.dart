@@ -65,7 +65,7 @@ class PtBr implements Translation {
   String get bsPassword => "Senha do BS";
   String get bsUserName => "Usuário do BS";
   String get cancel => "Cancelar";
-  String get canceledSales => "Vendas canceladas";
+  String get sales => "Vendas canceladas";
   String get cancellation => "Cancelamento";
   String get cancellationAbbreviated => "Canc";
   String get cancelledBy => "Cancelado por";
@@ -157,7 +157,7 @@ class PtBr implements Translation {
   String get next => "Próxima";
   String get no => "Não";
   String get noData => "Não há dados";
-  String get notCanceledSales => "Vendas não canceladas";
+  String get notSales => "Vendas não canceladas";
   String get of => "De";
   String get operator => "Operador";
   String get operators => "Operadores";
@@ -191,7 +191,6 @@ class PtBr implements Translation {
   String get result => "Resultado";
   String get revenue => "Faturamento";
   String get sale => "Venda";
-  String get sales => "Vendas";
   String get salesFrom => "Vendas de";
   String get salesOfTheDay => "Vendas do dia";
   String get salesOfTheMonth => "Vendas do mês";

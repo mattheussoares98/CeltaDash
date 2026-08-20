@@ -22,14 +22,16 @@ class SalesContent extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedPeriod = useState(SalesPeriod.hourly);
-    final visitedPeriods = useState<Set<SalesPeriod>>({SalesPeriod.hourly});
+    final selectedPeriod = useState(HomeSalesPeriod.hourly);
+    final visitedPeriods = useState<Set<HomeSalesPeriod>>({
+      HomeSalesPeriod.hourly,
+    });
     //! only build the respective period when it was opened
 
     return Column(
       children: [
         NewBaseSegmentedButtons(
-          items: SalesPeriod.values,
+          items: HomeSalesPeriod.values,
           selectedValue: selectedPeriod.value,
           onChanged: (value) {
             selectedPeriod.value = value;
@@ -50,7 +52,7 @@ class SalesContent extends HookConsumerWidget {
               return IndexedStack(
                 index: selectedPeriod.value.index,
                 children: [
-                  for (final period in SalesPeriod.values)
+                  for (final period in HomeSalesPeriod.values)
                     if (visitedPeriods.value.contains(period))
                       _SalesPeriodView(
                         enterpriseId: enterpriseId,
@@ -77,12 +79,12 @@ class _SalesPeriodView extends ConsumerWidget {
   });
 
   final int enterpriseId;
-  final SalesPeriod period;
+  final HomeSalesPeriod period;
   final DateTime selectedDate;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final provider = salesControllerProvider(enterpriseId, period);
+    final provider = homeSalesControllerProvider(enterpriseId, period);
     final statisticsAsync = ref.watch(provider);
 
     return AsyncValueWidget(
@@ -95,24 +97,24 @@ class _SalesPeriodView extends ConsumerWidget {
         }
 
         return switch (period) {
-          SalesPeriod.hourly => _HourlySalesTable(
+          HomeSalesPeriod.hourly => _HourlySalesTable(
             statistics: statistics,
             refreshProvider: provider,
             isLoading: statisticsAsync.isLoading,
           ),
-          SalesPeriod.daily => _DailySalesTable(
-            statistics: statistics,
-            selectedDate: selectedDate,
-            refreshProvider: provider,
-            isLoading: statisticsAsync.isLoading,
-          ),
-          SalesPeriod.monthly => _MonthlySalesTable(
+          HomeSalesPeriod.daily => _DailySalesTable(
             statistics: statistics,
             selectedDate: selectedDate,
             refreshProvider: provider,
             isLoading: statisticsAsync.isLoading,
           ),
-          SalesPeriod.yearly => _YearlySalesTable(
+          HomeSalesPeriod.monthly => _MonthlySalesTable(
+            statistics: statistics,
+            selectedDate: selectedDate,
+            refreshProvider: provider,
+            isLoading: statisticsAsync.isLoading,
+          ),
+          HomeSalesPeriod.yearly => _YearlySalesTable(
             statistics: statistics,
             refreshProvider: provider,
             isLoading: statisticsAsync.isLoading,

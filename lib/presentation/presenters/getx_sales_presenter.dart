@@ -1,3 +1,4 @@
+import 'package:celta_dash/ui/pages/sales/sales_presenter.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:get/get.dart';
 
@@ -32,10 +33,7 @@ class GetxSalesPresenter extends GetxController
   }
 
   @override
-  Future<void> getSales({
-    PeriodType? periodType,
-    bool? forceRefresh,
-  }) async {
+  Future<void> getSales({PeriodType? periodType, bool? forceRefresh}) async {
     if (isLoadingValue == true) {
       isLoading = false;
       isLoading = true;
@@ -113,7 +111,8 @@ class GetxSalesPresenter extends GetxController
         groupByHour: selectedPeriod == PeriodType.hourly,
         groupByDay: selectedPeriod == PeriodType.daily,
         groupByMonth: selectedPeriod == PeriodType.monthly,
-        groupByYear: selectedPeriod == PeriodType.monthly ||
+        groupByYear:
+            selectedPeriod == PeriodType.monthly ||
             selectedPeriod == PeriodType.yearly,
       );
 

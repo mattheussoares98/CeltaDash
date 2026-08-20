@@ -1,8 +1,7 @@
-import 'package:go_router/go_router.dart';
-
 import 'package:celta_dash/main/factories/factories.dart';
 import 'package:celta_dash/routing/routes.dart';
 import 'package:celta_dash/ui/pages/pages.dart';
+import 'package:go_router/go_router.dart';
 
 RouteBase appAnalyticsRoute() => GoRoute(
   path: '/home/app-analytics',
@@ -40,10 +39,10 @@ RouteBase moreRoute() => GoRoute(
   builder: (context, state) => makeMorePage(),
 );
 
-RouteBase notCanceledSalesRoute() => GoRoute(
+RouteBase notSalesRoute() => GoRoute(
   path: '/home/not-canceled-sales',
-  name: Routes.notCanceledSales.name,
-  builder: (context, state) => makeNotCanceledSalesPage(),
+  name: Routes.notSales.name,
+  builder: (context, state) => makeNotSalesPage(),
 );
 
 RouteBase setGoalRoute() => GoRoute(

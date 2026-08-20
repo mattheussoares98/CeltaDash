@@ -65,7 +65,7 @@ class HomeDrawer extends HookConsumerWidget {
                     ),
                     onTap: () {
                       context.pop();
-                      context.pushNamed(Routes.canceledSales.name);
+                      context.pushNamed(Routes.sales.name);
                     },
                   ),
                   _DrawerItem(
@@ -76,7 +76,7 @@ class HomeDrawer extends HookConsumerWidget {
                     ),
                     onTap: () {
                       context.pop();
-                      context.pushNamed(Routes.notCanceledSales.name);
+                      context.pushNamed(Routes.notSales.name);
                     },
                   ),
                   _DrawerItem(

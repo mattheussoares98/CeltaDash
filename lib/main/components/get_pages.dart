@@ -24,8 +24,8 @@ class GetPages {
       transition: transition,
     ),
     GetPage(
-      name: PageRoutes.canceledSales,
-      page: makeCanceledSalesPage,
+      name: PageRoutes.sales,
+      page: makeSalesPage,
       transition: transition,
     ),
     GetPage(
@@ -58,21 +58,13 @@ class GetPages {
       page: makeGroupSummaryPage,
       transition: transition,
     ),
+    GetPage(name: PageRoutes.more, page: makeMorePage, transition: transition),
     GetPage(
-      name: PageRoutes.more,
-      page: makeMorePage,
+      name: PageRoutes.notSales,
+      page: makeNotSalesPage,
       transition: transition,
     ),
-    GetPage(
-      name: PageRoutes.notCanceledSales,
-      page: makeNotCanceledSalesPage,
-      transition: transition,
-    ),
-    GetPage(
-      name: PageRoutes.home,
-      page: makeHomePage,
-      transition: transition,
-    ),
+    GetPage(name: PageRoutes.home, page: makeHomePage, transition: transition),
     GetPage(
       name: PageRoutes.login,
       page: makeLoginPage,

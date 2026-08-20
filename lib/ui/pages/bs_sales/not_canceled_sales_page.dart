@@ -12,15 +12,14 @@ import '../../mixins/mixins.dart';
 import '../pages.dart';
 import 'components/components.dart';
 
-class NotCanceledSalesPage extends StatefulWidget {
-  const NotCanceledSalesPage({super.key});
+class NotSalesPage extends StatefulWidget {
+  const NotSalesPage({super.key});
 
   @override
-  State<NotCanceledSalesPage> createState() => _NotCanceledSalesPageState();
+  State<NotSalesPage> createState() => _NotSalesPageState();
 }
 
-class _NotCanceledSalesPageState extends State<NotCanceledSalesPage>
-    with UIErrorManager {
+class _NotSalesPageState extends State<NotSalesPage> with UIErrorManager {
   bool alreadySearched = false;
   StreamSubscription? mainErrorSubscription;
   DateTime? selectedDate;
@@ -54,14 +53,12 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage>
                   paddingPattern: 8,
                   onChangeEnterprise: (_) async {
                     if (selectedDate != null) {
-                      await bsSalesPresenter.getNotCanceledSales(
-                        date: selectedDate!,
-                      );
+                      await bsSalesPresenter.getNotSales(date: selectedDate!);
                     }
                   },
                   onChangeDate: (_) async {},
                 ),
-                FilterNotCanceledSales(
+                FilterNotSales(
                   isLoading: loadingSnap.data == true,
                   alreadySearched: alreadySearched,
                   selectedDate: selectedDate,
@@ -78,7 +75,7 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage>
                 ),
                 Expanded(
                   child: Obx(() {
-                    final sales = bsSalesPresenter.notCanceledSales?.collection
+                    final sales = bsSalesPresenter.notSales?.collection
                         .where(
                           (e) =>
                               e.enterpriseId ==
@@ -113,7 +110,7 @@ class _NotCanceledSalesPageState extends State<NotCanceledSalesPage>
                         ScrollableTableItem(
                           titleMinHeight: isPortrait ? 43 : 30,
                           selectedPeriodType: bsSalesPresenter.selectedPeriod,
-                          pdfFileName: R.string.notCanceledSales,
+                          pdfFileName: R.string.notSales,
                           columnsIndexToSum: const [3],
                           fixFirstColumn: true,
                           indexToSort: 2,

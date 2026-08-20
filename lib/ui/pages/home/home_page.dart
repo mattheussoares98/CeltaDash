@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:celta_dash/domain/helpers/helpers.dart';
+import 'package:celta_dash/ui/pages/sales/sales_presenter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -33,8 +34,10 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
         ResumePresenter resumePresenter = Get.find();
         EnterprisesManagerPresenter enterprisesManagerPresenter = Get.find();
 
-        mainErrorSubscription =
-            handleMainError(context, homePresenter.mainErrorStream);
+        mainErrorSubscription = handleMainError(
+          context,
+          homePresenter.mainErrorStream,
+        );
 
         await enterprisesManagerPresenter.loadLocalEnterprises();
         homePresenter.updateSelectedIndex(0);
@@ -55,8 +58,10 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
     mainErrorSubscription?.cancel();
     final routeObserver = Get.find<RouteObserver<PageRoute>>();
     routeObserver.unsubscribe(this);
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: SystemUiOverlay.values);
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: SystemUiOverlay.values,
+    );
   }
 
   @override
@@ -127,12 +132,16 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
     final orientation = MediaQuery.of(context).orientation;
     if (orientation == Orientation.landscape) {
       // Remove the top that shows status bar
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-          overlays: [SystemUiOverlay.bottom]);
+      SystemChrome.setEnabledSystemUIMode(
+        SystemUiMode.manual,
+        overlays: [SystemUiOverlay.bottom],
+      );
     } else {
       // Add the top that shows status bar
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-          overlays: SystemUiOverlay.values);
+      SystemChrome.setEnabledSystemUIMode(
+        SystemUiMode.manual,
+        overlays: SystemUiOverlay.values,
+      );
     }
 
     return Obx(() {
@@ -141,7 +150,8 @@ class _HomePageState extends State<HomePage> with UIErrorManager, RouteAware {
         resizeToAvoidBottomInset: false,
         body: Padding(
           padding: EdgeInsets.only(
-              top: orientation == Orientation.landscape ? 8 : 0),
+            top: orientation == Orientation.landscape ? 8 : 0,
+          ),
           child: homePresenter.appMode == AppMode.financialTitles
               ? const FinancialTitlePage()
               : Stack(
