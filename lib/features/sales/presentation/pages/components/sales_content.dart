@@ -69,18 +69,15 @@ class SalesContent extends HookConsumerWidget {
                 ),
               ),
               Flexible(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
-                  child: BaseSwitch(
-                    title: 'Somente vendas canceladas'.hardcoded,
-                    value: onlyCancelled.value,
-                    onChanged: (value) {
-                      onlyCancelled.value = value;
-                      pages.value = {
-                        for (final period in SalesPeriod.values) period: 1,
-                      };
-                    },
-                  ),
+                child: BaseSwitch(
+                  title: 'Somente canceladas'.hardcoded,
+                  value: onlyCancelled.value,
+                  onChanged: (value) {
+                    onlyCancelled.value = value;
+                    pages.value = {
+                      for (final period in SalesPeriod.values) period: 1,
+                    };
+                  },
                 ),
               ),
             ],

@@ -54,10 +54,7 @@ class SalesPeriodView extends HookConsumerWidget {
               if (result.collection.isEmpty) {
                 return Center(
                   child: BaseText.error(
-                    (onlyCancelled
-                            ? 'Nenhuma venda cancelada'
-                            : 'Nenhuma venda não cancelada')
-                        .hardcoded,
+                    'Nenhuma venda foi encontrada'.hardcoded,
                   ),
                 );
               }
