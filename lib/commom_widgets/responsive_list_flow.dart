@@ -14,8 +14,15 @@ class ResponsiveListFlow extends StatelessWidget {
     this.padding,
     this.physics,
     this.useMultiColumnWhenMobile = false,
+    this.useMasonryLayout = true,
     this.scrollController,
-  });
+  }) : assert(
+         !isSliver || !useMasonryLayout,
+         'SliverMasonryGrid has a known scroll-jumping bug when used inside '
+         'a CustomScrollView with other slivers. Use useMasonryLayout: false '
+         'when isSliver is true. See: '
+         'https://github.com/letsar/flutter_staggered_grid_view/issues/308',
+       );
 
   final int itemCount;
   final Widget Function(BuildContext context, int index) itemBuilder;
@@ -24,6 +31,7 @@ class ResponsiveListFlow extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final ScrollPhysics? physics;
   final bool useMultiColumnWhenMobile;
+  final bool useMasonryLayout;
   final ScrollController? scrollController;
 
   @override
@@ -57,18 +65,33 @@ class ResponsiveListFlow extends StatelessWidget {
     final itemsPerRow = max((screenWidth / effectiveItemWidth).floor(), 1);
 
     if (isSliver) {
-      final grid = SliverMasonryGrid.count(
+      // Always uses SliverAlignedGrid — SliverMasonryGrid is blocked by the
+      // constructor assert (known scroll-jumping bug).
+      final grid = SliverAlignedGrid.count(
         crossAxisCount: itemsPerRow,
         mainAxisSpacing: Sizes.p8,
         crossAxisSpacing: Sizes.p8,
-        childCount: itemCount,
+        itemCount: itemCount,
         itemBuilder: itemBuilder,
       );
 
       return SliverPadding(padding: effectivePadding, sliver: grid);
     }
 
-    return MasonryGridView.count(
+    if (useMasonryLayout) {
+      return MasonryGridView.count(
+        controller: scrollController,
+        physics: physics,
+        padding: effectivePadding is EdgeInsets ? effectivePadding : null,
+        crossAxisCount: itemsPerRow,
+        mainAxisSpacing: Sizes.p8,
+        crossAxisSpacing: Sizes.p8,
+        itemCount: itemCount,
+        itemBuilder: itemBuilder,
+      );
+    }
+
+    return AlignedGridView.count(
       controller: scrollController,
       physics: physics,
       padding: effectivePadding is EdgeInsets ? effectivePadding : null,

@@ -28,6 +28,7 @@ class CanceledSaleDetailsContent extends StatelessWidget {
         ResponsiveListFlow(
           padding: const EdgeInsets.all(Sizes.p8),
           isSliver: true,
+          useMasonryLayout: false,
           itemCount: items.length,
           itemBuilder: (context, index) {
             return items[index];
@@ -44,6 +45,7 @@ class CanceledSaleDetailsContent extends StatelessWidget {
           ResponsiveListFlow(
             padding: const EdgeInsets.all(Sizes.p8),
             isSliver: true,
+            useMasonryLayout: false,
             itemCount: products.length,
             itemBuilder: (context, index) {
               final product = products[index];
