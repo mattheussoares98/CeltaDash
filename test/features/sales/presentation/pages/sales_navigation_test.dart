@@ -7,16 +7,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../domain/mocks/mocks.dart';
 import '../../../../presentation/fake_controllers/fake_controllers.dart';
 
-class MockSalesRepository extends Mock
-    implements ISalesRepository {}
+class MockSalesRepository extends Mock implements ISalesRepository {}
 
 void main() {
   testWidgets('tapping a row opens and loads the sale details', (tester) async {
+    await initializeDateFormatting('pt_BR');
     final repository = MockSalesRepository();
     final ecParams = EntityFactory.makeEcParams();
     final selectedSale = EntityFactory.makeSaleMovementCollectionItemEntity();
@@ -45,10 +46,7 @@ void main() {
         GoRoute(
           path: '/list',
           builder: (context, state) => Scaffold(
-            body: SalesTable(
-              sales: [selectedSale],
-              refreshProvider: null,
-            ),
+            body: SalesTable(sales: [selectedSale], refreshProvider: null),
           ),
         ),
         saleDetailsRoute(),

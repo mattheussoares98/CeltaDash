@@ -14,6 +14,8 @@ class SalesController extends _$SalesController {
   Future<SaleMovementEntity> build(
     int enterpriseId,
     SalesPeriod selectedPeriod,
+    bool onlyCancelled,
+    int actualPage,
   ) async {
     ref.cache();
     final ecParams = await ref.watch(
@@ -33,6 +35,8 @@ class SalesController extends _$SalesController {
             enterpriseId: enterpriseId,
             selectedDate: selectedDate,
             selectedPeriod: selectedPeriod,
+            onlyCancelled: onlyCancelled,
+            actualPage: actualPage,
           ),
           ecParams: ecParams,
         );
@@ -42,6 +46,8 @@ class SalesController extends _$SalesController {
     required int enterpriseId,
     required DateTime selectedDate,
     required SalesPeriod selectedPeriod,
+    required bool onlyCancelled,
+    required int actualPage,
   }) {
     final startDate = DateTime(
       selectedDate.year,
@@ -56,7 +62,9 @@ class SalesController extends _$SalesController {
       enterpriseIds: [enterpriseId],
       startDate: startDate,
       endDate: endDate,
-      onlyCancelled: true,
+      onlyCancelled: onlyCancelled,
+      onlyNotCancelled: !onlyCancelled,
+      actualPage: actualPage,
     );
   }
 }

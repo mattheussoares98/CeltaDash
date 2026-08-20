@@ -19,6 +19,10 @@ class SalesContent extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedPeriod = useState(SalesPeriod.daily);
     final visitedPeriods = useState<Set<SalesPeriod>>({SalesPeriod.daily});
+    final onlyCancelled = useState(false);
+    final pages = useState(<SalesPeriod, int>{
+      for (final period in SalesPeriod.values) period: 1,
+    });
 
     return BaseScaffold(
       isScrollable: false,
@@ -37,32 +41,65 @@ class SalesContent extends HookConsumerWidget {
           refreshProviders: [
             for (final period in SalesPeriod.values)
               if (visitedPeriods.value.contains(period))
-                salesControllerProvider(enterpriseId, period),
+                salesControllerProvider(
+                  enterpriseId,
+                  period,
+                  onlyCancelled.value,
+                  pages.value[period]!,
+                ),
           ],
         ),
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(Sizes.p8),
-            child: NewBaseSegmentedButtons<SalesPeriod>(
-              items: SalesPeriod.values,
-              selectedValue: selectedPeriod.value,
-              onChanged: (value) {
-                visitedPeriods.value = {...visitedPeriods.value, value};
-                selectedPeriod.value = value;
-              },
-              itemLabelBuilder: (value) => value.label,
-            ),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(Sizes.p8),
+                  child: NewBaseSegmentedButtons<SalesPeriod>(
+                    items: SalesPeriod.values,
+                    selectedValue: selectedPeriod.value,
+                    onChanged: (value) {
+                      visitedPeriods.value = {...visitedPeriods.value, value};
+                      selectedPeriod.value = value;
+                    },
+                    itemLabelBuilder: (value) => value.label,
+                  ),
+                ),
+              ),
+              Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
+                  child: BaseSwitch(
+                    title: 'Somente vendas canceladas'.hardcoded,
+                    value: onlyCancelled.value,
+                    onChanged: (value) {
+                      onlyCancelled.value = value;
+                      pages.value = {
+                        for (final period in SalesPeriod.values) period: 1,
+                      };
+                    },
+                  ),
+                ),
+              ),
+            ],
           ),
-          gapH8,
           Expanded(
             child: IndexedStack(
               index: selectedPeriod.value.index,
               children: [
                 for (final period in SalesPeriod.values)
                   if (visitedPeriods.value.contains(period))
-                    SalesPeriodView(enterpriseId: enterpriseId, period: period)
+                    SalesPeriodView(
+                      enterpriseId: enterpriseId,
+                      period: period,
+                      onlyCancelled: onlyCancelled.value,
+                      actualPage: pages.value[period]!,
+                      onPageChanged: (page) {
+                        pages.value = {...pages.value, period: page};
+                      },
+                    )
                   else
                     const SizedBox.shrink(),
               ],

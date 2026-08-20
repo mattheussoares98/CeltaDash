@@ -13,8 +13,7 @@ import '../../../../domain/mocks/mocks.dart';
 import '../../../../presentation/fake_controllers/fake_controllers.dart';
 import '../../../home/mocks/mocks.dart';
 
-class MockSalesRepository extends Mock
-    implements ISalesRepository {}
+class MockSalesRepository extends Mock implements ISalesRepository {}
 
 void main() {
   late MockSalesRepository repository;
@@ -24,17 +23,22 @@ void main() {
   final selectedDate = DateTime(2026, 8, 20);
   const enterpriseId = 10;
 
-  GetSaleMovementParams makeParams(SalesPeriod period) =>
-      GetSaleMovementParams(
-        enterpriseIds: const [enterpriseId],
-        startDate: period == SalesPeriod.daily
-            ? DateTime(2026, 8, 20)
-            : DateTime(2026, 8),
-        endDate: period == SalesPeriod.daily
-            ? DateTime(2026, 8, 20)
-            : DateTime(2026, 8, 31),
-        onlyCancelled: true,
-      );
+  GetSaleMovementParams makeParams(
+    SalesPeriod period, {
+    required bool onlyCancelled,
+    int actualPage = 1,
+  }) => GetSaleMovementParams(
+    enterpriseIds: const [enterpriseId],
+    startDate: period == SalesPeriod.daily
+        ? DateTime(2026, 8, 20)
+        : DateTime(2026, 8),
+    endDate: period == SalesPeriod.daily
+        ? DateTime(2026, 8, 20)
+        : DateTime(2026, 8, 31),
+    onlyCancelled: onlyCancelled,
+    onlyNotCancelled: !onlyCancelled,
+    actualPage: actualPage,
+  );
 
   ProviderContainer makeContainer() => ProviderContainer(
     retry: (_, _) => null,
@@ -63,26 +67,53 @@ void main() {
 
   tearDown(() => container.dispose());
 
-  for (final period in SalesPeriod.values) {
-    test('loads canceled sales for the ${period.name} period', () async {
-      final params = makeParams(period);
-      when(
-        () => repository.getSaleMovements(params: params, ecParams: ecParams),
-      ).thenAnswer((_) async => result);
+  for (final onlyCancelled in [true, false]) {
+    for (final period in SalesPeriod.values) {
+      test('loads ${onlyCancelled ? 'canceled' : 'non-canceled'} sales for the '
+          '${period.name} period', () async {
+        final params = makeParams(period, onlyCancelled: onlyCancelled);
+        when(
+          () => repository.getSaleMovements(params: params, ecParams: ecParams),
+        ).thenAnswer((_) async => result);
 
-      final value = await container.read(
-        salesControllerProvider(enterpriseId, period).future,
-      );
+        final value = await container.read(
+          salesControllerProvider(
+            enterpriseId,
+            period,
+            onlyCancelled,
+            1,
+          ).future,
+        );
 
-      expect(value, result);
-      verify(
-        () => repository.getSaleMovements(params: params, ecParams: ecParams),
-      ).called(1);
-    });
+        expect(value, result);
+        verify(
+          () => repository.getSaleMovements(params: params, ecParams: ecParams),
+        ).called(1);
+      });
+    }
   }
 
+  test('passes the selected page to the repository', () async {
+    final params = makeParams(
+      SalesPeriod.daily,
+      onlyCancelled: false,
+      actualPage: 2,
+    );
+    when(
+      () => repository.getSaleMovements(params: params, ecParams: ecParams),
+    ).thenAnswer((_) async => result);
+
+    await container.read(
+      salesControllerProvider(enterpriseId, SalesPeriod.daily, false, 2).future,
+    );
+
+    verify(
+      () => repository.getSaleMovements(params: params, ecParams: ecParams),
+    ).called(1);
+  });
+
   test('preserves repository errors in the controller state', () async {
-    final params = makeParams(SalesPeriod.daily);
+    final params = makeParams(SalesPeriod.daily, onlyCancelled: true);
     final exception = Exception('failed to load canceled sales');
     when(
       () => repository.getSaleMovements(params: params, ecParams: ecParams),
@@ -90,6 +121,8 @@ void main() {
     final provider = salesControllerProvider(
       enterpriseId,
       SalesPeriod.daily,
+      true,
+      1,
     );
 
     await expectLater(container.read(provider.future), throwsA(exception));

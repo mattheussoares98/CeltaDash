@@ -13,12 +13,14 @@ class SalesTable extends StatelessWidget {
     required this.sales,
     required this.refreshProvider,
     this.isLoading = false,
+    this.showCancellationDetails = true,
     super.key,
   });
 
   final List<SaleMovementCollectionItemEntity> sales;
   final ProviderBase<AsyncValue<dynamic>>? refreshProvider;
   final bool isLoading;
+  final bool showCancellationDetails;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +30,7 @@ class SalesTable extends StatelessWidget {
       fixFirstColumn: true,
       isLoading: isLoading,
       refreshProvider: refreshProvider,
+      rowHeight: Sizes.p64,
       initialSortColumnIndex: 2,
       onTapRow: (row) {
         final enterpriseId = row.sale.enterpriseId;
@@ -97,23 +100,25 @@ class SalesTable extends StatelessWidget {
                 .toBRL(),
           ),
         ),
-        ScrollableTableColumnSpec(
-          headerTitle: 'Cancelada por'.hardcoded,
-          cellBuilder: (row) => BaseText.bodyMedium(
-            row.sale.userCancellation ?? 'Indefinido'.hardcoded,
+        if (showCancellationDetails) ...[
+          ScrollableTableColumnSpec(
+            headerTitle: 'Cancelada por'.hardcoded,
+            cellBuilder: (row) => BaseText.bodyMedium(
+              row.sale.userCancellation ?? 'Indefinido'.hardcoded,
+            ),
+            sortValueMapper: (row) => row.sale.userCancellation ?? '',
           ),
-          sortValueMapper: (row) => row.sale.userCancellation ?? '',
-        ),
-        ScrollableTableColumnSpec(
-          headerTitle: 'Justificativa'.hardcoded,
-          minWidth: 150,
-          cellBuilder: (row) => BaseText.bodyMedium(
-            row.sale.motiveCancellation ?? 'Indefinido'.hardcoded,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
+          ScrollableTableColumnSpec(
+            headerTitle: 'Justificativa'.hardcoded,
+            minWidth: 150,
+            cellBuilder: (row) => BaseText.bodyMedium(
+              row.sale.motiveCancellation ?? 'Indefinido'.hardcoded,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            sortValueMapper: (row) => row.sale.motiveCancellation ?? '',
           ),
-          sortValueMapper: (row) => row.sale.motiveCancellation ?? '',
-        ),
+        ],
       ],
     );
   }

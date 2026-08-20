@@ -10,15 +10,26 @@ class SalesPeriodView extends ConsumerWidget {
   const SalesPeriodView({
     required this.enterpriseId,
     required this.period,
+    required this.onlyCancelled,
+    required this.actualPage,
+    required this.onPageChanged,
     super.key,
   });
 
   final int enterpriseId;
   final SalesPeriod period;
+  final bool onlyCancelled;
+  final int actualPage;
+  final ValueChanged<int> onPageChanged;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final provider = salesControllerProvider(enterpriseId, period);
+    final provider = salesControllerProvider(
+      enterpriseId,
+      period,
+      onlyCancelled,
+      actualPage,
+    );
     final salesAsync = ref.watch(provider);
 
     return AsyncValueWidget(
@@ -28,13 +39,30 @@ class SalesPeriodView extends ConsumerWidget {
       data: (result) {
         if (result.collection.isEmpty) {
           return Center(
-            child: BaseText.error('Nenhuma venda cancelada'.hardcoded),
+            child: BaseText.error(
+              (onlyCancelled
+                      ? 'Nenhuma venda cancelada'
+                      : 'Nenhuma venda não cancelada')
+                  .hardcoded,
+            ),
           );
         }
-        return SalesTable(
-          sales: result.collection,
-          refreshProvider: provider,
-          isLoading: salesAsync.isLoading,
+        return Column(
+          children: [
+            SalesPagination(
+              result: result,
+              isLoading: salesAsync.isLoading,
+              onPageChanged: onPageChanged,
+            ),
+            Expanded(
+              child: SalesTable(
+                sales: result.collection,
+                refreshProvider: provider,
+                isLoading: salesAsync.isLoading,
+                showCancellationDetails: onlyCancelled,
+              ),
+            ),
+          ],
         );
       },
     );
