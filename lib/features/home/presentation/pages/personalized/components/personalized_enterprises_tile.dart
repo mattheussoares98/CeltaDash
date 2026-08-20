@@ -2,8 +2,8 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/utils/utils.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:get/utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class PersonalizedEnterprisesTile extends HookConsumerWidget {
@@ -22,7 +22,7 @@ class PersonalizedEnterprisesTile extends HookConsumerWidget {
       personalizedControllerProvider.select((s) => s.selectedEnterpriseId),
     );
     final enterprises = ref.watch(
-      homeControllerProvider.select((s) => s.value?.enterprises ?? []),
+      enterprisesControllerProvider.select((s) => s.value ?? []),
     );
 
     final selectedEnterprise = enterprises.firstWhereOrNull(
@@ -41,8 +41,9 @@ class PersonalizedEnterprisesTile extends HookConsumerWidget {
       ),
       title: BaseText.bodyMedium(
         titleText,
-        fontWeight:
-            selectedEnterprise != null ? FontWeight.bold : FontWeight.normal,
+        fontWeight: selectedEnterprise != null
+            ? FontWeight.bold
+            : FontWeight.normal,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),

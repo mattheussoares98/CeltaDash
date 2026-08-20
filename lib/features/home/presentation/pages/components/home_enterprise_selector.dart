@@ -10,16 +10,18 @@ class HomeEnterpriseSelector extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final homeState = ref.watch(homeControllerProvider).value;
-    if (homeState == null) return const LoadingWidget();
+    final enterprisesAsync = ref.watch(enterprisesControllerProvider);
+    final enterprises = enterprisesAsync.value;
+    if (homeState == null || enterprises == null) return const LoadingWidget();
 
     return BaseDropDown<int>(
       key: const ValueKey('home_enterprise_selector'),
       label: 'Empresa'.hardcoded,
       selectedItem: homeState.selectedEnterpriseId,
-      onChanged: homeState.isRefreshing
+      onChanged: enterprisesAsync.isLoading
           ? null
           : ref.read(homeControllerProvider.notifier).selectEnterprise,
-      items: homeState.enterprises.map((enterprise) {
+      items: enterprises.map((enterprise) {
         final label = [
           enterprise.personalizedCode,
           enterprise.name,

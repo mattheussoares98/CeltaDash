@@ -1,31 +1,27 @@
 import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/core/providers.dart';
-import 'package:celta_dash/features/home/domain/domain.dart';
-import 'package:celta_dash/features/home/presentation/models/models.dart';
-import 'package:celta_dash/features/home/providers.dart';
-import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:celta_dash/features/home/home.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'home_controller.g.dart';
 
 @Riverpod(keepAlive: true)
 class HomeController extends _$HomeController {
-  int _requestVersion = 0;
-
   @override
   Future<HomeState> build() async {
+    final previousState = state.value;
     final repository = ref.watch(homeRepositoryProvider);
-    final appMode = await repository.loadAppMode();
-    final initialState = HomeState.initial(appMode: appMode);
-    final ecParams = await ref.watch(
-      activeEcParamsStateControllerProvider.future,
+    final appMode = previousState?.appMode ?? await repository.loadAppMode();
+    final homeState = previousState ?? HomeState.initial(appMode: appMode);
+    final enterprises = await ref.watch(enterprisesControllerProvider.future);
+    final selectedEnterpriseId = _resolveSelectedEnterpriseId(
+      enterprises: enterprises,
+      currentId: homeState.selectedEnterpriseId,
     );
-    if (ecParams == null) return initialState;
 
-    return _loadEnterprises(
-      repository: repository,
-      ecParams: ecParams,
-      previousState: initialState,
+    return homeState.copyWith(
+      selectedEnterpriseId: selectedEnterpriseId,
+      clearSelectedEnterpriseId: selectedEnterpriseId == null,
     );
   }
 
@@ -39,30 +35,16 @@ class HomeController extends _$HomeController {
     final current = state.value;
     if (current == null || current.selectedEnterpriseId == enterpriseId) return;
 
-    final enterprise = current.enterprises
-        .where((item) => item.id == enterpriseId)
+    final enterprise = ref
+        .read(enterprisesControllerProvider)
+        .value
+        ?.where((item) => item.id == enterpriseId)
         .firstOrNull;
-    if (enterprise == null || !enterprise.enabled) {
-      state = AsyncValue.data(
-        current.copyWith(
-          selectionError: 'Essa empresa está desabilitada'.hardcoded,
-        ),
-      );
-      return;
-    }
+    if (enterprise == null || !enterprise.enabled) return;
 
     state = AsyncValue.data(
-      current.copyWith(
-        selectedEnterpriseId: enterpriseId,
-        clearSelectionError: true,
-      ),
+      current.copyWith(selectedEnterpriseId: enterpriseId),
     );
-  }
-
-  void clearSelectionError() {
-    final current = state.value;
-    if (current == null || current.selectionError == null) return;
-    state = AsyncValue.data(current.copyWith(clearSelectionError: true));
   }
 
   Future<void> toggleAppMode() async {
@@ -81,70 +63,20 @@ class HomeController extends _$HomeController {
   Future<void> logout() async {
     await ref.read(homeRepositoryProvider).logout();
     ref.invalidate(activeEcParamsStateControllerProvider);
+    ref.invalidate(enterprisesControllerProvider);
     ref.invalidateSelf();
   }
 
-  Future<void> refreshEnterprises() async {
-    final current = state.value;
-    if (current == null) return;
-    final requestVersion = ++_requestVersion;
-    state = AsyncValue.data(current.copyWith(isRefreshing: true));
-
-    try {
-      final ecParams = await ref.read(
-        activeEcParamsStateControllerProvider.future,
-      );
-      if (ecParams == null || requestVersion != _requestVersion) return;
-      final repository = ref.read(homeRepositoryProvider);
-      final refreshed = await _loadEnterprises(
-        repository: repository,
-        ecParams: ecParams,
-        previousState: current,
-      );
-      if (requestVersion == _requestVersion) {
-        state = AsyncValue.data(refreshed);
-      }
-    } catch (error, stackTrace) {
-      if (requestVersion == _requestVersion) {
-        state = AsyncValue.error(error, stackTrace);
-      }
+  int? _resolveSelectedEnterpriseId({
+    required List<HomeEnterpriseEntity> enterprises,
+    required int? currentId,
+  }) {
+    for (final enterprise in enterprises) {
+      if (enterprise.id == currentId && enterprise.enabled) return currentId;
     }
-  }
-
-  Future<HomeState> _loadEnterprises({
-    required IHomeRepository repository,
-    required EcParams ecParams,
-    required HomeState previousState,
-  }) async {
-    final activeEnterprise = await repository.loadActiveEnterprise();
-    final enterprises = await repository.getEnterprises(ecParams);
-    final enabledById = {
-      for (final enterprise
-          in activeEnterprise?.firebaseSubEnterprises ??
-              const <FirebaseSubEnterpriseEntity>[])
-        if (enterprise.id != null) enterprise.id: enterprise.enabled == true,
-    };
-    final reconciled = enterprises
-        .map(
-          (enterprise) =>
-              enterprise.copyWith(enabled: enabledById[enterprise.id] ?? false),
-        )
-        .toList(
-          growable: false, //can't add/remove
-        );
-    final selectedId =
-        reconciled.any(
-          (enterprise) => enterprise.id == previousState.selectedEnterpriseId,
-        )
-        ? previousState.selectedEnterpriseId
-        : reconciled.firstOrNull?.id;
-
-    return previousState.copyWith(
-      enterprises: reconciled,
-      selectedEnterpriseId: selectedId,
-      clearSelectedEnterpriseId: selectedId == null,
-      isRefreshing: false,
-      clearSelectionError: true,
-    );
+    for (final enterprise in enterprises) {
+      if (enterprise.id != null && enterprise.enabled) return enterprise.id;
+    }
+    return enterprises.firstOrNull?.id;
   }
 }

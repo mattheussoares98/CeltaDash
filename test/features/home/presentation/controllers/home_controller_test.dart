@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/core/providers.dart';
 import 'package:celta_dash/features/home/domain/domain.dart';
@@ -61,27 +59,19 @@ void main() {
   Future<HomeState> loadState() =>
       container.read(homeControllerProvider.future);
 
-  test(
-    'build loads mode, reconciles enabled metadata, and selects first item',
-    () async {
-      final state = await loadState();
+  test('build loads mode and selects the first enabled enterprise', () async {
+    final state = await loadState();
 
-      expect(state.appMode, AppMode.sales);
-      expect(state.selectedEnterpriseId, 1);
-      expect(state.enterprises.first.enabled, isTrue);
-      expect(state.enterprises.last.enabled, isFalse);
-    },
-  );
+    expect(state.appMode, AppMode.sales);
+    expect(state.selectedEnterpriseId, 1);
+  });
 
-  test('build safely marks missing Firebase metadata as disabled', () async {
+  test('build select first enabled enterprise', () async {
     when(() => repository.loadActiveEnterprise()).thenAnswer((_) async => null);
 
     final state = await loadState();
 
-    expect(
-      state.enterprises.every((enterprise) => !enterprise.enabled),
-      isTrue,
-    );
+    expect(state.selectedEnterpriseId, enabledEnterprise.id);
   });
 
   test('build supports an empty enterprise response', () async {
@@ -89,7 +79,6 @@ void main() {
 
     final state = await loadState();
 
-    expect(state.enterprises, isEmpty);
     expect(state.selectedEnterpriseId, isNull);
   });
 
@@ -101,8 +90,8 @@ void main() {
 
     expect(container.read(homeControllerProvider).value?.selectedDate, newDate);
     expect(
-      container.read(homeControllerProvider).value?.enterprises,
-      oldState.enterprises,
+      container.read(homeControllerProvider).value?.selectedEnterpriseId,
+      oldState.selectedEnterpriseId,
     );
   });
 
@@ -115,22 +104,8 @@ void main() {
 
       final state = container.read(homeControllerProvider).value!;
       expect(state.selectedEnterpriseId, 1);
-      expect(state.selectionError, isNotNull);
     },
   );
-
-  test('clearSelectionError removes selection feedback', () async {
-    await loadState();
-    final controller = container.read(homeControllerProvider.notifier);
-    controller.selectEnterprise(2);
-
-    controller.clearSelectionError();
-
-    expect(
-      container.read(homeControllerProvider).value?.selectionError,
-      isNull,
-    );
-  });
 
   test('toggleAppMode persists before publishing the new mode', () async {
     when(
@@ -175,32 +150,21 @@ void main() {
   });
 
   test(
-    'refreshEnterprises applies only the latest request completion',
+    'build skips disabled enterprises when initializing selection',
     () async {
-      await loadState();
-      final firstRequest = Completer<List<HomeEnterpriseEntity>>();
-      final secondRequest = Completer<List<HomeEnterpriseEntity>>();
-      var requestCount = 0;
-      when(() => repository.getEnterprises(ecParams)).thenAnswer((_) {
-        requestCount++;
-        return requestCount == 1 ? firstRequest.future : secondRequest.future;
-      });
-      final controller = container.read(homeControllerProvider.notifier);
-
-      final firstRefresh = controller.refreshEnterprises();
-      await Future<void>.delayed(Duration.zero);
-      final secondRefresh = controller.refreshEnterprises();
-      await Future<void>.delayed(Duration.zero);
-      final newest = HomeEntityFactory.makeHomeEnterpriseEntity(id: 3);
-      secondRequest.complete([newest]);
-      await secondRefresh;
-      firstRequest.complete([enabledEnterprise]);
-      await firstRefresh;
-
-      expect(
-        container.read(homeControllerProvider).value?.enterprises.single.id,
-        3,
+      activeEnterprise = activeEnterprise.copyWith(
+        firebaseSubEnterprises: [
+          EntityFactory.makeFirebaseSubEnterpriseEntity(id: 1, enabled: false),
+          EntityFactory.makeFirebaseSubEnterpriseEntity(id: 2, enabled: true),
+        ],
       );
+      when(
+        () => repository.loadActiveEnterprise(),
+      ).thenAnswer((_) async => activeEnterprise);
+
+      final state = await loadState();
+
+      expect(state.selectedEnterpriseId, 2);
     },
   );
 }

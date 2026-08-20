@@ -6,7 +6,9 @@ import 'package:celta_dash/features/home/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:toastification/toastification.dart';
 
 import '../../../../domain/mocks/mocks.dart';
 import '../../../../presentation/fake_controllers/fake_controllers.dart';
@@ -17,6 +19,10 @@ void main() {
   late EcParams ecParams;
   late HomeEnterpriseEntity enterprise;
   late FirebaseEnterpriseEntity activeEnterprise;
+
+  setUpAll(() async {
+    await initializeDateFormatting('pt_BR');
+  });
 
   setUp(() {
     repository = MockHomeRepository();
@@ -48,14 +54,16 @@ void main() {
           ),
           homeRepositoryProvider.overrideWithValue(repository),
         ],
-        child: const MaterialApp(
-          home: Scaffold(
-            appBar: HomeAppBar(
-              isLandscape: false,
-              showToggleAppMode: true,
-              showEnterpriseManagement: true,
+        child: ToastificationWrapper(
+          child: const MaterialApp(
+            home: Scaffold(
+              appBar: HomeAppBar(
+                isLandscape: false,
+                showToggleAppMode: true,
+                showEnterpriseManagement: true,
+              ),
+              body: SizedBox.shrink(),
             ),
-            body: SizedBox.shrink(),
           ),
         ),
       ),

@@ -11,13 +11,19 @@ class HomeDateSelector extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final homeState = ref.watch(homeControllerProvider).value;
-    if (homeState == null) return const LoadingWidget();
+    final enterprisesAsync = ref.watch(enterprisesControllerProvider);
+    final enterprises = enterprisesAsync.value;
+    if (homeState == null || enterprises == null) return const LoadingWidget();
+    final selectedEnterpriseIsEnabled = enterprises.any(
+      (enterprise) =>
+          enterprise.id == homeState.selectedEnterpriseId && enterprise.enabled,
+    );
 
     return PrimaryTextButton(
       key: const ValueKey('home_date_selector'),
       text: homeState.selectedDate.formatDate(),
-      isLoading: homeState.isRefreshing,
-      onPressed: homeState.selectedEnterpriseIsEnabled
+      isLoading: enterprisesAsync.isLoading,
+      onPressed: selectedEnterpriseIsEnabled
           ? () async {
               final newDate = await GetNewDate.get(
                 context: context,

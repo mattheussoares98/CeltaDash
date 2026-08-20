@@ -33,14 +33,9 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final homeAsync = ref.watch(homeControllerProvider);
-    ref.listen(
-      homeControllerProvider.select((value) => value.value?.selectionError),
-      (previous, next) {
-        if (next == null || next == previous) return;
-        showToastMessage(next.hardcoded, type: ToastType.error);
-        ref.read(homeControllerProvider.notifier).clearSelectionError();
-      },
-    );
+    ref.listen(homeControllerProvider, (p, n) {
+      n.showToastOnError(context, p);
+    });
 
     final enterpriseSelector = showEnterpriseDropdown
         ? const HomeEnterpriseSelector()
@@ -75,7 +70,10 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
 
     final controls = AsyncValueWidget(
       value: homeAsync,
-      tryAgain: () => ref.invalidate(homeControllerProvider),
+      tryAgain: () {
+        ref.invalidate(enterprisesControllerProvider);
+        ref.invalidate(homeControllerProvider);
+      },
       data: (homeState) {
         if (MediaQuery.orientationOf(context) == Orientation.landscape) {
           return Row(

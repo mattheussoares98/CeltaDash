@@ -23,7 +23,10 @@ class EnterpriseGuard extends ConsumerWidget {
     return AsyncValueWidget(
       value: homeAsync,
       preserveValue: preserveValue,
-      tryAgain: () => ref.invalidate(homeControllerProvider),
+      tryAgain: () {
+        ref.invalidate(enterprisesControllerProvider);
+        ref.invalidate(homeControllerProvider);
+      },
       data: (homeState) {
         final enterpriseId = homeState.selectedEnterpriseId;
         if (enterpriseId == null) {
