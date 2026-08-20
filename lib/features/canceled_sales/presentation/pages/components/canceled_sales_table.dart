@@ -28,9 +28,7 @@ class CanceledSalesTable extends StatelessWidget {
       fixFirstColumn: true,
       isLoading: isLoading,
       refreshProvider: refreshProvider,
-      initialSortColumnIndex: 3,
-      initialSortAscending: false,
-      highlightColumnIndex: 3,
+      initialSortColumnIndex: 2,
       onTapRow: (row) {
         final enterpriseId = row.sale.enterpriseId;
         final documentNumber = row.sale.documentNumber;
