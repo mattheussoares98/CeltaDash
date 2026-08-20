@@ -16,7 +16,7 @@ class OperatorsController extends _$OperatorsController {
     int enterpriseId,
     OperatorsPeriod selectedPeriod,
   ) async {
-    ref.cache();
+    ref.cache(10);
     ref.watch(activeEcParamsStateControllerProvider);
     final selectedDate = await ref.watch(
       homeControllerProvider.selectAsync((state) => state.selectedDate),

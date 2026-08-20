@@ -17,7 +17,7 @@ class SellersController extends _$SellersController {
     int enterpriseId,
     SellersPeriod selectedPeriod,
   ) async {
-    ref.cache();
+    ref.cache(10);
     ref.watch(activeEcParamsStateControllerProvider);
     final selectedDate = await ref.watch(
       homeControllerProvider.selectAsync((state) => state.selectedDate),
