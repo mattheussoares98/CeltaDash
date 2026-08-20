@@ -19,7 +19,6 @@ class SellersController extends _$SellersController {
   ) async {
     ref.cache();
     ref.watch(activeEcParamsStateControllerProvider);
-    ref.watch(resumeCurrentDateProvider);
     final selectedDate = await ref.watch(
       homeControllerProvider.selectAsync((state) => state.selectedDate),
     );
