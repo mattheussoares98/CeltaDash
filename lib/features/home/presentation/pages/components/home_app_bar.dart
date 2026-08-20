@@ -16,6 +16,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
     this.showEnterpriseManagement = false,
     this.showEnterpriseDropdown = true,
     this.leading,
+    this.leftDateWidget,
     super.key,
   });
 
@@ -26,6 +27,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
   final bool showEnterpriseManagement;
   final bool showEnterpriseDropdown;
   final Widget? leading;
+  final Widget? leftDateWidget;
 
   @override
   Size get preferredSize => Size.fromHeight(isLandscape ? kToolbarHeight : 95);
@@ -82,6 +84,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
               ?drawerButton,
               if (enterpriseSelector != null)
                 Expanded(flex: 2, child: enterpriseSelector),
+              ?leftDateWidget,
               dateSelector,
               gapW8,
               ?modeToggle,
@@ -105,6 +108,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
             Row(
               mainAxisAlignment: .spaceBetween,
               children: [
+                ?leftDateWidget,
                 dateSelector,
                 ?modeToggle,
                 ?selectEnterprise,

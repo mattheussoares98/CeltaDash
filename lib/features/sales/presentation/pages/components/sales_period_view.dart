@@ -13,6 +13,7 @@ class SalesPeriodView extends HookConsumerWidget {
     required this.period,
     required this.onlyCancelled,
     required this.actualPage,
+    required this.onOnlyCancelledChanged,
     required this.onPageChanged,
     super.key,
   });
@@ -21,6 +22,7 @@ class SalesPeriodView extends HookConsumerWidget {
   final SalesPeriod period;
   final bool onlyCancelled;
   final int actualPage;
+  final ValueChanged<bool> onOnlyCancelledChanged;
   final ValueChanged<int> onPageChanged;
 
   @override
@@ -40,9 +42,11 @@ class SalesPeriodView extends HookConsumerWidget {
     return Column(
       children: [
         if (paginationResult != null && paginationResult.totalPages > 1)
-          SalesPagination(
+          SalesPaginationAndCancFilter(
             result: paginationResult,
             isLoading: salesAsync.isLoading,
+            onlyCancelled: onlyCancelled,
+            onOnlyCancelledChanged: onOnlyCancelledChanged,
             onPageChanged: onPageChanged,
           ),
         Expanded(
