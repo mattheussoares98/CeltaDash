@@ -58,12 +58,6 @@ RouteBase notCanceledSalesRoute() => GoRoute(
   builder: (context, state) => makeNotCanceledSalesPage(),
 );
 
-RouteBase operatorsRoute() => GoRoute(
-  path: '/home/operators',
-  name: Routes.operators.name,
-  builder: (context, state) => makeOperatorsPage(),
-);
-
 RouteBase setGoalRoute() => GoRoute(
   path: '/home/set-goal',
   name: Routes.setGoal.name,

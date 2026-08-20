@@ -2,6 +2,7 @@ export 'departments/departments.dart';
 export 'group_summary/group_summary.dart';
 export 'home/home.dart';
 export 'login_route.dart';
+export 'operators_route.dart';
 export 'payments/payments.dart';
 export 'sale_statistics_features_routes.dart';
 export 'sellers_route.dart';
