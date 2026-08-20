@@ -30,7 +30,7 @@ GoRouter goRouter(Ref ref) {
       webLoginRoute(),
       ...homeRoutes(rootNavigatorKey, [
         appAnalyticsRoute(),
-        bsSaleDetailsRoute(),
+        canceledSaleDetailsRoute(),
         canceledSalesRoute(),
         compareDaysRoute(),
         compareMonthsRoute(),

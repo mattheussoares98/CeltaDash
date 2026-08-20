@@ -10,18 +10,6 @@ RouteBase appAnalyticsRoute() => GoRoute(
   builder: (context, state) => makeAppAnalyticsPage(),
 );
 
-RouteBase bsSaleDetailsRoute() => GoRoute(
-  path: '/home/bs-sale-details',
-  name: Routes.bsSaleDetails.name,
-  builder: (context, state) => makeBsSaleDetailsPage(),
-);
-
-RouteBase canceledSalesRoute() => GoRoute(
-  path: '/home/canceled-sales',
-  name: Routes.canceledSales.name,
-  builder: (context, state) => makeCanceledSalesPage(),
-);
-
 RouteBase compareDaysRoute() => GoRoute(
   path: '/home/compare-days',
   name: Routes.compareDays.name,
