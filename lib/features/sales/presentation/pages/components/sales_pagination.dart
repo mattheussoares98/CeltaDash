@@ -18,8 +18,6 @@ class SalesPagination extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (result.totalPages <= 1) return const SizedBox.shrink();
-
     final firstRecord = (result.actualPage - 1) * result.recordsByPage + 1;
     final lastRecord = firstRecord + result.recordsOnThisPage - 1;
     final isFirstPage = result.actualPage <= 1;
