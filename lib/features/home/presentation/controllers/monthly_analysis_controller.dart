@@ -1,6 +1,5 @@
-import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/core/providers.dart';
-import 'package:celta_dash/features/home/presentation/controllers/home_data_selection_controller.dart';
+import 'package:celta_dash/features/home/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/home/presentation/models/models.dart';
 import 'package:celta_dash/features/home/providers.dart';
 import 'package:celta_dash/features/sale_statistics/domain/entities/entities.dart';
@@ -16,11 +15,8 @@ class MonthlyAnalysisController extends _$MonthlyAnalysisController {
     ref.watch(activeEcParamsStateControllerProvider);
 
     final selectedDate = await ref.watch(
-      homeDataSelectionControllerProvider(
-        AppMode.sales,
-      ).selectAsync((selection) => selection?.selectedDate),
+      homeControllerProvider.selectAsync((selection) => selection.selectedDate),
     );
-    if (selectedDate == null) return state.requireValue;
     final now = ref.watch(resumeCurrentDateProvider);
     final isToday = _isSameDay(selectedDate, now);
     final params = GetSaleStatisticsParams(

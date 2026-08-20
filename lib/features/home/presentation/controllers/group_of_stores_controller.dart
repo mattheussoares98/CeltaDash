@@ -1,6 +1,5 @@
-import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/core/providers.dart';
-import 'package:celta_dash/features/home/presentation/controllers/home_data_selection_controller.dart';
+import 'package:celta_dash/features/home/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/home/presentation/models/models.dart';
 import 'package:celta_dash/features/sale_statistics/domain/entities/entities.dart';
 import 'package:celta_dash/features/sale_statistics/presentation/controllers/controllers.dart';
@@ -16,11 +15,8 @@ class GroupOfStoresController extends _$GroupOfStoresController {
     ref.watch(activeEcParamsStateControllerProvider);
 
     final selectedDate = await ref.watch(
-      homeDataSelectionControllerProvider(
-        AppMode.sales,
-      ).selectAsync((s) => s?.selectedDate),
+      homeControllerProvider.selectAsync((s) => s.selectedDate),
     );
-    if (selectedDate == null) return state.requireValue;
 
     final params = GetSaleStatisticsParams(
       startDate: DateTime(
