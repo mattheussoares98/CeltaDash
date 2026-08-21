@@ -10,6 +10,7 @@ extension DateTimeExtension on DateTime {
 
 enum DateFormatType {
   yMd('yMd'),
+  yMMM('yMMM'),
   yMMMMd('yMMMMd'),
   yMMMd('yMMMd'),
   yMMMEd('yMMMEd'),
@@ -18,6 +19,7 @@ enum DateFormatType {
   Hm('Hm'),
   MM('MM'),
   MMM('MMM'),
+  MMMM('MMMM'),
   Hms('Hms'),
   ddMMyyyy('dd/MM/yyyy'),
   ddMMyyyyHHmm('dd/MM/yyyy HH:mm'),
