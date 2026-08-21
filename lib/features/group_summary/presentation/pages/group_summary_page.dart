@@ -7,6 +7,7 @@ import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class GroupSummaryPage extends StatelessWidget {
@@ -38,7 +39,13 @@ class _GroupSummaryContent extends HookConsumerWidget {
       appBar: HomeAppBar(
         isLandscape: true,
         reloadButton: ReloadIconButton(refreshProviders: [provider]),
-        showLeading: true,
+        leading: BaseIconButton(
+          onPressed: context.pop,
+          platformIcon: const PlatformIcon(
+            cupertinoIcon: CupertinoIcons.back,
+            materialIcon: Icons.arrow_back,
+          ),
+        ),
         showEnterpriseDropdown: false,
       ),
       isScrollable: false,
