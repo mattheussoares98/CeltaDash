@@ -1,5 +1,6 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/features/home/home.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/misc.dart';
 import 'package:go_router/go_router.dart';
@@ -19,6 +20,17 @@ class HomePage extends HookConsumerWidget {
     final enterpriseId = ref.watch(
       homeControllerProvider.select((s) => s.value?.selectedEnterpriseId),
     );
+    final selectedEnterpriseIsDisabled =
+        enterpriseId != null &&
+        ref.watch(
+          enterprisesControllerProvider.select(
+            (s) =>
+                s.value
+                    ?.firstWhereOrNull((e) => e.id == enterpriseId)
+                    ?.enabled ==
+                false,
+          ),
+        );
     final providers = enterpriseId == null
         ? null
         : <ProviderBase<AsyncValue<dynamic>>>[
@@ -47,7 +59,11 @@ class HomePage extends HookConsumerWidget {
           : null,
       body: Stack(
         fit: StackFit.expand,
-        children: [navigationShell, const ResumeProvidersListener()],
+        children: [
+          navigationShell,
+          const ResumeProvidersListener(),
+          if (selectedEnterpriseIsDisabled) const DisabledEnterpriseOverlay(),
+        ],
       ),
       bottomNavigationBar: HomeBottomNavigation(
         currentIndex: navigationShell.currentIndex,
