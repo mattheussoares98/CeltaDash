@@ -1,6 +1,5 @@
 import 'package:celta_dash/data/database/database.dart';
 import 'package:celta_dash/domain/helpers/helpers.dart';
-import 'package:celta_dash/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirebaseAdapter implements FirebaseStorage {
@@ -49,10 +48,6 @@ class FirebaseAdapter implements FirebaseStorage {
     required String path,
     required Map<String, dynamic>? data,
   }) async {
-    if (PlatformUtil.isWindows) {
-      return;
-    }
-
     try {
       final json = data;
       if (increment != null) {

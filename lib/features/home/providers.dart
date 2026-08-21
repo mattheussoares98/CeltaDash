@@ -23,5 +23,6 @@ IHomeRepository homeRepository(Ref ref) {
   return HomeRepositoryImpl(
     ref.watch(homeDatasourceProvider),
     ref.watch(homeLocalDatasourceProvider),
+    HomeGoalDatasource(ref.watch(firebaseStorageProvider)),
   );
 }

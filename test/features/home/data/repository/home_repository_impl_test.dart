@@ -1,5 +1,7 @@
 import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/features/home/data/data.dart';
+import 'package:celta_dash/features/home/domain/domain.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -9,12 +11,18 @@ import '../../mocks/mocks.dart';
 void main() {
   late MockHomeDatasource remoteDatasource;
   late MockHomeLocalDatasource localDatasource;
+  late MockHomeGoalDatasource goalDatasource;
   late HomeRepositoryImpl repository;
 
   setUp(() {
     remoteDatasource = MockHomeDatasource();
     localDatasource = MockHomeLocalDatasource();
-    repository = HomeRepositoryImpl(remoteDatasource, localDatasource);
+    goalDatasource = MockHomeGoalDatasource();
+    repository = HomeRepositoryImpl(
+      remoteDatasource,
+      localDatasource,
+      goalDatasource,
+    );
   });
 
   test('getEnterprises converts datasource models into entities', () async {
@@ -58,6 +66,68 @@ void main() {
 
     expect(await repository.loadActiveEnterprise(), enterprise);
     verify(() => localDatasource.loadActiveEnterprise()).called(1);
+  });
+
+  test('getMonthlyGoal converts the datasource model into an entity', () async {
+    final firebaseEnterpriseId = faker.guid.guid();
+    final entity = MonthlyGoalEntity(
+      enterpriseId: faker.randomGenerator.integer(100),
+      month: faker.date.dateTime(),
+      value: faker.randomGenerator.decimal(),
+      userName: faker.person.name(),
+    );
+    final model = MonthlyGoalModel.fromEntity(entity);
+    when(
+      () => goalDatasource.getMonthlyGoal(
+        firebaseEnterpriseId: firebaseEnterpriseId,
+        enterpriseId: entity.enterpriseId,
+        month: entity.month,
+      ),
+    ).thenAnswer((_) async => model);
+
+    final result = await repository.getMonthlyGoal(
+      firebaseEnterpriseId: firebaseEnterpriseId,
+      enterpriseId: entity.enterpriseId,
+      month: entity.month,
+    );
+
+    expect(result, entity);
+    verify(
+      () => goalDatasource.getMonthlyGoal(
+        firebaseEnterpriseId: firebaseEnterpriseId,
+        enterpriseId: entity.enterpriseId,
+        month: entity.month,
+      ),
+    ).called(1);
+  });
+
+  test('saveMonthlyGoal converts the entity and delegates saving', () async {
+    final firebaseEnterpriseId = faker.guid.guid();
+    final entity = MonthlyGoalEntity(
+      enterpriseId: faker.randomGenerator.integer(100),
+      month: faker.date.dateTime(),
+      value: faker.randomGenerator.decimal(),
+      userName: faker.person.name(),
+    );
+    final model = MonthlyGoalModel.fromEntity(entity);
+    when(
+      () => goalDatasource.saveMonthlyGoal(
+        firebaseEnterpriseId: firebaseEnterpriseId,
+        goal: model,
+      ),
+    ).thenAnswer((_) async {});
+
+    await repository.saveMonthlyGoal(
+      firebaseEnterpriseId: firebaseEnterpriseId,
+      goal: entity,
+    );
+
+    verify(
+      () => goalDatasource.saveMonthlyGoal(
+        firebaseEnterpriseId: firebaseEnterpriseId,
+        goal: model,
+      ),
+    ).called(1);
   });
 
   test('logout delegates to the local datasource', () async {

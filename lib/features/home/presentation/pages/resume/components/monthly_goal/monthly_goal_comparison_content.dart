@@ -2,13 +2,19 @@ import 'dart:math';
 
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/features/home/presentation/models/models.dart';
+import 'package:celta_dash/features/home/presentation/pages/resume/components/components.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class MonthlyGoalComparisonContent extends StatelessWidget {
-  const MonthlyGoalComparisonContent({super.key, required this.comparison});
+  const MonthlyGoalComparisonContent({
+    super.key,
+    required this.comparison,
+    required this.enterpriseId,
+  });
 
   final MonthlyGoalComparisonState comparison;
+  final int enterpriseId;
 
   @override
   Widget build(BuildContext context) => Card(
@@ -20,33 +26,41 @@ class MonthlyGoalComparisonContent extends StatelessWidget {
             (constraints.maxWidth - Sizes.p16) / 2,
             Sizes.p120,
           );
-          return Row(
+          return Column(
             children: [
-              Expanded(
-                child: AnimatedCircleProgress(
-                  key: ValueKey(
-                    comparison.currentMonthLiquidValue + comparison.monthlyGoal,
+              Row(
+                children: [
+                  Expanded(
+                    child: AnimatedCircleProgress(
+                      key: ValueKey(
+                        comparison.currentMonthLiquidValue +
+                            comparison.monthlyGoal,
+                      ),
+                      title: 'Meta mensal'.hardcoded,
+                      value: comparison.currentMonthLiquidValue.toDouble(),
+                      maximum: comparison.monthlyGoal,
+                      height: circleSize,
+                      width: circleSize,
+                    ),
                   ),
-                  title: 'Meta mensal'.hardcoded,
-                  value: comparison.currentMonthLiquidValue.toDouble(),
-                  maximum: comparison.monthlyGoal,
-                  height: circleSize,
-                  width: circleSize,
-                ),
-              ),
-              gapW16,
-              Expanded(
-                child: AnimatedCircleProgress(
-                  key: ValueKey(
-                    comparison.selectedDayLiquidValue + comparison.dailyGoal,
+                  gapW16,
+                  Expanded(
+                    child: AnimatedCircleProgress(
+                      key: ValueKey(
+                        comparison.selectedDayLiquidValue +
+                            comparison.dailyGoal,
+                      ),
+                      title: 'Meta diária'.hardcoded,
+                      value: comparison.selectedDayLiquidValue.toDouble(),
+                      maximum: comparison.dailyGoal,
+                      height: circleSize,
+                      width: circleSize,
+                    ),
                   ),
-                  title: 'Meta diária'.hardcoded,
-                  value: comparison.selectedDayLiquidValue.toDouble(),
-                  maximum: comparison.dailyGoal,
-                  height: circleSize,
-                  width: circleSize,
-                ),
+                ],
               ),
+              gapH16,
+              MonthlyGoalEditor(enterpriseId: enterpriseId),
             ],
           );
         },

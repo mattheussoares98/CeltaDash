@@ -20,7 +20,10 @@ class MonthlyGoalComparisonCard extends ConsumerWidget {
       preserveValue: true,
       tryAgain: () => ref.invalidate(provider),
       data: (comparison) => comparison.hasGoal
-          ? MonthlyGoalComparisonContent(comparison: comparison)
+          ? MonthlyGoalComparisonContent(
+              comparison: comparison,
+              enterpriseId: enterpriseId,
+            )
           : Center(
               child: BaseText.bodyLarge(
                 'Não há dados para calcular as metas'.hardcoded,

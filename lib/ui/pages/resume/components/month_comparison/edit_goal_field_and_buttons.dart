@@ -53,10 +53,7 @@ class _EditGoalFieldAndButtonsState extends State<EditGoalFieldAndButtons> {
               labelText: R.string.goal.addBrazilianCoin(),
             ),
             onFieldSubmitted: (_) => changeGoal(),
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
-              BrazilianRealInputFormatter(),
-            ],
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             validator: (value) => ValidationComposite([
               const RequiredFieldValidation(),
             ]).validate(value)?.description,

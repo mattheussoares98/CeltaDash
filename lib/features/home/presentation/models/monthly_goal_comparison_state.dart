@@ -7,6 +7,7 @@ class MonthlyGoalComparisonState extends Equatable {
     required this.currentMonthLiquidValue,
     required this.comparisonLiquidValue,
     required this.selectedDayLiquidValue,
+    this.customMonthlyGoal,
   });
 
   final DateTime selectedDate;
@@ -14,22 +15,39 @@ class MonthlyGoalComparisonState extends Equatable {
   final num currentMonthLiquidValue;
   final num comparisonLiquidValue;
   final num selectedDayLiquidValue;
+  final double? customMonthlyGoal;
 
-  double get monthlyGoal => comparisonLiquidValue * 1.05;
+  double get monthlyGoal => customMonthlyGoal ?? comparisonLiquidValue * 1.05;
 
   int get comparisonMonthDays =>
       DateTime(comparisonDate.year, comparisonDate.month + 1, 0).day;
 
-  double get dailyGoal => monthlyGoal / comparisonMonthDays;
+  int get selectedMonthDays =>
+      DateTime(selectedDate.year, selectedDate.month + 1, 0).day;
+
+  double get dailyGoal =>
+      monthlyGoal /
+      (customMonthlyGoal == null ? comparisonMonthDays : selectedMonthDays);
 
   bool get hasGoal => monthlyGoal > 0;
 
+  MonthlyGoalComparisonState copyWith({double? customMonthlyGoal}) =>
+      MonthlyGoalComparisonState(
+        selectedDate: selectedDate,
+        comparisonDate: comparisonDate,
+        currentMonthLiquidValue: currentMonthLiquidValue,
+        comparisonLiquidValue: comparisonLiquidValue,
+        selectedDayLiquidValue: selectedDayLiquidValue,
+        customMonthlyGoal: customMonthlyGoal ?? this.customMonthlyGoal,
+      );
+
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
     selectedDate,
     comparisonDate,
     currentMonthLiquidValue,
     comparisonLiquidValue,
     selectedDayLiquidValue,
+    customMonthlyGoal,
   ];
 }
