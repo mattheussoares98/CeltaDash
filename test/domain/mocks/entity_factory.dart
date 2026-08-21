@@ -5,14 +5,23 @@ import 'package:celta_dash/domain/entities/entities.dart'
         FirebaseEnterpriseEntity,
         FirebaseSubEnterpriseEntity,
         SaleStatisticsEntity;
-import 'package:celta_dash/domain/usecases/usecases.dart'
-    hide GetSaleStatisticsParams;
+import 'package:celta_dash/features/enterprises_manager/domain/domain.dart';
 import 'package:celta_dash/features/sale_statistics/domain/entities/entities.dart';
 import 'package:celta_dash/main/builders/builders.dart';
 import 'package:faker/faker.dart';
 
 class EntityFactory {
   EntityFactory._();
+
+  static AddEnterpriseParams makeAddEnterpriseParams({
+    String? enterpriseName,
+    String? user,
+    String? password,
+  }) => AddEnterpriseParams(
+    enterpriseName: enterpriseName ?? faker.company.name(),
+    user: user ?? faker.person.name(),
+    password: password ?? faker.internet.password(),
+  );
 
   static EcParams makeEcParams({
     String? url,
