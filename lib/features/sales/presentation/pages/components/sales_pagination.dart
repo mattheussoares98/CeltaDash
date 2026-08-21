@@ -48,11 +48,11 @@ class SalesPaginationAndCancFilter extends StatelessWidget {
                 child: Column(
                   children: [
                     BaseText(
-                      'Página $actualPage/${result!.totalPages}'.hardcoded,
+                      'Página $actualPage/${result?.totalPages ?? 0}'.hardcoded,
                       textAlign: .center,
                     ),
                     BaseText.caption(
-                      '$firstRecord-$lastRecord/${result!.totalRecords}',
+                      '$firstRecord-$lastRecord/${result?.totalRecords ?? 0}',
                       textAlign: .center,
                     ),
                   ],
