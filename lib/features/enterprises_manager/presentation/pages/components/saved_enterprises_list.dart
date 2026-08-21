@@ -25,10 +25,10 @@ class SavedEnterprisesList extends ConsumerWidget {
       );
     }
 
-    return SliverList.separated(
-      //TODO ResponsiveListFlow
+    return ResponsiveListFlow(
       itemCount: enterprises.length,
-      separatorBuilder: (_, _) => gapH8,
+      isSliver: true,
+      useMasonryLayout: false,
       itemBuilder: (context, index) {
         final enterprise = enterprises[index];
         final isSelected = managerState?.isSelected(enterprise) == true;
@@ -43,6 +43,7 @@ class SavedEnterprisesList extends ConsumerWidget {
             ),
           ),
           child: BaseListTile(
+            contentPadding: const EdgeInsets.all(Sizes.p8),
             title: BaseText.titleMedium(
               enterprise.enterpriseName?.toUpperCase() ?? '-'.hardcoded,
             ),
@@ -71,6 +72,7 @@ class SavedEnterprisesList extends ConsumerWidget {
                     platformIcon: const PlatformIcon(
                       materialIcon: Icons.delete_outline,
                       cupertinoIcon: CupertinoIcons.delete,
+                      color: Colors.red,
                     ),
                   ),
             onTap: isSelected

@@ -48,7 +48,6 @@ class AddEnterpriseForm extends HookConsumerWidget {
       key: formKey,
       child: ExpansionTile(
         title: BaseText.titleMedium('Adicionar nova empresa'.hardcoded),
-        childrenPadding: const EdgeInsets.only(bottom: Sizes.p16),
         children: [
           EnterpriseField(
             controller: enterpriseController,
