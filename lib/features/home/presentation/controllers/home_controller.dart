@@ -9,6 +9,7 @@ part 'home_controller.g.dart';
 class HomeController extends _$HomeController {
   @override
   Future<HomeState> build() async {
+    ref.watch(activeEcParamsStateControllerProvider);
     final previousState = state.value;
     final repository = ref.watch(homeRepositoryProvider);
     final appMode = previousState?.appMode ?? await repository.loadAppMode();
