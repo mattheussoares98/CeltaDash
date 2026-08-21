@@ -14,7 +14,7 @@ class SalesPaginationAndCancFilter extends StatelessWidget {
     super.key,
   });
 
-  final SaleMovementEntity result;
+  final SaleMovementEntity? result;
   final bool isLoading;
   final bool onlyCancelled;
   final ValueChanged<bool> onOnlyCancelledChanged;
@@ -22,10 +22,11 @@ class SalesPaginationAndCancFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final firstRecord = (result.actualPage - 1) * result.recordsByPage + 1;
-    final lastRecord = firstRecord + result.recordsOnThisPage - 1;
-    final isFirstPage = result.actualPage <= 1;
-    final isLastPage = result.actualPage >= result.totalPages;
+    final actualPage = result?.actualPage ?? 1;
+    final firstRecord = ((actualPage - 1) * (result?.recordsByPage ?? 1)) + 1;
+    final lastRecord = firstRecord + (result?.recordsOnThisPage ?? 0) - 1;
+    final isFirstPage = actualPage <= 1;
+    final isLastPage = actualPage >= (result?.totalPages ?? 1);
 
     return Row(
       children: [
@@ -36,7 +37,7 @@ class SalesPaginationAndCancFilter extends StatelessWidget {
               BaseIconButton(
                 onPressed: isFirstPage || isLoading
                     ? null
-                    : () => onPageChanged(result.actualPage - 1),
+                    : () => onPageChanged(actualPage - 1),
                 platformIcon: const PlatformIcon(
                   cupertinoIcon: CupertinoIcons.arrow_left,
                   materialIcon: Icons.arrow_back_ios_new_outlined,
@@ -47,12 +48,11 @@ class SalesPaginationAndCancFilter extends StatelessWidget {
                 child: Column(
                   children: [
                     BaseText(
-                      'Página ${result.actualPage}/${result.totalPages}'
-                          .hardcoded,
+                      'Página $actualPage/${result!.totalPages}'.hardcoded,
                       textAlign: .center,
                     ),
                     BaseText.caption(
-                      '$firstRecord-$lastRecord/${result.totalRecords}',
+                      '$firstRecord-$lastRecord/${result!.totalRecords}',
                       textAlign: .center,
                     ),
                   ],
@@ -61,7 +61,7 @@ class SalesPaginationAndCancFilter extends StatelessWidget {
               BaseIconButton(
                 onPressed: isLastPage || isLoading
                     ? null
-                    : () => onPageChanged(result.actualPage + 1),
+                    : () => onPageChanged(actualPage + 1),
                 platformIcon: const PlatformIcon(
                   cupertinoIcon: CupertinoIcons.arrow_right,
                   materialIcon: Icons.arrow_forward_ios_outlined,
@@ -73,13 +73,10 @@ class SalesPaginationAndCancFilter extends StatelessWidget {
         ),
         Expanded(
           flex: 6,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
-            child: BaseSwitch(
-              title: 'Somente canceladas'.hardcoded,
-              value: onlyCancelled,
-              onChanged: isLoading ? null : onOnlyCancelledChanged,
-            ),
+          child: BaseSwitch(
+            title: 'Somente canceladas'.hardcoded,
+            value: onlyCancelled,
+            onChanged: isLoading ? null : onOnlyCancelledChanged,
           ),
         ),
       ],

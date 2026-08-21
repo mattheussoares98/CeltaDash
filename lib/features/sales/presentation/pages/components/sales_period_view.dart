@@ -41,14 +41,13 @@ class SalesPeriodView extends HookConsumerWidget {
 
     return Column(
       children: [
-        if (paginationResult != null && paginationResult.totalPages > 1)
-          SalesPaginationAndCancFilter(
-            result: paginationResult,
-            isLoading: salesAsync.isLoading,
-            onlyCancelled: onlyCancelled,
-            onOnlyCancelledChanged: onOnlyCancelledChanged,
-            onPageChanged: onPageChanged,
-          ),
+        SalesPaginationAndCancFilter(
+          result: paginationResult,
+          isLoading: salesAsync.isLoading,
+          onlyCancelled: onlyCancelled,
+          onOnlyCancelledChanged: onOnlyCancelledChanged,
+          onPageChanged: onPageChanged,
+        ),
         Expanded(
           child: AsyncValueWidget(
             value: salesAsync,
