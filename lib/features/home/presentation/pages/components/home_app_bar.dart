@@ -1,9 +1,10 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
-import 'package:celta_dash/features/enterprises_manager/enterprises_manager.dart';
 import 'package:celta_dash/features/home/home.dart';
+import 'package:celta_dash/routing/routing.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
@@ -59,8 +60,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
     final selectEnterprise = showEnterpriseManagement
         ? BaseIconButton(
             key: const ValueKey('home_enterprises_manager'),
-            onPressed: () =>
-                showModalPage(const EnterprisesManagerPage(), context),
+            onPressed: () => context.pushNamed(Routes.enterprisesManager.name),
             platformIcon: const PlatformIcon(
               materialIcon: Icons.manage_accounts,
               cupertinoIcon: CupertinoIcons.person_2,
