@@ -1,8 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:celta_dash/data/database/database.dart';
 import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/utils/utils.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirebaseAdapter implements FirebaseStorage {
   FirebaseFirestore get instance => FirebaseFirestore.instance;
@@ -13,10 +12,6 @@ class FirebaseAdapter implements FirebaseStorage {
     String? fieldToSearch,
     String? valueToSearch,
   }) async {
-    if (PlatformUtil.isWindows) {
-      return null;
-    }
-
     try {
       final pathSegments = path.split('/');
 
@@ -75,12 +70,13 @@ class FirebaseAdapter implements FirebaseStorage {
       final pathSegments = path.split('/');
       if (pathSegments.length % 2 != 0) {
         throw ArgumentError(
-            'Invalid document path: $path. Path must have an even number of segments.');
+          'Invalid document path: $path. Path must have an even number of segments.',
+        );
       }
 
       // Create the DocumentReference from the path
-      final DocumentReference<Map<String, dynamic>> documentReference =
-          instance.doc(path);
+      final DocumentReference<Map<String, dynamic>> documentReference = instance
+          .doc(path);
 
       await documentReference
           .set(json, SetOptions(merge: merge == true))
