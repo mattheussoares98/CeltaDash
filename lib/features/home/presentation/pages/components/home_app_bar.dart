@@ -38,8 +38,11 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
       reloadButton != null;
 
   @override
-  Size get preferredSize =>
-      Size.fromHeight((isLandscape || !_showBottomLine) ? kToolbarHeight : 95);
+  Size get preferredSize => Size.fromHeight(
+    (isLandscape || !_showBottomLine || !showEnterpriseDropdown)
+        ? kToolbarHeight
+        : 95,
+  );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -104,29 +107,33 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
             ],
           );
         }
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: .stretch,
-          children: [
-            Row(
-              children: [
-                ?drawerButton,
-                if (enterpriseSelector != null)
-                  Expanded(child: enterpriseSelector),
+        return Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: .stretch,
+            children: [
+              if (enterpriseSelector != null) ...[
+                Row(
+                  children: [
+                    ?drawerButton,
+                    Expanded(child: enterpriseSelector),
+                  ],
+                ),
+                gapH4,
               ],
-            ),
-            gapH4,
-            Row(
-              mainAxisAlignment: .spaceBetween,
-              children: [
-                ?leftDateWidget,
-                ?dateSelector,
-                ?modeToggle,
-                ?selectEnterprise,
-                ?reloadButton,
-              ],
-            ),
-          ],
+              Row(
+                mainAxisAlignment: .spaceBetween,
+                children: [
+                  if (enterpriseSelector == null) ?drawerButton,
+                  ?leftDateWidget,
+                  ?dateSelector,
+                  ?modeToggle,
+                  ?selectEnterprise,
+                  ?reloadButton,
+                ],
+              ),
+            ],
+          ),
         );
       },
     );
