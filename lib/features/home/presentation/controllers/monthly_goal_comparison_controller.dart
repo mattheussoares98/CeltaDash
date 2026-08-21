@@ -1,8 +1,7 @@
 import 'package:celta_dash/core/providers.dart';
-import 'package:celta_dash/features/home/domain/domain.dart';
 import 'package:celta_dash/features/home/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/home/presentation/models/models.dart';
-import 'package:celta_dash/features/home/providers.dart';
+import 'package:celta_dash/features/home/domain/domain.dart';
 import 'package:celta_dash/features/sale_statistics/domain/entities/entities.dart';
 import 'package:celta_dash/features/sale_statistics/presentation/controllers/controllers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -19,18 +18,16 @@ class MonthlyGoalComparisonController
     final selectedDate = await ref.watch(
       homeControllerProvider.selectAsync((selection) => selection.selectedDate),
     );
-    final homeRepository = ref.watch(homeRepositoryProvider);
-    final customGoal = await homeRepository.loadActiveEnterprise().then((
-      enterprise,
-    ) {
-      final firebaseEnterpriseId = enterprise?.firebaseId;
-      if (firebaseEnterpriseId == null) return null;
-      return homeRepository.getMonthlyGoal(
-        firebaseEnterpriseId: firebaseEnterpriseId,
-        enterpriseId: enterpriseId,
-        month: selectedDate,
-      );
-    });
+    final customGoal = ref
+        .read(monthlyGoalsControllerProvider.future)
+        .then(
+          (goals) =>
+              goals[MonthlyGoalKey(
+                enterpriseId: enterpriseId,
+                year: selectedDate.year,
+                month: selectedDate.month,
+              )],
+        );
 
     final dailyComparisonSelectedLiquidValue = ref.watch(
       dailyComparisonControllerProvider(
@@ -99,32 +96,7 @@ class MonthlyGoalComparisonController
       currentMonthLiquidValue: currentMonthStatistics.sumLiquidValue(),
       comparisonLiquidValue: comparisonStatistics.sumLiquidValue(),
       selectedDayLiquidValue: await dailyComparisonSelectedLiquidValue,
-      customMonthlyGoal: (customGoal)?.value,
+      customMonthlyGoal: (await customGoal)?.value,
     );
-  }
-
-  Future<void> updateMonthlyGoal(double value) async {
-    final previous = state.requireValue;
-    final repository = ref.read(homeRepositoryProvider);
-    final activeEnterprise = await repository.loadActiveEnterprise();
-    final firebaseEnterpriseId = activeEnterprise?.firebaseId;
-    if (firebaseEnterpriseId == null) {
-      throw StateError('The active enterprise has no Firebase identifier.');
-    }
-
-    try {
-      await repository.saveMonthlyGoal(
-        firebaseEnterpriseId: firebaseEnterpriseId,
-        goal: MonthlyGoalEntity(
-          enterpriseId: enterpriseId,
-          month: previous.selectedDate,
-          value: value,
-          userName: activeEnterprise?.bsUser?.name ?? '',
-        ),
-      );
-      state = AsyncData(previous.copyWith(customMonthlyGoal: value));
-    } catch (error, stackTrace) {
-      Error.throwWithStackTrace(error, stackTrace);
-    }
   }
 }

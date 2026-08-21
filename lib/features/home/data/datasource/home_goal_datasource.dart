@@ -9,25 +9,40 @@ class HomeGoalDatasource implements IHomeGoalDatasource {
   final FirebaseStorage _firebaseStorage;
 
   @override
-  Future<MonthlyGoalModel?> getMonthlyGoal({
+  Future<List<MonthlyGoalModel>> getMonthlyGoals({
     required String firebaseEnterpriseId,
-    required int enterpriseId,
-    required DateTime month,
   }) async {
     final snapshot = await _firebaseStorage.get(
       path: _goalPath(firebaseEnterpriseId),
     );
     final data = snapshot?.data();
-    if (data is! Map) return null;
+    if (data is! Map) return [];
 
-    final goalJson = data[_goalId(enterpriseId, month)];
-    if (goalJson is! Map) return null;
+    final goals = <MonthlyGoalModel>[];
+    for (final entry in data.entries) {
+      final match = RegExp(
+        r'^(\d+)-(\d{4})-(\d{2})$',
+      ).firstMatch(entry.key.toString());
+      if (match == null || entry.value is! Map) continue;
 
-    return MonthlyGoalModel.fromJson(
-      goalJson,
-      enterpriseId: enterpriseId,
-      month: month,
-    );
+      final enterpriseId = int.parse(match.group(1)!);
+      final year = int.parse(match.group(2)!);
+      final month = int.parse(match.group(3)!);
+      if (month < 1 || month > 12) continue;
+
+      try {
+        goals.add(
+          MonthlyGoalModel.fromJson(
+            entry.value as Map,
+            enterpriseId: enterpriseId,
+            month: DateTime(year, month),
+          ),
+        );
+      } catch (_) {
+        continue;
+      }
+    }
+    return goals;
   }
 
   @override

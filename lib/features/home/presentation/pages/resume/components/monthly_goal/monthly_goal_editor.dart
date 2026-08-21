@@ -16,7 +16,6 @@ class MonthlyGoalEditor extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final provider = monthlyGoalComparisonControllerProvider(enterpriseId);
     final selectedDate = ref.watch(
       homeControllerProvider.select((state) => state.value?.selectedDate),
     );
@@ -45,7 +44,13 @@ class MonthlyGoalEditor extends HookConsumerWidget {
 
       isSaving.value = true;
       try {
-        await ref.read(provider.notifier).updateMonthlyGoal(value);
+        await ref
+            .read(monthlyGoalsControllerProvider.notifier)
+            .updateGoal(
+              enterpriseId: enterpriseId,
+              month: selectedDate!,
+              value: value,
+            );
         if (!context.mounted) return;
         closeEditor();
         showToastMessage('Meta atualizada'.hardcoded);

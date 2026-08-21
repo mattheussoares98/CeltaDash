@@ -68,7 +68,7 @@ void main() {
     verify(() => localDatasource.loadActiveEnterprise()).called(1);
   });
 
-  test('getMonthlyGoal converts the datasource model into an entity', () async {
+  test('getMonthlyGoals converts datasource models into entities', () async {
     final firebaseEnterpriseId = faker.guid.guid();
     final entity = MonthlyGoalEntity(
       enterpriseId: faker.randomGenerator.integer(100),
@@ -78,25 +78,19 @@ void main() {
     );
     final model = MonthlyGoalModel.fromEntity(entity);
     when(
-      () => goalDatasource.getMonthlyGoal(
+      () => goalDatasource.getMonthlyGoals(
         firebaseEnterpriseId: firebaseEnterpriseId,
-        enterpriseId: entity.enterpriseId,
-        month: entity.month,
       ),
-    ).thenAnswer((_) async => model);
+    ).thenAnswer((_) async => [model]);
 
-    final result = await repository.getMonthlyGoal(
+    final result = await repository.getMonthlyGoals(
       firebaseEnterpriseId: firebaseEnterpriseId,
-      enterpriseId: entity.enterpriseId,
-      month: entity.month,
     );
 
-    expect(result, entity);
+    expect(result, [entity]);
     verify(
-      () => goalDatasource.getMonthlyGoal(
+      () => goalDatasource.getMonthlyGoals(
         firebaseEnterpriseId: firebaseEnterpriseId,
-        enterpriseId: entity.enterpriseId,
-        month: entity.month,
       ),
     ).called(1);
   });

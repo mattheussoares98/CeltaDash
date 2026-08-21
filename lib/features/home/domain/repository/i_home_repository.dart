@@ -10,10 +10,8 @@ abstract class IHomeRepository {
 
   Future<FirebaseEnterpriseEntity?> loadActiveEnterprise();
 
-  Future<MonthlyGoalEntity?> getMonthlyGoal({
+  Future<List<MonthlyGoalEntity>> getMonthlyGoals({
     required String firebaseEnterpriseId,
-    required int enterpriseId,
-    required DateTime month,
   });
 
   Future<void> saveMonthlyGoal({

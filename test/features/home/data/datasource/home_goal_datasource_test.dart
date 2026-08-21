@@ -19,9 +19,10 @@ void main() {
     firebaseStorage = FakeHomeGoalFirebaseStorage();
     datasource = HomeGoalDatasource(firebaseStorage);
     firebaseEnterpriseId = faker.guid.guid();
+    final month = faker.date.dateTime();
     goal = MonthlyGoalEntity(
       enterpriseId: faker.randomGenerator.integer(100),
-      month: faker.date.dateTime(),
+      month: DateTime(month.year, month.month),
       value: faker.randomGenerator.decimal(),
       userName: faker.person.name(),
     );
@@ -29,33 +30,44 @@ void main() {
     path = 'enterprises/$firebaseEnterpriseId/goals/all';
   });
 
-  test('getMonthlyGoal maps the matching Firebase goal', () async {
+  test('getMonthlyGoals maps every valid Firebase goal', () async {
+    final otherGoal = goal.copyWith(
+      enterpriseId: goal.enterpriseId + 1,
+      month: DateTime(goal.month.year, goal.month.month - 1),
+    );
+    final otherGoalId =
+        '${otherGoal.enterpriseId}-${DateFormat('yyyy-MM').format(otherGoal.month)}';
     firebaseStorage.getResult = FakeDoc({
       goalId: MonthlyGoalModel.fromEntity(goal).toJson(),
+      otherGoalId: MonthlyGoalModel.fromEntity(otherGoal).toJson(),
+      'invalid-key': MonthlyGoalModel.fromEntity(goal).toJson(),
+      '${goal.enterpriseId}-${goal.month.year}-13': {
+        'value': goal.value,
+        'userName': goal.userName,
+      },
+      '${goal.enterpriseId + 2}-${DateFormat('yyyy-MM').format(goal.month)}': {
+        'value': 'invalid',
+      },
     }, null);
 
-    final result = await datasource.getMonthlyGoal(
+    final result = await datasource.getMonthlyGoals(
       firebaseEnterpriseId: firebaseEnterpriseId,
-      enterpriseId: goal.enterpriseId,
-      month: goal.month,
     );
 
-    expect(result?.toEntity(), goal);
+    expect(result.map((model) => model.toEntity()), [goal, otherGoal]);
     expect(firebaseStorage.getPath, path);
   });
 
   test(
-    'getMonthlyGoal returns null when the month has no saved goal',
+    'getMonthlyGoals returns an empty list when there are no saved goals',
     () async {
       firebaseStorage.getResult = const FakeDoc({}, null);
 
-      final result = await datasource.getMonthlyGoal(
+      final result = await datasource.getMonthlyGoals(
         firebaseEnterpriseId: firebaseEnterpriseId,
-        enterpriseId: goal.enterpriseId,
-        month: goal.month,
       );
 
-      expect(result, isNull);
+      expect(result, isEmpty);
     },
   );
 
@@ -75,15 +87,13 @@ void main() {
     },
   );
 
-  test('getMonthlyGoal propagates Firebase failures', () async {
+  test('getMonthlyGoals propagates Firebase failures', () async {
     final error = Exception(faker.lorem.sentence());
     firebaseStorage.getError = error;
 
     expect(
-      () => datasource.getMonthlyGoal(
+      () => datasource.getMonthlyGoals(
         firebaseEnterpriseId: firebaseEnterpriseId,
-        enterpriseId: goal.enterpriseId,
-        month: goal.month,
       ),
       throwsA(same(error)),
     );

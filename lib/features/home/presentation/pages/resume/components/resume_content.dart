@@ -14,6 +14,7 @@ class ResumeContent extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final monthlyGoalsProvider = monthlyGoalsControllerProvider;
     final providers = <ProviderBase<AsyncValue<dynamic>>>[
       dailyComparisonControllerProvider(enterpriseId),
       monthlyGoalComparisonControllerProvider(enterpriseId),
@@ -56,6 +57,7 @@ class ResumeContent extends HookConsumerWidget {
             child: PrimaryTextButton(
               text: 'Tentar novamente'.hardcoded,
               onPressed: () {
+                ref.invalidate(monthlyGoalsProvider);
                 for (final item in errors) {
                   ref.invalidate(item.provider);
                 }
@@ -81,7 +83,7 @@ class ResumeContent extends HookConsumerWidget {
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
       onRefresh: () => ref.invalidate(resumeCurrentDateProvider),
       //TODO test this refresh indicator
-      refreshProviders: providers,
+      refreshProviders: [monthlyGoalsProvider, ...providers],
       body: content,
     );
   }
