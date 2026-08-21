@@ -57,26 +57,14 @@ class HomeDrawer extends HookConsumerWidget {
                     },
                   ),
                   _DrawerItem(
-                    title: 'Vendas canceladas'.hardcoded,
+                    title: 'Vendas'.hardcoded,
                     platformIcon: const PlatformIcon(
                       materialIcon: Icons.cancel_outlined,
                       cupertinoIcon: CupertinoIcons.clear_circled,
-                      color: Colors.red,
                     ),
                     onTap: () {
                       context.pop();
                       context.pushNamed(Routes.sales.name);
-                    },
-                  ),
-                  _DrawerItem(
-                    title: 'Vendas não canceladas'.hardcoded,
-                    platformIcon: const PlatformIcon(
-                      materialIcon: Icons.check_circle_outline,
-                      cupertinoIcon: CupertinoIcons.check_mark_circled,
-                    ),
-                    onTap: () {
-                      context.pop();
-                      context.pushNamed(Routes.notSales.name);
                     },
                   ),
                   _DrawerItem(
