@@ -135,21 +135,22 @@ ListTileThemeData get listTileThemeData => const ListTileThemeData(
   iconColor: AppColors.primary,
 );
 
-ExpansionTileThemeData get expansionTileThemeData =>
-    const ExpansionTileThemeData(
-      childrenPadding: EdgeInsets.all(Sizes.p8),
-      tilePadding: EdgeInsets.all(Sizes.p8),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(Sizes.p8)),
-      ),
-      collapsedShape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(Sizes.p8)),
-      ),
-      iconColor: AppColors.primary,
-      textColor: AppColors.primary,
-      collapsedIconColor: AppColors.fade,
-      collapsedTextColor: AppColors.onSurface,
-    );
+ExpansionTileThemeData get expansionTileThemeData => ExpansionTileThemeData(
+  childrenPadding: const EdgeInsets.all(Sizes.p8),
+  tilePadding: const EdgeInsets.all(Sizes.p8),
+  shape: const RoundedRectangleBorder(
+    borderRadius: BorderRadius.all(Radius.circular(Sizes.p8)),
+  ),
+  collapsedShape: const RoundedRectangleBorder(
+    borderRadius: BorderRadius.all(Radius.circular(Sizes.p8)),
+  ),
+  iconColor: AppColors.primary,
+  textColor: AppColors.primary,
+  collapsedIconColor: AppColors.fade,
+  collapsedTextColor: AppColors.onSurface,
+  backgroundColor: AppColors.primary.withAlpha(30),
+  collapsedBackgroundColor: AppColors.primary.withAlpha(50),
+);
 
 ExpansionTileThemeData get darkExpansionTileThemeData =>
     const ExpansionTileThemeData(
@@ -166,6 +167,7 @@ ExpansionTileThemeData get darkExpansionTileThemeData =>
       collapsedIconColor: Color(0xFF64748B),
       collapsedTextColor: Color(0xFFE2E8F0),
       backgroundColor: AppColors.fadeLight,
+      collapsedBackgroundColor: AppColors.fadeLight,
     );
 
 /// Bottom Navigation Bar Themes
