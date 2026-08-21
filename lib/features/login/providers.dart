@@ -2,14 +2,13 @@
 import 'package:celta_dash/core/providers.dart';
 import 'package:celta_dash/features/login/data/data.dart';
 import 'package:celta_dash/features/login/domain/repository/repository.dart';
-import 'package:celta_dash/infra/databases/databases.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'providers.g.dart';
 
 @riverpod
 IFirebaseLoginEnterpriseDatasource firebaseLoginEnterpriseDatasource(Ref ref) {
-  return FirebaseLoginEnterpriseDatasource(FirebaseAdapter());
+  return FirebaseLoginEnterpriseDatasource(ref.watch(firebaseStorageProvider));
 }
 
 @riverpod

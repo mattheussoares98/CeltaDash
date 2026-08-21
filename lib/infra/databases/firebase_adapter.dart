@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../data/database/database.dart';
-import '../../domain/helpers/helpers.dart';
+import 'package:celta_dash/data/database/database.dart';
+import 'package:celta_dash/domain/helpers/helpers.dart';
+import 'package:celta_dash/utils/utils.dart';
 
 class FirebaseAdapter implements FirebaseStorage {
-  final instance = FirebaseFirestore.instance;
+  FirebaseFirestore get instance => FirebaseFirestore.instance;
 
   @override
   Future<dynamic> get({
@@ -12,6 +13,10 @@ class FirebaseAdapter implements FirebaseStorage {
     String? fieldToSearch,
     String? valueToSearch,
   }) async {
+    if (PlatformUtil.isWindows) {
+      return null;
+    }
+
     try {
       final pathSegments = path.split('/');
 
@@ -49,6 +54,10 @@ class FirebaseAdapter implements FirebaseStorage {
     required String path,
     required Map<String, dynamic>? data,
   }) async {
+    if (PlatformUtil.isWindows) {
+      return;
+    }
+
     try {
       final json = data;
       if (increment != null) {
