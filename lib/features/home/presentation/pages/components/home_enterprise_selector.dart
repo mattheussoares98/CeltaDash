@@ -14,13 +14,43 @@ class HomeEnterpriseSelector extends ConsumerWidget {
     final enterprises = enterprisesAsync.value;
     if (homeState == null || enterprises == null) return const LoadingWidget();
 
+    final currentIndex = enterprises.indexWhere(
+      (enterprise) => enterprise.id == homeState.selectedEnterpriseId,
+    );
+
+    int? previousEnterpriseId;
+    if (currentIndex > 0) {
+      for (int i = currentIndex - 1; i >= 0; i--) {
+        if (enterprises[i].enabled) {
+          previousEnterpriseId = enterprises[i].id;
+          break;
+        }
+      }
+    }
+
+    int? nextEnterpriseId;
+    final startIndex = currentIndex < 0 ? 0 : currentIndex + 1;
+    for (int i = startIndex; i < enterprises.length; i++) {
+      if (enterprises[i].enabled) {
+        nextEnterpriseId = enterprises[i].id;
+        break;
+      }
+    }
+
+    final bool isLoading = enterprisesAsync.isLoading;
+    final notifier = ref.read(homeControllerProvider.notifier);
+
     return BaseDropDown<int>(
       key: const ValueKey('home_enterprise_selector'),
       label: 'Empresa'.hardcoded,
       selectedItem: homeState.selectedEnterpriseId,
-      onChanged: enterprisesAsync.isLoading
-          ? null
-          : ref.read(homeControllerProvider.notifier).selectEnterprise,
+      onChanged: isLoading ? null : notifier.selectEnterprise,
+      onPrevious: !isLoading && previousEnterpriseId != null
+          ? () => notifier.selectEnterprise(previousEnterpriseId!)
+          : null,
+      onNext: !isLoading && nextEnterpriseId != null
+          ? () => notifier.selectEnterprise(nextEnterpriseId!)
+          : null,
       items: enterprises.map((enterprise) {
         final label = [
           enterprise.personalizedCode,

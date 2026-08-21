@@ -16,6 +16,8 @@ class BaseDropDown<T> extends StatelessWidget {
     this.showLabelAtTopLeft = false,
     this.isSimple = false,
     this.adviceMessage,
+    this.onPrevious,
+    this.onNext,
     super.key,
   });
   final void Function(T)? onChanged;
@@ -28,6 +30,8 @@ class BaseDropDown<T> extends StatelessWidget {
   final bool showLabelAtTopLeft;
   final bool isSimple;
   final String? adviceMessage;
+  final void Function()? onPrevious;
+  final void Function()? onNext;
 
   @override
   Widget build(BuildContext context) {
@@ -62,11 +66,16 @@ class BaseDropDown<T> extends StatelessWidget {
     final disabledColor = theme.disabledColor.withValues(alpha: .2);
     final enabledColor = theme.disabledColor.withValues(alpha: .1);
 
+    final bool hasStepButtons = onPrevious != null || onNext != null;
+    final bool isDropdownEnabled =
+        onChanged != null && (centeredItems?.length ?? 0) > 0;
+
     if (PlatformUtil.isCupertino && !isSimple) {
       final double screenWidth = MediaQuery.sizeOf(context).width;
       final selectedMenuItem = centeredItems?.firstWhereOrNull(
         (item) => item.value == selectedItem,
       );
+
       return FormField<T>(
         key: key,
         autovalidateMode: AutovalidateMode.onUserInteractionIfError,
@@ -77,107 +86,147 @@ class BaseDropDown<T> extends StatelessWidget {
             children: [
               SizedBox(
                 height: dropdownHeight,
-                child: Stack(
-                  children: [
-                    ?topLeftLabel,
-                    CupertinoButton(
-                      disabledColor: disabledColor,
-                      padding: const EdgeInsets.only(left: 15),
-                      color: enabledColor,
-                      onPressed:
-                          onChanged == null || (centeredItems?.length ?? 0) < 1
-                          ? null
-                          : () async {
-                              FocusManager.instance.primaryFocus?.unfocus();
-                              if (adviceMessage != null) {
-                                final ok = await showAlertDialog(
-                                  context: context,
-                                  title: 'Atenção!'.hardcoded,
-                                  content: adviceMessage,
-                                  defaultActionText: 'Continuar'.hardcoded,
-                                  cancelActionText: 'Cancelar'.hardcoded,
-                                );
-                                if (ok != true) return;
-                              }
-                              if (context.mounted) {
-                                final selected =
-                                    await showCupertinoModalPopup<T>(
-                                      context: context,
-                                      builder: (sheetContext) =>
-                                          CupertinoActionSheet(
-                                            title: BaseText(
-                                              'Selecionar'.hardcoded,
-                                            ),
-                                            actions: centeredItems!.map((item) {
-                                              return CupertinoActionSheetAction(
-                                                onPressed: () {
-                                                  if (item.enabled) {
-                                                    Navigator.of(
-                                                      sheetContext,
-                                                    ).pop(item.value);
-                                                  }
-                                                },
-                                                child: item.child,
-                                              );
-                                            }).toList(),
-                                            cancelButton:
-                                                CupertinoActionSheetAction(
-                                                  isDefaultAction: true,
-                                                  onPressed: () => Navigator.of(
-                                                    sheetContext,
-                                                  ).pop(),
-                                                  child: BaseText.titleMedium(
-                                                    'Cancelar'.hardcoded,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: isDropdownEnabled ? enabledColor : disabledColor,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(Sizes.p8),
+                    ),
+                  ),
+                  child: Stack(
+                    children: [
+                      ?topLeftLabel,
+                      Row(
+                        children: [
+                          if (hasStepButtons)
+                            BaseIconButton(
+                              targetSize: dropdownHeight,
+                              platformIcon: const PlatformIcon(
+                                cupertinoIcon: CupertinoIcons.chevron_left,
+                                materialIcon: Icons.chevron_left,
+                              ),
+                              onPressed: onPrevious,
+                            ),
+                          Expanded(
+                            child: CupertinoButton(
+                              padding: EdgeInsets.only(
+                                left: hasStepButtons ? 0 : 15,
+                              ),
+                              onPressed:
+                                  onChanged == null ||
+                                      (centeredItems?.length ?? 0) < 1
+                                  ? null
+                                  : () async {
+                                      FocusManager.instance.primaryFocus
+                                          ?.unfocus();
+                                      if (adviceMessage != null) {
+                                        final ok = await showAlertDialog(
+                                          context: context,
+                                          title: 'Atenção!'.hardcoded,
+                                          content: adviceMessage,
+                                          defaultActionText:
+                                              'Continuar'.hardcoded,
+                                          cancelActionText:
+                                              'Cancelar'.hardcoded,
+                                        );
+                                        if (ok != true) return;
+                                      }
+                                      if (context.mounted) {
+                                        final selected = await showCupertinoModalPopup<T>(
+                                          context: context,
+                                          builder: (sheetContext) =>
+                                              CupertinoActionSheet(
+                                                title: BaseText(
+                                                  'Selecionar'.hardcoded,
+                                                ),
+                                                actions: centeredItems!.map((
+                                                  item,
+                                                ) {
+                                                  return CupertinoActionSheetAction(
+                                                    onPressed: () {
+                                                      if (item.enabled) {
+                                                        Navigator.of(
+                                                          sheetContext,
+                                                        ).pop(item.value);
+                                                      }
+                                                    },
+                                                    child: item.child,
+                                                  );
+                                                }).toList(),
+                                                cancelButton:
+                                                    CupertinoActionSheetAction(
+                                                      isDefaultAction: true,
+                                                      onPressed: () =>
+                                                          Navigator.of(
+                                                            sheetContext,
+                                                          ).pop(),
+                                                      child: BaseText.titleMedium(
+                                                        'Cancelar'.hardcoded,
+                                                        color: CupertinoColors
+                                                            .destructiveRed,
+                                                      ),
+                                                    ),
+                                              ),
+                                        );
 
-                                                    color: CupertinoColors
-                                                        .destructiveRed,
-                                                  ),
+                                        if (selected != null &&
+                                            onChanged != null) {
+                                          state.didChange(selected);
+                                          onChanged!(selected);
+                                        }
+                                      }
+                                    },
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: selectedMenuItem != null
+                                        ? DefaultTextStyle(
+                                            style:
+                                                theme.textTheme.bodyLarge ??
+                                                const TextStyle(),
+                                            textAlign: TextAlign.center,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            child: selectedMenuItem.child,
+                                          )
+                                        : Center(
+                                            child:
+                                                hint ??
+                                                BaseText(
+                                                  label ??
+                                                      'Selecionar'.hardcoded,
+                                                  textType: TextType.bodyLarge,
+                                                  maxLines: 1,
+                                                  textAlign: TextAlign.center,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                 ),
                                           ),
-                                    );
-
-                                if (selected != null && onChanged != null) {
-                                  state.didChange(selected);
-                                  onChanged!(selected);
-                                }
-                              }
-                            },
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: selectedMenuItem != null
-                                ? DefaultTextStyle(
-                                    style:
-                                        theme.textTheme.bodyLarge ??
-                                        const TextStyle(),
-                                    textAlign: TextAlign.center,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    child: selectedMenuItem.child,
-                                  )
-                                : Center(
-                                    child:
-                                        hint ??
-                                        BaseText(
-                                          label ?? 'Selecionar'.hardcoded,
-                                          textType: TextType.bodyLarge,
-                                          maxLines: 1,
-                                          textAlign: TextAlign.center,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
                                   ),
-                          ),
-                          if (screenWidth > 300)
-                            const Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: Sizes.p16,
+                                  if (!hasStepButtons && screenWidth > 300)
+                                    const Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: Sizes.p16,
+                                      ),
+                                      child: Icon(CupertinoIcons.chevron_down),
+                                    ),
+                                ],
                               ),
-                              child: Icon(CupertinoIcons.chevron_down),
+                            ),
+                          ),
+                          if (hasStepButtons)
+                            BaseIconButton(
+                              targetSize: dropdownHeight,
+                              platformIcon: const PlatformIcon(
+                                cupertinoIcon: CupertinoIcons.chevron_right,
+                                materialIcon: Icons.chevron_right,
+                              ),
+                              onPressed: onNext,
                             ),
                         ],
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               if (state.hasError)
@@ -193,9 +242,6 @@ class BaseDropDown<T> extends StatelessWidget {
         },
       );
     }
-
-    final bool isDropdownEnabled =
-        onChanged != null && (centeredItems?.length ?? 0) > 0;
 
     return FormField<T>(
       key: key,
@@ -221,47 +267,87 @@ class BaseDropDown<T> extends StatelessWidget {
                   child: Stack(
                     children: [
                       ?topLeftLabel,
-                      DropdownButtonFormField<T>(
-                        autovalidateMode:
-                            AutovalidateMode.onUserInteractionIfError,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          errorStyle: TextStyle(height: 0, fontSize: 0),
-                        ),
-                        padding: const EdgeInsets.only(left: Sizes.p8),
-                        dropdownColor: theme.colorScheme.surface,
-                        initialValue: selectedItem,
-                        isExpanded: true,
-                        alignment: Alignment.center,
-                        iconSize: 17,
-                        onTap: adviceMessage == null
-                            ? null
-                            : () {
-                                showAlertDialog(
-                                  context: context,
-                                  title: 'Atenção!'.hardcoded,
-                                  content: adviceMessage,
-                                );
-                              },
-                        hint: hint ?? (label != null ? BaseText(label!) : null),
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: theme.textTheme.titleMedium?.fontSize,
-                          color: theme.colorScheme.onSurface,
-                          height: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        items: centeredItems,
-                        onChanged:
-                            onChanged == null ||
-                                (centeredItems?.length ?? 0) < 1
-                            ? null
-                            : (value) {
-                                if (value != null) {
-                                  state.didChange(value);
-                                  onChanged?.call(value);
-                                }
-                              },
+                      Row(
+                        children: [
+                          if (hasStepButtons)
+                            BaseIconButton(
+                              targetSize: dropdownHeight,
+                              platformIcon: const PlatformIcon(
+                                cupertinoIcon: CupertinoIcons.chevron_left,
+                                materialIcon: Icons.chevron_left,
+                              ),
+                              onPressed: onPrevious,
+                            ),
+                          Expanded(
+                            child: Align(
+                              child: DropdownButtonFormField<T>(
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteractionIfError,
+                                decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  enabledBorder: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                  errorBorder: InputBorder.none,
+                                  focusedErrorBorder: InputBorder.none,
+                                  disabledBorder: InputBorder.none,
+                                  contentPadding: EdgeInsets.zero,
+                                  isDense: true,
+                                  errorStyle: TextStyle(height: 0, fontSize: 0),
+                                ),
+                                focusColor: Colors.transparent,
+                                padding: const EdgeInsets.only(left: Sizes.p8),
+                                dropdownColor: theme.colorScheme.surface,
+                                initialValue: selectedItem,
+                                isExpanded: true,
+                                alignment: Alignment.center,
+                                iconSize: hasStepButtons ? 0 : 17,
+                                icon: hasStepButtons
+                                    ? const SizedBox.shrink()
+                                    : const Icon(Icons.arrow_drop_down),
+                                onTap: adviceMessage == null
+                                    ? null
+                                    : () {
+                                        showAlertDialog(
+                                          context: context,
+                                          title: 'Atenção!'.hardcoded,
+                                          content: adviceMessage,
+                                        );
+                                      },
+                                hint:
+                                    hint ??
+                                    (label != null ? BaseText(label!) : null),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize:
+                                      theme.textTheme.titleMedium?.fontSize,
+                                  color: theme.colorScheme.onSurface,
+                                  height: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                items: centeredItems,
+                                onChanged:
+                                    onChanged == null ||
+                                        (centeredItems?.length ?? 0) < 1
+                                    ? null
+                                    : (value) {
+                                        if (value != null) {
+                                          state.didChange(value);
+                                          onChanged?.call(value);
+                                        }
+                                      },
+                              ),
+                            ),
+                          ),
+                          if (hasStepButtons)
+                            BaseIconButton(
+                              targetSize: dropdownHeight,
+                              platformIcon: const PlatformIcon(
+                                cupertinoIcon: CupertinoIcons.chevron_right,
+                                materialIcon: Icons.chevron_right,
+                              ),
+                              onPressed: onNext,
+                            ),
+                        ],
                       ),
                     ],
                   ),
