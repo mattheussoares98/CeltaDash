@@ -14,18 +14,28 @@ class HomeModeToggle extends ConsumerWidget {
     final homeState = ref.watch(homeControllerProvider).value;
     if (homeState == null) return const LoadingWidget();
 
+    final enterprisesAsync = ref.watch(enterprisesControllerProvider);
+    final enterprises = enterprisesAsync.value;
+    if (enterprises == null) return const LoadingWidget();
+    final selectedEnterpriseIsEnabled = enterprises.any(
+      (enterprise) =>
+          enterprise.id == homeState.selectedEnterpriseId && enterprise.enabled,
+    );
+
     return PrimaryTextButton(
       key: const ValueKey('home_mode_toggle'),
       text: homeState.appMode == AppMode.sales
           ? 'Vendas'.hardcoded
           : 'Financeiro'.hardcoded,
-      onPressed: () async {
-        try {
-          await ref.read(homeControllerProvider.notifier).toggleAppMode();
-        } catch (error) {
-          showToastMessage(error.toString(), type: ToastType.error);
-        }
-      },
+      onPressed: selectedEnterpriseIsEnabled
+          ? () async {
+              try {
+                await ref.read(homeControllerProvider.notifier).toggleAppMode();
+              } catch (error) {
+                showToastMessage(error.toString(), type: ToastType.error);
+              }
+            }
+          : null,
       platformIcon: const PlatformIcon(
         materialIcon: Icons.compare_arrows,
         cupertinoIcon: CupertinoIcons.arrow_2_squarepath,
