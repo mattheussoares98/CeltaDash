@@ -50,10 +50,12 @@ class HomePage extends HookConsumerWidget {
               showToggleAppMode: true,
               showEnterpriseManagement: true,
               reloadButton: ReloadIconButton(
-                onRefresh: providers == null
+                onRefresh: providers == null || selectedEnterpriseIsDisabled
                     ? null
                     : () => ref.invalidate(resumeCurrentDateProvider),
-                refreshProviders: providers,
+                refreshProviders: selectedEnterpriseIsDisabled
+                    ? null
+                    : providers,
               ),
             )
           : null,

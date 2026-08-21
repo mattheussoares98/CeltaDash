@@ -1,6 +1,7 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/utils/extensions/extensions.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,17 +15,28 @@ class HomeDateSelector extends ConsumerWidget {
     final enterprisesAsync = ref.watch(enterprisesControllerProvider);
     final enterprises = enterprisesAsync.value;
     if (homeState == null || enterprises == null) return const LoadingWidget();
-    final selectedEnterpriseIsEnabled = enterprises.any(
-      (enterprise) =>
-          enterprise.id == homeState.selectedEnterpriseId && enterprise.enabled,
-    );
+
+    final selectedEnterpriseIsDisabled =
+        homeState.selectedEnterpriseId != null &&
+        ref.watch(
+          enterprisesControllerProvider.select(
+            (s) =>
+                s.value
+                    ?.firstWhereOrNull(
+                      (e) => e.id == homeState.selectedEnterpriseId,
+                    )
+                    ?.enabled ==
+                false,
+          ),
+        );
 
     return PrimaryTextButton(
       key: const ValueKey('home_date_selector'),
       text: homeState.selectedDate.formatDate(),
       isLoading: enterprisesAsync.isLoading,
-      onPressed: selectedEnterpriseIsEnabled
-          ? () async {
+      onPressed: selectedEnterpriseIsDisabled
+          ? null
+          : () async {
               final newDate = await GetNewDate.get(
                 context: context,
                 currentSelectedDate: homeState.selectedDate,
@@ -37,8 +49,7 @@ class HomeDateSelector extends ConsumerWidget {
               if (newDate != null) {
                 ref.read(homeControllerProvider.notifier).selectDate(newDate);
               }
-            }
-          : null,
+            },
       platformIcon: const PlatformIcon(
         materialIcon: Icons.date_range,
         cupertinoIcon: CupertinoIcons.calendar,
