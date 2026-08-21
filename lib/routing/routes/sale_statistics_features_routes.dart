@@ -1,4 +1,6 @@
 import 'package:celta_dash/main/factories/factories.dart';
+import 'package:celta_dash/features/compare_days/presentation/presentation.dart'
+    as compare_days;
 import 'package:celta_dash/routing/routes.dart';
 import 'package:celta_dash/ui/pages/pages.dart';
 import 'package:go_router/go_router.dart';
@@ -12,7 +14,7 @@ RouteBase appAnalyticsRoute() => GoRoute(
 RouteBase compareDaysRoute() => GoRoute(
   path: '/home/compare-days',
   name: Routes.compareDays.name,
-  builder: (context, state) => makeCompareDaysPage(),
+  builder: (context, state) => const compare_days.CompareDaysPage(),
 );
 
 RouteBase compareMonthsRoute() => GoRoute(
