@@ -3,7 +3,9 @@ import 'package:celta_dash/features/compare_days/presentation/controllers/contro
 import 'package:celta_dash/features/compare_days/presentation/pages/components/components.dart';
 import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class CompareDaysPage extends StatelessWidget {
@@ -28,11 +30,19 @@ class _CompareDaysContent extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final provider = compareDaysControllerProvider(enterpriseId);
     final stateAsync = ref.watch(provider);
-    final isLandscape =
-        MediaQuery.orientationOf(context) == Orientation.landscape;
 
     return BaseScaffold(
-      appBar: HomeAppBar(isLandscape: isLandscape),
+      appBar: HomeAppBar(
+        isLandscape: false,
+        showSelectDate: false,
+        leading: BaseIconButton(
+          onPressed: context.pop,
+          platformIcon: const PlatformIcon(
+            cupertinoIcon: CupertinoIcons.back,
+            materialIcon: Icons.arrow_back,
+          ),
+        ),
+      ),
       isScrollable: false,
       usePadding: false,
       body: Column(

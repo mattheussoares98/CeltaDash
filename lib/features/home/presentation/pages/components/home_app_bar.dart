@@ -15,6 +15,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
     this.showToggleAppMode = false,
     this.showEnterpriseManagement = false,
     this.showEnterpriseDropdown = true,
+    this.showSelectDate = true,
     this.leading,
     this.leftDateWidget,
     super.key,
@@ -26,11 +27,19 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
   final bool showToggleAppMode;
   final bool showEnterpriseManagement;
   final bool showEnterpriseDropdown;
+  final bool showSelectDate;
   final Widget? leading;
   final Widget? leftDateWidget;
 
+  bool get _showBottomLine =>
+      showToggleAppMode ||
+      showEnterpriseManagement ||
+      showSelectDate ||
+      reloadButton != null;
+
   @override
-  Size get preferredSize => Size.fromHeight(isLandscape ? kToolbarHeight : 95);
+  Size get preferredSize =>
+      Size.fromHeight((isLandscape || !_showBottomLine) ? kToolbarHeight : 95);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -42,7 +51,9 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
     final enterpriseSelector = showEnterpriseDropdown
         ? const HomeEnterpriseSelector()
         : null;
-    const dateSelector = Expanded(child: HomeDateSelector());
+    final dateSelector = showSelectDate
+        ? const Expanded(child: HomeDateSelector())
+        : null;
     final modeToggle = showToggleAppMode
         ? const Flexible(child: HomeModeToggle())
         : null;
@@ -85,7 +96,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
               if (enterpriseSelector != null)
                 Expanded(flex: 2, child: enterpriseSelector),
               ?leftDateWidget,
-              dateSelector,
+              ?dateSelector,
               gapW8,
               ?modeToggle,
               ?selectEnterprise,
@@ -109,7 +120,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
               mainAxisAlignment: .spaceBetween,
               children: [
                 ?leftDateWidget,
-                dateSelector,
+                ?dateSelector,
                 ?modeToggle,
                 ?selectEnterprise,
                 ?reloadButton,
