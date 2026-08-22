@@ -34,7 +34,7 @@ class DailyStatistics extends StatelessWidget {
           if (e.Date == null) {
             return false;
           } else {
-            return e.Date!.year == now.year;
+            return e.Date!.year == homePresenter.selectedDate.year;
           }
         })
         .map((e) => e.toViewModel())
@@ -49,7 +49,8 @@ class DailyStatistics extends StatelessWidget {
           if (e.Date == null) {
             return false;
           } else {
-            return e.Date?.month != now.month && e.Date!.year == now.year;
+            return e.Date?.month != homePresenter.selectedDate.month &&
+                e.Date!.year == homePresenter.selectedDate.year;
           }
         })
         .map((e) => e.toViewModel())
