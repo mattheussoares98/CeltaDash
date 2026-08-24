@@ -1,4 +1,5 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
+import 'package:celta_dash/features/web_enterprises/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/web_enterprises/presentation/pages/components/components.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,8 @@ class WebEnterprisesPage extends HookConsumerWidget {
 
     return BaseScaffold(
       isScrollable: false,
-      appBar: BaseAppBar(title: 'Empresas remotas'.hardcoded),
+      appBar: BaseAppBar(title: 'Clientes'.hardcoded),
+      onRefresh: ref.read(remoteEnterprisesControllerProvider.notifier).refresh,
       body: IndexedStack(
         index: selectedIndex.value,
         children: [
