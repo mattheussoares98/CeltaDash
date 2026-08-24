@@ -1,10 +1,9 @@
-import 'package:celta_dash/data/models/models.dart';
-import 'package:celta_dash/domain/entities/entities.dart';
-import 'package:celta_dash/domain/helpers/helpers.dart';
+import 'package:celta_dash/features/web_enterprises/data/models/models.dart';
+import 'package:celta_dash/features/web_enterprises/domain/domain.dart';
 
 class WebAnalyticsModel {
-  final List<SearchCountEntity> searchCounts;
-  final List<ActiveUserEntity> users;
+  final List<WebAnalyticsSearchCountModel> searchCounts;
+  final List<WebAnalyticsUserModel> users;
   final String enterprise;
 
   const WebAnalyticsModel({
@@ -14,15 +13,13 @@ class WebAnalyticsModel {
   });
 
   factory WebAnalyticsModel.fromJson(Map json, {required String enterpriseId}) {
-    final searchCounts = <SearchCountEntity>[];
-    final users = <ActiveUserEntity>[];
+    final searchCounts = <WebAnalyticsSearchCountModel>[];
+    final users = <WebAnalyticsUserModel>[];
 
     for (final MapEntry(:key, :value) in json.entries) {
       if (key == 'users' && value is List) {
         users.addAll(
-          value.whereType<Map>().map(
-            (user) => ActiveUserModel.fromJson(Map<String, dynamic>.from(user)),
-          ),
+          value.whereType<Map>().map(WebAnalyticsUserModel.fromJson),
         );
         continue;
       }
@@ -30,16 +27,16 @@ class WebAnalyticsModel {
       final parts = key.toString().split('-');
       if (parts.length != 2 || value is! int) continue;
 
-      final reportType = ReportType.values
+      final reportType = WebAnalyticsReportType.values
           .where((type) => type.name == parts.first)
           .firstOrNull;
-      final periodType = PeriodType.values
+      final periodType = WebAnalyticsPeriodType.values
           .where((type) => type.name == parts.last)
           .firstOrNull;
       if (reportType == null || periodType == null) continue;
 
       searchCounts.add(
-        SearchCountEntity(
+        WebAnalyticsSearchCountModel(
           reportType: reportType,
           periodType: periodType,
           count: value,
@@ -54,10 +51,14 @@ class WebAnalyticsModel {
     );
   }
 
-  factory WebAnalyticsModel.fromEntity(MonthlyAnalyticsEntity entity) =>
+  factory WebAnalyticsModel.fromEntity(WebAnalyticsEntity entity) =>
       WebAnalyticsModel(
-        searchCounts: entity.searchCounts,
-        users: entity.users,
+        searchCounts: entity.searchCounts
+            .map(WebAnalyticsSearchCountModel.fromEntity)
+            .toList(growable: false),
+        users: entity.users
+            .map(WebAnalyticsUserModel.fromEntity)
+            .toList(growable: false),
         enterprise: entity.enterprise,
       );
 
@@ -65,14 +66,14 @@ class WebAnalyticsModel {
     for (final searchCount in searchCounts)
       '${searchCount.reportType.name}-${searchCount.periodType.name}':
           searchCount.count,
-    'users': users
-        .map((user) => ActiveUserModel.fromEntity(user).toJson())
-        .toList(),
+    'users': users.map((user) => user.toJson()).toList(),
   };
 
-  MonthlyAnalyticsEntity toEntity() => MonthlyAnalyticsEntity(
-    searchCounts: searchCounts,
-    users: users,
+  WebAnalyticsEntity toEntity() => WebAnalyticsEntity(
+    searchCounts: searchCounts
+        .map((searchCount) => searchCount.toEntity())
+        .toList(growable: false),
+    users: users.map((user) => user.toEntity()).toList(growable: false),
     enterprise: enterprise,
   );
 }

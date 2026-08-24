@@ -1,7 +1,8 @@
-import 'package:celta_dash/domain/entities/entities.dart';
+import 'package:celta_dash/core/data/data.dart';
+import 'package:celta_dash/features/web_enterprises/data/models/models.dart';
 
 abstract class IWebEnterprisesDatasource {
-  Future<List<FirebaseEnterpriseEntity>> getEnterprises();
+  Future<List<FirebaseEnterpriseModel>> getEnterprises();
 
-  Future<List<MonthlyAnalyticsEntity>> getAnalytics(DateTime period);
+  Future<List<WebAnalyticsModel>> getAnalytics(DateTime period);
 }
