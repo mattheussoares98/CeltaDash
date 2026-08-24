@@ -7,7 +7,11 @@ part 'providers.g.dart';
 
 @riverpod
 IWebEnterprisesDatasource webEnterprisesDatasource(Ref ref) =>
-    WebEnterprisesDatasource(ref.watch(firebaseStorageProvider));
+    WebEnterprisesDatasource(
+      firebaseStorage: ref.watch(firebaseStorageProvider),
+      soapRequest: ref.watch(soapRequestProvider),
+      httpClient: ref.watch(httpClientProvider),
+    );
 
 @riverpod
 IWebEnterprisesRepository webEnterprisesRepository(Ref ref) =>

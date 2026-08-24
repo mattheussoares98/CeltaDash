@@ -17,7 +17,21 @@ class WebEnterprisesPage extends HookConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       padding: const .symmetric(horizontal: Sizes.p8),
-      appBar: BaseAppBar(title: 'Clientes'.hardcoded),
+      appBar: BaseAppBar(
+        title: 'Clientes'.hardcoded,
+        actions: selectedIndex.value == 0
+            ? [
+                BaseIconButton(
+                  onPressed: () =>
+                      showModalPage(const CreateEnterpriseForm(), context),
+                  platformIcon: const PlatformIcon(
+                    materialIcon: Icons.add_business,
+                    cupertinoIcon: CupertinoIcons.add_circled_solid,
+                  ),
+                ),
+              ]
+            : null,
+      ),
       onRefresh: ref.read(remoteEnterprisesControllerProvider.notifier).refresh,
       body: IndexedStack(
         index: selectedIndex.value,

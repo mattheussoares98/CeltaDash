@@ -1,14 +1,13 @@
 import 'package:celta_dash/core/infrastructure/infrastructure.dart';
 import 'package:celta_dash/data/database/database.dart';
-import 'package:celta_dash/data/http/http.dart';
 import 'package:celta_dash/data/usecases/usecases.dart';
 import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/infra/databases/databases.dart';
 import 'package:celta_dash/infra/helpers/helpers.dart';
 import 'package:celta_dash/infra/http/http.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 export 'presentation/controllers/active_ec_params_state_controller.dart';

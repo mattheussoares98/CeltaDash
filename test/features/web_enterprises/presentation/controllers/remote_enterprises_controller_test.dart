@@ -1,3 +1,5 @@
+import 'package:celta_dash/exceptions/exceptions.dart';
+import 'package:celta_dash/features/web_enterprises/domain/domain.dart';
 import 'package:celta_dash/features/web_enterprises/presentation/presentation.dart';
 import 'package:celta_dash/features/web_enterprises/providers.dart';
 import 'package:faker/faker.dart';
@@ -75,5 +77,62 @@ void main() {
       updated,
     ]);
     verify(() => repository.updateEnterprise(updated)).called(1);
+  });
+
+  test('createEnterprise appends the repository result', () async {
+    final existing = EntityFactory.makeFirebaseEnterpriseEntity();
+    final created = EntityFactory.makeFirebaseEnterpriseEntity();
+    final params = CreateWebEnterpriseParams(
+      baseUrl: created.baseUrl!,
+      enterpriseName: created.enterpriseName!,
+      user: faker.person.name(),
+      password: faker.internet.password(),
+    );
+    when(repository.getEnterprises).thenAnswer((_) async => [existing]);
+    when(
+      () => repository.createEnterprise(params),
+    ).thenAnswer((_) async => created);
+    final container = ProviderContainer(
+      overrides: [
+        webEnterprisesRepositoryProvider.overrideWithValue(repository),
+      ],
+    );
+    addTearDown(container.dispose);
+    await container.read(remoteEnterprisesControllerProvider.future);
+
+    await container
+        .read(remoteEnterprisesControllerProvider.notifier)
+        .createEnterprise(params);
+
+    expect(container.read(remoteEnterprisesControllerProvider).value, [
+      existing,
+      created,
+    ]);
+  });
+
+  test('createEnterprise rejects a duplicated normalized name', () async {
+    final existing = EntityFactory.makeFirebaseEnterpriseEntity();
+    final params = CreateWebEnterpriseParams(
+      baseUrl: faker.internet.httpUrl(),
+      enterpriseName: '  ${existing.enterpriseName!}  ',
+      user: faker.person.name(),
+      password: faker.internet.password(),
+    );
+    when(repository.getEnterprises).thenAnswer((_) async => [existing]);
+    final container = ProviderContainer(
+      overrides: [
+        webEnterprisesRepositoryProvider.overrideWithValue(repository),
+      ],
+    );
+    addTearDown(container.dispose);
+    await container.read(remoteEnterprisesControllerProvider.future);
+
+    expect(
+      () => container
+          .read(remoteEnterprisesControllerProvider.notifier)
+          .createEnterprise(params),
+      throwsA(isA<AppException>()),
+    );
+    verifyNever(() => repository.createEnterprise(params));
   });
 }

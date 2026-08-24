@@ -1,10 +1,1 @@
-abstract class HttpClient {
-  Future<dynamic> request({
-    required String url,
-    required String method,
-    dynamic body,
-    Map? headers,
-    bool? addDefaultHeaders,
-    bool? decodeBody,
-  });
-}
+export 'package:celta_dash/core/infrastructure/http/i_http_client.dart';

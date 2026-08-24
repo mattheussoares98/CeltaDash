@@ -4,6 +4,10 @@ import 'package:celta_dash/features/web_enterprises/domain/entities/entities.dar
 abstract class IWebEnterprisesRepository {
   Future<List<FirebaseEnterpriseEntity>> getEnterprises();
 
+  Future<FirebaseEnterpriseEntity> createEnterprise(
+    CreateWebEnterpriseParams params,
+  );
+
   Future<void> updateEnterprise(FirebaseEnterpriseEntity enterprise);
 
   Future<List<WebAnalyticsEntity>> getAnalytics(DateTime period);
