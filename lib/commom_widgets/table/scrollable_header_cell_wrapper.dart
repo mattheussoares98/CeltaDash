@@ -8,6 +8,7 @@ class _ScrollableHeaderCellWrapper<T> extends StatelessWidget {
   final bool isSorted;
   final bool sortAscending;
   final VoidCallback onTap;
+  final VoidCallback? onPdfTap;
 
   const _ScrollableHeaderCellWrapper({
     required this.col,
@@ -17,6 +18,7 @@ class _ScrollableHeaderCellWrapper<T> extends StatelessWidget {
     required this.isSorted,
     required this.sortAscending,
     required this.onTap,
+    this.onPdfTap,
   });
 
   @override
@@ -32,6 +34,7 @@ class _ScrollableHeaderCellWrapper<T> extends StatelessWidget {
         isSorted: isSorted,
         sortAscending: sortAscending,
         onTap: onTap,
+        onPdfTap: onPdfTap,
       ),
     );
   }

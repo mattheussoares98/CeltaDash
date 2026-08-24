@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
+import 'package:celta_dash/ui/pages/pdf/pdf.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,9 @@ class ScrollableTable<T> extends HookConsumerWidget {
   final int? initialSortColumnIndex;
   final bool initialSortAscending;
   final int? highlightColumnIndex;
+  final String? pdfFileName;
+  final String? pdfSubtitle;
+  final VoidCallback? onExportPdf;
 
   const ScrollableTable({
     super.key,
@@ -54,6 +58,9 @@ class ScrollableTable<T> extends HookConsumerWidget {
     this.initialSortColumnIndex,
     this.initialSortAscending = true,
     this.highlightColumnIndex,
+    this.pdfFileName,
+    this.pdfSubtitle,
+    this.onExportPdf,
   });
 
   static const double footerH = 40;
@@ -310,6 +317,47 @@ class ScrollableTable<T> extends HookConsumerWidget {
       }
     }
 
+    assert(() {
+      if (pdfFileName != null) {
+        for (final col in columns) {
+          assert(
+            col.textValueMapper != null || col.sortValueMapper != null,
+            '❌ [ScrollableTable] Column "${col.headerTitle}" has no textValueMapper or sortValueMapper. '
+            'Provide textValueMapper to export cell data to PDF.',
+          );
+        }
+      }
+      return true;
+    }());
+
+    final handleExportPdf = useCallback(() async {
+      if (items.isEmpty) {
+        showToastMessage('Não há dados para exportar.'.hardcoded);
+        return;
+      }
+
+      final generator = TablePdfGenerator<T>(
+        pdfFileName: pdfFileName!,
+        pdfSubtitle: pdfSubtitle,
+        columns: columns,
+        sortedItems: sortedItems,
+        highlightColumnIndex: highlightColumnIndex,
+      );
+
+      final bytes = await generator.generatePdfBytes();
+      await PdfViewerPage.openPdf(bytes, pdfFileName!);
+    }, [
+      pdfFileName,
+      pdfSubtitle,
+      columns,
+      sortedItems,
+      highlightColumnIndex,
+      items,
+    ]);
+
+    final effectiveOnExportPdf =
+        onExportPdf ?? (pdfFileName != null ? handleExportPdf : null);
+
     final hasFooter = columns.any((col) => col.footerCellBuilder != null);
 
     final physics = refreshProvider != null
@@ -328,18 +376,28 @@ class ScrollableTable<T> extends HookConsumerWidget {
 
     Widget table = LayoutBuilder(
       builder: (context, constraints) {
-        final double totalMinWidth = columns.fold(
+        final double totalMinWidth = columns.asMap().entries.fold(
           0.0,
-          (sum, col) => sum + col.effectiveMinWidth,
+          (sum, entry) {
+            final col = entry.value;
+            final isFirstWithPdf = entry.key == 0 && effectiveOnExportPdf != null;
+            final minW = isFirstWithPdf
+                ? math.max(col.effectiveMinWidth, 85.0)
+                : col.effectiveMinWidth;
+            return sum + minW;
+          },
         );
         final double available = constraints.maxWidth;
         final double extraPerColumn = available > totalMinWidth
             ? (available - totalMinWidth) / columns.length
             : 0.0;
 
-        final double firstColWidth = columns.isNotEmpty
-            ? columns.first.effectiveMinWidth + extraPerColumn
+        final double firstColBaseWidth = columns.isNotEmpty
+            ? (effectiveOnExportPdf != null
+                ? math.max(columns.first.effectiveMinWidth, 85.0)
+                : columns.first.effectiveMinWidth)
             : 0.0;
+        final double firstColWidth = firstColBaseWidth + extraPerColumn;
 
         final double totalContentHeight =
             headerHeight +
@@ -378,6 +436,7 @@ class ScrollableTable<T> extends HookConsumerWidget {
             onTapRow: onTapRow,
             rowColor: getEffectiveRowColor,
             fitsInAvailableHeight: fitsInAvailableHeight,
+            onPdfTap: effectiveOnExportPdf,
           );
         } else {
           mainLayout = _ScrollableLayout<T>(
@@ -400,6 +459,7 @@ class ScrollableTable<T> extends HookConsumerWidget {
             onTapRow: onTapRow,
             rowColor: getEffectiveRowColor,
             fitsInAvailableHeight: fitsInAvailableHeight,
+            onPdfTap: effectiveOnExportPdf,
           );
         }
 

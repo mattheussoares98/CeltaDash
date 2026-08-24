@@ -25,6 +25,7 @@ class _FixedLayout<T> extends StatelessWidget {
   final void Function(T item)? onTapRow;
   final Color? Function(T item)? rowColor;
   final bool fitsInAvailableHeight;
+  final VoidCallback? onPdfTap;
 
   const _FixedLayout({
     required this.columns,
@@ -51,12 +52,16 @@ class _FixedLayout<T> extends StatelessWidget {
     required this.rowColor,
     required this.fitsInAvailableHeight,
     this.horizontalScrollController,
+    this.onPdfTap,
   });
 
   @override
   Widget build(BuildContext context) {
     final firstCol = columns.first;
-    final double firstColWidth = firstCol.effectiveMinWidth + extraPerColumn;
+    final double firstColBaseWidth = onPdfTap != null
+        ? math.max(firstCol.effectiveMinWidth, 85.0)
+        : firstCol.effectiveMinWidth;
+    final double firstColWidth = firstColBaseWidth + extraPerColumn;
     final theme = context.theme;
     final Color headerBg =
         headerBackgroundColor ?? theme.disabledColor.withAlpha(30);
@@ -94,6 +99,7 @@ class _FixedLayout<T> extends StatelessWidget {
                   isSorted: sortColumnIndex == 0,
                   sortAscending: sortAscending,
                   onTap: () => onHeaderTap(0),
+                  onPdfTap: onPdfTap,
                 ),
               ),
               () {

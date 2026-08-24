@@ -9,6 +9,9 @@ class ScrollableTableColumnSpec<T> {
   final bool? isMoney;
   final bool? isPercentage;
 
+  final String Function(T item)? textValueMapper;
+  final String Function(List<T> items)? footerTextValueMapper;
+
   const ScrollableTableColumnSpec({
     required this.headerTitle,
     this.minWidth,
@@ -17,7 +20,41 @@ class ScrollableTableColumnSpec<T> {
     this.footerCellBuilder,
     this.isMoney,
     this.isPercentage,
+    this.textValueMapper,
+    this.footerTextValueMapper,
   });
+
+  /// Extracts the formatted string for this cell to be used in PDF/CSV exports.
+  String getExportValue(T item) {
+    if (textValueMapper != null) {
+      return textValueMapper!(item);
+    }
+    if (sortValueMapper != null) {
+      final val = sortValueMapper!(item);
+      if (isMoney == true && val is num) {
+        return val.toDouble().toString().toBRL();
+      }
+      if (isPercentage == true && val is num) {
+        return '${val.toString().toBRL()}%';
+      }
+      if (val is DateTime) {
+        return val.formatDate();
+      }
+      if (val is num && val % 1 == 0) {
+        return val.toInt().toString();
+      }
+      return val.toString();
+    }
+    return '';
+  }
+
+  /// Extracts the formatted string for the footer summary of this column.
+  String? getExportFooterValue(List<T> items) {
+    if (footerTextValueMapper != null) {
+      return footerTextValueMapper!(items);
+    }
+    return null;
+  }
 
   double get effectiveMinWidth {
     if (minWidth != null) return minWidth!;

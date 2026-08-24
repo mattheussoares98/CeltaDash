@@ -18,6 +18,15 @@ class PersonalizedTable extends HookConsumerWidget {
     final isGenerating = ref.watch(
       personalizedControllerProvider.select((s) => s.isGenerating),
     );
+    final startDate = ref.watch(
+      personalizedControllerProvider.select((s) => s.startDate),
+    );
+    final endDate = ref.watch(
+      personalizedControllerProvider.select((s) => s.endDate),
+    );
+    final pdfSubtitle = (startDate != null && endDate != null)
+        ? 'Período: ${startDate.formatDate()} até ${endDate.formatDate()}'
+        : null;
 
     return AsyncValueWidget<List<SaleStatisticsEntity>>(
       value: salesAsync,
@@ -65,6 +74,10 @@ class PersonalizedTable extends HookConsumerWidget {
                     );
                   },
                   sortValueMapper: (s) => s.Month ?? 0,
+                  textValueMapper: (s) {
+                    final date = DateTime(0, s.Month ?? 1);
+                    return date.formatDate(.MMM).toUpperCase().replaceAll('.', '');
+                  },
                 ),
               ),
               'Dia'.hardcoded: (
@@ -88,6 +101,11 @@ class PersonalizedTable extends HookConsumerWidget {
                     return BaseText.bodySmall('${s.Hour}h\n$dateStr');
                   },
                   sortValueMapper: (s) => s.Hour ?? 0,
+                  textValueMapper: (s) {
+                    final formatter = DateFormat('yyyy/MM/dd', 'pt_BR');
+                    final dateStr = s.Date != null ? formatter.format(s.Date!) : '';
+                    return '${s.Hour}h $dateStr'.trim();
+                  },
                 ),
               ),
               'Produto'.hardcoded: (
@@ -102,6 +120,12 @@ class PersonalizedTable extends HookConsumerWidget {
                     return BaseText.bodyMedium(name, maxLines: 2);
                   },
                   sortValueMapper: (s) => s.Product ?? '',
+                  textValueMapper: (s) {
+                    final parts = s.Product?.split('-');
+                    return (parts != null && parts.length > 2)
+                        ? parts[2]
+                        : (s.Product ?? '');
+                  },
                 ),
               ),
               'Qtd produtos'.hardcoded: (
@@ -122,6 +146,13 @@ class PersonalizedTable extends HookConsumerWidget {
                         .toBRL(3, true),
                     fontWeight: FontWeight.bold,
                   ),
+                  footerTextValueMapper: (items) => items
+                      .fold<num>(
+                        0,
+                        (total, s) => total + (s.QuantityOfProducts ?? 0),
+                      )
+                      .toString()
+                      .toBRL(3, true),
                 ),
               ),
               'Departamento'.hardcoded: (
@@ -178,6 +209,13 @@ class PersonalizedTable extends HookConsumerWidget {
                         .toBRL(2, true),
                     fontWeight: FontWeight.bold,
                   ),
+                  footerTextValueMapper: (items) => items
+                      .fold<int>(
+                        0,
+                        (total, s) => total + (s.QuantitySales ?? 0),
+                      )
+                      .toString()
+                      .toBRL(2, true),
                 ),
               ),
               'Operador'.hardcoded: (
@@ -217,6 +255,14 @@ class PersonalizedTable extends HookConsumerWidget {
                         .toBRL(),
                     fontWeight: FontWeight.bold,
                   ),
+                  footerTextValueMapper: (items) => items
+                      .fold<double>(
+                        0,
+                        (total, s) =>
+                            total + (s.LiquidValue?.toDouble() ?? 0),
+                      )
+                      .toString()
+                      .toBRL(),
                 ),
               ),
               'Custo'.hardcoded: (
@@ -239,6 +285,14 @@ class PersonalizedTable extends HookConsumerWidget {
                         .toBRL(),
                     fontWeight: FontWeight.bold,
                   ),
+                  footerTextValueMapper: (items) => items
+                      .fold<double>(
+                        0,
+                        (total, s) =>
+                            total + (s.TotalRepositionCost?.toDouble() ?? 0),
+                      )
+                      .toString()
+                      .toBRL(),
                 ),
               ),
               'Lucro'.hardcoded: (
@@ -256,6 +310,12 @@ class PersonalizedTable extends HookConsumerWidget {
                   sortValueMapper: (s) =>
                       (s.LiquidValue?.toDouble() ?? 0) -
                       (s.TotalRepositionCost?.toDouble() ?? 0),
+                  textValueMapper: (s) {
+                    final profit =
+                        (s.LiquidValue?.toDouble() ?? 0) -
+                        (s.TotalRepositionCost?.toDouble() ?? 0);
+                    return profit.toString().toBRL();
+                  },
                   footerCellBuilder: (items) {
                     final totalProfit = items.fold<double>(
                       0,
@@ -268,6 +328,16 @@ class PersonalizedTable extends HookConsumerWidget {
                       totalProfit.toString().toBRL(),
                       fontWeight: FontWeight.bold,
                     );
+                  },
+                  footerTextValueMapper: (items) {
+                    final totalProfit = items.fold<double>(
+                      0,
+                      (total, s) =>
+                          total +
+                          ((s.LiquidValue?.toDouble() ?? 0) -
+                              (s.TotalRepositionCost?.toDouble() ?? 0)),
+                    );
+                    return totalProfit.toString().toBRL();
                   },
                 ),
               ),
@@ -303,6 +373,11 @@ class PersonalizedTable extends HookConsumerWidget {
               columns: activeColumns,
               fixFirstColumn: true,
               isLoading: isGenerating,
+              pdfFileName: 'Personalizado'.hardcoded,
+              pdfSubtitle: pdfSubtitle,
+              highlightColumnIndex: activeColumns.isNotEmpty
+                  ? activeColumns.length - 1
+                  : null,
             );
           },
         );

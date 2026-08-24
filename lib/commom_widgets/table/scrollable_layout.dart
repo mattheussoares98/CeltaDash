@@ -20,6 +20,7 @@ class _ScrollableLayout<T> extends StatelessWidget {
   final void Function(T item)? onTapRow;
   final Color? Function(T item)? rowColor;
   final bool fitsInAvailableHeight;
+  final VoidCallback? onPdfTap;
 
   const _ScrollableLayout({
     required this.columns,
@@ -41,6 +42,7 @@ class _ScrollableLayout<T> extends StatelessWidget {
     required this.fitsInAvailableHeight,
     this.horizontalScrollController,
     this.physics,
+    this.onPdfTap,
   });
 
   @override
@@ -112,6 +114,7 @@ class _ScrollableLayout<T> extends StatelessWidget {
                     isSorted: sortColumnIndex == i,
                     sortAscending: sortAscending,
                     onTap: () => onHeaderTap(i),
+                    onPdfTap: i == 0 ? onPdfTap : null,
                   ),
               ],
             ),
