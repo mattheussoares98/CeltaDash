@@ -3,10 +3,12 @@ import 'package:celta_dash/core/validators/validators.dart';
 import 'package:celta_dash/exceptions/exceptions.dart';
 import 'package:celta_dash/features/home/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/home/providers.dart';
+import 'package:celta_dash/routing/routes.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class MonthlyGoalEditor extends HookConsumerWidget {
@@ -62,67 +64,78 @@ class MonthlyGoalEditor extends HookConsumerWidget {
       }
     }
 
-    if (!isEditing.value) {
-      return Center(
-        child: PrimaryTextButton(
-          text: 'Editar meta'.hardcoded,
-          onPressed: canEdit
-              ? () {
-                  isEditing.value = true;
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    if (context.mounted) focusNode.requestFocus();
-                  });
-                }
-              : null,
-          platformIcon: const PlatformIcon(
-            cupertinoIcon: CupertinoIcons.pencil,
-            materialIcon: Icons.edit,
-          ),
-        ),
-      );
-    }
-
-    return Form(
-      key: formKey,
-      child: Column(
-        children: [
-          Row(
-            children: [
-              BaseIconButton(
-                onPressed: isSaving.value ? null : closeEditor,
-                platformIcon: const PlatformIcon(
-                  cupertinoIcon: CupertinoIcons.xmark,
-                  materialIcon: Icons.close,
-                  color: Colors.red,
-                ),
-              ),
-              Expanded(
-                child: BaseTextFormField(
-                  controller: controller,
-                  focusNode: focusNode,
-                  labelText: 'Meta (R\$)'.hardcoded,
-                  onFieldSubmitted: (_) => save(),
-                  autovalidateMode: AutovalidateMode.onUserInteractionIfError,
-                  validator: FormValidators.compose([
-                    NonEmptyValidator(),
-                    NumberValidator(allowDecimal: true),
-                  ]),
-                  keyboardType: const TextInputType.numberWithOptions(
-                    signed: true,
+    return Row(
+      crossAxisAlignment: .start,
+      children: [
+        if (isEditing.value)
+          Expanded(
+            flex: 2,
+            child: Form(
+              key: formKey,
+              child: BaseTextFormField(
+                controller: controller,
+                focusNode: focusNode,
+                labelText: 'Meta (R\$)'.hardcoded,
+                onFieldSubmitted: (_) => save(),
+                prefixIcon: BaseIconButton(
+                  onPressed: isSaving.value ? null : closeEditor,
+                  platformIcon: const PlatformIcon(
+                    cupertinoIcon: CupertinoIcons.xmark,
+                    materialIcon: Icons.close,
+                    color: Colors.red,
                   ),
                 ),
-              ),
-              BaseIconButton(
-                onPressed: isSaving.value ? null : save,
-                platformIcon: const PlatformIcon(
-                  cupertinoIcon: CupertinoIcons.check_mark,
-                  materialIcon: Icons.save,
+                suffixIcon: BaseIconButton(
+                  onPressed: isSaving.value ? null : save,
+                  platformIcon: const PlatformIcon(
+                    cupertinoIcon: CupertinoIcons.check_mark,
+                    materialIcon: Icons.save,
+                  ),
+                ),
+                autovalidateMode: AutovalidateMode.onUserInteractionIfError,
+                validator: FormValidators.compose([
+                  NonEmptyValidator(),
+                  NumberValidator(allowDecimal: true),
+                ]),
+                keyboardType: const TextInputType.numberWithOptions(
+                  signed: true,
                 ),
               ),
-            ],
+            ),
+          )
+        else
+          Expanded(
+            child: PrimaryTextButton(
+              text: 'Editar meta'.hardcoded,
+              onPressed: canEdit
+                  ? () {
+                      isEditing.value = true;
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (context.mounted) focusNode.requestFocus();
+                      });
+                    }
+                  : null,
+              platformIcon: const PlatformIcon(
+                cupertinoIcon: CupertinoIcons.pencil,
+                materialIcon: Icons.edit,
+              ),
+            ),
           ),
-        ],
-      ),
+        gapW16,
+        Expanded(
+          child: Align(
+            alignment: .topCenter,
+            child: PrimaryTextButton(
+              text: 'Histórico'.hardcoded,
+              onPressed: () => context.pushNamed(Routes.goalHistoric.name),
+              platformIcon: const PlatformIcon(
+                cupertinoIcon: CupertinoIcons.time,
+                materialIcon: Icons.history,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -82,13 +82,20 @@ class EntityFactory {
     int? enterpriseId,
     int? year,
     int? month,
+    DateTime? date,
+    bool nullDate = false,
   }) => SaleStatisticsEntity(
     QuantityOfProducts: faker.randomGenerator.decimal(),
     TotalRepositionCost: faker.randomGenerator.decimal(),
     LiquidValue: faker.randomGenerator.decimal(),
     Year: year ?? faker.randomGenerator.integer(3000),
-    Month: month ?? faker.randomGenerator.integer(12, min: 1),
-    Date: faker.date.dateTime(),
+    Month: month ?? (date?.month ?? faker.randomGenerator.integer(12, min: 1)),
+    Date: nullDate
+        ? null
+        : (date ??
+            (month != null
+                ? DateTime(year ?? 2026, month)
+                : faker.date.dateTime())),
     Hour: faker.randomGenerator.integer(23),
     Product: faker.food.dish(),
     ProductDepartment: faker.food.cuisine(),

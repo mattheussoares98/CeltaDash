@@ -4,6 +4,8 @@ import 'package:celta_dash/features/compare_months/presentation/presentation.dar
     as compare_months;
 import 'package:celta_dash/features/enterprises_manager/presentation/presentation.dart'
     as enterprises_manager;
+import 'package:celta_dash/features/goal_historic/presentation/presentation.dart'
+    as goal_historic;
 import 'package:celta_dash/main/factories/factories.dart';
 import 'package:celta_dash/routing/routes.dart';
 import 'package:celta_dash/ui/pages/pages.dart';
@@ -37,7 +39,7 @@ RouteBase enterprisesManagerRoute() => GoRoute(
 RouteBase goalHistoricRoute() => GoRoute(
   path: '/home/goal-historic',
   name: Routes.goalHistoric.name,
-  builder: (context, state) => makeGoalHistoricPage(),
+  builder: (context, state) => const goal_historic.GoalHistoricPage(),
 );
 
 RouteBase moreRoute() => GoRoute(
