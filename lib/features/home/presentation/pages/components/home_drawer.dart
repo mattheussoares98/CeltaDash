@@ -16,7 +16,15 @@ class HomeDrawer extends HookConsumerWidget {
       child: SafeArea(
         child: Column(
           children: [
-            const DrawerHeader(child: LogoWidget()),
+            DrawerHeader(
+              child: GestureDetector(
+                onLongPress: () {
+                  context.pop();
+                  context.pushNamed(Routes.webLogin.name);
+                },
+                child: const LogoWidget(),
+              ),
+            ),
             Expanded(
               child: ListView(
                 children: [
