@@ -1,7 +1,7 @@
-import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/core/providers.dart';
 import 'package:celta_dash/features/home/domain/domain.dart';
 import 'package:celta_dash/features/home/providers.dart';
+import 'package:celta_dash/features/login/login.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'enterprises_controller.g.dart';
@@ -16,7 +16,23 @@ class EnterprisesController extends _$EnterprisesController {
     if (ecParams == null) return const [];
 
     final repository = ref.watch(homeRepositoryProvider);
-    final activeEnterprise = await repository.loadActiveEnterprise();
+    var activeEnterprise = await repository.loadActiveEnterprise();
+    if (activeEnterprise?.enterpriseName != null) {
+      try {
+        final config = await ref
+            .read(firebaseLoginEnterpriseDatasourceProvider)
+            .getEnterpriseConfig(
+              enterpriseName: activeEnterprise!.enterpriseName!,
+            );
+        activeEnterprise = activeEnterprise.copyWith(
+          baseUrl: config.baseUrl ?? activeEnterprise.baseUrl,
+          firebaseSubEnterprises: config.toEntity().firebaseSubEnterprises,
+        );
+      } catch (_) {
+        // Fallback to locally stored active enterprise if offline or not found
+      }
+    }
+
     final enterprises = await repository.getEnterprises(ecParams);
     final enabledById = {
       for (final enterprise

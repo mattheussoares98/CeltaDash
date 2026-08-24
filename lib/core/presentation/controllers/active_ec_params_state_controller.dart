@@ -25,7 +25,7 @@ class ActiveEcParamsStateController extends _$ActiveEcParamsStateController {
     required EcParams params,
     FirebaseEnterpriseEntity? enterprise,
   }) async {
-    state = AsyncValue.data(params);
+    state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       final storage = ref.read(localStorageProvider);
       if (enterprise != null) {
@@ -39,7 +39,7 @@ class ActiveEcParamsStateController extends _$ActiveEcParamsStateController {
   }
 
   Future<void> clear() async {
-    state = const AsyncValue.data(null);
+    state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       final storage = ref.read(localStorageProvider);
       await storage.delete(DatabaseKeys.enterprise);
