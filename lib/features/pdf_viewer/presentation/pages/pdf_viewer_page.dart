@@ -24,16 +24,18 @@ class PdfViewerPage extends HookWidget {
     String pdfFileName, [
     BuildContext? context,
   ]) async {
-    final navContext = context ?? rootNavigatorKey.currentContext;
-    if (navContext == null) {
+    final navState =
+        (context != null ? Navigator.of(context, rootNavigator: true) : null) ??
+        rootNavigatorKey.currentState;
+    if (navState == null) {
       debugPrint(
-        '❌ [PdfViewerPage] Cannot open PDF: No valid BuildContext found.',
+        '❌ [PdfViewerPage] Cannot open PDF: No valid Navigator found.',
       );
       return;
     }
-    await Navigator.push(
-      navContext,
+    await navState.push(
       MaterialPageRoute(
+        fullscreenDialog: true,
         builder: (context) =>
             PdfViewerPage(pdfBytes: pdfBytes, pdfFileName: pdfFileName),
       ),
