@@ -59,17 +59,20 @@ class PaymentsStatisticsTable extends StatelessWidget {
 
     return ScrollableTable<PaymentsStatisticsRowState>(
       items: rows,
+      pdfFileName: filterByFinalizations
+          ? 'Finalizadoras'.hardcoded
+          : 'Modalidades'.hardcoded,
       fixFirstColumn: true,
       isLoading: isLoading,
       initialSortColumnIndex: 1,
       initialSortAscending: false,
       highlightColumnIndex: 1,
-      rowHeight: Sizes.p64,
       columns: [
         ScrollableTableColumnSpec(
           headerTitle: 'Forma de pagamento'.hardcoded,
           cellBuilder: (row) => BaseText(row.description, maxLines: 3),
           sortValueMapper: (row) => row.description,
+          textValueMapper: (row) => row.description,
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Vendas'.hardcoded,
@@ -83,18 +86,27 @@ class PaymentsStatisticsTable extends StatelessWidget {
                 .toString()
                 .toBRL(),
           ),
+          footerTextValueMapper: (items) => items
+              .fold<double>(0, (total, row) => total + row.totalValue)
+              .toString()
+              .toBRL(),
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Qtd'.hardcoded,
           cellBuilder: (row) =>
-              BaseText.bodyMedium(row.totalQuantity.toString().toBRL(3, true)),
+              BaseText.bodyMedium(row.totalQuantity.toString().toBRL(0, true)),
           sortValueMapper: (row) => row.totalQuantity,
+          textValueMapper: (row) => row.totalQuantity.toString().toBRL(0, true),
           footerCellBuilder: (items) => BaseText.bodyMedium(
             items
                 .fold<int>(0, (total, row) => total + row.totalQuantity)
                 .toString()
-                .toBRL(3, true),
+                .toBRL(0, true),
           ),
+          footerTextValueMapper: (items) => items
+              .fold<int>(0, (total, row) => total + row.totalQuantity)
+              .toString()
+              .toBRL(0, true),
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Ticket médio'.hardcoded,
