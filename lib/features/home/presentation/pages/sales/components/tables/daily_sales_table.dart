@@ -59,6 +59,7 @@ class _DailySalesTable extends StatelessWidget {
 
     return ScrollableTable<SalesStatisticsRowState>(
       items: rows,
+      pdfFileName: 'Vendas por dia'.hardcoded,
       fixFirstColumn: true,
       isLoading: isLoading,
       refreshProvider: refreshProvider,
@@ -80,6 +81,9 @@ class _DailySalesTable extends StatelessWidget {
                 )
               : BaseText.bodyMedium(row.description),
           sortValueMapper: (row) => row.description,
+          textValueMapper: (row) => row.subtitle != null
+              ? '${row.description} (${row.subtitle})'
+              : row.description,
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Vendas'.hardcoded,
@@ -93,18 +97,27 @@ class _DailySalesTable extends StatelessWidget {
                 .toString()
                 .toBRL(),
           ),
+          footerTextValueMapper: (items) => items
+              .fold<double>(0, (total, row) => total + row.sales)
+              .toString()
+              .toBRL(),
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Qtd'.hardcoded,
           cellBuilder: (row) =>
               BaseText.bodyMedium(row.quantity.toString().toBRL(0, true)),
           sortValueMapper: (row) => row.quantity,
+          textValueMapper: (row) => row.quantity.toString().toBRL(0, true),
           footerCellBuilder: (items) => BaseText.bodyMedium(
             items
                 .fold<double>(0, (total, row) => total + row.quantity)
                 .toString()
                 .toBRL(0, true),
           ),
+          footerTextValueMapper: (items) => items
+              .fold<double>(0, (total, row) => total + row.quantity)
+              .toString()
+              .toBRL(0, true),
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Ticket médio'.hardcoded,

@@ -1,7 +1,7 @@
 // lib/features/home/presentation/pages/sales/components/tables/hourly_sales_table.dart
 part of '../sales_content.dart';
 
-class _HourlySalesTable extends StatelessWidget {
+class _HourlySalesTable extends ConsumerWidget {
   const _HourlySalesTable({
     required this.statistics,
     required this.refreshProvider,
@@ -13,7 +13,7 @@ class _HourlySalesTable extends StatelessWidget {
   final bool isLoading;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final overallValue = statistics.fold<double>(
       0,
       (total, s) => total + (s.LiquidValue?.toDouble() ?? 0),
@@ -50,6 +50,7 @@ class _HourlySalesTable extends StatelessWidget {
 
     return ScrollableTable<SalesStatisticsRowState>(
       items: rows,
+      pdfFileName: 'Vendas por hora'.hardcoded,
       fixFirstColumn: true,
       isLoading: isLoading,
       refreshProvider: refreshProvider,
@@ -59,6 +60,12 @@ class _HourlySalesTable extends StatelessWidget {
           headerTitle: 'Hora'.hardcoded,
           cellBuilder: (row) => BaseText.bodyMedium(row.description),
           sortValueMapper: (row) => row.description,
+          textValueMapper: (row) => ref.read(
+            homeControllerProvider.select(
+              (s) =>
+                  '${s.value?.selectedDate.formatDate() ?? ''} ${row.description}',
+            ),
+          ),
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Vendas'.hardcoded,
@@ -72,18 +79,27 @@ class _HourlySalesTable extends StatelessWidget {
                 .toString()
                 .toBRL(),
           ),
+          footerTextValueMapper: (items) => items
+              .fold<double>(0, (total, row) => total + row.sales)
+              .toString()
+              .toBRL(),
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Qtd'.hardcoded,
           cellBuilder: (row) =>
               BaseText.bodyMedium(row.quantity.toString().toBRL(0, true)),
           sortValueMapper: (row) => row.quantity,
+          textValueMapper: (row) => row.quantity.toString().toBRL(0, true),
           footerCellBuilder: (items) => BaseText.bodyMedium(
             items
                 .fold<double>(0, (total, row) => total + row.quantity)
                 .toString()
                 .toBRL(0, true),
           ),
+          footerTextValueMapper: (items) => items
+              .fold<double>(0, (total, row) => total + row.quantity)
+              .toString()
+              .toBRL(0, true),
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Ticket médio'.hardcoded,
