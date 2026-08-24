@@ -27,7 +27,7 @@ class WebLoginPage extends ConsumerWidget {
           previousState?.isAuthenticated != true) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (context.mounted) {
-            context.goNamed(Routes.webEnterprises.name);
+            context.pushReplacementNamed(Routes.webEnterprises.name);
           }
         });
       }
