@@ -64,6 +64,7 @@ class RemoteEnterprisesView extends HookConsumerWidget {
                     itemBuilder: (context, index) {
                       final enterprise = filteredItems[index];
                       return Card(
+                        clipBehavior: .hardEdge,
                         child: BaseListTile(
                           onTap: () => showModalPage(
                             EnterpriseEditor(enterprise: enterprise),
