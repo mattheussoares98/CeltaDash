@@ -69,7 +69,9 @@ class RemoteEnterprisesView extends HookConsumerWidget {
                             EnterpriseEditor(enterprise: enterprise),
                             context,
                           ),
-                          contentPadding: const .only(left: Sizes.p8),
+                          contentPadding: const .symmetric(
+                            horizontal: Sizes.p8,
+                          ),
                           leading: const PlatformIcon(
                             materialIcon: Icons.business,
                             cupertinoIcon: Icons.business,
