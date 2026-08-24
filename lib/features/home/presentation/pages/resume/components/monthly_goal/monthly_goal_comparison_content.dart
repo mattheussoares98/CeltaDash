@@ -39,55 +39,61 @@ class MonthlyGoalComparisonContent extends ConsumerWidget {
     return Stack(
       children: [
         Card(
-          child: Padding(
-            padding: const EdgeInsets.all(Sizes.p16),
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final circleSize = min(
-                  (constraints.maxWidth - Sizes.p16) / 2,
-                  Sizes.p120,
-                );
-                return Column(
-                  children: [
-                    Row(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(Sizes.p16),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final circleSize = min(
+                      (constraints.maxWidth - Sizes.p16) / 2,
+                      Sizes.p120,
+                    );
+                    return Column(
                       children: [
-                        Expanded(
-                          child: AnimatedCircleProgress(
-                            key: ValueKey(
-                              displayedComparison.currentMonthLiquidValue +
-                                  displayedComparison.monthlyGoal,
+                        Row(
+                          children: [
+                            Expanded(
+                              child: AnimatedCircleProgress(
+                                key: ValueKey(
+                                  displayedComparison.currentMonthLiquidValue +
+                                      displayedComparison.monthlyGoal,
+                                ),
+                                title: 'Meta mensal'.hardcoded,
+                                value: displayedComparison
+                                    .currentMonthLiquidValue
+                                    .toDouble(),
+                                maximum: displayedComparison.monthlyGoal,
+                                height: circleSize,
+                                width: circleSize,
+                              ),
                             ),
-                            title: 'Meta mensal'.hardcoded,
-                            value: displayedComparison.currentMonthLiquidValue
-                                .toDouble(),
-                            maximum: displayedComparison.monthlyGoal,
-                            height: circleSize,
-                            width: circleSize,
-                          ),
-                        ),
-                        gapW16,
-                        Expanded(
-                          child: AnimatedCircleProgress(
-                            key: ValueKey(
-                              displayedComparison.selectedDayLiquidValue +
-                                  displayedComparison.dailyGoal,
+                            gapW16,
+                            Expanded(
+                              child: AnimatedCircleProgress(
+                                key: ValueKey(
+                                  displayedComparison.selectedDayLiquidValue +
+                                      displayedComparison.dailyGoal,
+                                ),
+                                title: 'Meta diária'.hardcoded,
+                                value: displayedComparison
+                                    .selectedDayLiquidValue
+                                    .toDouble(),
+                                maximum: displayedComparison.dailyGoal,
+                                height: circleSize,
+                                width: circleSize,
+                              ),
                             ),
-                            title: 'Meta diária'.hardcoded,
-                            value: displayedComparison.selectedDayLiquidValue
-                                .toDouble(),
-                            maximum: displayedComparison.dailyGoal,
-                            height: circleSize,
-                            width: circleSize,
-                          ),
+                          ],
                         ),
                       ],
-                    ),
-                    gapH16,
-                    MonthlyGoalEditor(enterpriseId: enterpriseId),
-                  ],
-                );
-              },
-            ),
+                    );
+                  },
+                ),
+              ),
+              MonthlyGoalEditor(enterpriseId: enterpriseId),
+              gapH8,
+            ],
           ),
         ),
         Positioned(

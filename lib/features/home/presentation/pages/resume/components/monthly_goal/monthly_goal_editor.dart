@@ -121,7 +121,6 @@ class MonthlyGoalEditor extends HookConsumerWidget {
               ),
             ),
           ),
-        gapW16,
         Expanded(
           child: Align(
             alignment: .topCenter,
