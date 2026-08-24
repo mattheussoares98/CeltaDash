@@ -53,6 +53,47 @@ void main() {
     ).called(1);
   });
 
+  test('updateEnterprise saves the URL and CNPJ states with merge', () async {
+    final entity = EntityFactory.makeFirebaseEnterpriseEntity();
+    final model = FirebaseEnterpriseModel.fromEntity(entity);
+    final data = <String, dynamic>{
+      'baseUrl': model.baseUrl,
+      'subEnterprises': model.subEnterprises
+          ?.map((subEnterprise) => subEnterprise.toJson())
+          .toList(growable: false),
+    };
+    when(
+      () => firebaseStorage.put(
+        path: 'enterprises/${model.firebaseId}',
+        data: data,
+        merge: true,
+      ),
+    ).thenAnswer((_) async {});
+
+    await datasource.updateEnterprise(model);
+
+    verify(
+      () => firebaseStorage.put(
+        path: 'enterprises/${model.firebaseId}',
+        data: data,
+        merge: true,
+      ),
+    ).called(1);
+  });
+
+  test('updateEnterprise rejects an enterprise without Firebase ID', () async {
+    final entity = EntityFactory.makeFirebaseEnterpriseEntity().copyWith(
+      annulFirebaseId: true,
+    );
+
+    expect(
+      () => datasource.updateEnterprise(
+        FirebaseEnterpriseModel.fromEntity(entity),
+      ),
+      throwsArgumentError,
+    );
+  });
+
   test('public loaders return empty lists for invalid snapshots', () async {
     when(
       () => firebaseStorage.get(path: 'enterprises'),

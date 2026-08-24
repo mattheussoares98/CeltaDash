@@ -1,3 +1,4 @@
+import 'package:celta_dash/core/data/data.dart';
 import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/features/web_enterprises/data/datasource/datasource.dart';
 import 'package:celta_dash/features/web_enterprises/domain/domain.dart';
@@ -12,6 +13,12 @@ class WebEnterprisesRepositoryImpl implements IWebEnterprisesRepository {
     final models = await datasource.getEnterprises();
     return models.map((model) => model.toEntity()).toList(growable: false);
   }
+
+  @override
+  Future<void> updateEnterprise(FirebaseEnterpriseEntity enterprise) =>
+      datasource.updateEnterprise(
+        FirebaseEnterpriseModel.fromEntity(enterprise),
+      );
 
   @override
   Future<List<WebAnalyticsEntity>> getAnalytics(DateTime period) async {

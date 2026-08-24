@@ -16,6 +16,20 @@ class FirebaseSubEnterpriseEntity extends Equatable {
     required this.enabled,
   });
 
+  FirebaseSubEnterpriseEntity copyWith({
+    int? id,
+    String? name,
+    String? personalizedCode,
+    String? cnpj,
+    bool? enabled,
+  }) => FirebaseSubEnterpriseEntity(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    personalizedCode: personalizedCode ?? this.personalizedCode,
+    cnpj: cnpj ?? this.cnpj,
+    enabled: enabled ?? this.enabled,
+  );
+
   @override
   List<Object?> get props => [id, name, personalizedCode, cnpj, enabled];
 }

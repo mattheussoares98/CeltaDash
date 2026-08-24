@@ -1,5 +1,6 @@
 import 'package:celta_dash/features/web_enterprises/presentation/presentation.dart';
 import 'package:celta_dash/features/web_enterprises/providers.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -51,5 +52,28 @@ void main() {
       container.read(remoteEnterprisesControllerProvider).value,
       refreshed,
     );
+  });
+
+  test('updateEnterprise persists and replaces the matching item', () async {
+    final enterprise = EntityFactory.makeFirebaseEnterpriseEntity();
+    final updated = enterprise.copyWith(baseUrl: faker.internet.httpUrl());
+    when(repository.getEnterprises).thenAnswer((_) async => [enterprise]);
+    when(() => repository.updateEnterprise(updated)).thenAnswer((_) async {});
+    final container = ProviderContainer(
+      overrides: [
+        webEnterprisesRepositoryProvider.overrideWithValue(repository),
+      ],
+    );
+    addTearDown(container.dispose);
+    await container.read(remoteEnterprisesControllerProvider.future);
+
+    await container
+        .read(remoteEnterprisesControllerProvider.notifier)
+        .updateEnterprise(updated);
+
+    expect(container.read(remoteEnterprisesControllerProvider).value, [
+      updated,
+    ]);
+    verify(() => repository.updateEnterprise(updated)).called(1);
   });
 }

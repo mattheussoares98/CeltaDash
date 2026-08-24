@@ -4,5 +4,7 @@ import 'package:celta_dash/features/web_enterprises/data/models/models.dart';
 abstract class IWebEnterprisesDatasource {
   Future<List<FirebaseEnterpriseModel>> getEnterprises();
 
+  Future<void> updateEnterprise(FirebaseEnterpriseModel enterprise);
+
   Future<List<WebAnalyticsModel>> getAnalytics(DateTime period);
 }

@@ -18,4 +18,21 @@ class RemoteEnterprisesController extends _$RemoteEnterprisesController {
       ref.read(webEnterprisesRepositoryProvider).getEnterprises,
     );
   }
+
+  Future<void> updateEnterprise(FirebaseEnterpriseEntity enterprise) async {
+    await ref
+        .read(webEnterprisesRepositoryProvider)
+        .updateEnterprise(enterprise);
+
+    final enterprises = state.value;
+    if (enterprises == null) return;
+    final index = enterprises.indexWhere(
+      (item) => item.firebaseId == enterprise.firebaseId,
+    );
+    if (index == -1) return;
+
+    final updatedEnterprises = [...enterprises];
+    updatedEnterprises[index] = enterprise;
+    state = AsyncData(updatedEnterprises);
+  }
 }

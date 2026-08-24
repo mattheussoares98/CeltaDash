@@ -33,4 +33,16 @@ void main() {
     expect(await repository.getAnalytics(period), analytics);
     verify(() => datasource.getAnalytics(period)).called(1);
   });
+
+  test('updateEnterprise converts the entity and forwards the model', () async {
+    final enterprise = EntityFactory.makeFirebaseEnterpriseEntity().copyWith(
+      annulBsUser: true,
+    );
+    final model = FirebaseEnterpriseModel.fromEntity(enterprise);
+    when(() => datasource.updateEnterprise(model)).thenAnswer((_) async {});
+
+    await repository.updateEnterprise(enterprise);
+
+    verify(() => datasource.updateEnterprise(model)).called(1);
+  });
 }

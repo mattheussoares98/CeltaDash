@@ -1,5 +1,6 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/features/web_enterprises/presentation/controllers/controllers.dart';
+import 'package:celta_dash/features/web_enterprises/presentation/pages/components/components.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -49,10 +50,10 @@ class RemoteEnterprisesView extends HookConsumerWidget {
                     onPressed: enterpriseController.text.trim().isEmpty
                         ? null
                         : enterpriseController.clear,
-                    platformIcon: const PlatformIcon(
+                    platformIcon: PlatformIcon(
                       materialIcon: Icons.clear,
                       cupertinoIcon: Icons.clear,
-                      color: Colors.red,
+                      color: context.colorScheme.error,
                     ),
                   ),
                 ),
@@ -64,6 +65,10 @@ class RemoteEnterprisesView extends HookConsumerWidget {
                       final enterprise = filteredItems[index];
                       return Card(
                         child: BaseListTile(
+                          onTap: () => showModalPage(
+                            EnterpriseEditor(enterprise: enterprise),
+                            context,
+                          ),
                           contentPadding: const .only(left: Sizes.p8),
                           leading: const PlatformIcon(
                             materialIcon: Icons.business,
@@ -76,6 +81,10 @@ class RemoteEnterprisesView extends HookConsumerWidget {
                           subtitle: enterprise.baseUrl == null
                               ? null
                               : BaseText(enterprise.baseUrl!),
+                          trailing: const PlatformIcon(
+                            materialIcon: Icons.edit,
+                            cupertinoIcon: Icons.edit,
+                          ),
                         ),
                       );
                     },

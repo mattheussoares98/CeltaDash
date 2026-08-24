@@ -74,7 +74,7 @@ class SalesPaginationAndCancFilter extends StatelessWidget {
         Expanded(
           flex: 6,
           child: BaseSwitch(
-            title: 'Somente canceladas'.hardcoded,
+            title: BaseText.title('Somente canceladas'.hardcoded),
             value: onlyCancelled,
             onChanged: isLoading ? null : onOnlyCancelledChanged,
           ),

@@ -22,6 +22,25 @@ class WebEnterprisesDatasource implements IWebEnterprisesDatasource {
   }
 
   @override
+  Future<void> updateEnterprise(FirebaseEnterpriseModel enterprise) async {
+    final firebaseId = enterprise.firebaseId;
+    if (firebaseId == null || firebaseId.isEmpty) {
+      throw ArgumentError.value(firebaseId, 'firebaseId');
+    }
+
+    await firebaseStorage.put(
+      path: 'enterprises/$firebaseId',
+      data: <String, dynamic>{
+        'baseUrl': enterprise.baseUrl,
+        'subEnterprises': enterprise.subEnterprises
+            ?.map((subEnterprise) => subEnterprise.toJson())
+            .toList(growable: false),
+      },
+      merge: true,
+    );
+  }
+
+  @override
   Future<List<WebAnalyticsModel>> getAnalytics(DateTime period) async {
     final month = DateFormat('yyyy-MM').format(period);
     final snapshot = await firebaseStorage.get(

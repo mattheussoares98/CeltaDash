@@ -1,10 +1,9 @@
-import 'package:celta_dash/commom_widgets/text/text.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class BaseSwitch extends StatelessWidget {
-  final String title;
+  final Widget title;
   final bool value;
   final void Function(bool)? onChanged;
   const BaseSwitch({
@@ -18,7 +17,7 @@ class BaseSwitch extends StatelessWidget {
   Widget build(BuildContext context) {
     if (PlatformUtil.isCupertino) {
       return CupertinoListTile(
-        title: BaseText.title(title),
+        title: title,
         padding: EdgeInsets.zero,
         trailing: CupertinoSwitch(value: value, onChanged: onChanged),
       );
@@ -26,7 +25,7 @@ class BaseSwitch extends StatelessWidget {
       return SwitchListTile.adaptive(
         dense: true,
         contentPadding: EdgeInsetsGeometry.zero,
-        title: BaseText.title(title),
+        title: title,
         value: value,
         onChanged: onChanged,
       );
