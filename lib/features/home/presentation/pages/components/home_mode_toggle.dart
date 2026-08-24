@@ -1,11 +1,13 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/features/home/home.dart';
+import 'package:celta_dash/routing/routing.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeModeToggle extends ConsumerWidget {
   const HomeModeToggle({super.key});
@@ -43,6 +45,14 @@ class HomeModeToggle extends ConsumerWidget {
           : () async {
               try {
                 await ref.read(homeControllerProvider.notifier).toggleAppMode();
+                if (!context.mounted) return;
+
+                final appMode = ref.read(homeControllerProvider).value?.appMode;
+                context.goNamed(
+                  appMode == AppMode.financialTitles
+                      ? Routes.financialHomeResume.name
+                      : Routes.salesHomeResume.name,
+                );
               } catch (error) {
                 showToastMessage(error.toString(), type: ToastType.error);
               }

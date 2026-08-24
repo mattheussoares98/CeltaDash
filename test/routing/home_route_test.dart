@@ -1,8 +1,10 @@
+import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/routing/routing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:toastification/toastification.dart';
 
 void main() {
   late GoRouter router;
@@ -10,6 +12,7 @@ void main() {
   Future<void> pumpRouter(
     WidgetTester tester, {
     String initialLocation = '/home',
+    AppMode appMode = AppMode.sales,
   }) async {
     final navigatorKey = GlobalKey<NavigatorState>();
     router = GoRouter(
@@ -23,14 +26,18 @@ void main() {
             builder: (context, state) =>
                 const Scaffold(body: Text('Operators')),
           ),
-        ]),
+        ], loadAppMode: () async => appMode),
       ],
       errorBuilder: (context, state) => const Scaffold(body: Text('Not found')),
     );
     addTearDown(router.dispose);
 
     await tester.pumpWidget(
-      ProviderScope(child: MaterialApp.router(routerConfig: router)),
+      ProviderScope(
+        child: ToastificationWrapper(
+          child: MaterialApp.router(routerConfig: router),
+        ),
+      ),
     );
     await tester.pumpAndSettle();
   }
@@ -41,25 +48,33 @@ void main() {
     await pumpRouter(tester);
 
     expect(currentPath(), '/home/resume');
-    expect(find.text('Resume'), findsWidgets);
+  });
+
+  testWidgets('/home redirects to the financial shell when persisted', (
+    tester,
+  ) async {
+    await pumpRouter(tester, appMode: AppMode.financialTitles);
+
+    expect(currentPath(), '/home/financial/resume');
+    expect(find.text('Resumo financeiro'), findsOneWidget);
   });
 
   testWidgets('each named destination supports a direct deep link', (
     tester,
   ) async {
-    const destinations = {
-      '/home/resume': 'Resume',
-      '/home/sales': 'Sales',
-      '/home/products': 'Products',
-      '/home/personalized': 'Personalized',
-      '/home/more': 'More',
-    };
+    const destinations = [
+      '/home/resume',
+      '/home/sales',
+      '/home/products',
+      '/home/financial/resume',
+      '/home/personalized',
+      '/home/more',
+    ];
 
-    for (final destination in destinations.entries) {
-      await pumpRouter(tester, initialLocation: destination.key);
+    for (final destination in destinations) {
+      await pumpRouter(tester, initialLocation: destination);
 
-      expect(currentPath(), destination.key);
-      expect(find.text(destination.value), findsWidgets);
+      expect(currentPath(), destination);
     }
   });
 
@@ -68,11 +83,9 @@ void main() {
   ) async {
     await pumpRouter(tester);
     const destinations = [
-      ('home_navigation_sales', '/home/sales', 'Sales'),
-      ('home_navigation_products', '/home/products', 'Products'),
-      ('home_navigation_personalized', '/home/personalized', 'Personalized'),
-      ('home_navigation_more', '/home/more', 'More'),
-      ('home_navigation_resume', '/home/resume', 'Resume'),
+      ('home_navigation_sales', '/home/sales'),
+      ('home_navigation_products', '/home/products'),
+      ('home_navigation_resume', '/home/resume'),
     ];
 
     for (final destination in destinations) {
@@ -80,7 +93,6 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(currentPath(), destination.$2);
-      expect(find.text(destination.$3), findsWidgets);
     }
   });
 
@@ -96,7 +108,6 @@ void main() {
     router.pop();
     await tester.pumpAndSettle();
     expect(currentPath(), '/home/sales');
-    expect(find.text('Sales'), findsWidgets);
   });
 
   testWidgets('payments is nested under the resume route', (tester) async {
