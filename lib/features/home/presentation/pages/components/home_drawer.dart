@@ -59,8 +59,8 @@ class HomeDrawer extends HookConsumerWidget {
                   _DrawerItem(
                     title: 'Vendas'.hardcoded,
                     platformIcon: const PlatformIcon(
-                      materialIcon: Icons.cancel_outlined,
-                      cupertinoIcon: CupertinoIcons.clear_circled,
+                      materialIcon: Icons.sell,
+                      cupertinoIcon: CupertinoIcons.money_dollar,
                     ),
                     onTap: () {
                       context.pop();
