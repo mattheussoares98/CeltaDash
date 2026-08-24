@@ -83,11 +83,13 @@ class SectionsStatisticsTable extends StatelessWidget {
 
     return ScrollableTable<SectionsStatisticsRowState>(
       items: rows,
+      pdfFileName: 'Seções'.hardcoded,
       fixFirstColumn: true,
       isLoading: isLoading,
       initialSortColumnIndex: 3,
       initialSortAscending: false,
       highlightColumnIndex: 3,
+      rowHeight: Sizes.p64,
       columns: [
         ScrollableTableColumnSpec(
           headerTitle: 'Seções'.hardcoded,
@@ -103,11 +105,16 @@ class SectionsStatisticsTable extends StatelessWidget {
                   maxLines: 1,
                   fontWeight: FontWeight.w600,
                 ),
-                BaseText.caption(row.section, maxLines: 2, textAlign: .center),
+                BaseText.caption(
+                  row.section,
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                ),
               ],
             ),
           ),
           sortValueMapper: (row) => '${row.department}_${row.section}',
+          textValueMapper: (row) => '${row.department} - ${row.section}',
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Vendas'.hardcoded,
@@ -121,6 +128,10 @@ class SectionsStatisticsTable extends StatelessWidget {
                 .toString()
                 .toBRL(),
           ),
+          footerTextValueMapper: (items) => items
+              .fold<double>(0, (total, row) => total + row.sales)
+              .toString()
+              .toBRL(),
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Custo'.hardcoded,
@@ -134,6 +145,10 @@ class SectionsStatisticsTable extends StatelessWidget {
                 .toString()
                 .toBRL(),
           ),
+          footerTextValueMapper: (items) => items
+              .fold<double>(0, (total, row) => total + row.cost)
+              .toString()
+              .toBRL(),
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Lucro'.hardcoded,
@@ -147,6 +162,10 @@ class SectionsStatisticsTable extends StatelessWidget {
                 .toString()
                 .toBRL(),
           ),
+          footerTextValueMapper: (items) => items
+              .fold<double>(0, (total, row) => total + row.profit)
+              .toString()
+              .toBRL(),
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Margem'.hardcoded,

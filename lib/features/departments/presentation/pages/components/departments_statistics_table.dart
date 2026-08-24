@@ -62,6 +62,7 @@ class DepartmentsStatisticsTable extends StatelessWidget {
 
     return ScrollableTable<DepartmentsStatisticsRowState>(
       items: rows,
+      pdfFileName: 'Departamentos'.hardcoded,
       fixFirstColumn: true,
       isLoading: isLoading,
       initialSortColumnIndex: 3,
@@ -73,6 +74,7 @@ class DepartmentsStatisticsTable extends StatelessWidget {
           headerTitle: 'Dep.'.hardcoded,
           cellBuilder: (row) => BaseText(row.department, maxLines: 2),
           sortValueMapper: (row) => row.department,
+          textValueMapper: (row) => row.department,
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Vendas'.hardcoded,
@@ -86,6 +88,10 @@ class DepartmentsStatisticsTable extends StatelessWidget {
                 .toString()
                 .toBRL(),
           ),
+          footerTextValueMapper: (items) => items
+              .fold<double>(0, (total, row) => total + row.sales)
+              .toString()
+              .toBRL(),
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Custo'.hardcoded,
@@ -99,6 +105,10 @@ class DepartmentsStatisticsTable extends StatelessWidget {
                 .toString()
                 .toBRL(),
           ),
+          footerTextValueMapper: (items) => items
+              .fold<double>(0, (total, row) => total + row.cost)
+              .toString()
+              .toBRL(),
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Lucro'.hardcoded,
@@ -112,6 +122,10 @@ class DepartmentsStatisticsTable extends StatelessWidget {
                 .toString()
                 .toBRL(),
           ),
+          footerTextValueMapper: (items) => items
+              .fold<double>(0, (total, row) => total + row.profit)
+              .toString()
+              .toBRL(),
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Margem'.hardcoded,
