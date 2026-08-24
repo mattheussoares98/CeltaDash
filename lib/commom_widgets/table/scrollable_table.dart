@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
-import 'package:celta_dash/ui/pages/pdf/pdf.dart';
+import 'package:celta_dash/features/pdf_viewer/pdf_viewer.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
