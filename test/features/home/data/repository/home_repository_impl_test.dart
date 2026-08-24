@@ -80,17 +80,20 @@ void main() {
     when(
       () => goalDatasource.getMonthlyGoals(
         firebaseEnterpriseId: firebaseEnterpriseId,
+        year: entity.month.year,
       ),
     ).thenAnswer((_) async => [model]);
 
     final result = await repository.getMonthlyGoals(
       firebaseEnterpriseId: firebaseEnterpriseId,
+      year: entity.month.year,
     );
 
     expect(result, [entity]);
     verify(
       () => goalDatasource.getMonthlyGoals(
         firebaseEnterpriseId: firebaseEnterpriseId,
+        year: entity.month.year,
       ),
     ).called(1);
   });

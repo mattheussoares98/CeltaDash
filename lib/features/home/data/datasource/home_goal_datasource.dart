@@ -11,9 +11,10 @@ class HomeGoalDatasource implements IHomeGoalDatasource {
   @override
   Future<List<MonthlyGoalModel>> getMonthlyGoals({
     required String firebaseEnterpriseId,
+    required int year,
   }) async {
     final snapshot = await _firebaseStorage.get(
-      path: _goalPath(firebaseEnterpriseId),
+      path: _goalPath(firebaseEnterpriseId, year),
     );
     final data = snapshot?.data();
     if (data is! Map) return [];
@@ -26,16 +27,16 @@ class HomeGoalDatasource implements IHomeGoalDatasource {
       if (match == null || entry.value is! Map) continue;
 
       final enterpriseId = int.parse(match.group(1)!);
-      final year = int.parse(match.group(2)!);
+      final parsedYear = int.parse(match.group(2)!);
       final month = int.parse(match.group(3)!);
-      if (month < 1 || month > 12) continue;
+      if (parsedYear != year || month < 1 || month > 12) continue;
 
       try {
         goals.add(
           MonthlyGoalModel.fromJson(
             entry.value as Map,
             enterpriseId: enterpriseId,
-            month: DateTime(year, month),
+            month: DateTime(parsedYear, month),
           ),
         );
       } catch (_) {
@@ -50,13 +51,13 @@ class HomeGoalDatasource implements IHomeGoalDatasource {
     required String firebaseEnterpriseId,
     required MonthlyGoalModel goal,
   }) => _firebaseStorage.put(
-    path: _goalPath(firebaseEnterpriseId),
+    path: _goalPath(firebaseEnterpriseId, goal.month.year),
     data: {_goalId(goal.enterpriseId, goal.month): goal.toJson()},
     merge: true,
   );
 
-  String _goalPath(String firebaseEnterpriseId) =>
-      'enterprises/$firebaseEnterpriseId/goals/all';
+  String _goalPath(String firebaseEnterpriseId, int year) =>
+      'enterprises/$firebaseEnterpriseId/goals/$year';
 
   String _goalId(int enterpriseId, DateTime month) =>
       '$enterpriseId-${DateFormat('yyyy-MM').format(month)}';

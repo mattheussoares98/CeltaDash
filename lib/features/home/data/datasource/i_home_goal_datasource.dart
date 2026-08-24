@@ -3,6 +3,7 @@ import 'package:celta_dash/features/home/data/models/models.dart';
 abstract class IHomeGoalDatasource {
   Future<List<MonthlyGoalModel>> getMonthlyGoals({
     required String firebaseEnterpriseId,
+    required int year,
   });
 
   Future<void> saveMonthlyGoal({

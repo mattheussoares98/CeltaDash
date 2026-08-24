@@ -12,6 +12,7 @@ abstract class IHomeRepository {
 
   Future<List<MonthlyGoalEntity>> getMonthlyGoals({
     required String firebaseEnterpriseId,
+    required int year,
   });
 
   Future<void> saveMonthlyGoal({

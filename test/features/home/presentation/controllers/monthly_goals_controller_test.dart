@@ -1,7 +1,8 @@
+import 'package:celta_dash/core/domain/entities/entities.dart';
 import 'package:celta_dash/core/providers.dart';
-import 'package:celta_dash/domain/entities/entities.dart';
 import 'package:celta_dash/features/home/domain/domain.dart';
 import 'package:celta_dash/features/home/presentation/controllers/controllers.dart';
+import 'package:celta_dash/features/home/presentation/models/models.dart';
 import 'package:celta_dash/features/home/providers.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,12 +17,20 @@ void main() {
   late MockHomeRepository repository;
   late FirebaseEnterpriseEntity activeEnterprise;
   late List<MonthlyGoalEntity> goals;
+  late DateTime selectedDate;
 
   ProviderContainer makeContainer() => ProviderContainer(
     retry: (_, _) => null,
     overrides: [
       activeEcParamsStateControllerProvider.overrideWith(
         () => FakeActiveEcParams(EntityFactory.makeEcParams()),
+      ),
+      homeControllerProvider.overrideWith(
+        () => FakeHomeController(
+          HomeState.initial(appMode: AppMode.sales).copyWith(
+            selectedDate: selectedDate,
+          ),
+        ),
       ),
       homeRepositoryProvider.overrideWithValue(repository),
     ],
@@ -30,10 +39,11 @@ void main() {
   setUp(() {
     repository = MockHomeRepository();
     activeEnterprise = EntityFactory.makeFirebaseEnterpriseEntity();
+    selectedDate = faker.date.dateTime();
     goals = [
       MonthlyGoalEntity(
         enterpriseId: faker.randomGenerator.integer(100),
-        month: faker.date.dateTime(),
+        month: DateTime(selectedDate.year, selectedDate.month),
         value: faker.randomGenerator.decimal(),
         userName: faker.person.name(),
       ),
@@ -44,6 +54,7 @@ void main() {
     when(
       () => repository.getMonthlyGoals(
         firebaseEnterpriseId: activeEnterprise.firebaseId!,
+        year: selectedDate.year,
       ),
     ).thenAnswer((_) async => goals);
   });
@@ -68,6 +79,7 @@ void main() {
     verify(
       () => repository.getMonthlyGoals(
         firebaseEnterpriseId: activeEnterprise.firebaseId!,
+        year: selectedDate.year,
       ),
     ).called(1);
   });
@@ -77,6 +89,7 @@ void main() {
     when(
       () => repository.getMonthlyGoals(
         firebaseEnterpriseId: activeEnterprise.firebaseId!,
+        year: selectedDate.year,
       ),
     ).thenThrow(error);
     final container = makeContainer();

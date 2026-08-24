@@ -27,19 +27,20 @@ void main() {
       userName: faker.person.name(),
     );
     goalId = '${goal.enterpriseId}-${DateFormat('yyyy-MM').format(goal.month)}';
-    path = 'enterprises/$firebaseEnterpriseId/goals/all';
+    path = 'enterprises/$firebaseEnterpriseId/goals/${goal.month.year}';
   });
 
   test('getMonthlyGoals maps every valid Firebase goal', () async {
     final otherGoal = goal.copyWith(
       enterpriseId: goal.enterpriseId + 1,
-      month: DateTime(goal.month.year, goal.month.month - 1),
+      month: DateTime(goal.month.year, goal.month.month == 1 ? 2 : goal.month.month - 1),
     );
     final otherGoalId =
         '${otherGoal.enterpriseId}-${DateFormat('yyyy-MM').format(otherGoal.month)}';
     firebaseStorage.getResult = FakeDoc({
       goalId: MonthlyGoalModel.fromEntity(goal).toJson(),
       otherGoalId: MonthlyGoalModel.fromEntity(otherGoal).toJson(),
+      '${goal.enterpriseId}-${goal.month.year + 1}-01': MonthlyGoalModel.fromEntity(goal).toJson(),
       'invalid-key': MonthlyGoalModel.fromEntity(goal).toJson(),
       '${goal.enterpriseId}-${goal.month.year}-13': {
         'value': goal.value,
@@ -52,6 +53,7 @@ void main() {
 
     final result = await datasource.getMonthlyGoals(
       firebaseEnterpriseId: firebaseEnterpriseId,
+      year: goal.month.year,
     );
 
     expect(result.map((model) => model.toEntity()), [goal, otherGoal]);
@@ -65,6 +67,7 @@ void main() {
 
       final result = await datasource.getMonthlyGoals(
         firebaseEnterpriseId: firebaseEnterpriseId,
+        year: goal.month.year,
       );
 
       expect(result, isEmpty);
@@ -94,6 +97,7 @@ void main() {
     expect(
       () => datasource.getMonthlyGoals(
         firebaseEnterpriseId: firebaseEnterpriseId,
+        year: goal.month.year,
       ),
       throwsA(same(error)),
     );

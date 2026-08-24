@@ -1,5 +1,6 @@
 import 'package:celta_dash/core/providers.dart';
 import 'package:celta_dash/features/home/domain/domain.dart';
+import 'package:celta_dash/features/home/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/home/providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -10,13 +11,17 @@ class MonthlyGoalsController extends _$MonthlyGoalsController {
   @override
   Future<Map<MonthlyGoalKey, MonthlyGoalEntity>> build() async {
     ref.watch(activeEcParamsStateControllerProvider);
-    final repository = ref.watch(homeRepositoryProvider);
+    final repository = ref.read(homeRepositoryProvider);
     final activeEnterprise = await repository.loadActiveEnterprise();
     final firebaseEnterpriseId = activeEnterprise?.firebaseId;
     if (firebaseEnterpriseId == null) return const {};
 
+    final selectedDate = await ref.watch(
+      homeControllerProvider.selectAsync((s) => s.selectedDate),
+    );
     final goals = await repository.getMonthlyGoals(
       firebaseEnterpriseId: firebaseEnterpriseId,
+      year: selectedDate.year,
     );
     return Map.unmodifiable({
       for (final goal in goals) _keyFor(goal.enterpriseId, goal.month): goal,

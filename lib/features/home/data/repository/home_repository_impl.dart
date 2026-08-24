@@ -33,9 +33,11 @@ class HomeRepositoryImpl implements IHomeRepository {
   @override
   Future<List<MonthlyGoalEntity>> getMonthlyGoals({
     required String firebaseEnterpriseId,
+    required int year,
   }) async {
     final models = await _goalDatasource.getMonthlyGoals(
       firebaseEnterpriseId: firebaseEnterpriseId,
+      year: year,
     );
     return models.map((model) => model.toEntity()).toList();
   }
