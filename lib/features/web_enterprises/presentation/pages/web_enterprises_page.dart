@@ -2,6 +2,7 @@ import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/features/web_enterprises/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/web_enterprises/presentation/pages/components/components.dart';
 import 'package:celta_dash/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -22,16 +23,22 @@ class WebEnterprisesPage extends HookConsumerWidget {
         index: selectedIndex.value,
         children: const [RemoteEnterprisesView(), WebAnalyticsView()],
       ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: selectedIndex.value,
-        onDestinationSelected: (index) => selectedIndex.value = index,
-        destinations: [
-          NavigationDestination(
-            icon: const Icon(Icons.business),
+      bottomNavigationBar: BaseBottomNavigationBar(
+        currentIndex: selectedIndex.value,
+        onTap: (index) => selectedIndex.value = index,
+        items: [
+          BaseBottomNavigationBarItem(
+            platformIcon: const PlatformIcon(
+              materialIcon: Icons.business,
+              cupertinoIcon: CupertinoIcons.briefcase,
+            ),
             label: 'Empresas'.hardcoded,
           ),
-          NavigationDestination(
-            icon: const Icon(Icons.auto_graph),
+          BaseBottomNavigationBarItem(
+            platformIcon: const PlatformIcon(
+              materialIcon: Icons.auto_graph,
+              cupertinoIcon: CupertinoIcons.graph_circle,
+            ),
             label: 'Análises'.hardcoded,
           ),
         ],
