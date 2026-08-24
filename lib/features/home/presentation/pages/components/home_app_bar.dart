@@ -98,7 +98,11 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
               ?drawerButton,
               if (enterpriseSelector != null)
                 Expanded(flex: 2, child: enterpriseSelector),
-              ?leftDateWidget,
+              if (leftDateWidget != null)
+                Padding(
+                  padding: const EdgeInsets.only(left: Sizes.p8),
+                  child: leftDateWidget!,
+                ),
               ?dateSelector,
               gapW8,
               ?modeToggle,
