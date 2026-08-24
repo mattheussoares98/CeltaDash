@@ -42,6 +42,13 @@ class _DepartmentsContent extends HookConsumerWidget {
       appBar: HomeAppBar(
         isLandscape: isLandscape,
         reloadButton: reloadButton,
+        leading: BaseIconButton(
+          onPressed: Navigator.of(context).pop,
+          platformIcon: const PlatformIcon(
+            cupertinoIcon: CupertinoIcons.back,
+            materialIcon: Icons.arrow_back,
+          ),
+        ),
       ),
       isScrollable: false,
       usePadding: false,
