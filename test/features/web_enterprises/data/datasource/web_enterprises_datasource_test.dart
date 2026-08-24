@@ -1,11 +1,10 @@
 import 'package:celta_dash/core/data/data.dart';
-import 'package:celta_dash/domain/entities/entities.dart';
-import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/features/web_enterprises/data/data.dart';
+import 'package:celta_dash/features/web_enterprises/domain/domain.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../../domain/mocks/mocks.dart';
+import '../../../../domain/mocks/mocks.dart' hide MockFirebaseStorage;
 import '../../mocks/mocks.dart';
 
 void main() {
@@ -29,7 +28,7 @@ void main() {
 
     final result = await datasource.getEnterprises();
 
-    expect(result, [entity]);
+    expect(result.map((model) => model.toEntity()), [entity]);
     verify(() => firebaseStorage.get(path: 'enterprises')).called(1);
   });
 
@@ -45,7 +44,10 @@ void main() {
     final result = await datasource.getAnalytics(DateTime(2026, 8));
 
     expect(result.single.enterprise, 'enterprise-1');
-    expect(result.single.searchCounts.single.reportType, ReportType.sales);
+    expect(
+      result.single.searchCounts.single.reportType,
+      WebAnalyticsReportType.sales,
+    );
     verify(
       () => firebaseStorage.get(path: 'analytics/2026-08/informations'),
     ).called(1);

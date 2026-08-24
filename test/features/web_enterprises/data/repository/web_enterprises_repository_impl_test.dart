@@ -1,4 +1,4 @@
-import 'package:celta_dash/domain/entities/entities.dart';
+import 'package:celta_dash/core/data/data.dart';
 import 'package:celta_dash/features/web_enterprises/data/data.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -17,7 +17,8 @@ void main() {
 
   test('getEnterprises forwards the datasource result', () async {
     final enterprises = [EntityFactory.makeFirebaseEnterpriseEntity()];
-    when(datasource.getEnterprises).thenAnswer((_) async => enterprises);
+    final models = enterprises.map(FirebaseEnterpriseModel.fromEntity).toList();
+    when(datasource.getEnterprises).thenAnswer((_) async => models);
 
     expect(await repository.getEnterprises(), enterprises);
     verify(datasource.getEnterprises).called(1);
@@ -25,10 +26,9 @@ void main() {
 
   test('getAnalytics forwards the period and result', () async {
     final period = DateTime(2026, 8);
-    const analytics = <MonthlyAnalyticsEntity>[];
-    when(
-      () => datasource.getAnalytics(period),
-    ).thenAnswer((_) async => analytics);
+    final analytics = [WebEnterprisesEntityFactory.makeWebAnalyticsEntity()];
+    final models = analytics.map(WebAnalyticsModel.fromEntity).toList();
+    when(() => datasource.getAnalytics(period)).thenAnswer((_) async => models);
 
     expect(await repository.getAnalytics(period), analytics);
     verify(() => datasource.getAnalytics(period)).called(1);

@@ -1,4 +1,4 @@
-import 'package:celta_dash/domain/entities/entities.dart';
+import 'package:celta_dash/features/web_enterprises/domain/domain.dart';
 import 'package:celta_dash/features/web_enterprises/presentation/presentation.dart';
 import 'package:celta_dash/features/web_enterprises/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,7 +14,7 @@ void main() {
 
   test('build loads analytics for its period family key', () async {
     final period = DateTime(2026, 8);
-    const analytics = <MonthlyAnalyticsEntity>[];
+    final analytics = [WebEnterprisesEntityFactory.makeWebAnalyticsEntity()];
     when(
       () => repository.getAnalytics(period),
     ).thenAnswer((_) async => analytics);
@@ -36,7 +36,7 @@ void main() {
     final period = DateTime(2026, 8);
     when(
       () => repository.getAnalytics(period),
-    ).thenAnswer((_) async => const <MonthlyAnalyticsEntity>[]);
+    ).thenAnswer((_) async => const <WebAnalyticsEntity>[]);
     final container = ProviderContainer(
       overrides: [
         webEnterprisesRepositoryProvider.overrideWithValue(repository),

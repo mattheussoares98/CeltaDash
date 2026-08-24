@@ -1,46 +1,41 @@
-import 'package:celta_dash/domain/entities/entities.dart';
-import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/features/web_enterprises/data/data.dart';
+import 'package:celta_dash/features/web_enterprises/domain/domain.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import '../../mocks/mocks.dart';
 
 void main() {
   test('fromJson parses users and valid search-count keys', () {
+    final enterpriseId = faker.guid.guid();
+    final userName = faker.person.name();
+    final count = faker.randomGenerator.integer(100, min: 1);
     final model = WebAnalyticsModel.fromJson({
-      'sales-daily': 4,
-      'invalid-key': 9,
+      'sales-daily': count,
+      'invalid-key': faker.randomGenerator.integer(100),
       'users': [
-        {'userName': 'Maria', 'platform': 'web'},
+        {'userName': userName, 'platform': 'web'},
       ],
-    }, enterpriseId: 'enterprise-1');
+    }, enterpriseId: enterpriseId);
 
-    expect(model.enterprise, 'enterprise-1');
-    expect(model.users.single.userName, 'Maria');
-    expect(
-      model.searchCounts.single,
-      const SearchCountEntity(
-        reportType: ReportType.sales,
-        periodType: PeriodType.daily,
-        count: 4,
-      ),
-    );
+    expect(model.enterprise, enterpriseId);
+    expect(model.users.single.userName, userName);
+    expect(model.searchCounts.single.reportType, WebAnalyticsReportType.sales);
+    expect(model.searchCounts.single.periodType, WebAnalyticsPeriodType.daily);
+    expect(model.searchCounts.single.count, count);
   });
 
   test('toJson and toEntity preserve analytics data', () {
-    const entity = MonthlyAnalyticsEntity(
-      enterprise: 'enterprise-1',
-      searchCounts: [
-        SearchCountEntity(
-          reportType: ReportType.sales,
-          periodType: PeriodType.daily,
-          count: 4,
-        ),
-      ],
-      users: [ActiveUserEntity(userName: 'Maria', platform: 'web')],
-    );
+    final entity = WebEnterprisesEntityFactory.makeWebAnalyticsEntity();
 
     final model = WebAnalyticsModel.fromEntity(entity);
 
     expect(model.toEntity(), entity);
-    expect(model.toJson()['sales-daily'], 4);
+    final searchCount = entity.searchCounts.single;
+    expect(
+      model
+          .toJson()['${searchCount.reportType.name}-${searchCount.periodType.name}'],
+      searchCount.count,
+    );
   });
 }

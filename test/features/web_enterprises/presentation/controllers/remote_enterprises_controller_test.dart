@@ -32,9 +32,9 @@ void main() {
     final first = [EntityFactory.makeFirebaseEnterpriseEntity()];
     final refreshed = [EntityFactory.makeFirebaseEnterpriseEntity()];
     var requestCount = 0;
-    when(repository.getEnterprises).thenAnswer(
-      (_) async => requestCount++ == 0 ? first : refreshed,
-    );
+    when(
+      repository.getEnterprises,
+    ).thenAnswer((_) async => requestCount++ == 0 ? first : refreshed);
     final container = ProviderContainer(
       overrides: [
         webEnterprisesRepositoryProvider.overrideWithValue(repository),
