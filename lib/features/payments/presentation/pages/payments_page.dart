@@ -40,7 +40,6 @@ class _PaymentsContent extends HookConsumerWidget {
       appBar: HomeAppBar(
         isLandscape: isLandscape,
         reloadButton: ReloadIconButton(refreshProviders: [provider]),
-        showLeading: true,
       ),
       isScrollable: false,
       usePadding: false,

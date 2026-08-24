@@ -42,7 +42,6 @@ class _DepartmentsContent extends HookConsumerWidget {
       appBar: HomeAppBar(
         isLandscape: isLandscape,
         reloadButton: reloadButton,
-        showLeading: true,
       ),
       isScrollable: false,
       usePadding: false,

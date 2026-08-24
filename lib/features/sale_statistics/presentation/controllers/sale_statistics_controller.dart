@@ -20,7 +20,7 @@ class SaleStatisticsController extends _$SaleStatisticsController {
     PeriodGroupingType? periodGroupingType,
     SaleStatisticsSeriesType seriesType = SaleStatisticsSeriesType.primary,
   }) {
-    ref.cache(60);
+    ref.cache();
     ref.watch(activeEcParamsStateControllerProvider);
     return const AsyncValue.data([]);
   }

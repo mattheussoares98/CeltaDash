@@ -54,8 +54,8 @@ void main() {
           ),
           homeRepositoryProvider.overrideWithValue(repository),
         ],
-        child: ToastificationWrapper(
-          child: const MaterialApp(
+        child: const ToastificationWrapper(
+          child: MaterialApp(
             home: Scaffold(
               appBar: HomeAppBar(
                 isLandscape: false,

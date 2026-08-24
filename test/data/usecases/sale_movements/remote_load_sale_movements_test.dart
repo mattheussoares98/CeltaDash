@@ -1,7 +1,6 @@
 import 'package:celta_dash/data/models/models.dart';
 import 'package:celta_dash/data/usecases/usecases.dart';
 import 'package:celta_dash/domain/entities/entities.dart';
-import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/main/builders/builders.dart';
 import 'package:faker/faker.dart';
 
