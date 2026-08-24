@@ -1,8 +1,11 @@
 enum WebAnalyticsPeriodType {
-  hourly,
-  daily,
-  weekly,
-  monthly,
-  personalized,
-  yearly,
+  hourly('Hora'),
+  daily('Diário'),
+  weekly('Semanal'),
+  monthly('Mensal'),
+  personalized('Personalizado'),
+  yearly('Anual');
+
+  final String label;
+  const WebAnalyticsPeriodType(this.label);
 }

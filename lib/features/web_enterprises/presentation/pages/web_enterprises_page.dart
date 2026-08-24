@@ -12,23 +12,15 @@ class WebEnterprisesPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedIndex = useState(0);
-    final selectedPeriod = useState(
-      DateTime(DateTime.now().year, DateTime.now().month),
-    );
 
     return BaseScaffold(
       isScrollable: false,
+      padding: const .symmetric(horizontal: Sizes.p8),
       appBar: BaseAppBar(title: 'Clientes'.hardcoded),
       onRefresh: ref.read(remoteEnterprisesControllerProvider.notifier).refresh,
       body: IndexedStack(
         index: selectedIndex.value,
-        children: [
-          const RemoteEnterprisesView(),
-          WebAnalyticsView(
-            selectedPeriod: selectedPeriod.value,
-            onPeriodChanged: (period) => selectedPeriod.value = period,
-          ),
-        ],
+        children: const [RemoteEnterprisesView(), WebAnalyticsView()],
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: selectedIndex.value,
