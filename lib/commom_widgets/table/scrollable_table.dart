@@ -330,30 +330,36 @@ class ScrollableTable<T> extends HookConsumerWidget {
       return true;
     }());
 
-    final handleExportPdf = useCallback(() async {
-      if (items.isEmpty) {
-        showToastMessage('Não há dados para exportar.'.hardcoded);
-        return;
-      }
+    final handleExportPdf = useCallback(
+      () async {
+        if (items.isEmpty) {
+          showToastMessage('Não há dados para exportar.'.hardcoded);
+          return;
+        }
 
-      final generator = TablePdfGenerator<T>(
-        pdfFileName: pdfFileName!,
-        pdfSubtitle: pdfSubtitle,
-        columns: columns,
-        sortedItems: sortedItems,
-        highlightColumnIndex: highlightColumnIndex,
-      );
+        final generator = TablePdfGenerator<T>(
+          pdfFileName: pdfFileName!,
+          pdfSubtitle: pdfSubtitle,
+          columns: columns,
+          sortedItems: sortedItems,
+          highlightColumnIndex: highlightColumnIndex,
+        );
 
-      final bytes = await generator.generatePdfBytes();
-      await PdfViewerPage.openPdf(bytes, pdfFileName!);
-    }, [
-      pdfFileName,
-      pdfSubtitle,
-      columns,
-      sortedItems,
-      highlightColumnIndex,
-      items,
-    ]);
+        final bytes = await generator.generatePdfBytes();
+        if (context.mounted) {
+          await PdfViewerPage.openPdf(bytes, pdfFileName!, context);
+        }
+      },
+      [
+        context,
+        pdfFileName,
+        pdfSubtitle,
+        columns,
+        sortedItems,
+        highlightColumnIndex,
+        items,
+      ],
+    );
 
     final effectiveOnExportPdf =
         onExportPdf ?? (pdfFileName != null ? handleExportPdf : null);
@@ -376,17 +382,17 @@ class ScrollableTable<T> extends HookConsumerWidget {
 
     Widget table = LayoutBuilder(
       builder: (context, constraints) {
-        final double totalMinWidth = columns.asMap().entries.fold(
-          0.0,
-          (sum, entry) {
-            final col = entry.value;
-            final isFirstWithPdf = entry.key == 0 && effectiveOnExportPdf != null;
-            final minW = isFirstWithPdf
-                ? math.max(col.effectiveMinWidth, 85.0)
-                : col.effectiveMinWidth;
-            return sum + minW;
-          },
-        );
+        final double totalMinWidth = columns.asMap().entries.fold(0.0, (
+          sum,
+          entry,
+        ) {
+          final col = entry.value;
+          final isFirstWithPdf = entry.key == 0 && effectiveOnExportPdf != null;
+          final minW = isFirstWithPdf
+              ? math.max(col.effectiveMinWidth, 85.0)
+              : col.effectiveMinWidth;
+          return sum + minW;
+        });
         final double available = constraints.maxWidth;
         final double extraPerColumn = available > totalMinWidth
             ? (available - totalMinWidth) / columns.length
@@ -394,8 +400,8 @@ class ScrollableTable<T> extends HookConsumerWidget {
 
         final double firstColBaseWidth = columns.isNotEmpty
             ? (effectiveOnExportPdf != null
-                ? math.max(columns.first.effectiveMinWidth, 85.0)
-                : columns.first.effectiveMinWidth)
+                  ? math.max(columns.first.effectiveMinWidth, 85.0)
+                  : columns.first.effectiveMinWidth)
             : 0.0;
         final double firstColWidth = firstColBaseWidth + extraPerColumn;
 

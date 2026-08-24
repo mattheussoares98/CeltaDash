@@ -1,3 +1,4 @@
+import 'package:celta_dash/routing/routing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
@@ -9,14 +10,26 @@ import '../../components/components.dart';
 class PdfViewerPage {
   PdfViewerPage._();
 
-  static Future<void> openPdf(Uint8List pdfBytes, String pdfFileName) async {
+  static Future<void> openPdf(
+    Uint8List pdfBytes,
+    String pdfFileName, [
+    BuildContext? context,
+  ]) async {
+    final navContext =
+        context ??
+        rootNavigatorKey.currentContext ??
+        NavigatorKey.key.currentContext;
+    if (navContext == null) {
+      debugPrint(
+        '❌ [PdfViewerPage] Cannot open PDF: No valid BuildContext found.',
+      );
+      return;
+    }
     await Navigator.push(
-      NavigatorKey.key.currentContext!,
+      navContext,
       MaterialPageRoute(
-        builder: (context) => _PdfViewerPage(
-          pdfBytes: pdfBytes,
-          pdfFileName: pdfFileName,
-        ),
+        builder: (context) =>
+            _PdfViewerPage(pdfBytes: pdfBytes, pdfFileName: pdfFileName),
       ),
     );
   }
@@ -25,10 +38,7 @@ class PdfViewerPage {
 class _PdfViewerPage extends StatefulWidget {
   final Uint8List pdfBytes;
   final String pdfFileName;
-  const _PdfViewerPage({
-    required this.pdfBytes,
-    required this.pdfFileName,
-  });
+  const _PdfViewerPage({required this.pdfBytes, required this.pdfFileName});
 
   @override
   State<_PdfViewerPage> createState() => _PdfViewerPageState();
@@ -73,12 +83,8 @@ class _PdfViewerPageState extends State<_PdfViewerPage> {
       );
     } catch (e) {
       debugPrint("❌ An error occurred while sharing the PDF: $e");
-      if (context.mounted) {
-        snackBarMessage(
-          context,
-          'Could not share file: $e',
-          Colors.red,
-        );
+      if (mounted) {
+        snackBarMessage(context, 'Could not share file: $e', Colors.red);
       }
     }
   }
@@ -96,9 +102,7 @@ class _PdfViewerPageState extends State<_PdfViewerPage> {
           ),
         ],
       ),
-      body: SfPdfViewer.memory(
-        widget.pdfBytes,
-      ),
+      body: SfPdfViewer.memory(widget.pdfBytes),
     );
   }
 }
