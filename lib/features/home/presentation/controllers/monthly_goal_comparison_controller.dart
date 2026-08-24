@@ -90,13 +90,16 @@ class MonthlyGoalComparisonController
       )).requireValue;
     }
 
+    final resolvedCustomGoal = await customGoal;
+
     return MonthlyGoalComparisonState(
       selectedDate: selectedDate,
       comparisonDate: comparisonParams.endDate,
       currentMonthLiquidValue: currentMonthStatistics.sumLiquidValue(),
       comparisonLiquidValue: comparisonStatistics.sumLiquidValue(),
       selectedDayLiquidValue: await dailyComparisonSelectedLiquidValue,
-      customMonthlyGoal: (await customGoal)?.value,
+      customMonthlyGoal: resolvedCustomGoal?.value,
+      customMonthlyGoalAuthor: resolvedCustomGoal?.userName,
     );
   }
 }

@@ -8,6 +8,7 @@ class MonthlyGoalComparisonState extends Equatable {
     required this.comparisonLiquidValue,
     required this.selectedDayLiquidValue,
     this.customMonthlyGoal,
+    this.customMonthlyGoalAuthor,
   });
 
   final DateTime selectedDate;
@@ -16,6 +17,7 @@ class MonthlyGoalComparisonState extends Equatable {
   final num comparisonLiquidValue;
   final num selectedDayLiquidValue;
   final double? customMonthlyGoal;
+  final String? customMonthlyGoalAuthor;
 
   double get monthlyGoal => customMonthlyGoal ?? comparisonLiquidValue * 1.05;
 
@@ -31,7 +33,10 @@ class MonthlyGoalComparisonState extends Equatable {
 
   bool get hasGoal => monthlyGoal > 0;
 
-  MonthlyGoalComparisonState copyWith({double? customMonthlyGoal}) =>
+  MonthlyGoalComparisonState copyWith({
+    double? customMonthlyGoal,
+    String? customMonthlyGoalAuthor,
+  }) =>
       MonthlyGoalComparisonState(
         selectedDate: selectedDate,
         comparisonDate: comparisonDate,
@@ -39,6 +44,8 @@ class MonthlyGoalComparisonState extends Equatable {
         comparisonLiquidValue: comparisonLiquidValue,
         selectedDayLiquidValue: selectedDayLiquidValue,
         customMonthlyGoal: customMonthlyGoal ?? this.customMonthlyGoal,
+        customMonthlyGoalAuthor:
+            customMonthlyGoalAuthor ?? this.customMonthlyGoalAuthor,
       );
 
   @override
@@ -49,5 +56,6 @@ class MonthlyGoalComparisonState extends Equatable {
     comparisonLiquidValue,
     selectedDayLiquidValue,
     customMonthlyGoal,
+    customMonthlyGoalAuthor,
   ];
 }
