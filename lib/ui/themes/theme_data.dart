@@ -28,11 +28,11 @@ ColorScheme get darkColorScheme => ColorScheme.fromSeed(
 IconThemeData get darkIconThemeData =>
     const IconThemeData(color: AppColors.primary);
 
-/// App ar Theme
+/// AppBar Theme
 AppBarTheme get appBarTheme => const AppBarTheme(
   backgroundColor: AppColors.white,
   surfaceTintColor: Colors.transparent,
-  iconTheme: IconThemeData(color: AppColors.black),
+  iconTheme: IconThemeData(color: AppColors.primary),
   elevation: 0,
   systemOverlayStyle: SystemUiOverlayStyle(
     statusBarColor: AppColors.white,
@@ -44,7 +44,7 @@ AppBarTheme get appBarTheme => const AppBarTheme(
 AppBarTheme get darkAppBarTheme => const AppBarTheme(
   backgroundColor: Color(0xFF121214),
   surfaceTintColor: Colors.transparent,
-  iconTheme: IconThemeData(color: Color(0xFFE2E8F0)),
+  iconTheme: IconThemeData(color: AppColors.primary),
   elevation: 0,
   systemOverlayStyle: SystemUiOverlayStyle(
     statusBarColor: Color(0xFF121214),
