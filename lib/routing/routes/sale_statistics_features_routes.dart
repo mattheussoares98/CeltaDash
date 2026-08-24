@@ -66,12 +66,6 @@ RouteBase updateAppVersionRoute() => GoRoute(
   builder: (context, state) => makeUpdateAppVersionPage(),
 );
 
-RouteBase webEnterprisesRoute() => GoRoute(
-  path: '/home/web-enterprises',
-  name: Routes.webEnterprises.name,
-  builder: (context, state) => makeWebEnterprisesPage(),
-);
-
 RouteBase webEnterpriseDetailsRoute() => GoRoute(
   path: '/home/web-enterprise-details',
   name: Routes.webEnterpriseDetails.name,

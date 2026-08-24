@@ -1,7 +1,3 @@
-import '../../../../ui/pages/pages.dart';
-import '../../factories.dart';
+import 'package:celta_dash/features/web_enterprises/presentation/presentation.dart';
 
-WebEnterprisesPage makeWebEnterprisesPage() => WebEnterprisesPage(
-      webEnterprisesPresenter: makeGetxWebEnterprisesPresenter(),
-      analyticsPresenter: makeGetxAnalyticsPresenter(),
-    );
+WebEnterprisesPage makeWebEnterprisesPage() => const WebEnterprisesPage();

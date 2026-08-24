@@ -10,3 +10,4 @@ export 'sale_statistics_features_routes.dart';
 export 'sellers_route.dart';
 export 'splash_route.dart';
 export 'web_login_route.dart';
+export 'web_enterprises/web_enterprises.dart';
