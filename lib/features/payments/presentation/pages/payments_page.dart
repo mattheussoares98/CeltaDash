@@ -38,6 +38,13 @@ class _PaymentsContent extends HookConsumerWidget {
 
     return BaseScaffold(
       appBar: HomeAppBar(
+        leading: BaseIconButton(
+          onPressed: Navigator.of(context).pop,
+          platformIcon: const PlatformIcon(
+            cupertinoIcon: CupertinoIcons.left_chevron,
+            materialIcon: Icons.arrow_back,
+          ),
+        ),
         isLandscape: isLandscape,
         reloadButton: ReloadIconButton(refreshProviders: [provider]),
       ),
