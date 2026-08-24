@@ -59,6 +59,7 @@ class ProductsTable extends StatelessWidget {
 
     return ScrollableTable<ProductsStatisticsRowState>(
       items: rows,
+      pdfFileName: 'Produtos'.hardcoded,
       fixFirstColumn: true,
       isLoading: isLoading,
       refreshProvider: refreshProvider,
@@ -85,6 +86,10 @@ class ProductsTable extends StatelessWidget {
             ],
           ),
           sortValueMapper: (row) => row.productName,
+          textValueMapper: (row) =>
+              row.productCode != null && row.productCode!.isNotEmpty
+              ? '${row.productCode} - ${row.productName}'
+              : row.productName,
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Vendas'.hardcoded,
@@ -98,18 +103,27 @@ class ProductsTable extends StatelessWidget {
                 .toString()
                 .toBRL(),
           ),
+          footerTextValueMapper: (items) => items
+              .fold<double>(0, (total, row) => total + row.sales)
+              .toString()
+              .toBRL(),
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Qtd'.hardcoded,
           cellBuilder: (row) =>
               BaseText.bodyMedium(row.quantity.toString().toBRL(0, true)),
           sortValueMapper: (row) => row.quantity,
+          textValueMapper: (row) => row.quantity.toString().toBRL(0, true),
           footerCellBuilder: (items) => BaseText.bodyMedium(
             items
                 .fold<double>(0, (total, row) => total + row.quantity)
                 .toString()
                 .toBRL(0, true),
           ),
+          footerTextValueMapper: (items) => items
+              .fold<double>(0, (total, row) => total + row.quantity)
+              .toString()
+              .toBRL(0, true),
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Preço médio'.hardcoded,
@@ -130,6 +144,10 @@ class ProductsTable extends StatelessWidget {
                 .toString()
                 .toBRL(),
           ),
+          footerTextValueMapper: (items) => items
+              .fold<double>(0, (total, row) => total + row.cost)
+              .toString()
+              .toBRL(),
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Custo médio'.hardcoded,
@@ -150,6 +168,10 @@ class ProductsTable extends StatelessWidget {
                 .toString()
                 .toBRL(),
           ),
+          footerTextValueMapper: (items) => items
+              .fold<double>(0, (total, row) => total + row.profit)
+              .toString()
+              .toBRL(),
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Margem'.hardcoded,
