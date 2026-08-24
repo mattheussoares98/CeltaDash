@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'package:xml2json/xml2json.dart';
+
 import 'package:http/http.dart' as http;
+import 'package:xml2json/xml2json.dart';
 
 import '../../data/http/http.dart';
-import '../../domain/helpers/helpers.dart';
 import '../helpers/helpers.dart';
 
 class SoapAdapter implements SoapRequest {
@@ -32,7 +32,8 @@ class SoapAdapter implements SoapRequest {
         parameterTags += '<$tag>$value</$tag>\n';
       });
 
-      final envelope = '''<?xml version="1.0" encoding="utf-8"?>
+      final envelope =
+          '''<?xml version="1.0" encoding="utf-8"?>
       <soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
         <soap12:Body>
           <$soapAction xmlns="http://celtaware.com.br/">
@@ -50,7 +51,7 @@ class SoapAdapter implements SoapRequest {
           .timeout(const Duration(seconds: 30));
 
       if (response.statusCode != 200) {
-        throw DomainError.unexpected;
+        throw BsError(response.reasonPhrase ?? response.body);
       }
 
       final Xml2Json xml2json = Xml2Json();
