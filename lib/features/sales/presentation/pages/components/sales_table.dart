@@ -26,6 +26,7 @@ class SalesTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final rows = sales.map(SaleRowState.new).toList(growable: false);
     return ScrollableTable<SaleRowState>(
+      pdfFileName: 'Vendas'.hardcoded,
       items: rows,
       fixFirstColumn: true,
       isLoading: isLoading,
