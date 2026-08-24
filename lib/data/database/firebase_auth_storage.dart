@@ -1,10 +1,1 @@
-import 'dart:async';
-
-abstract class FirebaseAuthStorage {
-  Future<bool> isLoggedIn();
-  Future<void> login({
-    required String email,
-    required String password,
-  });
-  Future<void> logout();
-}
+export 'package:celta_dash/core/infrastructure/storage/i_firebase_auth_storage.dart';

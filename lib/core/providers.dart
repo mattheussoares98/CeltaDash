@@ -8,6 +8,7 @@ import 'package:celta_dash/infra/helpers/helpers.dart';
 import 'package:celta_dash/infra/http/http.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 export 'presentation/controllers/active_ec_params_state_controller.dart';
@@ -52,6 +53,11 @@ SoapRequest soapRequest(Ref ref) {
 @Riverpod(keepAlive: true)
 FirebaseStorage firebaseStorage(Ref ref) {
   return FirebaseAdapter();
+}
+
+@Riverpod(keepAlive: true)
+FirebaseAuthStorage firebaseAuthStorage(Ref ref) {
+  return FirebaseAuthAdapter(firebaseAuth: FirebaseAuth.instance);
 }
 
 @Riverpod(keepAlive: true)

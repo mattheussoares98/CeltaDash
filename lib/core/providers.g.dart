@@ -297,6 +297,54 @@ final class FirebaseStorageProvider
 
 String _$firebaseStorageHash() => r'fe4dc94c54a2d6d86214c255db3f611075a9f85d';
 
+@ProviderFor(firebaseAuthStorage)
+final firebaseAuthStorageProvider = FirebaseAuthStorageProvider._();
+
+final class FirebaseAuthStorageProvider
+    extends
+        $FunctionalProvider<
+          FirebaseAuthStorage,
+          FirebaseAuthStorage,
+          FirebaseAuthStorage
+        >
+    with $Provider<FirebaseAuthStorage> {
+  FirebaseAuthStorageProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'firebaseAuthStorageProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$firebaseAuthStorageHash();
+
+  @$internal
+  @override
+  $ProviderElement<FirebaseAuthStorage> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  FirebaseAuthStorage create(Ref ref) {
+    return firebaseAuthStorage(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(FirebaseAuthStorage value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<FirebaseAuthStorage>(value),
+    );
+  }
+}
+
+String _$firebaseAuthStorageHash() =>
+    r'12e6edad2fe95a3272c33e7e5b2478446afdfc9e';
+
 @ProviderFor(firebaseManager)
 final firebaseManagerProvider = FirebaseManagerProvider._();
 

@@ -1,8 +1,7 @@
-import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../../data/database/database.dart';
+import 'package:celta_dash/core/infrastructure/infrastructure.dart';
+
 import '../../domain/helpers/helpers.dart';
 
 class FirebaseAuthAdapter implements FirebaseAuthStorage {
@@ -11,10 +10,7 @@ class FirebaseAuthAdapter implements FirebaseAuthStorage {
   FirebaseAuthAdapter({required this.firebaseAuth});
 
   @override
-  Future<void> login({
-    required String email,
-    required String password,
-  }) async {
+  Future<void> login({required String email, required String password}) async {
     try {
       final userCredential = await firebaseAuth.signInWithEmailAndPassword(
         email: email,
@@ -39,16 +35,5 @@ class FirebaseAuthAdapter implements FirebaseAuthStorage {
   }
 
   @override
-  Future<bool> isLoggedIn() async {
-    bool logged = false;
-    final loginSubscription =
-        firebaseAuth.authStateChanges().listen((User? user) {
-      if (user != null) {
-        logged = true;
-      }
-    });
-    await Future.delayed(const Duration(seconds: 3));
-    loginSubscription.cancel();
-    return logged;
-  }
+  Future<bool> isLoggedIn() async => firebaseAuth.currentUser != null;
 }
