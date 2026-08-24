@@ -1,3 +1,4 @@
+import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/routing/not_found_page.dart';
 import 'package:celta_dash/routing/routes/routes.dart';
 import 'package:flutter/material.dart';
@@ -28,23 +29,27 @@ GoRouter goRouter(Ref ref) {
       splashRoute(),
       loginRoute(),
       webLoginRoute(),
-      ...homeRoutes(rootNavigatorKey, [
-        appAnalyticsRoute(),
-        saleDetailsRoute(),
-        salesRoute(),
-        compareDaysRoute(),
-        compareMonthsRoute(),
-        enterprisesManagerRoute(),
-        goalHistoricRoute(),
-        homePersonalizedRoute(),
-        notSalesRoute(),
-        operatorsRoute(),
-        sellersRoute(),
-        setGoalRoute(),
-        updateAppVersionRoute(),
-        webEnterprisesRoute(),
-        webEnterpriseDetailsRoute(),
-      ]),
+      ...homeRoutes(
+        rootNavigatorKey,
+        [
+          appAnalyticsRoute(),
+          saleDetailsRoute(),
+          salesRoute(),
+          compareDaysRoute(),
+          compareMonthsRoute(),
+          enterprisesManagerRoute(),
+          goalHistoricRoute(),
+          homePersonalizedRoute(),
+          notSalesRoute(),
+          operatorsRoute(),
+          sellersRoute(),
+          setGoalRoute(),
+          updateAppVersionRoute(),
+          webEnterprisesRoute(),
+          webEnterpriseDetailsRoute(),
+        ],
+        loadAppMode: () => ref.read(homeRepositoryProvider).loadAppMode(),
+      ),
     ],
     errorBuilder: (context, state) => const NotFoundPage(),
   );
