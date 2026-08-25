@@ -29,6 +29,7 @@ class CompareMonthsTable extends ConsumerWidget {
       fixFirstColumn: true,
       isLoading: isLoading,
       highlightColumnIndex: 1,
+      pdfFileName: 'Comparativo mensal'.hardcoded,
       columns: [
         ScrollableTableColumnSpec(
           headerTitle: 'Dia'.hardcoded,
@@ -47,6 +48,10 @@ class CompareMonthsTable extends ConsumerWidget {
                 .toString()
                 .toBRL(),
           ),
+          footerTextValueMapper: (rows) => rows
+              .fold<num>(0, (total, row) => total + row.firstMonthValue)
+              .toString()
+              .toBRL(),
         ),
         ScrollableTableColumnSpec(
           headerTitle: secondMonth.formatDate(.yMMM),
@@ -59,6 +64,10 @@ class CompareMonthsTable extends ConsumerWidget {
                 .toString()
                 .toBRL(),
           ),
+          footerTextValueMapper: (rows) => rows
+              .fold<num>(0, (total, row) => total + row.secondMonthValue)
+              .toString()
+              .toBRL(),
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Dif'.hardcoded,

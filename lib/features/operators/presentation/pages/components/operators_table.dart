@@ -47,6 +47,7 @@ class OperatorsTable extends StatelessWidget {
       initialSortColumnIndex: 1,
       initialSortAscending: false,
       highlightColumnIndex: 1,
+      pdfFileName: 'Operadores'.hardcoded,
       columns: [
         ScrollableTableColumnSpec(
           headerTitle: 'Operador'.hardcoded,
@@ -70,6 +71,10 @@ class OperatorsTable extends StatelessWidget {
                 .toString()
                 .toBRL(),
           ),
+          footerTextValueMapper: (items) => items
+              .fold<double>(0, (total, row) => total + row.sales)
+              .toString()
+              .toBRL(),
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Qtd vendas'.hardcoded,
@@ -82,6 +87,10 @@ class OperatorsTable extends StatelessWidget {
                 .toString()
                 .toBRL(0),
           ),
+          footerTextValueMapper: (items) => items
+              .fold<int>(0, (total, row) => total + row.quantity)
+              .toString()
+              .toBRL(0),
         ),
       ],
     );

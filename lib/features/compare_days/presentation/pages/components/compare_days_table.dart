@@ -42,6 +42,7 @@ class CompareDaysTable extends ConsumerWidget {
       fixFirstColumn: true,
       isLoading: isLoading,
       highlightColumnIndex: 3,
+      pdfFileName: 'Comparativo diário'.hardcoded,
       columns: [
         ScrollableTableColumnSpec(
           headerTitle: 'Hora'.hardcoded,
@@ -49,6 +50,8 @@ class CompareDaysTable extends ConsumerWidget {
             '${row.hour.toString().padLeft(2, '0')}:00 ~ ${row.hour.toString().padLeft(2, '0')}:59',
           ),
           sortValueMapper: (row) => row.hour,
+          textValueMapper: (row) =>
+              '${row.hour.toString().padLeft(2, '0')}:00 ~ ${row.hour.toString().padLeft(2, '0')}:59',
         ),
         ScrollableTableColumnSpec(
           headerTitle: firstDay.formatDate(),
@@ -61,6 +64,10 @@ class CompareDaysTable extends ConsumerWidget {
                 .toString()
                 .toBRL(),
           ),
+          footerTextValueMapper: (rows) => rows
+              .fold<num>(0, (total, row) => total + row.firstDayValue)
+              .toString()
+              .toBRL(),
         ),
         ScrollableTableColumnSpec(
           headerTitle: secondDay.formatDate(),
@@ -73,6 +80,10 @@ class CompareDaysTable extends ConsumerWidget {
                 .toString()
                 .toBRL(),
           ),
+          footerTextValueMapper: (rows) => rows
+              .fold<num>(0, (total, row) => total + row.secondDayValue)
+              .toString()
+              .toBRL(),
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Dif'.hardcoded,
@@ -82,6 +93,7 @@ class CompareDaysTable extends ConsumerWidget {
           sortValueMapper: (row) => row.percentageDifference,
           footerCellBuilder: (_) =>
               BaseText.bodyMedium(totalDifference.toString().toBRL()),
+          footerTextValueMapper: (_) => totalDifference.toString().toBRL(),
         ),
       ],
     );

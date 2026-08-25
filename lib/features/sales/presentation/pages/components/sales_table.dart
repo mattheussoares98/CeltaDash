@@ -100,6 +100,13 @@ class SalesTable extends StatelessWidget {
                 .toString()
                 .toBRL(),
           ),
+          footerTextValueMapper: (items) => items
+              .fold<double>(
+                0,
+                (total, row) => total + (row.sale.totalLiquid ?? 0),
+              )
+              .toString()
+              .toBRL(),
         ),
         if (showCancellationDetails) ...[
           ScrollableTableColumnSpec(
