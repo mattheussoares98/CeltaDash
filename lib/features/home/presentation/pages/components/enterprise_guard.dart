@@ -1,3 +1,4 @@
+// lib/features/home/presentation/pages/components/enterprise_guard.dart
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/features/home/presentation/controllers/controllers.dart';
 import 'package:celta_dash/utils/utils.dart';
@@ -19,6 +20,10 @@ class EnterpriseGuard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final homeAsync = ref.watch(homeControllerProvider);
+
+    if (homeAsync.hasError) {
+      return const SizedBox.shrink();
+    }
 
     return AsyncValueWidget(
       value: homeAsync,

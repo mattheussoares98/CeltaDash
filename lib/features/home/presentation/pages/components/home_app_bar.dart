@@ -84,34 +84,32 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
               )
         : null;
 
-    final controls = AsyncValueWidget(
-      value: homeAsync,
-      tryAgain: () {
-        ref.invalidate(enterprisesControllerProvider);
-        ref.invalidate(homeControllerProvider);
-      },
-      data: (homeState) {
-        if (MediaQuery.orientationOf(context) == Orientation.landscape) {
-          return Row(
-            mainAxisAlignment: .spaceEvenly,
-            children: [
-              ?drawerButton,
-              if (enterpriseSelector != null)
-                Expanded(flex: 2, child: enterpriseSelector),
-              if (leftDateWidget != null)
-                Padding(
-                  padding: const EdgeInsets.only(left: Sizes.p8),
-                  child: leftDateWidget!,
-                ),
-              ?dateSelector,
-              gapW8,
-              ?modeToggle,
-              ?selectEnterprise,
-              ?reloadButton,
-            ],
-          );
-        }
-        return Center(
+    final isLandscape =
+        MediaQuery.orientationOf(context) == Orientation.landscape;
+
+    final Widget controls;
+    if (homeAsync is AsyncData) {
+      if (isLandscape) {
+        controls = Row(
+          mainAxisAlignment: .spaceEvenly,
+          children: [
+            ?drawerButton,
+            if (enterpriseSelector != null)
+              Expanded(flex: 2, child: enterpriseSelector),
+            if (leftDateWidget != null)
+              Padding(
+                padding: const EdgeInsets.only(left: Sizes.p8),
+                child: leftDateWidget!,
+              ),
+            ?dateSelector,
+            gapW8,
+            ?modeToggle,
+            ?selectEnterprise,
+            ?reloadButton,
+          ],
+        );
+      } else {
+        controls = Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: .stretch,
@@ -139,14 +137,31 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
             ],
           ),
         );
-      },
-    );
+      }
+    } else {
+      final fallbackAsync = AsyncValueWidget(
+        value: homeAsync,
+        errorMaxLines: 1,
+        tryAgain: () {
+          ref.invalidate(enterprisesControllerProvider);
+          ref.invalidate(homeControllerProvider);
+        },
+        data: (_) => const SizedBox.shrink(),
+      );
+
+      controls = Row(
+        children: [
+          ?drawerButton,
+          Expanded(child: fallbackAsync),
+        ],
+      );
+    }
 
     return BaseAppBar(
       showLeading: false,
       titleWidget: controls,
       actionsPadding: EdgeInsets.symmetric(
-        vertical: isLandscape ? Sizes.p8 : Sizes.p24,
+        vertical: this.isLandscape ? Sizes.p8 : Sizes.p24,
       ),
     );
   }

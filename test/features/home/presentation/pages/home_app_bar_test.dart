@@ -124,7 +124,13 @@ void main() {
       () => repository.getEnterprises(ecParams),
     ).thenThrow(Exception('load failed'));
     await pumpAppBar(tester);
+
     expect(find.text('Tentar novamente'), findsOneWidget);
+    expect(find.byKey(const ValueKey('home_drawer_button')), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey('home_enterprises_manager')),
+      findsNothing,
+    );
 
     when(
       () => repository.getEnterprises(ecParams),
@@ -135,6 +141,10 @@ void main() {
     expect(
       find.byKey(const ValueKey('home_enterprise_selector')),
       findsWidgets,
+    );
+    expect(
+      find.byKey(const ValueKey('home_enterprises_manager')),
+      findsOneWidget,
     );
   });
 }
