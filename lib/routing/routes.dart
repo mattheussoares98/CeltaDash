@@ -6,6 +6,7 @@ enum Routes {
   salesHomeSales,
   salesHomeProducts,
   financialHomeResume,
+  financialHomePeriods,
   homePersonalized,
   homeMore,
   bsSaleDetails,
