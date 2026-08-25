@@ -3,6 +3,7 @@ import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/features/sale_statistics/domain/entities/entities.dart';
 import 'package:celta_dash/utils/utils.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -24,10 +25,25 @@ class PersonalizedTable extends HookConsumerWidget {
     final endDate = ref.watch(
       personalizedControllerProvider.select((s) => s.endDate),
     );
-    final pdfSubtitle = (startDate != null && endDate != null)
-        ? 'Período: ${startDate.formatDate()} até ${endDate.formatDate()}'
+    String? pdfSubtitle = (startDate != null && endDate != null)
+        ? '${startDate.formatDate()} até ${endDate.formatDate()}'
         : null;
-
+    final allEnterprises = ref.read(
+      enterprisesControllerProvider.select((s) => s.value ?? []),
+    );
+    final HomeEnterpriseEntity? selectedEnterprise;
+    if (allEnterprises.isNotEmpty) {
+      final selectedId = ref.read(
+        personalizedControllerProvider.select((s) => s.selectedEnterpriseId),
+      );
+      selectedEnterprise = allEnterprises.firstWhereOrNull(
+        (e) => e.id == selectedId,
+      );
+      if (selectedEnterprise != null) {
+        pdfSubtitle =
+            '$pdfSubtitle - ${selectedEnterprise.personalizedCode} ${selectedEnterprise.name}';
+      }
+    }
     return AsyncValueWidget<List<SaleStatisticsEntity>>(
       value: salesAsync,
       tryAgain: () =>
