@@ -82,12 +82,14 @@ class MonthlyAnalysisChart extends StatelessWidget {
                 bottomTitles: AxisTitles(
                   sideTitles: SideTitles(
                     showTitles: true,
-                    interval: 1,
+                    interval: max(1, (days.length / 8).ceil()).toDouble(),
                     reservedSize: Sizes.p32,
                     maxIncluded: false,
                     getTitlesWidget: (value, meta) {
-                      final index = value.toInt();
-                      if (index < 0 || index >= days.length || value != index) {
+                      final index = value.round();
+                      if (index < 0 ||
+                          index >= days.length ||
+                          (value - index).abs() > 0.01) {
                         return const SizedBox.shrink();
                       }
                       return SideTitleWidget(
