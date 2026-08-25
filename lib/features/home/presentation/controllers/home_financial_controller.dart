@@ -53,34 +53,31 @@ class HomeFinancialController extends _$HomeFinancialController {
   }) {
     switch (selectedPeriod) {
       case HomeFinancialPeriod.daily:
-        final startDate = DateTime(selectedDate.year, selectedDate.month, 1);
+        final startDate = DateTime(selectedDate.year, selectedDate.month);
         final endDate = DateTime(selectedDate.year, selectedDate.month + 1, 0);
         return SearchFinancialTitleDataParams(
           enterpriseCodes: [enterpriseId],
           startDate: startDate,
           endDate: endDate,
           periodGrouping: FinancialTitlePeriodGrouping.day,
-          mountCalculatedTotals: true,
         );
       case HomeFinancialPeriod.monthly:
-        final startDate = DateTime(selectedDate.year, 1, 1);
+        final startDate = DateTime(selectedDate.year);
         final endDate = DateTime(selectedDate.year, 12, 31);
         return SearchFinancialTitleDataParams(
           enterpriseCodes: [enterpriseId],
           startDate: startDate,
           endDate: endDate,
           periodGrouping: FinancialTitlePeriodGrouping.month,
-          mountCalculatedTotals: true,
         );
       case HomeFinancialPeriod.yearly:
-        final startDate = DateTime(selectedDate.year - 2, 1, 1);
+        final startDate = DateTime(selectedDate.year - 2);
         final endDate = DateTime(selectedDate.year, 12, 31);
         return SearchFinancialTitleDataParams(
           enterpriseCodes: [enterpriseId],
           startDate: startDate,
           endDate: endDate,
           periodGrouping: FinancialTitlePeriodGrouping.year,
-          mountCalculatedTotals: true,
         );
     }
   }

@@ -1,11 +1,13 @@
+// lib/features/home/presentation/pages/financial_home_page.dart
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/features/home/home.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class FinancialHomePage extends ConsumerWidget {
+class FinancialHomePage extends HookConsumerWidget {
   const FinancialHomePage({super.key, required this.navigationShell});
 
   final StatefulNavigationShell navigationShell;
@@ -33,6 +35,15 @@ class FinancialHomePage extends ConsumerWidget {
           ),
         );
 
+    final providers = enterpriseId == null
+        ? null
+        : <ProviderBase<AsyncValue<dynamic>>>[
+            homeFinancialControllerProvider(
+              enterpriseId,
+              HomeFinancialPeriod.daily,
+            ),
+          ];
+
     return BaseScaffold(
       isScrollable: false,
       usePadding: false,
@@ -41,6 +52,12 @@ class FinancialHomePage extends ConsumerWidget {
         isLandscape: isLandscape,
         showToggleAppMode: true,
         showEnterpriseManagement: true,
+        reloadButton: ReloadIconButton(
+          onRefresh: providers == null || selectedEnterpriseIsDisabled
+              ? null
+              : () => ref.invalidate(resumeCurrentDateProvider),
+          refreshProviders: selectedEnterpriseIsDisabled ? null : providers,
+        ),
       ),
       body: Stack(
         fit: StackFit.expand,
@@ -49,6 +66,16 @@ class FinancialHomePage extends ConsumerWidget {
           if (selectedEnterpriseIsDisabled) const DisabledEnterpriseOverlay(),
         ],
       ),
+      bottomNavigationBar: navigationShell.route.branches.length >= 2
+          ? FinancialBottomNavigation(
+              currentIndex: navigationShell.currentIndex,
+              onTap: (index) => navigationShell.goBranch(
+                index,
+                initialLocation: index == navigationShell.currentIndex,
+              ),
+            )
+          : null,
     );
   }
 }
+

@@ -1,5 +1,7 @@
 import 'package:celta_dash/core/domain/domain.dart';
+import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/routing/routing.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -56,8 +58,9 @@ void main() {
     await pumpRouter(tester, appMode: AppMode.financialTitles);
 
     expect(currentPath(), '/home/financial/resume');
-    expect(find.text('Resumo financeiro'), findsOneWidget);
+    expect(find.byType(FinancialPeriodsPage), findsOneWidget);
   });
+
 
   testWidgets('each named destination supports a direct deep link', (
     tester,
