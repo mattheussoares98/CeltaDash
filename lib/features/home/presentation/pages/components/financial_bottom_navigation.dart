@@ -21,6 +21,14 @@ class FinancialBottomNavigation extends StatelessWidget {
       onTap: onTap,
       items: [
         BaseBottomNavigationBarItem(
+          label: 'Resumo'.hardcoded,
+          platformIcon: const PlatformIcon(
+            key: ValueKey('financial_navigation_resume'),
+            materialIcon: Icons.pie_chart,
+            cupertinoIcon: CupertinoIcons.chart_pie,
+          ),
+        ),
+        BaseBottomNavigationBarItem(
           label: 'Movimentação'.hardcoded,
           platformIcon: const PlatformIcon(
             key: ValueKey('financial_navigation_periods'),

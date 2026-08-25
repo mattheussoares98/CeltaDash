@@ -42,6 +42,11 @@ class FinancialHomePage extends HookConsumerWidget {
               enterpriseId,
               HomeFinancialPeriod.daily,
             ),
+            homeFinancialControllerProvider(
+              enterpriseId,
+              HomeFinancialPeriod.monthly,
+            ),
+            financialGroupOfStoresControllerProvider(enterpriseId),
           ];
 
     return BaseScaffold(
