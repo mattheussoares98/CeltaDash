@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
+import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/features/pdf_viewer/pdf_viewer.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -39,6 +40,7 @@ class ScrollableTable<T> extends HookConsumerWidget {
   final int? highlightColumnIndex;
   final String? pdfFileName;
   final String? pdfSubtitle;
+  final String? enterpriseName;
   final VoidCallback? onExportPdf;
 
   const ScrollableTable({
@@ -60,6 +62,7 @@ class ScrollableTable<T> extends HookConsumerWidget {
     this.highlightColumnIndex,
     this.pdfFileName,
     this.pdfSubtitle,
+    this.enterpriseName,
     this.onExportPdf,
   });
 
@@ -337,9 +340,26 @@ class ScrollableTable<T> extends HookConsumerWidget {
           return;
         }
 
+        String? resolvedEnterprise = enterpriseName;
+        if (resolvedEnterprise == null) {
+          final selectedId = ref
+              .read(homeControllerProvider)
+              .value
+              ?.selectedEnterpriseId;
+          final enterprises = ref.read(enterprisesControllerProvider).value;
+          final enterprise = enterprises
+              ?.where((e) => e.id == selectedId)
+              .firstOrNull;
+          if (enterprise != null) {
+            resolvedEnterprise =
+                '${enterprise.personalizedCode} - ${enterprise.name}';
+          }
+        }
+
         final generator = TablePdfGenerator<T>(
           pdfFileName: pdfFileName!,
           pdfSubtitle: pdfSubtitle,
+          enterpriseName: resolvedEnterprise,
           columns: columns,
           sortedItems: sortedItems,
           highlightColumnIndex: highlightColumnIndex,
@@ -354,10 +374,12 @@ class ScrollableTable<T> extends HookConsumerWidget {
         context,
         pdfFileName,
         pdfSubtitle,
+        enterpriseName,
         columns,
         sortedItems,
         highlightColumnIndex,
         items,
+        ref,
       ],
     );
 

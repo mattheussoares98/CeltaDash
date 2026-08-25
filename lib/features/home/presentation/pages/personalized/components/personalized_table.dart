@@ -25,25 +25,21 @@ class PersonalizedTable extends HookConsumerWidget {
     final endDate = ref.watch(
       personalizedControllerProvider.select((s) => s.endDate),
     );
-    String? pdfSubtitle = (startDate != null && endDate != null)
+    final pdfSubtitle = (startDate != null && endDate != null)
         ? '${startDate.formatDate()} até ${endDate.formatDate()}'
         : null;
-    final allEnterprises = ref.read(
+    final allEnterprises = ref.watch(
       enterprisesControllerProvider.select((s) => s.value ?? []),
     );
-    final HomeEnterpriseEntity? selectedEnterprise;
-    if (allEnterprises.isNotEmpty) {
-      final selectedId = ref.read(
-        personalizedControllerProvider.select((s) => s.selectedEnterpriseId),
-      );
-      selectedEnterprise = allEnterprises.firstWhereOrNull(
-        (e) => e.id == selectedId,
-      );
-      if (selectedEnterprise != null) {
-        pdfSubtitle =
-            '$pdfSubtitle - ${selectedEnterprise.personalizedCode} ${selectedEnterprise.name}';
-      }
-    }
+    final selectedEnterpriseId = ref.watch(
+      personalizedControllerProvider.select((s) => s.selectedEnterpriseId),
+    );
+    final selectedEnterprise = allEnterprises.firstWhereOrNull(
+      (e) => e.id == selectedEnterpriseId,
+    );
+    final enterpriseName = selectedEnterprise != null
+        ? '${selectedEnterprise.personalizedCode} - ${selectedEnterprise.name}'
+        : null;
     return AsyncValueWidget<List<SaleStatisticsEntity>>(
       value: salesAsync,
       tryAgain: () =>
@@ -400,6 +396,7 @@ class PersonalizedTable extends HookConsumerWidget {
               isLoading: isGenerating,
               pdfFileName: 'Personalizado'.hardcoded,
               pdfSubtitle: pdfSubtitle,
+              enterpriseName: enterpriseName,
               highlightColumnIndex: activeColumns.isNotEmpty
                   ? activeColumns.length - 1
                   : null,

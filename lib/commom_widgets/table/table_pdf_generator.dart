@@ -8,6 +8,7 @@ import 'package:pdf/widgets.dart' as pw;
 class TablePdfGenerator<T> {
   final String pdfFileName;
   final String? pdfSubtitle;
+  final String? enterpriseName;
   final List<ScrollableTableColumnSpec<T>> columns;
   final List<T> sortedItems;
   final int? highlightColumnIndex;
@@ -15,6 +16,7 @@ class TablePdfGenerator<T> {
   const TablePdfGenerator({
     required this.pdfFileName,
     this.pdfSubtitle,
+    this.enterpriseName,
     required this.columns,
     required this.sortedItems,
     this.highlightColumnIndex,
@@ -83,12 +85,27 @@ class TablePdfGenerator<T> {
       child: pw.Column(
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
-          pw.Text(
-            pdfFileName,
-            style: const pw.TextStyle(
-              fontWeight: pw.FontWeight.bold,
-              fontSize: 16,
-            ),
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: pw.CrossAxisAlignment.end,
+            children: [
+              pw.Text(
+                pdfFileName,
+                style: const pw.TextStyle(
+                  fontWeight: pw.FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+              if (enterpriseName != null && enterpriseName!.isNotEmpty)
+                pw.Text(
+                  enterpriseName!,
+                  style: const pw.TextStyle(
+                    fontWeight: pw.FontWeight.bold,
+                    fontSize: 11,
+                    color: PdfColors.grey800,
+                  ),
+                ),
+            ],
           ),
           pw.SizedBox(height: 2),
           pw.Row(
