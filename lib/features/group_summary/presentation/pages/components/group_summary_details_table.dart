@@ -67,6 +67,7 @@ class GroupSummaryDetailsTable extends StatelessWidget {
       initialSortColumnIndex: 1,
       initialSortAscending: false,
       highlightColumnIndex: 1,
+      pdfFileName: 'Resumo do grupo'.hardcoded,
       columns: [
         ScrollableTableColumnSpec(
           headerTitle: 'Empresa'.hardcoded,
@@ -85,6 +86,10 @@ class GroupSummaryDetailsTable extends StatelessWidget {
                 .toString()
                 .toBRL(),
           ),
+          footerTextValueMapper: (items) => items
+              .fold<double>(0, (total, row) => total + row.sales)
+              .toString()
+              .toBRL(),
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Share'.hardcoded,
