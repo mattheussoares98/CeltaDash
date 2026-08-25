@@ -34,7 +34,12 @@ class PersonalizedTable extends HookConsumerWidget {
           ref.read(personalizedControllerProvider.notifier).generateReport(),
       data: (sales) {
         if (sales.isEmpty) {
-          return const SizedBox.shrink();
+          return Center(
+            child: BaseText.error(
+              'Não foram encontrados dados com os filtros selecionados'
+                  .hardcoded,
+            ),
+          );
         }
 
         final columnDefinitions =
@@ -76,7 +81,10 @@ class PersonalizedTable extends HookConsumerWidget {
                   sortValueMapper: (s) => s.Month ?? 0,
                   textValueMapper: (s) {
                     final date = DateTime(0, s.Month ?? 1);
-                    return date.formatDate(.MMM).toUpperCase().replaceAll('.', '');
+                    return date
+                        .formatDate(.MMM)
+                        .toUpperCase()
+                        .replaceAll('.', '');
                   },
                 ),
               ),
@@ -103,7 +111,9 @@ class PersonalizedTable extends HookConsumerWidget {
                   sortValueMapper: (s) => s.Hour ?? 0,
                   textValueMapper: (s) {
                     final formatter = DateFormat('yyyy/MM/dd', 'pt_BR');
-                    final dateStr = s.Date != null ? formatter.format(s.Date!) : '';
+                    final dateStr = s.Date != null
+                        ? formatter.format(s.Date!)
+                        : '';
                     return '${s.Hour}h $dateStr'.trim();
                   },
                 ),
@@ -258,8 +268,7 @@ class PersonalizedTable extends HookConsumerWidget {
                   footerTextValueMapper: (items) => items
                       .fold<double>(
                         0,
-                        (total, s) =>
-                            total + (s.LiquidValue?.toDouble() ?? 0),
+                        (total, s) => total + (s.LiquidValue?.toDouble() ?? 0),
                       )
                       .toString()
                       .toBRL(),
