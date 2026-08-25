@@ -15,7 +15,7 @@ class FinancialTitlesController extends _$FinancialTitlesController {
   @override
   AsyncValue<FinancialTitleDataResponseEntity> build({
     FinancialTitlePeriodGrouping? periodGrouping,
-    FinancialTitlePeriodType periodType = FinancialTitlePeriodType.emission,
+    FinancialTitlePeriodType periodType = FinancialTitlePeriodType.expiration,
   }) {
     ref.cache();
     ref.watch(activeEcParamsStateControllerProvider);
