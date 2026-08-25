@@ -6,7 +6,7 @@ import 'package:celta_dash/domain/entities/entities.dart'
         FirebaseSubEnterpriseEntity,
         SaleStatisticsEntity;
 import 'package:celta_dash/features/enterprises_manager/domain/domain.dart';
-import 'package:celta_dash/features/sale_statistics/domain/entities/entities.dart';
+import 'package:celta_dash/features/sales_features/sale_statistics/domain/entities/entities.dart';
 import 'package:celta_dash/main/builders/builders.dart';
 import 'package:faker/faker.dart';
 
@@ -93,9 +93,9 @@ class EntityFactory {
     Date: nullDate
         ? null
         : (date ??
-            (month != null
-                ? DateTime(year ?? 2026, month)
-                : faker.date.dateTime())),
+              (month != null
+                  ? DateTime(year ?? 2026, month)
+                  : faker.date.dateTime())),
     Hour: faker.randomGenerator.integer(23),
     Product: faker.food.dish(),
     ProductDepartment: faker.food.cuisine(),

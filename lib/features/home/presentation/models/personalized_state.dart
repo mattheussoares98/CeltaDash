@@ -1,6 +1,6 @@
 // lib/features/home/presentation/models/personalized_state.dart
 import 'package:celta_dash/domain/helpers/helpers.dart';
-import 'package:celta_dash/features/sale_statistics/domain/entities/entities.dart';
+import 'package:celta_dash/features/sales_features/sale_statistics/domain/entities/entities.dart';
 import 'package:equatable/equatable.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

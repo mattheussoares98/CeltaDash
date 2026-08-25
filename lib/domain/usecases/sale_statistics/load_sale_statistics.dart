@@ -1,12 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:celta_dash/features/sale_statistics/domain/entities/entities.dart';
+import 'package:celta_dash/features/sales_features/sale_statistics/domain/entities/entities.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:get/get.dart';
 
 import '../../../ui/pages/pages.dart';
 import '../../helpers/helpers.dart';
 
-export 'package:celta_dash/features/sale_statistics/domain/entities/get_sale_statistics_params.dart';
+export 'package:celta_dash/features/sales_features/sale_statistics/domain/entities/get_sale_statistics_params.dart';
 
 abstract class LoadSaleStatistics {
   Future<List<SaleStatisticsEntity>> get(GetSaleStatisticsParams params);

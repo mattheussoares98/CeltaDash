@@ -1,4 +1,4 @@
-import 'package:celta_dash/features/operators/operators.dart';
+import 'package:celta_dash/features/sales_features/operators/operators.dart';
 import 'package:celta_dash/routing/routing.dart';
 import 'package:go_router/go_router.dart';
 
