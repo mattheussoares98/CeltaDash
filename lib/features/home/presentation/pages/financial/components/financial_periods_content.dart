@@ -28,14 +28,25 @@ class FinancialPeriodsContent extends HookConsumerWidget {
 
     return Column(
       children: [
-        NewBaseSegmentedButtons(
-          items: HomeFinancialPeriod.values,
-          selectedValue: selectedPeriod.value,
-          onChanged: (value) {
-            selectedPeriod.value = value;
-            visitedPeriods.value.add(value);
-          },
-          itemLabelBuilder: (value) => value.label,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
+          child: Row(
+            children: [
+              Expanded(
+                child: NewBaseSegmentedButtons(
+                  items: HomeFinancialPeriod.values,
+                  selectedValue: selectedPeriod.value,
+                  onChanged: (value) {
+                    selectedPeriod.value = value;
+                    visitedPeriods.value.add(value);
+                  },
+                  itemLabelBuilder: (value) => value.label,
+                ),
+              ),
+              gapW8,
+              const FinancialPeriodTypeSelector(),
+            ],
+          ),
         ),
         gapH8,
         Expanded(
