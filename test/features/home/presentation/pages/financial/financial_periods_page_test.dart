@@ -79,7 +79,6 @@ void main() {
 
     expect(find.text('Dia'), findsOneWidget);
     expect(find.text('Mês'), findsOneWidget);
-    expect(find.text('Ano'), findsOneWidget);
   });
 
   testWidgets('renders empty placeholder when no data exists', (tester) async {

@@ -166,14 +166,17 @@ void main() {
       () => repository.getData(params: params, ecParams: ecParams),
     ).thenThrow(exception);
 
-    expect(
-      () => container.read(
+    await expectLater(
+      container.read(
         homeFinancialControllerProvider(
           enterpriseId,
           HomeFinancialPeriod.daily,
         ).future,
       ),
-      throwsA(exception),
+      throwsA(same(exception)),
     );
+    verify(
+      () => repository.getData(params: params, ecParams: ecParams),
+    ).called(1);
   });
 }

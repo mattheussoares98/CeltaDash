@@ -87,7 +87,8 @@ void main() {
         child: const MaterialApp(home: Scaffold(body: SellersPage())),
       ),
     );
-    await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
 
     final dailyParams = makeParams(SellersPeriod.daily);
     final monthlyParams = makeParams(SellersPeriod.monthly);
@@ -110,7 +111,8 @@ void main() {
     );
 
     await tester.tap(find.text('Mês'));
-    await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
 
     verify(
       () => repository.getSaleStatistics(
@@ -126,7 +128,8 @@ void main() {
     );
 
     await tester.tap(find.text('Ano'));
-    await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
 
     verify(
       () => repository.getSaleStatistics(

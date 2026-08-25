@@ -1,7 +1,6 @@
 // test/features/sale_statistics/data/datasource/sale_statistics_datasource_test.dart
 import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/core/infrastructure/http/http.dart';
-import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/data/datasource/datasource.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/data/models/models.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/domain/entities/entities.dart';
@@ -83,7 +82,7 @@ void main() {
     );
 
     test(
-      'should throw DomainError.unexpected when httpClient throws HttpError',
+      'should propagate HttpError when httpClient throws HttpError',
       () async {
         when(
           () => mockHttpClient.request(
@@ -99,7 +98,7 @@ void main() {
           ecParams: tEcParams,
         );
 
-        expect(() => call, throwsA(DomainError.unexpected));
+        expect(() => call, throwsA(HttpError.serverError));
       },
     );
   });

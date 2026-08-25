@@ -2,8 +2,13 @@ import 'package:celta_dash/features/home/presentation/presentation.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
+  setUpAll(() async {
+    await initializeDateFormatting('pt_BR');
+  });
+
   testWidgets('shows summaries, highlights, and the monthly chart', (
     tester,
   ) async {
@@ -21,11 +26,10 @@ void main() {
       ),
     );
 
-    expect(find.text('ANÁLISE MENSAL'), findsOneWidget);
-    expect(find.text('Total de vendas'), findsOneWidget);
-    expect(find.text('Venda média diária'), findsOneWidget);
-    expect(find.text('Melhor dia do mês'), findsOneWidget);
-    expect(find.text('Pior dia do mês'), findsOneWidget);
+    expect(find.text('Faturamento mensal'), findsOneWidget);
+    expect(find.text('Ticket médio'), findsOneWidget);
+    expect(find.textContaining('Melhor dia'), findsOneWidget);
+    expect(find.textContaining('Pior dia'), findsOneWidget);
     expect(find.byType(LineChart), findsOneWidget);
   });
 }

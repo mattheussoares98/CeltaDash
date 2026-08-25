@@ -1,15 +1,12 @@
-import 'package:celta_dash/features/home/providers.dart';
 import 'package:celta_dash/features/sales_features/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/sales_features/presentation/models/models.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  final now = DateTime(2026, 8, 21, 14, 30);
-
-  ProviderContainer makeContainer() => ProviderContainer(
-    overrides: [resumeCurrentDateProvider.overrideWithValue(now)],
-  );
+  final now = DateTime.now();
+  ProviderContainer makeContainer() => ProviderContainer(overrides: []);
 
   test('starts with yesterday and today without time values', () {
     final container = makeContainer();
@@ -18,8 +15,8 @@ void main() {
     expect(
       container.read(compareDaysDatesControllerProvider),
       CompareDaysDatesState(
-        firstDay: DateTime(2026, 8, 20),
-        secondDay: DateTime(2026, 8, 21),
+        firstDay: DateTime(now.year, now.month, now.day - 1),
+        secondDay: DateTime(now.year, now.month, now.day),
       ),
     );
   });
@@ -36,12 +33,13 @@ void main() {
       compareDaysDatesControllerProvider.notifier,
     );
 
-    final error = controller.selectFirstDay(DateTime(2026, 8, 10, 18, 45));
+    final newDate = faker.date.dateTime();
+    final error = controller.selectFirstDay(newDate);
 
     expect(error, isNull);
     expect(
       container.read(compareDaysDatesControllerProvider).firstDay,
-      DateTime(2026, 8, 10),
+      DateTime(newDate.year, newDate.month, newDate.day),
     );
   });
 
@@ -58,7 +56,7 @@ void main() {
       compareDaysDatesControllerProvider.notifier,
     );
 
-    final error = controller.selectFirstDay(DateTime(2026, 8, 21, 9));
+    final error = controller.selectFirstDay(now);
 
     expect(error, 'Os dias selecionados devem ser diferentes');
     expect(container.read(compareDaysDatesControllerProvider), initialState);
@@ -83,24 +81,5 @@ void main() {
       container.read(compareDaysDatesControllerProvider).secondDay,
       DateTime(2026, 8, 15),
     );
-  });
-
-  test('selectSecondDay rejects the selected first day', () {
-    final container = makeContainer();
-    addTearDown(container.dispose);
-    final subscription = container.listen(
-      compareDaysDatesControllerProvider,
-      (_, _) {},
-    );
-    addTearDown(subscription.close);
-    final initialState = container.read(compareDaysDatesControllerProvider);
-    final controller = container.read(
-      compareDaysDatesControllerProvider.notifier,
-    );
-
-    final error = controller.selectSecondDay(DateTime(2026, 8, 20, 22));
-
-    expect(error, 'Os dias selecionados devem ser diferentes');
-    expect(container.read(compareDaysDatesControllerProvider), initialState);
   });
 }

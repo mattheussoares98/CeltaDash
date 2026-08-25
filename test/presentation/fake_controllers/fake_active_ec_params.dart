@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/core/presentation/presentation.dart';
 
@@ -7,5 +9,5 @@ class FakeActiveEcParams extends ActiveEcParamsStateController {
   final EcParams? value;
 
   @override
-  Future<EcParams?> build() async => value;
+  FutureOr<EcParams?> build() => value;
 }
