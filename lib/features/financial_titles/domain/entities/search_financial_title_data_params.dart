@@ -27,6 +27,7 @@ class SearchFinancialTitleDataParams extends Equatable
   final List<int>? financialClassificationCodes;
   final bool excludeFinancialClassifications;
   final FinancialTitlePeriodGrouping? periodGrouping;
+  final bool groupByEnterprise;
   final bool mountPortionPayments;
   final bool mountPortionsAdministrativeTax;
   final bool mountLiquidationPortions;
@@ -66,6 +67,7 @@ class SearchFinancialTitleDataParams extends Equatable
     this.financialClassificationCodes,
     this.excludeFinancialClassifications = false,
     this.periodGrouping,
+    this.groupByEnterprise = false,
     this.mountPortionPayments = false,
     this.mountPortionsAdministrativeTax = false,
     this.mountLiquidationPortions = false,
@@ -100,6 +102,7 @@ class SearchFinancialTitleDataParams extends Equatable
     financialClassificationCodes,
     excludeFinancialClassifications,
     periodGrouping,
+    groupByEnterprise,
     mountPortionPayments,
     mountPortionsAdministrativeTax,
     mountLiquidationPortions,
@@ -133,6 +136,7 @@ class SearchFinancialTitleDataParams extends Equatable
     List<int>? financialClassificationCodes,
     bool? excludeFinancialClassifications,
     FinancialTitlePeriodGrouping? periodGrouping,
+    bool? groupByEnterprise,
     bool? mountPortionPayments,
     bool? mountPortionsAdministrativeTax,
     bool? mountLiquidationPortions,
@@ -168,6 +172,7 @@ class SearchFinancialTitleDataParams extends Equatable
           excludeFinancialClassifications ??
           this.excludeFinancialClassifications,
       periodGrouping: periodGrouping ?? this.periodGrouping,
+      groupByEnterprise: groupByEnterprise ?? this.groupByEnterprise,
       mountPortionPayments: mountPortionPayments ?? this.mountPortionPayments,
       mountPortionsAdministrativeTax:
           mountPortionsAdministrativeTax ?? this.mountPortionsAdministrativeTax,
@@ -226,6 +231,7 @@ class SearchFinancialTitleDataParams extends Equatable
       "financialClassificationCodes": financialClassificationCodes,
     "excludeFinancialClassifications": excludeFinancialClassifications,
     if (periodGrouping != null) "periodGrouping": periodGrouping!.value,
+    if (groupByEnterprise) "groupByEnterprise": true,
     "mountPortionPayments": mountPortionPayments,
     "mountPortionsAdministrativeTax": mountPortionsAdministrativeTax,
     "mountLiquidationPortions": mountLiquidationPortions,
