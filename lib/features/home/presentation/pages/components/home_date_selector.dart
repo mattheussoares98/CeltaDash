@@ -14,7 +14,7 @@ class HomeDateSelector extends ConsumerWidget {
     final homeState = ref.watch(homeControllerProvider).value;
     final enterprisesAsync = ref.watch(enterprisesControllerProvider);
     final enterprises = enterprisesAsync.value;
-    if (homeState == null || enterprises == null) return const LoadingWidget();
+    if (homeState == null || enterprises == null) return const LoadingCircle();
 
     final selectedEnterpriseIsDisabled =
         homeState.selectedEnterpriseId != null &&

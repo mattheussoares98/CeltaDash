@@ -12,7 +12,7 @@ class HomeEnterpriseSelector extends ConsumerWidget {
     final homeState = ref.watch(homeControllerProvider).value;
     final enterprisesAsync = ref.watch(enterprisesControllerProvider);
     final enterprises = enterprisesAsync.value;
-    if (homeState == null || enterprises == null) return const LoadingWidget();
+    if (homeState == null || enterprises == null) return const LoadingCircle();
 
     final currentIndex = enterprises.indexWhere(
       (enterprise) => enterprise.id == homeState.selectedEnterpriseId,

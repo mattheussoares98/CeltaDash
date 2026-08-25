@@ -107,7 +107,7 @@ Only create the data/domain folders and contracts that are required by the missi
 4. Show the five destinations in the current order: resume, sales, products, personalized, more.
 5. Preserve the legacy disabled-enterprise rule: when the selected enterprise is disabled, report destinations cannot be entered and the user receives themed feedback. Resume remains available to display the disabled-enterprise explanation.
 6. Hide the sales bottom bar in financial-titles mode if that behavior is retained.
-7. Replace the legacy full-screen `loadedEnterprises` overlay with `AsyncValueWidget`/`LoadingWidget` and explicit empty/error states.
+7. Replace the legacy full-screen `loadedEnterprises` overlay with `AsyncValueWidget`/`LoadingCircle` and explicit empty/error states.
 8. Keep system-UI/orientation changes isolated in a hook/effect and restore them on disposal; do not reproduce `RouteAware`/GetX subscriptions.
 
 ### Phase 3 validation

@@ -36,7 +36,7 @@ class PrimaryButton extends ConsumerWidget {
         ? context.theme.disabledColor.withAlpha(30)
         : backgroundColor ?? context.theme.primaryColor;
 
-    const loadingWidget = Center(child: FittedBox(child: LoadingWidget()));
+    const loadingCircle = Center(child: FittedBox(child: LoadingCircle()));
 
     if (isIOS) {
       return LayoutBuilder(
@@ -71,7 +71,7 @@ class PrimaryButton extends ConsumerWidget {
                       ),
                   ],
                 ),
-                if (isLoading) loadingWidget,
+                if (isLoading) loadingCircle,
               ],
             ),
           );
@@ -103,7 +103,7 @@ class PrimaryButton extends ConsumerWidget {
             label: Stack(
               children: [
                 FittedBox(child: textWidget),
-                if (isLoading) loadingWidget,
+                if (isLoading) loadingCircle,
               ],
             ),
           ),

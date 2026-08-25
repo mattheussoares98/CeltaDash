@@ -1,5 +1,4 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
-import 'package:celta_dash/ui/themes/theme.dart' as theme;
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -50,7 +49,9 @@ class BaseChoiceChip<T> extends StatelessWidget {
             },
             selectedColor: color,
             labelStyle: TextStyle(
-              color: isSelected ? Colors.white : theme.colorScheme.onSurface,
+              color: isSelected
+                  ? Colors.white
+                  : context.theme.colorScheme.onSurface,
             ),
           );
         }).toList(),

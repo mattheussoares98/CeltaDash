@@ -1,5 +1,5 @@
 import 'package:celta_dash/core/validators/validators.dart';
-import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:celta_dash/utils/utils.dart';
 
 class DddValidator implements StringValidator {
   @override

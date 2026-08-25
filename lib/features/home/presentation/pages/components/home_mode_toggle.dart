@@ -15,11 +15,11 @@ class HomeModeToggle extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final homeState = ref.watch(homeControllerProvider).value;
-    if (homeState == null) return const LoadingWidget();
+    if (homeState == null) return const LoadingCircle();
 
     final enterprisesAsync = ref.watch(enterprisesControllerProvider);
     final enterprises = enterprisesAsync.value;
-    if (enterprises == null) return const LoadingWidget();
+    if (enterprises == null) return const LoadingCircle();
 
     final selectedEnterpriseIsDisabled =
         homeState.selectedEnterpriseId != null &&

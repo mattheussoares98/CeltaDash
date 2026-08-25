@@ -1,7 +1,6 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/exceptions/exceptions.dart';
-import 'package:celta_dash/ui/helpers/helpers.dart';
-import 'package:celta_dash/utils/constants/constants.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -116,9 +115,9 @@ class _Loading extends StatelessWidget {
       return const LinearProgressIndicator();
     }
     if (isSliver == true) {
-      return const SliverToBoxAdapter(child: Center(child: LoadingWidget()));
+      return const SliverToBoxAdapter(child: Center(child: LoadingCircle()));
     }
-    return const Center(child: LoadingWidget());
+    return const Center(child: LoadingCircle());
   }
 }
 

@@ -41,7 +41,7 @@ class ResumeContent extends HookConsumerWidget {
 
     Widget content;
     if (isInitialLoading) {
-      content = const LoadingWidget();
+      content = const LoadingCircle();
     } else if (errors.isNotEmpty) {
       content = ListView(
         children: [

@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 /// PERFORMANCE: This manager uses the Overlay API to create an accessory bar

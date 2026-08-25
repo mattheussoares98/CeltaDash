@@ -1,7 +1,6 @@
 import 'package:celta_dash/exceptions/exceptions.dart';
 import 'package:celta_dash/infra/helpers/helpers.dart';
-import 'package:celta_dash/ui/helpers/helpers.dart';
-import 'package:celta_dash/utils/extensions/string_modifier.dart';
+import 'package:celta_dash/utils/utils.dart';
 
 String parseErrorMessage(Object? error) {
   late final String message;

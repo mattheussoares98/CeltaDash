@@ -1,5 +1,4 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
-import 'package:celta_dash/ui/helpers/helpers.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -98,7 +97,8 @@ class AnimatedCircleProgress extends HookWidget {
                           ),
                           painter: _ProgressCirclePainter(
                             progress: progressAnimation.value,
-                            backgroundColor: IsDarkTheme.isDark
+                            backgroundColor:
+                                context.theme.brightness == Brightness.dark
                                 ? context.theme.disabledColor
                                 : context.theme.disabledColor.withAlpha(20),
                             progressColor: value >= maximum

@@ -6,6 +6,8 @@ import 'package:celta_dash/features/sales_features/goal_historic/presentation/pr
     as goal_historic;
 import 'package:celta_dash/features/sales_features/presentation/presentation.dart'
     as compare_days;
+import 'package:celta_dash/features/sales_features/sales/presentation/pages/pages.dart'
+    as sales;
 import 'package:celta_dash/main/factories/factories.dart';
 import 'package:celta_dash/routing/routes.dart';
 import 'package:celta_dash/ui/pages/pages.dart';
@@ -51,7 +53,7 @@ RouteBase moreRoute() => GoRoute(
 RouteBase notSalesRoute() => GoRoute(
   path: '/home/not-canceled-sales',
   name: Routes.notSales.name,
-  builder: (context, state) => makeNotSalesPage(),
+  builder: (context, state) => const sales.SalesPage(),
 );
 
 RouteBase setGoalRoute() => GoRoute(

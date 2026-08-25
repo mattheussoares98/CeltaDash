@@ -31,13 +31,13 @@ void main() {
     await pumpValue(tester, value, preserveValue: true);
 
     expect(find.text('cached payments'), findsOneWidget);
-    expect(find.byType(LoadingWidget), findsNothing);
+    expect(find.byType(LoadingCircle), findsNothing);
   });
 
   testWidgets('shows loading without a previous value', (tester) async {
     await pumpValue(tester, const AsyncLoading<String>(), preserveValue: true);
 
-    expect(find.byType(LoadingWidget), findsOneWidget);
+    expect(find.byType(LoadingCircle), findsOneWidget);
   });
 
   testWidgets('keeps the original loading behavior when disabled', (
@@ -50,7 +50,7 @@ void main() {
     await pumpValue(tester, value, preserveValue: false);
 
     expect(find.text('cached payments'), findsNothing);
-    expect(find.byType(LoadingWidget), findsOneWidget);
+    expect(find.byType(LoadingCircle), findsOneWidget);
   });
 
   testWidgets(

@@ -95,7 +95,7 @@ class _LoadingOverlayController extends Notifier<void> {
                     ),
                     gapH8,
                     isIOS
-                        ? const LoadingWidget()
+                        ? const LoadingCircle()
                         : const LinearProgressIndicator(),
                   ],
                 ),

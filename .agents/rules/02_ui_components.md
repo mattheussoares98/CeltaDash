@@ -12,7 +12,7 @@ description: Activate this rule whenever the user asks to create, modify, style,
 - **Inputs**: `DefaultDropDown`, `DefaultSimpleDropDown`, `DefaultCheckBox`, `DefaultSwitch`, `DefaultChoiceChip`, `DefaultSegmentedButtons`
 - **Layout**: `ResponsiveCenter`, `ResponsiveListFlow`, `ResponsiveScrollableWidget`
 - **Label+Value rows**: always use `TitleAndSubtitle` — never create custom `SummaryRow` or `KeyValueRow` widgets.
-- **Feedback**: `LoadingWidget`, `LoadingExtension`, `EmptyPlaceholderWidget`, `AsyncValueWidget`
+- **Feedback**: `LoadingCircle`, `LoadingExtension`, `EmptyPlaceholderWidget`, `AsyncValueWidget`
 - **Overlays**: `AlertDialogs`, `ShowToastMessage`, `ShowModalPage`
 - **Icons**: `PlatformIcon`
 

@@ -1,4 +1,4 @@
-import 'package:celta_dash/ui/helpers/helpers.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 import 'logo.dart';
