@@ -70,15 +70,15 @@ class HomeFinancialController extends _$HomeFinancialController {
           endDate: endDate,
           periodGrouping: FinancialTitlePeriodGrouping.month,
         );
-      case HomeFinancialPeriod.yearly:
-        final startDate = DateTime(selectedDate.year - 2);
-        final endDate = DateTime(selectedDate.year, 12, 31);
-        return SearchFinancialTitleDataParams(
-          enterpriseCodes: [enterpriseId],
-          startDate: startDate,
-          endDate: endDate,
-          periodGrouping: FinancialTitlePeriodGrouping.year,
-        );
+      // case HomeFinancialPeriod.yearly:
+      //   final startDate = DateTime(selectedDate.year - 2);
+      //   final endDate = DateTime(selectedDate.year, 12, 31);
+      //   return SearchFinancialTitleDataParams(
+      //     enterpriseCodes: [enterpriseId],
+      //     startDate: startDate,
+      //     endDate: endDate,
+      //     periodGrouping: FinancialTitlePeriodGrouping.year,
+      //   );
     }
   }
 }

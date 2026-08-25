@@ -1,7 +1,6 @@
 // lib/features/home/presentation/pages/financial/components/financial_periods_content.dart
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/features/financial_titles/domain/entities/entities.dart';
-
 import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:collection/collection.dart';
@@ -13,7 +12,7 @@ import 'package:intl/intl.dart';
 
 part 'tables/daily_financial_table.dart';
 part 'tables/monthly_financial_table.dart';
-part 'tables/yearly_financial_table.dart';
+// part 'tables/yearly_financial_table.dart';
 
 class FinancialPeriodsContent extends HookConsumerWidget {
   const FinancialPeriodsContent({required this.enterpriseId, super.key});
@@ -93,9 +92,7 @@ class _FinancialPeriodView extends ConsumerWidget {
       data: (response) {
         final portions = response.financialTitlePortions;
         if (portions.isEmpty) {
-          return Center(
-            child: BaseText('Nenhum título encontrado'.hardcoded),
-          );
+          return Center(child: BaseText('Nenhum título encontrado'.hardcoded));
         }
 
         return switch (period) {
@@ -111,11 +108,11 @@ class _FinancialPeriodView extends ConsumerWidget {
             refreshProvider: provider,
             isLoading: responseAsync.isLoading,
           ),
-          HomeFinancialPeriod.yearly => _YearlyFinancialTable(
-            portions: portions,
-            refreshProvider: provider,
-            isLoading: responseAsync.isLoading,
-          ),
+          // HomeFinancialPeriod.yearly => _YearlyFinancialTable(
+          //   portions: portions,
+          //   refreshProvider: provider,
+          //   isLoading: responseAsync.isLoading,
+          // ),
         };
       },
     );

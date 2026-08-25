@@ -40,13 +40,13 @@ void main() {
           endDate: DateTime(2026, 12, 31),
           periodGrouping: FinancialTitlePeriodGrouping.month,
         );
-      case HomeFinancialPeriod.yearly:
-        return SearchFinancialTitleDataParams(
-          enterpriseCodes: const [enterpriseId],
-          startDate: DateTime(2024),
-          endDate: DateTime(2026, 12, 31),
-          periodGrouping: FinancialTitlePeriodGrouping.year,
-        );
+      // case HomeFinancialPeriod.yearly:
+      //   return SearchFinancialTitleDataParams(
+      //     enterpriseCodes: const [enterpriseId],
+      //     startDate: DateTime(2024),
+      //     endDate: DateTime(2026, 12, 31),
+      //     periodGrouping: FinancialTitlePeriodGrouping.year,
+      //   );
     }
   }
 
@@ -140,24 +140,24 @@ void main() {
     ).called(1);
   });
 
-  test('loads yearly financial data for 3-year range', () async {
-    final params = makeParams(HomeFinancialPeriod.yearly);
-    when(
-      () => repository.getData(params: params, ecParams: ecParams),
-    ).thenAnswer((_) async => responseEntity);
+  // test('loads yearly financial data for 3-year range', () async {
+  //   final params = makeParams(HomeFinancialPeriod.yearly);
+  //   when(
+  //     () => repository.getData(params: params, ecParams: ecParams),
+  //   ).thenAnswer((_) async => responseEntity);
 
-    final result = await container.read(
-      homeFinancialControllerProvider(
-        enterpriseId,
-        HomeFinancialPeriod.yearly,
-      ).future,
-    );
+  //   final result = await container.read(
+  //     homeFinancialControllerProvider(
+  //       enterpriseId,
+  //       HomeFinancialPeriod.yearly,
+  //     ).future,
+  //   );
 
-    expect(result, responseEntity);
-    verify(
-      () => repository.getData(params: params, ecParams: ecParams),
-    ).called(1);
-  });
+  //   expect(result, responseEntity);
+  //   verify(
+  //     () => repository.getData(params: params, ecParams: ecParams),
+  //   ).called(1);
+  // });
 
   test('propagates errors when repository throws', () async {
     final params = makeParams(HomeFinancialPeriod.daily);

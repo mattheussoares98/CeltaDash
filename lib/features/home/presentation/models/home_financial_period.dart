@@ -3,8 +3,8 @@ import 'package:celta_dash/features/financial_titles/domain/entities/entities.da
 
 enum HomeFinancialPeriod {
   daily('Dia', FinancialTitlePeriodGrouping.day),
-  monthly('Mês', FinancialTitlePeriodGrouping.month),
-  yearly('Ano', FinancialTitlePeriodGrouping.year);
+  monthly('Mês', FinancialTitlePeriodGrouping.month);
+  // yearly('Ano', FinancialTitlePeriodGrouping.year);
 
   final String label;
   final FinancialTitlePeriodGrouping periodGrouping;
