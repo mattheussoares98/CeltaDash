@@ -18,6 +18,7 @@ class HomeFinancialController extends _$HomeFinancialController {
     ref.cache();
     ref.watch(activeEcParamsStateControllerProvider);
     ref.watch(resumeCurrentDateProvider);
+    final periodType = ref.watch(homeFinancialPeriodTypeControllerProvider);
     final selectedDate = await ref.watch(
       homeControllerProvider.selectAsync((state) => state.selectedDate),
     );
@@ -25,6 +26,7 @@ class HomeFinancialController extends _$HomeFinancialController {
     final financialController = ref.watch(
       financialTitlesControllerProvider(
         periodGrouping: selectedPeriod.periodGrouping,
+        periodType: periodType,
       ).notifier,
     );
     final financialState = await financialController.loadData(
@@ -32,6 +34,7 @@ class HomeFinancialController extends _$HomeFinancialController {
         enterpriseId: enterpriseId,
         selectedDate: selectedDate,
         selectedPeriod: selectedPeriod,
+        periodType: periodType,
       ),
       forceRefresh: true,
     );
@@ -50,6 +53,7 @@ class HomeFinancialController extends _$HomeFinancialController {
     required int enterpriseId,
     required DateTime selectedDate,
     required HomeFinancialPeriod selectedPeriod,
+    required FinancialTitlePeriodType periodType,
   }) {
     switch (selectedPeriod) {
       case HomeFinancialPeriod.daily:
@@ -60,6 +64,7 @@ class HomeFinancialController extends _$HomeFinancialController {
           startDate: startDate,
           endDate: endDate,
           periodGrouping: FinancialTitlePeriodGrouping.day,
+          periodType: periodType,
         );
       case HomeFinancialPeriod.monthly:
         final startDate = DateTime(selectedDate.year);
@@ -69,6 +74,7 @@ class HomeFinancialController extends _$HomeFinancialController {
           startDate: startDate,
           endDate: endDate,
           periodGrouping: FinancialTitlePeriodGrouping.month,
+          periodType: periodType,
         );
       // case HomeFinancialPeriod.yearly:
       //   final startDate = DateTime(selectedDate.year - 2);
@@ -78,6 +84,7 @@ class HomeFinancialController extends _$HomeFinancialController {
       //     startDate: startDate,
       //     endDate: endDate,
       //     periodGrouping: FinancialTitlePeriodGrouping.year,
+      //     periodType: periodType,
       //   );
     }
   }
