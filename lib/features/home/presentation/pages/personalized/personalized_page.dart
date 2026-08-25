@@ -97,6 +97,10 @@ class PersonalizedPage extends HookConsumerWidget {
                             ),
                             if (hasValidDateRange) ...[
                               gapH8,
+                              PersonalizedGenerateButton(
+                                onGenerateSuccess: () => collapseAll(true),
+                              ),
+                              gapH8,
                               PersonalizedEnterprisesTile(
                                 controller: enterprisesController,
                                 onEnterpriseSelected: () {
@@ -119,10 +123,6 @@ class PersonalizedPage extends HookConsumerWidget {
                               gapH8,
                               PersonalizedCategoryTile(
                                 controller: categoriesController,
-                              ),
-                              gapH8,
-                              PersonalizedGenerateButton(
-                                onGenerateSuccess: () => collapseAll(true),
                               ),
                             ],
                           ],
