@@ -29,26 +29,23 @@ void main() {
       case HomeFinancialPeriod.daily:
         return SearchFinancialTitleDataParams(
           enterpriseCodes: const [enterpriseId],
-          startDate: DateTime(2026, 8, 1),
+          startDate: DateTime(2026, 8),
           endDate: DateTime(2026, 8, 31),
           periodGrouping: FinancialTitlePeriodGrouping.day,
-          mountCalculatedTotals: true,
         );
       case HomeFinancialPeriod.monthly:
         return SearchFinancialTitleDataParams(
           enterpriseCodes: const [enterpriseId],
-          startDate: DateTime(2026, 1, 1),
+          startDate: DateTime(2026),
           endDate: DateTime(2026, 12, 31),
           periodGrouping: FinancialTitlePeriodGrouping.month,
-          mountCalculatedTotals: true,
         );
       case HomeFinancialPeriod.yearly:
         return SearchFinancialTitleDataParams(
           enterpriseCodes: const [enterpriseId],
-          startDate: DateTime(2024, 1, 1),
+          startDate: DateTime(2024),
           endDate: DateTime(2026, 12, 31),
           periodGrouping: FinancialTitlePeriodGrouping.year,
-          mountCalculatedTotals: true,
         );
     }
   }
@@ -75,7 +72,7 @@ void main() {
     registerFallbackValue(EntityFactory.makeEcParams());
     registerFallbackValue(
       SearchFinancialTitleDataParams(
-        startDate: DateTime(2026, 1, 1),
+        startDate: DateTime(2026),
         endDate: DateTime(2026, 1, 31),
         enterpriseCodes: const [1],
       ),

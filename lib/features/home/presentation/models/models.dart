@@ -1,4 +1,6 @@
 export 'daily_comparison_state.dart';
+export 'financial_statistics_row_state.dart';
+
 export 'group_of_stores_enterprise_state.dart';
 export 'group_of_stores_state.dart';
 export 'home_financial_period.dart';

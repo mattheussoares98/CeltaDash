@@ -26,7 +26,7 @@ void main() {
     registerFallbackValue(EntityFactory.makeEcParams());
     registerFallbackValue(
       SearchFinancialTitleDataParams(
-        startDate: DateTime(2026, 1, 1),
+        startDate: DateTime(2026),
         endDate: DateTime(2026, 1, 31),
         enterpriseCodes: const [1],
       ),
@@ -37,7 +37,7 @@ void main() {
     mockRepository = MockFinancialTitlesRepository();
     tEcParams = EntityFactory.makeEcParams();
     tParams = SearchFinancialTitleDataParams(
-      startDate: DateTime(2026, 1, 1),
+      startDate: DateTime(2026),
       endDate: DateTime(2026, 1, 31),
       enterpriseCodes: const [1],
     );
@@ -128,7 +128,6 @@ void main() {
           state.error.toString(),
           contains('Credenciais da empresa ativa não encontradas'),
         );
-
       },
     );
 
@@ -152,10 +151,7 @@ void main() {
       expect(controller.lastLoadedParams, tParams);
 
       verify(
-        () => mockRepository.getData(
-          params: tParams,
-          ecParams: tEcParams,
-        ),
+        () => mockRepository.getData(params: tParams, ecParams: tEcParams),
       ).called(1);
     });
 
@@ -176,17 +172,11 @@ void main() {
         );
 
         await controller.loadData(params: tParams);
-        final secondCall = await controller.loadData(
-          params: tParams,
-          forceRefresh: false,
-        );
+        final secondCall = await controller.loadData(params: tParams);
 
         expect(secondCall, AsyncValue.data(tEntity));
         verify(
-          () => mockRepository.getData(
-            params: tParams,
-            ecParams: tEcParams,
-          ),
+          () => mockRepository.getData(params: tParams, ecParams: tEcParams),
         ).called(1);
       },
     );
@@ -211,10 +201,7 @@ void main() {
         await controller.loadData(params: tParams, forceRefresh: true);
 
         verify(
-          () => mockRepository.getData(
-            params: tParams,
-            ecParams: tEcParams,
-          ),
+          () => mockRepository.getData(params: tParams, ecParams: tEcParams),
         ).called(2);
       },
     );

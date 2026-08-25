@@ -23,7 +23,7 @@ void main() {
     registerFallbackValue(EntityFactory.makeEcParams());
     registerFallbackValue(
       SearchFinancialTitleDataParams(
-        startDate: DateTime(2026, 1, 1),
+        startDate: DateTime(2026),
         endDate: DateTime(2026, 1, 31),
         enterpriseCodes: const [1],
       ),
@@ -35,7 +35,7 @@ void main() {
     sut = FinancialTitlesRepositoryImpl(mockDatasource);
     tEcParams = EntityFactory.makeEcParams();
     tParams = SearchFinancialTitleDataParams(
-      startDate: DateTime(2026, 1, 1),
+      startDate: DateTime(2026),
       endDate: DateTime(2026, 1, 31),
       enterpriseCodes: const [1],
     );
@@ -70,10 +70,7 @@ void main() {
       await sut.getData(params: tParams, ecParams: tEcParams);
 
       verify(
-        () => mockDatasource.getData(
-          params: tParams,
-          ecParams: tEcParams,
-        ),
+        () => mockDatasource.getData(params: tParams, ecParams: tEcParams),
       ).called(1);
     });
 
@@ -87,10 +84,7 @@ void main() {
           ),
         ).thenAnswer((_) async => tModel);
 
-        final result = await sut.getData(
-          params: tParams,
-          ecParams: tEcParams,
-        );
+        final result = await sut.getData(params: tParams, ecParams: tEcParams);
 
         expect(result, isA<FinancialTitleDataResponseEntity>());
         expect(
@@ -115,10 +109,7 @@ void main() {
           ),
         ).thenThrow(DomainError.unexpected);
 
-        final call = sut.getData(
-          params: tParams,
-          ecParams: tEcParams,
-        );
+        final call = sut.getData(params: tParams, ecParams: tEcParams);
 
         expect(() => call, throwsA(DomainError.unexpected));
       },
