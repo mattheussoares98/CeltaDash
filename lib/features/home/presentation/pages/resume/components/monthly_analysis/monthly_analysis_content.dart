@@ -15,7 +15,6 @@ class MonthlyAnalysisContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          //TODO use wrap or BaseRich
           Row(
             children: [
               Expanded(

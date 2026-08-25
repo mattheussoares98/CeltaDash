@@ -139,7 +139,6 @@ class BaseText extends StatelessWidget {
     color: color,
     fontWeight: fontWeight ?? FontWeight.w400,
     fontStyle: fontStyle,
-    //TODO create a model with all posible parameters to avoid BaseText without created params
   );
 
   factory BaseText.headline(

@@ -110,7 +110,6 @@ class HomeDrawer extends HookConsumerWidget {
                       context.pushNamed(Routes.enterprisesManager.name);
                     },
                   ),
-                  //TODO add option to toggle app mode
                 ],
               ),
             ),
