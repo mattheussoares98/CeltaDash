@@ -38,8 +38,8 @@ class HomeModeToggle extends ConsumerWidget {
     return PrimaryTextButton(
       key: const ValueKey('home_mode_toggle'),
       text: homeState.appMode == AppMode.sales
-          ? 'Vendas'.hardcoded
-          : 'Financeiro'.hardcoded,
+          ? 'Financeiro'.hardcoded
+          : 'Vendas'.hardcoded,
       onPressed: selectedEnterpriseIsDisabled
           ? null
           : () async {
