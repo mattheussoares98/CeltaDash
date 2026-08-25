@@ -1,9 +1,9 @@
 import 'dart:convert';
 
+import 'package:celta_dash/core/infrastructure/http/http.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 
-import 'package:celta_dash/core/infrastructure/http/http.dart';
 import '../helpers/helpers.dart';
 
 class HttpAdapter implements HttpClient {
@@ -34,7 +34,7 @@ class HttpAdapter implements HttpClient {
     String applyedUrl = url;
 
     //! replace easily when testing the API
-    if (kDebugMode && 1 == 1) {
+    if (kDebugMode && 1 == 2) {
       applyedUrl = url.replaceFirstMapped(
         RegExp(r'https?://.+?/api', caseSensitive: false),
         (match) => 'http://localhost:58915',

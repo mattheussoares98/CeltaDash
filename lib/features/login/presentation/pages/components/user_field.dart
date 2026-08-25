@@ -22,8 +22,8 @@ class UserField extends StatelessWidget {
     return BaseTextFormField(
       controller: controller,
       focusNode: focusNode,
-      labelText: 'Usuário'.hardcoded,
-      hintText: 'Usuário'.hardcoded,
+      labelText: 'Usuário do BS'.hardcoded,
+      hintText: 'Usuário do BS'.hardcoded,
       prefixIcon: const PlatformIcon(
         cupertinoIcon: CupertinoIcons.person_fill,
         materialIcon: Icons.person,
