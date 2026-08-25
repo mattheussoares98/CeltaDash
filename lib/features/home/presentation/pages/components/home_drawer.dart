@@ -14,136 +14,155 @@ class HomeDrawer extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Drawer(
       child: SafeArea(
-        child: Column(
-          children: [
-            DrawerHeader(
-              child: GestureDetector(
-                onLongPress: () {
-                  context.pop();
-                  context.pushNamed(Routes.webLogin.name);
-                },
-                child: const LogoWidget(),
-              ),
-            ),
-            Expanded(
-              child: ListView(
-                children: [
-                  _DrawerSectionTitle(
-                    title: 'Relatórios & consultas'.hardcoded,
-                  ),
-                  _DrawerItem(
-                    title: 'Personalizado'.hardcoded,
-                    platformIcon: const PlatformIcon(
-                      materialIcon: Icons.assignment_ind,
-                      cupertinoIcon: CupertinoIcons.doc_person,
-                    ),
-                    onTap: () {
+        child: Consumer(
+          builder: (_, ref, _) {
+            final hasError = ref.watch(
+              homeControllerProvider.select((s) => s.hasError),
+            );
+            return Column(
+              children: [
+                DrawerHeader(
+                  child: GestureDetector(
+                    onLongPress: () {
                       context.pop();
-                      context.pushNamed(Routes.homePersonalized.name);
+                      context.pushNamed(Routes.webLogin.name);
                     },
+                    child: const LogoWidget(),
                   ),
-                  _DrawerItem(
-                    title: 'Vendedores'.hardcoded,
-                    platformIcon: const PlatformIcon(
-                      materialIcon: Icons.people,
-                      cupertinoIcon: CupertinoIcons.person_3,
-                    ),
-                    onTap: () {
-                      context.pop();
-                      context.pushNamed(Routes.sellers.name);
-                    },
+                ),
+                Expanded(
+                  child: ListView(
+                    children: [
+                      _DrawerSectionTitle(
+                        title: 'Relatórios & consultas de vendas'.hardcoded,
+                      ),
+                      _DrawerItem(
+                        title: 'Personalizado'.hardcoded,
+                        platformIcon: const PlatformIcon(
+                          materialIcon: Icons.assignment_ind,
+                          cupertinoIcon: CupertinoIcons.doc_person,
+                        ),
+                        onTap: hasError
+                            ? null
+                            : () {
+                                context.pop();
+                                context.pushNamed(Routes.homePersonalized.name);
+                              },
+                      ),
+                      _DrawerItem(
+                        title: 'Vendedores'.hardcoded,
+                        platformIcon: const PlatformIcon(
+                          materialIcon: Icons.people,
+                          cupertinoIcon: CupertinoIcons.person_3,
+                        ),
+                        onTap: hasError
+                            ? null
+                            : () {
+                                context.pop();
+                                context.pushNamed(Routes.sellers.name);
+                              },
+                      ),
+                      _DrawerItem(
+                        title: 'Operadores'.hardcoded,
+                        platformIcon: const PlatformIcon(
+                          materialIcon: Icons.badge,
+                          cupertinoIcon: CupertinoIcons.person_badge_plus,
+                        ),
+                        onTap: hasError
+                            ? null
+                            : () {
+                                context.pop();
+                                context.pushNamed(Routes.operators.name);
+                              },
+                      ),
+                      _DrawerItem(
+                        title: 'Vendas'.hardcoded,
+                        platformIcon: const PlatformIcon(
+                          materialIcon: Icons.sell,
+                          cupertinoIcon: CupertinoIcons.money_dollar,
+                        ),
+                        onTap: hasError
+                            ? null
+                            : () {
+                                context.pop();
+                                context.pushNamed(Routes.sales.name);
+                              },
+                      ),
+                      _DrawerItem(
+                        title: 'Comparativo diário'.hardcoded,
+                        platformIcon: const PlatformIcon(
+                          materialIcon: Icons.calendar_view_day_sharp,
+                          cupertinoIcon: CupertinoIcons.chart_bar,
+                        ),
+                        onTap: hasError
+                            ? null
+                            : () {
+                                context.pop();
+                                context.pushNamed(Routes.compareDays.name);
+                              },
+                      ),
+                      _DrawerItem(
+                        title: 'Comparativo mensal'.hardcoded,
+                        platformIcon: const PlatformIcon(
+                          materialIcon: Icons.calendar_month,
+                          cupertinoIcon: CupertinoIcons.calendar,
+                        ),
+                        onTap: hasError
+                            ? null
+                            : () {
+                                context.pop();
+                                context.pushNamed(Routes.compareMonths.name);
+                              },
+                      ),
+                      const Divider(),
+                      _DrawerSectionTitle(title: 'Sistema'.hardcoded),
+                      _DrawerItem(
+                        title: 'Gerenciar empresas'.hardcoded,
+                        platformIcon: const PlatformIcon(
+                          materialIcon: Icons.manage_accounts,
+                          cupertinoIcon: CupertinoIcons.person_2,
+                        ),
+                        onTap: () {
+                          context.pop();
+                          context.pushNamed(Routes.enterprisesManager.name);
+                        },
+                      ),
+                    ],
                   ),
-                  _DrawerItem(
-                    title: 'Operadores'.hardcoded,
-                    platformIcon: const PlatformIcon(
-                      materialIcon: Icons.badge,
-                      cupertinoIcon: CupertinoIcons.person_badge_plus,
-                    ),
-                    onTap: () {
-                      context.pop();
-                      context.pushNamed(Routes.operators.name);
-                    },
+                ),
+                const Divider(height: 1),
+                _DrawerItem(
+                  title: 'Sair'.hardcoded,
+                  textColor: context.colorScheme.error,
+                  platformIcon: PlatformIcon(
+                    materialIcon: Icons.logout,
+                    cupertinoIcon: CupertinoIcons.square_arrow_right,
+                    color: context.colorScheme.error,
                   ),
-                  _DrawerItem(
-                    title: 'Vendas'.hardcoded,
-                    platformIcon: const PlatformIcon(
-                      materialIcon: Icons.sell,
-                      cupertinoIcon: CupertinoIcons.money_dollar,
-                    ),
-                    onTap: () {
-                      context.pop();
-                      context.pushNamed(Routes.sales.name);
-                    },
-                  ),
-                  _DrawerItem(
-                    title: 'Comparativo diário'.hardcoded,
-                    platformIcon: const PlatformIcon(
-                      materialIcon: Icons.compare_arrows,
-                      cupertinoIcon: CupertinoIcons.arrow_right_arrow_left,
-                    ),
-                    onTap: () {
-                      context.pop();
-                      context.pushNamed(Routes.compareDays.name);
-                    },
-                  ),
-                  _DrawerItem(
-                    title: 'Comparativo mensal'.hardcoded,
-                    platformIcon: const PlatformIcon(
-                      materialIcon: Icons.calendar_month,
-                      cupertinoIcon: CupertinoIcons.calendar,
-                    ),
-                    onTap: () {
-                      context.pop();
-                      context.pushNamed(Routes.compareMonths.name);
-                    },
-                  ),
-                  const Divider(),
-                  _DrawerSectionTitle(title: 'Sistema'.hardcoded),
-                  _DrawerItem(
-                    title: 'Gerenciar empresas'.hardcoded,
-                    platformIcon: const PlatformIcon(
-                      materialIcon: Icons.manage_accounts,
-                      cupertinoIcon: CupertinoIcons.person_2,
-                    ),
-                    onTap: () {
-                      context.pop();
-                      context.pushNamed(Routes.enterprisesManager.name);
-                    },
-                  ),
-                ],
-              ),
-            ),
-            const Divider(height: 1),
-            _DrawerItem(
-              title: 'Sair'.hardcoded,
-              textColor: context.colorScheme.error,
-              platformIcon: PlatformIcon(
-                materialIcon: Icons.logout,
-                cupertinoIcon: CupertinoIcons.square_arrow_right,
-                color: context.colorScheme.error,
-              ),
-              onTap: () async {
-                final confirmed = await showAlertDialog(
-                  context: context,
-                  title: 'Deseja realmente sair?'.hardcoded,
-                  cancelActionText: 'Cancelar'.hardcoded,
-                  defaultActionText: 'Sair'.hardcoded,
-                );
-                if (confirmed != true || !context.mounted) return;
+                  onTap: () async {
+                    final confirmed = await showAlertDialog(
+                      context: context,
+                      title: 'Deseja realmente sair?'.hardcoded,
+                      cancelActionText: 'Cancelar'.hardcoded,
+                      defaultActionText: 'Sair'.hardcoded,
+                    );
+                    if (confirmed != true || !context.mounted) return;
 
-                try {
-                  context.pop();
-                  await ref.read(homeControllerProvider.notifier).logout();
-                  if (context.mounted) context.goNamed(Routes.splash.name);
-                } catch (error) {
-                  showToastMessage(
-                    error.toString().hardcoded,
-                    type: ToastType.error,
-                  );
-                }
-              },
-            ),
-          ],
+                    try {
+                      context.pop();
+                      await ref.read(homeControllerProvider.notifier).logout();
+                      if (context.mounted) context.goNamed(Routes.splash.name);
+                    } catch (error) {
+                      showToastMessage(
+                        error.toString().hardcoded,
+                        type: ToastType.error,
+                      );
+                    }
+                  },
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
@@ -182,14 +201,18 @@ class _DrawerItem extends StatelessWidget {
 
   final String title;
   final PlatformIcon platformIcon;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
     return BaseListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
-      leading: platformIcon,
+      leading: platformIcon.copyWith(
+        color: onTap == null
+            ? context.colorScheme.onSurface.withValues(alpha: .5)
+            : null,
+      ),
       title: BaseText.bodyMedium(
         title,
         color: textColor ?? context.colorScheme.onSurface,
