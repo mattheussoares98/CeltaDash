@@ -1,4 +1,4 @@
-import '../../data/database/database.dart';
+import 'package:celta_dash/core/infrastructure/storage/storage.dart';
 import 'package:hive/hive.dart';
 
 import '../helpers/helpers.dart';

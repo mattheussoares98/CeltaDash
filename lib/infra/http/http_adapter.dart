@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 
-import '../../data/http/http.dart';
+import 'package:celta_dash/core/infrastructure/http/http.dart';
 import '../helpers/helpers.dart';
 
 class HttpAdapter implements HttpClient {

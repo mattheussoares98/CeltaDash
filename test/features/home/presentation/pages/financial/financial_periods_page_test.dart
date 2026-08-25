@@ -1,7 +1,6 @@
 // test/features/home/presentation/pages/financial/financial_periods_page_test.dart
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/core/domain/domain.dart';
-
 import 'package:celta_dash/core/providers.dart';
 import 'package:celta_dash/features/financial_titles/domain/entities/entities.dart';
 import 'package:celta_dash/features/financial_titles/domain/repository/repository.dart';
@@ -10,13 +9,12 @@ import 'package:celta_dash/features/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../../domain/mocks/mocks.dart';
 import '../../../../../presentation/fake_controllers/fake_controllers.dart';
 import '../../../mocks/mocks.dart';
-
-import 'package:intl/date_symbol_data_local.dart';
 
 class MockFinancialTitlesRepository extends Mock
     implements IFinancialTitlesRepository {}
@@ -28,7 +26,7 @@ void main() {
   final selectedDate = DateTime(2026, 8, 17);
 
   setUpAll(() async {
-    await initializeDateFormatting('pt_BR', null);
+    await initializeDateFormatting('pt_BR');
     registerFallbackValue(EntityFactory.makeEcParams());
 
     registerFallbackValue(
@@ -116,7 +114,5 @@ void main() {
     expect(find.textContaining('Receber', findRichText: true), findsWidgets);
     expect(find.textContaining('Pagar', findRichText: true), findsWidgets);
     expect(find.textContaining('Saldo', findRichText: true), findsWidgets);
-
-
   });
 }

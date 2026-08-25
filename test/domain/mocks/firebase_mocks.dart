@@ -1,5 +1,5 @@
 // test/domain/mocks/firebase_mocks.dart
-import 'package:celta_dash/data/database/database.dart';
+import 'package:celta_dash/core/infrastructure/storage/storage.dart';
 import 'package:mocktail/mocktail.dart';
 
 class FakeDoc {

@@ -1,7 +1,7 @@
 // test/core/presentation/controllers/active_ec_params_controller_test.dart
 import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/core/providers.dart';
-import 'package:celta_dash/data/models/models.dart';
+import 'package:celta_dash/core/data/data.dart';
 import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/infra/helpers/helpers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

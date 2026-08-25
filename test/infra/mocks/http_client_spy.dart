@@ -1,6 +1,6 @@
 
 
-import 'package:celta_dash/data/http/http.dart';
+import 'package:celta_dash/core/infrastructure/http/http.dart';
 import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:mocktail/mocktail.dart';
 

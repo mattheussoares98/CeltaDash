@@ -1,9 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:celta_dash/features/sales_features/sale_statistics/domain/entities/entities.dart';
-import 'package:celta_dash/utils/utils.dart';
-import 'package:get/get.dart';
-
-import '../../../ui/pages/pages.dart';
 import '../../helpers/helpers.dart';
 
 export 'package:celta_dash/features/sales_features/sale_statistics/domain/entities/get_sale_statistics_params.dart';
@@ -20,19 +16,6 @@ extension GetSaleStatisticsParamsPeriodType on GetSaleStatisticsParams {
       }
     }
     return null;
-  }
-}
-
-extension GetSaleStatisticsParamsEnterprise on GetSaleStatisticsParams {
-  List<EcEnterpriseViewModel>? get selectedsEnterprises {
-    final homePresenter = Get.find<HomePresenter>();
-    final enterprises = homePresenter.enterprises;
-    final selectedIds = this.enterpriseIds;
-    final selectedsEnterprises = enterprises
-        ?.where((e) => selectedIds?.contains(e.id?.toInt()) == true)
-        .toList();
-
-    return selectedsEnterprises;
   }
 }
 

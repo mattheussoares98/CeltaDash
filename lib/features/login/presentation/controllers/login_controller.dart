@@ -1,7 +1,7 @@
 // lib/features/login/presentation/controllers/login_controller.dart
 import 'package:celta_dash/core/domain/domain.dart';
+import 'package:celta_dash/core/data/data.dart';
 import 'package:celta_dash/core/providers.dart';
-import 'package:celta_dash/data/models/models.dart';
 import 'package:celta_dash/features/login/domain/entities/entities.dart';
 import 'package:celta_dash/features/login/providers.dart';
 import 'package:celta_dash/infra/helpers/helpers.dart';

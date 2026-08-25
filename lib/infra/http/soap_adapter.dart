@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:xml2json/xml2json.dart';
 
-import '../../data/http/http.dart';
+import 'package:celta_dash/core/infrastructure/http/http.dart';
 import '../helpers/helpers.dart';
 
 class SoapAdapter implements SoapRequest {

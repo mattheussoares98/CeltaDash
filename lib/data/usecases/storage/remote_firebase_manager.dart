@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../domain/usecases/usecases.dart';
-import '../../database/database.dart';
+import 'package:celta_dash/core/infrastructure/storage/storage.dart';
 
 class RemoteFirebaseManager implements FirebaseManager {
   final FirebaseStorage firebaseStorage;

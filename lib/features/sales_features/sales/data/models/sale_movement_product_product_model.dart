@@ -1,6 +1,4 @@
 import 'package:celta_dash/features/sales_features/sales/domain/entities/entities.dart';
-import 'package:celta_dash/ui/pages/pages.dart';
-import 'package:celta_dash/utils/utils.dart';
 import 'package:equatable/equatable.dart';
 
 class SaleMovementProductProductModel extends Equatable {
@@ -63,22 +61,4 @@ class SaleMovementProductProductModel extends Equatable {
         PackingQuantity: PackingQuantity,
       );
 
-  SaleMovementProductProductViewModel toViewModel() =>
-      SaleMovementProductProductViewModel(
-        Id: Id?.toString(),
-        Plu: Plu,
-        Name: Name,
-        PackingAbbreviation: PackingAbbreviation,
-        PackingQuantity: PackingQuantity?.toString(),
-      );
-
-  factory SaleMovementProductProductModel.fromViewModel(
-    SaleMovementProductProductViewModel viewModel,
-  ) => SaleMovementProductProductModel(
-    Id: viewModel.Id?.toInt(),
-    Plu: viewModel.Plu,
-    Name: viewModel.Name,
-    PackingAbbreviation: viewModel.PackingAbbreviation,
-    PackingQuantity: viewModel.PackingQuantity?.toDouble(),
-  );
 }

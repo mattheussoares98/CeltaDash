@@ -1,7 +1,5 @@
 import 'package:celta_dash/features/sales_features/sales/data/models/models.dart';
 import 'package:celta_dash/features/sales_features/sales/domain/entities/entities.dart';
-import 'package:celta_dash/ui/pages/pages.dart';
-import 'package:celta_dash/utils/utils.dart';
 import 'package:equatable/equatable.dart';
 
 class SaleMovementProductModel extends Equatable {
@@ -116,37 +114,4 @@ class SaleMovementProductModel extends Equatable {
     Product: Product?.toEntity(),
   );
 
-  SaleMovementProductViewModel toViewModel() => SaleMovementProductViewModel(
-    Id: Id?.toString(),
-    Quantity: Quantity?.toString(),
-    UnitValue: UnitValue?.toString(),
-    IsCancelled: IsCancelled?.toString(),
-    UnitValueLiquid: UnitValueLiquid?.toString(),
-    RepositionCost: RepositionCost?.toString(),
-    LiquidCost: LiquidCost?.toString(),
-    TotalBrute: TotalBrute?.toString(),
-    TotalLiquid: TotalLiquid?.toString(),
-    TotalDiscounts: TotalDiscounts?.toString(),
-    ProductPackingId: ProductPackingId?.toString(),
-    Product: Product?.toViewModel(),
-  );
-
-  factory SaleMovementProductModel.fromViewModel(
-    SaleMovementProductViewModel viewModel,
-  ) => SaleMovementProductModel(
-    Id: viewModel.Id?.toInt(),
-    Quantity: viewModel.Quantity?.toDouble(),
-    UnitValue: viewModel.UnitValue?.toDouble(),
-    IsCancelled: bool.tryParse(viewModel.IsCancelled ?? ""),
-    UnitValueLiquid: viewModel.UnitValueLiquid?.toDouble(),
-    RepositionCost: viewModel.RepositionCost?.toDouble(),
-    LiquidCost: viewModel.LiquidCost?.toDouble(),
-    TotalBrute: viewModel.TotalBrute?.toDouble(),
-    TotalLiquid: viewModel.TotalLiquid?.toDouble(),
-    TotalDiscounts: viewModel.TotalDiscounts?.toDouble(),
-    ProductPackingId: viewModel.ProductPackingId?.toInt(),
-    Product: viewModel.Product != null
-        ? SaleMovementProductProductModel.fromViewModel(viewModel.Product!)
-        : null,
-  );
 }

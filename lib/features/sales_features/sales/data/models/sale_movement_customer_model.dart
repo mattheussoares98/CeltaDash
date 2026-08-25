@@ -1,6 +1,4 @@
 import 'package:celta_dash/features/sales_features/sales/domain/entities/entities.dart';
-import 'package:celta_dash/ui/pages/pages.dart';
-import 'package:celta_dash/utils/utils.dart';
 import 'package:equatable/equatable.dart';
 
 class SaleMovementCustomerModel extends Equatable {
@@ -50,19 +48,4 @@ class SaleMovementCustomerModel extends Equatable {
     CpfCnpj: CpfCnpj,
   );
 
-  SaleMovementCustomerViewModel toViewModel() => SaleMovementCustomerViewModel(
-    SaleMovementId: SaleMovementId?.toString(),
-    Id: Id?.toString(),
-    Name: Name,
-    CpfCnpj: CpfCnpj,
-  );
-
-  factory SaleMovementCustomerModel.fromViewModel(
-    SaleMovementCustomerViewModel viewModel,
-  ) => SaleMovementCustomerModel(
-    SaleMovementId: viewModel.SaleMovementId?.toInt()!,
-    Id: viewModel.Id?.toInt()!,
-    Name: viewModel.Name,
-    CpfCnpj: viewModel.CpfCnpj,
-  );
 }

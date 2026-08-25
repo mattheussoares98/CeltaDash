@@ -1,6 +1,5 @@
 import 'package:celta_dash/features/sales_features/sales/data/models/models.dart';
 import 'package:celta_dash/features/sales_features/sales/domain/entities/entities.dart';
-import 'package:celta_dash/ui/pages/pages.dart';
 import 'package:equatable/equatable.dart';
 
 class SaleMovementModel extends Equatable {
@@ -73,24 +72,4 @@ class SaleMovementModel extends Equatable {
             .toList(),
       );
 
-  SaleMovementViewModel toViewModel() => SaleMovementViewModel(
-    totalRecords: totalRecords,
-    recordsByPage: recordsByPage,
-    recordsOnThisPage: recordsOnThisPage,
-    totalPages: totalPages,
-    actualPage: actualPage,
-    collection: collection.map((e) => e.toViewModel()).toList(),
-  );
-
-  factory SaleMovementModel.fromViewModel(SaleMovementViewModel viewModel) =>
-      SaleMovementModel(
-        totalRecords: viewModel.totalRecords,
-        recordsByPage: viewModel.recordsByPage,
-        recordsOnThisPage: viewModel.recordsOnThisPage,
-        totalPages: viewModel.totalPages,
-        actualPage: viewModel.actualPage,
-        collection: viewModel.collection
-            .map((e) => SaleMovementCollectionItemModel.fromViewModel(e))
-            .toList(),
-      );
 }

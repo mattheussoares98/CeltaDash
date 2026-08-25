@@ -1,8 +1,5 @@
 import 'package:celta_dash/features/sales_features/sales/domain/entities/entities.dart';
-import 'package:celta_dash/ui/pages/pages.dart';
-import 'package:celta_dash/utils/utils.dart';
 import 'package:equatable/equatable.dart';
-import 'package:intl/intl.dart';
 
 import 'sale_movement_customer_model.dart';
 import 'sale_movement_finalization_model.dart';
@@ -188,71 +185,4 @@ class SaleMovementCollectionItemModel extends Equatable {
             .toList(),
       );
 
-  SaleMovementCollectionItemViewModel toViewModel() {
-    final df = DateFormat('dd/MM/yyyy HH:mm:ss');
-    return SaleMovementCollectionItemViewModel(
-      Id: Id?.toString(),
-      enterpriseId: enterpriseId?.toString(),
-      fiscalNoteTypeId: fiscalNoteTypeId?.toString(),
-      sellerId: sellerId?.toString(),
-      documentNumber: documentNumber,
-      cashierNumber: cashierNumber,
-      motiveCancellation: motiveCancellation,
-      dateHourOfBilling: dateHourOfBilling != null
-          ? df.format(dateHourOfBilling!)
-          : null,
-      dateHourOfCancellation: dateHourOfCancellation != null
-          ? df.format(dateHourOfCancellation!)
-          : null,
-      totalLiquid: totalLiquid?.toString(),
-      isCancelled: isCancelled?.toString(),
-      fiscalNoteType: fiscalNoteType?.toViewModel(),
-      customer: customer?.toViewModel(),
-      seller: seller?.toViewModel(),
-      userCancellation: userCancellation,
-      products: products?.map((e) => e.toViewModel()).toList(),
-      paymentFinalizations: paymentFinalizations
-          ?.map((e) => e.toViewModel())
-          .toList(),
-    );
-  }
-
-  factory SaleMovementCollectionItemModel.fromViewModel(
-    SaleMovementCollectionItemViewModel viewModel,
-  ) {
-    final df = DateFormat('dd/MM/yyyy HH:mm:ss');
-    return SaleMovementCollectionItemModel(
-      Id: viewModel.Id?.toInt(),
-      enterpriseId: viewModel.enterpriseId?.toInt(),
-      fiscalNoteTypeId: viewModel.fiscalNoteTypeId?.toInt(),
-      sellerId: viewModel.sellerId?.toInt(),
-      documentNumber: viewModel.documentNumber,
-      cashierNumber: viewModel.cashierNumber,
-      motiveCancellation: viewModel.motiveCancellation,
-      dateHourOfBilling: viewModel.dateHourOfBilling != null
-          ? df.parse(viewModel.dateHourOfBilling!)
-          : null,
-      dateHourOfCancellation: viewModel.dateHourOfCancellation != null
-          ? df.parse(viewModel.dateHourOfCancellation!)
-          : null,
-      totalLiquid: viewModel.totalLiquid?.toDouble(),
-      isCancelled: bool.tryParse(viewModel.isCancelled ?? ""),
-      fiscalNoteType: viewModel.fiscalNoteType != null
-          ? SaleMovementFiscalNoteModel.fromViewModel(viewModel.fiscalNoteType!)
-          : null,
-      customer: viewModel.customer != null
-          ? SaleMovementCustomerModel.fromViewModel(viewModel.customer!)
-          : null,
-      seller: viewModel.seller != null
-          ? SaleMovementSellerModel.fromViewModel(viewModel.seller!)
-          : null,
-      userCancellation: viewModel.userCancellation,
-      products: viewModel.products
-          ?.map((e) => SaleMovementProductModel.fromViewModel(e))
-          .toList(),
-      paymentFinalizations: viewModel.paymentFinalizations
-          ?.map((e) => SaleMovementFinalizationModel.fromViewModel(e))
-          .toList(),
-    );
-  }
 }

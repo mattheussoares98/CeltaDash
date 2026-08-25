@@ -1,5 +1,5 @@
 import 'package:celta_dash/core/domain/domain.dart';
-import 'package:celta_dash/data/http/http.dart';
+import 'package:celta_dash/core/infrastructure/http/http.dart';
 import 'package:celta_dash/features/sales_features/sales/data/datasource/datasource.dart';
 import 'package:celta_dash/features/sales_features/sales/data/models/models.dart';
 import 'package:celta_dash/features/sales_features/sales/domain/entities/entities.dart';

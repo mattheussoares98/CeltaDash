@@ -1,7 +1,7 @@
 // lib/features/login/data/datasource/login_bs_auth_datasource.dart
 import 'dart:convert';
 
-import 'package:celta_dash/data/http/http.dart';
+import 'package:celta_dash/core/infrastructure/http/http.dart';
 import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/features/login/data/datasource/i_login_bs_auth_datasource.dart';
 import 'package:celta_dash/features/login/data/models/models.dart';

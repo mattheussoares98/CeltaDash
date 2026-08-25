@@ -1,6 +1,6 @@
 // lib/features/login/data/datasource/firebase_login_enterprise_datasource.dart
 import 'package:celta_dash/core/data/data.dart';
-import 'package:celta_dash/data/database/database.dart';
+import 'package:celta_dash/core/infrastructure/storage/storage.dart';
 import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/features/login/data/datasource/i_firebase_login_enterprise_datasource.dart';
 import 'package:celta_dash/utils/utils.dart';

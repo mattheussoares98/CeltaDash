@@ -1,4 +1,3 @@
-import '../../ui/helpers/helpers.dart';
 import '../usecases/usecases.dart';
 
 enum PeriodGroupingType {
@@ -12,13 +11,13 @@ extension PeriodGroupingTypeExtension on PeriodGroupingType {
   String get name {
     switch (this) {
       case PeriodGroupingType.year:
-        return R.string.year;
+        return 'Ano';
       case PeriodGroupingType.month:
-        return R.string.month;
+        return 'Mês';
       case PeriodGroupingType.day:
-        return R.string.day;
+        return 'Dia';
       case PeriodGroupingType.hour:
-        return R.string.hour;
+        return 'Hora';
     }
   }
 }

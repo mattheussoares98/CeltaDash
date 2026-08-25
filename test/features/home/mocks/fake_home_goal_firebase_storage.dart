@@ -1,4 +1,4 @@
-import 'package:celta_dash/data/database/database.dart';
+import 'package:celta_dash/core/infrastructure/storage/storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FakeHomeGoalFirebaseStorage implements FirebaseStorage {

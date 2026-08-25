@@ -1,35 +1,16 @@
-import '../../ui/helpers/helpers.dart';
 import '../usecases/usecases.dart';
 
 enum CategoryGroupingType {
-  cashierOperator,
-  paymentFinalization,
-  paymentModality,
-  product,
-  productDepartment,
-  productSection,
-  seller,
-}
+  cashierOperator('Operador'),
+  paymentFinalization('Finalização'),
+  paymentModality('Tipos de pagamento'),
+  product('Produto'),
+  productDepartment('Departamento'),
+  productSection('Seção'),
+  seller('Vendedor');
 
-extension CategoryGroupingTypeExtension on CategoryGroupingType {
-  String get name {
-    switch (this) {
-      case CategoryGroupingType.cashierOperator:
-        return R.string.operator;
-      case CategoryGroupingType.paymentFinalization:
-        return R.string.finalization;
-      case CategoryGroupingType.paymentModality:
-        return R.string.paymentsType;
-      case CategoryGroupingType.product:
-        return R.string.product;
-      case CategoryGroupingType.productDepartment:
-        return R.string.department;
-      case CategoryGroupingType.productSection:
-        return R.string.section;
-      case CategoryGroupingType.seller:
-        return R.string.seller;
-    }
-  }
+  final String label;
+  const CategoryGroupingType(this.label);
 }
 
 extension SaleStatisticsCategoryGrouping on GetSaleStatisticsParams {

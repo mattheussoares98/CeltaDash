@@ -1,6 +1,6 @@
 // lib/features/financial_titles/data/datasource/financial_titles_datasource.dart
 import 'package:celta_dash/core/domain/domain.dart';
-import 'package:celta_dash/data/http/http.dart';
+import 'package:celta_dash/core/infrastructure/http/http.dart';
 import 'package:celta_dash/features/financial_titles/data/datasource/datasource.dart';
 import 'package:celta_dash/features/financial_titles/data/models/models.dart';
 import 'package:celta_dash/features/financial_titles/domain/entities/entities.dart';

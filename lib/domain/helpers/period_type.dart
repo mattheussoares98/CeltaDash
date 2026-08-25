@@ -1,5 +1,3 @@
-import '../../ui/helpers/helpers.dart';
-
 enum PeriodType {
   hourly,
   daily,
@@ -13,17 +11,17 @@ extension PeriodTypeDescriptionExtension on PeriodType {
   String get description {
     switch (this) {
       case PeriodType.hourly:
-        return R.string.hourly;
+        return 'Horário';
       case PeriodType.daily:
-        return R.string.daily;
+        return 'Diário';
       case PeriodType.weekly:
-        return R.string.weekly;
+        return 'Semanal';
       case PeriodType.monthly:
-        return R.string.monthly;
+        return 'Mensal';
       case PeriodType.personalized:
-        return R.string.personalized;
+        return 'Personalizado';
       case PeriodType.yearly:
-        return R.string.yearly;
+        return 'Anual';
     }
   }
 }
@@ -32,17 +30,17 @@ extension PeriodTypeNameExtension on PeriodType {
   String get descriptionName {
     switch (this) {
       case PeriodType.hourly:
-        return R.string.hour;
+        return 'Hora';
       case PeriodType.daily:
-        return R.string.day;
+        return 'Dia';
       case PeriodType.weekly:
-        return R.string.week;
+        return 'Semana';
       case PeriodType.monthly:
-        return R.string.month;
+        return 'Mês';
       case PeriodType.personalized:
-        return R.string.personalized;
+        return 'Personalizado';
       case PeriodType.yearly:
-        return R.string.year;
+        return 'Ano';
     }
   }
 }

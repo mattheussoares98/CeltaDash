@@ -18,7 +18,7 @@ class PersonalizedCategoryTile extends HookConsumerWidget {
     );
 
     final hasSelections = selectedCategories.isNotEmpty;
-    final selectedNames = selectedCategories.map((c) => c.name).join(', ');
+    final selectedNames = selectedCategories.map((c) => c.label).join(', ');
     final titleText = hasSelections
         ? '${'Agrupamento por categoria:'.hardcoded} ($selectedNames)'
         : 'Agrupamento por categoria'.hardcoded;
@@ -38,7 +38,7 @@ class PersonalizedCategoryTile extends HookConsumerWidget {
           dense: true,
           value: isSelected,
           title: BaseText.bodyMedium(
-            category.name.hardcoded,
+            category.label.hardcoded,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
           ),
           onChanged: (_) {

@@ -1,4 +1,4 @@
-import 'package:celta_dash/data/database/database.dart';
+import 'package:celta_dash/core/infrastructure/storage/storage.dart';
 import 'package:celta_dash/features/splash/data/datasource/i_version_datasource.dart';
 
 class FirebaseVersionDatasource implements IVersionDatasource {

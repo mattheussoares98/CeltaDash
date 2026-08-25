@@ -1,6 +1,3 @@
-import 'package:celta_dash/utils/utils.dart';
-
-import '../../ui/pages/pages.dart';
 import 'helpers.dart';
 
 abstract class DateRangeParams {
@@ -38,35 +35,6 @@ class SearchHelper {
     }
   }
 
-  static bool changedTheEnterprise<T extends DateRangeParams>({
-    required PeriodType selectedPeriodType,
-    required EcEnterpriseViewModel? selectedEnterprise,
-    T? lastGetStatisticsParams,
-    T? lastHourlyParams,
-    T? lastDailyParams,
-    T? lastMonthlyParams,
-    T? lastYearlyParams,
-  }) {
-    bool changed(T? params) {
-      return params?.enterpriseIds?.any(
-            (e) => e == selectedEnterprise?.id?.toInt(),
-          ) ==
-          false;
-    }
-
-    if (lastGetStatisticsParams != null) {
-      return changed(lastGetStatisticsParams);
-    } else if (selectedPeriodType == PeriodType.hourly) {
-      return changed(lastHourlyParams);
-    } else if (selectedPeriodType == PeriodType.daily) {
-      return changed(lastDailyParams);
-    } else if (selectedPeriodType == PeriodType.monthly) {
-      return changed(lastMonthlyParams);
-    } else if (selectedPeriodType == PeriodType.yearly) {
-      return changed(lastYearlyParams);
-    }
-    return false;
-  }
 
   static bool _canSearchYearly<T extends DateRangeParams>(
     T? lastParams,

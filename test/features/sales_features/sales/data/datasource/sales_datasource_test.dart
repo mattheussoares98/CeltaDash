@@ -1,5 +1,6 @@
 import 'package:celta_dash/core/domain/domain.dart';
-import 'package:celta_dash/data/http/http.dart';
+import 'package:celta_dash/core/infrastructure/http/http.dart';
+import 'package:celta_dash/data/models/models.dart';
 import 'package:celta_dash/features/login/login.dart';
 import 'package:celta_dash/features/sales_features/sales/data/datasource/datasource.dart';
 import 'package:flutter_test/flutter_test.dart';

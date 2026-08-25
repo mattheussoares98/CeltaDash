@@ -1,8 +1,6 @@
-import 'package:celta_dash/utils/utils.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../domain/entities/entities.dart';
-import '../../ui/pages/pages.dart';
 
 class EnterpriseModel extends Equatable {
   final int? id;
@@ -49,19 +47,4 @@ class EnterpriseModel extends Equatable {
     cnpj: cnpj,
   );
 
-  factory EnterpriseModel.fromViewModel(EcEnterpriseViewModel viewModel) {
-    return EnterpriseModel(
-      id: viewModel.id?.toInt(),
-      name: viewModel.name,
-      personalizedCode: viewModel.personalizedCode,
-      cnpj: viewModel.cnpj,
-    );
-  }
-
-  EcEnterpriseViewModel toViewModel() => EcEnterpriseViewModel(
-    id: id.toString(),
-    name: name,
-    personalizedCode: personalizedCode,
-    cnpj: cnpj,
-  );
 }

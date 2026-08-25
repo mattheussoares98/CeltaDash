@@ -1,8 +1,6 @@
-import 'package:celta_dash/utils/utils.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../domain/entities/entities.dart';
-import '../../ui/pages/pages.dart';
 
 class SaleStatisticsModel extends Equatable {
   final num? LiquidValue;
@@ -152,63 +150,4 @@ class SaleStatisticsModel extends Equatable {
     QuantitySales: QuantitySales,
   );
 
-  factory SaleStatisticsModel.fromViewModel(SaleStatisticViewModel viewModel) {
-    double? parsedLiquidValue = double.tryParse(viewModel.LiquidValue ?? '');
-    double? parsedQuantityOfProducts = double.tryParse(
-      viewModel.QuantityOfProducts ?? '',
-    );
-    double? parsedTotalRepositionCost = double.tryParse(
-      viewModel.TotalRepositionCost ?? '',
-    );
-    int? parsedYear = int.tryParse(viewModel.Year ?? '');
-    int? parsedMonth = int.tryParse(viewModel.Month ?? '');
-    int? parsedHour;
-    if (viewModel.Hour != null && viewModel.Hour!.contains(":")) {
-      parsedHour = int.tryParse(viewModel.Hour!.split(":").first);
-    }
-
-    return SaleStatisticsModel(
-      LiquidValue: parsedLiquidValue,
-      QuantityOfProducts: parsedQuantityOfProducts,
-      TotalRepositionCost: parsedTotalRepositionCost,
-      Year: parsedYear,
-      Month: parsedMonth,
-      Date: viewModel.Date,
-      Hour: parsedHour,
-      Product: viewModel.Product,
-      ProductDepartment: viewModel.ProductDepartment,
-      ProductSection: viewModel.ProductSection,
-      PaymentFinalization: viewModel.PaymentFinalization,
-      PaymentModality: viewModel.PaymentModality,
-      EnterpriseId: viewModel.EnterpriseId?.toInt(),
-      EnterprisePersonalizedCode: viewModel.EnterprisePersonalizedCode,
-      EnterpriseFantasyName: viewModel.EnterpriseFantasyName,
-      CashierOperator: viewModel.CashierOperator,
-      Seller: viewModel.Seller,
-      QuantitySales: viewModel.QuantitySales?.toInt(),
-    );
-  }
-
-  SaleStatisticViewModel toViewModel() {
-    return SaleStatisticViewModel(
-      Date: Date,
-      LiquidValue: LiquidValue?.toString(),
-      QuantityOfProducts: QuantityOfProducts?.toString(),
-      TotalRepositionCost: TotalRepositionCost?.toString(),
-      Year: Year?.toString(),
-      Month: Month?.toString(),
-      Hour: Hour != null ? '$Hour:00\n$Hour:59' : null,
-      Product: Product,
-      ProductDepartment: ProductDepartment,
-      ProductSection: ProductSection,
-      PaymentFinalization: PaymentFinalization,
-      PaymentModality: PaymentModality,
-      EnterpriseId: EnterpriseId?.toString(),
-      EnterprisePersonalizedCode: EnterprisePersonalizedCode,
-      EnterpriseFantasyName: EnterpriseFantasyName,
-      CashierOperator: CashierOperator,
-      Seller: Seller,
-      QuantitySales: QuantitySales?.toString(),
-    );
-  }
 }

@@ -1,6 +1,4 @@
 import 'package:celta_dash/features/sales_features/sales/domain/entities/entities.dart';
-import 'package:celta_dash/ui/pages/pages.dart';
-import 'package:celta_dash/utils/utils.dart';
 import 'package:equatable/equatable.dart';
 
 class SaleMovementFiscalNoteModel extends Equatable {
@@ -24,13 +22,4 @@ class SaleMovementFiscalNoteModel extends Equatable {
   SaleMovementFiscalNoteEntity toEntity() =>
       SaleMovementFiscalNoteEntity(Id: Id, Name: Name);
 
-  SaleMovementFiscalNoteViewModel toViewModel() =>
-      SaleMovementFiscalNoteViewModel(Id: Id?.toString(), Name: Name);
-
-  factory SaleMovementFiscalNoteModel.fromViewModel(
-    SaleMovementFiscalNoteViewModel viewModel,
-  ) => SaleMovementFiscalNoteModel(
-    Id: viewModel.Id?.toInt(),
-    Name: viewModel.Name,
-  );
 }

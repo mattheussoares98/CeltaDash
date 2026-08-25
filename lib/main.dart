@@ -1,6 +1,5 @@
 import 'package:celta_dash/routing/routing.dart';
-import 'package:celta_dash/ui/helpers/helpers.dart';
-import 'package:celta_dash/ui/mixins/mixins.dart';
+import 'package:celta_dash/core/presentation/presentation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -9,7 +8,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:toastification/toastification.dart';
 
 import 'main/utils/utils.dart';
-import 'ui/themes/theme.dart';
 
 void main() async {
   await initApp();
@@ -33,14 +31,12 @@ void main() async {
   runApp(UncontrolledProviderScope(container: container, child: const App()));
 }
 
-class App extends HookConsumerWidget with KeyboardManager {
+class App extends HookConsumerWidget {
   const App({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    StringSize.updateStringSize(context);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
-    IsDarkTheme.updateIsDark(context);
 
     final router = ref.watch(goRouterProvider);
 
@@ -52,11 +48,9 @@ class App extends HookConsumerWidget with KeyboardManager {
         behavior: HitTestBehavior.translucent,
         onTap: () {
           FocusScope.of(context).unfocus();
-          hideKeyboard(context);
         },
         onPanDown: (_) {
           FocusScope.of(context).unfocus();
-          hideKeyboard(context);
         },
         child: MaterialApp.router(
           routerConfig: router,

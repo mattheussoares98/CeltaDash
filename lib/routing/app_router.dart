@@ -32,7 +32,6 @@ GoRouter goRouter(Ref ref) {
       ...homeRoutes(
         rootNavigatorKey,
         [
-          appAnalyticsRoute(),
           saleDetailsRoute(),
           salesRoute(),
           compareDaysRoute(),
@@ -43,7 +42,6 @@ GoRouter goRouter(Ref ref) {
           notSalesRoute(),
           operatorsRoute(),
           sellersRoute(),
-          setGoalRoute(),
           updateAppVersionRoute(),
           webEnterprisesRoute(),
           webEnterpriseDetailsRoute(),

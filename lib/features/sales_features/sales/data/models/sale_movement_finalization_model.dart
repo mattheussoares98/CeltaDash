@@ -1,9 +1,6 @@
 import 'package:celta_dash/features/sales_features/sales/data/models/models.dart';
 import 'package:celta_dash/features/sales_features/sales/domain/entities/entities.dart';
-import 'package:celta_dash/ui/pages/pages.dart';
-import 'package:celta_dash/utils/utils.dart';
 import 'package:equatable/equatable.dart';
-import 'package:intl/intl.dart';
 
 class SaleMovementFinalizationModel extends Equatable {
   final int? Id;
@@ -74,35 +71,4 @@ class SaleMovementFinalizationModel extends Equatable {
     Finalization: Finalization?.toEntity(),
   );
 
-  SaleMovementFinalizationViewModel toViewModel() {
-    final df = DateFormat('yyyy-MM-dd HH:mm:ss');
-    return SaleMovementFinalizationViewModel(
-      Id: Id?.toString(),
-      Value: Value?.toString(),
-      QuantityOfPortions: QuantityOfPortions?.toString(),
-      DateOfExpiration: DateOfExpiration != null
-          ? df.format(DateOfExpiration!)
-          : null,
-      Finalization: Finalization?.toViewModel(),
-    );
-  }
-
-  factory SaleMovementFinalizationModel.fromViewModel(
-    SaleMovementFinalizationViewModel viewModel,
-  ) {
-    final df = DateFormat('yyyy-MM-dd HH:mm:ss');
-    return SaleMovementFinalizationModel(
-      Id: viewModel.Id?.toInt(),
-      Value: viewModel.Value?.toDouble(),
-      QuantityOfPortions: viewModel.QuantityOfPortions?.toInt(),
-      DateOfExpiration: viewModel.DateOfExpiration != null
-          ? df.parse(viewModel.DateOfExpiration!)
-          : null,
-      Finalization: viewModel.Finalization != null
-          ? SaleMovementFinalizationFinalizationModel.fromViewModel(
-              viewModel.Finalization!,
-            )
-          : null,
-    );
-  }
 }

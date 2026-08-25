@@ -1,10 +1,10 @@
 import 'package:celta_dash/features/home/presentation/presentation.dart';
 
 class FakeDailyComparisonController extends DailyComparisonController {
-  FakeDailyComparisonController(this.initialState);
+  FakeDailyComparisonController(this.value);
 
-  final DailyComparisonState initialState;
+  final DailyComparisonState value;
 
   @override
-  Future<DailyComparisonState> build(int enterpriseId) async => initialState;
+  Future<DailyComparisonState> build(int enterpriseId) async => value;
 }

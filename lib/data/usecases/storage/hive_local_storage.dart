@@ -1,7 +1,7 @@
 import '../../../domain/usecases/usecases.dart';
 import '../../../infra/helpers/helpers.dart';
-import '../../database/database.dart';
-import '../../mixins/mixins.dart';
+import 'package:celta_dash/core/infrastructure/http/http.dart';
+import 'package:celta_dash/core/infrastructure/storage/storage.dart';
 
 class HiveLocalStorage with ErrorHandling implements LocalStorage {
   final HiveStorage hiveAdapter;
