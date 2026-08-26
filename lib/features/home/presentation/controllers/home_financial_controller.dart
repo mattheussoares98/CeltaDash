@@ -16,7 +16,7 @@ class HomeFinancialController extends _$HomeFinancialController {
     HomeFinancialPeriod selectedPeriod,
   ) async {
     ref.watch(activeEcParamsStateControllerProvider);
-    final periodType = ref.watch(homeFinancialPeriodTypeControllerProvider);
+    final filters = ref.watch(homeFinancialFiltersControllerProvider);
     final initialSelectedDate = (await ref.read(
       homeControllerProvider.future,
     )).selectedDate;
@@ -29,7 +29,7 @@ class HomeFinancialController extends _$HomeFinancialController {
     final financialController = ref.watch(
       financialTitlesControllerProvider(
         periodGrouping: selectedPeriod.periodGrouping,
-        periodType: periodType,
+        periodType: filters.periodType,
       ).notifier,
     );
     final financialState = await financialController.loadData(
@@ -37,7 +37,8 @@ class HomeFinancialController extends _$HomeFinancialController {
         enterpriseId: enterpriseId,
         selectedDate: selectedDate,
         selectedPeriod: selectedPeriod,
-        periodType: periodType,
+        periodType: filters.periodType,
+        situations: filters.situations,
       ),
       forceRefresh: true,
     );
@@ -57,6 +58,7 @@ class HomeFinancialController extends _$HomeFinancialController {
     required DateTime selectedDate,
     required HomeFinancialPeriod selectedPeriod,
     required FinancialTitlePeriodType periodType,
+    required Set<FinancialTitleSituation> situations,
   }) {
     switch (selectedPeriod) {
       case HomeFinancialPeriod.daily:
@@ -68,6 +70,7 @@ class HomeFinancialController extends _$HomeFinancialController {
           endDate: endDate,
           periodGrouping: FinancialTitlePeriodGrouping.day,
           periodType: periodType,
+          situations: situations.toList(),
         );
       case HomeFinancialPeriod.monthly:
         final startDate = DateTime(selectedDate.year);
@@ -78,6 +81,7 @@ class HomeFinancialController extends _$HomeFinancialController {
           endDate: endDate,
           periodGrouping: FinancialTitlePeriodGrouping.month,
           periodType: periodType,
+          situations: situations.toList(),
         );
       // case HomeFinancialPeriod.yearly:
       //   final startDate = DateTime(selectedDate.year - 2);

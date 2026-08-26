@@ -1,4 +1,3 @@
-// lib/features/home/presentation/pages/financial/resume/components/financial_resume_content.dart
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/utils/constants/constants.dart';
@@ -107,7 +106,14 @@ class FinancialResumeContent extends HookConsumerWidget {
             padding: EdgeInsets.only(bottom: Sizes.p4),
             child: Align(
               alignment: Alignment.centerRight,
-              child: FinancialPeriodTypeSelector(),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  FinancialSituationSelector(),
+                  gapW8,
+                  FinancialPeriodTypeSelector(),
+                ],
+              ),
             ),
           ),
           Expanded(child: content),

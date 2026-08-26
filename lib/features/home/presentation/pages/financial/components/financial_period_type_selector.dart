@@ -1,4 +1,3 @@
-// lib/features/home/presentation/pages/financial/components/financial_period_type_selector.dart
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/features/financial_titles/domain/entities/entities.dart';
 import 'package:celta_dash/features/home/home.dart';
@@ -12,7 +11,11 @@ class FinancialPeriodTypeSelector extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedType = ref.watch(homeFinancialPeriodTypeControllerProvider);
+    final selectedType = ref.watch(
+      homeFinancialFiltersControllerProvider.select(
+        (state) => state.periodType,
+      ),
+    );
     final theme = context.theme;
 
     return PopupMenuButton<FinancialTitlePeriodType>(
@@ -21,7 +24,7 @@ class FinancialPeriodTypeSelector extends ConsumerWidget {
       initialValue: selectedType,
       onSelected: (type) {
         ref
-            .read(homeFinancialPeriodTypeControllerProvider.notifier)
+            .read(homeFinancialFiltersControllerProvider.notifier)
             .setPeriodType(type);
       },
       itemBuilder: (context) => [

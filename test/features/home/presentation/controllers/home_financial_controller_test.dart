@@ -24,7 +24,10 @@ void main() {
   final selectedDate = DateTime(2026, 8, 17);
   const enterpriseId = 10;
 
-  SearchFinancialTitleDataParams makeParams(HomeFinancialPeriod period) {
+  SearchFinancialTitleDataParams makeParams(
+    HomeFinancialPeriod period, {
+    List<FinancialTitleSituation> situations = FinancialTitleSituation.values,
+  }) {
     switch (period) {
       case HomeFinancialPeriod.daily:
         return SearchFinancialTitleDataParams(
@@ -33,6 +36,7 @@ void main() {
           endDate: DateTime(2026, 8, 31),
           periodGrouping: FinancialTitlePeriodGrouping.day,
           periodType: FinancialTitlePeriodType.expiration,
+          situations: situations,
         );
       case HomeFinancialPeriod.monthly:
         return SearchFinancialTitleDataParams(
@@ -41,6 +45,7 @@ void main() {
           endDate: DateTime(2026, 12, 31),
           periodGrouping: FinancialTitlePeriodGrouping.month,
           periodType: FinancialTitlePeriodType.expiration,
+          situations: situations,
         );
       // case HomeFinancialPeriod.yearly:
       //   return SearchFinancialTitleDataParams(
@@ -154,7 +159,9 @@ void main() {
 
     await container.read(provider.future);
     final homeController = container.read(homeControllerProvider.notifier);
-    final currentHomeState = container.read(homeControllerProvider).requireValue;
+    final currentHomeState = container
+        .read(homeControllerProvider)
+        .requireValue;
     (homeController as FakeHomeController).updateState(
       currentHomeState.copyWith(appMode: AppMode.sales),
     );
@@ -163,6 +170,33 @@ void main() {
     expect(container.read(provider).requireValue, responseEntity);
     verify(
       () => repository.getData(params: params, ecParams: ecParams),
+    ).called(1);
+  });
+
+  test('reloads financial data with the selected situations', () async {
+    final initialParams = makeParams(HomeFinancialPeriod.daily);
+    const situations = [FinancialTitleSituation.open];
+    final filteredParams = makeParams(
+      HomeFinancialPeriod.daily,
+      situations: situations,
+    );
+    when(
+      () => repository.getData(params: initialParams, ecParams: ecParams),
+    ).thenAnswer((_) async => responseEntity);
+    when(
+      () => repository.getData(params: filteredParams, ecParams: ecParams),
+    ).thenAnswer((_) async => responseEntity);
+    final provider = homeFinancialControllerProvider(
+      enterpriseId,
+      HomeFinancialPeriod.daily,
+    );
+
+    await container.read(provider.future);
+
+    await container.read(provider.future);
+
+    verify(
+      () => repository.getData(params: filteredParams, ecParams: ecParams),
     ).called(1);
   });
 

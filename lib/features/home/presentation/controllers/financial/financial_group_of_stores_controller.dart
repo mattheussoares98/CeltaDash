@@ -4,6 +4,7 @@ import 'package:celta_dash/features/financial_titles/domain/entities/entities.da
 import 'package:celta_dash/features/financial_titles/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/home/home.dart';
 import 'package:collection/collection.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'financial_group_of_stores_controller.g.dart';
@@ -14,7 +15,11 @@ class FinancialGroupOfStoresController
   @override
   Future<FinancialGroupOfStoresState> build(int enterpriseId) async {
     ref.watch(activeEcParamsStateControllerProvider);
-    final periodType = ref.watch(homeFinancialPeriodTypeControllerProvider);
+    final periodType = ref.watch(
+      homeFinancialFiltersControllerProvider.select(
+        (state) => state.periodType,
+      ),
+    );
     final selectedDate = await ref.watch(
       homeControllerProvider.selectAsync((s) => s.selectedDate),
     );
