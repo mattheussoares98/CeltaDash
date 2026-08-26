@@ -2,8 +2,8 @@
 
 enum FinancialTitleSituation {
   open(1, 'Aberto'),
-  partiallySettled(2, 'Parcialmente Quitado'),
-  completelySettled(3, 'Totalmente Quitado');
+  partiallySettled(2, 'Parcialmente liquidado'),
+  completelySettled(3, 'Totalmente liquidado');
 
   final int value;
   final String label;
