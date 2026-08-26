@@ -1,4 +1,4 @@
-import 'package:celta_dash/features/home/presentation/pages/components/components.dart';
+import 'package:celta_dash/features/home/presentation/pages/sales_pages/components/components.dart';
 import 'package:celta_dash/features/sales_features/sales/presentation/pages/components/components.dart';
 import 'package:flutter/material.dart';
 

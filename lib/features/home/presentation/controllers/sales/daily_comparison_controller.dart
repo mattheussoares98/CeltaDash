@@ -1,6 +1,6 @@
 import 'package:celta_dash/core/providers.dart';
 import 'package:celta_dash/features/home/presentation/controllers/controllers.dart';
-import 'package:celta_dash/features/home/presentation/models/daily_comparison_state.dart';
+import 'package:celta_dash/features/home/presentation/models/sales/daily_comparison_state.dart';
 import 'package:celta_dash/features/home/providers.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/domain/entities/entities.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/presentation/controllers/controllers.dart';
