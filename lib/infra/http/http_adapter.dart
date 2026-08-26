@@ -34,7 +34,7 @@ class HttpAdapter implements HttpClient {
     String applyedUrl = url;
 
     //! replace easily when testing the API
-    if (kDebugMode && 1 == 2) {
+    if (kDebugMode && 1 == 1) {
       applyedUrl = url.replaceFirstMapped(
         RegExp(r'https?://.+?/api', caseSensitive: false),
         (match) => 'http://localhost:58915',

@@ -9,7 +9,7 @@ class HomeFinancialPeriodTypeController
     extends _$HomeFinancialPeriodTypeController {
   @override
   FinancialTitlePeriodType build() {
-    return FinancialTitlePeriodType.emission;
+    return FinancialTitlePeriodType.expiration;
   }
 
   void setPeriodType(FinancialTitlePeriodType periodType) {

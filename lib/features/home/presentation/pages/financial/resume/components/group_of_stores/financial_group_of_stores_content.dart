@@ -1,10 +1,8 @@
 // lib/features/home/presentation/pages/financial/resume/components/group_of_stores/financial_group_of_stores_content.dart
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/features/home/presentation/models/models.dart';
-import 'package:celta_dash/routing/routing.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class FinancialGroupOfStoresContent extends StatelessWidget {
   const FinancialGroupOfStoresContent({super.key, required this.stores});
@@ -15,34 +13,36 @@ class FinancialGroupOfStoresContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final topStores = stores.enterprises.take(4);
     final otherStores = stores.enterprises.skip(4);
+    final otherStoresValue = otherStores.fold<double>(
+      0,
+      (p, n) => p + n.totalVolume,
+    );
 
     final parameters = [
       ...topStores.map(
         (enterprise) => PieParameter(
           value: enterprise.totalVolume > 0 ? enterprise.totalVolume : 1.0,
-          title: BaseText.title(enterprise.name),
+          title: BaseText.bodySmall(enterprise.name, fontWeight: .bold),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               BaseRichText(
                 texts: [
                   BaseText.caption('Rec: '.hardcoded),
+                  BaseText.caption('R\$ '.hardcoded, fontWeight: .bold),
                   BaseText.caption(
-                    enterprise.receiveLiquidValue
-                        .toString()
-                        .toBRL()
-                        .addBrazilianCoin(),
+                    enterprise.receiveLiquidValue.toString().toBRL(),
+                    fontWeight: .bold,
                   ),
                 ],
               ),
               BaseRichText(
                 texts: [
                   BaseText.caption('Pag: '.hardcoded),
+                  BaseText.caption('R\$ '.hardcoded, fontWeight: .bold),
                   BaseText.caption(
-                    enterprise.payLiquidValue
-                        .toString()
-                        .toBRL()
-                        .addBrazilianCoin(),
+                    enterprise.payLiquidValue.toString().toBRL(),
+                    fontWeight: .bold,
                   ),
                 ],
               ),
@@ -50,12 +50,9 @@ class FinancialGroupOfStoresContent extends StatelessWidget {
           ),
         ),
       ),
-      if (otherStores.isNotEmpty)
+      if (otherStores.isNotEmpty && otherStoresValue > 0)
         PieParameter(
-          value: otherStores.fold<double>(
-            0,
-            (total, enterprise) => total + enterprise.totalVolume,
-          ),
+          value: otherStoresValue,
           title: BaseText.title('Outras empresas'.hardcoded),
           subtitle: BaseRichText(
             texts: [
@@ -90,11 +87,6 @@ class FinancialGroupOfStoresContent extends StatelessWidget {
               pieParameters: parameters,
               rightFlex: 55,
               leftFlex: 45,
-            ),
-            gapH8,
-            PrimaryButton(
-              onPressed: () => context.goNamed(Routes.financialHomePeriods.name),
-              text: 'Ver movimentação'.hardcoded,
             ),
           ],
         ),

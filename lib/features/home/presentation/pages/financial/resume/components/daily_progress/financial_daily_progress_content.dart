@@ -1,11 +1,7 @@
 // lib/features/home/presentation/pages/financial/resume/components/daily_progress/financial_daily_progress_content.dart
-import 'dart:math';
-
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
-import 'package:celta_dash/routing/routing.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class FinancialDailyProgressContent extends StatelessWidget {
   const FinancialDailyProgressContent({
@@ -21,9 +17,10 @@ class FinancialDailyProgressContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final total = receiveValue + payValue;
     final balance = receiveValue - payValue;
     final balanceColor = balance >= 0 ? Colors.green : Colors.red;
+    final payColor = balance < 0 ? Colors.red : Colors.amber;
+    final receiveColor = balance < 0 ? Colors.amber : Colors.green;
 
     return Card(
       child: Padding(
@@ -32,68 +29,60 @@ class FinancialDailyProgressContent extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             BaseText.titleLarge(
-              '${'Títulos do dia'.hardcoded.toUpperCase()} (${selectedDate.formatDate()})',
+              'Títulos do dia'.hardcoded.toUpperCase(),
               textAlign: TextAlign.center,
             ),
-            gapH16,
-            LayoutBuilder(
-              builder: (context, constraints) {
-                final circleSize = min(
-                  (constraints.maxWidth - Sizes.p16) / 2,
-                  Sizes.p120,
-                );
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(
-                      child: AnimatedCircleProgress(
-                        key: ValueKey('receive_${receiveValue}_$total'),
-                        title: 'A receber'.hardcoded,
-                        value: receiveValue,
-                        maximum: total > 0
-                            ? total
-                            : (receiveValue > 0 ? receiveValue : 1),
-                        height: circleSize,
-                        width: circleSize,
-                      ),
-                    ),
-                    gapW16,
-                    Expanded(
-                      child: AnimatedCircleProgress(
-                        key: ValueKey('pay_${payValue}_$total'),
-                        title: 'A pagar'.hardcoded,
-                        value: payValue,
-                        maximum: total > 0
-                            ? total
-                            : (payValue > 0 ? payValue : 1),
-                        height: circleSize,
-                        width: circleSize,
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
-            gapH16,
-            Center(
-              child: BaseRichText(
-                texts: [
-                  BaseText.bodyLarge('Saldo do dia: '.hardcoded),
-                  BaseText.title(
-                    balance.toString().toBRL().addBrazilianCoin(),
-                    color: balanceColor,
+            ChartPieWidget(
+              centerPassedColor: context.theme.disabledColor.withAlpha(40),
+              centerRemainingColor: context.theme.colorScheme.surface,
+              showTotalAmount: payValue > 0 && receiveValue > 0,
+              pieParameters: [
+                PieParameter(
+                  value: payValue,
+                  color: payColor,
+                  title: BaseText.bodyMedium('A pagar'.hardcoded),
+                  subtitle: _CurrencyValue(value: payValue, color: payColor),
+                ),
+                PieParameter(
+                  value: receiveValue,
+                  color: receiveColor,
+                  title: BaseText.bodyMedium('A receber'.hardcoded),
+                  subtitle: _CurrencyValue(
+                    value: receiveValue,
+                    color: receiveColor,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            gapH12,
-            PrimaryButton(
-              text: 'Ver movimentação'.hardcoded,
-              onPressed: () => context.goNamed(Routes.financialHomePeriods.name),
+            Center(
+              child: _CurrencyValue(
+                value: balance,
+                color: balanceColor,
+                text: 'Saldo'.hardcoded,
+              ),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _CurrencyValue extends StatelessWidget {
+  const _CurrencyValue({this.text, required this.value, this.color});
+  final String? text;
+  final double value;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    return BaseRichText(
+      color: color,
+      texts: [
+        if (text != null) BaseText.bodyLarge('$text '.hardcoded),
+        BaseText.caption('R\$ '),
+        BaseText.title(value.toString().toBRL()),
+      ],
     );
   }
 }
