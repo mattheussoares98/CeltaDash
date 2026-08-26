@@ -115,8 +115,10 @@ class _DailyFinancialTable extends StatelessWidget {
         ScrollableTableColumnSpec(
           headerTitle: 'Saldo'.hardcoded,
           isMoney: true,
-          cellBuilder: (row) =>
-              BaseText.bodyMedium(row.balance.toString().toBRL()),
+          cellBuilder: (row) => BaseText.title(
+            row.balance.toString().toBRL(),
+            color: row.balance > 0 ? Colors.green : Colors.redAccent,
+          ),
           sortValueMapper: (row) => row.balance,
           footerCellBuilder: (items) => BaseText.bodyMedium(
             items
