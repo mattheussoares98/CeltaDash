@@ -70,6 +70,28 @@ class BaseDropDown<T> extends StatelessWidget {
     final bool isDropdownEnabled =
         onChanged != null && (centeredItems?.length ?? 0) > 0;
 
+    Widget? previousButton = hasStepButtons
+        ? BaseIconButton(
+            targetSize: dropdownHeight,
+            platformIcon: const PlatformIcon(
+              cupertinoIcon: CupertinoIcons.chevron_left,
+              materialIcon: Icons.chevron_left,
+            ),
+            onPressed: onPrevious,
+          )
+        : null;
+
+    Widget? nextButton = hasStepButtons
+        ? BaseIconButton(
+            targetSize: dropdownHeight,
+            platformIcon: const PlatformIcon(
+              cupertinoIcon: CupertinoIcons.chevron_right,
+              materialIcon: Icons.chevron_right,
+            ),
+            onPressed: onNext,
+          )
+        : null;
+
     if (PlatformUtil.isCupertino && !isSimple) {
       final double screenWidth = MediaQuery.sizeOf(context).width;
       final selectedMenuItem = centeredItems?.firstWhereOrNull(
@@ -98,15 +120,7 @@ class BaseDropDown<T> extends StatelessWidget {
                       ?topLeftLabel,
                       Row(
                         children: [
-                          if (hasStepButtons)
-                            BaseIconButton(
-                              targetSize: dropdownHeight,
-                              platformIcon: const PlatformIcon(
-                                cupertinoIcon: CupertinoIcons.chevron_left,
-                                materialIcon: Icons.chevron_left,
-                              ),
-                              onPressed: onPrevious,
-                            ),
+                          ?previousButton,
                           Expanded(
                             child: CupertinoButton(
                               padding: EdgeInsets.only(
@@ -214,15 +228,7 @@ class BaseDropDown<T> extends StatelessWidget {
                               ),
                             ),
                           ),
-                          if (hasStepButtons)
-                            BaseIconButton(
-                              targetSize: dropdownHeight,
-                              platformIcon: const PlatformIcon(
-                                cupertinoIcon: CupertinoIcons.chevron_right,
-                                materialIcon: Icons.chevron_right,
-                              ),
-                              onPressed: onNext,
-                            ),
+                          ?nextButton,
                         ],
                       ),
                     ],
@@ -269,15 +275,7 @@ class BaseDropDown<T> extends StatelessWidget {
                       ?topLeftLabel,
                       Row(
                         children: [
-                          if (hasStepButtons)
-                            BaseIconButton(
-                              targetSize: dropdownHeight,
-                              platformIcon: const PlatformIcon(
-                                cupertinoIcon: CupertinoIcons.chevron_left,
-                                materialIcon: Icons.chevron_left,
-                              ),
-                              onPressed: onPrevious,
-                            ),
+                          ?previousButton,
                           Expanded(
                             child: Align(
                               child: DropdownButtonFormField<T>(
@@ -338,15 +336,7 @@ class BaseDropDown<T> extends StatelessWidget {
                               ),
                             ),
                           ),
-                          if (hasStepButtons)
-                            BaseIconButton(
-                              targetSize: dropdownHeight,
-                              platformIcon: const PlatformIcon(
-                                cupertinoIcon: CupertinoIcons.chevron_right,
-                                materialIcon: Icons.chevron_right,
-                              ),
-                              onPressed: onNext,
-                            ),
+                          ?nextButton,
                         ],
                       ),
                     ],
