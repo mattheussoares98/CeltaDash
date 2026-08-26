@@ -24,7 +24,7 @@ class FinancialDailyProgressContent extends StatelessWidget {
 
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(Sizes.p16),
+        padding: const EdgeInsets.all(Sizes.p8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -40,13 +40,13 @@ class FinancialDailyProgressContent extends StatelessWidget {
                 PieParameter(
                   value: payValue,
                   color: payColor,
-                  title: BaseText.bodyMedium('A pagar'.hardcoded),
+                  title: BaseText.titleMedium('A pagar'.hardcoded),
                   subtitle: _CurrencyValue(value: payValue, color: payColor),
                 ),
                 PieParameter(
                   value: receiveValue,
                   color: receiveColor,
-                  title: BaseText.bodyMedium('A receber'.hardcoded),
+                  title: BaseText.titleMedium('A receber'.hardcoded),
                   subtitle: _CurrencyValue(
                     value: receiveValue,
                     color: receiveColor,
@@ -80,8 +80,8 @@ class _CurrencyValue extends StatelessWidget {
       color: color,
       texts: [
         if (text != null) BaseText.bodyLarge('$text '.hardcoded),
-        BaseText.caption('R\$ '),
-        BaseText.title(value.toString().toBRL()),
+        const BaseText('R\$ '),
+        BaseText.titleLarge(value.toString().toBRL()),
       ],
     );
   }
