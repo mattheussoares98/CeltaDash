@@ -5,6 +5,7 @@ import 'package:celta_dash/features/home/presentation/models/sales/daily_compari
 import 'package:celta_dash/features/home/providers.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/domain/entities/entities.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/presentation/controllers/controllers.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'daily_comparison_controller.g.dart';
@@ -13,6 +14,7 @@ part 'daily_comparison_controller.g.dart';
 class DailyComparisonController extends _$DailyComparisonController {
   @override
   Future<DailyComparisonState> build(int enterpriseId) async {
+    ref.invalidatePeriodically();
     ref.watch(activeEcParamsStateControllerProvider);
 
     final selectedDate = await ref.watch(

@@ -9,14 +9,14 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'products_controller.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class ProductsController extends _$ProductsController {
   @override
   Future<List<SaleStatisticsEntity>> build(
     int enterpriseId,
     ProductsPeriod selectedPeriod,
   ) async {
-    ref.cache();
+    ref.invalidatePeriodically();
     ref.watch(activeEcParamsStateControllerProvider);
     ref.watch(resumeCurrentDateProvider);
     final selectedDate = await ref.watch(

@@ -3,6 +3,7 @@ import 'package:celta_dash/features/app_analytics/providers.dart';
 import 'package:celta_dash/features/home/domain/domain.dart';
 import 'package:celta_dash/features/home/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/home/providers.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'monthly_goals_controller.g.dart';
@@ -11,6 +12,7 @@ part 'monthly_goals_controller.g.dart';
 class MonthlyGoalsController extends _$MonthlyGoalsController {
   @override
   Future<Map<MonthlyGoalKey, MonthlyGoalEntity>> build() async {
+    ref.invalidatePeriodically();
     ref.watch(activeEcParamsStateControllerProvider);
     final repository = ref.read(homeRepositoryProvider);
     final activeEnterprise = await repository.loadActiveEnterprise();

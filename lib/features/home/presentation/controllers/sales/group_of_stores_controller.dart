@@ -4,6 +4,7 @@ import 'package:celta_dash/features/home/presentation/controllers/controllers.da
 import 'package:celta_dash/features/home/presentation/models/models.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/domain/entities/entities.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/presentation/controllers/controllers.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -13,6 +14,7 @@ part 'group_of_stores_controller.g.dart';
 class GroupOfStoresController extends _$GroupOfStoresController {
   @override
   Future<GroupOfStoresState> build(int enterpriseId) async {
+    ref.invalidatePeriodically();
     ref.watch(activeEcParamsStateControllerProvider);
 
     final selectedDate = await ref.watch(

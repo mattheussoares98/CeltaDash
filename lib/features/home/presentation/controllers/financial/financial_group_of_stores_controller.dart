@@ -4,6 +4,7 @@ import 'package:celta_dash/features/app_analytics/providers.dart';
 import 'package:celta_dash/features/financial_titles/domain/entities/entities.dart';
 import 'package:celta_dash/features/financial_titles/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/home/home.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -15,6 +16,7 @@ class FinancialGroupOfStoresController
     extends _$FinancialGroupOfStoresController {
   @override
   Future<FinancialGroupOfStoresState> build(int enterpriseId) async {
+    ref.invalidatePeriodically();
     ref.watch(activeEcParamsStateControllerProvider);
     final periodType = ref.watch(
       homeFinancialFiltersControllerProvider.select(

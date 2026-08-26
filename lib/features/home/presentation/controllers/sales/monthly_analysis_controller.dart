@@ -5,6 +5,7 @@ import 'package:celta_dash/features/home/presentation/models/models.dart';
 import 'package:celta_dash/features/home/providers.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/domain/entities/entities.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/presentation/controllers/controllers.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'monthly_analysis_controller.g.dart';
@@ -13,6 +14,7 @@ part 'monthly_analysis_controller.g.dart';
 class MonthlyAnalysisController extends _$MonthlyAnalysisController {
   @override
   Future<MonthlyAnalysisState> build(int enterpriseId) async {
+    ref.invalidatePeriodically();
     ref.watch(activeEcParamsStateControllerProvider);
 
     final selectedDate = await ref.watch(

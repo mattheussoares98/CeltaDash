@@ -18,6 +18,7 @@ class FinancialTitlesController extends _$FinancialTitlesController {
     FinancialTitlePeriodType periodType = FinancialTitlePeriodType.expiration,
   }) {
     ref.cache();
+    ref.invalidatePeriodically();
     ref.watch(activeEcParamsStateControllerProvider);
     return const AsyncValue.data(FinancialTitleDataResponseEntity());
   }
