@@ -9,6 +9,4 @@ abstract class IWebEnterprisesRepository {
   );
 
   Future<void> updateEnterprise(FirebaseEnterpriseEntity enterprise);
-
-  Future<List<WebAnalyticsEntity>> getAnalytics(DateTime period);
 }

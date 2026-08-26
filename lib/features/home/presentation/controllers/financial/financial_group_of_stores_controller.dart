@@ -1,5 +1,6 @@
 // lib/features/home/presentation/controllers/financial/financial_group_of_stores_controller.dart
 import 'package:celta_dash/core/providers.dart';
+import 'package:celta_dash/features/app_analytics/providers.dart';
 import 'package:celta_dash/features/financial_titles/domain/entities/entities.dart';
 import 'package:celta_dash/features/financial_titles/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/home/home.dart';
@@ -73,6 +74,13 @@ class FinancialGroupOfStoresController
         financialState.stackTrace!,
       );
     }
+
+    ref
+        .read(appAnalyticsRepositoryProvider)
+        .addNewMonthlyAnalytic(
+          reportType: .financialGroupOfStores,
+          periodType: .daily,
+        );
 
     final portions = financialState.requireValue.financialTitlePortions;
     final grouped = groupBy(

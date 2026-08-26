@@ -1,5 +1,6 @@
 import 'package:celta_dash/core/providers.dart';
 import 'package:celta_dash/domain/entities/entities.dart';
+import 'package:celta_dash/features/app_analytics/providers.dart';
 import 'package:celta_dash/features/home/home.dart' hide HomeSalesPeriod;
 import 'package:celta_dash/features/sales_features/sales/presentation/models/models.dart';
 import 'package:celta_dash/features/sales_features/sales/providers.dart';
@@ -28,7 +29,7 @@ class SalesController extends _$SalesController {
       homeControllerProvider.selectAsync((state) => state.selectedDate),
     );
 
-    return ref
+    final movements = await ref
         .watch(salesRepositoryProvider)
         .getSaleMovements(
           params: _buildParams(
@@ -40,6 +41,15 @@ class SalesController extends _$SalesController {
           ),
           ecParams: ecParams,
         );
+
+    ref
+        .read(appAnalyticsRepositoryProvider)
+        .addNewMonthlyAnalytic(
+          reportType: onlyCancelled ? .canceledSales : .notCanceledSales,
+          periodType: selectedPeriod == SalesPeriod.daily ? .daily : .monthly,
+        );
+
+    return movements;
   }
 
   GetSaleMovementParams _buildParams({

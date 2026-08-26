@@ -1,5 +1,6 @@
 // lib/features/group_summary/presentation/controllers/group_summary_controller.dart
 import 'package:celta_dash/core/providers.dart';
+import 'package:celta_dash/features/app_analytics/providers.dart';
 import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/features/sales_features/group_summary/presentation/models/models.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/domain/entities/entities.dart';
@@ -44,6 +45,15 @@ class GroupSummaryController extends _$GroupSummaryController {
         statisticsState.stackTrace!,
       );
     }
+
+    ref
+        .read(appAnalyticsRepositoryProvider)
+        .addNewMonthlyAnalytic(
+          reportType: .groupSummary,
+          periodType: selectedPeriod == GroupSummaryPeriod.daily
+              ? .daily
+              : .monthly,
+        );
 
     return statisticsState.requireValue;
   }

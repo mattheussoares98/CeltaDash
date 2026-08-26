@@ -1,4 +1,5 @@
 import 'package:celta_dash/core/providers.dart';
+import 'package:celta_dash/features/app_analytics/providers.dart';
 import 'package:celta_dash/features/home/domain/domain.dart';
 import 'package:celta_dash/features/home/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/home/presentation/models/models.dart';
@@ -91,6 +92,13 @@ class MonthlyGoalComparisonController
     }
 
     final resolvedCustomGoal = await customGoal;
+
+    ref
+        .read(appAnalyticsRepositoryProvider)
+        .addNewMonthlyAnalytic(
+          reportType: .monthlyGoalComparison,
+          periodType: .monthly,
+        );
 
     return MonthlyGoalComparisonState(
       selectedDate: selectedDate,

@@ -1,4 +1,5 @@
 // lib/features/compare_months/presentation/controllers/compare_months_controller.dart
+import 'package:celta_dash/features/app_analytics/providers.dart';
 import 'package:celta_dash/features/sales_features/compare_months/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/sales_features/compare_months/presentation/models/models.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/domain/entities/entities.dart';
@@ -51,6 +52,13 @@ class CompareMonthsController extends _$CompareMonthsController {
         Error.throwWithStackTrace(result.error!, result.stackTrace!);
       }
     }
+
+    ref
+        .read(appAnalyticsRepositoryProvider)
+        .addNewMonthlyAnalytic(
+          reportType: .compareMonths,
+          periodType: .monthly,
+        );
 
     return CompareMonthsState(
       firstMonthStatistics: results.first.requireValue,

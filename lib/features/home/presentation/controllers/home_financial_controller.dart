@@ -1,5 +1,6 @@
 // lib/features/home/presentation/controllers/home_financial_controller.dart
 import 'package:celta_dash/core/providers.dart';
+import 'package:celta_dash/features/app_analytics/providers.dart';
 import 'package:celta_dash/features/financial_titles/domain/entities/entities.dart';
 import 'package:celta_dash/features/financial_titles/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/home/home.dart';
@@ -49,6 +50,15 @@ class HomeFinancialController extends _$HomeFinancialController {
         financialState.stackTrace!,
       );
     }
+
+    ref
+        .read(appAnalyticsRepositoryProvider)
+        .addNewMonthlyAnalytic(
+          reportType: .financial,
+          periodType: selectedPeriod == HomeFinancialPeriod.daily
+              ? .daily
+              : .monthly,
+        );
 
     return financialState.requireValue;
   }

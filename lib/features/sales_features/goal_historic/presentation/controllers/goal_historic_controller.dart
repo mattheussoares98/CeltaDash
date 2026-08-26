@@ -1,4 +1,5 @@
 import 'package:celta_dash/core/providers.dart';
+import 'package:celta_dash/features/app_analytics/providers.dart';
 import 'package:celta_dash/features/home/domain/domain.dart';
 import 'package:celta_dash/features/home/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/sales_features/goal_historic/presentation/controllers/controllers.dart';
@@ -75,6 +76,10 @@ class GoalHistoricController extends _$GoalHistoricController {
 
     final currentYearStatistics = initialStates.first.requireValue;
     final previousYearStatistics = initialStates.last.requireValue;
+
+    ref
+        .read(appAnalyticsRepositoryProvider)
+        .addNewMonthlyAnalytic(reportType: .goalHistoric, periodType: .yearly);
 
     final rows = <GoalHistoricRowState>[];
 

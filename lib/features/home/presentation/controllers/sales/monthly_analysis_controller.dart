@@ -1,4 +1,5 @@
 import 'package:celta_dash/core/providers.dart';
+import 'package:celta_dash/features/app_analytics/providers.dart';
 import 'package:celta_dash/features/home/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/home/presentation/models/models.dart';
 import 'package:celta_dash/features/home/providers.dart';
@@ -49,6 +50,13 @@ class MonthlyAnalysisController extends _$MonthlyAnalysisController {
         statisticsState.stackTrace!,
       );
     }
+
+    ref
+        .read(appAnalyticsRepositoryProvider)
+        .addNewMonthlyAnalytic(
+          reportType: .monthlyAnalysis,
+          periodType: .monthly,
+        );
 
     final statistics = statisticsState.requireValue;
     final dates =

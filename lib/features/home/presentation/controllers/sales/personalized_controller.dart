@@ -1,6 +1,6 @@
-// lib/features/home/presentation/controllers/personalized_controller.dart
 import 'package:celta_dash/core/providers.dart';
 import 'package:celta_dash/domain/helpers/helpers.dart';
+import 'package:celta_dash/features/app_analytics/providers.dart';
 import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/providers.dart';
 import 'package:celta_dash/utils/utils.dart';
@@ -202,6 +202,12 @@ class PersonalizedController extends _$PersonalizedController {
         sales: AsyncValue.data(results),
         lastLoadedParams: params,
       );
+      ref
+          .read(appAnalyticsRepositoryProvider)
+          .addNewMonthlyAnalytic(
+            reportType: .personalized,
+            periodType: .personalized,
+          );
       return true;
     } catch (e, stackTrace) {
       state = state.copyWith(sales: AsyncValue.error(e, stackTrace));

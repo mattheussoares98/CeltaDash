@@ -1,4 +1,5 @@
 import 'package:celta_dash/core/providers.dart';
+import 'package:celta_dash/features/app_analytics/providers.dart';
 import 'package:celta_dash/features/home/domain/domain.dart';
 import 'package:celta_dash/features/home/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/home/providers.dart';
@@ -23,6 +24,11 @@ class MonthlyGoalsController extends _$MonthlyGoalsController {
       firebaseEnterpriseId: firebaseEnterpriseId,
       year: selectedDate.year,
     );
+
+    ref
+        .read(appAnalyticsRepositoryProvider)
+        .addNewMonthlyAnalytic(reportType: .monthlyGoals, periodType: .monthly);
+
     return Map.unmodifiable({
       for (final goal in goals) _keyFor(goal.enterpriseId, goal.month): goal,
     });

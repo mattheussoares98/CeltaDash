@@ -17,6 +17,7 @@ enum DateFormatType {
   yMMMEd('yMMMEd'),
   yMMMMEEEEd('yMMMMEEEEd'),
   yMdHm('yMdHm'),
+  yyyyMM('yyyy-MM'),
   Hm('Hm'),
   MM('MM'),
   MMM('MMM'),

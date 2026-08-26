@@ -1,6 +1,6 @@
-import 'package:celta_dash/features/web_enterprises/domain/domain.dart';
-import 'package:celta_dash/features/web_enterprises/presentation/presentation.dart';
-import 'package:celta_dash/features/web_enterprises/providers.dart';
+import 'package:celta_dash/features/app_analytics/domain/domain.dart';
+import 'package:celta_dash/features/app_analytics/presentation/presentation.dart';
+import 'package:celta_dash/features/app_analytics/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -8,25 +8,25 @@ import 'package:mocktail/mocktail.dart';
 import '../../mocks/mocks.dart';
 
 void main() {
-  late MockWebEnterprisesRepository repository;
+  late MockAppAnalyticsRepository repository;
 
-  setUp(() => repository = MockWebEnterprisesRepository());
+  setUp(() => repository = MockAppAnalyticsRepository());
 
   test('build loads analytics for its period family key', () async {
     final period = DateTime(2026, 8);
-    final analytics = [WebEnterprisesEntityFactory.makeWebAnalyticsEntity()];
+    final analytics = [AppAnalyticsEntityFactory.makeAppAnalyticsEntity()];
     when(
       () => repository.getAnalytics(period),
     ).thenAnswer((_) async => analytics);
     final container = ProviderContainer(
       overrides: [
-        webEnterprisesRepositoryProvider.overrideWithValue(repository),
+        appAnalyticsRepositoryProvider.overrideWithValue(repository),
       ],
     );
     addTearDown(container.dispose);
 
     expect(
-      await container.read(webAnalyticsControllerProvider(period).future),
+      await container.read(appAnalyticsControllerProvider(period).future),
       analytics,
     );
     verify(() => repository.getAnalytics(period)).called(1);
@@ -36,17 +36,17 @@ void main() {
     final period = DateTime(2026, 8);
     when(
       () => repository.getAnalytics(period),
-    ).thenAnswer((_) async => const <WebAnalyticsEntity>[]);
+    ).thenAnswer((_) async => const <AppAnalyticsEntity>[]);
     final container = ProviderContainer(
       overrides: [
-        webEnterprisesRepositoryProvider.overrideWithValue(repository),
+        appAnalyticsRepositoryProvider.overrideWithValue(repository),
       ],
     );
     addTearDown(container.dispose);
-    await container.read(webAnalyticsControllerProvider(period).future);
+    await container.read(appAnalyticsControllerProvider(period).future);
 
     await container
-        .read(webAnalyticsControllerProvider(period).notifier)
+        .read(appAnalyticsControllerProvider(period).notifier)
         .refresh();
 
     verify(() => repository.getAnalytics(period)).called(2);

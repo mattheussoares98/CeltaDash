@@ -1,6 +1,6 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
-import 'package:celta_dash/features/web_enterprises/domain/domain.dart';
-import 'package:celta_dash/features/web_enterprises/presentation/controllers/controllers.dart';
+import 'package:celta_dash/features/app_analytics/domain/domain.dart';
+import 'package:celta_dash/features/app_analytics/presentation/controllers/controllers.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -37,11 +37,11 @@ class WebAnalyticsView extends HookConsumerWidget {
           builder: (context, _) {
             return AsyncValueWidget(
               value: ref.watch(
-                webAnalyticsControllerProvider(selectedPeriod.value),
+                appAnalyticsControllerProvider(selectedPeriod.value),
               ),
               preserveValue: true,
               tryAgain: () => ref.invalidate(
-                webAnalyticsControllerProvider(selectedPeriod.value),
+                appAnalyticsControllerProvider(selectedPeriod.value),
               ),
               data: (items) {
                 if (items.isEmpty) {
@@ -58,7 +58,7 @@ class WebAnalyticsView extends HookConsumerWidget {
                   );
                 }).toList();
 
-                int sum(List<WebAnalyticsSearchCountEntity> items) {
+                int sum(List<AppAnalyticsSearchCountEntity> items) {
                   return items.fold(0, (total, item) => total + item.count);
                 }
 

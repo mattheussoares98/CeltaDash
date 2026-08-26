@@ -1,4 +1,5 @@
 import 'package:celta_dash/core/providers.dart';
+import 'package:celta_dash/features/app_analytics/providers.dart';
 import 'package:celta_dash/features/home/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/home/presentation/models/sales/daily_comparison_state.dart';
 import 'package:celta_dash/features/home/providers.dart';
@@ -75,6 +76,13 @@ class DailyComparisonController extends _$DailyComparisonController {
       );
     }
     final results = [selectedState.requireValue, comparisonState.requireValue];
+
+    ref
+        .read(appAnalyticsRepositoryProvider)
+        .addNewMonthlyAnalytic(
+          reportType: .dailyComparison,
+          periodType: .daily,
+        );
 
     return DailyComparisonState(
       selectedDate: isCurrentDay ? DateTime.now() : selectedDate,

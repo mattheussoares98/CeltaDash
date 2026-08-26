@@ -1,3 +1,4 @@
+import 'package:celta_dash/features/app_analytics/providers.dart';
 import 'package:celta_dash/features/sales_features/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/sales_features/presentation/models/models.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/domain/entities/entities.dart';
@@ -50,6 +51,10 @@ class CompareDaysController extends _$CompareDaysController {
         Error.throwWithStackTrace(result.error!, result.stackTrace!);
       }
     }
+
+    ref
+        .read(appAnalyticsRepositoryProvider)
+        .addNewMonthlyAnalytic(reportType: .compareDays, periodType: .hourly);
 
     return CompareDaysState(
       firstDayStatistics: results.first.requireValue,

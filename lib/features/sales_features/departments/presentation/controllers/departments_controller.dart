@@ -1,6 +1,6 @@
-// lib/features/departments/presentation/controllers/departments_controller.dart
 import 'package:celta_dash/core/providers.dart';
 import 'package:celta_dash/domain/helpers/helpers.dart';
+import 'package:celta_dash/features/app_analytics/providers.dart';
 import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/features/sales_features/departments/presentation/models/models.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/domain/entities/entities.dart';
@@ -44,6 +44,15 @@ class DepartmentsController extends _$DepartmentsController {
         statisticsState.stackTrace!,
       );
     }
+
+    ref
+        .read(appAnalyticsRepositoryProvider)
+        .addNewMonthlyAnalytic(
+          reportType: .departments,
+          periodType: selectedPeriod == DepartmentsPeriod.daily
+              ? .daily
+              : .monthly,
+        );
 
     return statisticsState.requireValue;
   }

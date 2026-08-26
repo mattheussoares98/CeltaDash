@@ -1,4 +1,5 @@
 import 'package:celta_dash/core/providers.dart';
+import 'package:celta_dash/features/app_analytics/providers.dart';
 import 'package:celta_dash/features/home/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/home/presentation/models/models.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/domain/entities/entities.dart';
@@ -52,6 +53,10 @@ class GroupOfStoresController extends _$GroupOfStoresController {
         statisticsState.stackTrace!,
       );
     }
+
+    ref
+        .read(appAnalyticsRepositoryProvider)
+        .addNewMonthlyAnalytic(reportType: .groupOfStores, periodType: .daily);
 
     final grouped = groupBy(
       statisticsState.requireValue,

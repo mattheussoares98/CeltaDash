@@ -18,6 +18,4 @@ abstract class IWebEnterprisesDatasource {
   Future<void> createEnterprise(FirebaseEnterpriseModel enterprise);
 
   Future<void> updateEnterprise(FirebaseEnterpriseModel enterprise);
-
-  Future<List<WebAnalyticsModel>> getAnalytics(DateTime period);
 }

@@ -1,5 +1,6 @@
 import 'package:celta_dash/core/providers.dart';
 import 'package:celta_dash/domain/helpers/helpers.dart';
+import 'package:celta_dash/features/app_analytics/providers.dart';
 import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/features/sales_features/operators/presentation/models/models.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/domain/entities/entities.dart';
@@ -43,6 +44,17 @@ class OperatorsController extends _$OperatorsController {
         statisticsState.stackTrace!,
       );
     }
+
+    ref
+        .read(appAnalyticsRepositoryProvider)
+        .addNewMonthlyAnalytic(
+          reportType: .operators,
+          periodType: switch (selectedPeriod) {
+            OperatorsPeriod.daily => .daily,
+            OperatorsPeriod.monthly => .monthly,
+            OperatorsPeriod.yearly => .yearly,
+          },
+        );
 
     return statisticsState.requireValue;
   }

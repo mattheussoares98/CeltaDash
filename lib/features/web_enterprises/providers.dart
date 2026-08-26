@@ -11,6 +11,7 @@ IWebEnterprisesDatasource webEnterprisesDatasource(Ref ref) =>
       firebaseStorage: ref.watch(firebaseStorageProvider),
       soapRequest: ref.watch(soapRequestProvider),
       httpClient: ref.watch(httpClientProvider),
+      localStorage: ref.watch(localStorageProvider),
     );
 
 @riverpod

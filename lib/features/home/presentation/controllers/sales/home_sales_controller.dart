@@ -1,5 +1,6 @@
 // lib/features/home/presentation/controllers/sales_controller.dart
 import 'package:celta_dash/core/providers.dart';
+import 'package:celta_dash/features/app_analytics/providers.dart';
 import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/domain/entities/entities.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/presentation/controllers/controllers.dart';
@@ -43,6 +44,18 @@ class HomeSalesController extends _$HomeSalesController {
         statisticsState.stackTrace!,
       );
     }
+
+    ref
+        .read(appAnalyticsRepositoryProvider)
+        .addNewMonthlyAnalytic(
+          reportType: .sales,
+          periodType: switch (selectedPeriod) {
+            HomeSalesPeriod.hourly => .hourly,
+            HomeSalesPeriod.daily => .daily,
+            HomeSalesPeriod.monthly => .monthly,
+            HomeSalesPeriod.yearly => .yearly,
+          },
+        );
 
     return statisticsState.requireValue;
   }

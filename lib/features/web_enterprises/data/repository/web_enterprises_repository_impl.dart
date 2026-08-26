@@ -52,10 +52,4 @@ class WebEnterprisesRepositoryImpl implements IWebEnterprisesRepository {
       datasource.updateEnterprise(
         FirebaseEnterpriseModel.fromEntity(enterprise),
       );
-
-  @override
-  Future<List<WebAnalyticsEntity>> getAnalytics(DateTime period) async {
-    final models = await datasource.getAnalytics(period);
-    return models.map((model) => model.toEntity()).toList(growable: false);
-  }
 }

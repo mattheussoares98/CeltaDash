@@ -1,5 +1,5 @@
-import 'package:celta_dash/features/web_enterprises/data/data.dart';
-import 'package:celta_dash/features/web_enterprises/domain/domain.dart';
+import 'package:celta_dash/features/app_analytics/data/data.dart';
+import 'package:celta_dash/features/app_analytics/domain/domain.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -10,8 +10,12 @@ void main() {
     final enterpriseId = faker.guid.guid();
     final userName = faker.person.name();
     final count = faker.randomGenerator.integer(100, min: 1);
-    final model = WebAnalyticsModel.fromJson({
+    final model = AppAnalyticsModel.fromJson({
       'sales-daily': count,
+      'financial-daily': count,
+      'groupOfStores-daily': count,
+      'compareMonths-monthly': count,
+      'dailyComparison-daily': count,
       'invalid-key': faker.randomGenerator.integer(100),
       'users': [
         {'userName': userName, 'platform': 'web'},
@@ -20,15 +24,22 @@ void main() {
 
     expect(model.enterprise, enterpriseId);
     expect(model.users.single.userName, userName);
-    expect(model.searchCounts.single.reportType, WebAnalyticsReportType.sales);
-    expect(model.searchCounts.single.periodType, WebAnalyticsPeriodType.daily);
-    expect(model.searchCounts.single.count, count);
+    expect(
+      model.searchCounts.map((e) => e.reportType),
+      containsAll([
+        AppAnalyticsReportType.sales,
+        AppAnalyticsReportType.financial,
+        AppAnalyticsReportType.groupOfStores,
+        AppAnalyticsReportType.compareMonths,
+        AppAnalyticsReportType.dailyComparison,
+      ]),
+    );
   });
 
   test('toJson and toEntity preserve analytics data', () {
-    final entity = WebEnterprisesEntityFactory.makeWebAnalyticsEntity();
+    final entity = AppAnalyticsEntityFactory.makeAppAnalyticsEntity();
 
-    final model = WebAnalyticsModel.fromEntity(entity);
+    final model = AppAnalyticsModel.fromEntity(entity);
 
     expect(model.toEntity(), entity);
     final searchCount = entity.searchCounts.single;
