@@ -30,21 +30,23 @@ class FinancialPeriodsContent extends HookConsumerWidget {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
-          child: Row(
+          child: Wrap(
+            alignment: .center,
+            spacing: Sizes.p8,
+            runSpacing: Sizes.p8,
+            crossAxisAlignment: .center,
             children: [
-              Expanded(
-                child: NewBaseSegmentedButtons(
-                  items: HomeFinancialPeriod.values,
-                  selectedValue: selectedPeriod.value,
-                  onChanged: (value) {
-                    selectedPeriod.value = value;
-                    visitedPeriods.value.add(value);
-                  },
-                  itemLabelBuilder: (value) => value.label,
-                ),
+              NewBaseSegmentedButtons(
+                items: HomeFinancialPeriod.values,
+                selectedValue: selectedPeriod.value,
+                onChanged: (value) {
+                  selectedPeriod.value = value;
+                  visitedPeriods.value.add(value);
+                },
+                itemLabelBuilder: (value) => value.label,
               ),
-              gapW8,
-              const FinancialSelectorsFilters(),
+              const FinancialSituationSelector(),
+              const FinancialPeriodTypeSelector(),
             ],
           ),
         ),

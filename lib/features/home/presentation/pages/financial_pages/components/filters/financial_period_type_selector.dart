@@ -1,7 +1,13 @@
-part of 'financial_selectors_filters.dart';
+import 'package:celta_dash/commom_widgets/commom_widgets.dart';
+import 'package:celta_dash/features/financial_titles/domain/entities/financial_title_period_type.dart';
+import 'package:celta_dash/features/home/presentation/controllers/controllers.dart';
+import 'package:celta_dash/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class _FinancialPeriodTypeSelector extends ConsumerWidget {
-  const _FinancialPeriodTypeSelector();
+class FinancialPeriodTypeSelector extends ConsumerWidget {
+  const FinancialPeriodTypeSelector({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -68,7 +74,12 @@ class _FinancialPeriodTypeSelector extends ConsumerWidget {
               color: theme.primaryColor,
             ),
             gapW4,
-            BaseText.caption(selectedType.label, fontWeight: FontWeight.w600),
+            Flexible(
+              child: BaseText.caption(
+                selectedType.label,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
             PlatformIcon(
               materialIcon: Icons.arrow_drop_down,
               cupertinoIcon: CupertinoIcons.chevron_down,

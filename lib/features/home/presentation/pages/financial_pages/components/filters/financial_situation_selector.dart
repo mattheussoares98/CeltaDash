@@ -1,7 +1,13 @@
-part of 'financial_selectors_filters.dart';
+import 'package:celta_dash/commom_widgets/commom_widgets.dart';
+import 'package:celta_dash/features/financial_titles/domain/entities/entities.dart';
+import 'package:celta_dash/features/home/presentation/controllers/controllers.dart';
+import 'package:celta_dash/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class _FinancialSituationSelector extends ConsumerWidget {
-  const _FinancialSituationSelector();
+class FinancialSituationSelector extends ConsumerWidget {
+  const FinancialSituationSelector({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -40,7 +46,7 @@ class _FinancialSituationSelector extends ConsumerWidget {
           border: Border.all(color: theme.dividerColor.withAlpha(60)),
         ),
         child: Row(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: .min,
           children: [
             PlatformIcon(
               materialIcon: Icons.filter_alt_outlined,
@@ -49,9 +55,11 @@ class _FinancialSituationSelector extends ConsumerWidget {
               color: theme.primaryColor,
             ),
             gapW4,
-            BaseText.caption(
-              '${situations.length}/${FinancialTitleSituation.values.length}',
-              fontWeight: FontWeight.w600,
+            Flexible(
+              child: BaseText.caption(
+                '${situations.length}/${FinancialTitleSituation.values.length}',
+                fontWeight: FontWeight.w600,
+              ),
             ),
             PlatformIcon(
               materialIcon: Icons.arrow_drop_down,
