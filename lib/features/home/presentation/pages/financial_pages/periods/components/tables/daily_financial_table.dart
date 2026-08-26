@@ -1,7 +1,6 @@
-// lib/features/home/presentation/pages/financial/components/tables/daily_financial_table.dart
 part of '../financial_periods_content.dart';
 
-class _DailyFinancialTable extends StatelessWidget {
+class _DailyFinancialTable extends ConsumerWidget {
   const _DailyFinancialTable({
     required this.portions,
     required this.selectedDate,
@@ -15,7 +14,7 @@ class _DailyFinancialTable extends StatelessWidget {
   final bool isLoading;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final sorted = List<FinancialTitleDataRowEntity>.from(portions)
       ..sort((a, b) => (a.date?.day ?? 0).compareTo(b.date?.day ?? 0));
 
@@ -52,6 +51,8 @@ class _DailyFinancialTable extends StatelessWidget {
       );
     }).toList();
 
+    final filters = ref.read(homeFinancialFiltersControllerProvider);
+
     return ScrollableTable<FinancialStatisticsRowState>(
       items: rows,
       pdfFileName: 'Movimentação financeira por dia'.hardcoded,
@@ -59,6 +60,10 @@ class _DailyFinancialTable extends StatelessWidget {
       isLoading: isLoading,
       refreshProvider: refreshProvider,
       highlightColumnIndex: 3,
+      pdfSubtitle: [
+        ...filters.situations.map((e) => e.label),
+        'Filtrado por ${filters.periodType.label.toUpperCase()}',
+      ].join('; '),
       columns: [
         ScrollableTableColumnSpec(
           headerTitle: 'Dia'.hardcoded,

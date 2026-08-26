@@ -1,7 +1,6 @@
-// lib/features/home/presentation/pages/financial/components/tables/monthly_financial_table.dart
 part of '../financial_periods_content.dart';
 
-class _MonthlyFinancialTable extends StatelessWidget {
+class _MonthlyFinancialTable extends ConsumerWidget {
   const _MonthlyFinancialTable({
     required this.portions,
     required this.selectedDate,
@@ -15,7 +14,7 @@ class _MonthlyFinancialTable extends StatelessWidget {
   final bool isLoading;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final sorted = List<FinancialTitleDataRowEntity>.from(portions)
       ..sort((a, b) => (a.month ?? 0).compareTo(b.month ?? 0));
 
@@ -53,6 +52,8 @@ class _MonthlyFinancialTable extends StatelessWidget {
       );
     }).toList();
 
+    final filters = ref.read(homeFinancialFiltersControllerProvider);
+
     return ScrollableTable<FinancialStatisticsRowState>(
       items: rows,
       pdfFileName: 'Movimentação financeira por mês'.hardcoded,
@@ -60,6 +61,10 @@ class _MonthlyFinancialTable extends StatelessWidget {
       isLoading: isLoading,
       refreshProvider: refreshProvider,
       highlightColumnIndex: 3,
+      pdfSubtitle: [
+        ...filters.situations.map((e) => e.label),
+        'Filtrado por ${filters.periodType.label.toUpperCase()}',
+      ].join('; '),
       columns: [
         ScrollableTableColumnSpec(
           headerTitle: 'Mês'.hardcoded,
