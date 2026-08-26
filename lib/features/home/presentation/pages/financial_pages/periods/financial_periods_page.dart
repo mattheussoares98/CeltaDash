@@ -1,5 +1,5 @@
 // lib/features/home/presentation/pages/financial/financial_periods_page.dart
-import 'package:celta_dash/features/home/presentation/pages/financial_pages/components/components.dart';
+import 'package:celta_dash/features/home/presentation/pages/financial_pages/periods/components/components.dart';
 import 'package:celta_dash/features/home/presentation/pages/sales_pages/components/components.dart';
 import 'package:flutter/material.dart';
 
