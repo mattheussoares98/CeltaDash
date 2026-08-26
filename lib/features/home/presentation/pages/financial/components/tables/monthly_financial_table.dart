@@ -59,7 +59,7 @@ class _MonthlyFinancialTable extends StatelessWidget {
       fixFirstColumn: true,
       isLoading: isLoading,
       refreshProvider: refreshProvider,
-      initialSortColumnIndex: 0,
+      highlightColumnIndex: 3,
       columns: [
         ScrollableTableColumnSpec(
           headerTitle: 'Mês'.hardcoded,

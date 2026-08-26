@@ -58,7 +58,7 @@ class _DailyFinancialTable extends StatelessWidget {
       fixFirstColumn: true,
       isLoading: isLoading,
       refreshProvider: refreshProvider,
-      initialSortColumnIndex: 0,
+      highlightColumnIndex: 3,
       columns: [
         ScrollableTableColumnSpec(
           headerTitle: 'Dia'.hardcoded,

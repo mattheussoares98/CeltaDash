@@ -3,21 +3,18 @@ import 'package:celta_dash/core/providers.dart';
 import 'package:celta_dash/features/financial_titles/domain/entities/entities.dart';
 import 'package:celta_dash/features/financial_titles/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/home/home.dart';
-import 'package:celta_dash/utils/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'home_financial_controller.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class HomeFinancialController extends _$HomeFinancialController {
   @override
   Future<FinancialTitleDataResponseEntity> build(
     int enterpriseId,
     HomeFinancialPeriod selectedPeriod,
   ) async {
-    ref.cache();
     ref.watch(activeEcParamsStateControllerProvider);
-    ref.watch(resumeCurrentDateProvider);
     final periodType = ref.watch(homeFinancialPeriodTypeControllerProvider);
     final selectedDate = await ref.watch(
       homeControllerProvider.selectAsync((state) => state.selectedDate),
