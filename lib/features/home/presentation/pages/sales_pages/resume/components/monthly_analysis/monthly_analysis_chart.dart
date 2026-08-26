@@ -53,6 +53,7 @@ class MonthlyAnalysisChart extends StatelessWidget {
               ],
               lineTouchData: LineTouchData(
                 touchTooltipData: LineTouchTooltipData(
+                  fitInsideHorizontally: true,
                   getTooltipColor: (_) => theme.colorScheme.inverseSurface,
                   getTooltipItems: (spots) => spots.map((spot) {
                     final day = days[spot.x.toInt()];

@@ -46,7 +46,7 @@ class FinancialMonthlyChart extends StatelessWidget {
               ),
             ),
             gapW4,
-            BaseText.caption('A receber'.hardcoded),
+            BaseText('A receber'.hardcoded),
             gapW16,
             Container(
               width: 10,
@@ -57,7 +57,7 @@ class FinancialMonthlyChart extends StatelessWidget {
               ),
             ),
             gapW4,
-            BaseText.caption('A pagar'.hardcoded),
+            BaseText('A pagar'.hardcoded),
           ],
         ),
         gapH8,
@@ -101,10 +101,7 @@ class FinancialMonthlyChart extends StatelessWidget {
                   belowBarData: BarAreaData(
                     show: true,
                     gradient: LinearGradient(
-                      colors: [
-                        payColor.withAlpha(100),
-                        payColor.withAlpha(10),
-                      ],
+                      colors: [payColor.withAlpha(100), payColor.withAlpha(10)],
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                     ),
@@ -113,6 +110,7 @@ class FinancialMonthlyChart extends StatelessWidget {
               ],
               lineTouchData: LineTouchData(
                 touchTooltipData: LineTouchTooltipData(
+                  fitInsideHorizontally: true,
                   getTooltipColor: (_) => theme.colorScheme.inverseSurface,
                   getTooltipItems: (spots) {
                     if (spots.isEmpty) return [];
