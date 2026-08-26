@@ -30,7 +30,7 @@ class HomeDateSelector extends ConsumerWidget {
           ),
         );
 
-    return PrimaryTextButton(
+    return PrimaryButton(
       key: const ValueKey('home_date_selector'),
       text: homeState.selectedDate.formatDate(),
       isLoading: enterprisesAsync.isLoading,
@@ -50,7 +50,7 @@ class HomeDateSelector extends ConsumerWidget {
                 ref.read(homeControllerProvider.notifier).selectDate(newDate);
               }
             },
-      platformIcon: const PlatformIcon(
+      icon: const PlatformIcon(
         materialIcon: Icons.date_range,
         cupertinoIcon: CupertinoIcons.calendar,
       ),
