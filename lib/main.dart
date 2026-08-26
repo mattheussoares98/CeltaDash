@@ -1,9 +1,8 @@
-import 'package:celta_dash/routing/routing.dart';
 import 'package:celta_dash/core/presentation/presentation.dart';
+import 'package:celta_dash/routing/routing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:toastification/toastification.dart';
 
@@ -12,8 +11,6 @@ import 'main/utils/utils.dart';
 void main() async {
   await initApp();
 
-  // turn off the # in the URLs on the web
-  usePathUrlStrategy();
   // * Register error handlers. For more info, see:
   // * https://docs.flutter.dev/testing/errors
   // * Create ProviderContainer with any required overrides
