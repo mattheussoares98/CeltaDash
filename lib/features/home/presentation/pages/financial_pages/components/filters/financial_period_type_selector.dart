@@ -1,13 +1,7 @@
-import 'package:celta_dash/commom_widgets/commom_widgets.dart';
-import 'package:celta_dash/features/financial_titles/domain/entities/entities.dart';
-import 'package:celta_dash/features/home/home.dart';
-import 'package:celta_dash/utils/utils.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+part of 'financial_selectors_filters.dart';
 
-class FinancialPeriodTypeSelector extends ConsumerWidget {
-  const FinancialPeriodTypeSelector({super.key});
+class _FinancialPeriodTypeSelector extends ConsumerWidget {
+  const _FinancialPeriodTypeSelector();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

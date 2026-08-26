@@ -44,7 +44,7 @@ class FinancialPeriodsContent extends HookConsumerWidget {
                 ),
               ),
               gapW8,
-              const FinancialPeriodTypeSelector(),
+              const FinancialSelectorsFilters(),
             ],
           ),
         ),
