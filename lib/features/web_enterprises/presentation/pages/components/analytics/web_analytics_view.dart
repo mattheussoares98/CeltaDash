@@ -122,7 +122,9 @@ class WebAnalyticsView extends HookConsumerWidget {
                                     child: Icon(
                                       user.platform == 'ios'
                                           ? Icons.apple
-                                          : Icons.android,
+                                          : user.platform == 'android'
+                                          ? Icons.android
+                                          : Icons.public,
                                     ),
                                   ),
                                   const TextSpan(text: ' '),
