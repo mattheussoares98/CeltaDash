@@ -32,6 +32,7 @@ void main() {
           startDate: DateTime(2026, 8),
           endDate: DateTime(2026, 8, 31),
           periodGrouping: FinancialTitlePeriodGrouping.day,
+          periodType: FinancialTitlePeriodType.expiration,
         );
       case HomeFinancialPeriod.monthly:
         return SearchFinancialTitleDataParams(
@@ -39,6 +40,7 @@ void main() {
           startDate: DateTime(2026),
           endDate: DateTime(2026, 12, 31),
           periodGrouping: FinancialTitlePeriodGrouping.month,
+          periodType: FinancialTitlePeriodType.expiration,
         );
       // case HomeFinancialPeriod.yearly:
       //   return SearchFinancialTitleDataParams(
@@ -135,6 +137,30 @@ void main() {
     );
 
     expect(result, responseEntity);
+    verify(
+      () => repository.getData(params: params, ecParams: ecParams),
+    ).called(1);
+  });
+
+  test('does not reload financial data when only app mode changes', () async {
+    final params = makeParams(HomeFinancialPeriod.daily);
+    when(
+      () => repository.getData(params: params, ecParams: ecParams),
+    ).thenAnswer((_) async => responseEntity);
+    final provider = homeFinancialControllerProvider(
+      enterpriseId,
+      HomeFinancialPeriod.daily,
+    );
+
+    await container.read(provider.future);
+    final homeController = container.read(homeControllerProvider.notifier);
+    final currentHomeState = container.read(homeControllerProvider).requireValue;
+    (homeController as FakeHomeController).updateState(
+      currentHomeState.copyWith(appMode: AppMode.sales),
+    );
+    await container.pump();
+
+    expect(container.read(provider).requireValue, responseEntity);
     verify(
       () => repository.getData(params: params, ecParams: ecParams),
     ).called(1);

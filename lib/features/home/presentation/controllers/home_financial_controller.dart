@@ -3,6 +3,7 @@ import 'package:celta_dash/core/providers.dart';
 import 'package:celta_dash/features/financial_titles/domain/entities/entities.dart';
 import 'package:celta_dash/features/financial_titles/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/home/home.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'home_financial_controller.g.dart';
@@ -16,8 +17,13 @@ class HomeFinancialController extends _$HomeFinancialController {
   ) async {
     ref.watch(activeEcParamsStateControllerProvider);
     final periodType = ref.watch(homeFinancialPeriodTypeControllerProvider);
-    final selectedDate = await ref.watch(
-      homeControllerProvider.selectAsync((state) => state.selectedDate),
+    final initialSelectedDate = (await ref.read(
+      homeControllerProvider.future,
+    )).selectedDate;
+    final selectedDate = ref.watch(
+      homeControllerProvider.select(
+        (state) => state.value?.selectedDate ?? initialSelectedDate,
+      ),
     );
 
     final financialController = ref.watch(
