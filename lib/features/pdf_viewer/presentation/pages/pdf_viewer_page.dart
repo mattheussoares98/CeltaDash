@@ -82,18 +82,20 @@ class PdfViewerPage extends HookWidget {
       };
     }, const []);
 
-    return Scaffold(
+    return BaseScaffold(
+      isScrollable: false,
       appBar: AppBar(
         title: BaseText.title(pdfFileName),
         actions: [
-          IconButton(
-            icon: const PlatformIcon(
-              materialIcon: Icons.share,
-              cupertinoIcon: CupertinoIcons.share,
+          if (PlatformUtil.isMobile)
+            IconButton(
+              icon: const PlatformIcon(
+                materialIcon: Icons.share,
+                cupertinoIcon: CupertinoIcons.share,
+              ),
+              onPressed: () => _sharePdf(context),
+              tooltip: 'Compartilhar PDF'.hardcoded,
             ),
-            onPressed: () => _sharePdf(context),
-            tooltip: 'Compartilhar PDF'.hardcoded,
-          ),
         ],
       ),
       body: SfPdfViewer.memory(pdfBytes),
