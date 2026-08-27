@@ -1,2 +1,1 @@
-export './injections.dart';
-export './navigator_key.dart';
+export 'init_app.dart';
