@@ -10,12 +10,14 @@ class PasswordField extends HookWidget {
   final TextEditingController controller;
   final FocusNode focusNode;
   final VoidCallback onSubmitted;
+  final bool isLoading;
 
   const PasswordField({
     super.key,
     required this.controller,
     required this.focusNode,
     required this.onSubmitted,
+    required this.isLoading,
   });
 
   @override
@@ -28,6 +30,7 @@ class PasswordField extends HookWidget {
       obscureText: !showPassword.value,
       labelText: 'Senha'.hardcoded,
       hintText: 'Senha'.hardcoded,
+      enabled: !isLoading,
       autofillHints: const [AutofillHints.password],
       prefixIcon: const PlatformIcon(
         cupertinoIcon: CupertinoIcons.lock_fill,

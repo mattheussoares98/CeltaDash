@@ -9,12 +9,14 @@ class UserField extends StatelessWidget {
   final TextEditingController controller;
   final FocusNode focusNode;
   final FocusNode nextFocusNode;
+  final bool isLoading;
 
   const UserField({
     super.key,
     required this.controller,
     required this.focusNode,
     required this.nextFocusNode,
+    required this.isLoading,
   });
 
   @override
@@ -24,6 +26,7 @@ class UserField extends StatelessWidget {
       focusNode: focusNode,
       labelText: 'Usuário do BS'.hardcoded,
       hintText: 'Usuário do BS'.hardcoded,
+      enabled: !isLoading,
       prefixIcon: const PlatformIcon(
         cupertinoIcon: CupertinoIcons.person_fill,
         materialIcon: Icons.person,

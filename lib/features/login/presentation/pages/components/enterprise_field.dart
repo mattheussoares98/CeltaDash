@@ -9,12 +9,14 @@ class EnterpriseField extends StatelessWidget {
   final TextEditingController controller;
   final FocusNode focusNode;
   final FocusNode nextFocusNode;
+  final bool isLoading;
 
   const EnterpriseField({
     super.key,
     required this.controller,
     required this.focusNode,
     required this.nextFocusNode,
+    required this.isLoading,
   });
 
   @override
@@ -24,6 +26,7 @@ class EnterpriseField extends StatelessWidget {
       focusNode: focusNode,
       labelText: 'Empresa'.hardcoded,
       hintText: 'Empresa'.hardcoded,
+      enabled: !isLoading,
       prefixIcon: const PlatformIcon(
         cupertinoIcon: CupertinoIcons.building_2_fill,
         materialIcon: Icons.business,

@@ -19,11 +19,6 @@ class AddEnterpriseForm extends HookConsumerWidget {
     final userFocusNode = useFocusNode();
     final passwordFocusNode = useFocusNode();
     final formKey = useMemoized(GlobalKey<FormState>.new);
-    final isLoading = ref.watch(
-      enterprisesManagerControllerProvider.select(
-        (s) => s.value?.isProcessing == true,
-      ),
-    );
 
     Future<void> submit() async {
       if (formKey.currentState?.validate() != true) return;
@@ -46,33 +41,45 @@ class AddEnterpriseForm extends HookConsumerWidget {
 
     return Form(
       key: formKey,
-      child: ExpansionTile(
-        title: BaseText.titleMedium('Adicionar nova empresa'.hardcoded),
-        children: [
-          EnterpriseField(
-            controller: enterpriseController,
-            focusNode: enterpriseFocusNode,
-            nextFocusNode: userFocusNode,
-          ),
-          gapH12,
-          UserField(
-            controller: userController,
-            focusNode: userFocusNode,
-            nextFocusNode: passwordFocusNode,
-          ),
-          gapH12,
-          PasswordField(
-            controller: passwordController,
-            focusNode: passwordFocusNode,
-            onSubmitted: submit,
-          ),
-          gapH16,
-          PrimaryButton(
-            text: 'Adicionar'.hardcoded,
-            isLoading: isLoading,
-            onPressed: submit,
-          ),
-        ],
+      child: Consumer(
+        builder: (_, ref, _) {
+          final isLoading = ref.watch(
+            enterprisesManagerControllerProvider.select(
+              (s) => s.value?.isProcessing == true,
+            ),
+          );
+          return ExpansionTile(
+            title: BaseText.titleMedium('Adicionar nova empresa'.hardcoded),
+            children: [
+              EnterpriseField(
+                controller: enterpriseController,
+                focusNode: enterpriseFocusNode,
+                nextFocusNode: userFocusNode,
+                isLoading: isLoading,
+              ),
+              gapH12,
+              UserField(
+                controller: userController,
+                focusNode: userFocusNode,
+                nextFocusNode: passwordFocusNode,
+                isLoading: isLoading,
+              ),
+              gapH12,
+              PasswordField(
+                controller: passwordController,
+                focusNode: passwordFocusNode,
+                isLoading: isLoading,
+                onSubmitted: submit,
+              ),
+              gapH16,
+              PrimaryButton(
+                text: 'Adicionar'.hardcoded,
+                isLoading: isLoading,
+                onPressed: submit,
+              ),
+            ],
+          );
+        },
       ),
     );
   }

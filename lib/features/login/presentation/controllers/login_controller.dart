@@ -1,6 +1,6 @@
 // lib/features/login/presentation/controllers/login_controller.dart
-import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/core/data/data.dart';
+import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/core/providers.dart';
 import 'package:celta_dash/features/login/domain/entities/entities.dart';
 import 'package:celta_dash/features/login/providers.dart';
@@ -15,6 +15,7 @@ part 'login_controller.g.dart';
 class LoginController extends _$LoginController {
   @override
   AsyncValue<void> build() {
+    ref.cache();
     return const AsyncValue.data(null);
   }
 
@@ -23,9 +24,9 @@ class LoginController extends _$LoginController {
     required String user,
     required String password,
   }) async {
+    bool succeeds = false;
     state = const AsyncValue.loading();
-
-    final result = await AsyncValue.guard(() async {
+    state = await AsyncValue.guard(() async {
       final repository = ref.read(loginRepositoryProvider);
       final newEnterprise = await repository.login(
         LoginParams(
@@ -79,9 +80,8 @@ class LoginController extends _$LoginController {
             .read(activeEcParamsStateControllerProvider.notifier)
             .updateParams(params: ecParams, enterprise: newEnterprise);
       }
+      succeeds = true;
     });
-
-    state = result;
-    return !result.hasError;
+    return succeeds;
   }
 }
