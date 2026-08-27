@@ -38,6 +38,7 @@ class ResumeContent extends HookConsumerWidget {
     final isInitialLoading = providerValues.any(
       (item) => item.value.isLoading && !item.value.hasValue,
     );
+    final isLoading = providerValues.any((item) => item.value.isLoading);
 
     Widget content;
     if (isInitialLoading) {
@@ -71,10 +72,21 @@ class ResumeContent extends HookConsumerWidget {
         ],
       );
     } else {
-      content = ResponsiveListFlow(
-        maxItemWidth: Breakpoint.tablet,
-        itemCount: items.length,
-        itemBuilder: (context, index) => items[index],
+      content = Column(
+        children: [
+          if (isLoading)
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: Sizes.p4),
+              child: LinearProgressIndicator(),
+            ),
+          Expanded(
+            child: ResponsiveListFlow(
+              maxItemWidth: Breakpoint.tablet,
+              itemCount: items.length,
+              itemBuilder: (context, index) => items[index],
+            ),
+          ),
+        ],
       );
     }
 

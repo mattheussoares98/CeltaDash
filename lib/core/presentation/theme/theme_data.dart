@@ -198,4 +198,9 @@ CardThemeData get darkCardTheme => const CardThemeData(
   elevation: 0,
 );
 
-
+ProgressIndicatorThemeData get progressIndicatorTheme =>
+    const ProgressIndicatorThemeData(
+      color: AppColors.primaryLight,
+      linearTrackColor: AppColors.fadeLight,
+      borderRadius: BorderRadius.all(Radius.circular(Sizes.p4)),
+    );

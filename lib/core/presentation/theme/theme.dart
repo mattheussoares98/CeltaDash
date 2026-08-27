@@ -25,6 +25,7 @@ ThemeData lightTheme = ThemeData(
   bottomNavigationBarTheme: bottomNavigationBarTheme,
   expansionTileTheme: expansionTileThemeData,
   cardTheme: cardTheme,
+  progressIndicatorTheme: progressIndicatorTheme,
 );
 
 ThemeData darkTheme = ThemeData(
@@ -46,6 +47,5 @@ ThemeData darkTheme = ThemeData(
   bottomNavigationBarTheme: darkBottomNavigationBarTheme,
   expansionTileTheme: darkExpansionTileThemeData,
   cardTheme: darkCardTheme,
+  progressIndicatorTheme: progressIndicatorTheme,
 );
-
-
