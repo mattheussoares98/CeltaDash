@@ -86,6 +86,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
 
     final isLandscape =
         MediaQuery.orientationOf(context) == Orientation.landscape;
+    final showReloadButton = !PlatformUtil.isMobile;
 
     final Widget controls;
     if (homeAsync is AsyncData) {
@@ -105,7 +106,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
             ?dateSelector,
             ?modeToggle,
             ?selectEnterprise,
-            ?reloadButton,
+            if (showReloadButton) ?reloadButton,
           ],
         );
       } else {
@@ -131,7 +132,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
                   ?dateSelector,
                   ?modeToggle,
                   ?selectEnterprise,
-                  ?reloadButton,
+                  if (showReloadButton) ?reloadButton,
                 ],
               ),
             ],
