@@ -43,12 +43,7 @@ class App extends HookConsumerWidget {
     return ToastificationWrapper(
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        onPanDown: (_) {
-          FocusScope.of(context).unfocus();
-        },
+        onTap: FocusScope.of(context).unfocus,
         child: MaterialApp.router(
           routerConfig: router,
           title: 'Celta Dash',
