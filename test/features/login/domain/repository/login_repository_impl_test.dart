@@ -1,5 +1,4 @@
 // test/features/login/domain/repository/login_repository_impl_test.dart
-import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/features/login/login.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -88,12 +87,9 @@ void main() {
       () => mockEnterpriseDatasource.getEnterpriseConfig(
         enterpriseName: tParams.enterpriseName,
       ),
-    ).thenThrow(DomainError.enterpriseNotFound);
+    ).thenThrow(Exception);
 
-    expect(
-      () => repository.login(tParams),
-      throwsA(DomainError.enterpriseNotFound),
-    );
+    expect(() => repository.login(tParams), throwsA(Exception));
   });
 
   test('loadLastLogin delegates to the local datasource', () async {

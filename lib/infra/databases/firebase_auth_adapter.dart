@@ -1,8 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:celta_dash/core/infrastructure/infrastructure.dart';
-
-import '../../domain/helpers/helpers.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class FirebaseAuthAdapter implements FirebaseAuthStorage {
   final FirebaseAuth firebaseAuth;
@@ -11,27 +8,19 @@ class FirebaseAuthAdapter implements FirebaseAuthStorage {
 
   @override
   Future<void> login({required String email, required String password}) async {
-    try {
-      final userCredential = await firebaseAuth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+    final userCredential = await firebaseAuth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
 
-      if (userCredential.user == null) {
-        throw Exception();
-      }
-    } catch (e) {
-      throw DomainError.unexpected;
+    if (userCredential.user == null) {
+      throw Exception();
     }
   }
 
   @override
   Future<void> logout() async {
-    try {
-      await firebaseAuth.signOut();
-    } catch (e) {
-      throw DomainError.unexpected;
-    }
+    await firebaseAuth.signOut();
   }
 
   @override

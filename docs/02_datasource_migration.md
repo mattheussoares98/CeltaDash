@@ -48,7 +48,7 @@ import 'package:celta_dash/data/mixins/mixins.dart';
 import 'package:celta_dash/features/seller/data/datasource/i_seller_datasource.dart';
 import 'package:celta_dash/features/seller/data/models/models.dart';
 
-class SellerDatasource with ErrorHandling implements ISellerDatasource {
+class SellerDatasource  implements ISellerDatasource {
   final HttpClient _httpClient;
 
   const SellerDatasource(this._httpClient);

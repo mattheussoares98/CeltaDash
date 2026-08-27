@@ -2,51 +2,43 @@ import '../../../domain/entities/entities.dart';
 import '../../../domain/usecases/usecases.dart';
 import '../../../main/builders/builders.dart';
 import '../../http/http.dart';
-import '../../mixins/mixins.dart';
 import '../../models/models.dart';
 
-class RemoteLoadSaleMovements with ErrorHandling implements LoadSaleMovements {
+class RemoteLoadSaleMovements implements LoadSaleMovements {
   final HttpClient httpAdapter;
 
   const RemoteLoadSaleMovements(this.httpAdapter);
 
   @override
-  Future<SaleMovementEntity> get(
-    GetSaleMovementParams params,
-  ) async {
+  Future<SaleMovementEntity> get(GetSaleMovementParams params) async {
     final url = EnterpriseBuilder.entity?.baseUrl;
 
-    try {
-      final response = await httpAdapter.request(
-        url: "$url/api/salemovements",
-        method: "post",
-        headers: {
-          "user": EnterpriseBuilder.entity?.bsUser?.name,
-          "accessKey": EnterpriseBuilder.entity?.bsUser?.AccessKey,
+    final response = await httpAdapter.request(
+      url: "$url/api/salemovements",
+      method: "post",
+      headers: {
+        "user": EnterpriseBuilder.entity?.bsUser?.name,
+        "accessKey": EnterpriseBuilder.entity?.bsUser?.AccessKey,
+      },
+      body: {
+        "enterpriseIds": params.enterpriseIds,
+        "dateHourOfBilling": {
+          "startDate": params.startDate.toIso8601String(),
+          "endDate": params.endDate.toIso8601String(),
         },
-        body: {
-          "enterpriseIds": params.enterpriseIds,
-          "dateHourOfBilling": {
-            "startDate": params.startDate.toIso8601String(),
-            "endDate": params.endDate.toIso8601String(),
-          },
-          "DocumentNumbers": params.documentNumbers,
-          "onlyCancelled": params.onlyCancelled ?? false,
-          "OnlyNotCancelled": params.onlyNotCancelled ?? false,
-          "MountFiscalNoteType": params.mountFiscalNoteType ?? false,
-          "MountCustomer": params.mountCustomer ?? false,
-          "MountSeller": params.mountSeller ?? false,
-          "MountProducts": params.mountProducts ?? false,
-          "MountPaymentFinalizations":
-              params.mountPaymentFinalizations ?? false,
-          "ActualPage": params.actualPage ?? 1,
-          "RecordsByPage": params.recordsByPage ?? 100,
-        },
-      );
+        "DocumentNumbers": params.documentNumbers,
+        "onlyCancelled": params.onlyCancelled ?? false,
+        "OnlyNotCancelled": params.onlyNotCancelled ?? false,
+        "MountFiscalNoteType": params.mountFiscalNoteType ?? false,
+        "MountCustomer": params.mountCustomer ?? false,
+        "MountSeller": params.mountSeller ?? false,
+        "MountProducts": params.mountProducts ?? false,
+        "MountPaymentFinalizations": params.mountPaymentFinalizations ?? false,
+        "ActualPage": params.actualPage ?? 1,
+        "RecordsByPage": params.recordsByPage ?? 100,
+      },
+    );
 
-      return SaleMovementModel.fromJson(response).toEntity();
-    } catch (e) {
-      treatError(e);
-    }
+    return SaleMovementModel.fromJson(response).toEntity();
   }
 }

@@ -1,6 +1,5 @@
 // test/features/login/presentation/controllers/login_controller_test.dart
 import 'package:celta_dash/core/providers.dart';
-import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/features/login/domain/entities/entities.dart';
 import 'package:celta_dash/features/login/presentation/controllers/controllers.dart';
@@ -57,9 +56,7 @@ void main() {
     test(
       'should return false and set error state when repository throws DomainError',
       () async {
-        when(
-          () => mockRepository.login(tParams),
-        ).thenThrow(DomainError.enterpriseNotFound);
+        when(() => mockRepository.login(tParams)).thenThrow(Exception);
 
         final controller = container.read(loginControllerProvider.notifier);
         final success = await controller.login(
@@ -71,7 +68,7 @@ void main() {
         expect(success, false);
         final state = container.read(loginControllerProvider);
         expect(state.hasError, true);
-        expect(state.error, DomainError.enterpriseNotFound);
+        expect(state.error, Exception);
 
         verify(() => mockRepository.login(tParams)).called(1);
       },

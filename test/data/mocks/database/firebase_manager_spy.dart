@@ -1,4 +1,3 @@
-import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
@@ -54,34 +53,34 @@ class FirebaseManagerSpy extends Mock implements FirebaseManager {
   }
 
   When _mockPutCall() => when(
-        () => this.put(
-          path: any(named: "path"),
-          data: any(named: "data"),
-          arrayUnion: any(named: "arrayUnion"),
-          increment: any(named: "increment"),
-          merge: any(named: "merge"),
-        ),
-      );
+    () => this.put(
+      path: any(named: "path"),
+      data: any(named: "data"),
+      arrayUnion: any(named: "arrayUnion"),
+      increment: any(named: "increment"),
+      merge: any(named: "merge"),
+    ),
+  );
   void mockPut() {
     this._mockPutCall().thenAnswer((any) async => any);
   }
 
   void mockPutError() {
-    this._mockPutCall().thenThrow(DomainError.unexpected);
+    this._mockPutCall().thenThrow(Exception());
   }
 
   When _mockGetCall() => when(
-        () => this.get(
-          path: any(named: "path"),
-          fieldToSearch: any(named: "fieldToSearch"),
-          valueToSearch: any(named: "valueToSearch"),
-        ),
-      );
+    () => this.get(
+      path: any(named: "path"),
+      fieldToSearch: any(named: "fieldToSearch"),
+      valueToSearch: any(named: "valueToSearch"),
+    ),
+  );
   void mockGet(MockedFirebaseGet value) {
     this._mockGetCall().thenAnswer((any) async => value);
   }
 
   void mockGetError() {
-    this._mockGetCall().thenThrow(DomainError.unexpected);
+    this._mockGetCall().thenThrow(Exception());
   }
 }

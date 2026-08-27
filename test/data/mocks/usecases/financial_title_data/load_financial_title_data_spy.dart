@@ -1,12 +1,10 @@
 import 'package:celta_dash/domain/entities/entities.dart';
-import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:mocktail/mocktail.dart';
 
 class LoadFinancialTitleDataSpy extends Mock implements LoadFinancialTitleData {
-  When<Future<FinancialTitleDataResponseEntity>> _mockGetCall() => when(
-        () => get(any()),
-      );
+  When<Future<FinancialTitleDataResponseEntity>> _mockGetCall() =>
+      when(() => get(any()));
 
   void mockGet(FinancialTitleDataResponseEntity response) {
     _mockGetCall().thenAnswer((_) async => response);
@@ -15,7 +13,8 @@ class LoadFinancialTitleDataSpy extends Mock implements LoadFinancialTitleData {
   void mockGetWith(
     Future<FinancialTitleDataResponseEntity> Function(
       SearchFinancialTitleDataParams params,
-    ) callback,
+    )
+    callback,
   ) {
     _mockGetCall().thenAnswer(
       (invocation) => callback(
@@ -25,7 +24,7 @@ class LoadFinancialTitleDataSpy extends Mock implements LoadFinancialTitleData {
   }
 
   void mockGetError() {
-    _mockGetCall().thenThrow(DomainError.unexpected);
+    _mockGetCall().thenThrow(Exception());
   }
 
   void verifyGet(SearchFinancialTitleDataParams params, int count) {

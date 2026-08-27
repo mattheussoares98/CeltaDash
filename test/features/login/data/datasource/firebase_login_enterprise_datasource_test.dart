@@ -1,6 +1,5 @@
 // test/features/login/data/datasource/firebase_login_enterprise_datasource_test.dart
 import 'package:celta_dash/core/data/data.dart';
-import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/features/login/data/datasource/datasource.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:faker/faker.dart';
@@ -14,9 +13,14 @@ void main() {
   late FirebaseLoginEnterpriseDatasource datasource;
 
   final tEnterpriseEntity = EntityFactory.makeFirebaseEnterpriseEntity();
-  final tEnterpriseModel = FirebaseEnterpriseModel.fromEntity(tEnterpriseEntity);
+  final tEnterpriseModel = FirebaseEnterpriseModel.fromEntity(
+    tEnterpriseEntity,
+  );
   final tEnterpriseName = tEnterpriseEntity.enterpriseName!;
-  final tCleanEnterpriseName = tEnterpriseName.trim().toLowerCase().removeWhiteSpaces();
+  final tCleanEnterpriseName = tEnterpriseName
+      .trim()
+      .toLowerCase()
+      .removeWhiteSpaces();
   final tEnterpriseJson = tEnterpriseModel.toJson();
   final tDocId = tEnterpriseEntity.firebaseId!;
 
@@ -34,9 +38,8 @@ void main() {
       );
 
       when(
-        () => mockFirebaseStorage.get(
-          path: 'enterprises/$tCleanEnterpriseName',
-        ),
+        () =>
+            mockFirebaseStorage.get(path: 'enterprises/$tCleanEnterpriseName'),
       ).thenAnswer((_) async => fakeDoc);
 
       final result = await datasource.getEnterpriseConfig(
@@ -52,44 +55,33 @@ void main() {
       );
 
       verify(
-        () => mockFirebaseStorage.get(
-          path: 'enterprises/$tCleanEnterpriseName',
-        ),
+        () =>
+            mockFirebaseStorage.get(path: 'enterprises/$tCleanEnterpriseName'),
       ).called(1);
     },
   );
 
-  test(
-    'should throw DomainError.enterpriseNotFound when snapshot data is null',
-    () async {
-      const fakeDoc = FakeDoc(null, 'some_id');
+  test('should throw Exception when snapshot data is null', () async {
+    const fakeDoc = FakeDoc(null, 'some_id');
 
-      when(
-        () => mockFirebaseStorage.get(
-          path: 'enterprises/$tCleanEnterpriseName',
-        ),
-      ).thenAnswer((_) async => fakeDoc);
+    when(
+      () => mockFirebaseStorage.get(path: 'enterprises/$tCleanEnterpriseName'),
+    ).thenAnswer((_) async => fakeDoc);
 
-      expect(
-        () => datasource.getEnterpriseConfig(enterpriseName: tEnterpriseName),
-        throwsA(DomainError.enterpriseNotFound),
-      );
-    },
-  );
+    expect(
+      () => datasource.getEnterpriseConfig(enterpriseName: tEnterpriseName),
+      throwsA(Exception),
+    );
+  });
 
-  test(
-    'should throw DomainError.enterpriseNotFound when storage get throws an exception',
-    () async {
-      when(
-        () => mockFirebaseStorage.get(
-          path: 'enterprises/$tCleanEnterpriseName',
-        ),
-      ).thenThrow(Exception(faker.lorem.sentence()));
+  test('should throw Exception when storage get throws an exception', () async {
+    when(
+      () => mockFirebaseStorage.get(path: 'enterprises/$tCleanEnterpriseName'),
+    ).thenThrow(Exception(faker.lorem.sentence()));
 
-      expect(
-        () => datasource.getEnterpriseConfig(enterpriseName: tEnterpriseName),
-        throwsA(DomainError.enterpriseNotFound),
-      );
-    },
-  );
+    expect(
+      () => datasource.getEnterpriseConfig(enterpriseName: tEnterpriseName),
+      throwsA(Exception),
+    );
+  });
 }

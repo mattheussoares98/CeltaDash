@@ -1,5 +1,4 @@
 import 'package:celta_dash/core/infrastructure/http/http.dart';
-import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/features/home/data/data.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -20,7 +19,7 @@ void main() {
     'getEnterprises sends the EC URL and headers and maps the response',
     () async {
       final ecParams = EntityFactory.makeEcParams();
-    final entity = HomeEntityFactory.makeHomeEnterpriseEntity();
+      final entity = HomeEntityFactory.makeHomeEnterpriseEntity();
       final json = BSFEnterpriseModel.fromEntity(entity).toJson();
       when(
         () => httpClient.request(
@@ -56,10 +55,7 @@ void main() {
         ),
       ).thenThrow(HttpError.serverError);
 
-      expect(
-        () => datasource.getEnterprises(ecParams),
-        throwsA(DomainError.unexpected),
-      );
+      expect(() => datasource.getEnterprises(ecParams), throwsA(Exception()));
     },
   );
 }

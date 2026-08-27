@@ -1,6 +1,5 @@
 // ignore_for_file: unnecessary_this
 
-import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -18,20 +17,22 @@ class FirebaseLoginManagementSpy extends Mock
   }
 
   void mockLogoutError() {
-    this._mockLogoutCall().thenThrow(DomainError.unexpected);
+    this._mockLogoutCall().thenThrow(Exception());
   }
 
-  When _mockLoginCall() => when(() => this.login(
-        email: any(named: "email"),
-        password: any(named: "password"),
-      ));
+  When _mockLoginCall() => when(
+    () => this.login(
+      email: any(named: "email"),
+      password: any(named: "password"),
+    ),
+  );
 
   void _mockLogin() {
     this._mockLoginCall().thenAnswer((any) async => any);
   }
 
   void mockLoginError() {
-    this._mockLoginCall().thenThrow(DomainError.unexpected);
+    this._mockLoginCall().thenThrow(Exception());
   }
 
   When _mockIsLoggedInCall() => when(() => this.isLoggedIn());
@@ -41,6 +42,6 @@ class FirebaseLoginManagementSpy extends Mock
   }
 
   void mockIsLoggedError() {
-    this._mockIsLoggedInCall().thenThrow(DomainError.unexpected);
+    this._mockIsLoggedInCall().thenThrow(Exception());
   }
 }

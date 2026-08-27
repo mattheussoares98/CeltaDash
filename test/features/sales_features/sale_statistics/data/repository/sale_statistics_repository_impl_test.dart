@@ -1,6 +1,5 @@
 // test/features/sale_statistics/data/repository/sale_statistics_repository_impl_test.dart
 import 'package:celta_dash/core/domain/domain.dart';
-import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/data/data.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/domain/domain.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -73,23 +72,17 @@ void main() {
       },
     );
 
-    test(
-      'should propagate error when datasource throws DomainError.unexpected',
-      () async {
-        when(
-          () => mockDatasource.getSaleStatistics(
-            params: any(named: 'params'),
-            ecParams: any(named: 'ecParams'),
-          ),
-        ).thenThrow(DomainError.unexpected);
+    test('should propagate error when datasource throws Exception()', () async {
+      when(
+        () => mockDatasource.getSaleStatistics(
+          params: any(named: 'params'),
+          ecParams: any(named: 'ecParams'),
+        ),
+      ).thenThrow(Exception());
 
-        final call = sut.getSaleStatistics(
-          params: tParams,
-          ecParams: tEcParams,
-        );
+      final call = sut.getSaleStatistics(params: tParams, ecParams: tEcParams);
 
-        expect(() => call, throwsA(DomainError.unexpected));
-      },
-    );
+      expect(() => call, throwsA(Exception()));
+    });
   });
 }

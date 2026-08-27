@@ -1,6 +1,5 @@
 // test/features/financial_titles/data/repository/financial_titles_repository_impl_test.dart
 import 'package:celta_dash/core/domain/domain.dart';
-import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/features/financial_titles/data/data.dart';
 import 'package:celta_dash/features/financial_titles/domain/domain.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -99,20 +98,17 @@ void main() {
       },
     );
 
-    test(
-      'should propagate error when datasource throws DomainError.unexpected',
-      () async {
-        when(
-          () => mockDatasource.getData(
-            params: any(named: 'params'),
-            ecParams: any(named: 'ecParams'),
-          ),
-        ).thenThrow(DomainError.unexpected);
+    test('should propagate error when datasource throws Exception()', () async {
+      when(
+        () => mockDatasource.getData(
+          params: any(named: 'params'),
+          ecParams: any(named: 'ecParams'),
+        ),
+      ).thenThrow(Exception());
 
-        final call = sut.getData(params: tParams, ecParams: tEcParams);
+      final call = sut.getData(params: tParams, ecParams: tEcParams);
 
-        expect(() => call, throwsA(DomainError.unexpected));
-      },
-    );
+      expect(() => call, throwsA(Exception()));
+    });
   });
 }

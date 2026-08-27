@@ -1,33 +1,19 @@
 import '../../../domain/usecases/usecases.dart';
 import '../../../infra/databases/databases.dart';
-import '../../mixins/mixins.dart';
 
-class WebFirebaseLoginManagement
-    with ErrorHandling
-    implements FirebaseLoginManagement {
+class WebFirebaseLoginManagement implements FirebaseLoginManagement {
   final FirebaseAuthAdapter firebaseAuthAdapter;
 
   WebFirebaseLoginManagement({required this.firebaseAuthAdapter});
 
   @override
-  Future<void> login({
-    required String email,
-    required String password,
-  }) async {
-    try {
-      await firebaseAuthAdapter.login(email: email, password: password);
-    } catch (e) {
-      treatError(e);
-    }
+  Future<void> login({required String email, required String password}) async {
+    await firebaseAuthAdapter.login(email: email, password: password);
   }
 
   @override
   Future<void> logout() async {
-    try {
-      await firebaseAuthAdapter.logout();
-    } catch (e) {
-      treatError(e);
-    }
+    await firebaseAuthAdapter.logout();
   }
 
   @override
