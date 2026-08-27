@@ -28,6 +28,7 @@ class UserField extends StatelessWidget {
         cupertinoIcon: CupertinoIcons.person_fill,
         materialIcon: Icons.person,
       ),
+      autofillHints: const [AutofillHints.username],
       textInputAction: TextInputAction.next,
       onFieldSubmitted: (_) => nextFocusNode.requestFocus(),
       validator: FormValidators.compose([NonEmptyValidator()]),

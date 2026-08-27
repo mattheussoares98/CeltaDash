@@ -70,43 +70,46 @@ class LoginPage extends HookConsumerWidget {
           child: Form(
             key: formKey,
             child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: .center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  gapH32,
-                  GestureDetector(
-                    onLongPress: () => context.pushNamed(Routes.webLogin.name),
-                    child: const LogoWidget(
-                      animationDuration: Duration(milliseconds: 3500),
+              child: AutofillGroup(
+                child: Column(
+                  mainAxisAlignment: .center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    gapH32,
+                    GestureDetector(
+                      onLongPress: () =>
+                          context.pushNamed(Routes.webLogin.name),
+                      child: const LogoWidget(
+                        animationDuration: Duration(milliseconds: 3500),
+                      ),
                     ),
-                  ),
-                  gapH24,
-                  EnterpriseField(
-                    controller: enterpriseController,
-                    focusNode: enterpriseFocusNode,
-                    nextFocusNode: userFocusNode,
-                  ),
-                  gapH16,
-                  UserField(
-                    controller: userController,
-                    focusNode: userFocusNode,
-                    nextFocusNode: passwordFocusNode,
-                  ),
-                  gapH16,
-                  PasswordField(
-                    controller: passwordController,
-                    focusNode: passwordFocusNode,
-                    onSubmitted: submitLogin,
-                  ),
-                  gapH24,
-                  PrimaryButton(
-                    text: 'Entrar'.hardcoded,
-                    isLoading: isLoading,
-                    onPressed: submitLogin,
-                  ),
-                  gapH32,
-                ],
+                    gapH24,
+                    EnterpriseField(
+                      controller: enterpriseController,
+                      focusNode: enterpriseFocusNode,
+                      nextFocusNode: userFocusNode,
+                    ),
+                    gapH16,
+                    UserField(
+                      controller: userController,
+                      focusNode: userFocusNode,
+                      nextFocusNode: passwordFocusNode,
+                    ),
+                    gapH16,
+                    PasswordField(
+                      controller: passwordController,
+                      focusNode: passwordFocusNode,
+                      onSubmitted: submitLogin,
+                    ),
+                    gapH24,
+                    PrimaryButton(
+                      text: 'Entrar'.hardcoded,
+                      isLoading: isLoading,
+                      onPressed: submitLogin,
+                    ),
+                    gapH32,
+                  ],
+                ),
               ),
             ),
           ),

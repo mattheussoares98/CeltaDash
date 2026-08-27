@@ -28,6 +28,7 @@ class PasswordField extends HookWidget {
       obscureText: !showPassword.value,
       labelText: 'Senha'.hardcoded,
       hintText: 'Senha'.hardcoded,
+      autofillHints: const [AutofillHints.password],
       prefixIcon: const PlatformIcon(
         cupertinoIcon: CupertinoIcons.lock_fill,
         materialIcon: Icons.lock,
