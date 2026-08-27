@@ -19,7 +19,6 @@ export 'base_choice_chip.dart';
 export 'base_drop_down.dart';
 export 'base_list_tile.dart';
 export 'base_radio.dart';
-export 'base_segmented_buttons.dart';
 export 'base_switch.dart';
 export 'buttons/buttons.dart';
 export 'chart_pie/chart_pie.dart';
