@@ -1,6 +1,6 @@
 // lib/features/home/presentation/pages/personalized/components/personalized_category_tile.dart
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
-import 'package:celta_dash/domain/helpers/helpers.dart';
+import 'package:celta_dash/core/domain/helpers/helpers.dart';
 import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';

@@ -1,4 +1,4 @@
-import 'package:celta_dash/domain/helpers/helpers.dart';
+import 'package:celta_dash/core/domain/helpers/helpers.dart';
 
 enum OperatorsPeriod {
   daily('Dia', PeriodGroupingType.day),

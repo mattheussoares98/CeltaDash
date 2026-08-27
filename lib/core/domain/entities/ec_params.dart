@@ -1,5 +1,4 @@
-// lib/core/domain/entities/ec_params.dart
-import 'package:celta_dash/domain/entities/entities.dart';
+import 'package:celta_dash/core/domain/entities/entities.dart';
 import 'package:equatable/equatable.dart';
 
 class EcParams extends Equatable {

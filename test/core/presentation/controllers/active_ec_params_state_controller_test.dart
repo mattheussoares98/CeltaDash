@@ -2,15 +2,15 @@
 import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/core/providers.dart';
 import 'package:celta_dash/core/data/data.dart';
-import 'package:celta_dash/domain/usecases/usecases.dart';
-import 'package:celta_dash/infra/helpers/helpers.dart';
+import 'package:celta_dash/core/infrastructure/storage/storage.dart';
+import 'package:celta_dash/core/infrastructure/infrastructure.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../domain/mocks/mocks.dart';
 
-class MockLocalStorage extends Mock implements LocalStorage {}
+class MockLocalStorage extends Mock implements IAppStorage {}
 
 void main() {
   late MockLocalStorage mockLocalStorage;
@@ -19,7 +19,7 @@ void main() {
   late FirebaseEnterpriseEntity tEnterprise;
 
   setUpAll(() {
-    registerFallbackValue(DatabaseKeys.enterprise);
+    registerFallbackValue(DatabaseKeys.enterprise.name);
     registerFallbackValue(<String, dynamic>{});
   });
 
@@ -29,17 +29,17 @@ void main() {
     tEcParams = EcParams.fromFirebaseEnterprise(tEnterprise)!;
 
     when(
-      () => mockLocalStorage.get(DatabaseKeys.enterprise),
+      () => mockLocalStorage.get(DatabaseKeys.enterprise.name),
     ).thenAnswer((_) async => null);
     when(
-      () => mockLocalStorage.put(DatabaseKeys.enterprise, any()),
+      () => mockLocalStorage.put(DatabaseKeys.enterprise.name, any()),
     ).thenAnswer((_) async {});
     when(
-      () => mockLocalStorage.delete(DatabaseKeys.enterprise),
+      () => mockLocalStorage.delete(DatabaseKeys.enterprise.name),
     ).thenAnswer((_) async {});
 
     container = ProviderContainer(
-      overrides: [localStorageProvider.overrideWithValue(mockLocalStorage)],
+      overrides: [appStorageProvider.overrideWithValue(mockLocalStorage)],
     );
   });
 
@@ -66,11 +66,11 @@ void main() {
         ).toJson();
 
         when(
-          () => mockLocalStorage.get(DatabaseKeys.enterprise),
+          () => mockLocalStorage.get(DatabaseKeys.enterprise.name),
         ).thenAnswer((_) async => enterpriseJson);
 
         final newContainer = ProviderContainer(
-          overrides: [localStorageProvider.overrideWithValue(mockLocalStorage)],
+          overrides: [appStorageProvider.overrideWithValue(mockLocalStorage)],
         );
         addTearDown(newContainer.dispose);
 
@@ -78,7 +78,7 @@ void main() {
           activeEcParamsStateControllerProvider.future,
         );
         expect(state, tEcParams);
-        verify(() => mockLocalStorage.get(DatabaseKeys.enterprise)).called(1);
+        verify(() => mockLocalStorage.get(DatabaseKeys.enterprise.name)).called(1);
       },
     );
   });
@@ -106,7 +106,7 @@ void main() {
         expect(state, tEcParams);
 
         verify(
-          () => mockLocalStorage.put(DatabaseKeys.enterprise, expectedJson),
+          () => mockLocalStorage.put(DatabaseKeys.enterprise.name, expectedJson),
         ).called(1);
       },
     );
@@ -125,7 +125,7 @@ void main() {
         );
         expect(state, tEcParams);
 
-        verifyNever(() => mockLocalStorage.put(DatabaseKeys.enterprise, any()));
+        verifyNever(() => mockLocalStorage.put(DatabaseKeys.enterprise.name, any()));
       },
     );
   });
@@ -154,7 +154,7 @@ void main() {
           isNull,
         );
         verify(
-          () => mockLocalStorage.delete(DatabaseKeys.enterprise),
+          () => mockLocalStorage.delete(DatabaseKeys.enterprise.name),
         ).called(1);
       },
     );

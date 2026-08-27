@@ -1,7 +1,7 @@
 // test/features/home/presentation/controllers/personalized_controller_test.dart
 import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/core/providers.dart';
-import 'package:celta_dash/domain/helpers/helpers.dart';
+import 'package:celta_dash/core/domain/helpers/helpers.dart';
 import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/domain/entities/entities.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/providers.dart';

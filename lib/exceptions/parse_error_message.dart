@@ -1,15 +1,11 @@
 import 'package:celta_dash/exceptions/exceptions.dart';
-import 'package:celta_dash/infra/helpers/helpers.dart';
 import 'package:celta_dash/utils/utils.dart';
 
 String parseErrorMessage(Object? error) {
   late final String message;
   String? supabaseDetails;
 
-  //TODO treat firebase exception
   if (error is AppException) {
-    message = error.message;
-  } else if (error is BsError) {
     message = error.message;
   } else if (error is Exception) {
     message = error.toString().replaceFirst('Exception: ', '');

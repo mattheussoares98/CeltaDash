@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../firebase_options.dart';
-import '../../infra/helpers/helpers.dart';
+import 'package:celta_dash/core/infrastructure/storage/storage.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override

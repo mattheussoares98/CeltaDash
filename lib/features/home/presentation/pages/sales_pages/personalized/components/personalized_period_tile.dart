@@ -1,6 +1,6 @@
 // lib/features/home/presentation/pages/personalized/components/personalized_period_tile.dart
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
-import 'package:celta_dash/domain/helpers/helpers.dart';
+import 'package:celta_dash/core/domain/helpers/helpers.dart';
 import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +23,7 @@ class PersonalizedPeriodTile extends HookConsumerWidget {
     );
 
     final titleText = selectedPeriod != null
-        ? '${'Agrupamento por período:'.hardcoded} (${selectedPeriod.name})'
+        ? '${'Agrupamento por período:'.hardcoded} (${selectedPeriod.label})'
         : 'Agrupamento por período'.hardcoded;
 
     return ExpansionTile(
@@ -34,8 +34,9 @@ class PersonalizedPeriodTile extends HookConsumerWidget {
       ),
       title: BaseText.bodyMedium(
         titleText,
-        fontWeight:
-            selectedPeriod != null ? FontWeight.bold : FontWeight.normal,
+        fontWeight: selectedPeriod != null
+            ? FontWeight.bold
+            : FontWeight.normal,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
@@ -56,7 +57,7 @@ class PersonalizedPeriodTile extends HookConsumerWidget {
                 dense: true,
                 value: period,
                 title: BaseText.bodyMedium(
-                  period.name.hardcoded,
+                  period.label.hardcoded,
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                 ),
               );

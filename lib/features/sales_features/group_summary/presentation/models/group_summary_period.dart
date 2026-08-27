@@ -1,5 +1,5 @@
 // lib/features/group_summary/presentation/models/group_summary_period.dart
-import 'package:celta_dash/domain/helpers/helpers.dart';
+import 'package:celta_dash/core/domain/helpers/helpers.dart';
 
 enum GroupSummaryPeriod {
   daily('Dia'),

@@ -1,15 +1,10 @@
 // lib/features/financial_titles/domain/entities/search_financial_title_data_params.dart
-import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:celta_dash/features/financial_titles/domain/entities/entities.dart';
 import 'package:equatable/equatable.dart';
 
-class SearchFinancialTitleDataParams extends Equatable
-    implements DateRangeParams {
-  @override
+class SearchFinancialTitleDataParams extends Equatable {
   final DateTime startDate;
-  @override
   final DateTime endDate;
-  @override
   final List<int>? enterpriseIds;
 
   final List<int> enterpriseCodes;

@@ -1,10 +1,10 @@
 // test/features/login/presentation/controllers/login_controller_test.dart
 import 'package:celta_dash/core/providers.dart';
-import 'package:celta_dash/domain/usecases/usecases.dart';
+import 'package:celta_dash/core/infrastructure/storage/storage.dart';
 import 'package:celta_dash/features/login/domain/entities/entities.dart';
 import 'package:celta_dash/features/login/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/login/providers.dart';
-import 'package:celta_dash/infra/helpers/helpers.dart';
+import 'package:celta_dash/core/infrastructure/infrastructure.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -13,7 +13,7 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../domain/mocks/mocks.dart';
 import '../../mocks/mocks.dart';
 
-class MockLocalStorage extends Mock implements LocalStorage {}
+class MockLocalStorage extends Mock implements IAppStorage {}
 
 void main() {
   late MockLoginRepository mockRepository;
@@ -38,7 +38,7 @@ void main() {
     container = ProviderContainer(
       overrides: [
         loginRepositoryProvider.overrideWithValue(mockRepository),
-        localStorageProvider.overrideWithValue(mockLocalStorage),
+        appStorageProvider.overrideWithValue(mockLocalStorage),
       ],
     );
   });
@@ -82,15 +82,15 @@ void main() {
         ).thenAnswer((_) async => tEnterpriseEntity);
 
         when(
-          () => mockLocalStorage.put(DatabaseKeys.enterprise, any()),
+          () => mockLocalStorage.put(DatabaseKeys.enterprise.name, any()),
         ).thenAnswer((_) async => Future.value());
 
         when(
-          () => mockLocalStorage.get(DatabaseKeys.allEnterprises),
+          () => mockLocalStorage.get(DatabaseKeys.allEnterprises.name),
         ).thenAnswer((_) async => []);
 
         when(
-          () => mockLocalStorage.put(DatabaseKeys.allEnterprises, any()),
+          () => mockLocalStorage.put(DatabaseKeys.allEnterprises.name, any()),
         ).thenAnswer((_) async => Future.value());
 
         final controller = container.read(loginControllerProvider.notifier);
@@ -106,7 +106,7 @@ void main() {
 
         verify(() => mockRepository.login(tParams)).called(1);
         verify(
-          () => mockLocalStorage.put(DatabaseKeys.enterprise, any()),
+          () => mockLocalStorage.put(DatabaseKeys.enterprise.name, any()),
         ).called(greaterThanOrEqualTo(1));
       },
     );

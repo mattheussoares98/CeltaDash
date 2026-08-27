@@ -10,7 +10,7 @@ part 'providers.g.dart';
 IAppAnalyticsDatasource appAnalyticsDatasource(Ref ref) {
   return AppAnalyticsDatasource(
     firebaseStorage: ref.watch(firebaseStorageProvider),
-    localStorage: ref.watch(localStorageProvider),
+    localStorage: ref.watch(appStorageProvider),
   );
 }
 

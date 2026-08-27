@@ -1,5 +1,5 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
-import 'package:celta_dash/domain/entities/entities.dart';
+import 'package:celta_dash/features/sales_features/sales/domain/domain.dart';
 import 'package:celta_dash/features/sales_features/sales/presentation/pages/sale_details/components/components.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';

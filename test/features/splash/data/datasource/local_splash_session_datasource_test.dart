@@ -1,6 +1,6 @@
 import 'package:celta_dash/core/data/data.dart';
 import 'package:celta_dash/features/splash/data/data.dart';
-import 'package:celta_dash/infra/helpers/helpers.dart';
+import 'package:celta_dash/core/infrastructure/infrastructure.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
 import 'package:mocktail/mocktail.dart';

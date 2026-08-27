@@ -1,7 +1,7 @@
 import 'package:celta_dash/core/data/data.dart';
 import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/core/providers.dart';
-import 'package:celta_dash/infra/helpers/helpers.dart';
+import 'package:celta_dash/core/infrastructure/infrastructure.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'active_ec_params_state_controller.g.dart';
@@ -10,8 +10,8 @@ part 'active_ec_params_state_controller.g.dart';
 class ActiveEcParamsStateController extends _$ActiveEcParamsStateController {
   @override
   FutureOr<EcParams?> build() async {
-    final storage = ref.read(localStorageProvider);
-    final savedEnterprise = await storage.get(DatabaseKeys.enterprise);
+    final storage = ref.read(appStorageProvider);
+    final savedEnterprise = await storage.get(DatabaseKeys.enterprise.name);
     if (savedEnterprise != null && savedEnterprise != '') {
       final enterpriseEntity = FirebaseEnterpriseModel.fromJson(
         savedEnterprise,
@@ -27,10 +27,10 @@ class ActiveEcParamsStateController extends _$ActiveEcParamsStateController {
   }) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
-      final storage = ref.read(localStorageProvider);
+      final storage = ref.read(appStorageProvider);
       if (enterprise != null) {
         await storage.put(
-          DatabaseKeys.enterprise,
+          DatabaseKeys.enterprise.name,
           FirebaseEnterpriseModel.fromEntity(enterprise).toJson(),
         );
       }
@@ -41,8 +41,8 @@ class ActiveEcParamsStateController extends _$ActiveEcParamsStateController {
   Future<void> clear() async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
-      final storage = ref.read(localStorageProvider);
-      await storage.delete(DatabaseKeys.enterprise);
+      final storage = ref.read(appStorageProvider);
+      await storage.delete(DatabaseKeys.enterprise.name);
       return null;
     });
   }

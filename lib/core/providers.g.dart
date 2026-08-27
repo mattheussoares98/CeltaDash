@@ -91,88 +91,6 @@ final class HttpClientProvider
 
 String _$httpClientHash() => r'e330b95dbb965f86e1c9780c27509b9613b2d74b';
 
-@ProviderFor(hiveStorage)
-final hiveStorageProvider = HiveStorageProvider._();
-
-final class HiveStorageProvider
-    extends $FunctionalProvider<HiveStorage, HiveStorage, HiveStorage>
-    with $Provider<HiveStorage> {
-  HiveStorageProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'hiveStorageProvider',
-        isAutoDispose: false,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$hiveStorageHash();
-
-  @$internal
-  @override
-  $ProviderElement<HiveStorage> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
-
-  @override
-  HiveStorage create(Ref ref) {
-    return hiveStorage(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(HiveStorage value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<HiveStorage>(value),
-    );
-  }
-}
-
-String _$hiveStorageHash() => r'1d526ed93cc7aa93f75aa7c5c73d0e9b0489809f';
-
-@ProviderFor(localStorage)
-final localStorageProvider = LocalStorageProvider._();
-
-final class LocalStorageProvider
-    extends $FunctionalProvider<LocalStorage, LocalStorage, LocalStorage>
-    with $Provider<LocalStorage> {
-  LocalStorageProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'localStorageProvider',
-        isAutoDispose: false,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$localStorageHash();
-
-  @$internal
-  @override
-  $ProviderElement<LocalStorage> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
-
-  @override
-  LocalStorage create(Ref ref) {
-    return localStorage(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(LocalStorage value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<LocalStorage>(value),
-    );
-  }
-}
-
-String _$localStorageHash() => r'fc597f102c8b93474eee57132131815532c0fb80';
-
 @ProviderFor(appStorage)
 final appStorageProvider = AppStorageProvider._();
 
@@ -212,7 +130,7 @@ final class AppStorageProvider
   }
 }
 
-String _$appStorageHash() => r'e62e2e05ab70f8d21aa61ca14c615f11e8dad15f';
+String _$appStorageHash() => r'ea9d890b806af8f2fd7b666659aa1bbd188ef36e';
 
 @ProviderFor(soapRequest)
 final soapRequestProvider = SoapRequestProvider._();
@@ -344,48 +262,6 @@ final class FirebaseAuthStorageProvider
 
 String _$firebaseAuthStorageHash() =>
     r'12e6edad2fe95a3272c33e7e5b2478446afdfc9e';
-
-@ProviderFor(firebaseManager)
-final firebaseManagerProvider = FirebaseManagerProvider._();
-
-final class FirebaseManagerProvider
-    extends
-        $FunctionalProvider<FirebaseManager, FirebaseManager, FirebaseManager>
-    with $Provider<FirebaseManager> {
-  FirebaseManagerProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'firebaseManagerProvider',
-        isAutoDispose: false,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$firebaseManagerHash();
-
-  @$internal
-  @override
-  $ProviderElement<FirebaseManager> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
-
-  @override
-  FirebaseManager create(Ref ref) {
-    return firebaseManager(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(FirebaseManager value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<FirebaseManager>(value),
-    );
-  }
-}
-
-String _$firebaseManagerHash() => r'62ac1ae04bccadb63f56bce3d54ed3ecc1aef6b7';
 
 @ProviderFor(deviceService)
 final deviceServiceProvider = DeviceServiceProvider._();

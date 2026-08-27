@@ -1,13 +1,7 @@
 import 'package:celta_dash/core/domain/domain.dart';
-import 'package:celta_dash/domain/entities/entities.dart'
-    hide
-        BsUserEntity,
-        FirebaseEnterpriseEntity,
-        FirebaseSubEnterpriseEntity,
-        SaleStatisticsEntity;
 import 'package:celta_dash/features/enterprises_manager/domain/domain.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/domain/entities/entities.dart';
-import 'package:celta_dash/main/builders/builders.dart';
+import 'package:celta_dash/features/sales_features/sales/domain/domain.dart';
 import 'package:faker/faker.dart';
 
 class EntityFactory {
@@ -46,38 +40,6 @@ class EntityFactory {
         ],
       );
 
-  static FirebaseEnterpriseEntity anullEnterpriseProperties({
-    bool? annullbaseUrl,
-    bool? anullUserName,
-    bool? anullUserAccessKey,
-    bool? anullUserCrossIdentity,
-    bool? annullEnterpriseName,
-    bool? annullSubEnterprises,
-    bool? annulFirebaseId,
-  }) {
-    final enterprise = EnterpriseBuilder.entity;
-    final bsUser = BsUserEntity(
-      name: anullUserName == true ? null : enterprise?.bsUser?.name,
-      AccessKey: anullUserAccessKey == true
-          ? null
-          : enterprise?.bsUser?.AccessKey,
-      CrossIdentity_Usuario: anullUserCrossIdentity == true
-          ? null
-          : enterprise?.bsUser?.CrossIdentity_Usuario,
-    );
-    return FirebaseEnterpriseEntity(
-      baseUrl: annullbaseUrl == true ? null : enterprise?.baseUrl,
-      bsUser: bsUser,
-      enterpriseName: annullEnterpriseName == true
-          ? null
-          : enterprise?.enterpriseName,
-      firebaseSubEnterprises: annullSubEnterprises == true
-          ? null
-          : enterprise?.firebaseSubEnterprises,
-      firebaseId: annulFirebaseId == true ? null : enterprise?.firebaseId,
-    );
-  }
-
   static SaleStatisticsEntity makeSaleStatisticEntity({
     int? enterpriseId,
     int? year,
@@ -114,13 +76,6 @@ class EntityFactory {
     name: name ?? faker.person.name(),
     AccessKey: faker.guid.guid(),
     CrossIdentity_Usuario: faker.guid.guid(),
-  );
-
-  static EnterpriseEntity makeEnterpriseEntity({int? id}) => EnterpriseEntity(
-    id: id ?? faker.randomGenerator.integer(100),
-    name: faker.company.name(),
-    personalizedCode: faker.randomGenerator.integer(10).toString(),
-    cnpj: faker.guid.guid(),
   );
 
   static FirebaseSubEnterpriseEntity makeFirebaseSubEnterpriseEntity({
@@ -265,6 +220,7 @@ class EntityFactory {
     onlyNotCancelled: faker.randomGenerator.boolean(),
   );
 
+  /* Legacy factories retained only in history.
   static FirebaseGoalEntity makeFirebaseGoalEntity({
     int? enterpriseId,
     int? year,
@@ -559,4 +515,5 @@ class EntityFactory {
     comparisonFinancialTitlePortions: [makeFinancialTitleDataEntity()],
     calculatedTotals: makeFinancialTitleCalculatedTotalsEntity(),
   );
+  */
 }

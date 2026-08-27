@@ -1,5 +1,5 @@
 // lib/features/login/data/models/bs_user_model.dart
-import 'package:celta_dash/domain/entities/entities.dart';
+import 'package:celta_dash/core/domain/domain.dart';
 
 class BsUserModel {
   final String? name;

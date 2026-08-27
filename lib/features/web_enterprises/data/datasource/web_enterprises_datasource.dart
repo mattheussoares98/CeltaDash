@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:celta_dash/core/data/data.dart';
 import 'package:celta_dash/core/infrastructure/infrastructure.dart';
-import 'package:celta_dash/domain/usecases/usecases.dart';
 import 'package:celta_dash/exceptions/exceptions.dart';
 import 'package:celta_dash/features/web_enterprises/data/datasource/datasource.dart';
 import 'package:celta_dash/features/web_enterprises/data/models/models.dart';
@@ -14,13 +13,11 @@ class WebEnterprisesDatasource implements IWebEnterprisesDatasource {
   final FirebaseStorage firebaseStorage;
   final SoapRequest soapRequest;
   final HttpClient httpClient;
-  final LocalStorage? localStorage;
 
   const WebEnterprisesDatasource({
     required this.firebaseStorage,
     required this.soapRequest,
     required this.httpClient,
-    this.localStorage,
   });
 
   @override

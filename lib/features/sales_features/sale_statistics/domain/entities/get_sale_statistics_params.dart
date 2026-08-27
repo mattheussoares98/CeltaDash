@@ -1,13 +1,9 @@
 // lib/features/sale_statistics/domain/entities/get_sale_statistics_params.dart
 import 'package:equatable/equatable.dart';
-import 'package:celta_dash/domain/helpers/helpers.dart';
 
-class GetSaleStatisticsParams extends Equatable implements DateRangeParams {
-  @override
+class GetSaleStatisticsParams extends Equatable {
   final DateTime startDate;
-  @override
   final DateTime endDate;
-  @override
   final List<int>? enterpriseIds;
   final bool? groupByEnterprise;
   final bool? groupByYear;
@@ -126,4 +122,3 @@ class GetSaleStatisticsParams extends Equatable implements DateRangeParams {
         "groupBySeller": groupBySeller == true,
       };
 }
-

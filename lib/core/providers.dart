@@ -1,9 +1,4 @@
 import 'package:celta_dash/core/infrastructure/infrastructure.dart';
-import 'package:celta_dash/data/usecases/usecases.dart';
-import 'package:celta_dash/domain/usecases/usecases.dart';
-import 'package:celta_dash/infra/databases/databases.dart';
-import 'package:celta_dash/infra/helpers/helpers.dart';
-import 'package:celta_dash/infra/http/http.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
@@ -27,18 +22,8 @@ HttpClient httpClient(Ref ref) {
 }
 
 @Riverpod(keepAlive: true)
-HiveStorage hiveStorage(Ref ref) {
-  return HiveAdapter(box: Hive.box(DatabaseKeys.dash.name));
-}
-
-@Riverpod(keepAlive: true)
-LocalStorage localStorage(Ref ref) {
-  return HiveLocalStorage(ref.watch(hiveStorageProvider));
-}
-
-@Riverpod(keepAlive: true)
 IAppStorage appStorage(Ref ref) {
-  return LegacyAppStorage(ref.watch(localStorageProvider));
+  return HiveAdapter(box: Hive.box(DatabaseKeys.dash.name));
 }
 
 @Riverpod(keepAlive: true)
@@ -54,13 +39,6 @@ FirebaseStorage firebaseStorage(Ref ref) {
 @Riverpod(keepAlive: true)
 FirebaseAuthStorage firebaseAuthStorage(Ref ref) {
   return FirebaseAuthAdapter(firebaseAuth: FirebaseAuth.instance);
-}
-
-@Riverpod(keepAlive: true)
-FirebaseManager firebaseManager(Ref ref) {
-  return RemoteFirebaseManager(
-    firebaseStorage: ref.watch(firebaseStorageProvider),
-  );
 }
 
 @Riverpod(keepAlive: true)

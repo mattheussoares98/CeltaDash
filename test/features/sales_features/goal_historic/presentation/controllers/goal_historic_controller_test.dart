@@ -1,5 +1,5 @@
 import 'package:celta_dash/core/providers.dart';
-import 'package:celta_dash/domain/helpers/helpers.dart';
+import 'package:celta_dash/core/domain/helpers/helpers.dart';
 import 'package:celta_dash/features/home/domain/domain.dart';
 import 'package:celta_dash/features/home/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/sales_features/goal_historic/presentation/controllers/controllers.dart';

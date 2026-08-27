@@ -1,5 +1,5 @@
 import 'package:celta_dash/core/providers.dart';
-import 'package:celta_dash/domain/entities/entities.dart';
+import 'package:celta_dash/features/sales_features/sales/domain/domain.dart';
 import 'package:celta_dash/features/app_analytics/providers.dart';
 import 'package:celta_dash/features/home/home.dart' hide HomeSalesPeriod;
 import 'package:celta_dash/features/sales_features/sales/presentation/models/models.dart';

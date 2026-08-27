@@ -1,5 +1,5 @@
 import 'package:celta_dash/core/data/data.dart';
-import 'package:celta_dash/domain/entities/entities.dart';
+import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/features/app_analytics/data/data.dart';
 import 'package:celta_dash/features/app_analytics/domain/domain.dart';
 import 'package:flutter_test/flutter_test.dart';

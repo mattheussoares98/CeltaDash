@@ -3,7 +3,7 @@ import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/core/providers.dart';
 import 'package:celta_dash/features/enterprises_manager/presentation/presentation.dart';
 import 'package:celta_dash/features/enterprises_manager/providers.dart';
-import 'package:celta_dash/infra/helpers/helpers.dart';
+import 'package:celta_dash/core/infrastructure/infrastructure.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -13,14 +13,14 @@ import '../../mocks/mocks.dart';
 
 void main() {
   late MockEnterprisesManagerRepository repository;
-  late MockLocalStorage localStorage;
+  late MockAppStorage localStorage;
   late ProviderContainer container;
   late FirebaseEnterpriseEntity selectedEnterprise;
   late FirebaseEnterpriseEntity otherEnterprise;
 
   setUp(() {
     repository = MockEnterprisesManagerRepository();
-    localStorage = MockLocalStorage();
+    localStorage = MockAppStorage();
     selectedEnterprise = EntityFactory.makeFirebaseEnterpriseEntity();
     otherEnterprise = EntityFactory.makeFirebaseEnterpriseEntity();
     when(
@@ -33,7 +33,7 @@ void main() {
       retry: (_, _) => null,
       overrides: [
         enterprisesManagerRepositoryProvider.overrideWithValue(repository),
-        localStorageProvider.overrideWithValue(localStorage),
+        appStorageProvider.overrideWithValue(localStorage),
       ],
     );
     addTearDown(container.dispose);
@@ -75,7 +75,7 @@ void main() {
     () async {
       final json = FirebaseEnterpriseModel.fromEntity(otherEnterprise).toJson();
       when(
-        () => localStorage.put(DatabaseKeys.enterprise, json),
+        () => localStorage.put(DatabaseKeys.enterprise.name, json),
       ).thenAnswer((_) async {});
       await container.read(enterprisesManagerControllerProvider.future);
 
@@ -84,7 +84,7 @@ void main() {
           .selectEnterprise(otherEnterprise);
 
       expect(success, true);
-      verify(() => localStorage.put(DatabaseKeys.enterprise, json)).called(1);
+      verify(() => localStorage.put(DatabaseKeys.enterprise.name, json)).called(1);
     },
   );
 

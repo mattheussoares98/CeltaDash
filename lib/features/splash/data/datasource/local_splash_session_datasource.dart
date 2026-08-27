@@ -1,7 +1,7 @@
 import 'package:celta_dash/core/data/data.dart';
 import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/features/splash/data/datasource/i_splash_session_datasource.dart';
-import 'package:celta_dash/infra/helpers/helpers.dart';
+import 'package:celta_dash/core/infrastructure/infrastructure.dart';
 import 'package:hive/hive.dart';
 
 class LocalSplashSessionDatasource implements ISplashSessionDatasource {

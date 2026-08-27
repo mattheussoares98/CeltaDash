@@ -3,6 +3,7 @@ import 'package:celta_dash/features/login/domain/entities/entities.dart';
 import 'package:celta_dash/features/sales_features/sales/data/datasource/datasource.dart';
 import 'package:celta_dash/features/sales_features/sales/data/models/models.dart';
 import 'package:celta_dash/features/sales_features/sales/data/repository/repository.dart';
+import 'package:celta_dash/features/sales_features/sales/domain/domain.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

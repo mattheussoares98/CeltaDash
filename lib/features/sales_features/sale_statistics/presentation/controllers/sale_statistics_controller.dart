@@ -1,6 +1,6 @@
 // lib/features/sale_statistics/presentation/controllers/sale_statistics_controller.dart
 import 'package:celta_dash/core/providers.dart';
-import 'package:celta_dash/domain/helpers/helpers.dart';
+import 'package:celta_dash/core/domain/helpers/helpers.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/domain/entities/entities.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/presentation/models/models.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/providers.dart';

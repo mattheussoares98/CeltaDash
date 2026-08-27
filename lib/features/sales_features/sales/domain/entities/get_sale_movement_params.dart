@@ -1,12 +1,8 @@
-import 'package:celta_dash/domain/helpers/helpers.dart';
 import 'package:equatable/equatable.dart';
 
-class GetSaleMovementParams extends Equatable implements DateRangeParams {
-  @override
+class GetSaleMovementParams extends Equatable {
   final List<int> enterpriseIds;
-  @override
   final DateTime startDate;
-  @override
   final DateTime endDate;
   final List<String>? documentNumbers;
   final bool? onlyCancelled;

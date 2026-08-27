@@ -1,11 +1,9 @@
 // lib/features/login/presentation/controllers/login_controller.dart
 import 'package:celta_dash/core/data/data.dart';
-import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/core/providers.dart';
 import 'package:celta_dash/features/login/domain/entities/entities.dart';
 import 'package:celta_dash/features/login/providers.dart';
-import 'package:celta_dash/infra/helpers/helpers.dart';
-import 'package:celta_dash/main/builders/builders.dart';
+import 'package:celta_dash/core/infrastructure/infrastructure.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -36,18 +34,17 @@ class LoginController extends _$LoginController {
         ),
       );
 
-      final storage = ref.read(localStorageProvider);
+      final storage = ref.read(appStorageProvider);
 
       // 1. Save as selected enterprise
-      EnterpriseBuilder.entity = newEnterprise;
       await storage.put(
-        DatabaseKeys.enterprise,
+        DatabaseKeys.enterprise.name,
         FirebaseEnterpriseModel.fromEntity(newEnterprise).toJson(),
       );
 
       // 2. Add to allEnterprises in storage if not present
       final localAllEnterprises = await storage.get(
-        DatabaseKeys.allEnterprises,
+        DatabaseKeys.allEnterprises.name,
       );
       List<dynamic> allEnterprisesList = [];
       if (localAllEnterprises is List) {
@@ -70,7 +67,7 @@ class LoginController extends _$LoginController {
         allEnterprisesList.add(
           FirebaseEnterpriseModel.fromEntity(newEnterprise).toJson(),
         );
-        await storage.put(DatabaseKeys.allEnterprises, allEnterprisesList);
+        await storage.put(DatabaseKeys.allEnterprises.name, allEnterprisesList);
       }
 
       // 3. Update ActiveEcParamsStateController

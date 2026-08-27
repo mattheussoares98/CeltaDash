@@ -1,5 +1,5 @@
 // lib/features/home/presentation/models/sales_period.dart
-import 'package:celta_dash/domain/helpers/helpers.dart';
+import 'package:celta_dash/core/domain/helpers/helpers.dart';
 
 enum HomeSalesPeriod {
   hourly('Hora', PeriodGroupingType.hour),

@@ -1,6 +1,6 @@
 import 'package:celta_dash/features/app_analytics/data/data.dart';
 import 'package:celta_dash/features/app_analytics/domain/domain.dart';
-import 'package:celta_dash/infra/helpers/helpers.dart';
+import 'package:celta_dash/core/infrastructure/infrastructure.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mocktail/mocktail.dart';
@@ -54,7 +54,7 @@ void main() {
 
   test('loadLocalMonthlyAnalytics loads and maps local storage data', () async {
     when(
-      () => localStorage.get(DatabaseKeys.monthlyAnalytics),
+      () => localStorage.get(DatabaseKeys.monthlyAnalytics.name),
     ).thenAnswer((_) async => {
       'sales-daily': 2,
       'users': [
@@ -79,26 +79,26 @@ void main() {
       enterprise: 'enterprise-1',
     );
     when(
-      () => localStorage.put(DatabaseKeys.monthlyAnalytics, any()),
+      () => localStorage.put(DatabaseKeys.monthlyAnalytics.name, any()),
     ).thenAnswer((_) async {});
     when(
-      () => localStorage.delete(DatabaseKeys.monthlyAnalytics),
+      () => localStorage.delete(DatabaseKeys.monthlyAnalytics.name),
     ).thenAnswer((_) async {});
 
     await datasource.saveLocalMonthlyAnalytics(model);
     await datasource.clearLocalMonthlyAnalytics();
 
-    verify(() => localStorage.put(DatabaseKeys.monthlyAnalytics, any())).called(1);
-    verify(() => localStorage.delete(DatabaseKeys.monthlyAnalytics)).called(1);
+    verify(() => localStorage.put(DatabaseKeys.monthlyAnalytics.name, any())).called(1);
+    verify(() => localStorage.delete(DatabaseKeys.monthlyAnalytics.name)).called(1);
   });
 
   test('getLastSyncDate and saveLastSyncDate manage sync timestamps', () async {
     final now = DateTime(2026, 8, 26);
     when(
-      () => localStorage.get(DatabaseKeys.lastAnalyticsSyncDate),
+      () => localStorage.get(DatabaseKeys.lastAnalyticsSyncDate.name),
     ).thenAnswer((_) async => now.toIso8601String());
     when(
-      () => localStorage.put(DatabaseKeys.lastAnalyticsSyncDate, any()),
+      () => localStorage.put(DatabaseKeys.lastAnalyticsSyncDate.name, any()),
     ).thenAnswer((_) async {});
 
     final retrieved = await datasource.getLastSyncDate();
@@ -107,7 +107,7 @@ void main() {
     await datasource.saveLastSyncDate(now);
     verify(
       () => localStorage.put(
-        DatabaseKeys.lastAnalyticsSyncDate,
+        DatabaseKeys.lastAnalyticsSyncDate.name,
         now.toIso8601String(),
       ),
     ).called(1);
