@@ -113,7 +113,21 @@ class _ProductsPeriodView extends ConsumerWidget {
       data: (statistics) {
         if (statistics.isEmpty) {
           return Center(
-            child: BaseText.error('Nenhuma venda encontrada'.hardcoded),
+            child: Column(
+              mainAxisSize: .min,
+              children: [
+                BaseText.error('Nenhuma venda encontrada'.hardcoded),
+                Consumer(
+                  builder: (_, ref, _) {
+                    return PrimaryTextButton(
+                      text: 'Carregar novamente'.hardcoded,
+                      isLoading: ref.watch(provider.select((s) => s.isLoading)),
+                      onPressed: () => ref.invalidate(provider),
+                    );
+                  },
+                ),
+              ],
+            ),
           );
         }
 
