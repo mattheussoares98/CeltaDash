@@ -1,11 +1,11 @@
 import 'package:celta_dash/features/enterprises_manager/presentation/presentation.dart'
     as enterprises_manager;
+import 'package:celta_dash/features/sales_features/compare_days/presentation.dart'
+    as compare_days;
 import 'package:celta_dash/features/sales_features/compare_months/presentation/presentation.dart'
     as compare_months;
 import 'package:celta_dash/features/sales_features/goal_historic/presentation/presentation.dart'
     as goal_historic;
-import 'package:celta_dash/features/sales_features/presentation/presentation.dart'
-    as compare_days;
 import 'package:celta_dash/features/sales_features/sales/presentation/pages/pages.dart'
     as sales;
 import 'package:celta_dash/features/splash/presentation/presentation.dart'

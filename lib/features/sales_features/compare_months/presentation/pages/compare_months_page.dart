@@ -64,6 +64,7 @@ class _CompareMonthsContent extends ConsumerWidget {
                 child: CompareMonthsTable(
                   state: state,
                   isLoading: stateAsync.isLoading,
+                  provider: provider,
                 ),
               );
             },

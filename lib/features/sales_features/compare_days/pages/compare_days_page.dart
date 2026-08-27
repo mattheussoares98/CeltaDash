@@ -1,7 +1,7 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/features/home/home.dart';
-import 'package:celta_dash/features/sales_features/presentation/controllers/controllers.dart';
-import 'package:celta_dash/features/sales_features/presentation/pages/components/components.dart';
+import 'package:celta_dash/features/sales_features/compare_days/controllers/controllers.dart';
+import 'package:celta_dash/features/sales_features/compare_days/pages/components/components.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -64,6 +64,7 @@ class _CompareDaysContent extends ConsumerWidget {
                 child: CompareDaysTable(
                   state: state,
                   isLoading: stateAsync.isLoading,
+                  provider: provider,
                 ),
               );
             },

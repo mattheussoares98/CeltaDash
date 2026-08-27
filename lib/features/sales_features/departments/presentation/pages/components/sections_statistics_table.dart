@@ -1,5 +1,5 @@
-// lib/features/departments/presentation/pages/components/sections_statistics_table.dart
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
+import 'package:celta_dash/features/sales_features/departments/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/sales_features/departments/presentation/models/models.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/domain/entities/entities.dart';
 import 'package:celta_dash/utils/utils.dart';
@@ -10,11 +10,13 @@ class SectionsStatisticsTable extends StatelessWidget {
   const SectionsStatisticsTable({
     required this.saleStatistics,
     this.isLoading = false,
+    required this.provider,
     super.key,
   });
 
   final List<SaleStatisticsEntity> saleStatistics;
   final bool isLoading;
+  final DepartmentsControllerProvider provider;
 
   static Color _generateDepartmentColor(String department) {
     final hash = department.hashCode.abs();
@@ -90,6 +92,7 @@ class SectionsStatisticsTable extends StatelessWidget {
       initialSortAscending: false,
       highlightColumnIndex: 3,
       rowHeight: Sizes.p64,
+      refreshProvider: provider,
       columns: [
         ScrollableTableColumnSpec(
           headerTitle: 'Seções'.hardcoded,

@@ -98,11 +98,13 @@ class _PaymentsContent extends HookConsumerWidget {
                                       saleStatistics: statistics,
                                       filterByFinalizations: false,
                                       isLoading: statisticsAsync.isLoading,
+                                      provider: provider,
                                     ),
                                     PaymentsStatisticsTable(
                                       saleStatistics: statistics,
                                       filterByFinalizations: true,
                                       isLoading: statisticsAsync.isLoading,
+                                      provider: provider,
                                     ),
                                   ],
                                 ),

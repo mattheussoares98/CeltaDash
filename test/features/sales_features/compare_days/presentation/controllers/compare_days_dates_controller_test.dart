@@ -1,5 +1,5 @@
-import 'package:celta_dash/features/sales_features/presentation/controllers/controllers.dart';
-import 'package:celta_dash/features/sales_features/presentation/models/models.dart';
+import 'package:celta_dash/features/sales_features/compare_days/controllers/controllers.dart';
+import 'package:celta_dash/features/sales_features/compare_days/models/models.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';

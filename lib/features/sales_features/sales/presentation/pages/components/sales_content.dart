@@ -3,6 +3,7 @@ import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/features/sales_features/sales/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/sales_features/sales/presentation/models/models.dart';
 import 'package:celta_dash/features/sales_features/sales/presentation/pages/components/components.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -48,14 +49,19 @@ class SalesContent extends HookConsumerWidget {
                 ),
           ],
         ),
-        leftDateWidget: NewBaseSegmentedButtons<SalesPeriod>(
-          items: SalesPeriod.values,
-          selectedValue: selectedPeriod.value,
-          onChanged: (value) {
-            visitedPeriods.value = {...visitedPeriods.value, value};
-            selectedPeriod.value = value;
-          },
-          itemLabelBuilder: (value) => value.label,
+        leftDateWidget: Flexible(
+          child: Padding(
+            padding: const .symmetric(horizontal: Sizes.p8),
+            child: NewBaseSegmentedButtons<SalesPeriod>(
+              items: SalesPeriod.values,
+              selectedValue: selectedPeriod.value,
+              onChanged: (value) {
+                visitedPeriods.value = {...visitedPeriods.value, value};
+                selectedPeriod.value = value;
+              },
+              itemLabelBuilder: (value) => value.label,
+            ),
+          ),
         ),
       ),
       body: Column(

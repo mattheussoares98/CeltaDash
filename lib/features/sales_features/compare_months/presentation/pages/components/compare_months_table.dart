@@ -11,10 +11,12 @@ class CompareMonthsTable extends ConsumerWidget {
     super.key,
     required this.state,
     required this.isLoading,
+    required this.provider,
   });
 
   final CompareMonthsState state;
   final bool isLoading;
+  final CompareMonthsControllerProvider provider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -30,6 +32,7 @@ class CompareMonthsTable extends ConsumerWidget {
       isLoading: isLoading,
       highlightColumnIndex: 1,
       pdfFileName: 'Comparativo mensal'.hardcoded,
+      refreshProvider: provider,
       columns: [
         ScrollableTableColumnSpec(
           headerTitle: 'Dia'.hardcoded,

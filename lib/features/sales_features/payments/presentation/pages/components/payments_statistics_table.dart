@@ -1,4 +1,5 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
+import 'package:celta_dash/features/sales_features/payments/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/sales_features/payments/presentation/models/models.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/domain/entities/entities.dart';
 import 'package:celta_dash/utils/utils.dart';
@@ -10,12 +11,14 @@ class PaymentsStatisticsTable extends StatelessWidget {
     required this.saleStatistics,
     required this.filterByFinalizations,
     this.isLoading = false,
+    required this.provider,
     super.key,
   });
 
   final List<SaleStatisticsEntity> saleStatistics;
   final bool filterByFinalizations;
   final bool isLoading;
+  final PaymentsControllerProvider provider;
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +70,7 @@ class PaymentsStatisticsTable extends StatelessWidget {
       initialSortColumnIndex: 1,
       initialSortAscending: false,
       highlightColumnIndex: 1,
+      refreshProvider: provider,
       columns: [
         ScrollableTableColumnSpec(
           headerTitle: 'Forma de pagamento'.hardcoded,

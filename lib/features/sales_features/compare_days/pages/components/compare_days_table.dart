@@ -1,6 +1,6 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
-import 'package:celta_dash/features/sales_features/presentation/controllers/controllers.dart';
-import 'package:celta_dash/features/sales_features/presentation/models/models.dart';
+import 'package:celta_dash/features/sales_features/compare_days/controllers/controllers.dart';
+import 'package:celta_dash/features/sales_features/compare_days/models/models.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/domain/entities/entities.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -11,10 +11,12 @@ class CompareDaysTable extends ConsumerWidget {
     super.key,
     required this.state,
     required this.isLoading,
+    required this.provider,
   });
 
   final CompareDaysState state;
   final bool isLoading;
+  final CompareDaysControllerProvider provider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -43,6 +45,7 @@ class CompareDaysTable extends ConsumerWidget {
       isLoading: isLoading,
       highlightColumnIndex: 3,
       pdfFileName: 'Comparativo diário'.hardcoded,
+      refreshProvider: provider,
       columns: [
         ScrollableTableColumnSpec(
           headerTitle: 'Hora'.hardcoded,

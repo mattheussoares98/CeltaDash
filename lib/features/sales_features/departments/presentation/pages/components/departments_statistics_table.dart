@@ -1,5 +1,6 @@
 // lib/features/departments/presentation/pages/components/departments_statistics_table.dart
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
+import 'package:celta_dash/features/sales_features/departments/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/sales_features/departments/presentation/models/models.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/domain/entities/entities.dart';
 import 'package:celta_dash/utils/utils.dart';
@@ -10,11 +11,13 @@ class DepartmentsStatisticsTable extends StatelessWidget {
   const DepartmentsStatisticsTable({
     required this.saleStatistics,
     this.isLoading = false,
+    required this.provider,
     super.key,
   });
 
   final List<SaleStatisticsEntity> saleStatistics;
   final bool isLoading;
+  final DepartmentsControllerProvider provider;
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +72,7 @@ class DepartmentsStatisticsTable extends StatelessWidget {
       initialSortAscending: false,
       highlightColumnIndex: 3,
       rowHeight: Sizes.p64,
+      refreshProvider: provider,
       columns: [
         ScrollableTableColumnSpec(
           headerTitle: 'Dep.'.hardcoded,

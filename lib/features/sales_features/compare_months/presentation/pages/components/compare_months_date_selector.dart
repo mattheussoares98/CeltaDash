@@ -50,20 +50,24 @@ class CompareMonthsDateSelector extends ConsumerWidget {
               },
             ),
           ),
-          gapW8,
-          BaseIconButton(
-            onPressed: isLoading
-                ? null
-                : ref
-                      .read(
-                        compareMonthsControllerProvider(enterpriseId).notifier,
-                      )
-                      .refresh,
-            platformIcon: const PlatformIcon(
-              materialIcon: Icons.refresh,
-              cupertinoIcon: CupertinoIcons.refresh,
+          if (!PlatformUtil.isMobile) ...[
+            gapW8,
+            BaseIconButton(
+              onPressed: isLoading
+                  ? null
+                  : ref
+                        .read(
+                          compareMonthsControllerProvider(
+                            enterpriseId,
+                          ).notifier,
+                        )
+                        .refresh,
+              platformIcon: const PlatformIcon(
+                materialIcon: Icons.refresh,
+                cupertinoIcon: CupertinoIcons.refresh,
+              ),
             ),
-          ),
+          ],
         ],
       ),
     );

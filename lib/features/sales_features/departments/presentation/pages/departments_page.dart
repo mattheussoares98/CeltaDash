@@ -98,10 +98,12 @@ class _DepartmentsContent extends HookConsumerWidget {
                                     DepartmentsStatisticsTable(
                                       saleStatistics: statistics,
                                       isLoading: statisticsAsync.isLoading,
+                                      provider: provider,
                                     ),
                                     SectionsStatisticsTable(
                                       saleStatistics: statistics,
                                       isLoading: statisticsAsync.isLoading,
+                                      provider: provider,
                                     ),
                                   ],
                                 ),

@@ -1,5 +1,5 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
-import 'package:celta_dash/features/sales_features/presentation/controllers/controllers.dart';
+import 'package:celta_dash/features/sales_features/compare_days/controllers/controllers.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -41,19 +41,20 @@ class CompareDaysDateSelector extends ConsumerWidget {
             ),
           ),
           gapW8,
-          BaseIconButton(
-            onPressed: isLoading
-                ? null
-                : ref
-                      .read(
-                        compareDaysControllerProvider(enterpriseId).notifier,
-                      )
-                      .refresh,
-            platformIcon: const PlatformIcon(
-              materialIcon: Icons.refresh,
-              cupertinoIcon: CupertinoIcons.refresh,
+          if (!PlatformUtil.isMobile)
+            BaseIconButton(
+              onPressed: isLoading
+                  ? null
+                  : ref
+                        .read(
+                          compareDaysControllerProvider(enterpriseId).notifier,
+                        )
+                        .refresh,
+              platformIcon: const PlatformIcon(
+                materialIcon: Icons.refresh,
+                cupertinoIcon: CupertinoIcons.refresh,
+              ),
             ),
-          ),
         ],
       ),
     );

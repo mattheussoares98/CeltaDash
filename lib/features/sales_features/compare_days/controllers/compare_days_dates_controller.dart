@@ -1,4 +1,4 @@
-import 'package:celta_dash/features/sales_features/presentation/models/models.dart';
+import 'package:celta_dash/features/sales_features/compare_days/models/models.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

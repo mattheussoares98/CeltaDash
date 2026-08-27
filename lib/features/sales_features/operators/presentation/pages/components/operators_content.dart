@@ -31,6 +31,20 @@ class OperatorsContent extends HookConsumerWidget {
             materialIcon: Icons.arrow_back,
           ),
         ),
+        leftDateWidget: Expanded(
+          child: Padding(
+            padding: const .symmetric(horizontal: Sizes.p8),
+            child: NewBaseSegmentedButtons<OperatorsPeriod>(
+              items: OperatorsPeriod.values,
+              selectedValue: selectedPeriod.value,
+              onChanged: (value) {
+                visitedPeriods.value = {...visitedPeriods.value, value};
+                selectedPeriod.value = value;
+              },
+              itemLabelBuilder: (value) => value.label,
+            ),
+          ),
+        ),
         isLandscape:
             MediaQuery.of(context).orientation == Orientation.landscape,
         reloadButton: ReloadIconButton(
@@ -43,18 +57,6 @@ class OperatorsContent extends HookConsumerWidget {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(Sizes.p8),
-            child: NewBaseSegmentedButtons<OperatorsPeriod>(
-              items: OperatorsPeriod.values,
-              selectedValue: selectedPeriod.value,
-              onChanged: (value) {
-                visitedPeriods.value = {...visitedPeriods.value, value};
-                selectedPeriod.value = value;
-              },
-              itemLabelBuilder: (value) => value.label,
-            ),
-          ),
           gapH8,
           Expanded(
             child: IndexedStack(

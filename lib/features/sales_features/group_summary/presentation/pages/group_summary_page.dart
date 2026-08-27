@@ -6,7 +6,6 @@ import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class GroupSummaryPage extends StatelessWidget {
@@ -35,28 +34,30 @@ class _GroupSummaryContent extends HookConsumerWidget {
     );
 
     return BaseScaffold(
-      appBar: HomeAppBar(
-        isLandscape: true,
-        reloadButton: ReloadIconButton(refreshProviders: [provider]),
-        leading: BaseIconButton(
-          onPressed: context.pop,
-          platformIcon: const PlatformIcon(
-            cupertinoIcon: CupertinoIcons.back,
-            materialIcon: Icons.arrow_back,
-          ),
+      appBar: BaseAppBar(
+        titleWidget: Row(
+          mainAxisAlignment: .spaceEvenly,
+          children: [
+            Flexible(
+              child: NewBaseSegmentedButtons(
+                items: GroupSummaryPeriod.values,
+                selectedValue: selectedPeriod.value,
+                onChanged: (value) => selectedPeriod.value = value,
+                itemLabelBuilder: (value) => value.label,
+              ),
+            ),
+            gapW8,
+            const Flexible(child: HomeDateSelector()),
+            if (!PlatformUtil.isMobile)
+              ReloadIconButton(refreshProviders: [provider]),
+          ],
         ),
-        showEnterpriseDropdown: false,
       ),
+
       isScrollable: false,
       usePadding: false,
       body: Column(
         children: [
-          NewBaseSegmentedButtons(
-            items: GroupSummaryPeriod.values,
-            selectedValue: selectedPeriod.value,
-            onChanged: (value) => selectedPeriod.value = value,
-            itemLabelBuilder: (value) => value.label,
-          ),
           DefaultTabController(
             length: 2,
             child: Expanded(
@@ -97,6 +98,7 @@ class _GroupSummaryContent extends HookConsumerWidget {
                                     GroupSummaryDetailsTable(
                                       saleStatistics: statistics,
                                       isLoading: statisticsAsync.isLoading,
+                                      provider: provider,
                                     ),
                                     GroupSummaryResumeTab(
                                       saleStatistics: statistics,

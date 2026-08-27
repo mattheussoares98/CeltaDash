@@ -32,59 +32,62 @@ class SavedEnterprisesList extends ConsumerWidget {
       itemBuilder: (context, index) {
         final enterprise = enterprises[index];
         final isSelected = managerState?.isSelected(enterprise) == true;
-        return DecoratedBox(
-          decoration: BoxDecoration(
-            color: context.colorScheme.surfaceContainer,
-            borderRadius: BorderRadius.circular(Sizes.p12),
-            border: Border.all(
-              color: isSelected
-                  ? context.colorScheme.primary
-                  : context.colorScheme.outlineVariant,
+        return Padding(
+          padding: const .only(bottom: Sizes.p8),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: context.colorScheme.surfaceContainer,
+              borderRadius: BorderRadius.circular(Sizes.p12),
+              border: Border.all(
+                color: isSelected
+                    ? context.colorScheme.primary
+                    : context.colorScheme.outlineVariant,
+              ),
             ),
-          ),
-          child: BaseListTile(
-            contentPadding: const EdgeInsets.all(Sizes.p8),
-            title: BaseText.titleMedium(
-              enterprise.enterpriseName?.toUpperCase() ?? '-'.hardcoded,
-            ),
-            subtitle: enterprise.bsUser?.name == null
-                ? null
-                : BaseText.bodySmall(enterprise.bsUser!.name!),
-            trailing: isSelected
-                ? const PlatformIcon(
-                    materialIcon: Icons.check_circle,
-                    cupertinoIcon: CupertinoIcons.check_mark_circled_solid,
-                  )
-                : BaseIconButton(
-                    onPressed: () async {
-                      final confirmed = await showAlertDialog(
-                        context: context,
-                        title: 'Remover empresa?'.hardcoded,
-                        content: enterprise.enterpriseName,
-                        cancelActionText: 'Cancelar'.hardcoded,
-                        defaultActionText: 'Remover'.hardcoded,
-                      );
-                      if (confirmed != true) return;
-                      await ref
-                          .read(enterprisesManagerControllerProvider.notifier)
-                          .removeEnterprise(enterprise);
-                    },
-                    platformIcon: const PlatformIcon(
-                      materialIcon: Icons.delete_outline,
-                      cupertinoIcon: CupertinoIcons.delete,
-                      color: Colors.red,
+            child: BaseListTile(
+              contentPadding: const EdgeInsets.all(Sizes.p8),
+              title: BaseText.titleMedium(
+                enterprise.enterpriseName?.toUpperCase() ?? '-'.hardcoded,
+              ),
+              subtitle: enterprise.bsUser?.name == null
+                  ? null
+                  : BaseText.bodySmall(enterprise.bsUser!.name!),
+              trailing: isSelected
+                  ? const PlatformIcon(
+                      materialIcon: Icons.check_circle,
+                      cupertinoIcon: CupertinoIcons.check_mark_circled_solid,
+                    )
+                  : BaseIconButton(
+                      onPressed: () async {
+                        final confirmed = await showAlertDialog(
+                          context: context,
+                          title: 'Remover empresa?'.hardcoded,
+                          content: enterprise.enterpriseName,
+                          cancelActionText: 'Cancelar'.hardcoded,
+                          defaultActionText: 'Remover'.hardcoded,
+                        );
+                        if (confirmed != true) return;
+                        await ref
+                            .read(enterprisesManagerControllerProvider.notifier)
+                            .removeEnterprise(enterprise);
+                      },
+                      platformIcon: const PlatformIcon(
+                        materialIcon: Icons.delete_outline,
+                        cupertinoIcon: CupertinoIcons.delete,
+                        color: Colors.red,
+                      ),
                     ),
-                  ),
-            onTap: isSelected
-                ? null
-                : () async {
-                    final success = await ref
-                        .read(enterprisesManagerControllerProvider.notifier)
-                        .selectEnterprise(enterprise);
-                    if (success && context.mounted) {
-                      Navigator.of(context).pop();
-                    }
-                  },
+              onTap: isSelected
+                  ? null
+                  : () async {
+                      final success = await ref
+                          .read(enterprisesManagerControllerProvider.notifier)
+                          .selectEnterprise(enterprise);
+                      if (success && context.mounted) {
+                        Navigator.of(context).pop();
+                      }
+                    },
+            ),
           ),
         );
       },

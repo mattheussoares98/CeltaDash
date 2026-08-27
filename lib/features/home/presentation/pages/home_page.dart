@@ -1,6 +1,5 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/features/home/home.dart';
-import 'package:celta_dash/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/misc.dart';
@@ -50,17 +49,14 @@ class HomePage extends HookConsumerWidget {
               isLandscape: isLandscape,
               showToggleAppMode: true,
               showEnterpriseManagement: true,
-              reloadButton: PlatformUtil.isMobile
-                  ? null
-                  : ReloadIconButton(
-                      onRefresh:
-                          providers == null || selectedEnterpriseIsDisabled
-                          ? null
-                          : () => ref.invalidate(resumeCurrentDateProvider),
-                      refreshProviders: selectedEnterpriseIsDisabled
-                          ? null
-                          : providers,
-                    ),
+              reloadButton: ReloadIconButton(
+                onRefresh: providers == null || selectedEnterpriseIsDisabled
+                    ? null
+                    : () => ref.invalidate(resumeCurrentDateProvider),
+                refreshProviders: selectedEnterpriseIsDisabled
+                    ? null
+                    : providers,
+              ),
             )
           : null,
       body: Stack(

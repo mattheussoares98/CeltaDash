@@ -1,8 +1,8 @@
 import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/core/providers.dart';
 import 'package:celta_dash/features/home/providers.dart';
-import 'package:celta_dash/features/sales_features/presentation/controllers/controllers.dart';
-import 'package:celta_dash/features/sales_features/presentation/models/models.dart';
+import 'package:celta_dash/features/sales_features/compare_days/controllers/controllers.dart';
+import 'package:celta_dash/features/sales_features/compare_days/models/models.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/domain/entities/entities.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

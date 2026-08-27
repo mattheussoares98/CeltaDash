@@ -46,18 +46,20 @@ class GoalHistoricYearSelector extends ConsumerWidget {
                       .selectYear(year);
                 },
         ),
-        gapW16,
-        BaseIconButton(
-          onPressed: isLoading
-              ? null
-              : () => ref.invalidate(
-                  goalHistoricControllerProvider(enterpriseId),
-                ),
-          platformIcon: const PlatformIcon(
-            materialIcon: Icons.refresh,
-            cupertinoIcon: CupertinoIcons.refresh,
+        if (!PlatformUtil.isMobile) ...[
+          gapW16,
+          BaseIconButton(
+            onPressed: isLoading
+                ? null
+                : () => ref.invalidate(
+                    goalHistoricControllerProvider(enterpriseId),
+                  ),
+            platformIcon: const PlatformIcon(
+              materialIcon: Icons.refresh,
+              cupertinoIcon: CupertinoIcons.refresh,
+            ),
           ),
-        ),
+        ],
       ],
     );
   }

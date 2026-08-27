@@ -30,20 +30,9 @@ class SellersContent extends HookConsumerWidget {
             materialIcon: Icons.arrow_back,
           ),
         ),
-        isLandscape:
-            MediaQuery.of(context).orientation == Orientation.landscape,
-        reloadButton: ReloadIconButton(
-          refreshProviders: [
-            for (final period in SellersPeriod.values)
-              if (visitedPeriods.value.contains(period))
-                sellersControllerProvider(enterpriseId, period),
-          ],
-        ),
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(Sizes.p8),
+        leftDateWidget: Expanded(
+          child: Padding(
+            padding: const .symmetric(horizontal: Sizes.p8),
             child: NewBaseSegmentedButtons<SellersPeriod>(
               items: SellersPeriod.values,
               selectedValue: selectedPeriod.value,
@@ -54,6 +43,20 @@ class SellersContent extends HookConsumerWidget {
               itemLabelBuilder: (value) => value.label,
             ),
           ),
+        ),
+        isLandscape:
+            MediaQuery.of(context).orientation == Orientation.landscape,
+        reloadButton: ReloadIconButton(
+          //TODO change reloadButton type to be ReloadIconButton
+          refreshProviders: [
+            for (final period in SellersPeriod.values)
+              if (visitedPeriods.value.contains(period))
+                sellersControllerProvider(enterpriseId, period),
+          ],
+        ),
+      ),
+      body: Column(
+        children: [
           gapH8,
           Expanded(
             child: IndexedStack(

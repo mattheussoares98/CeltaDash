@@ -1,6 +1,6 @@
 import 'package:celta_dash/features/app_analytics/providers.dart';
-import 'package:celta_dash/features/sales_features/presentation/controllers/controllers.dart';
-import 'package:celta_dash/features/sales_features/presentation/models/models.dart';
+import 'package:celta_dash/features/sales_features/compare_days/controllers/controllers.dart';
+import 'package:celta_dash/features/sales_features/compare_days/models/models.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/domain/entities/entities.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/presentation/controllers/controllers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

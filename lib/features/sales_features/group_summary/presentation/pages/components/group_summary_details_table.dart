@@ -1,5 +1,6 @@
 // lib/features/group_summary/presentation/pages/components/group_summary_details_table.dart
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
+import 'package:celta_dash/features/sales_features/group_summary/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/sales_features/group_summary/presentation/models/models.dart';
 import 'package:celta_dash/features/sales_features/sale_statistics/domain/entities/entities.dart';
 import 'package:celta_dash/utils/utils.dart';
@@ -9,12 +10,14 @@ import 'package:flutter/material.dart';
 class GroupSummaryDetailsTable extends StatelessWidget {
   const GroupSummaryDetailsTable({
     required this.saleStatistics,
+    required this.provider,
     this.isLoading = false,
     super.key,
   });
 
   final List<SaleStatisticsEntity> saleStatistics;
   final bool isLoading;
+  final GroupSummaryControllerProvider provider;
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +70,7 @@ class GroupSummaryDetailsTable extends StatelessWidget {
       initialSortColumnIndex: 1,
       initialSortAscending: false,
       highlightColumnIndex: 1,
+      refreshProvider: provider,
       pdfFileName: 'Resumo do grupo'.hardcoded,
       columns: [
         ScrollableTableColumnSpec(
