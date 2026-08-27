@@ -32,9 +32,8 @@ class ResumeContent extends HookConsumerWidget {
       MonthlyAnalysisCard(enterpriseId: enterpriseId),
       GroupOfStoresCard(enterpriseId: enterpriseId),
     ];
-    final errors = providerValues
-        .where((item) => item.value.hasError && !item.value.hasValue)
-        .toList();
+    final errors = providerValues.where((item) => item.value.hasError).toList();
+
     final isInitialLoading = providerValues.any(
       (item) => item.value.isLoading && !item.value.hasValue,
     );
