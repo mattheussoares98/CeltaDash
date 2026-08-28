@@ -44,6 +44,17 @@ class _PaymentsContent extends HookConsumerWidget {
             materialIcon: Icons.arrow_back,
           ),
         ),
+        leftDateWidget: Expanded(
+          child: Padding(
+            padding: const .symmetric(horizontal: Sizes.p8),
+            child: NewBaseSegmentedButtons(
+              items: PaymentsPeriod.values,
+              selectedValue: selectedPeriod.value,
+              onChanged: (value) => selectedPeriod.value = value,
+              itemLabelBuilder: (value) => value.label,
+            ),
+          ),
+        ),
         isLandscape: isLandscape,
         reloadButton: ReloadIconButton(refreshProviders: [provider]),
       ),
@@ -51,12 +62,6 @@ class _PaymentsContent extends HookConsumerWidget {
       usePadding: false,
       body: Column(
         children: [
-          NewBaseSegmentedButtons(
-            items: PaymentsPeriod.values,
-            selectedValue: selectedPeriod.value,
-            onChanged: (value) => selectedPeriod.value = value,
-            itemLabelBuilder: (value) => value.label,
-          ),
           DefaultTabController(
             length: 2,
             child: Expanded(

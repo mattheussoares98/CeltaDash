@@ -130,6 +130,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
                   ?modeToggle,
                   ?selectEnterprise,
                   if (showReloadButton) ?reloadButton,
+                  gapW8,
                 ],
               ),
             ],
