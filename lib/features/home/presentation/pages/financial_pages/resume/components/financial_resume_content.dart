@@ -109,10 +109,12 @@ class FinancialResumeContent extends HookConsumerWidget {
 
     return BaseScaffold(
       isScrollable: false,
+      padding: const .symmetric(horizontal: Sizes.p8),
       onRefresh: () => ref.invalidate(resumeCurrentDateProvider),
       refreshProviders: providers,
       body: Column(
         children: [
+          gapH4,
           const Wrap(
             alignment: .center,
             crossAxisAlignment: .center,
