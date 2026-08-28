@@ -100,7 +100,11 @@ class BaseBottomNavigationBar extends StatelessWidget {
 
     final Widget bottomBar;
 
-    const height = 64.0;
+    final height =
+        64 +
+        (PlatformUtil.isAndroid
+            ? MediaQuery.viewPaddingOf(context).bottom
+            : 0.0);
 
     if (isCupertino) {
       bottomBar = CupertinoTabBar(
