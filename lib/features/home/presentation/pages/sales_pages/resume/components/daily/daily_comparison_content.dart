@@ -15,7 +15,7 @@ class DailyComparisonContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final percentage = comparison.percentageDifference;
     final todayColor = percentage >= 0 ? Colors.green : Colors.red;
-    final prevColor = context.theme.secondaryHeaderColor;
+    const prevColor = Colors.amber;
 
     return Card(
       child: Padding(
