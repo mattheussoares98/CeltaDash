@@ -33,7 +33,17 @@ class App extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+    final themeMode = ref.watch(
+      themeModeControllerProvider.select(
+        (s) => s.value?.toFlutterThemeMode() ?? ThemeMode.light,
+      ),
+    );
+
+    SystemChrome.setSystemUIOverlayStyle(
+      themeMode == ThemeMode.dark
+          ? SystemUiOverlayStyle.light
+          : SystemUiOverlayStyle.dark,
+    );
 
     final router = ref.watch(goRouterProvider);
 
@@ -49,7 +59,7 @@ class App extends HookConsumerWidget {
           title: 'Celta Dash',
           theme: lightTheme,
           darkTheme: darkTheme,
-          themeMode: .light, //TODO enable changing the theme
+          themeMode: themeMode,
           debugShowCheckedModeBanner: false,
           supportedLocales: const [Locale('en', 'US'), Locale('pt', 'BR')],
           localizationsDelegates: const [

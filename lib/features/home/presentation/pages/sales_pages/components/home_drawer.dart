@@ -1,4 +1,5 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
+import 'package:celta_dash/core/presentation/presentation.dart';
 import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/routing/routing.dart';
 import 'package:celta_dash/utils/utils.dart';
@@ -21,14 +22,26 @@ class HomeDrawer extends HookConsumerWidget {
             );
             return Column(
               children: [
-                DrawerHeader(
-                  child: GestureDetector(
-                    onLongPress: () {
-                      context.pop();
-                      context.pushNamed(Routes.webLogin.name);
-                    },
-                    child: const LogoWidget(),
-                  ),
+                Consumer(
+                  builder: (_, ref, _) {
+                    final isDark = ref.watch(
+                      themeModeControllerProvider.select(
+                        (s) => s.value?.isDark ?? false,
+                      ),
+                    );
+                    return DrawerHeader(
+                      decoration: BoxDecoration(
+                        color: isDark ? Colors.white : null,
+                      ),
+                      child: GestureDetector(
+                        onLongPress: () {
+                          context.pop();
+                          context.pushNamed(Routes.webLogin.name);
+                        },
+                        child: const LogoWidget(),
+                      ),
+                    );
+                  },
                 ),
                 Expanded(
                   child: ListView(
@@ -127,6 +140,23 @@ class HomeDrawer extends HookConsumerWidget {
                           context.pushNamed(Routes.enterprisesManager.name);
                         },
                       ),
+                      Consumer(
+                        builder: (context, ref, _) {
+                          final isDark = ref.watch(
+                            themeModeControllerProvider.select(
+                              (s) => s.value?.isDark ?? false,
+                            ),
+                          );
+                          return _DrawerThemeItem(
+                            isDark: isDark,
+                            onChanged: (_) {
+                              ref
+                                  .read(themeModeControllerProvider.notifier)
+                                  .toggleTheme();
+                            },
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -218,6 +248,34 @@ class _DrawerItem extends StatelessWidget {
         color: textColor ?? context.colorScheme.onSurface,
       ),
       onTap: onTap,
+    );
+  }
+}
+
+class _DrawerThemeItem extends StatelessWidget {
+  const _DrawerThemeItem({required this.isDark, required this.onChanged});
+
+  final bool isDark;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return BaseListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
+      leading: PlatformIcon(
+        materialIcon: isDark ? Icons.dark_mode : Icons.light_mode,
+        cupertinoIcon: isDark
+            ? CupertinoIcons.moon_fill
+            : CupertinoIcons.sun_max_fill,
+      ),
+      title: BaseText.bodyMedium(
+        (isDark ? 'Tema escuro' : 'Tema claro').hardcoded,
+        color: context.colorScheme.onSurface,
+      ),
+      trailing: PlatformUtil.isCupertino
+          ? CupertinoSwitch(value: isDark, onChanged: onChanged)
+          : Switch.adaptive(value: isDark, onChanged: onChanged),
+      onTap: () => onChanged(!isDark),
     );
   }
 }
