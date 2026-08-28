@@ -5,12 +5,14 @@ import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/features/pdf_viewer/pdf_viewer.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/misc.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 part 'fixed_layout.dart';
+part 'linked_scroll_controller_group.dart';
 part 'scrollable_hand_animation.dart';
 part 'scrollable_header_cell_wrapper.dart';
 part 'scrollable_layout.dart';
@@ -72,9 +74,28 @@ class ScrollableTable<T> extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     if (columns.isEmpty) return const SizedBox.shrink();
 
-    final fixedVerticalController = useScrollController();
-    final scrollableVerticalController = useScrollController();
+    // Linked controllers keep fixed and scrollable columns synchronized and allow
+    // immediate touch/drag interruption even during iOS bounce or fling animations.
+    final linkedScrollGroup = useMemoized(
+      () => LinkedScrollControllerGroup(),
+      [],
+    );
+    final fixedVerticalController = useMemoized(
+      () => linkedScrollGroup.addAndGet(),
+      [linkedScrollGroup],
+    );
+    final scrollableVerticalController = useMemoized(
+      () => linkedScrollGroup.addAndGet(),
+      [linkedScrollGroup],
+    );
     final horizontalScrollController = useScrollController();
+
+    useEffect(() {
+      return () {
+        fixedVerticalController.dispose();
+        scrollableVerticalController.dispose();
+      };
+    }, [fixedVerticalController, scrollableVerticalController]);
 
     final handAnimationController = useAnimationController(
       duration: const Duration(milliseconds: 3500),
@@ -113,8 +134,6 @@ class ScrollableTable<T> extends HookConsumerWidget {
 
     final showHand = useState(false);
     final hasPlayedAnimation = useRef(false);
-    final isSyncing = useRef(false);
-    final activeScrollController = useState<ScrollController?>(null);
 
     final sortColumnIndex = useState<int?>(initialSortColumnIndex);
     final sortAscending = useState(initialSortAscending);
@@ -209,48 +228,6 @@ class ScrollableTable<T> extends HookConsumerWidget {
       return null;
     }
 
-    useEffect(() {
-      void syncFixedToScrollable() {
-        if (isSyncing.value) return;
-        if (!scrollableVerticalController.hasClients) return;
-        if (activeScrollController.value != null &&
-            activeScrollController.value != fixedVerticalController) {
-          return;
-        }
-
-        final offset = fixedVerticalController.offset;
-        if (scrollableVerticalController.offset == offset) return;
-
-        isSyncing.value = true;
-        scrollableVerticalController.jumpTo(offset);
-        isSyncing.value = false;
-      }
-
-      void syncScrollableToFixed() {
-        if (isSyncing.value) return;
-        if (!fixedVerticalController.hasClients) return;
-        if (activeScrollController.value != null &&
-            activeScrollController.value != scrollableVerticalController) {
-          return;
-        }
-
-        final offset = scrollableVerticalController.offset;
-        if (fixedVerticalController.offset == offset) return;
-
-        isSyncing.value = true;
-        fixedVerticalController.jumpTo(offset);
-        isSyncing.value = false;
-      }
-
-      fixedVerticalController.addListener(syncFixedToScrollable);
-      scrollableVerticalController.addListener(syncScrollableToFixed);
-
-      return () {
-        fixedVerticalController.removeListener(syncFixedToScrollable);
-        scrollableVerticalController.removeListener(syncScrollableToFixed);
-      };
-    }, [fixedVerticalController, scrollableVerticalController]);
-
     void handleHeaderTap(int columnIndex) {
       if (columns[columnIndex].sortValueMapper == null) return;
 
@@ -260,18 +237,6 @@ class ScrollableTable<T> extends HookConsumerWidget {
         sortColumnIndex.value = columnIndex;
         sortAscending.value = true;
       }
-    }
-
-    void handleScrollNotification(ScrollController controller, bool isStart) {
-      if (isStart && activeScrollController.value != null) return;
-      if (!isStart && activeScrollController.value != controller) return;
-
-      activeScrollController.value = isStart ? controller : null;
-    }
-
-    bool shouldConsumeScrollNotification(ScrollController controller) {
-      final active = activeScrollController.value;
-      return active != null && active != controller;
     }
 
     Future<void> playScrollHint() async {
@@ -392,16 +357,6 @@ class ScrollableTable<T> extends HookConsumerWidget {
         ? const AlwaysScrollableScrollPhysics()
         : null;
 
-    final fixedPhysics =
-        activeScrollController.value == scrollableVerticalController
-        ? _PassiveScrollPhysics(parent: physics)
-        : physics;
-
-    final scrollablePhysics =
-        activeScrollController.value == fixedVerticalController
-        ? _PassiveScrollPhysics(parent: physics)
-        : physics;
-
     Widget table = LayoutBuilder(
       builder: (context, constraints) {
         final double totalMinWidth = columns.asMap().entries.fold(0.0, (
@@ -456,11 +411,8 @@ class ScrollableTable<T> extends HookConsumerWidget {
             sortColumnIndex: sortColumnIndex.value,
             sortAscending: sortAscending.value,
             onHeaderTap: handleHeaderTap,
-            onScrollNotification: handleScrollNotification,
-            shouldConsumeScrollNotification: shouldConsumeScrollNotification,
             hasFooter: hasFooter,
-            fixedPhysics: fixedPhysics,
-            scrollablePhysics: scrollablePhysics,
+            physics: physics,
             onTapRow: onTapRow,
             rowColor: getEffectiveRowColor,
             fitsInAvailableHeight: fitsInAvailableHeight,
@@ -537,24 +489,6 @@ class ScrollableTable<T> extends HookConsumerWidget {
             : table,
       ),
     );
-  }
-}
-
-class _PassiveScrollPhysics extends ScrollPhysics {
-  const _PassiveScrollPhysics({super.parent});
-
-  @override
-  _PassiveScrollPhysics applyTo(ScrollPhysics? ancestor) {
-    return _PassiveScrollPhysics(parent: buildParent(ancestor));
-  }
-
-  @override
-  Simulation? createBallisticSimulation(
-    ScrollMetrics position,
-    double velocity,
-  ) {
-    // Prevents automatic bounce-back or deceleration animation on the passive list
-    return null;
   }
 }
 

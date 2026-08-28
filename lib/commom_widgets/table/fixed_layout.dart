@@ -17,11 +17,8 @@ class _FixedLayout<T> extends StatelessWidget {
   final int? sortColumnIndex;
   final bool sortAscending;
   final void Function(int) onHeaderTap;
-  final void Function(ScrollController, bool) onScrollNotification;
-  final bool Function(ScrollController) shouldConsumeScrollNotification;
   final bool hasFooter;
-  final ScrollPhysics? fixedPhysics;
-  final ScrollPhysics? scrollablePhysics;
+  final ScrollPhysics? physics;
   final void Function(T item)? onTapRow;
   final Color? Function(T item)? rowColor;
   final bool fitsInAvailableHeight;
@@ -43,11 +40,8 @@ class _FixedLayout<T> extends StatelessWidget {
     required this.sortColumnIndex,
     required this.sortAscending,
     required this.onHeaderTap,
-    required this.onScrollNotification,
-    required this.shouldConsumeScrollNotification,
     required this.hasFooter,
-    required this.fixedPhysics,
-    required this.scrollablePhysics,
+    required this.physics,
     required this.onTapRow,
     required this.rowColor,
     required this.fitsInAvailableHeight,
@@ -107,55 +101,38 @@ class _FixedLayout<T> extends StatelessWidget {
                   behavior: ScrollConfiguration.of(
                     context,
                   ).copyWith(scrollbars: false),
-                  child: NotificationListener<ScrollNotification>(
-                    onNotification: (notification) {
-                      if (notification is ScrollStartNotification) {
-                        onScrollNotification(fixedVerticalController, true);
-                      } else if (notification is ScrollEndNotification) {
-                        onScrollNotification(fixedVerticalController, false);
+                  child: ListView.builder(
+                    controller: fixedVerticalController,
+                    physics: physics,
+                    padding: EdgeInsets.zero,
+                    itemCount: sortedItems.length,
+                    itemExtent: rowHeight,
+                    itemBuilder: (_, index) {
+                      final item = sortedItems[index];
+                      final rowBg = _resolveRowBackgroundColor<T>(
+                        index: index,
+                        rowColor: rowColor,
+                        item: item,
+                        evenRowBg: evenRowBg,
+                        oddRowBg: oddRowBg,
+                      );
+                      Widget cell = _ScrollableTableCell(
+                        width: firstColWidth,
+                        height: rowHeight,
+                        spec: firstCol,
+                        backgroundColor: rowBg,
+                        child: firstCol.cellBuilder(item),
+                      );
+                      if (onTapRow != null) {
+                        cell = _TappableRowIndicator(child: cell);
+                        return GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () => onTapRow!(sortedItems[index]),
+                          child: cell,
+                        );
                       }
-
-                      // Stop scroll events from the jumped list bubbling to the RefreshIndicator
-                      if (shouldConsumeScrollNotification(
-                        fixedVerticalController,
-                      )) {
-                        return true;
-                      }
-                      return false;
+                      return cell;
                     },
-                    child: ListView.builder(
-                      controller: fixedVerticalController,
-                      physics: fixedPhysics,
-                      padding: EdgeInsets.zero,
-                      itemCount: sortedItems.length,
-                      itemExtent: rowHeight,
-                      itemBuilder: (_, index) {
-                        final item = sortedItems[index];
-                        final rowBg = _resolveRowBackgroundColor<T>(
-                          index: index,
-                          rowColor: rowColor,
-                          item: item,
-                          evenRowBg: evenRowBg,
-                          oddRowBg: oddRowBg,
-                        );
-                        Widget cell = _ScrollableTableCell(
-                          width: firstColWidth,
-                          height: rowHeight,
-                          spec: firstCol,
-                          backgroundColor: rowBg,
-                          child: firstCol.cellBuilder(item),
-                        );
-                        if (onTapRow != null) {
-                          cell = _TappableRowIndicator(child: cell);
-                          return GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: () => onTapRow!(sortedItems[index]),
-                            child: cell,
-                          );
-                        }
-                        return cell;
-                      },
-                    ),
                   ),
                 );
 
@@ -214,54 +191,31 @@ class _FixedLayout<T> extends StatelessWidget {
                     ),
                   ),
                   () {
-                    final list = NotificationListener<ScrollNotification>(
-                      onNotification: (notification) {
-                        if (notification is ScrollStartNotification) {
-                          onScrollNotification(
-                            scrollableVerticalController,
-                            true,
-                          );
-                        } else if (notification is ScrollEndNotification) {
-                          onScrollNotification(
-                            scrollableVerticalController,
-                            false,
-                          );
-                        }
-
-                        // Stop scroll events from the jumped list bubbling to the RefreshIndicator
-                        if (shouldConsumeScrollNotification(
-                          scrollableVerticalController,
-                        )) {
-                          return true;
-                        }
-                        return false;
+                    final list = ListView.builder(
+                      controller: scrollableVerticalController,
+                      physics: physics,
+                      padding: EdgeInsets.zero,
+                      itemCount: sortedItems.length,
+                      itemExtent: rowHeight,
+                      itemBuilder: (_, index) {
+                        final item = sortedItems[index];
+                        final rowBg = _resolveRowBackgroundColor<T>(
+                          index: index,
+                          rowColor: rowColor,
+                          item: item,
+                          evenRowBg: evenRowBg,
+                          oddRowBg: oddRowBg,
+                        );
+                        return _ScrollableRow<T>(
+                          item: item,
+                          columns: scrollableColumns,
+                          rowHeight: rowHeight,
+                          backgroundColor: rowBg,
+                          extraPerColumn: extraPerColumn,
+                          onTapRow: onTapRow,
+                          showTapIndicator: false,
+                        );
                       },
-                      child: ListView.builder(
-                        controller: scrollableVerticalController,
-                        physics: scrollablePhysics,
-                        padding: EdgeInsets.zero,
-                        itemCount: sortedItems.length,
-                        itemExtent: rowHeight,
-                        itemBuilder: (_, index) {
-                          final item = sortedItems[index];
-                          final rowBg = _resolveRowBackgroundColor<T>(
-                            index: index,
-                            rowColor: rowColor,
-                            item: item,
-                            evenRowBg: evenRowBg,
-                            oddRowBg: oddRowBg,
-                          );
-                          return _ScrollableRow<T>(
-                            item: item,
-                            columns: scrollableColumns,
-                            rowHeight: rowHeight,
-                            backgroundColor: rowBg,
-                            extraPerColumn: extraPerColumn,
-                            onTapRow: onTapRow,
-                            showTapIndicator: false,
-                          );
-                        },
-                      ),
                     );
 
                     if (fitsInAvailableHeight) {
