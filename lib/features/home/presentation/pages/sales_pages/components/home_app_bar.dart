@@ -97,7 +97,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
             ?drawerButton,
             if (enterpriseSelector != null)
               Expanded(flex: 2, child: enterpriseSelector),
-            ?leftDateWidget, //TODO test all pages with this widget
+            ?leftDateWidget,
             gapW4,
             ?dateSelector,
             ?modeToggle,
