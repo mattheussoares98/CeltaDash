@@ -5,4 +5,5 @@ enum DatabaseKeys {
   monthlyAnalytics,
   lastAnalyticsSyncDate,
   appMode,
+  themeMode,
 }
