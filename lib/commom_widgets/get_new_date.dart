@@ -18,22 +18,16 @@ class GetNewDate {
 
     FocusManager.instance.primaryFocus?.unfocus();
 
-    final currentSelectedIsBeforeMinimumDate =
-        currentSelectedDate?.isBefore(minimumDate) ?? true;
-    final correctMinimumDate = currentSelectedIsBeforeMinimumDate
+    final baseDate = currentSelectedDate ?? DateTime.now();
+    final initialDate = baseDate.isBefore(minimumDate)
         ? minimumDate
-        : currentSelectedDate!;
-
-    final firstDate = currentSelectedIsBeforeMinimumDate
-        ? correctMinimumDate
-        : minimumDate;
-    final initialDate = currentSelectedIsBeforeMinimumDate
-        ? correctMinimumDate
-        : currentSelectedDate;
+        : baseDate.isAfter(maximumDate)
+        ? maximumDate
+        : baseDate;
 
     if (PlatformUtil.isCupertino) {
       selectedDate = await _showCupertinoDatePicker(
-        firstDate: firstDate,
+        firstDate: minimumDate,
         context: context,
         maximumDate: maximumDate,
         initialDate: initialDate,
@@ -42,7 +36,7 @@ class GetNewDate {
     } else {
       selectedDate = await showDatePicker(
         context: context,
-        firstDate: firstDate,
+        firstDate: minimumDate,
         initialDate: initialDate,
         lastDate: maximumDate,
       );
@@ -55,7 +49,7 @@ class GetNewDate {
     if (PlatformUtil.isCupertino) {
       if (!context.mounted) return null;
       final time = await _showCupertinoDatePicker(
-        firstDate: firstDate,
+        firstDate: minimumDate,
         context: context,
         maximumDate: maximumDate,
         initialDate: initialDate,
@@ -68,9 +62,7 @@ class GetNewDate {
       if (!context.mounted) return null;
       selectedTime = await showTimePicker(
         context: context,
-        initialTime: TimeOfDay.fromDateTime(
-          currentSelectedDate ?? DateTime.now(),
-        ),
+        initialTime: TimeOfDay.fromDateTime(initialDate),
       );
     }
 
@@ -92,7 +84,7 @@ class GetNewDate {
       selectedTime.minute,
     );
 
-    if (finalDateTime.isBefore(firstDate)) {
+    if (finalDateTime.isBefore(minimumDate)) {
       if (!context.mounted) return null;
       showToastMessage(
         'O horário não pode ser menor que a data mínima'.hardcoded,
@@ -111,7 +103,7 @@ class GetNewDate {
     required BuildContext context,
     required CupertinoDatePickerMode mode,
   }) async {
-    DateTime? tempPickedDate = firstDate;
+    DateTime? tempPickedDate = initialDate ?? firstDate;
 
     return await showCupertinoModalPopup<DateTime>(
       context: context,
