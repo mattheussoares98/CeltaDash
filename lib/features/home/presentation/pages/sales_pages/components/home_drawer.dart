@@ -11,6 +11,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class HomeDrawer extends HookConsumerWidget {
   const HomeDrawer({super.key});
 
+  Future<void> _navigate(BuildContext context, String routeName) async {
+    context.pop();
+    await Future.delayed(const Duration(milliseconds: 300));
+    if (context.mounted) {
+      context.pushNamed(routeName);
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Drawer(
@@ -34,10 +42,8 @@ class HomeDrawer extends HookConsumerWidget {
                         color: isDark ? Colors.white : null,
                       ),
                       child: GestureDetector(
-                        onLongPress: () {
-                          context.pop();
-                          context.pushNamed(Routes.webLogin.name);
-                        },
+                        onLongPress: () =>
+                            _navigate(context, Routes.webLogin.name),
                         child: const LogoWidget(),
                       ),
                     );
@@ -57,10 +63,10 @@ class HomeDrawer extends HookConsumerWidget {
                         ),
                         onTap: hasError
                             ? null
-                            : () {
-                                context.pop();
-                                context.pushNamed(Routes.homePersonalized.name);
-                              },
+                            : () => _navigate(
+                                context,
+                                Routes.homePersonalized.name,
+                              ),
                       ),
                       _DrawerItem(
                         title: 'Vendedores'.hardcoded,
@@ -70,10 +76,7 @@ class HomeDrawer extends HookConsumerWidget {
                         ),
                         onTap: hasError
                             ? null
-                            : () {
-                                context.pop();
-                                context.pushNamed(Routes.sellers.name);
-                              },
+                            : () => _navigate(context, Routes.sellers.name),
                       ),
                       _DrawerItem(
                         title: 'Operadores'.hardcoded,
@@ -83,10 +86,7 @@ class HomeDrawer extends HookConsumerWidget {
                         ),
                         onTap: hasError
                             ? null
-                            : () {
-                                context.pop();
-                                context.pushNamed(Routes.operators.name);
-                              },
+                            : () => _navigate(context, Routes.operators.name),
                       ),
                       _DrawerItem(
                         title: 'Vendas'.hardcoded,
@@ -96,10 +96,7 @@ class HomeDrawer extends HookConsumerWidget {
                         ),
                         onTap: hasError
                             ? null
-                            : () {
-                                context.pop();
-                                context.pushNamed(Routes.sales.name);
-                              },
+                            : () => _navigate(context, Routes.sales.name),
                       ),
                       _DrawerItem(
                         title: 'Comparativo diário'.hardcoded,
@@ -109,10 +106,7 @@ class HomeDrawer extends HookConsumerWidget {
                         ),
                         onTap: hasError
                             ? null
-                            : () {
-                                context.pop();
-                                context.pushNamed(Routes.compareDays.name);
-                              },
+                            : () => _navigate(context, Routes.compareDays.name),
                       ),
                       _DrawerItem(
                         title: 'Comparativo mensal'.hardcoded,
@@ -122,10 +116,8 @@ class HomeDrawer extends HookConsumerWidget {
                         ),
                         onTap: hasError
                             ? null
-                            : () {
-                                context.pop();
-                                context.pushNamed(Routes.compareMonths.name);
-                              },
+                            : () =>
+                                  _navigate(context, Routes.compareMonths.name),
                       ),
                       const Divider(),
                       _DrawerSectionTitle(title: 'Sistema'.hardcoded),
@@ -135,10 +127,8 @@ class HomeDrawer extends HookConsumerWidget {
                           materialIcon: Icons.manage_accounts,
                           cupertinoIcon: CupertinoIcons.person_2,
                         ),
-                        onTap: () {
-                          context.pop();
-                          context.pushNamed(Routes.enterprisesManager.name);
-                        },
+                        onTap: () =>
+                            _navigate(context, Routes.enterprisesManager.name),
                       ),
                       Consumer(
                         builder: (context, ref, _) {
