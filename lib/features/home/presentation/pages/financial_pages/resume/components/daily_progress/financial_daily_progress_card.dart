@@ -35,19 +35,29 @@ class FinancialDailyProgressCard extends ConsumerWidget {
               p.date?.day == selectedDate.day,
         );
 
-        final receive = matchingPortions.fold<double>(
+        final payOpen = matchingPortions.fold<double>(
           0,
-          (sum, p) => sum + (p.receiveLiquidValue?.toDouble() ?? 0),
+          (p, n) => p + (n.payOpenValue?.toDouble() ?? 0),
         );
-        final pay = matchingPortions.fold<double>(
+        final paySettled = matchingPortions.fold<double>(
           0,
-          (sum, p) => sum + (p.payLiquidValue?.toDouble() ?? 0),
+          (p, n) => p + (n.paySettledValue?.toDouble() ?? 0),
+        );
+        final receiveOpen = matchingPortions.fold<double>(
+          0,
+          (p, n) => p + (n.receiveOpenValue?.toDouble() ?? 0),
+        );
+        final receiveSettled = matchingPortions.fold<double>(
+          0,
+          (p, n) => p + (n.receiveSettledValue?.toDouble() ?? 0),
         );
 
         return FinancialDailyProgressContent(
           selectedDate: selectedDate,
-          receiveValue: receive,
-          payValue: pay,
+          payOpenValue: payOpen,
+          paySettledValue: paySettled,
+          receiveOpenValue: receiveOpen,
+          receiveSettledValue: receiveSettled,
         );
       },
     );
