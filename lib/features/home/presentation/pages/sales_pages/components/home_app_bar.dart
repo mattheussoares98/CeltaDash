@@ -125,6 +125,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
                 children: [
                   if (enterpriseSelector == null) ?drawerButton,
                   ?leftDateWidget,
+                  gapW8,
                   ?dateSelector,
                   ?modeToggle,
                   ?selectEnterprise,
