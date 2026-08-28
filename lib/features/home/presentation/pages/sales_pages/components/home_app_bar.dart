@@ -156,6 +156,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
     }
 
     return BaseAppBar(
+      preferredHeight: preferredSize.height,
       showLeading: false,
       titleWidget: controls,
       actionsPadding: EdgeInsets.symmetric(
