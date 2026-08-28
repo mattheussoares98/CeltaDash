@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:riverpod/riverpod.dart';
 
 extension RefExtensions on Ref {
-  void invalidatePeriodically([int seconds = 60]) {
+  void invalidatePeriodically([int seconds = 300]) {
     if (seconds <= 0) {
       throw ArgumentError.value(
         seconds,
