@@ -65,76 +65,106 @@ class WebAnalyticsView extends HookConsumerWidget {
                 filteredItems.sort(
                   (a, b) => sum(b.searchCounts).compareTo(sum(a.searchCounts)),
                 );
+                final requestsCount = filteredItems
+                    .fold(0, (p, n) => p + sum(n.searchCounts))
+                    .toString();
 
                 return Expanded(
-                  child: ResponsiveListFlow(
-                    itemCount: filteredItems.length,
-                    itemBuilder: (context, index) {
-                      final analytic = filteredItems[index];
-                      final totalRequests = analytic.searchCounts.fold<int>(
-                        0,
-                        (total, item) => total + item.count,
-                      );
-
-                      analytic.searchCounts.sort(
-                        (a, b) => b.count.compareTo(a.count),
-                      );
-                      return ExpansionTile(
-                        title: Row(
-                          children: [
-                            const PlatformIcon(
-                              materialIcon: Icons.auto_graph,
-                              cupertinoIcon: Icons.auto_graph,
-                            ),
-                            gapW8,
-                            Expanded(child: BaseText(analytic.enterprise)),
-                          ],
-                        ),
-                        subtitle: BaseText(
-                          '${analytic.users.length} ${'usuários'.hardcoded} · '
-                          '$totalRequests ${'consultas'.hardcoded}',
-                        ),
+                  child: Column(
+                    children: [
+                      Row(
                         children: [
-                          ...analytic.searchCounts.map((searchCount) {
-                            return Row(
-                              children: [
-                                Expanded(
-                                  child: BaseText(
-                                    '${searchCount.reportType.label} (${searchCount.periodType.label})',
-                                  ),
-                                ),
-                                gapW4,
-                                BaseText(
-                                  '${searchCount.count} ${'consultas'.hardcoded}',
-                                ),
-                              ],
-                            );
-                          }),
-                          const Divider(),
-                          RichText(
-                            text: TextSpan(
-                              style: context.textTheme.bodyMedium,
-                              children: [
-                                for (var user in analytic.users) ...[
-                                  TextSpan(text: user.userName),
-                                  WidgetSpan(
-                                    alignment: .middle,
-                                    child: Icon(
-                                      user.platform == 'ios'
-                                          ? Icons.apple
-                                          : user.platform == 'android'
-                                          ? Icons.android
-                                          : Icons.public,
-                                    ),
-                                  ),
-                                  const TextSpan(text: ' '),
-                                ],
-                              ],
+                          Expanded(
+                            child: BaseText(
+                              '${filteredItems.length} ${'empresas'.hardcoded}',
+                            ),
+                          ),
+                          Expanded(
+                            child: BaseText(
+                              '$requestsCount ${'Requisições'.hardcoded}',
+                              textAlign: .right,
                             ),
                           ),
                         ],
-                      );
-                    },
+                      ),
+                      Expanded(
+                        child: ResponsiveListFlow(
+                          itemCount: filteredItems.length,
+                          itemBuilder: (context, index) {
+                            final analytic = filteredItems[index];
+                            final totalRequests = analytic.searchCounts
+                                .fold<int>(
+                                  0,
+                                  (total, item) => total + item.count,
+                                );
+
+                            analytic.searchCounts.sort(
+                              (a, b) => b.count.compareTo(a.count),
+                            );
+                            return Padding(
+                              padding: const .only(bottom: Sizes.p8),
+                              child: ExpansionTile(
+                                title: Row(
+                                  children: [
+                                    const PlatformIcon(
+                                      materialIcon: Icons.auto_graph,
+                                      cupertinoIcon: Icons.auto_graph,
+                                    ),
+                                    gapW8,
+                                    Expanded(
+                                      child: BaseText(analytic.enterprise),
+                                    ),
+                                  ],
+                                ),
+                                subtitle: BaseText(
+                                  '${analytic.users.length} ${'usuários'.hardcoded} · '
+                                  '$totalRequests ${'consultas'.hardcoded}',
+                                ),
+                                children: [
+                                  ...analytic.searchCounts.map((searchCount) {
+                                    return Row(
+                                      children: [
+                                        Expanded(
+                                          child: BaseText(
+                                            '${searchCount.reportType.label} (${searchCount.periodType.label})',
+                                          ),
+                                        ),
+                                        gapW4,
+                                        BaseText(
+                                          '${searchCount.count} ${'consultas'.hardcoded}',
+                                        ),
+                                      ],
+                                    );
+                                  }),
+                                  const Divider(),
+                                  RichText(
+                                    text: TextSpan(
+                                      style: context.textTheme.bodyMedium,
+                                      children: [
+                                        for (var user in analytic.users) ...[
+                                          TextSpan(text: user.userName),
+                                          WidgetSpan(
+                                            alignment: .middle,
+                                            child: Icon(
+                                              user.platform == 'ios'
+                                                  ? Icons.apple
+                                                  : user.platform == 'android'
+                                                  ? Icons.android
+                                                  : Icons.public,
+                                            ),
+                                          ),
+                                          const TextSpan(text: ' '),
+                                        ],
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 );
               },
