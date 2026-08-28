@@ -23,7 +23,7 @@ void main() {
       columns = [
         ScrollableTableColumnSpec<_DummyItem>(
           headerTitle: 'ID',
-          minWidth: 80,
+          minWidth: 120,
           cellBuilder: (item) => Text('Item ${item.id}'),
           sortValueMapper: (item) => item.id,
         ),
@@ -90,6 +90,116 @@ void main() {
         // Both columns back at top
         expect(find.text('Item 0'), findsOneWidget);
         expect(find.text('Product 0'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'flinging fixed column to bottom reaches the exact maximum offset on both columns',
+      (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: SizedBox(
+                height: 400,
+                width: 300,
+                child: ScrollableTable<_DummyItem>(
+                  items: items,
+                  columns: columns,
+                  fixFirstColumn: true,
+                ),
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        // Fling from the fixed column to the very bottom
+        await tester.fling(
+          find.text('Item 0'),
+          const Offset(0, -10000),
+          15000,
+        );
+        await tester.pumpAndSettle();
+
+        // Both columns must reach the bottom (item 99) together with no misalignment
+        expect(find.text('Item 99'), findsOneWidget);
+        expect(find.text('Product 99'), findsOneWidget);
+
+        final fixedItemPos = tester.getTopLeft(find.text('Item 99'));
+        final productItemPos = tester.getTopLeft(find.text('Product 99'));
+        expect(fixedItemPos.dy, equals(productItemPos.dy));
+
+        // Now fling from the fixed column back to the very top
+        await tester.fling(
+          find.text('Item 99'),
+          const Offset(0, 10000),
+          15000,
+        );
+        await tester.pumpAndSettle();
+
+        // Both columns must reach the top (item 0) together with no misalignment
+        expect(find.text('Item 0'), findsOneWidget);
+        expect(find.text('Product 0'), findsOneWidget);
+
+        final topFixedPos = tester.getTopLeft(find.text('Item 0'));
+        final topProductPos = tester.getTopLeft(find.text('Product 0'));
+        expect(topFixedPos.dy, equals(topProductPos.dy));
+      },
+    );
+
+    testWidgets(
+      'flinging scrollable column to bottom reaches the exact maximum offset on both columns',
+      (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: SizedBox(
+                height: 400,
+                width: 300,
+                child: ScrollableTable<_DummyItem>(
+                  items: items,
+                  columns: columns,
+                  fixFirstColumn: true,
+                ),
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        // Fling from the scrollable column to the very bottom
+        await tester.fling(
+          find.text('Product 0'),
+          const Offset(0, -10000),
+          15000,
+        );
+        await tester.pumpAndSettle();
+
+        // Both columns must reach the bottom (item 99) together with no misalignment
+        expect(find.text('Item 99'), findsOneWidget);
+        expect(find.text('Product 99'), findsOneWidget);
+
+        final fixedItemPos = tester.getTopLeft(find.text('Item 99'));
+        final productItemPos = tester.getTopLeft(find.text('Product 99'));
+        expect(fixedItemPos.dy, equals(productItemPos.dy));
+
+        // Now fling from the scrollable column back to the very top
+        await tester.fling(
+          find.text('Product 99'),
+          const Offset(0, 10000),
+          15000,
+        );
+        await tester.pumpAndSettle();
+
+        // Both columns must reach the top (item 0) together with no misalignment
+        expect(find.text('Item 0'), findsOneWidget);
+        expect(find.text('Product 0'), findsOneWidget);
+
+        final topFixedPos = tester.getTopLeft(find.text('Item 0'));
+        final topProductPos = tester.getTopLeft(find.text('Product 0'));
+        expect(topFixedPos.dy, equals(topProductPos.dy));
       },
     );
 

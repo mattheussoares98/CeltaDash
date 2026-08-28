@@ -33,9 +33,9 @@ class LinkedScrollControllerGroup {
 
   /// Jumps all attached scroll positions to the given [value].
   void jumpTo(double value) {
-    for (final position in _attachedPositions) {
-      position.jumpTo(value);
-    }
+    final positions = _attachedPositions.toList();
+    if (positions.isEmpty) return;
+    positions.first.jumpTo(value);
   }
 
   /// Animates all attached scroll positions to the given [offset].
@@ -44,17 +44,13 @@ class LinkedScrollControllerGroup {
     required Duration duration,
     required Curve curve,
   }) async {
-    final animations = <Future<void>>[];
-    for (final position in _attachedPositions) {
-      animations.add(
-        position.animateTo(
-          offset,
-          duration: duration,
-          curve: curve,
-        ),
-      );
-    }
-    await Future.wait(animations);
+    final positions = _attachedPositions.toList();
+    if (positions.isEmpty) return;
+    await positions.first.animateTo(
+      offset,
+      duration: duration,
+      curve: curve,
+    );
   }
 
   /// Resets all attached scroll positions to 0.0.
@@ -126,12 +122,14 @@ class _LinkedScrollPosition extends ScrollPositionWithSingleContext {
   @override
   double setPixels(double newPixels) {
     final result = super.setPixels(newPixels);
-    // Propagate offset changes to all peer controllers in the group within the same frame
-    for (final position in _group._attachedPositions) {
-      if (position != this &&
-          position.hasPixels &&
-          position.pixels != newPixels) {
-        position.forcePixels(newPixels);
+    // Propagate the actual clamped/resolved offset (`pixels`) to peer positions
+    if (hasPixels) {
+      for (final position in _group._attachedPositions) {
+        if (position != this &&
+            position.hasPixels &&
+            position.pixels != pixels) {
+          position.forcePixels(pixels);
+        }
       }
     }
     return result;
@@ -140,25 +138,41 @@ class _LinkedScrollPosition extends ScrollPositionWithSingleContext {
   @override
   void correctPixels(double value) {
     super.correctPixels(value);
-    for (final position in _group._attachedPositions) {
-      if (position != this &&
-          position.hasPixels &&
-          position.pixels != value) {
-        position.correctPixels(value);
+    if (hasPixels) {
+      for (final position in _group._attachedPositions) {
+        if (position != this &&
+            position.hasPixels &&
+            position.pixels != pixels) {
+          position.correctPixels(pixels);
+        }
       }
     }
   }
 
   @override
   void forcePixels(double value) {
-    if (pixels == value) return;
+    if (hasPixels && pixels == value) return;
     super.forcePixels(value);
-    notifyListeners();
+  }
+
+  @override
+  void goIdle() {
+    super.goIdle();
+    // Ensure all peers settle on the exact same offset when activity finishes
+    if (hasPixels) {
+      for (final position in _group._attachedPositions) {
+        if (position != this &&
+            position.hasPixels &&
+            position.pixels != pixels) {
+          position.forcePixels(pixels);
+        }
+      }
+    }
   }
 
   @override
   ScrollHoldController hold(VoidCallback holdCancelCallback) {
-    // Touching any column immediately cancels running animations (like iOS bounce/fling) on peer columns
+    // Touching any column immediately cancels running animations on peer columns
     for (final position in _group._attachedPositions) {
       if (position != this) {
         position.goIdle();
@@ -181,7 +195,7 @@ class _LinkedScrollPosition extends ScrollPositionWithSingleContext {
   @override
   void beginActivity(ScrollActivity? newActivity) {
     if (newActivity == null) return;
-    // When a new driving activity starts (drag, fling, programmatic scroll), stop active animations on peers
+    // When a new driving activity starts, stop active animations on peers
     if (newActivity is DragScrollActivity ||
         newActivity is BallisticScrollActivity ||
         newActivity is DrivenScrollActivity) {
