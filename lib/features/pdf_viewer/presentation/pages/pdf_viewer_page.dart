@@ -98,7 +98,20 @@ class PdfViewerPage extends HookWidget {
             ),
         ],
       ),
-      body: SfPdfViewer.memory(pdfBytes),
+      body: SfPdfViewer.memory(
+        pdfBytes,
+        onDocumentLoadFailed: (details) {
+          debugPrint(
+            '❌ [PdfViewerPage] Document load failed: ${details.error} - ${details.description}',
+          );
+          if (context.mounted) {
+            showToastMessage(
+              'Erro ao carregar visualização do PDF: ${details.description}'.hardcoded,
+              type: ToastType.error,
+            );
+          }
+        },
+      ),
     );
   }
 }

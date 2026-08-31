@@ -31,6 +31,13 @@
 
   <title>celta_dash</title>
   <link rel="manifest" href="manifest.json">
+
+  <!-- Syncfusion PDF Viewer Web Support (pdf.js) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+  <script type="text/javascript">
+    window.pdfjsLib = window['pdfjs-dist/build/pdf'];
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js";
+  </script>
 </head>
 <body>
   <script src="flutter_bootstrap.js" async></script>
