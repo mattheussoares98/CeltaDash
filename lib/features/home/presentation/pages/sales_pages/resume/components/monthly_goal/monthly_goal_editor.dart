@@ -70,35 +70,38 @@ class MonthlyGoalEditor extends HookConsumerWidget {
         if (isEditing.value)
           Expanded(
             flex: 2,
-            child: Form(
-              key: formKey,
-              child: BaseTextFormField(
-                controller: controller,
-                focusNode: focusNode,
-                labelText: 'Meta (R\$)'.hardcoded,
-                onFieldSubmitted: (_) => save(),
-                prefixIcon: BaseIconButton(
-                  onPressed: isSaving.value ? null : closeEditor,
-                  platformIcon: const PlatformIcon(
-                    cupertinoIcon: CupertinoIcons.xmark,
-                    materialIcon: Icons.close,
-                    color: Colors.red,
+            child: Padding(
+              padding: const .only(left: Sizes.p8),
+              child: Form(
+                key: formKey,
+                child: BaseTextFormField(
+                  controller: controller,
+                  focusNode: focusNode,
+                  labelText: 'Meta (R\$)'.hardcoded,
+                  onFieldSubmitted: (_) => save(),
+                  prefixIcon: BaseIconButton(
+                    onPressed: isSaving.value ? null : closeEditor,
+                    platformIcon: const PlatformIcon(
+                      cupertinoIcon: CupertinoIcons.xmark,
+                      materialIcon: Icons.close,
+                      color: Colors.red,
+                    ),
                   ),
-                ),
-                suffixIcon: BaseIconButton(
-                  onPressed: isSaving.value ? null : save,
-                  platformIcon: const PlatformIcon(
-                    cupertinoIcon: CupertinoIcons.check_mark,
-                    materialIcon: Icons.save,
+                  suffixIcon: BaseIconButton(
+                    onPressed: isSaving.value ? null : save,
+                    platformIcon: const PlatformIcon(
+                      cupertinoIcon: CupertinoIcons.check_mark,
+                      materialIcon: Icons.save,
+                    ),
                   ),
-                ),
-                autovalidateMode: AutovalidateMode.onUserInteractionIfError,
-                validator: FormValidators.compose([
-                  NonEmptyValidator(),
-                  NumberValidator(allowDecimal: true),
-                ]),
-                keyboardType: const TextInputType.numberWithOptions(
-                  signed: true,
+                  autovalidateMode: AutovalidateMode.onUserInteractionIfError,
+                  validator: FormValidators.compose([
+                    NonEmptyValidator(),
+                    NumberValidator(allowDecimal: true),
+                  ]),
+                  keyboardType: const TextInputType.numberWithOptions(
+                    signed: true,
+                  ),
                 ),
               ),
             ),

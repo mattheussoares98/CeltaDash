@@ -21,7 +21,7 @@ class LoginRepositoryImpl implements ILoginRepository {
     );
 
     final bsUserModel = await bsAuthDatasource.authenticateBs(
-      user: params.user,
+      user: params.user.trim(),
       password: params.password,
       url: enterpriseModel.baseUrl ?? '',
     );

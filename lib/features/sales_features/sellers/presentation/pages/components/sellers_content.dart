@@ -47,7 +47,6 @@ class SellersContent extends HookConsumerWidget {
         isLandscape:
             MediaQuery.of(context).orientation == Orientation.landscape,
         reloadButton: ReloadIconButton(
-          //TODO change reloadButton type to be ReloadIconButton
           refreshProviders: [
             for (final period in SellersPeriod.values)
               if (visitedPeriods.value.contains(period))

@@ -42,7 +42,6 @@ class ProductsContent extends HookConsumerWidget {
               gapW8,
               Expanded(
                 child: SizedBox(
-                  height: 40,
                   child: BaseTextFormField(
                     controller: filterController,
                     hintText: 'Filtrar produto'.hardcoded,

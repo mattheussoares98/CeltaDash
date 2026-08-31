@@ -1,3 +1,5 @@
+import 'package:celta_dash/core/data/data.dart';
+import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/core/infrastructure/infrastructure.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hive/hive.dart';
@@ -44,4 +46,14 @@ FirebaseAuthStorage firebaseAuthStorage(Ref ref) {
 @Riverpod(keepAlive: true)
 IDeviceService deviceService(Ref ref) {
   return DeviceService();
+}
+
+@riverpod
+IThemeLocalDatasource themeLocalDatasource(Ref ref) {
+  return ThemeLocalDatasource(ref.watch(appStorageProvider));
+}
+
+@riverpod
+IThemeRepository themeRepository(Ref ref) {
+  return ThemeRepositoryImpl(ref.watch(themeLocalDatasourceProvider));
 }

@@ -97,7 +97,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
             ?drawerButton,
             if (enterpriseSelector != null)
               Expanded(flex: 2, child: enterpriseSelector),
-            ?leftDateWidget, //TODO test all pages with this widget
+            ?leftDateWidget,
             gapW4,
             ?dateSelector,
             ?modeToggle,
@@ -125,10 +125,12 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
                 children: [
                   if (enterpriseSelector == null) ?drawerButton,
                   ?leftDateWidget,
+                  gapW8,
                   ?dateSelector,
                   ?modeToggle,
                   ?selectEnterprise,
                   if (showReloadButton) ?reloadButton,
+                  gapW8,
                 ],
               ),
             ],
@@ -155,6 +157,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
     }
 
     return BaseAppBar(
+      preferredHeight: preferredSize.height,
       showLeading: false,
       titleWidget: controls,
       actionsPadding: EdgeInsets.symmetric(

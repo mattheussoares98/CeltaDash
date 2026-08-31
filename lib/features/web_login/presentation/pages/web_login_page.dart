@@ -34,8 +34,7 @@ class WebLoginPage extends ConsumerWidget {
     });
     final state = ref.watch(webLoginControllerProvider);
 
-    return BaseScaffold(
-      isScrollable: false,
+    return Scaffold(
       appBar: BaseAppBar(title: 'Login web'.hardcoded),
       body: AsyncValueWidget(
         value: state,

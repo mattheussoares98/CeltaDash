@@ -11,7 +11,7 @@ plugins {
 
 android {
     namespace = "br.com.celtaware.dash"
-    compileSdk = flutter.compileSdkVersion.toInt()
+    compileSdk = 36
     ndkVersion = "29.0.13113456"
 
     compileOptions {
@@ -25,8 +25,8 @@ android {
         applicationId = "br.com.celtaware.dash"
         multiDexEnabled = true
         minSdk = flutter.minSdkVersion.toInt()
-        targetSdk = flutter.targetSdkVersion.toInt()
-        versionCode = 36
+        targetSdk = 36
+        versionCode = 39
         versionName = flutter.versionName
     }
 

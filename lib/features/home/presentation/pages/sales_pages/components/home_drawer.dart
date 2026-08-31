@@ -1,4 +1,5 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
+import 'package:celta_dash/core/presentation/presentation.dart';
 import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/routing/routing.dart';
 import 'package:celta_dash/utils/utils.dart';
@@ -9,6 +10,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class HomeDrawer extends HookConsumerWidget {
   const HomeDrawer({super.key});
+
+  Future<void> _navigate(BuildContext context, String routeName) async {
+    context.pop();
+    await Future.delayed(const Duration(milliseconds: 300));
+    if (context.mounted) {
+      context.pushNamed(routeName);
+    }
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,14 +30,24 @@ class HomeDrawer extends HookConsumerWidget {
             );
             return Column(
               children: [
-                DrawerHeader(
-                  child: GestureDetector(
-                    onLongPress: () {
-                      context.pop();
-                      context.pushNamed(Routes.webLogin.name);
-                    },
-                    child: const LogoWidget(),
-                  ),
+                Consumer(
+                  builder: (_, ref, _) {
+                    final isDark = ref.watch(
+                      themeModeControllerProvider.select(
+                        (s) => s.value?.isDark ?? false,
+                      ),
+                    );
+                    return DrawerHeader(
+                      decoration: BoxDecoration(
+                        color: isDark ? Colors.white : null,
+                      ),
+                      child: GestureDetector(
+                        onLongPress: () =>
+                            _navigate(context, Routes.webLogin.name),
+                        child: const LogoWidget(),
+                      ),
+                    );
+                  },
                 ),
                 Expanded(
                   child: ListView(
@@ -44,10 +63,10 @@ class HomeDrawer extends HookConsumerWidget {
                         ),
                         onTap: hasError
                             ? null
-                            : () {
-                                context.pop();
-                                context.pushNamed(Routes.homePersonalized.name);
-                              },
+                            : () => _navigate(
+                                context,
+                                Routes.homePersonalized.name,
+                              ),
                       ),
                       _DrawerItem(
                         title: 'Vendedores'.hardcoded,
@@ -57,10 +76,7 @@ class HomeDrawer extends HookConsumerWidget {
                         ),
                         onTap: hasError
                             ? null
-                            : () {
-                                context.pop();
-                                context.pushNamed(Routes.sellers.name);
-                              },
+                            : () => _navigate(context, Routes.sellers.name),
                       ),
                       _DrawerItem(
                         title: 'Operadores'.hardcoded,
@@ -70,10 +86,7 @@ class HomeDrawer extends HookConsumerWidget {
                         ),
                         onTap: hasError
                             ? null
-                            : () {
-                                context.pop();
-                                context.pushNamed(Routes.operators.name);
-                              },
+                            : () => _navigate(context, Routes.operators.name),
                       ),
                       _DrawerItem(
                         title: 'Vendas'.hardcoded,
@@ -83,10 +96,7 @@ class HomeDrawer extends HookConsumerWidget {
                         ),
                         onTap: hasError
                             ? null
-                            : () {
-                                context.pop();
-                                context.pushNamed(Routes.sales.name);
-                              },
+                            : () => _navigate(context, Routes.sales.name),
                       ),
                       _DrawerItem(
                         title: 'Comparativo diário'.hardcoded,
@@ -96,10 +106,7 @@ class HomeDrawer extends HookConsumerWidget {
                         ),
                         onTap: hasError
                             ? null
-                            : () {
-                                context.pop();
-                                context.pushNamed(Routes.compareDays.name);
-                              },
+                            : () => _navigate(context, Routes.compareDays.name),
                       ),
                       _DrawerItem(
                         title: 'Comparativo mensal'.hardcoded,
@@ -109,10 +116,8 @@ class HomeDrawer extends HookConsumerWidget {
                         ),
                         onTap: hasError
                             ? null
-                            : () {
-                                context.pop();
-                                context.pushNamed(Routes.compareMonths.name);
-                              },
+                            : () =>
+                                  _navigate(context, Routes.compareMonths.name),
                       ),
                       const Divider(),
                       _DrawerSectionTitle(title: 'Sistema'.hardcoded),
@@ -122,9 +127,24 @@ class HomeDrawer extends HookConsumerWidget {
                           materialIcon: Icons.manage_accounts,
                           cupertinoIcon: CupertinoIcons.person_2,
                         ),
-                        onTap: () {
-                          context.pop();
-                          context.pushNamed(Routes.enterprisesManager.name);
+                        onTap: () =>
+                            _navigate(context, Routes.enterprisesManager.name),
+                      ),
+                      Consumer(
+                        builder: (context, ref, _) {
+                          final isDark = ref.watch(
+                            themeModeControllerProvider.select(
+                              (s) => s.value?.isDark ?? false,
+                            ),
+                          );
+                          return _DrawerThemeItem(
+                            isDark: isDark,
+                            onChanged: (_) {
+                              ref
+                                  .read(themeModeControllerProvider.notifier)
+                                  .toggleTheme();
+                            },
+                          );
                         },
                       ),
                     ],
@@ -218,6 +238,34 @@ class _DrawerItem extends StatelessWidget {
         color: textColor ?? context.colorScheme.onSurface,
       ),
       onTap: onTap,
+    );
+  }
+}
+
+class _DrawerThemeItem extends StatelessWidget {
+  const _DrawerThemeItem({required this.isDark, required this.onChanged});
+
+  final bool isDark;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return BaseListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
+      leading: PlatformIcon(
+        materialIcon: isDark ? Icons.dark_mode : Icons.light_mode,
+        cupertinoIcon: isDark
+            ? CupertinoIcons.moon_fill
+            : CupertinoIcons.sun_max_fill,
+      ),
+      title: BaseText.bodyMedium(
+        (isDark ? 'Tema escuro' : 'Tema claro').hardcoded,
+        color: context.colorScheme.onSurface,
+      ),
+      trailing: PlatformUtil.isCupertino
+          ? CupertinoSwitch(value: isDark, onChanged: onChanged)
+          : Switch.adaptive(value: isDark, onChanged: onChanged),
+      onTap: () => onChanged(!isDark),
     );
   }
 }

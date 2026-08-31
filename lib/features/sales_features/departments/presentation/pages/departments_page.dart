@@ -41,6 +41,17 @@ class _DepartmentsContent extends HookConsumerWidget {
       appBar: HomeAppBar(
         isLandscape: isLandscape,
         reloadButton: reloadButton,
+        leftDateWidget: Expanded(
+          child: Padding(
+            padding: const .symmetric(horizontal: Sizes.p8),
+            child: NewBaseSegmentedButtons(
+              items: DepartmentsPeriod.values,
+              selectedValue: selectedPeriod.value,
+              onChanged: (value) => selectedPeriod.value = value,
+              itemLabelBuilder: (value) => value.label,
+            ),
+          ),
+        ),
         leading: BaseIconButton(
           onPressed: Navigator.of(context).pop,
           platformIcon: const PlatformIcon(
@@ -53,12 +64,6 @@ class _DepartmentsContent extends HookConsumerWidget {
       usePadding: false,
       body: Column(
         children: [
-          NewBaseSegmentedButtons(
-            items: DepartmentsPeriod.values,
-            selectedValue: selectedPeriod.value,
-            onChanged: (value) => selectedPeriod.value = value,
-            itemLabelBuilder: (value) => value.label,
-          ),
           DefaultTabController(
             length: 2,
             child: Expanded(

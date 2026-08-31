@@ -17,6 +17,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.selectedEnterpriseCode,
     this.subtitle,
     this.actionsPadding,
+    this.preferredHeight,
   });
   final bool showLeading;
   final Widget? leading;
@@ -29,6 +30,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final int? selectedEnterpriseCode;
   final Widget? subtitle;
   final EdgeInsetsGeometry? actionsPadding;
+  final double? preferredHeight;
 
   BaseAppBar copyWith({
     bool? showLeading,
@@ -41,6 +43,8 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     List<Widget>? actions,
     int? selectedEnterpriseCode,
     Widget? subtitle,
+    EdgeInsetsGeometry? actionsPadding,
+    double? preferredHeight,
   }) {
     return BaseAppBar(
       key: key,
@@ -55,6 +59,8 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
       selectedEnterpriseCode:
           selectedEnterpriseCode ?? this.selectedEnterpriseCode,
       subtitle: subtitle ?? this.subtitle,
+      actionsPadding: actionsPadding ?? this.actionsPadding,
+      preferredHeight: preferredHeight ?? this.preferredHeight,
     );
   }
 
@@ -117,7 +123,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     if (context.isCupertino) {
       return Container(
-        height: _appBarHeight + MediaQuery.paddingOf(context).top,
+        height: preferredSize.height + MediaQuery.paddingOf(context).top,
         padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top),
         decoration: BoxDecoration(
           color: context.colorScheme.surface,
@@ -153,7 +159,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: centerTitle,
       actions: actions,
       actionsPadding: actionsPadding,
-      toolbarHeight: preferredSize.height + MediaQuery.paddingOf(context).top,
+      toolbarHeight: preferredSize.height,
     );
   }
 
@@ -168,5 +174,5 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(_appBarHeight);
+  Size get preferredSize => Size.fromHeight(preferredHeight ?? _appBarHeight);
 }

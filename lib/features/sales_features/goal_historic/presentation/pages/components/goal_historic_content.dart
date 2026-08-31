@@ -24,11 +24,15 @@ class GoalHistoricContent extends ConsumerWidget {
             materialIcon: Icons.arrow_back,
           ),
         ),
-        leftDateWidget: GoalHistoricYearSelector(enterpriseId: enterpriseId),
       ),
       isScrollable: false,
       usePadding: false,
-      body: GoalHistoricTable(enterpriseId: enterpriseId),
+      body: Column(
+        children: [
+          GoalHistoricYearSelector(enterpriseId: enterpriseId),
+          Expanded(child: GoalHistoricTable(enterpriseId: enterpriseId)),
+        ],
+      ),
     );
   }
 }
