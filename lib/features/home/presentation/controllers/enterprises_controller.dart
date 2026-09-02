@@ -34,6 +34,18 @@ class EnterprisesController extends _$EnterprisesController {
     }
 
     final enterprises = await repository.getEnterprises(ecParams);
+
+    if (activeEnterprise != null) {
+      try {
+        await repository.syncSubEnterprises(
+          activeEnterprise: activeEnterprise,
+          erpEnterprises: enterprises,
+        );
+      } catch (_) {
+        // Silently ignore sync failures (e.g. offline/network issues) so UI isn't blocked
+      }
+    }
+
     final enabledById = {
       for (final enterprise
           in activeEnterprise?.firebaseSubEnterprises ??

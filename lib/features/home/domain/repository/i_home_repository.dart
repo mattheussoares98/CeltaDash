@@ -20,5 +20,10 @@ abstract class IHomeRepository {
     required MonthlyGoalEntity goal,
   });
 
+  Future<void> syncSubEnterprises({
+    required FirebaseEnterpriseEntity activeEnterprise,
+    required List<HomeEnterpriseEntity> erpEnterprises,
+  });
+
   Future<void> logout();
 }

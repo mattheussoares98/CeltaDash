@@ -5,4 +5,9 @@ abstract class IFirebaseLoginEnterpriseDatasource {
   Future<FirebaseEnterpriseModel> getEnterpriseConfig({
     required String enterpriseName,
   });
+
+  Future<void> updateSubEnterprises({
+    required String firebaseId,
+    required List<FirebaseSubEnterpriseModel> subEnterprises,
+  });
 }

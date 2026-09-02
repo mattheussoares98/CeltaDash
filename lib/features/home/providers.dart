@@ -1,6 +1,7 @@
 import 'package:celta_dash/core/providers.dart';
 import 'package:celta_dash/features/home/data/data.dart';
 import 'package:celta_dash/features/home/domain/domain.dart';
+import 'package:celta_dash/features/login/login.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'providers.g.dart';
@@ -24,5 +25,6 @@ IHomeRepository homeRepository(Ref ref) {
     ref.watch(homeDatasourceProvider),
     ref.watch(homeLocalDatasourceProvider),
     HomeGoalDatasource(ref.watch(firebaseStorageProvider)),
+    ref.watch(firebaseLoginEnterpriseDatasourceProvider),
   );
 }

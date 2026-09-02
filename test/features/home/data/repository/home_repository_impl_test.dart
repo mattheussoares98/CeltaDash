@@ -1,6 +1,7 @@
 import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/features/home/data/data.dart';
 import 'package:celta_dash/features/home/domain/domain.dart';
+import 'package:celta_dash/features/login/data/data.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -12,16 +13,19 @@ void main() {
   late MockHomeDatasource remoteDatasource;
   late MockHomeLocalDatasource localDatasource;
   late MockHomeGoalDatasource goalDatasource;
+  late MockFirebaseLoginEnterpriseDatasource firebaseEnterpriseDatasource;
   late HomeRepositoryImpl repository;
 
   setUp(() {
     remoteDatasource = MockHomeDatasource();
     localDatasource = MockHomeLocalDatasource();
     goalDatasource = MockHomeGoalDatasource();
+    firebaseEnterpriseDatasource = MockFirebaseLoginEnterpriseDatasource();
     repository = HomeRepositoryImpl(
       remoteDatasource,
       localDatasource,
       goalDatasource,
+      firebaseEnterpriseDatasource,
     );
   });
 
@@ -133,5 +137,151 @@ void main() {
     await repository.logout();
 
     verify(() => localDatasource.logout()).called(1);
+  });
+
+  group('syncSubEnterprises', () {
+    test('does not update Firebase when lists are identical', () async {
+      const sub = FirebaseSubEnterpriseEntity(
+        id: 1,
+        name: 'Store 1',
+        personalizedCode: '01',
+        cnpj: '12345678000100',
+        enabled: true,
+      );
+      const activeEnterprise = FirebaseEnterpriseEntity(
+        baseUrl: 'https://api.com',
+        enterpriseName: 'test',
+        bsUser: null,
+        firebaseSubEnterprises: [sub],
+        firebaseId: 'test_id',
+      );
+      final erpEnterprises = [
+        const HomeEnterpriseEntity(
+          id: 1,
+          name: 'Store 1',
+          personalizedCode: '01',
+          cnpj: '12345678000100',
+          enabled: false,
+        ),
+      ];
+
+      await repository.syncSubEnterprises(
+        activeEnterprise: activeEnterprise,
+        erpEnterprises: erpEnterprises,
+      );
+
+      verifyNever(
+        () => firebaseEnterpriseDatasource.updateSubEnterprises(
+          firebaseId: any(named: 'firebaseId'),
+          subEnterprises: any(named: 'subEnterprises'),
+        ),
+      );
+    });
+
+    test(
+      'updates Firebase when ERP has new stores or duplicates exist',
+      () async {
+        const sub1 = FirebaseSubEnterpriseEntity(
+          id: 1,
+          name: 'Store 1',
+          personalizedCode: '01',
+          cnpj: '12345678000100',
+          enabled: true,
+        );
+        const activeEnterprise = FirebaseEnterpriseEntity(
+          baseUrl: 'https://api.com',
+          enterpriseName: 'test',
+          bsUser: null,
+          firebaseSubEnterprises: [sub1],
+          firebaseId: 'test_id',
+        );
+        final erpEnterprises = [
+          const HomeEnterpriseEntity(
+            id: 1,
+            name: 'Store 1',
+            personalizedCode: '01',
+            cnpj: '12345678000100',
+            enabled: false,
+          ),
+          const HomeEnterpriseEntity(
+            id: 2,
+            name: 'Store 2',
+            personalizedCode: '02',
+            cnpj: '99999999000199',
+            enabled: false,
+          ),
+        ];
+
+        when(
+          () => firebaseEnterpriseDatasource.updateSubEnterprises(
+            firebaseId: any(named: 'firebaseId'),
+            subEnterprises: any(named: 'subEnterprises'),
+          ),
+        ).thenAnswer((_) async {});
+
+        await repository.syncSubEnterprises(
+          activeEnterprise: activeEnterprise,
+          erpEnterprises: erpEnterprises,
+        );
+
+        verify(
+          () => firebaseEnterpriseDatasource.updateSubEnterprises(
+            firebaseId: 'test_id',
+            subEnterprises: any(named: 'subEnterprises'),
+          ),
+        ).called(1);
+      },
+    );
+
+    test(
+      'preserves multiple sub-enterprises having the same CNPJ but different IDs',
+      () async {
+        const activeEnterprise = FirebaseEnterpriseEntity(
+          baseUrl: 'https://api.com',
+          enterpriseName: 'test',
+          bsUser: null,
+          firebaseSubEnterprises: [],
+          firebaseId: 'test_id',
+        );
+        final erpEnterprises = [
+          const HomeEnterpriseEntity(
+            id: 1,
+            name: 'Store 1',
+            personalizedCode: '01',
+            cnpj: '12345678000100',
+            enabled: false,
+          ),
+          const HomeEnterpriseEntity(
+            id: 2,
+            name: 'Store 2',
+            personalizedCode: '02',
+            cnpj: '12345678000100', // Same CNPJ as Store 1
+            enabled: false,
+          ),
+        ];
+
+        late List<FirebaseSubEnterpriseModel> savedModels;
+        when(
+          () => firebaseEnterpriseDatasource.updateSubEnterprises(
+            firebaseId: any(named: 'firebaseId'),
+            subEnterprises: any(named: 'subEnterprises'),
+          ),
+        ).thenAnswer((invocation) async {
+          savedModels =
+              invocation.namedArguments[#subEnterprises]
+                  as List<FirebaseSubEnterpriseModel>;
+        });
+
+        await repository.syncSubEnterprises(
+          activeEnterprise: activeEnterprise,
+          erpEnterprises: erpEnterprises,
+        );
+
+        expect(savedModels.length, 2);
+        expect(savedModels[0].id, 1);
+        expect(savedModels[1].id, 2);
+        expect(savedModels[0].cnpj, savedModels[1].cnpj);
+      },
+    );
   });
 }

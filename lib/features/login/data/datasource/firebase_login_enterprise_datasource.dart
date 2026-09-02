@@ -28,4 +28,21 @@ class FirebaseLoginEnterpriseDatasource
 
     return FirebaseEnterpriseModel.fromJson(mutableData);
   }
+
+  @override
+  Future<void> updateSubEnterprises({
+    required String firebaseId,
+    required List<FirebaseSubEnterpriseModel> subEnterprises,
+  }) async {
+    final cleanId = firebaseId.trim().toLowerCase().removeWhiteSpaces();
+    await firebaseStorage.put(
+      path: 'enterprises/$cleanId',
+      data: <String, dynamic>{
+        'subEnterprises': subEnterprises
+            .map((subEnterprise) => subEnterprise.toJson())
+            .toList(growable: false),
+      },
+      merge: true,
+    );
+  }
 }
