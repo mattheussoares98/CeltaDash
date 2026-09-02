@@ -1,4 +1,3 @@
-import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/core/presentation/presentation.dart';
 import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/routing/not_found_page.dart';
@@ -13,13 +12,15 @@ final rootNavigatorKey = GlobalKey<NavigatorState>();
 
 @Riverpod(keepAlive: true)
 GoRouter goRouter(Ref ref) {
-  final authNotifier = ValueNotifier<AsyncValue<EcParams?>>(
-    ref.read(activeEcParamsStateControllerProvider),
+  final authNotifier = ValueNotifier<bool?>(
+    ref
+        .read(activeEcParamsStateControllerProvider)
+        .whenOrNull(data: (params) => params != null),
   );
-  ref.listen(
-    activeEcParamsStateControllerProvider,
-    (_, next) => authNotifier.value = next,
-  );
+  ref.listen(activeEcParamsStateControllerProvider, (_, next) {
+    final isLoggedIn = next.whenOrNull(data: (params) => params != null);
+    if (isLoggedIn != null) authNotifier.value = isLoggedIn;
+  });
   ref.onDispose(authNotifier.dispose);
 
   return GoRouter(
@@ -27,12 +28,10 @@ GoRouter goRouter(Ref ref) {
     initialLocation: '/splash',
     refreshListenable: authNotifier,
     redirect: (context, state) {
-      final authState = ref.read(activeEcParamsStateControllerProvider);
-
       // 1. While auth state is loading from storage, allow initial navigation
-      if (authState.isLoading) return null;
+      final isLoggedIn = authNotifier.value;
+      if (isLoggedIn == null) return null;
 
-      final isLoggedIn = authState.value != null;
       final location = state.matchedLocation;
 
       final isSplash = location == '/splash';

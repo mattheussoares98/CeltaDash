@@ -3,13 +3,14 @@ import 'package:celta_dash/features/enterprises_manager/presentation/controllers
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class SavedEnterprisesList extends ConsumerWidget {
   const SavedEnterprisesList({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext pageContext, WidgetRef ref) {
     final managerState = ref.watch(
       enterprisesManagerControllerProvider.select((value) => value.value),
     );
@@ -36,12 +37,12 @@ class SavedEnterprisesList extends ConsumerWidget {
           padding: const .only(bottom: Sizes.p8),
           child: DecoratedBox(
             decoration: BoxDecoration(
-              color: context.colorScheme.surfaceContainer,
+              color: pageContext.colorScheme.surfaceContainer,
               borderRadius: BorderRadius.circular(Sizes.p12),
               border: Border.all(
                 color: isSelected
-                    ? context.colorScheme.primary
-                    : context.colorScheme.outlineVariant,
+                    ? pageContext.colorScheme.primary
+                    : pageContext.colorScheme.outlineVariant,
               ),
             ),
             child: BaseListTile(
@@ -83,8 +84,8 @@ class SavedEnterprisesList extends ConsumerWidget {
                       final success = await ref
                           .read(enterprisesManagerControllerProvider.notifier)
                           .selectEnterprise(enterprise);
-                      if (success && context.mounted) {
-                        Navigator.of(context).pop();
+                      if (success && pageContext.mounted) {
+                        pageContext.pop();
                       }
                     },
             ),
