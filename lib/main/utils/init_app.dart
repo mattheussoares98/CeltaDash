@@ -40,6 +40,7 @@ Future<void> _initFirebase() async {
       options: DefaultFirebaseOptions.currentPlatform,
     );
 
+    if (kDebugMode) return;
     if (!kIsWeb && (Platform.isIOS || Platform.isAndroid)) {
       // Pass all uncaught "fatal" errors from the framework to Crashlytics
       FlutterError.onError = (errorDetails) {
