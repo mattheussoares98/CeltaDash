@@ -16,21 +16,53 @@ class FirebaseAdapter implements FirebaseStorage {
     // If path has an odd number of segments, it's a collection query
     if (pathSegments.length % 2 != 0) {
       final collectionRef = instance.collection(path);
-      if (fieldToSearch != null && valueToSearch != null) {
-        return await collectionRef
-            .where(fieldToSearch, isEqualTo: valueToSearch)
-            .get()
-            .timeout(const Duration(seconds: 30));
-      } else {
-        return await collectionRef.get().timeout(const Duration(seconds: 30));
+      try {
+        if (fieldToSearch != null && valueToSearch != null) {
+          return await collectionRef
+              .where(fieldToSearch, isEqualTo: valueToSearch)
+              .get()
+              .timeout(const Duration(seconds: 30));
+        } else {
+          return await collectionRef.get().timeout(const Duration(seconds: 30));
+        }
+      } on FirebaseException catch (e) {
+        if (e.code == 'unavailable') {
+          try {
+            if (fieldToSearch != null && valueToSearch != null) {
+              return await collectionRef
+                  .where(fieldToSearch, isEqualTo: valueToSearch)
+                  .get(const GetOptions(source: Source.cache));
+            } else {
+              return await collectionRef.get(
+                const GetOptions(source: Source.cache),
+              );
+            }
+          } catch (_) {
+            return null;
+          }
+        }
+        rethrow;
       }
     }
     // If path has an even number of segments, it's a document query
     else {
-      return await instance
-          .doc(path)
-          .get()
-          .timeout(const Duration(seconds: 30));
+      try {
+        return await instance
+            .doc(path)
+            .get()
+            .timeout(const Duration(seconds: 30));
+      } on FirebaseException catch (e) {
+        if (e.code == 'unavailable') {
+          try {
+            return await instance
+                .doc(path)
+                .get(const GetOptions(source: Source.cache));
+          } catch (_) {
+            return null;
+          }
+        }
+        rethrow;
+      }
     }
   }
 

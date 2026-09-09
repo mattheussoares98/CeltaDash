@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:celta_dash/core/infrastructure/storage/storage.dart';
 import 'package:celta_dash/features/home/data/datasource/datasource.dart';
 import 'package:celta_dash/features/home/data/models/models.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
 class HomeGoalDatasource implements IHomeGoalDatasource {
@@ -13,37 +16,44 @@ class HomeGoalDatasource implements IHomeGoalDatasource {
     required String firebaseEnterpriseId,
     required int year,
   }) async {
-    final snapshot = await _firebaseStorage.get(
-      path: _goalPath(firebaseEnterpriseId, year),
-    );
-    final data = snapshot?.data();
-    if (data is! Map) return [];
+    try {
+      final snapshot = await _firebaseStorage.get(
+        path: _goalPath(firebaseEnterpriseId, year),
+      );
+      final data = snapshot?.data();
+      if (data is! Map) return [];
 
-    final goals = <MonthlyGoalModel>[];
-    for (final entry in data.entries) {
-      final match = RegExp(
-        r'^(\d+)-(\d{4})-(\d{2})$',
-      ).firstMatch(entry.key.toString());
-      if (match == null || entry.value is! Map) continue;
+      final goals = <MonthlyGoalModel>[];
+      for (final entry in data.entries) {
+        final match = RegExp(
+          r'^(\d+)-(\d{4})-(\d{2})$',
+        ).firstMatch(entry.key.toString());
+        if (match == null || entry.value is! Map) continue;
 
-      final enterpriseId = int.parse(match.group(1)!);
-      final parsedYear = int.parse(match.group(2)!);
-      final month = int.parse(match.group(3)!);
-      if (parsedYear != year || month < 1 || month > 12) continue;
+        final enterpriseId = int.parse(match.group(1)!);
+        final parsedYear = int.parse(match.group(2)!);
+        final month = int.parse(match.group(3)!);
+        if (parsedYear != year || month < 1 || month > 12) continue;
 
-      try {
-        goals.add(
-          MonthlyGoalModel.fromJson(
-            entry.value as Map,
-            enterpriseId: enterpriseId,
-            month: DateTime(parsedYear, month),
-          ),
-        );
-      } catch (_) {
-        continue;
+        try {
+          goals.add(
+            MonthlyGoalModel.fromJson(
+              entry.value as Map,
+              enterpriseId: enterpriseId,
+              month: DateTime(parsedYear, month),
+            ),
+          );
+        } catch (_) {
+          continue;
+        }
       }
+      return goals;
+    } on FirebaseException catch (e) {
+      if (e.code == 'unavailable') return [];
+      rethrow;
+    } on TimeoutException {
+      return [];
     }
-    return goals;
   }
 
   @override
