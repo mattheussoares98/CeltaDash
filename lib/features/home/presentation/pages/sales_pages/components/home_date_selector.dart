@@ -46,7 +46,7 @@ class HomeDateSelector extends ConsumerWidget {
                 maximumDate: DateTime.now(),
                 insertHoursAndMinutes: false,
               );
-              if (newDate != null) {
+              if (newDate != null && context.mounted) {
                 ref.read(homeControllerProvider.notifier).selectDate(newDate);
               }
             },
