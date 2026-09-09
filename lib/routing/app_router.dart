@@ -1,7 +1,9 @@
+import 'package:celta_dash/core/infrastructure/infrastructure.dart';
 import 'package:celta_dash/core/presentation/presentation.dart';
 import 'package:celta_dash/features/home/home.dart';
 import 'package:celta_dash/routing/not_found_page.dart';
 import 'package:celta_dash/routing/routes/routes.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -77,5 +79,6 @@ GoRouter goRouter(Ref ref) {
       ),
     ],
     errorBuilder: (context, state) => const NotFoundPage(),
+    observers: [CrashlyticsRouteObserver(ref.read(crashlyticsServiceProvider))],
   );
 }
