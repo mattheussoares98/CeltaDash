@@ -11,7 +11,7 @@ Widget buildOrientationReader({
   required Widget Function(BuildContext context) builder,
   bool useSensor = true,
 }) {
-  if (PlatformUtil.isMobile) {
+  if (PlatformUtil.isIOS) {
     return native.NativeDeviceOrientationReader(
       useSensor: useSensor,
       builder: builder,
@@ -22,7 +22,7 @@ Widget buildOrientationReader({
 
 class NativeDeviceOrientationReaderWrapper {
   static native.NativeDeviceOrientation orientation(BuildContext context) {
-    if (PlatformUtil.isMobile) {
+    if (PlatformUtil.isIOS) {
       try {
         return native.NativeDeviceOrientationReader.orientation(context);
       } catch (_) {
