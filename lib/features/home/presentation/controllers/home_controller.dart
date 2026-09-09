@@ -1,4 +1,5 @@
 import 'package:celta_dash/core/domain/domain.dart';
+import 'package:celta_dash/core/infrastructure/infrastructure.dart';
 import 'package:celta_dash/core/providers.dart';
 import 'package:celta_dash/features/home/home.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -20,6 +21,10 @@ class HomeController extends _$HomeController {
       currentId: homeState.selectedEnterpriseId,
     );
 
+    if (selectedEnterpriseId != null) {
+      _setCrashlyticsEnterpriseKeys(selectedEnterpriseId, enterprises);
+    }
+
     return homeState.copyWith(
       selectedEnterpriseId: selectedEnterpriseId,
       clearSelectedEnterpriseId: selectedEnterpriseId == null,
@@ -36,12 +41,13 @@ class HomeController extends _$HomeController {
     final current = state.value;
     if (current == null || current.selectedEnterpriseId == enterpriseId) return;
 
-    final enterprise = ref
-        .read(enterprisesControllerProvider)
-        .value
+    final enterprises = ref.read(enterprisesControllerProvider).value;
+    final enterprise = enterprises
         ?.where((item) => item.id == enterpriseId)
         .firstOrNull;
     if (enterprise == null || !enterprise.enabled) return;
+
+    _setCrashlyticsEnterpriseKeys(enterpriseId, enterprises);
 
     state = AsyncValue.data(
       current.copyWith(selectedEnterpriseId: enterpriseId),
@@ -79,5 +85,27 @@ class HomeController extends _$HomeController {
       if (enterprise.id != null && enterprise.enabled) return enterprise.id;
     }
     return enterprises.firstOrNull?.id;
+  }
+
+  void _setCrashlyticsEnterpriseKeys(
+    int enterpriseId,
+    List<HomeEnterpriseEntity>? enterprises,
+  ) {
+    final enterprise = enterprises
+        ?.where((e) => e.id == enterpriseId)
+        .firstOrNull;
+    final enterpriseName = enterprise?.name;
+
+    ref.read(crashlyticsServiceProvider).setCustomKeys([
+      CrashlyticsCustomKeyEntity(
+        key: 'selected_enterprise_id',
+        value: enterpriseId,
+      ),
+      if (enterpriseName != null && enterpriseName.isNotEmpty)
+        CrashlyticsCustomKeyEntity(
+          key: 'selected_enterprise_name',
+          value: enterpriseName,
+        ),
+    ]);
   }
 }
