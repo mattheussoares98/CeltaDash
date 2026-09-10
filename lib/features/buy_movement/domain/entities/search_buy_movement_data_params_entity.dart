@@ -6,6 +6,7 @@ class SearchBuyMovementDataParamsEntity extends Equatable {
   final DateTime startDate;
   final DateTime endDate;
   final BuyMovementPeriodGrouping? periodGrouping;
+  final bool groupByEnterprise;
   final bool groupByProduct;
   final bool groupBySupplier;
   final String? productName;
@@ -16,13 +17,17 @@ class SearchBuyMovementDataParamsEntity extends Equatable {
     required this.startDate,
     required this.endDate,
     this.periodGrouping,
+    this.groupByEnterprise = false,
     this.groupByProduct = false,
     this.groupBySupplier = false,
     this.productName,
     this.topCount,
   }) : assert(
-         periodGrouping != null || groupByProduct || groupBySupplier,
-         'Select at least one period, product, or supplier grouping.',
+         periodGrouping != null ||
+             groupByEnterprise ||
+             groupByProduct ||
+             groupBySupplier,
+         'Select at least one period, enterprise, product, or supplier grouping.',
        ),
        assert(
          groupByProduct || (productName == null && topCount == null),
@@ -39,6 +44,7 @@ class SearchBuyMovementDataParamsEntity extends Equatable {
     startDate,
     endDate,
     periodGrouping,
+    groupByEnterprise,
     groupByProduct,
     groupBySupplier,
     productName,

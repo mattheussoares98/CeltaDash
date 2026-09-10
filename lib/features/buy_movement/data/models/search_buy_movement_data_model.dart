@@ -6,6 +6,7 @@ class SearchBuyMovementDataModel extends Equatable {
   final DateTime startDate;
   final DateTime endDate;
   final BuyMovementPeriodGrouping? periodGrouping;
+  final bool groupByEnterprise;
   final bool groupByProduct;
   final bool groupBySupplier;
   final String? productName;
@@ -16,6 +17,7 @@ class SearchBuyMovementDataModel extends Equatable {
     required this.startDate,
     required this.endDate,
     this.periodGrouping,
+    required this.groupByEnterprise,
     required this.groupByProduct,
     required this.groupBySupplier,
     this.productName,
@@ -36,6 +38,8 @@ class SearchBuyMovementDataModel extends Equatable {
       periodGrouping: BuyMovementPeriodGrouping.fromValue(
         json['PeriodGrouping'] ?? json['periodGrouping'],
       ),
+      groupByEnterprise:
+          (json['GroupByEnterprise'] ?? json['groupByEnterprise']) == true,
       groupByProduct:
           (json['GroupByProduct'] ?? json['groupByProduct']) == true,
       groupBySupplier:
@@ -52,6 +56,7 @@ class SearchBuyMovementDataModel extends Equatable {
     startDate: entity.startDate,
     endDate: entity.endDate,
     periodGrouping: entity.periodGrouping,
+    groupByEnterprise: entity.groupByEnterprise,
     groupByProduct: entity.groupByProduct,
     groupBySupplier: entity.groupBySupplier,
     productName: entity.productName,
@@ -64,6 +69,7 @@ class SearchBuyMovementDataModel extends Equatable {
         startDate: startDate,
         endDate: endDate,
         periodGrouping: periodGrouping,
+        groupByEnterprise: groupByEnterprise,
         groupByProduct: groupByProduct,
         groupBySupplier: groupBySupplier,
         productName: productName,
@@ -77,6 +83,7 @@ class SearchBuyMovementDataModel extends Equatable {
       'EndDate': endDate.toIso8601String(),
     },
     if (periodGrouping != null) 'PeriodGrouping': periodGrouping!.value,
+    'GroupByEnterprise': groupByEnterprise,
     'GroupByProduct': groupByProduct,
     'GroupBySupplier': groupBySupplier,
     if (productName != null) 'ProductName': productName,
@@ -89,6 +96,7 @@ class SearchBuyMovementDataModel extends Equatable {
     startDate,
     endDate,
     periodGrouping,
+    groupByEnterprise,
     groupByProduct,
     groupBySupplier,
     productName,

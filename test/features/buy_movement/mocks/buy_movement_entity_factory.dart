@@ -10,6 +10,7 @@ class BuyMovementEntityFactory {
     DateTime? endDate,
     BuyMovementPeriodGrouping? periodGrouping,
     bool annulPeriodGrouping = false,
+    bool? groupByEnterprise,
     bool? groupByProduct,
     bool? groupBySupplier,
     String? productName,
@@ -32,6 +33,7 @@ class BuyMovementEntityFactory {
                 BuyMovementPeriodGrouping.values[faker.randomGenerator.integer(
                   BuyMovementPeriodGrouping.values.length,
                 )],
+      groupByEnterprise: groupByEnterprise ?? false,
       groupByProduct:
           groupByProduct ??
           (productName != null ||
@@ -45,22 +47,35 @@ class BuyMovementEntityFactory {
 
   static BuyMovementDataResponseEntity makeResponseEntity({
     SearchBuyMovementDataParamsEntity? searchParameters,
+    List<BuyMovementDataRowEntity>? results,
   }) => BuyMovementDataResponseEntity(
     searchParameters: searchParameters ?? makeSearchParams(),
-    results: [
-      BuyMovementDataRowEntity(
-        product: BuyMovementDataProductEntity(
-          code: faker.randomGenerator.integer(1000, min: 1),
-          packingCode: faker.randomGenerator.integer(100, min: 1),
-          name: faker.food.dish(),
-          quantity: faker.randomGenerator.decimal(min: 1),
-        ),
-        supplier: BuyMovementDataSupplierEntity(
-          code: faker.randomGenerator.integer(1000, min: 1),
-          name: faker.company.name(),
-        ),
-        totalValue: faker.randomGenerator.decimal(min: 1),
-      ),
-    ],
+    results: results ?? [makeDataRowEntity()],
+  );
+
+  static BuyMovementDataRowEntity makeDataRowEntity({
+    int? enterpriseCode,
+    DateTime? date,
+    bool withProduct = true,
+    bool withSupplier = true,
+    num? totalValue,
+  }) => BuyMovementDataRowEntity(
+    enterpriseCode: enterpriseCode,
+    date: date,
+    product: withProduct
+        ? BuyMovementDataProductEntity(
+            code: faker.randomGenerator.integer(1000, min: 1),
+            packingCode: faker.randomGenerator.integer(100, min: 1),
+            name: faker.food.dish(),
+            quantity: faker.randomGenerator.decimal(min: 1),
+          )
+        : null,
+    supplier: withSupplier
+        ? BuyMovementDataSupplierEntity(
+            code: faker.randomGenerator.integer(1000, min: 1),
+            name: faker.company.name(),
+          )
+        : null,
+    totalValue: totalValue ?? faker.randomGenerator.decimal(min: 1),
   );
 }

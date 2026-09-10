@@ -2,12 +2,14 @@ import 'package:celta_dash/features/buy_movement/domain/entities/entities.dart';
 import 'package:equatable/equatable.dart';
 
 class BuyMovementDataRowEntity extends Equatable {
+  final int? enterpriseCode;
   final DateTime? date;
   final BuyMovementDataProductEntity? product;
   final BuyMovementDataSupplierEntity? supplier;
   final num totalValue;
 
   const BuyMovementDataRowEntity({
+    this.enterpriseCode,
     this.date,
     this.product,
     this.supplier,
@@ -15,5 +17,11 @@ class BuyMovementDataRowEntity extends Equatable {
   });
 
   @override
-  List<Object?> get props => [date, product, supplier, totalValue];
+  List<Object?> get props => [
+    enterpriseCode,
+    date,
+    product,
+    supplier,
+    totalValue,
+  ];
 }

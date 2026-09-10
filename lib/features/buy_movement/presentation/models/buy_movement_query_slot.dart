@@ -1,1 +1,8 @@
-enum BuyMovementQuerySlot { hourly, daily, monthly, yearly, products }
+enum BuyMovementQuerySlot {
+  hourly,
+  daily,
+  monthly,
+  yearly,
+  products,
+  groupOfStores,
+}

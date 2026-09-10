@@ -3,12 +3,14 @@ import 'package:celta_dash/features/buy_movement/domain/entities/entities.dart';
 import 'package:equatable/equatable.dart';
 
 class BuyMovementDataRowModel extends Equatable {
+  final int? enterpriseCode;
   final DateTime? date;
   final BuyMovementDataProductModel? product;
   final BuyMovementDataSupplierModel? supplier;
   final num totalValue;
 
   const BuyMovementDataRowModel({
+    this.enterpriseCode,
     this.date,
     this.product,
     this.supplier,
@@ -20,6 +22,8 @@ class BuyMovementDataRowModel extends Equatable {
     final supplier = (json['Supplier'] ?? json['supplier']) as Map?;
 
     return BuyMovementDataRowModel(
+      enterpriseCode:
+          ((json['EnterpriseCode'] ?? json['enterpriseCode']) as num?)?.toInt(),
       date: DateTime.tryParse((json['Date'] ?? json['date'])?.toString() ?? ''),
       product: product == null
           ? null
@@ -33,6 +37,7 @@ class BuyMovementDataRowModel extends Equatable {
 
   factory BuyMovementDataRowModel.fromEntity(BuyMovementDataRowEntity entity) =>
       BuyMovementDataRowModel(
+        enterpriseCode: entity.enterpriseCode,
         date: entity.date,
         product: entity.product == null
             ? null
@@ -44,6 +49,7 @@ class BuyMovementDataRowModel extends Equatable {
       );
 
   BuyMovementDataRowEntity toEntity() => BuyMovementDataRowEntity(
+    enterpriseCode: enterpriseCode,
     date: date,
     product: product?.toEntity(),
     supplier: supplier?.toEntity(),
@@ -51,6 +57,7 @@ class BuyMovementDataRowModel extends Equatable {
   );
 
   Map toJson() => {
+    'EnterpriseCode': enterpriseCode,
     'Date': date?.toIso8601String(),
     'Product': product?.toJson(),
     'Supplier': supplier?.toJson(),
@@ -58,5 +65,11 @@ class BuyMovementDataRowModel extends Equatable {
   };
 
   @override
-  List<Object?> get props => [date, product, supplier, totalValue];
+  List<Object?> get props => [
+    enterpriseCode,
+    date,
+    product,
+    supplier,
+    totalValue,
+  ];
 }
