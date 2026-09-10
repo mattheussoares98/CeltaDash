@@ -1,42 +1,63 @@
 import 'package:celta_dash/features/buy_movement/domain/entities/entities.dart';
+import 'package:faker/faker.dart';
 
 class BuyMovementEntityFactory {
   BuyMovementEntityFactory._();
 
   static SearchBuyMovementDataParamsEntity makeSearchParams({
-    List<int> enterpriseCodes = const [1],
+    List<int>? enterpriseCodes,
     DateTime? startDate,
     DateTime? endDate,
-    BuyMovementPeriodGrouping? periodGrouping = BuyMovementPeriodGrouping.day,
-    bool groupByProduct = false,
-    bool groupBySupplier = false,
+    BuyMovementPeriodGrouping? periodGrouping,
+    bool? groupByProduct,
+    bool? groupBySupplier,
     String? productName,
     int? topCount,
-  }) => SearchBuyMovementDataParamsEntity(
-    enterpriseCodes: enterpriseCodes,
-    startDate: startDate ?? DateTime.utc(2026, 9),
-    endDate: endDate ?? DateTime.utc(2026, 9, 10),
-    periodGrouping: periodGrouping,
-    groupByProduct: groupByProduct,
-    groupBySupplier: groupBySupplier,
-    productName: productName,
-    topCount: topCount,
-  );
+  }) {
+    final fakeStartDate = startDate ?? faker.date.dateTime();
+
+    return SearchBuyMovementDataParamsEntity(
+      enterpriseCodes:
+          enterpriseCodes ?? [faker.randomGenerator.integer(1000, min: 1)],
+      startDate: fakeStartDate,
+      endDate:
+          endDate ??
+          fakeStartDate.add(
+            Duration(days: faker.randomGenerator.integer(365, min: 1)),
+          ),
+      periodGrouping:
+          periodGrouping ??
+          BuyMovementPeriodGrouping.values[faker.randomGenerator.integer(
+            BuyMovementPeriodGrouping.values.length,
+          )],
+      groupByProduct:
+          groupByProduct ??
+          (productName != null ||
+              topCount != null ||
+              faker.randomGenerator.boolean()),
+      groupBySupplier: groupBySupplier ?? faker.randomGenerator.boolean(),
+      productName: productName,
+      topCount: topCount,
+    );
+  }
 
   static BuyMovementDataResponseEntity makeResponseEntity({
     SearchBuyMovementDataParamsEntity? searchParameters,
   }) => BuyMovementDataResponseEntity(
     searchParameters: searchParameters ?? makeSearchParams(),
-    results: const [
+    results: [
       BuyMovementDataRowEntity(
         product: BuyMovementDataProductEntity(
-          code: 10,
-          packingCode: 2,
-          name: 'Product',
-          quantity: 3.5,
+          code: faker.randomGenerator.integer(1000, min: 1),
+          packingCode: faker.randomGenerator.integer(100, min: 1),
+          name: faker.food.dish(),
+          quantity: faker.randomGenerator.decimal(min: 1),
         ),
-        supplier: BuyMovementDataSupplierEntity(code: 20, name: 'Supplier'),
-        totalValue: 42.75,
+        supplier: BuyMovementDataSupplierEntity(
+          code: faker.randomGenerator.integer(1000, min: 1),
+          name: faker.company.name(),
+        ),
+        totalValue: faker.randomGenerator.decimal(min: 1),
       ),
     ],
   );
