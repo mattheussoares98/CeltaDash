@@ -59,8 +59,12 @@ class HomeRepositoryImpl implements IHomeRepository {
     required FirebaseEnterpriseEntity activeEnterprise,
     required List<HomeEnterpriseEntity> erpEnterprises,
   }) async {
-    final firebaseId = activeEnterprise.firebaseId;
-    if (firebaseId == null || firebaseId.isEmpty) return;
+    final firebaseId =
+        (activeEnterprise.firebaseId != null &&
+                activeEnterprise.firebaseId!.isNotEmpty)
+            ? activeEnterprise.firebaseId!
+            : (activeEnterprise.enterpriseName ?? '');
+    if (firebaseId.isEmpty) return;
 
     final existingList =
         activeEnterprise.firebaseSubEnterprises ??

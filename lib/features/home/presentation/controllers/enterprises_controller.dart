@@ -26,6 +26,7 @@ class EnterprisesController extends _$EnterprisesController {
             );
         activeEnterprise = activeEnterprise.copyWith(
           baseUrl: config.baseUrl ?? activeEnterprise.baseUrl,
+          firebaseId: config.firebaseId ?? activeEnterprise.firebaseId,
           firebaseSubEnterprises: config.toEntity().firebaseSubEnterprises,
         );
       } catch (_) {
