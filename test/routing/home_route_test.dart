@@ -58,9 +58,16 @@ void main() {
     await pumpRouter(tester, appMode: AppMode.financialTitles);
 
     expect(currentPath(), '/home/financial/resume');
-    expect(find.byType(FinancialPeriodsPage), findsOneWidget);
+    expect(find.byType(FinancialResumePage), findsOneWidget);
   });
 
+  testWidgets('/home redirects to the buy movement shell when persisted', (
+    tester,
+  ) async {
+    await pumpRouter(tester, appMode: AppMode.buyMovements);
+
+    expect(currentPath(), '/home/buy-movements/resume');
+  });
 
   testWidgets('each named destination supports a direct deep link', (
     tester,
@@ -70,6 +77,9 @@ void main() {
       '/home/sales',
       '/home/products',
       '/home/financial/resume',
+      '/home/buy-movements/resume',
+      '/home/buy-movements/periods',
+      '/home/buy-movements/products',
       '/home/personalized',
       '/home/more',
     ];
@@ -89,6 +99,22 @@ void main() {
       ('home_navigation_sales', '/home/sales'),
       ('home_navigation_products', '/home/products'),
       ('home_navigation_resume', '/home/resume'),
+    ];
+
+    for (final destination in destinations) {
+      await tester.tap(find.byKey(ValueKey(destination.$1)));
+      await tester.pumpAndSettle();
+
+      expect(currentPath(), destination.$2);
+    }
+  });
+
+  testWidgets('buy movement navigation changes page and route', (tester) async {
+    await pumpRouter(tester, appMode: AppMode.buyMovements);
+    const destinations = [
+      ('buy_movement_navigation_periods', '/home/buy-movements/periods'),
+      ('buy_movement_navigation_products', '/home/buy-movements/products'),
+      ('buy_movement_navigation_resume', '/home/buy-movements/resume'),
     ];
 
     for (final destination in destinations) {

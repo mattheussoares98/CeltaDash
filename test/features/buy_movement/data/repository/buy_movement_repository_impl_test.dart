@@ -91,6 +91,29 @@ void main() {
       },
     );
 
+    test('ignores echoed parameters without a grouping', () async {
+      final invalidEcho = SearchBuyMovementDataModel(
+        enterpriseCodes: params.enterpriseCodes,
+        startDate: params.startDate,
+        endDate: params.endDate,
+        groupByEnterprise: false,
+        groupByProduct: false,
+        groupBySupplier: false,
+      );
+      final model = BuyMovementDataResponseModel(
+        searchParameters: invalidEcho,
+        results: BuyMovementDataResponseModel.fromEntity(response).results,
+      );
+      when(
+        () => datasource.getData(params: params, ecParams: ecParams),
+      ).thenAnswer((_) async => model);
+
+      final result = await sut.getData(params: params, ecParams: ecParams);
+
+      expect(result.searchParameters, params);
+      expect(result.results, response.results);
+    });
+
     test('propagates datasource exceptions', () async {
       final exception = Exception('request failed');
       when(

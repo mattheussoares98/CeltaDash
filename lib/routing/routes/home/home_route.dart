@@ -16,6 +16,7 @@ List<RouteBase> homeRoutes(
     ],
   ),
   financialHomeRoute(),
+  buyMovementHomeRoute(),
   ...secondaryRoutes,
   GoRoute(
     path: '/home',
@@ -25,11 +26,11 @@ List<RouteBase> homeRoutes(
       if (state.uri.path != homeLocation) return null;
 
       final appMode = await loadAppMode();
-      return state.namedLocation(
-        appMode == AppMode.financialTitles
-            ? Routes.financialHomeResume.name
-            : Routes.salesHomeResume.name,
-      );
+      return state.namedLocation(switch (appMode) {
+        AppMode.sales => Routes.salesHomeResume.name,
+        AppMode.financialTitles => Routes.financialHomeResume.name,
+        AppMode.buyMovements => Routes.buyMovementHomeResume.name,
+      });
     },
   ),
 ];

@@ -53,9 +53,8 @@ class HomeModeToggle extends ConsumerWidget {
         final routeName = switch (mode) {
           AppMode.sales => Routes.salesHomeResume.name,
           AppMode.financialTitles => Routes.financialHomeResume.name,
-          AppMode.buyMovements => null,
+          AppMode.buyMovements => Routes.buyMovementHomeResume.name,
         };
-        if (routeName == null) return;
 
         try {
           await ref.read(homeControllerProvider.notifier).selectAppMode(mode);
@@ -69,7 +68,6 @@ class HomeModeToggle extends ConsumerWidget {
         for (final mode in AppMode.values)
           PopupMenuItem(
             value: mode,
-            enabled: mode != AppMode.buyMovements,
             child: Row(
               children: [
                 if (mode == homeState.appMode)

@@ -15,11 +15,9 @@ class BuyMovementRepositoryImpl implements IBuyMovementRepository {
   }) async {
     final model = await _datasource.getData(params: params, ecParams: ecParams);
 
-    final entity = model.toEntity();
-
     return BuyMovementDataResponseEntity(
       searchParameters: params,
-      results: entity.results,
+      results: model.results.map((result) => result.toEntity()).toList(),
     );
   }
 }

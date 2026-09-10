@@ -39,7 +39,7 @@ class _DailyFinancialTable extends ConsumerWidget {
       String? subtitle;
       if (day > 0) {
         final dayDate = DateTime(selectedDate.year, selectedDate.month, day);
-        subtitle = DateFormat('EEE', 'pt_BR').format(dayDate).toUpperCase();
+        subtitle = dayDate.formatDate(.EEE).toUpperCase();
       }
 
       return FinancialStatisticsRowState(

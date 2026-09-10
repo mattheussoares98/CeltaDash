@@ -1,3 +1,5 @@
+export 'buy_movement_home_page.dart';
+export 'buy_movement_pages/buy_movement.dart';
 export 'financial_home_page.dart';
 export 'financial_pages/financial.dart';
 export 'home_page.dart';
