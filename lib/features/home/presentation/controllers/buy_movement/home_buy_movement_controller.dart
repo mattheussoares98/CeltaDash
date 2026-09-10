@@ -4,6 +4,7 @@ import 'package:celta_dash/features/buy_movement/domain/entities/entities.dart';
 import 'package:celta_dash/features/buy_movement/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/buy_movement/presentation/models/models.dart';
 import 'package:celta_dash/features/home/home.dart';
+import 'package:celta_dash/utils/extensions/extensions.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'home_buy_movement_controller.g.dart';
@@ -15,6 +16,7 @@ class HomeBuyMovementController extends _$HomeBuyMovementController {
     int enterpriseId,
     HomeBuyMovementPeriod selectedPeriod,
   ) async {
+    ref.cache();
     ref.watch(activeEcParamsStateControllerProvider);
     final selectedDate = await ref.watch(
       homeControllerProvider.selectAsync((state) => state.selectedDate),

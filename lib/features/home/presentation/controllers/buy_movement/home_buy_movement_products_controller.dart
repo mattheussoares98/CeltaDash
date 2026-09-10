@@ -16,6 +16,7 @@ class HomeBuyMovementProductsController
     int enterpriseId,
     HomeBuyMovementPeriod selectedPeriod,
   ) async {
+    ref.cache();
     ref.invalidatePeriodically();
     final selectedDate = await ref.watch(
       homeControllerProvider.selectAsync((state) => state.selectedDate),
