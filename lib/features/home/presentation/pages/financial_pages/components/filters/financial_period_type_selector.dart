@@ -20,6 +20,7 @@ class FinancialPeriodTypeSelector extends ConsumerWidget {
 
     return PopupMenuButton<FinancialTitlePeriodType>(
       clipBehavior: .hardEdge,
+      borderRadius: const BorderRadius.all(Radius.circular(Sizes.p16)),
       tooltip: 'Tipo de data do período'.hardcoded,
       initialValue: selectedType,
       onSelected: (type) {
@@ -61,7 +62,7 @@ class FinancialPeriodTypeSelector extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
           color: theme.colorScheme.surfaceContainerHighest.withAlpha(140),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(Sizes.p16),
           border: Border.all(color: theme.dividerColor.withAlpha(60)),
         ),
         child: Row(

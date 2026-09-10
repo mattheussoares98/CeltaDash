@@ -20,6 +20,7 @@ class FinancialSituationSelector extends ConsumerWidget {
 
     return PopupMenuButton<FinancialTitleSituation>(
       clipBehavior: .hardEdge,
+      borderRadius: const BorderRadius.all(Radius.circular(Sizes.p16)),
       tooltip: 'Situações dos títulos'.hardcoded,
       onSelected: (situation) => ref
           .read(homeFinancialFiltersControllerProvider.notifier)
