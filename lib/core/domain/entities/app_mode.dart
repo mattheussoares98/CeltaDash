@@ -1,1 +1,1 @@
-enum AppMode { sales, financialTitles }
+enum AppMode { sales, financialTitles, buyMovements }

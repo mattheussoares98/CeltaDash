@@ -16,12 +16,21 @@ void main() {
     datasource = HomeLocalDatasource(storage);
   });
 
-  test('loadAppMode returns the saved mode', () async {
+  test('loadAppMode returns a legacy saved mode', () async {
     when(
       () => storage.get('appMode'),
     ).thenAnswer((_) async => AppMode.financialTitles.name);
 
     expect(await datasource.loadAppMode(), AppMode.financialTitles);
+    verify(() => storage.get('appMode')).called(1);
+  });
+
+  test('loadAppMode returns the saved buy movements mode', () async {
+    when(
+      () => storage.get('appMode'),
+    ).thenAnswer((_) async => AppMode.buyMovements.name);
+
+    expect(await datasource.loadAppMode(), AppMode.buyMovements);
     verify(() => storage.get('appMode')).called(1);
   });
 
@@ -33,14 +42,12 @@ void main() {
 
   test('saveAppMode persists the enum name', () async {
     when(
-      () => storage.put('appMode', AppMode.financialTitles.name),
+      () => storage.put('appMode', AppMode.buyMovements.name),
     ).thenAnswer((_) async {});
 
-    await datasource.saveAppMode(AppMode.financialTitles);
+    await datasource.saveAppMode(AppMode.buyMovements);
 
-    verify(
-      () => storage.put('appMode', AppMode.financialTitles.name),
-    ).called(1);
+    verify(() => storage.put('appMode', AppMode.buyMovements.name)).called(1);
   });
 
   test('loadActiveEnterprise maps the saved core model', () async {
