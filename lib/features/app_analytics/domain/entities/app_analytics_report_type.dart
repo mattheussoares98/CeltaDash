@@ -15,6 +15,8 @@ enum AppAnalyticsReportType {
   notCanceledSales('Vendas não canceladas'),
   financial('Financeiro'),
   financialGroupOfStores('Grupo de lojas financeiro'),
+  buyMovements('Compra (movimentos)'),
+  buyMovementProducts('Compra (produtos)'),
   dailyComparison('Comparativo diário'),
   groupOfStores('Grupo de lojas'),
   monthlyAnalysis('Análise mensal'),

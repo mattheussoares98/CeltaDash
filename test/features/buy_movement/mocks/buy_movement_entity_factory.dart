@@ -9,6 +9,7 @@ class BuyMovementEntityFactory {
     DateTime? startDate,
     DateTime? endDate,
     BuyMovementPeriodGrouping? periodGrouping,
+    bool annulPeriodGrouping = false,
     bool? groupByProduct,
     bool? groupBySupplier,
     String? productName,
@@ -25,11 +26,12 @@ class BuyMovementEntityFactory {
           fakeStartDate.add(
             Duration(days: faker.randomGenerator.integer(365, min: 1)),
           ),
-      periodGrouping:
-          periodGrouping ??
-          BuyMovementPeriodGrouping.values[faker.randomGenerator.integer(
-            BuyMovementPeriodGrouping.values.length,
-          )],
+      periodGrouping: annulPeriodGrouping
+          ? null
+          : periodGrouping ??
+                BuyMovementPeriodGrouping.values[faker.randomGenerator.integer(
+                  BuyMovementPeriodGrouping.values.length,
+                )],
       groupByProduct:
           groupByProduct ??
           (productName != null ||
