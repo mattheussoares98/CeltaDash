@@ -37,7 +37,7 @@ GoRouter goRouter(Ref ref) {
       final location = state.matchedLocation;
 
       final isSplash = location == '/splash';
-      final isLogin = location == '/login' || location == '/web-login';
+      final isLogin = location == '/login';
       final isUpdateRequired = location == '/home/update-app-version';
       final isPublicRoute = isSplash || isLogin || isUpdateRequired;
 
@@ -57,26 +57,22 @@ GoRouter goRouter(Ref ref) {
     routes: [
       splashRoute(),
       loginRoute(),
-      webLoginRoute(),
-      ...homeRoutes(
-        rootNavigatorKey,
-        [
-          saleDetailsRoute(),
-          salesRoute(),
-          compareDaysRoute(),
-          compareMonthsRoute(),
-          enterprisesManagerRoute(),
-          goalHistoricRoute(),
-          homePersonalizedRoute(),
-          notSalesRoute(),
-          operatorsRoute(),
-          sellersRoute(),
-          updateAppVersionRoute(),
-          webEnterprisesRoute(),
-          webEnterpriseDetailsRoute(),
-        ],
-        loadAppMode: () => ref.read(homeRepositoryProvider).loadAppMode(),
-      ),
+      ...homeRoutes(rootNavigatorKey, [
+        saleDetailsRoute(),
+        salesRoute(),
+        compareDaysRoute(),
+        compareMonthsRoute(),
+        enterprisesManagerRoute(),
+        goalHistoricRoute(),
+        homePersonalizedRoute(),
+        notSalesRoute(),
+        operatorsRoute(),
+        sellersRoute(),
+        updateAppVersionRoute(),
+        webLoginRoute(),
+        webEnterprisesRoute(),
+        webEnterpriseDetailsRoute(),
+      ], loadAppMode: () => ref.read(homeRepositoryProvider).loadAppMode()),
     ],
     errorBuilder: (context, state) => const NotFoundPage(),
     observers: [CrashlyticsRouteObserver(ref.read(crashlyticsServiceProvider))],
