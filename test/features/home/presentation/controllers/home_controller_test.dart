@@ -1,4 +1,5 @@
 import 'package:celta_dash/core/domain/domain.dart';
+import 'package:celta_dash/core/infrastructure/services/crashlytics/provider.dart';
 import 'package:celta_dash/core/providers.dart';
 import 'package:celta_dash/features/home/domain/domain.dart';
 import 'package:celta_dash/features/home/presentation/presentation.dart';
@@ -48,6 +49,9 @@ void main() {
       overrides: [
         activeEcParamsStateControllerProvider.overrideWith(
           () => FakeActiveEcParams(ecParams),
+        ),
+        crashlyticsServiceProvider.overrideWithValue(
+          const FakeCrashlyticsService(),
         ),
         homeRepositoryProvider.overrideWithValue(repository),
       ],
@@ -107,13 +111,15 @@ void main() {
     },
   );
 
-  test('toggleAppMode persists before publishing the new mode', () async {
+  test('selectAppMode persists before publishing the new mode', () async {
     when(
       () => repository.saveAppMode(AppMode.financialTitles),
     ).thenAnswer((_) async {});
     await loadState();
 
-    await container.read(homeControllerProvider.notifier).toggleAppMode();
+    await container
+        .read(homeControllerProvider.notifier)
+        .selectAppMode(AppMode.financialTitles);
 
     verify(() => repository.saveAppMode(AppMode.financialTitles)).called(1);
     expect(
@@ -122,7 +128,7 @@ void main() {
     );
   });
 
-  test('toggleAppMode keeps the old mode when persistence fails', () async {
+  test('selectAppMode keeps the old mode when persistence fails', () async {
     final error = Exception('storage failed');
     when(
       () => repository.saveAppMode(AppMode.financialTitles),
@@ -130,13 +136,32 @@ void main() {
     await loadState();
 
     await expectLater(
-      container.read(homeControllerProvider.notifier).toggleAppMode(),
+      container
+          .read(homeControllerProvider.notifier)
+          .selectAppMode(AppMode.financialTitles),
       throwsA(error),
     );
 
     expect(
       container.read(homeControllerProvider).value?.appMode,
       AppMode.sales,
+    );
+  });
+
+  test('selectAppMode supports buy movements', () async {
+    when(
+      () => repository.saveAppMode(AppMode.buyMovements),
+    ).thenAnswer((_) async {});
+    await loadState();
+
+    await container
+        .read(homeControllerProvider.notifier)
+        .selectAppMode(AppMode.buyMovements);
+
+    verify(() => repository.saveAppMode(AppMode.buyMovements)).called(1);
+    expect(
+      container.read(homeControllerProvider).value?.appMode,
+      AppMode.buyMovements,
     );
   });
 

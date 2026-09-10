@@ -1,4 +1,5 @@
 import 'package:celta_dash/core/domain/domain.dart';
+import 'package:celta_dash/core/infrastructure/services/crashlytics/provider.dart';
 import 'package:celta_dash/core/providers.dart';
 import 'package:celta_dash/features/home/domain/domain.dart';
 import 'package:celta_dash/features/home/presentation/presentation.dart';
@@ -45,13 +46,27 @@ void main() {
     ).thenAnswer((_) async {});
   });
 
-  Future<void> pumpAppBar(WidgetTester tester) async {
+  Future<void> pumpAppBar(
+    WidgetTester tester, {
+    bool overrideHomeController = true,
+  }) async {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
           activeEcParamsStateControllerProvider.overrideWith(
             () => FakeActiveEcParams(ecParams),
           ),
+          crashlyticsServiceProvider.overrideWithValue(
+            const FakeCrashlyticsService(),
+          ),
+          if (overrideHomeController)
+            homeControllerProvider.overrideWith(
+              () => FakeHomeController(
+                HomeState.initial(
+                  appMode: AppMode.sales,
+                ).copyWith(selectedEnterpriseId: enterprise.id),
+              ),
+            ),
           homeRepositoryProvider.overrideWithValue(repository),
         ],
         child: const ToastificationWrapper(
@@ -81,7 +96,7 @@ void main() {
       findsWidgets,
     );
     expect(find.byKey(const ValueKey('home_date_selector')), findsOneWidget);
-    expect(find.byKey(const ValueKey('home_mode_toggle')), findsOneWidget);
+    expect(find.byKey(const ValueKey('home_mode_selector')), findsOneWidget);
     expect(
       find.byKey(const ValueKey('home_enterprises_manager')),
       findsOneWidget,
@@ -91,7 +106,11 @@ void main() {
   testWidgets('persists and displays the changed app mode', (tester) async {
     await pumpAppBar(tester);
 
-    await tester.tap(find.byKey(const ValueKey('home_mode_toggle')));
+    await tester.tap(find.byKey(const ValueKey('home_mode_selector')));
+    await tester.pumpAndSettle();
+    expect(find.text('Compras'), findsOneWidget);
+
+    await tester.tap(find.text('Financeiro').last);
     await tester.pumpAndSettle();
 
     verify(() => repository.saveAppMode(AppMode.financialTitles)).called(1);
@@ -123,7 +142,7 @@ void main() {
     when(
       () => repository.getEnterprises(ecParams),
     ).thenThrow(Exception('load failed'));
-    await pumpAppBar(tester);
+    await pumpAppBar(tester, overrideHomeController: false);
 
     expect(find.text('Tentar novamente'), findsOneWidget);
     expect(find.byKey(const ValueKey('home_drawer_button')), findsOneWidget);

@@ -1,4 +1,5 @@
 export 'fake_enterprises_controller.dart';
+export 'fake_crashlytics_service.dart';
 export 'fake_home_controller.dart';
 export 'fake_home_goal_firebase_storage.dart';
 export 'fake_monthly_goals_controller.dart';

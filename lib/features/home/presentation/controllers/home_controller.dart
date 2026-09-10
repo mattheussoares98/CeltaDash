@@ -54,16 +54,13 @@ class HomeController extends _$HomeController {
     );
   }
 
-  Future<void> toggleAppMode() async {
+  Future<void> selectAppMode(AppMode mode) async {
     final current = state.value;
-    if (current == null) return;
-    final newMode = current.appMode == AppMode.sales
-        ? AppMode.financialTitles
-        : AppMode.sales;
+    if (current == null || current.appMode == mode) return;
 
-    await ref.read(homeRepositoryProvider).saveAppMode(newMode);
+    await ref.read(homeRepositoryProvider).saveAppMode(mode);
     if (state.value case final latest?) {
-      state = AsyncValue.data(latest.copyWith(appMode: newMode));
+      state = AsyncValue.data(latest.copyWith(appMode: mode));
     }
   }
 
