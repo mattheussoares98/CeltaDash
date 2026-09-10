@@ -1,44 +1,30 @@
 ---
 trigger: model_decision
-description: Activate this rule whenever the user asks to create, modify, style, or review any Flutter UI components, widgets, screens, pages, or dialogs. This contains the required shared widgets, spacing/padding constants (Gaps), and theming rules
+description: Activate when creating, modifying, styling, or reviewing Flutter UI widgets, screens, pages, or dialogs.
 ---
 
-## Imports
+## Rules
 - Never add commented file path headers above code blocks.
-- Always import barrel files, not individual files.
+- Always import leaf barrel files, not individual files.
+- Never use `faker` or mock data in UI widgets; pass real entities or UI state models.
+- Extract sub-widgets into `components/` when file > 100 lines (follow `BuyRequestPage` pattern). Sub-widgets read providers directly (`ref.watch/read`) — no prop drilling.
+- Wrap `Text` or dynamic content inside `Row` with `Expanded` or `Flexible`.
+- Inline-init and dispose `TextEditingController` / `FocusNode` (no `late` unless dependent on `widget.*`).
 
-## Reusable Widgets (check `lib/commom_widgets` first)
+## Reusable Widgets (`lib/commom_widgets/`)
 - **Buttons**: `PrimaryButton`, `PrimaryTextButton`, `ActionTextButton`, `DefaultPaginationButtons`
 - **Inputs**: `DefaultDropDown`, `DefaultSimpleDropDown`, `DefaultCheckBox`, `DefaultSwitch`, `DefaultChoiceChip`, `DefaultSegmentedButtons`
 - **Layout**: `ResponsiveCenter`, `ResponsiveListFlow`, `ResponsiveScrollableWidget`
-- **Label+Value rows**: always use `TitleAndSubtitle` — never create custom `SummaryRow` or `KeyValueRow` widgets.
-- **Feedback**: `LoadingCircle`, `LoadingExtension`, `EmptyPlaceholderWidget`, `AsyncValueWidget`
-- **Overlays**: `AlertDialogs`, `ShowToastMessage`, `ShowModalPage`
+- **Label+Value**: Always use `TitleAndSubtitle` (never create custom `SummaryRow` / `KeyValueRow`).
+- **Feedback & Overlays**: `LoadingCircle`, `LoadingExtension`, `EmptyPlaceholderWidget`, `AsyncValueWidget`, `AlertDialogs`, `ShowToastMessage`, `ShowModalPage`
 - **Icons**: `PlatformIcon`
 
-Never use `faker` or mock data in UI widgets. Always pass real entities or UI state models.
-
-## Spacing (lib/constants/app_sizes.dart)
-Never hardcode pixel values. Use:
-- **Padding**: `Sizes.p4` … `Sizes.p120`
-- **Row/Column gaps**: `gapW4/gapH4` … `gapW32/gapH32`
-- **Sliver gaps**: `gapSliverW4/gapSliverH4` etc.
-
-## Theme
-- All texts → `.hardcoded`
-- Opacity → `.withAlpha(0–255)`. **`.withOpacity()` is forbidden.**
-- Colors → `context.theme.colorScheme` or `primaryColor / disabledColor / scaffoldBackgroundColor`. No hardcoded hex/RGB.
-- Typography → `context.theme.textTheme.*`
-
-## Widget Rules
-- Extract sub-widgets into `components/` when file exceeds 100 lines.
-- Extracted components read providers directly (`ref.watch/read`) — no prop drilling.
-- Follow `BuyRequestPage` folder pattern.
-- Never use `late` for `TextEditingController` or `FocusNode` unless value depends on `widget.*`. Initialize inline and dispose properly.
-- Wrap `Text` or dynamic content inside `Row` with `Expanded` or `Flexible` to prevent overflow.
+## Spacing (`lib/constants/app_sizes.dart`) & Theme
+- Spacing: Use `Sizes.p4`…`Sizes.p120`, `gapW4`/`gapH4`…`gapW32`/`gapH32`, `gapSliverW4`/`gapSliverH4`. Never hardcode pixels.
+- Theme: Texts `.hardcoded`. Opacity via `.withAlpha(0–255)` (`.withOpacity()` is forbidden). Colors from `context.theme.colorScheme` or `primaryColor` / `disabledColor` / `scaffoldBackgroundColor` (no hardcoded hex/RGB). Typography from `context.theme.textTheme.*`.
 
 ## Platform Adaptation (DRY)
-Declare shared sub-widgets once as local variables before the platform check, then reference them in each branch:
+Declare shared sub-widgets once before platform check:
 ```dart
 final title = Row(children: [Expanded(child: Text(t)), const Icon(Icons.info)]);
 if (PlatformUtil.isCupertino) return CupertinoWidget(title: title, ...);

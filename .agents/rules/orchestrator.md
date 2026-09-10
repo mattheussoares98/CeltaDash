@@ -2,7 +2,7 @@
 trigger: always_on
 ---
 
-Before writing code, identify which layers are affected (UI, Data, Domain, Tests) and read the relevant conditional rule files.
+Identify affected layers (UI, Data, Domain, Tests) and read relevant conditional rules before writing code.
 
-- Never run `build_runner` — user runs `dart run build_runner watch -d` in the background.
+- Never run `build_runner` (runs in background with `dart run build_runner watch -d`).
 - Never run modifying Git commands (`commit`, `add`, `reset`, `amend`, `checkout`). Only `git status` and `git diff` are allowed.

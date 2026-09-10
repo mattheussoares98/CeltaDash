@@ -4,63 +4,31 @@ trigger: always_on
 
 Feature-First + Clean Architecture. Never invent new patterns.
 
-## Folder Structure
-```
-lib/
-├── commom_widgets/   # Generic reusable widgets
-├── constants/        # Global constants
-├── core/             # Shared infra (data/domain/presentation)
-├── exceptions/       # Custom exceptions
-├── features/         # Bounded contexts
-├── localization/     # i18n
-├── routing/          # go_router config
-└── utils/            # Helpers and formatters
-```
+## Structure (`lib/`)
+- Root folders: `commom_widgets/`, `constants/`, `core/`, `exceptions/`, `features/`, `localization/`, `routing/`, `utils/`.
+- Per feature: `data/` (`datasource/`, `models/`), `domain/` (`entities/`, `repository/`), `presentation/` (`controllers/`, `models/`, `pages/`), `providers.dart`, `providers.g.dart`.
 
-## Feature Internal Structure
-```
-[feature]/
-├── data/
-│   ├── datasource/   # i_*.dart interfaces + implementations
-│   └── models/       # DTOs
-├── domain/
-│   ├── entities/     # Pure Dart business objects
-│   └── repository/   # i_*.dart interfaces + *_impl.dart
-├── presentation/
-│   ├── controllers/  # Riverpod state controllers
-│   ├── models/       # UI-specific state models
-│   └── pages/        # Widgets and screens
-├── providers.dart
-└── providers.g.dart
-```
-
-## Layer Rules
-- **Domain**: pure Dart only — no Flutter, no HTTP, no Hive.
-- **Data**: implements domain interfaces; handles all external I/O.
-- **Presentation**: depends on domain only; never touches datasources directly.
+## Layers
+- **Domain**: Pure Dart only (no Flutter, HTTP, Hive).
+- **Data**: Implements domain interfaces; handles external I/O.
+- **Presentation**: Depends on domain only; never touches datasources directly.
 
 ## Riverpod
-- Use `@riverpod` with code generation for all providers.
-- Use `.select()` when a widget only needs one property from a state.
-- Use `Consumer` to scope rebuilds instead of watching inside `build`.
-- Call `ref.invalidate` only if data is loaded inside the provider's `build`.
+- Use `@riverpod` code generation for all providers.
+- Use `.select()` for scoped property reads; use `Consumer` to limit rebuilds.
+- `ref.invalidate` only if data is loaded inside provider's `build`.
 
-### DI Pattern (providers.dart)
+### DI (`providers.dart`) & Controller
 ```dart
 @riverpod
 IMyDatasource myDatasource(Ref ref) => MyDatasourceImpl(ref.watch(httpClientProvider));
-
 @riverpod
 IMyRepository myRepository(Ref ref) => MyRepositoryImpl(ref.watch(myDatasourceProvider));
-```
 
-### Controller Pattern
-```dart
 @riverpod
 class MyController extends _$MyController {
   @override
   FutureOr<MyEntity> build({required int id}) async { /* fetch */ }
-
   void updateField(String v) {
     if (state is! AsyncData<MyEntity>) return;
     state = AsyncData(state.value!.copyWith(field: v));
@@ -68,12 +36,10 @@ class MyController extends _$MyController {
 }
 ```
 
-## Widgets and Imports
-- **No relative imports.** Always use `package:celta_dash/`.
-- **Barrel files required** in every major folder (same name as folder). Always import the barrel, never an individual file.
-  - ✅ `import 'package:celta_dash/features/auth/domain/entities/entities.dart';`
-  - ❌ `import 'package:celta_dash/features/auth/domain/entities/user_entity.dart';`
-- **Always specify the full file path** at the top of every code block you provide.
-- Pages go in `presentation/pages/`. Extract sub-widgets to a `components/` subfolder when the file exceeds ~100 lines.
-- **Never use `StatefulWidget`**: Always use `HookWidget` or `HookConsumerWidget` (`flutter_hooks`) to manage local widget state, controllers, and focus nodes, alongside Riverpod controllers for business state.
+## Widgets & Imports
+- **No relative imports**: Always use `package:celta_dash/`.
+- **Barrel files**: Create only in leaf folders (e.g. `entities/entities.dart`, `models/models.dart`, `controllers/controllers.dart`). Always import the barrel, never individual files.
+  - ❌ **FORBIDDEN**: Never create coarse barrel files: `data.dart`, `domain.dart`, `presentation.dart`, or `<feature_name>.dart`.
+- **Pages**: In `presentation/pages/`. Extract sub-widgets to `components/` if file > 100 lines.
+- **Hooks**: Never use `StatefulWidget`. Use `HookWidget` or `HookConsumerWidget` for local state/controllers/focus nodes.
 - Always use `const` constructors.
