@@ -29,35 +29,36 @@ class HttpAdapter implements HttpClient {
     var response = Response('', 500);
     Future<Response>? futureResponse;
 
-    String applyedUrl = url;
+    String appliedUrl = url;
 
-    //! replace easily when testing the API
-    if (kDebugMode && 1 == 2) {
-      applyedUrl = url.replaceFirstMapped(
-        RegExp(r'https?://.+?/api', caseSensitive: false),
-        (match) => 'http://localhost:58915',
+    const useLocalApi = bool.fromEnvironment('USE_LOCAL_API');
+    const localApiHost = String.fromEnvironment('LOCAL_API_HOST');
+    if (kDebugMode && useLocalApi && localApiHost.isNotEmpty) {
+      appliedUrl = url.replaceFirstMapped(
+        RegExp(r'(https?://)[^/]+/api'),
+        (match) => '${match[1]}$localApiHost',
       );
     }
     try {
       if (method == 'post') {
         futureResponse = client.post(
-          Uri.parse(applyedUrl),
+          Uri.parse(appliedUrl),
           headers: defaultHeaders,
           body: jsonBody,
         );
       } else if (method == 'get') {
         futureResponse = client.get(
-          Uri.parse(applyedUrl),
+          Uri.parse(appliedUrl),
           headers: defaultHeaders,
         );
       } else if (method == 'delete') {
         futureResponse = client.delete(
-          Uri.parse(applyedUrl),
+          Uri.parse(appliedUrl),
           headers: defaultHeaders,
         );
       } else if (method == 'put') {
         futureResponse = client.put(
-          Uri.parse(applyedUrl),
+          Uri.parse(appliedUrl),
           headers: defaultHeaders,
           body: jsonBody,
         );
