@@ -23,18 +23,32 @@ void main() {
   final selectedDate = DateTime(2026, 8, 17);
   const enterpriseId = 10;
 
-  SearchBuyMovementDataParamsEntity makeParams(HomeBuyMovementPeriod period) {
+  SearchBuyMovementDataParamsEntity makeParams(
+    HomeBuyMovementPeriod period, {
+    DateTime? date,
+    int requestedEnterpriseId = enterpriseId,
+  }) {
+    final targetDate = date ?? selectedDate;
     final (startDate, endDate) = switch (period) {
       HomeBuyMovementPeriod.hourly => (
-        DateTime(2026, 8, 17),
-        DateTime(2026, 8, 17),
+        DateTime(targetDate.year, targetDate.month, targetDate.day),
+        DateTime(targetDate.year, targetDate.month, targetDate.day),
       ),
-      HomeBuyMovementPeriod.daily => (DateTime(2026, 8), DateTime(2026, 8, 31)),
-      HomeBuyMovementPeriod.monthly => (DateTime(2026), DateTime(2026, 12, 31)),
-      HomeBuyMovementPeriod.yearly => (DateTime(2024), DateTime(2026, 12, 31)),
+      HomeBuyMovementPeriod.daily => (
+        DateTime(targetDate.year, targetDate.month),
+        DateTime(targetDate.year, targetDate.month + 1, 0),
+      ),
+      HomeBuyMovementPeriod.monthly => (
+        DateTime(targetDate.year),
+        DateTime(targetDate.year, 12, 31),
+      ),
+      HomeBuyMovementPeriod.yearly => (
+        DateTime(targetDate.year - 2),
+        DateTime(targetDate.year, 12, 31),
+      ),
     };
     return BuyMovementEntityFactory.makeSearchParams(
-      enterpriseCodes: const [enterpriseId],
+      enterpriseCodes: [requestedEnterpriseId],
       startDate: startDate,
       endDate: endDate,
       periodGrouping: period.periodGrouping,
@@ -119,6 +133,62 @@ void main() {
       },
     );
   }
+
+  test('reloads with the selected date', () async {
+    final initialParams = makeParams(HomeBuyMovementPeriod.daily);
+    final changedDate = DateTime(2026, 9, 5);
+    final changedParams = makeParams(
+      HomeBuyMovementPeriod.daily,
+      date: changedDate,
+    );
+    when(
+      () => repository.getData(params: initialParams, ecParams: ecParams),
+    ).thenAnswer((_) async => response);
+    when(
+      () => repository.getData(params: changedParams, ecParams: ecParams),
+    ).thenAnswer((_) async => response);
+    stubAnalytics(HomeBuyMovementPeriod.daily);
+    final provider = homeBuyMovementControllerProvider(
+      enterpriseId,
+      HomeBuyMovementPeriod.daily,
+    );
+
+    await container.read(provider.future);
+    final homeController = container.read(homeControllerProvider.notifier);
+    final homeState = container.read(homeControllerProvider).requireValue;
+    (homeController as FakeHomeController).updateState(
+      homeState.copyWith(selectedDate: changedDate),
+    );
+    await container.pump();
+    await container.read(provider.future);
+
+    verify(
+      () => repository.getData(params: changedParams, ecParams: ecParams),
+    ).called(1);
+  });
+
+  test('uses the selected enterprise identifier', () async {
+    const changedEnterpriseId = 20;
+    final params = makeParams(
+      HomeBuyMovementPeriod.hourly,
+      requestedEnterpriseId: changedEnterpriseId,
+    );
+    when(
+      () => repository.getData(params: params, ecParams: ecParams),
+    ).thenAnswer((_) async => response);
+    stubAnalytics(HomeBuyMovementPeriod.hourly);
+
+    await container.read(
+      homeBuyMovementControllerProvider(
+        changedEnterpriseId,
+        HomeBuyMovementPeriod.hourly,
+      ).future,
+    );
+
+    verify(
+      () => repository.getData(params: params, ecParams: ecParams),
+    ).called(1);
+  });
 
   test('does not record analytics when loading fails', () async {
     final params = makeParams(HomeBuyMovementPeriod.daily);

@@ -1,6 +1,8 @@
 // test/features/home/presentation/controllers/home_financial_controller_test.dart
 import 'package:celta_dash/core/domain/domain.dart';
 import 'package:celta_dash/core/providers.dart';
+import 'package:celta_dash/features/app_analytics/domain/domain.dart';
+import 'package:celta_dash/features/app_analytics/providers.dart';
 import 'package:celta_dash/features/financial_titles/domain/entities/entities.dart';
 import 'package:celta_dash/features/financial_titles/domain/repository/repository.dart';
 import 'package:celta_dash/features/financial_titles/providers.dart';
@@ -11,6 +13,7 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../domain/mocks/mocks.dart';
 import '../../../../presentation/fake_controllers/fake_controllers.dart';
+import '../../../app_analytics/mocks/mocks.dart';
 import '../../../home/mocks/mocks.dart';
 
 class MockFinancialTitlesRepository extends Mock
@@ -18,6 +21,7 @@ class MockFinancialTitlesRepository extends Mock
 
 void main() {
   late MockFinancialTitlesRepository repository;
+  late MockAppAnalyticsRepository analyticsRepository;
   late EcParams ecParams;
   late FinancialTitleDataResponseEntity responseEntity;
   late ProviderContainer container;
@@ -72,6 +76,7 @@ void main() {
         ),
       ),
       financialTitlesRepositoryProvider.overrideWithValue(repository),
+      appAnalyticsRepositoryProvider.overrideWithValue(analyticsRepository),
     ],
   );
 
@@ -88,7 +93,20 @@ void main() {
 
   setUp(() {
     repository = MockFinancialTitlesRepository();
+    analyticsRepository = MockAppAnalyticsRepository();
     ecParams = EntityFactory.makeEcParams();
+    when(
+      () => analyticsRepository.addNewMonthlyAnalytic(
+        reportType: AppAnalyticsReportType.financial,
+        periodType: AppAnalyticsPeriodType.daily,
+      ),
+    ).thenAnswer((_) async {});
+    when(
+      () => analyticsRepository.addNewMonthlyAnalytic(
+        reportType: AppAnalyticsReportType.financial,
+        periodType: AppAnalyticsPeriodType.monthly,
+      ),
+    ).thenAnswer((_) async {});
     responseEntity = const FinancialTitleDataResponseEntity(
       financialTitlePortions: [
         FinancialTitleDataRowEntity(
@@ -192,7 +210,11 @@ void main() {
     );
 
     await container.read(provider.future);
-
+    final filters = container.read(
+      homeFinancialFiltersControllerProvider.notifier,
+    );
+    filters.toggleSituation(FinancialTitleSituation.partiallySettled);
+    filters.toggleSituation(FinancialTitleSituation.completelySettled);
     await container.read(provider.future);
 
     verify(

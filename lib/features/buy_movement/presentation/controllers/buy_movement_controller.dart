@@ -51,11 +51,9 @@ class BuyMovementController extends _$BuyMovementController {
         params: params,
         ecParams: ecParams,
       );
-
       _lastLoadedParams = params;
       return response;
     });
-
     return state;
   }
 }
