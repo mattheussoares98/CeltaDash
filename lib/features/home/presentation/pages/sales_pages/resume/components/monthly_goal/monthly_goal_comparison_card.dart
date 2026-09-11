@@ -1,7 +1,6 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/features/home/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/home/presentation/pages/sales_pages/resume/components/components.dart';
-import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -24,12 +23,7 @@ class MonthlyGoalComparisonCard extends ConsumerWidget {
               comparison: comparison,
               enterpriseId: enterpriseId,
             )
-          : Center(
-              child: BaseText.bodyLarge(
-                'Não há dados para calcular as metas'.hardcoded,
-                textAlign: TextAlign.center,
-              ),
-            ),
+          : const SizedBox.shrink(),
     );
   }
 }
