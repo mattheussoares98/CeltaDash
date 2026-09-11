@@ -109,21 +109,34 @@ void main() {
     }
   });
 
-  testWidgets('buy movement navigation changes page and route', (tester) async {
-    await pumpRouter(tester, appMode: AppMode.buyMovements);
-    const destinations = [
-      ('buy_movement_navigation_periods', '/home/buy-movements/periods'),
-      ('buy_movement_navigation_products', '/home/buy-movements/products'),
-      ('buy_movement_navigation_resume', '/home/buy-movements/resume'),
-    ];
+  for (final viewport in const {
+    'phone': Size(390, 844),
+    'tablet': Size(1024, 1366),
+    'landscape': Size(900, 500),
+  }.entries) {
+    testWidgets('buy movement navigation works on ${viewport.key}', (
+      tester,
+    ) async {
+      tester.view.physicalSize = viewport.value;
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await pumpRouter(tester, appMode: AppMode.buyMovements);
+      const destinations = [
+        ('buy_movement_navigation_periods', '/home/buy-movements/periods'),
+        ('buy_movement_navigation_products', '/home/buy-movements/products'),
+        ('buy_movement_navigation_resume', '/home/buy-movements/resume'),
+      ];
 
-    for (final destination in destinations) {
-      await tester.tap(find.byKey(ValueKey(destination.$1)));
-      await tester.pumpAndSettle();
+      for (final destination in destinations) {
+        await tester.tap(find.byKey(ValueKey(destination.$1)));
+        await tester.pumpAndSettle();
 
-      expect(currentPath(), destination.$2);
-    }
-  });
+        expect(currentPath(), destination.$2);
+        expect(tester.takeException(), isNull);
+      }
+    });
+  }
 
   testWidgets('popping a secondary route restores the previous tab route', (
     tester,

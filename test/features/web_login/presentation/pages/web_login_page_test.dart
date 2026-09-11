@@ -30,7 +30,7 @@ void main() {
           builder: (context, state) =>
               const Scaffold(body: Text('Login source')),
         ),
-        webLoginRoute(),
+        webLoginRoute(isLoggedIn: repository.isLoggedIn),
         GoRoute(
           path: '/home/web-enterprises',
           name: Routes.webEnterprises.name,
@@ -81,5 +81,16 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Login source'), findsOneWidget);
+  });
+
+  testWidgets('shows Web Login when Firebase user is unauthenticated', (
+    tester,
+  ) async {
+    when(repository.isLoggedIn).thenAnswer((_) async => false);
+
+    await pumpRouter(tester, initialLocation: '/home/web-login');
+
+    expect(find.text('Login web'), findsOneWidget);
+    expect(find.text('Web enterprises'), findsNothing);
   });
 }

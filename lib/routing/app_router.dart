@@ -1,6 +1,7 @@
 import 'package:celta_dash/core/infrastructure/infrastructure.dart';
 import 'package:celta_dash/core/presentation/presentation.dart';
 import 'package:celta_dash/features/home/home.dart';
+import 'package:celta_dash/features/web_login/providers.dart';
 import 'package:celta_dash/routing/not_found_page.dart';
 import 'package:celta_dash/routing/routes/routes.dart';
 import 'package:celta_dash/utils/utils.dart';
@@ -69,7 +70,9 @@ GoRouter goRouter(Ref ref) {
         operatorsRoute(),
         sellersRoute(),
         updateAppVersionRoute(),
-        webLoginRoute(),
+        webLoginRoute(
+          isLoggedIn: () => ref.read(webLoginRepositoryProvider).isLoggedIn(),
+        ),
         webEnterprisesRoute(),
         webEnterpriseDetailsRoute(),
       ], loadAppMode: () => ref.read(homeRepositoryProvider).loadAppMode()),

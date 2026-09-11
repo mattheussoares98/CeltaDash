@@ -12,11 +12,10 @@ class HomeDrawer extends HookConsumerWidget {
   const HomeDrawer({super.key});
 
   Future<void> _navigate(BuildContext context, String routeName) async {
+    final router = GoRouter.of(context);
     context.pop();
     await Future.delayed(const Duration(milliseconds: 300));
-    if (context.mounted) {
-      context.pushNamed(routeName);
-    }
+    router.pushNamed(routeName);
   }
 
   @override
