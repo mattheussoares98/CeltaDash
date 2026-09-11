@@ -283,5 +283,91 @@ void main() {
         expect(savedModels[0].cnpj, savedModels[1].cnpj);
       },
     );
+
+    test('does not update Firebase when erpEnterprises is empty', () async {
+      const sub = FirebaseSubEnterpriseEntity(
+        id: 1,
+        name: 'Store 1',
+        personalizedCode: '01',
+        cnpj: '12345678000100',
+        enabled: true,
+      );
+      const activeEnterprise = FirebaseEnterpriseEntity(
+        baseUrl: 'https://api.com',
+        enterpriseName: 'test',
+        bsUser: null,
+        firebaseSubEnterprises: [sub],
+        firebaseId: 'test_id',
+      );
+
+      await repository.syncSubEnterprises(
+        activeEnterprise: activeEnterprise,
+        erpEnterprises: const [],
+      );
+
+      verifyNever(
+        () => firebaseEnterpriseDatasource.updateSubEnterprises(
+          firebaseId: any(named: 'firebaseId'),
+          subEnterprises: any(named: 'subEnterprises'),
+        ),
+      );
+    });
+
+    test('preserves existing subEnterprises not present in erpEnterprises', () async {
+      const sub1 = FirebaseSubEnterpriseEntity(
+        id: 1,
+        name: 'Store 1',
+        personalizedCode: '01',
+        cnpj: '12345678000100',
+        enabled: true,
+      );
+      const sub2 = FirebaseSubEnterpriseEntity(
+        id: 2,
+        name: 'Store 2',
+        personalizedCode: '02',
+        cnpj: '99999999000199',
+        enabled: false,
+      );
+      const activeEnterprise = FirebaseEnterpriseEntity(
+        baseUrl: 'https://api.com',
+        enterpriseName: 'test',
+        bsUser: null,
+        firebaseSubEnterprises: [sub1, sub2],
+        firebaseId: 'test_id',
+      );
+      final erpEnterprises = [
+        const HomeEnterpriseEntity(
+          id: 1,
+          name: 'Store 1 Updated',
+          personalizedCode: '01',
+          cnpj: '12345678000100',
+          enabled: false,
+        ),
+      ];
+
+      late List<FirebaseSubEnterpriseModel> savedModels;
+      when(
+        () => firebaseEnterpriseDatasource.updateSubEnterprises(
+          firebaseId: any(named: 'firebaseId'),
+          subEnterprises: any(named: 'subEnterprises'),
+        ),
+      ).thenAnswer((invocation) async {
+        savedModels =
+            invocation.namedArguments[#subEnterprises]
+                as List<FirebaseSubEnterpriseModel>;
+      });
+
+      await repository.syncSubEnterprises(
+        activeEnterprise: activeEnterprise,
+        erpEnterprises: erpEnterprises,
+      );
+
+      expect(savedModels.length, 2);
+      expect(savedModels[0].id, 1);
+      expect(savedModels[0].name, 'Store 1 Updated');
+      expect(savedModels[0].enabled, isTrue);
+      expect(savedModels[1].id, 2);
+      expect(savedModels[1].name, 'Store 2');
+    });
   });
 }

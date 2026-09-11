@@ -64,17 +64,17 @@ class HomeRepositoryImpl implements IHomeRepository {
                 activeEnterprise.firebaseId!.isNotEmpty)
             ? activeEnterprise.firebaseId!
             : (activeEnterprise.enterpriseName ?? '');
-    if (firebaseId.isEmpty) return;
+    if (firebaseId.isEmpty || erpEnterprises.isEmpty) return;
 
     final existingList =
         activeEnterprise.firebaseSubEnterprises ??
         const <FirebaseSubEnterpriseEntity>[];
 
-    // Map existing enabled flags by store id (ERP code)
-    final existingEnabledById = <int, bool>{};
+    // Map existing enabled flags and entities by store id (ERP code)
+    final existingById = <int, FirebaseSubEnterpriseEntity>{};
     for (final sub in existingList) {
       if (sub.id != null) {
-        existingEnabledById[sub.id!] = sub.enabled == true;
+        existingById[sub.id!] = sub;
       }
     }
 
@@ -86,8 +86,8 @@ class HomeRepositoryImpl implements IHomeRepository {
       if (erp.id != null && seenIds.contains(erp.id)) continue;
       if (erp.id != null) seenIds.add(erp.id!);
 
-      final isEnabled =
-          erp.id != null ? (existingEnabledById[erp.id!] ?? false) : false;
+      final existingSub = erp.id != null ? existingById[erp.id!] : null;
+      final isEnabled = existingSub?.enabled == true;
 
       reconciled.add(
         FirebaseSubEnterpriseEntity(
@@ -98,6 +98,14 @@ class HomeRepositoryImpl implements IHomeRepository {
           enabled: isEnabled,
         ),
       );
+    }
+
+    // Preserve any existing sub-enterprises that might not have been returned by ERP
+    for (final existing in existingList) {
+      if (existing.id != null && !seenIds.contains(existing.id)) {
+        reconciled.add(existing);
+        seenIds.add(existing.id!);
+      }
     }
 
     // Check if there is any difference between existingList and reconciled
