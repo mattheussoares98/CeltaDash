@@ -1,0 +1,26 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /enterprises/{enterpriseId} {
+      allow read: if true;
+      allow create: if true;
+
+      // Allow updates only if subEnterprises is not shrunk or emptied
+      allow update: if 
+        (!('subEnterprises' in request.resource.data) && !('subEnterprises' in resource.data))
+        || (!('subEnterprises' in resource.data) && ('subEnterprises' in request.resource.data))
+        || (
+          'subEnterprises' in request.resource.data &&
+          'subEnterprises' in resource.data &&
+          request.resource.data.subEnterprises.size() >= resource.data.subEnterprises.size()
+        );
+
+      allow delete: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
