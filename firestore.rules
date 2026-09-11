@@ -3,24 +3,60 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     match /enterprises/{enterpriseId} {
-      allow read: if true;
-      allow create: if true;
+      function existingSubEnterprisesArePreserved() {
+        return !('subEnterprises' in resource.data)
+          || resource.data.subEnterprises == null
+          || (
+            resource.data.subEnterprises is list
+            && request.resource.data.subEnterprises is list
+            && request.resource.data.subEnterprises.size()
+              >= resource.data.subEnterprises.size()
+            && request.resource.data.subEnterprises.hasAll(
+              resource.data.subEnterprises
+            )
+          );
+      }
 
-      // Allow updates only if subEnterprises is not shrunk or emptied
-      allow update: if 
-        (!('subEnterprises' in request.resource.data) && !('subEnterprises' in resource.data))
-        || (!('subEnterprises' in resource.data) && ('subEnterprises' in request.resource.data))
-        || (
-          'subEnterprises' in request.resource.data &&
-          'subEnterprises' in resource.data &&
-          request.resource.data.subEnterprises.size() >= resource.data.subEnterprises.size()
-        );
+      function authenticatedUpdateIsValid() {
+        return request.auth != null
+          && request.resource.data.diff(resource.data)
+            .affectedKeys()
+            .hasOnly(['baseUrl', 'subEnterprises'])
+          && (
+            !('subEnterprises' in resource.data)
+            || resource.data.subEnterprises == null
+            || (
+              request.resource.data.subEnterprises is list
+              && resource.data.subEnterprises is list
+              && request.resource.data.subEnterprises.size()
+                >= resource.data.subEnterprises.size()
+            )
+          );
+      }
+
+      function unauthenticatedUpdateOnlyAddsSubEnterprises() {
+        return request.auth == null
+          && request.resource.data.diff(resource.data)
+            .affectedKeys()
+            .hasOnly(['subEnterprises'])
+          && 'subEnterprises' in request.resource.data
+          && request.resource.data.subEnterprises is list
+          && existingSubEnterprisesArePreserved();
+      }
+
+      allow read: if true;
+      allow create: if request.auth != null;
+
+      allow update: if authenticatedUpdateIsValid()
+        || unauthenticatedUpdateOnlyAddsSubEnterprises();
 
       allow delete: if false;
     }
 
-    match /{document=**} {
-      allow read, write: if true;
+    // Preserve the current behavior for other top-level collections,
+    // without bypassing the enterprise restrictions.
+    match /{collection}/{document=**} {
+      allow read, write: if collection != 'enterprises';
     }
   }
 }
