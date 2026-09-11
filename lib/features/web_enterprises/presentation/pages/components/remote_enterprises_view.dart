@@ -81,9 +81,26 @@ class RemoteEnterprisesView extends HookConsumerWidget {
                             enterprise.enterpriseName?.toUpperCase() ??
                                 'Empresa sem identificação'.hardcoded,
                           ),
-                          subtitle: enterprise.baseUrl == null
-                              ? null
-                              : BaseText(enterprise.baseUrl!),
+                          subtitle: Column(
+                            children: [
+                              if (enterprise.baseUrl != null)
+                                BaseText(enterprise.baseUrl!),
+                              Builder(
+                                builder: (context) {
+                                  getEnterprisesLength(bool enabled) =>
+                                      enterprise.firebaseSubEnterprises?.where(
+                                        (e) => e.enabled == enabled,
+                                      );
+                                  final enabled = getEnterprisesLength(true);
+                                  final disabled = getEnterprisesLength(false);
+
+                                  return BaseText(
+                                    '${enabled?.length ?? 0} ativas - ${disabled?.length ?? 0} inativas',
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
                           trailing: const PlatformIcon(
                             materialIcon: Icons.edit,
                             cupertinoIcon: Icons.edit,
