@@ -22,3 +22,6 @@
     public <init>(android.content.Context, android.util.AttributeSet, int);
     public void set*(...);
 }
+
+# Flutter deferred components (Play Core is optional)
+-dontwarn com.google.android.play.core.**
