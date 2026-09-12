@@ -25,8 +25,8 @@ android {
         applicationId = "br.com.celtaware.dash"
         multiDexEnabled = true
         minSdk = flutter.minSdkVersion.toInt()
-        targetSdk = 36
-        versionCode = 40
+        targetSdk = 37
+        versionCode = 41
         versionName = flutter.versionName
     }
 
