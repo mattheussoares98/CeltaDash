@@ -17,6 +17,7 @@ enum AppAnalyticsReportType {
   financialGroupOfStores('Grupo de lojas financeiro'),
   buyMovements('Compra (movimentos)'),
   buyMovementProducts('Compra (produtos)'),
+  buyMovementDepartments('Compra (departamentos)'),
   buyMovementGroupOfStores('Compra (grupo de lojas)'),
   dailyComparison('Comparativo diário'),
   groupOfStores('Grupo de lojas'),

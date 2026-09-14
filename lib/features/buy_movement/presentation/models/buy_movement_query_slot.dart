@@ -4,5 +4,6 @@ enum BuyMovementQuerySlot {
   monthly,
   yearly,
   products,
+  departments,
   groupOfStores,
 }

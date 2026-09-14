@@ -25,7 +25,7 @@ void main() {
 
   SearchBuyMovementDataParamsEntity makeParams({
     String? productName,
-    int topCount = 10,
+    int topCount = 200,
   }) {
     return BuyMovementEntityFactory.makeSearchParams(
       enterpriseCodes: const [enterpriseId],
