@@ -1,6 +1,7 @@
 import 'package:celta_dash/core/domain/entities/entities.dart';
 import 'package:celta_dash/core/presentation/presentation.dart';
 import 'package:celta_dash/core/providers.dart';
+import 'package:celta_dash/utils/extensions/string_hardcoded.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -18,6 +19,7 @@ void main() {
     ecParams = EntityFactory.makeEcParams();
     repository = MockEcReleaseRepository();
     container = ProviderContainer(
+      retry: (_, _) => null,
       overrides: [
         ecReleaseRepositoryProvider.overrideWithValue(repository),
         activeEcParamsStateControllerProvider.overrideWith(
@@ -38,6 +40,21 @@ void main() {
     final result = await container.read(ecReleaseControllerProvider.future);
 
     expect(result, releasedAtUtc);
+    verify(() => repository.getReleasedAtUtc(ecParams)).called(1);
+  });
+  test('build throws a localized exception when loading fails', () async {
+    when(() => repository.getReleasedAtUtc(ecParams)).thenThrow(Exception());
+
+    await expectLater(
+      container.read(ecReleaseControllerProvider.future),
+      throwsA(
+        isA<Exception>().having(
+          (error) => error.toString(),
+          'message',
+          'Exception: ${'Não foi possível carregar a data da versão do sistema. Entre em contato com o suporte técnico e solicite a atualização da API'.hardcoded}',
+        ),
+      ),
+    );
     verify(() => repository.getReleasedAtUtc(ecParams)).called(1);
   });
 }
