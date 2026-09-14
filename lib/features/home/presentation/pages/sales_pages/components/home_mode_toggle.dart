@@ -35,38 +35,105 @@ class HomeModeToggle extends ConsumerWidget {
           ),
         );
 
-    return PrimaryTextButton(
-      //TODO return this code as it was in the previous commit
-      key: const ValueKey('home_mode_toggle'),
-      text: homeState.appMode == AppMode.sales
-          ? 'Financeiro'.hardcoded
-          : 'Vendas'.hardcoded,
-      onPressed: selectedEnterpriseIsDisabled
-          ? null
-          : () async {
-              try {
-                await ref
-                    .read(homeControllerProvider.notifier)
-                    .selectAppMode(
-                      homeState.appMode == AppMode.sales
-                          ? AppMode.financialTitles
-                          : AppMode.sales,
-                    );
-                if (!context.mounted) return;
+    final theme = context.theme;
+    final selectedModeLabel = switch (homeState.appMode) {
+      AppMode.sales => 'Vendas'.hardcoded,
+      AppMode.financialTitles => 'Financeiro'.hardcoded,
+      AppMode.buyMovements => 'Compras'.hardcoded,
+    };
 
-                final appMode = ref.read(homeControllerProvider).value?.appMode;
-                context.goNamed(
-                  appMode == AppMode.financialTitles
-                      ? Routes.financialHomeResume.name
-                      : Routes.salesHomeResume.name,
-                );
-              } catch (error) {
-                showToastMessage(error.toString(), type: ToastType.error);
-              }
-            },
-      platformIcon: const PlatformIcon(
-        materialIcon: Icons.compare_arrows,
-        cupertinoIcon: CupertinoIcons.arrow_2_squarepath,
+    return PopupMenuButton<AppMode>(
+      key: const ValueKey('home_mode_selector'),
+      borderRadius: const BorderRadius.all(Radius.circular(Sizes.p16)),
+      enabled: !selectedEnterpriseIsDisabled,
+      tooltip: 'Alterar modo'.hardcoded,
+      initialValue: homeState.appMode,
+      clipBehavior: .hardEdge,
+      onSelected: (mode) async {
+        final routeName = switch (mode) {
+          AppMode.sales => Routes.salesHomeResume.name,
+          AppMode.financialTitles => Routes.financialHomeResume.name,
+          AppMode.buyMovements => Routes.buyMovementHomeResume.name,
+        };
+
+        try {
+          await ref.read(homeControllerProvider.notifier).selectAppMode(mode);
+          if (!context.mounted) return;
+          context.goNamed(routeName);
+        } catch (error) {
+          showToastMessage(error.toString(), type: ToastType.error);
+        }
+      },
+      itemBuilder: (context) => [
+        for (final mode in AppMode.values)
+          PopupMenuItem(
+            value: mode,
+            child: Row(
+              children: [
+                if (mode == homeState.appMode)
+                  PlatformIcon(
+                    materialIcon: Icons.check,
+                    cupertinoIcon: CupertinoIcons.check_mark,
+                    size: Sizes.p16,
+                    color: theme.primaryColor,
+                  )
+                else
+                  const SizedBox(width: Sizes.p16),
+                gapW8,
+                Expanded(
+                  child: BaseText.bodyMedium(
+                    switch (mode) {
+                      AppMode.sales => 'Vendas'.hardcoded,
+                      AppMode.financialTitles => 'Financeiro'.hardcoded,
+                      AppMode.buyMovements => 'Compras'.hardcoded,
+                    },
+                    fontWeight: mode == homeState.appMode
+                        ? FontWeight.bold
+                        : FontWeight.normal,
+                    color: mode == homeState.appMode
+                        ? theme.primaryColor
+                        : null,
+                  ),
+                ),
+              ],
+            ),
+          ),
+      ],
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: Sizes.p8,
+          vertical: Sizes.p4,
+        ),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surfaceContainerHighest.withAlpha(140),
+          borderRadius: BorderRadius.circular(Sizes.p16),
+          border: Border.all(color: theme.dividerColor.withAlpha(60)),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            PlatformIcon(
+              materialIcon: Icons.swap_horiz,
+              cupertinoIcon: CupertinoIcons.arrow_2_squarepath,
+              size: Sizes.p16,
+              color: theme.primaryColor,
+            ),
+            gapW4,
+            Flexible(
+              child: BaseText.caption(
+                selectedModeLabel,
+                fontWeight: FontWeight.w600,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            PlatformIcon(
+              materialIcon: Icons.arrow_drop_down,
+              cupertinoIcon: CupertinoIcons.chevron_down,
+              size: Sizes.p16,
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ],
+        ),
       ),
     );
   }
