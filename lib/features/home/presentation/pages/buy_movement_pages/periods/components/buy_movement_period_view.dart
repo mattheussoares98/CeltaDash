@@ -57,8 +57,15 @@ class BuyMovementPeriodView extends ConsumerWidget {
                     );
                   },
                   sortValueMapper: (row) => row.date ?? DateTime(0),
-                  textValueMapper: (row) =>
-                      row.date?.formatDate(.MMyyyy) ?? '-',
+                  textValueMapper: (row) {
+                    final DateFormatType format = switch (period) {
+                      .daily || .weekly => .ddMMyyyy,
+                      .monthly => .MMyyyy,
+                      _ => .yyyy,
+                    };
+
+                    return row.date?.formatDate(format) ?? '';
+                  },
                 ),
                 ScrollableTableColumnSpec(
                   headerTitle: 'Valor'.hardcoded,
