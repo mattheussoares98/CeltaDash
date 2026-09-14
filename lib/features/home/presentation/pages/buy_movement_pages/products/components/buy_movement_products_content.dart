@@ -57,9 +57,17 @@ class BuyMovementProductsContent extends HookConsumerWidget {
                             .notifier,
                       )
                       .setProductName,
-                  prefixIcon: const PlatformIcon(
-                    materialIcon: Icons.search,
-                    cupertinoIcon: CupertinoIcons.search,
+                  prefixIcon: BaseIconButton(
+                    onPressed: () => ref
+                        .read(
+                          homeBuyMovementProductsFilterControllerProvider
+                              .notifier,
+                        )
+                        .setProductName(searchController.text),
+                    platformIcon: const PlatformIcon(
+                      materialIcon: Icons.search,
+                      cupertinoIcon: CupertinoIcons.search,
+                    ),
                   ),
                   suffixIcon: searchController.text.isEmpty
                       ? null

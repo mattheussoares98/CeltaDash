@@ -39,8 +39,8 @@ class BuyMovementBottomNavigation extends StatelessWidget {
           label: 'Produtos'.hardcoded,
           platformIcon: const PlatformIcon(
             key: ValueKey('buy_movement_navigation_products'),
-            materialIcon: Icons.inventory_2,
-            cupertinoIcon: CupertinoIcons.cube_box,
+            materialIcon: Icons.shopping_cart_rounded,
+            cupertinoIcon: CupertinoIcons.cart,
           ),
         ),
       ],

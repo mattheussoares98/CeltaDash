@@ -27,32 +27,42 @@ class BuyMovementProductsTable extends StatelessWidget {
       refreshProvider: refreshProvider,
       initialSortColumnIndex: 2,
       initialSortAscending: false,
-      rowHeight: 60,
+      rowHeight: 80,
       columns: [
         ScrollableTableColumnSpec(
           headerTitle:
               "${'Produto'.hardcoded} ${rows.isEmpty ? '' : '(${rows.length})'}",
-          minWidth: Sizes.p120,
+          minWidth: 200,
           cellBuilder: (row) => Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: .start,
+            mainAxisAlignment: .spaceEvenly,
             children: [
               BaseText.caption(row.product?.priceLookupCode ?? '-'),
-              Expanded(
-                child: BaseText(
-                  row.product?.name ?? '',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
+              Flexible(
+                child: BaseRichText(
+                  texts: [
+                    BaseText(
+                      ' ${row.product?.name}',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                    ),
+                    BaseText(
+                      ' (${row.product?.packingAbbreviation} ${row.product?.packingQuantity.toString().toBRL(3, true)})',
+                      color: Colors.blue,
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
+
           sortValueMapper: (row) => row.product?.name ?? '',
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Quantidade'.hardcoded,
           cellBuilder: (row) => BaseText.bodyMedium(
-            row.product?.quantity.toString().toBRL() ?? '-',
+            row.product?.quantity.toString().toBRL(3, true) ?? '-',
           ),
           sortValueMapper: (row) => row.product?.quantity ?? 0,
           footerTextValueMapper: (row) {
@@ -61,7 +71,7 @@ class BuyMovementProductsTable extends StatelessWidget {
           },
           footerCellBuilder: (items) {
             final total = items.fold(0.0, (p, e) => p + e.product!.quantity);
-            return BaseText.bodyMedium(total.toString().toBRL());
+            return BaseText.bodyMedium(total.toString().toBRL(3, true));
           },
         ),
         ScrollableTableColumnSpec(
