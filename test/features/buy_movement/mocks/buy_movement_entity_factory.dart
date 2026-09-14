@@ -12,6 +12,7 @@ class BuyMovementEntityFactory {
     bool annulPeriodGrouping = false,
     bool? groupByEnterprise,
     bool? groupByProduct,
+    bool? groupByProductDepartment,
     bool? groupBySupplier,
     String? productName,
     int? topCount,
@@ -39,6 +40,7 @@ class BuyMovementEntityFactory {
           (productName != null ||
               topCount != null ||
               faker.randomGenerator.boolean()),
+      groupByProductDepartment: groupByProductDepartment ?? false,
       groupBySupplier: groupBySupplier ?? faker.randomGenerator.boolean(),
       productName: productName,
       topCount: topCount,
@@ -57,6 +59,7 @@ class BuyMovementEntityFactory {
     int? enterpriseCode,
     DateTime? date,
     bool withProduct = true,
+    bool withProductDepartment = false,
     bool withSupplier = true,
     num? totalValue,
   }) => BuyMovementDataRowEntity(
@@ -66,12 +69,18 @@ class BuyMovementEntityFactory {
         ? BuyMovementDataProductEntity(
             code: faker.randomGenerator.integer(1000, min: 1),
             packingQuantity: faker.randomGenerator.integer(100, min: 1),
-            packingAbbreviation: faker.lorem.word().substring(0, 3),
+            packingAbbreviation: faker.lorem.word().padRight(3).substring(0, 3),
             priceLookupCode: faker.randomGenerator
                 .integer(1000, min: 1)
                 .toString(),
             name: faker.food.dish(),
             quantity: faker.randomGenerator.decimal(min: 1),
+          )
+        : null,
+    productDepartment: withProductDepartment
+        ? BuyMovementDataProductDepartmentEntity(
+            code: faker.randomGenerator.integer(1000, min: 1),
+            name: faker.food.cuisine(),
           )
         : null,
     supplier: withSupplier

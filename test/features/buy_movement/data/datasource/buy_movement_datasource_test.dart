@@ -56,6 +56,7 @@ void main() {
         'PeriodGrouping': 2,
         'GroupByEnterprise': false,
         'GroupByProduct': false,
+        'GroupByProductDepartment': false,
         'GroupBySupplier': false,
       });
       verify(
@@ -120,6 +121,7 @@ void main() {
         },
         'GroupByEnterprise': false,
         'GroupByProduct': true,
+        'GroupByProductDepartment': false,
         'GroupBySupplier': false,
         'ProductName': 'coffee',
         'TopCount': 25,
@@ -150,10 +152,11 @@ void main() {
               'Date': '2026-08-17T00:00:00',
               'Product': {
                 'Code': 20,
-                'PackingCode': 2,
+                'PriceLookupCode': '2',
                 'Name': 'Coffee',
                 'Quantity': 3.5,
               },
+              'ProductDepartment': {'Code': 40, 'Name': 'Grocery'},
               'Supplier': {'Code': 30, 'Name': 'Supplier'},
               'TotalValue': 125.75,
             },
@@ -165,8 +168,10 @@ void main() {
       final row = result.results.single;
 
       expect(row.enterpriseCode, 10);
-      expect(row.product?.priceLookupCode, 2);
+      expect(row.product?.priceLookupCode, '2');
       expect(row.product?.quantity, 3.5);
+      expect(row.productDepartment?.code, 40);
+      expect(row.productDepartment?.name, 'Grocery');
       expect(row.supplier?.code, 30);
       expect(row.totalValue, 125.75);
     });

@@ -6,6 +6,7 @@ class BuyMovementDataRowModel extends Equatable {
   final int? enterpriseCode;
   final DateTime? date;
   final BuyMovementDataProductModel? product;
+  final BuyMovementDataProductDepartmentModel? productDepartment;
   final BuyMovementDataSupplierModel? supplier;
   final num totalValue;
 
@@ -13,12 +14,15 @@ class BuyMovementDataRowModel extends Equatable {
     this.enterpriseCode,
     this.date,
     this.product,
+    this.productDepartment,
     this.supplier,
     required this.totalValue,
   });
 
   factory BuyMovementDataRowModel.fromJson(Map json) {
     final product = (json['Product'] ?? json['product']) as Map?;
+    final productDepartment =
+        (json['ProductDepartment'] ?? json['productDepartment']) as Map?;
     final supplier = (json['Supplier'] ?? json['supplier']) as Map?;
 
     return BuyMovementDataRowModel(
@@ -28,6 +32,9 @@ class BuyMovementDataRowModel extends Equatable {
       product: product == null
           ? null
           : BuyMovementDataProductModel.fromJson(product),
+      productDepartment: productDepartment == null
+          ? null
+          : BuyMovementDataProductDepartmentModel.fromJson(productDepartment),
       supplier: supplier == null
           ? null
           : BuyMovementDataSupplierModel.fromJson(supplier),
@@ -42,6 +49,11 @@ class BuyMovementDataRowModel extends Equatable {
         product: entity.product == null
             ? null
             : BuyMovementDataProductModel.fromEntity(entity.product!),
+        productDepartment: entity.productDepartment == null
+            ? null
+            : BuyMovementDataProductDepartmentModel.fromEntity(
+                entity.productDepartment!,
+              ),
         supplier: entity.supplier == null
             ? null
             : BuyMovementDataSupplierModel.fromEntity(entity.supplier!),
@@ -52,6 +64,7 @@ class BuyMovementDataRowModel extends Equatable {
     enterpriseCode: enterpriseCode,
     date: date,
     product: product?.toEntity(),
+    productDepartment: productDepartment?.toEntity(),
     supplier: supplier?.toEntity(),
     totalValue: totalValue,
   );
@@ -60,6 +73,7 @@ class BuyMovementDataRowModel extends Equatable {
     'EnterpriseCode': enterpriseCode,
     'Date': date?.toIso8601String(),
     'Product': product?.toJson(),
+    'ProductDepartment': productDepartment?.toJson(),
     'Supplier': supplier?.toJson(),
     'TotalValue': totalValue,
   };
@@ -69,6 +83,7 @@ class BuyMovementDataRowModel extends Equatable {
     enterpriseCode,
     date,
     product,
+    productDepartment,
     supplier,
     totalValue,
   ];

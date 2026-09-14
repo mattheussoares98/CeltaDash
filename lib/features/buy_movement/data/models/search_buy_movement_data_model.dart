@@ -8,6 +8,7 @@ class SearchBuyMovementDataModel extends Equatable {
   final BuyMovementPeriodGrouping? periodGrouping;
   final bool groupByEnterprise;
   final bool groupByProduct;
+  final bool groupByProductDepartment;
   final bool groupBySupplier;
   final String? productName;
   final int? topCount;
@@ -19,6 +20,7 @@ class SearchBuyMovementDataModel extends Equatable {
     this.periodGrouping,
     required this.groupByEnterprise,
     required this.groupByProduct,
+    this.groupByProductDepartment = false,
     required this.groupBySupplier,
     this.productName,
     this.topCount,
@@ -42,6 +44,10 @@ class SearchBuyMovementDataModel extends Equatable {
           (json['GroupByEnterprise'] ?? json['groupByEnterprise']) == true,
       groupByProduct:
           (json['GroupByProduct'] ?? json['groupByProduct']) == true,
+      groupByProductDepartment:
+          (json['GroupByProductDepartment'] ??
+              json['groupByProductDepartment']) ==
+          true,
       groupBySupplier:
           (json['GroupBySupplier'] ?? json['groupBySupplier']) == true,
       productName: json['ProductName'] ?? json['productName'],
@@ -58,6 +64,7 @@ class SearchBuyMovementDataModel extends Equatable {
     periodGrouping: entity.periodGrouping,
     groupByEnterprise: entity.groupByEnterprise,
     groupByProduct: entity.groupByProduct,
+    groupByProductDepartment: entity.groupByProductDepartment,
     groupBySupplier: entity.groupBySupplier,
     productName: entity.productName,
     topCount: entity.topCount,
@@ -71,6 +78,7 @@ class SearchBuyMovementDataModel extends Equatable {
         periodGrouping: periodGrouping,
         groupByEnterprise: groupByEnterprise,
         groupByProduct: groupByProduct,
+        groupByProductDepartment: groupByProductDepartment,
         groupBySupplier: groupBySupplier,
         productName: productName,
         topCount: topCount,
@@ -85,6 +93,7 @@ class SearchBuyMovementDataModel extends Equatable {
     if (periodGrouping != null) 'PeriodGrouping': periodGrouping!.value,
     'GroupByEnterprise': groupByEnterprise,
     'GroupByProduct': groupByProduct,
+    'GroupByProductDepartment': groupByProductDepartment,
     'GroupBySupplier': groupBySupplier,
     if (productName != null) 'ProductName': productName,
     if (topCount != null) 'TopCount': topCount,
@@ -98,6 +107,7 @@ class SearchBuyMovementDataModel extends Equatable {
     periodGrouping,
     groupByEnterprise,
     groupByProduct,
+    groupByProductDepartment,
     groupBySupplier,
     productName,
     topCount,
