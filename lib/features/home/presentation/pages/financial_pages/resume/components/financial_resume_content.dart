@@ -114,15 +114,18 @@ class FinancialResumeContent extends HookConsumerWidget {
       refreshProviders: providers,
       body: Column(
         children: [
-          const Wrap(
-            alignment: .center,
-            crossAxisAlignment: .center,
-            spacing: Sizes.p8,
-            runSpacing: Sizes.p8,
-            children: [
-              FinancialSituationSelector(),
-              FinancialPeriodTypeSelector(),
-            ],
+          const Padding(
+            padding: EdgeInsets.all(Sizes.p4),
+            child: Wrap(
+              alignment: .center,
+              crossAxisAlignment: .center,
+              spacing: Sizes.p8,
+              runSpacing: Sizes.p8,
+              children: [
+                FinancialSituationSelector(),
+                FinancialPeriodTypeSelector(),
+              ],
+            ),
           ),
           Expanded(child: content),
         ],
