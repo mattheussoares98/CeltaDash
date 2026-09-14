@@ -1,8 +1,10 @@
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
+import 'package:celta_dash/core/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/home/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/home/presentation/models/models.dart';
 import 'package:celta_dash/features/home/presentation/pages/buy_movement_pages/components/components.dart';
 import 'package:celta_dash/features/home/presentation/pages/sales_pages/components/components.dart';
+import 'package:celta_dash/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/misc.dart';
@@ -62,13 +64,30 @@ class BuyMovementHomePage extends HookConsumerWidget {
           refreshProviders: isDisabled ? null : providers,
         ),
       ),
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          navigationShell,
-          if (isDisabled) const DisabledEnterpriseOverlay(),
-        ],
+      body: AsyncValueWidget(
+        value: ref.watch(ecReleaseControllerProvider),
+        tryAgain: () => ref.invalidate(ecReleaseControllerProvider),
+        data: (date) {
+          if (date.isBefore(DateTime(2026, 09, 14))) {
+            return Center(
+              child: BaseText.error(
+                'Entre em contato com o suporte técnico e solicite a atualização da API para conseguir utilizar essa funcionalidade'
+                    .hardcoded,
+                textAlign: .center,
+                fontStyle: .italic,
+              ),
+            );
+          }
+          return Stack(
+            fit: StackFit.expand,
+            children: [
+              navigationShell,
+              if (isDisabled) const DisabledEnterpriseOverlay(),
+            ],
+          );
+        },
       ),
+
       bottomNavigationBar: BuyMovementBottomNavigation(
         currentIndex: navigationShell.currentIndex,
         onTap: (index) => navigationShell.goBranch(
