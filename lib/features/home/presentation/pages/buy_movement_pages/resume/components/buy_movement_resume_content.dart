@@ -53,7 +53,7 @@ class BuyMovementResumeContent extends HookConsumerWidget {
           Expanded(
             child: ResponsiveListFlow(
               maxItemWidth: Breakpoint.tablet,
-              itemCount: 4,
+              itemCount: 3,
               itemBuilder: (context, index) => [
                 BuyMovementPeriodChartCard(
                   enterpriseId: enterpriseId,
@@ -66,7 +66,6 @@ class BuyMovementResumeContent extends HookConsumerWidget {
                   title: 'Compras do mês'.hardcoded,
                 ),
                 BuyMovementGroupOfStoresCard(enterpriseId: enterpriseId),
-                BuyMovementTopProductsCard(enterpriseId: enterpriseId),
               ][index],
             ),
           ),
