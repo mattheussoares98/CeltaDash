@@ -39,7 +39,7 @@ class BuyMovementPeriodView extends ConsumerWidget {
                   cellBuilder: (row) {
                     final DateFormatType formatType = switch (period) {
                       HomeBuyMovementPeriod.daily => .ddMMyyyy,
-                      HomeBuyMovementPeriod.monthly => .MMM,
+                      HomeBuyMovementPeriod.monthly => .MMMM,
                       HomeBuyMovementPeriod.yearly => .yyyy,
                       _ => .ddMMyyyy,
                     };
@@ -50,7 +50,7 @@ class BuyMovementPeriodView extends ConsumerWidget {
                           textAlign: TextAlign.center,
                         ),
                         if (period == .daily)
-                          BaseText.caption(row.date?.formatDate(.EEE) ?? ''),
+                          BaseText.caption(row.date?.formatDate(.EEEE) ?? ''),
                       ],
                     );
                   },

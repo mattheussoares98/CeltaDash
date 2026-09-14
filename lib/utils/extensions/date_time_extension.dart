@@ -11,6 +11,7 @@ extension DateTimeExtension on DateTime {
 enum DateFormatType {
   //TODO sort alphabetically
   EEE('EEE'),
+  EEEE('EEEE'),
   yM('yM'),
   yMd('yMd'),
   yMMM('yMMM'),
