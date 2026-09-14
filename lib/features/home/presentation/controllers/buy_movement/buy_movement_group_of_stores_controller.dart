@@ -9,7 +9,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'buy_movement_group_of_stores_controller.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class BuyMovementGroupOfStoresController
     extends _$BuyMovementGroupOfStoresController {
   @override

@@ -9,14 +9,14 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'home_buy_movement_controller.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class HomeBuyMovementController extends _$HomeBuyMovementController {
   @override
   Future<HomeBuyMovementState> build(
     int enterpriseId,
     HomeBuyMovementPeriod selectedPeriod,
   ) async {
-    ref.cache();
+    ref.invalidatePeriodically();
     ref.watch(activeEcParamsStateControllerProvider);
     final selectedDate = await ref.watch(
       homeControllerProvider.selectAsync((state) => state.selectedDate),

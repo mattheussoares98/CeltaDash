@@ -3,7 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'home_buy_movement_products_filter_controller.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class HomeBuyMovementProductsFilterController
     extends _$HomeBuyMovementProductsFilterController {
   @override
