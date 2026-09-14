@@ -38,6 +38,18 @@ void main() {
         DateTime(targetDate.year, targetDate.month),
         DateTime(targetDate.year, targetDate.month + 1, 0),
       ),
+      HomeBuyMovementPeriod.weekly => (
+        DateTime(
+          targetDate.year,
+          targetDate.month,
+          targetDate.day - targetDate.weekday + DateTime.monday,
+        ),
+        DateTime(
+          targetDate.year,
+          targetDate.month,
+          targetDate.day - targetDate.weekday + DateTime.sunday,
+        ),
+      ),
       HomeBuyMovementPeriod.monthly => (
         DateTime(targetDate.year),
         DateTime(targetDate.year, 12, 31),
@@ -61,6 +73,7 @@ void main() {
     return switch (period) {
       HomeBuyMovementPeriod.hourly => AppAnalyticsPeriodType.hourly,
       HomeBuyMovementPeriod.daily => AppAnalyticsPeriodType.daily,
+      HomeBuyMovementPeriod.weekly => AppAnalyticsPeriodType.weekly,
       HomeBuyMovementPeriod.monthly => AppAnalyticsPeriodType.monthly,
       HomeBuyMovementPeriod.yearly => AppAnalyticsPeriodType.yearly,
     };

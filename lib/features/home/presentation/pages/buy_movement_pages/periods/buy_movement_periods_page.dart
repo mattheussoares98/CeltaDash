@@ -29,6 +29,7 @@ class _BuyMovementPeriodsContent extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     const periods = [
       HomeBuyMovementPeriod.daily,
+      HomeBuyMovementPeriod.weekly,
       HomeBuyMovementPeriod.monthly,
       HomeBuyMovementPeriod.yearly,
     ];

@@ -47,6 +47,7 @@ class HomeBuyMovementController extends _$HomeBuyMovementController {
           periodType: switch (selectedPeriod) {
             HomeBuyMovementPeriod.hourly => .hourly,
             HomeBuyMovementPeriod.daily => .daily,
+            HomeBuyMovementPeriod.weekly => .weekly,
             HomeBuyMovementPeriod.monthly => .monthly,
             HomeBuyMovementPeriod.yearly => .yearly,
           },
@@ -82,6 +83,18 @@ class HomeBuyMovementController extends _$HomeBuyMovementController {
         DateTime(selectedDate.year, selectedDate.month),
         DateTime(selectedDate.year, selectedDate.month + 1, 0),
       ),
+      HomeBuyMovementPeriod.weekly => (
+        DateTime(
+          selectedDate.year,
+          selectedDate.month,
+          selectedDate.day - selectedDate.weekday + DateTime.monday,
+        ),
+        DateTime(
+          selectedDate.year,
+          selectedDate.month,
+          selectedDate.day - selectedDate.weekday + DateTime.sunday,
+        ),
+      ),
       HomeBuyMovementPeriod.monthly => (
         DateTime(selectedDate.year),
         DateTime(selectedDate.year, 12, 31),
@@ -97,6 +110,7 @@ class HomeBuyMovementController extends _$HomeBuyMovementController {
     return switch (selectedPeriod) {
       HomeBuyMovementPeriod.hourly => BuyMovementQuerySlot.hourly,
       HomeBuyMovementPeriod.daily => BuyMovementQuerySlot.daily,
+      HomeBuyMovementPeriod.weekly => BuyMovementQuerySlot.weekly,
       HomeBuyMovementPeriod.monthly => BuyMovementQuerySlot.monthly,
       HomeBuyMovementPeriod.yearly => BuyMovementQuerySlot.yearly,
     };

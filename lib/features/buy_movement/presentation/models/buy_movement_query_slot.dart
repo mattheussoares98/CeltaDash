@@ -1,6 +1,7 @@
 enum BuyMovementQuerySlot {
   hourly,
   daily,
+  weekly,
   monthly,
   yearly,
   products,
