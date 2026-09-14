@@ -31,8 +31,9 @@ void main() {
       const remoteUrl = 'https://example.com/api/endpoint';
       const useLocalApi = bool.fromEnvironment('USE_LOCAL_API');
       const localApiHost = String.fromEnvironment('LOCAL_API_HOST');
+      final host = localApiHost.replaceFirst(RegExp(r'^https?://'), '');
       final expectedUrl = useLocalApi && localApiHost.isNotEmpty
-          ? 'https://$localApiHost/endpoint'
+          ? 'http://$host/endpoint'
           : remoteUrl;
 
       await sut.request(url: remoteUrl, method: 'get');
@@ -47,6 +48,32 @@ void main() {
         ),
       ).called(1);
     });
+
+    test(
+      'Should apply local API host with subpath before /api according to environment',
+      () async {
+        const remoteUrl =
+            'https://aws.celtaware.com.br:9093/megastok/api/BuyMovements/GetData';
+        const useLocalApi = bool.fromEnvironment('USE_LOCAL_API');
+        const localApiHost = String.fromEnvironment('LOCAL_API_HOST');
+        final host = localApiHost.replaceFirst(RegExp(r'^https?://'), '');
+        final expectedUrl = useLocalApi && localApiHost.isNotEmpty
+            ? 'http://$host/BuyMovements/GetData'
+            : remoteUrl;
+
+        await sut.request(url: remoteUrl, method: 'get');
+
+        verify(
+          () => client.get(
+            Uri.parse(expectedUrl),
+            headers: {
+              'content-type': 'application/json',
+              'accept': 'application/json',
+            },
+          ),
+        ).called(1);
+      },
+    );
 
     test('Should not add default headers according the parameter', () async {
       await sut.request(url: url, method: 'get', addDefaultHeaders: false);

@@ -34,9 +34,10 @@ class HttpAdapter implements HttpClient {
     const useLocalApi = bool.fromEnvironment('USE_LOCAL_API');
     const localApiHost = String.fromEnvironment('LOCAL_API_HOST');
     if (kDebugMode && useLocalApi && localApiHost.isNotEmpty) {
+      final host = localApiHost.replaceFirst(RegExp(r'^https?://'), '');
       appliedUrl = url.replaceFirstMapped(
-        RegExp(r'(https?://)[^/]+/api'),
-        (match) => '${match[1]}$localApiHost',
+        RegExp(r'https?://.*/api'),
+        (_) => 'http://$host',
       );
     }
     try {
