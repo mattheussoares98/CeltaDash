@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/features/buy_movement/domain/entities/entities.dart';
 import 'package:celta_dash/utils/utils.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class BuyMovementPeriodChart extends StatelessWidget {
@@ -18,39 +17,22 @@ class BuyMovementPeriodChart extends StatelessWidget {
     if (datedRows.isEmpty) {
       return Center(child: BaseText('Nenhuma compra encontrada'.hardcoded));
     }
-    final maxValue = datedRows
+    final values = datedRows
         .map((row) => row.totalValue.toDouble())
-        .reduce(max);
-    final color = context.theme.primaryColor;
+        .toList(growable: false);
+    final maxValue = values.reduce(max);
 
-    return SizedBox(
+    return PeriodLineChart(
+      dates: datedRows.map((row) => row.date!).toList(growable: false),
       height: MediaQuery.heightOf(context) * 0.28,
-      child: LineChart(
-        LineChartData(
-          minY: 0,
-          maxY: maxValue > 0 ? maxValue * 1.15 : 100,
-          lineBarsData: [
-            LineChartBarData(
-              spots: datedRows.indexed
-                  .map(
-                    (entry) => FlSpot(
-                      entry.$1.toDouble(),
-                      entry.$2.totalValue.toDouble(),
-                    ),
-                  )
-                  .toList(growable: false),
-              color: color,
-              dotData: const FlDotData(show: false),
-              belowBarData: BarAreaData(show: true, color: color.withAlpha(35)),
-            ),
-          ],
-          titlesData: const FlTitlesData(
-            topTitles: AxisTitles(),
-            rightTitles: AxisTitles(),
-          ),
-          borderData: FlBorderData(show: false),
+      series: [
+        PeriodLineChartSeries(
+          values: values,
+          color: context.theme.primaryColor,
         ),
-      ),
+      ],
+      minY: 0,
+      maxY: maxValue > 0 ? maxValue * 1.15 : 100,
     );
   }
 }

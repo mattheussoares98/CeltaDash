@@ -4,6 +4,7 @@ export './get_new_date.dart';
 export './loading_circle.dart';
 export './logo/logo_widget.dart';
 export './new_base_segmented_buttons.dart';
+export './period_chart/period_chart.dart';
 export './platform_icon.dart';
 export './responsive_center.dart';
 export './responsive_list_flow.dart';
