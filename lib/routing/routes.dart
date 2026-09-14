@@ -10,6 +10,7 @@ enum Routes {
   buyMovementHomeResume,
   buyMovementHomePeriods,
   buyMovementHomeProducts,
+  buyMovementHomeDepartments,
   homePersonalized,
   homeMore,
   bsSaleDetails,

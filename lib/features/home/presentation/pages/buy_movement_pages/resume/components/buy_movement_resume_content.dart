@@ -2,9 +2,11 @@ import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/features/home/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/home/presentation/models/models.dart';
 import 'package:celta_dash/features/home/presentation/pages/buy_movement_pages/resume/components/components.dart';
+import 'package:celta_dash/routing/routing.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/misc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class BuyMovementResumeContent extends HookConsumerWidget {
@@ -67,6 +69,14 @@ class BuyMovementResumeContent extends HookConsumerWidget {
                 ),
                 BuyMovementGroupOfStoresCard(enterpriseId: enterpriseId),
               ][index],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: Sizes.p8),
+            child: PrimaryButton(
+              text: 'Departamentos'.hardcoded,
+              onPressed: () =>
+                  context.pushNamed(Routes.buyMovementHomeDepartments.name),
             ),
           ),
         ],
