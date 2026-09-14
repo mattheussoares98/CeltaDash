@@ -1,4 +1,5 @@
 export 'buy_movement_data_product_entity.dart';
+export 'buy_movement_data_product_department_entity.dart';
 export 'buy_movement_data_response_entity.dart';
 export 'buy_movement_data_row_entity.dart';
 export 'buy_movement_data_supplier_entity.dart';

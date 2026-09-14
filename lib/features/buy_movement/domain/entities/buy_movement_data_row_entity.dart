@@ -5,6 +5,7 @@ class BuyMovementDataRowEntity extends Equatable {
   final int? enterpriseCode;
   final DateTime? date;
   final BuyMovementDataProductEntity? product;
+  final BuyMovementDataProductDepartmentEntity? productDepartment;
   final BuyMovementDataSupplierEntity? supplier;
   final num totalValue;
 
@@ -12,6 +13,7 @@ class BuyMovementDataRowEntity extends Equatable {
     this.enterpriseCode,
     this.date,
     this.product,
+    this.productDepartment,
     this.supplier,
     required this.totalValue,
   });
@@ -21,6 +23,7 @@ class BuyMovementDataRowEntity extends Equatable {
     enterpriseCode,
     date,
     product,
+    productDepartment,
     supplier,
     totalValue,
   ];
