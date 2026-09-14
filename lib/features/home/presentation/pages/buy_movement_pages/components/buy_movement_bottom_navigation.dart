@@ -43,6 +43,14 @@ class BuyMovementBottomNavigation extends StatelessWidget {
             cupertinoIcon: CupertinoIcons.cart,
           ),
         ),
+        BaseBottomNavigationBarItem(
+          label: 'Departamentos'.hardcoded,
+          platformIcon: const PlatformIcon(
+            key: ValueKey('buy_movement_navigation_departments'),
+            materialIcon: Icons.category,
+            cupertinoIcon: CupertinoIcons.square_grid_2x2,
+          ),
+        ),
       ],
     );
   }

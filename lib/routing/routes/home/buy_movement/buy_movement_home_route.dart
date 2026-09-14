@@ -9,5 +9,6 @@ RouteBase buyMovementHomeRoute() => StatefulShellRoute.indexedStack(
     StatefulShellBranch(routes: [buyMovementHomeResumeRoute()]),
     StatefulShellBranch(routes: [buyMovementHomePeriodsRoute()]),
     StatefulShellBranch(routes: [buyMovementHomeProductsRoute()]),
+    StatefulShellBranch(routes: [buyMovementHomeDepartmentsRoute()]),
   ],
 );

@@ -125,6 +125,10 @@ void main() {
       const destinations = [
         ('buy_movement_navigation_periods', '/home/buy-movements/periods'),
         ('buy_movement_navigation_products', '/home/buy-movements/products'),
+        (
+          'buy_movement_navigation_departments',
+          '/home/buy-movements/departments',
+        ),
         ('buy_movement_navigation_resume', '/home/buy-movements/resume'),
       ];
 

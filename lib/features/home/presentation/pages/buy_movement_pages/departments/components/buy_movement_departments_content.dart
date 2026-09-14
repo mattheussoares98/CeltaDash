@@ -2,7 +2,6 @@ import 'package:celta_dash/commom_widgets/commom_widgets.dart';
 import 'package:celta_dash/features/home/presentation/controllers/controllers.dart';
 import 'package:celta_dash/features/home/presentation/models/models.dart';
 import 'package:celta_dash/features/home/presentation/pages/buy_movement_pages/departments/components/components.dart';
-import 'package:celta_dash/features/home/presentation/pages/sales_pages/components/components.dart';
 import 'package:celta_dash/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,17 +25,7 @@ class BuyMovementDepartmentsContent extends HookConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       usePadding: false,
-      appBar: HomeAppBar(
-        isLandscape: MediaQuery.orientationOf(context) == Orientation.landscape,
-        reloadButton: ReloadIconButton(refreshProviders: [provider]),
-        leading: BaseIconButton(
-          onPressed: Navigator.of(context).pop,
-          platformIcon: const PlatformIcon(
-            cupertinoIcon: CupertinoIcons.back,
-            materialIcon: Icons.arrow_back,
-          ),
-        ),
-      ),
+
       body: Column(
         children: [
           Padding(

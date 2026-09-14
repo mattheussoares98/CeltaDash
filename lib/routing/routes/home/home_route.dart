@@ -17,7 +17,6 @@ List<RouteBase> homeRoutes(
   ),
   financialHomeRoute(),
   buyMovementHomeRoute(),
-  buyMovementHomeDepartmentsRoute(),
   ...secondaryRoutes,
   GoRoute(
     path: '/home',
