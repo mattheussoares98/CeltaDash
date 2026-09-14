@@ -101,8 +101,8 @@ class HomeBuyMovementProductsController
         ),
       ),
       HomeBuyMovementPeriod.monthly => (
-        DateTime(selectedDate.year),
-        DateTime(selectedDate.year, 12, 31),
+        DateTime(selectedDate.year, selectedDate.month),
+        DateTime(selectedDate.year, selectedDate.month + 1, 0),
       ),
       HomeBuyMovementPeriod.yearly => (
         DateTime(selectedDate.year - 2),
