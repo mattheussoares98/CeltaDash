@@ -5,15 +5,15 @@ import 'package:flutter/material.dart';
 class LoadingCircle extends StatefulWidget {
   const LoadingCircle({
     super.key,
-    this.strokeWidth = 4,
-    this.height = 30,
-    this.width = 30,
+    this.strokeWidth = 3,
+    this.height = 20,
+    this.width = 20,
     this.color,
     this.centered = true,
   });
 
   factory LoadingCircle.small([Color? color]) =>
-      LoadingCircle(strokeWidth: 2, height: 20, width: 20, color: color);
+      LoadingCircle(strokeWidth: 2, color: color);
   final double strokeWidth;
   final double height;
   final double width;
