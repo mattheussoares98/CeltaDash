@@ -41,8 +41,10 @@ class BuyMovementPeriodChartCard extends ConsumerWidget {
                 state.totalValue.toString().toBRL().addBrazilianCoin(),
                 textAlign: TextAlign.center,
               ),
-              gapH8,
-              BuyMovementPeriodChart(rows: state.rows),
+              if (period == HomeBuyMovementPeriod.daily) ...[
+                gapH8,
+                BuyMovementPeriodChart(rows: state.rows),
+              ],
             ],
           ),
         ),
