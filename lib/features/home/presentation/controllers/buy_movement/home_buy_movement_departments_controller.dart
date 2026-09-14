@@ -48,7 +48,6 @@ class HomeBuyMovementDepartmentsController
             BuyMovementDepartmentsPeriod.daily => .daily,
             BuyMovementDepartmentsPeriod.weekly => .weekly,
             BuyMovementDepartmentsPeriod.monthly => .monthly,
-            BuyMovementDepartmentsPeriod.yearly => .yearly,
           },
         );
 
@@ -92,10 +91,6 @@ class HomeBuyMovementDepartmentsController
     BuyMovementDepartmentsPeriod.monthly => (
       DateTime(selectedDate.year, selectedDate.month),
       DateTime(selectedDate.year, selectedDate.month + 1, 0),
-    ),
-    BuyMovementDepartmentsPeriod.yearly => (
-      DateTime(selectedDate.year),
-      DateTime(selectedDate.year, 12, 31),
     ),
   };
 }

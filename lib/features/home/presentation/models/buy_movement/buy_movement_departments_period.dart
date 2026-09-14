@@ -1,8 +1,7 @@
 enum BuyMovementDepartmentsPeriod {
   daily('Dia'),
   weekly('Semana'),
-  monthly('Mês'),
-  yearly('Ano');
+  monthly('Mês');
 
   final String label;
 
