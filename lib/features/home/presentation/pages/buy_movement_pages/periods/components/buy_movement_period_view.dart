@@ -44,6 +44,7 @@ class BuyMovementPeriodView extends ConsumerWidget {
                       _ => .ddMMyyyy,
                     };
                     return Column(
+                      mainAxisAlignment: .center,
                       children: [
                         BaseText.bodyMedium(
                           row.date?.formatDate(formatType).toUpperCase() ?? '-',
