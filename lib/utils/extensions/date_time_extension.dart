@@ -9,29 +9,28 @@ extension DateTimeExtension on DateTime {
 }
 
 enum DateFormatType {
-  //TODO sort alphabetically
+  ddMM('dd/MM'),
+  ddMMyyyy('dd/MM/yyyy'),
+  ddMMyyyyHHmm('dd/MM/yyyy HH:mm'),
+  ddMMyyyyHHmmss('dd/MM/yyyy HH:mm:ss'),
   EEE('EEE'),
   EEEE('EEEE'),
-  yM('yM'),
-  yMd('yMd'),
-  yMMM('yMMM'),
-  yMMMMd('yMMMMd'),
-  yMMMd('yMMMd'),
-  yMMMEd('yMMMEd'),
-  yMMMMEEEEd('yMMMMEEEEd'),
-  yMdHm('yMdHm'),
-  yyyy('yyyy'),
-  yyyyMM('yyyy-MM'),
   Hm('Hm'),
+  Hms('Hms'),
   MM('MM'),
   MMM('MMM'),
   MMMM('MMMM'),
   MMyyyy('MM/yyyy'),
-  Hms('Hms'),
-  ddMMyyyy('dd/MM/yyyy'),
-  ddMMyyyyHHmm('dd/MM/yyyy HH:mm'),
-  ddMMyyyyHHmmss('dd/MM/yyyy HH:mm:ss'),
-  ddMM('dd/MM');
+  yM('yM'),
+  yMd('yMd'),
+  yMdHm('yMdHm'),
+  yMMM('yMMM'),
+  yMMMd('yMMMd'),
+  yMMMEd('yMMMEd'),
+  yMMMMd('yMMMMd'),
+  yMMMMEEEEd('yMMMMEEEEd'),
+  yyyy('yyyy'),
+  yyyyMM('yyyy-MM');
 
   const DateFormatType(this.pattern);
   final String pattern;
