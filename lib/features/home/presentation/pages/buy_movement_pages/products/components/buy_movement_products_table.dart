@@ -27,21 +27,23 @@ class BuyMovementProductsTable extends StatelessWidget {
       refreshProvider: refreshProvider,
       initialSortColumnIndex: 2,
       initialSortAscending: false,
+      rowHeight: 60,
       columns: [
         ScrollableTableColumnSpec(
-          headerTitle: 'Produto'.hardcoded,
+          headerTitle:
+              "${'Produto'.hardcoded} ${rows.isEmpty ? '' : '(${rows.length})'}",
           minWidth: Sizes.p120,
           cellBuilder: (row) => Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              BaseText.caption(
-                '${row.product?.code ?? '-'}-${row.product?.packingCode ?? '-'}',
-              ),
-              BaseText(
-                row.product?.name ?? '',
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
+              BaseText.caption('${row.product?.packingCode ?? '-'}'),
+              Expanded(
+                child: BaseText(
+                  row.product?.name ?? '',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                ),
               ),
             ],
           ),
@@ -53,6 +55,14 @@ class BuyMovementProductsTable extends StatelessWidget {
             row.product?.quantity.toString().toBRL() ?? '-',
           ),
           sortValueMapper: (row) => row.product?.quantity ?? 0,
+          footerTextValueMapper: (row) {
+            final total = rows.fold(0.0, (p, e) => p + e.product!.quantity);
+            return total.toString().toBRL();
+          },
+          footerCellBuilder: (items) {
+            final total = items.fold(0.0, (p, e) => p + e.product!.quantity);
+            return BaseText.bodyMedium(total.toString().toBRL());
+          },
         ),
         ScrollableTableColumnSpec(
           headerTitle: 'Valor'.hardcoded,
@@ -60,6 +70,14 @@ class BuyMovementProductsTable extends StatelessWidget {
           cellBuilder: (row) =>
               BaseText.bodyMedium(row.totalValue.toString().toBRL()),
           sortValueMapper: (row) => row.totalValue,
+          footerCellBuilder: (items) {
+            final total = items.fold(0.0, (p, e) => p + e.totalValue);
+            return BaseText.bodyMedium(total.toString().toBRL());
+          },
+          footerTextValueMapper: (row) {
+            final total = rows.fold(0.0, (p, e) => p + e.totalValue);
+            return total.toString().toBRL();
+          },
         ),
       ],
     );

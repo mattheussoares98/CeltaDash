@@ -17,7 +17,6 @@ class BuyMovementProductsContent extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedPeriod = useState(HomeBuyMovementPeriod.daily);
     final searchController = useTextEditingController();
-    final filters = ref.watch(homeBuyMovementProductsFilterControllerProvider);
     final provider = homeBuyMovementProductsControllerProvider(
       enterpriseId,
       selectedPeriod.value,
@@ -31,18 +30,23 @@ class BuyMovementProductsContent extends HookConsumerWidget {
           child: Wrap(
             spacing: Sizes.p8,
             runSpacing: Sizes.p8,
-            crossAxisAlignment: WrapCrossAlignment.center,
+            crossAxisAlignment: .center,
+            alignment: .spaceEvenly,
             children: [
               NewBaseSegmentedButtons<HomeBuyMovementPeriod>(
-                items: HomeBuyMovementPeriod.values,
+                items: HomeBuyMovementPeriod.values
+                    .where(
+                      (e) =>
+                          e != HomeBuyMovementPeriod.hourly &&
+                          e != HomeBuyMovementPeriod.yearly,
+                    )
+                    .toList(),
                 selectedValue: selectedPeriod.value,
                 onChanged: (period) => selectedPeriod.value = period,
                 itemLabelBuilder: (period) => period.label,
               ),
               SizedBox(
-                width: MediaQuery.widthOf(
-                  context,
-                ).clamp(0, Breakpoint.tablet).toDouble(),
+                width: 200,
                 child: BaseTextFormField(
                   controller: searchController,
                   hintText: 'Buscar produto'.hardcoded,
@@ -57,24 +61,18 @@ class BuyMovementProductsContent extends HookConsumerWidget {
                     materialIcon: Icons.search,
                     cupertinoIcon: CupertinoIcons.search,
                   ),
+                  suffixIcon: searchController.text.isEmpty
+                      ? null
+                      : BaseIconButton(
+                          onPressed: searchController.clear,
+                          platformIcon: const PlatformIcon(
+                            cupertinoIcon: CupertinoIcons.delete,
+                            materialIcon: Icons.delete,
+                            color: Colors.red,
+                            size: 16,
+                          ),
+                        ),
                 ),
-              ),
-              BaseDropDown<int>(
-                label: 'Quantidade'.hardcoded,
-                selectedItem: filters.topCount,
-                onChanged: ref
-                    .read(
-                      homeBuyMovementProductsFilterControllerProvider.notifier,
-                    )
-                    .setTopCount,
-                items: const [10, 25, 50, 100, 250, 500]
-                    .map(
-                      (value) => DropdownMenuItem(
-                        value: value,
-                        child: BaseText(value.toString()),
-                      ),
-                    )
-                    .toList(),
               ),
             ],
           ),

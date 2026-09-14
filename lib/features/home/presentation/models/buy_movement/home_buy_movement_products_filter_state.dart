@@ -6,7 +6,7 @@ class HomeBuyMovementProductsFilterState extends Equatable {
 
   const HomeBuyMovementProductsFilterState({
     this.productName,
-    this.topCount = 10,
+    this.topCount = 200,
   }) : assert(topCount > 0 && topCount <= 500);
 
   HomeBuyMovementProductsFilterState copyWith({
