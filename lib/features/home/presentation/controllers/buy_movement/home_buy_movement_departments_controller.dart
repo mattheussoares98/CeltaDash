@@ -45,9 +45,10 @@ class HomeBuyMovementDepartmentsController
         .addNewMonthlyAnalytic(
           reportType: .buyMovementDepartments,
           periodType: switch (selectedPeriod) {
-            BuyMovementDepartmentsPeriod.daily => .daily,
-            BuyMovementDepartmentsPeriod.weekly => .weekly,
-            BuyMovementDepartmentsPeriod.monthly => .monthly,
+            .daily => .daily,
+            .weekly => .weekly,
+            .monthly => .monthly,
+            .yearly => .yearly,
           },
         );
 
@@ -91,6 +92,10 @@ class HomeBuyMovementDepartmentsController
     BuyMovementDepartmentsPeriod.monthly => (
       DateTime(selectedDate.year, selectedDate.month),
       DateTime(selectedDate.year, selectedDate.month + 1, 0),
+    ),
+    BuyMovementDepartmentsPeriod.yearly => (
+      DateTime(selectedDate.year),
+      DateTime(selectedDate.year, 12, 31),
     ),
   };
 }
