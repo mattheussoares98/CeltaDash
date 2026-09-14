@@ -65,7 +65,11 @@ class BuyMovementEntityFactory {
     product: withProduct
         ? BuyMovementDataProductEntity(
             code: faker.randomGenerator.integer(1000, min: 1),
-            packingCode: faker.randomGenerator.integer(100, min: 1),
+            packingQuantity: faker.randomGenerator.integer(100, min: 1),
+            packingAbbreviation: faker.lorem.word().substring(0, 3),
+            priceLookupCode: faker.randomGenerator
+                .integer(1000, min: 1)
+                .toString(),
             name: faker.food.dish(),
             quantity: faker.randomGenerator.decimal(min: 1),
           )

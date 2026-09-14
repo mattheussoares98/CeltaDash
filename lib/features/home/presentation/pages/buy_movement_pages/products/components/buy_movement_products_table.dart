@@ -36,7 +36,7 @@ class BuyMovementProductsTable extends StatelessWidget {
           cellBuilder: (row) => Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              BaseText.caption('${row.product?.packingCode ?? '-'}'),
+              BaseText.caption(row.product?.priceLookupCode ?? '-'),
               Expanded(
                 child: BaseText(
                   row.product?.name ?? '',

@@ -1,26 +1,25 @@
 import 'package:celta_dash/features/buy_movement/domain/entities/entities.dart';
-import 'package:equatable/equatable.dart';
 
-class BuyMovementDataProductModel extends Equatable {
-  final int code;
-  final int packingCode;
-  final String name;
-  final num quantity;
-
+class BuyMovementDataProductModel extends BuyMovementDataProductEntity {
   const BuyMovementDataProductModel({
-    required this.code,
-    required this.packingCode,
-    required this.name,
-    required this.quantity,
+    required super.code,
+    required super.priceLookupCode,
+    required super.name,
+    required super.packingAbbreviation,
+    required super.packingQuantity,
+    required super.quantity,
   });
 
   factory BuyMovementDataProductModel.fromJson(Map json) =>
       BuyMovementDataProductModel(
         code: ((json['Code'] ?? json['code']) as num?)?.toInt() ?? 0,
-        packingCode:
-            ((json['PackingCode'] ?? json['packingCode']) as num?)?.toInt() ??
-            0,
-        name: (json['Name'] ?? json['name'])?.toString() ?? '',
+        priceLookupCode:
+            (json['PriceLookupCode'] ?? json['priceLookupCode']) ?? '',
+        name: (json['Name'] ?? json['name']) ?? '',
+        packingAbbreviation:
+            (json['PackingAbbreviation'] ?? json['packingAbbreviation']) ?? '',
+        packingQuantity:
+            (json['PackingQuantity'] ?? json['packingQuantity']) as num? ?? 0,
         quantity: (json['Quantity'] ?? json['quantity']) as num? ?? 0,
       );
 
@@ -28,25 +27,38 @@ class BuyMovementDataProductModel extends Equatable {
     BuyMovementDataProductEntity entity,
   ) => BuyMovementDataProductModel(
     code: entity.code,
-    packingCode: entity.packingCode,
+    priceLookupCode: entity.priceLookupCode,
     name: entity.name,
+    packingAbbreviation: entity.packingAbbreviation,
+    packingQuantity: entity.packingQuantity,
     quantity: entity.quantity,
   );
 
   BuyMovementDataProductEntity toEntity() => BuyMovementDataProductEntity(
     code: code,
-    packingCode: packingCode,
+    priceLookupCode: priceLookupCode,
     name: name,
+    packingAbbreviation: packingAbbreviation,
+    packingQuantity: packingQuantity,
     quantity: quantity,
   );
 
   Map toJson() => {
     'Code': code,
-    'PackingCode': packingCode,
+    'PriceLookupCode': priceLookupCode,
     'Name': name,
+    'PackingAbbreviation': packingAbbreviation,
+    'PackingQuantity': packingQuantity,
     'Quantity': quantity,
   };
 
   @override
-  List<Object?> get props => [code, packingCode, name, quantity];
+  List<Object?> get props => [
+    code,
+    priceLookupCode,
+    name,
+    packingAbbreviation,
+    packingQuantity,
+    quantity,
+  ];
 }

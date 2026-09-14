@@ -165,7 +165,7 @@ void main() {
       final row = result.results.single;
 
       expect(row.enterpriseCode, 10);
-      expect(row.product?.packingCode, 2);
+      expect(row.product?.priceLookupCode, 2);
       expect(row.product?.quantity, 3.5);
       expect(row.supplier?.code, 30);
       expect(row.totalValue, 125.75);
