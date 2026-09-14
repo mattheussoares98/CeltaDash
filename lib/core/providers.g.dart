@@ -397,3 +397,99 @@ final class ThemeRepositoryProvider
 }
 
 String _$themeRepositoryHash() => r'a648cb25ec979506e06a6cd0a7f66aa2041feaf6';
+
+@ProviderFor(ecReleaseDatasource)
+final ecReleaseDatasourceProvider = EcReleaseDatasourceProvider._();
+
+final class EcReleaseDatasourceProvider
+    extends
+        $FunctionalProvider<
+          IEcReleaseDatasource,
+          IEcReleaseDatasource,
+          IEcReleaseDatasource
+        >
+    with $Provider<IEcReleaseDatasource> {
+  EcReleaseDatasourceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'ecReleaseDatasourceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$ecReleaseDatasourceHash();
+
+  @$internal
+  @override
+  $ProviderElement<IEcReleaseDatasource> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  IEcReleaseDatasource create(Ref ref) {
+    return ecReleaseDatasource(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(IEcReleaseDatasource value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<IEcReleaseDatasource>(value),
+    );
+  }
+}
+
+String _$ecReleaseDatasourceHash() =>
+    r'592a0630c088c75f1559b44197cca9c5a2d22fea';
+
+@ProviderFor(ecReleaseRepository)
+final ecReleaseRepositoryProvider = EcReleaseRepositoryProvider._();
+
+final class EcReleaseRepositoryProvider
+    extends
+        $FunctionalProvider<
+          IEcReleaseRepository,
+          IEcReleaseRepository,
+          IEcReleaseRepository
+        >
+    with $Provider<IEcReleaseRepository> {
+  EcReleaseRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'ecReleaseRepositoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$ecReleaseRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<IEcReleaseRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  IEcReleaseRepository create(Ref ref) {
+    return ecReleaseRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(IEcReleaseRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<IEcReleaseRepository>(value),
+    );
+  }
+}
+
+String _$ecReleaseRepositoryHash() =>
+    r'62e2709a96dbf9b05fb9b815a1df99d4e974d3bd';

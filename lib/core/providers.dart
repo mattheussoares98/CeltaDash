@@ -57,3 +57,13 @@ IThemeLocalDatasource themeLocalDatasource(Ref ref) {
 IThemeRepository themeRepository(Ref ref) {
   return ThemeRepositoryImpl(ref.watch(themeLocalDatasourceProvider));
 }
+
+@riverpod
+IEcReleaseDatasource ecReleaseDatasource(Ref ref) {
+  return EcReleaseDatasource(ref.watch(httpClientProvider));
+}
+
+@riverpod
+IEcReleaseRepository ecReleaseRepository(Ref ref) {
+  return EcReleaseRepositoryImpl(ref.watch(ecReleaseDatasourceProvider));
+}
