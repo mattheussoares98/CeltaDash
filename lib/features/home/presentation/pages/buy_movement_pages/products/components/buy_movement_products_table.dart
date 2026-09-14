@@ -34,7 +34,7 @@ class BuyMovementProductsTable extends StatelessWidget {
               "${'Produto'.hardcoded} ${rows.isEmpty ? '' : '(${rows.length})'}",
           minWidth: 200,
           cellBuilder: (row) => Column(
-            crossAxisAlignment: .start,
+            crossAxisAlignment: .stretch,
             mainAxisAlignment: .spaceEvenly,
             children: [
               BaseText.caption(row.product?.priceLookupCode ?? '-'),
