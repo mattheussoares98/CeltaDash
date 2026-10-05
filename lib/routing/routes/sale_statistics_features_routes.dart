@@ -53,7 +53,7 @@ RouteBase updateAppVersionRoute() => GoRoute(
 );
 
 RouteBase webEnterpriseDetailsRoute() => GoRoute(
-  path: '/home/web-enterprise-details',
+  path: '/web-enterprise-details',
   name: Routes.webEnterpriseDetails.name,
   builder: (context, state) => const web_enterprises.WebEnterprisesPage(),
 );

@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 RouteBase webLoginRoute({required Future<bool> Function() isLoggedIn}) =>
     GoRoute(
-      path: '/home/web-login',
+      path: '/web-login',
       name: Routes.webLogin.name,
       redirect: (context, state) async {
         if (await isLoggedIn()) {

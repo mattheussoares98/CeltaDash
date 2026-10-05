@@ -39,8 +39,17 @@ GoRouter goRouter(Ref ref) {
 
       final isSplash = location == '/splash';
       final isLogin = location == '/login';
+      final isWebLogin = location == '/web-login';
+      final isWebEnterprises = location == '/web-enterprises';
+      final isWebEnterpriseDetails = location == '/web-enterprise-details';
       final isUpdateRequired = location == '/home/update-app-version';
-      final isPublicRoute = isSplash || isLogin || isUpdateRequired;
+      final isPublicRoute =
+          isSplash ||
+          isLogin ||
+          isWebLogin ||
+          isWebEnterprises ||
+          isWebEnterpriseDetails ||
+          isUpdateRequired;
 
       // 2. Unauthenticated user trying to access a protected route
       if (!isLoggedIn) {
@@ -58,6 +67,11 @@ GoRouter goRouter(Ref ref) {
     routes: [
       splashRoute(),
       loginRoute(),
+      webLoginRoute(
+        isLoggedIn: () => ref.read(webLoginRepositoryProvider).isLoggedIn(),
+      ),
+      webEnterprisesRoute(),
+      webEnterpriseDetailsRoute(),
       ...homeRoutes(rootNavigatorKey, [
         saleDetailsRoute(),
         salesRoute(),
@@ -70,11 +84,6 @@ GoRouter goRouter(Ref ref) {
         operatorsRoute(),
         sellersRoute(),
         updateAppVersionRoute(),
-        webLoginRoute(
-          isLoggedIn: () => ref.read(webLoginRepositoryProvider).isLoggedIn(),
-        ),
-        webEnterprisesRoute(),
-        webEnterpriseDetailsRoute(),
       ], loadAppMode: () => ref.read(homeRepositoryProvider).loadAppMode()),
     ],
     errorBuilder: (context, state) => const NotFoundPage(),
