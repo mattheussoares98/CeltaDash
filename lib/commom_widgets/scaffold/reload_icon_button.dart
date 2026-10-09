@@ -24,10 +24,16 @@ class ReloadIconButton extends HookConsumerWidget {
     final animationController = useAnimationController(
       duration: const Duration(milliseconds: 1000),
     );
-
-    final isLoading =
-        refreshProviders?.any((e) => ref.watch(e.select((s) => s.isLoading))) ??
-        false;
+    var isLoading = false;
+    for (final provider
+        in refreshProviders ?? <ProviderBase<AsyncValue<dynamic>>>[]) {
+      if (ref.exists(provider)) {
+        final providerIsLoading = ref.watch(
+          provider.select((value) => value.isLoading),
+        );
+        isLoading = isLoading || providerIsLoading;
+      }
+    }
 
     useEffect(() {
       if (isLoading) {
@@ -50,7 +56,9 @@ class ReloadIconButton extends HookConsumerWidget {
       onRefresh?.call();
       if (refreshProviders?.isNotEmpty ?? false) {
         for (final provider in refreshProviders!) {
-          ref.invalidate(provider);
+          if (ref.exists(provider)) {
+            ref.invalidate(provider);
+          }
         }
       }
     }
