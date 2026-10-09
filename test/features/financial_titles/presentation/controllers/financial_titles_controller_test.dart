@@ -97,6 +97,25 @@ void main() {
 
   group('FinancialTitlesController.loadData', () {
     test(
+      'invalidation clears cached parameters before loading again',
+      () async {
+        when(
+          () => mockRepository.getData(params: tParams, ecParams: tEcParams),
+        ).thenAnswer((_) async => tEntity);
+        final provider = financialTitlesControllerProvider();
+        await container.read(provider.notifier).loadData(params: tParams);
+        expect(container.read(provider.notifier).lastLoadedParams, tParams);
+        container.invalidate(provider);
+        final controller = container.read(provider.notifier);
+        expect(controller.lastLoadedParams, isNull);
+        final result = await controller.loadData(params: tParams);
+        expect(result, AsyncValue.data(tEntity));
+        verify(
+          () => mockRepository.getData(params: tParams, ecParams: tEcParams),
+        ).called(2);
+      },
+    );
+    test(
       'should set state to AsyncError when activeEcParams is null',
       () async {
         final containerWithoutEcParams = ProviderContainer(

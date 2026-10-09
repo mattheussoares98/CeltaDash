@@ -41,7 +41,7 @@ class HomeFinancialController extends _$HomeFinancialController {
         periodType: filters.periodType,
         situations: filters.situations,
       ),
-      forceRefresh: true,
+      forceRefresh: selectedPeriod != HomeFinancialPeriod.monthly,
     );
 
     if (financialState.hasError) {

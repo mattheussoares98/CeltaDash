@@ -20,6 +20,7 @@ class FinancialTitlesController extends _$FinancialTitlesController {
     ref.cache();
     ref.invalidatePeriodically();
     ref.watch(activeEcParamsStateControllerProvider);
+    _lastLoadedParams = null;
     return const AsyncValue.data(FinancialTitleDataResponseEntity());
   }
 

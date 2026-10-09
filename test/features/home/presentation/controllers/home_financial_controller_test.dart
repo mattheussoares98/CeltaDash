@@ -165,6 +165,109 @@ void main() {
     ).called(1);
   });
 
+  test(
+    'annual data is reused across days and months of the same year',
+    () async {
+      final params = makeParams(HomeFinancialPeriod.monthly);
+      when(
+        () => repository.getData(params: params, ecParams: ecParams),
+      ).thenAnswer((_) async => responseEntity);
+      final provider = homeFinancialControllerProvider(
+        enterpriseId,
+        HomeFinancialPeriod.monthly,
+      );
+      await container.read(provider.future);
+      final home =
+          container.read(homeControllerProvider.notifier) as FakeHomeController;
+      final initial = container.read(homeControllerProvider).requireValue;
+      for (final date in [DateTime(2026, 8, 18), DateTime(2026, 12)]) {
+        home.updateState(initial.copyWith(selectedDate: date));
+        await container.pump();
+        expect(await container.read(provider.future), responseEntity);
+      }
+      verify(
+        () => repository.getData(params: params, ecParams: ecParams),
+      ).called(1);
+    },
+  );
+
+  test('annual data reloads when the selected year changes', () async {
+    final params = makeParams(HomeFinancialPeriod.monthly);
+    final nextYear = params.copyWith(
+      startDate: DateTime(2027),
+      endDate: DateTime(2027, 12, 31),
+    );
+    when(
+      () => repository.getData(params: params, ecParams: ecParams),
+    ).thenAnswer((_) async => responseEntity);
+    when(
+      () => repository.getData(params: nextYear, ecParams: ecParams),
+    ).thenAnswer((_) async => responseEntity);
+    final provider = homeFinancialControllerProvider(
+      enterpriseId,
+      HomeFinancialPeriod.monthly,
+    );
+    await container.read(provider.future);
+    final home =
+        container.read(homeControllerProvider.notifier) as FakeHomeController;
+    home.updateState(
+      container
+          .read(homeControllerProvider)
+          .requireValue
+          .copyWith(selectedDate: DateTime(2027, 2)),
+    );
+    expect(await container.read(provider.future), responseEntity);
+    verify(
+      () => repository.getData(params: nextYear, ecParams: ecParams),
+    ).called(1);
+  });
+
+  test('manual reload fetches fresh annual data', () async {
+    final params = makeParams(HomeFinancialPeriod.monthly);
+    when(
+      () => repository.getData(params: params, ecParams: ecParams),
+    ).thenAnswer((_) async => responseEntity);
+    final provider = homeFinancialControllerProvider(
+      enterpriseId,
+      HomeFinancialPeriod.monthly,
+    );
+    await container.read(provider.future);
+    container.invalidate(provider);
+    expect(await container.read(provider.future), responseEntity);
+    verify(
+      () => repository.getData(params: params, ecParams: ecParams),
+    ).called(2);
+  });
+
+  test('annual data reloads when situations change', () async {
+    final params = makeParams(HomeFinancialPeriod.monthly);
+    final filtered = makeParams(
+      HomeFinancialPeriod.monthly,
+      situations: [
+        FinancialTitleSituation.open,
+        FinancialTitleSituation.partiallySettled,
+      ],
+    );
+    when(
+      () => repository.getData(params: params, ecParams: ecParams),
+    ).thenAnswer((_) async => responseEntity);
+    when(
+      () => repository.getData(params: filtered, ecParams: ecParams),
+    ).thenAnswer((_) async => responseEntity);
+    final provider = homeFinancialControllerProvider(
+      enterpriseId,
+      HomeFinancialPeriod.monthly,
+    );
+    await container.read(provider.future);
+    container
+        .read(homeFinancialFiltersControllerProvider.notifier)
+        .toggleSituation(FinancialTitleSituation.completelySettled);
+    expect(await container.read(provider.future), responseEntity);
+    verify(
+      () => repository.getData(params: filtered, ecParams: ecParams),
+    ).called(1);
+  });
+
   test('does not reload financial data when only app mode changes', () async {
     final params = makeParams(HomeFinancialPeriod.daily);
     when(
